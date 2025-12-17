@@ -74,7 +74,7 @@ stages:
         testResultsFormat: VSTest
         testResultsFiles: '**/TestResults/*.trx'
         testRunTitle: ($(operatingSystem))
-        buildConfiguration: ${{ parameters.configuration }}
+        buildConfiguration: '$(buildConfiguration)'
         buildPlatform: $(operatingSystem)
         mergeTestResults: true
         failTaskOnFailedTests: false
