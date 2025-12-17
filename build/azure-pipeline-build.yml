@@ -73,7 +73,7 @@ stages:
       inputs:
         testResultsFormat: VSTest
         testResultsFiles: '**/TestResults/*.trx'
-        testRunTitle: ${{ project }} ($(operatingSystem))
+        testRunTitle: ($(operatingSystem))
         buildConfiguration: ${{ parameters.configuration }}
         buildPlatform: $(operatingSystem)
         mergeTestResults: true
