@@ -1,0 +1,136 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- main
+
+parameters:
+- name: publishNuGetPackages
+  displayName: Publish NuGet packages
+  type: boolean
+  default: false
+- name: createGitHubRelease
+  displayName: Create GitHub release
+  type: boolean
+  default: false
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  codeCoverageEngine: Cobertura     # Compile-time
+
+  
+stages:
+- stage: Initialize
+  displayName: "Stage 'Initialize'"
+  jobs:
+  - job: JobInit1
+    displayName: "Job Init (1) this"
+    steps:
+#     - script: echo "Initializing the application in Job Init1. publishNuGetPackages:${{ parameters.publishNuGetPackages }}, buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)"
+#       displayName: "Initializing 'this' in step1"
+#   - job: JobInit2
+#     displayName: "Job Init (2) that"
+#     steps:
+    - script: echo "Running init in Job Init2"
+      displayName: "Init 'that'"
+    - template: azure-pipelines-template/initialize.yml
+    - script: |
+        echo Add publishNuGetPackages:${{ parameters.publishNuGetPackages }}...
+        echo See buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)...
+      displayName: 'Run a multiline script'
+
+# - stage: Run
+#   displayName: "Stage 'Run'"
+#   jobs:
+#   - job: DefaultSingeJob
+#     displayName: "JobRun - brumm brumm..."
+#     steps:
+    
+    - task: NuGetToolInstaller@1
+    
+    - task: NuGetCommand@2
+      displayName: 'Nuget : restore solution'
+      inputs:
+        restoreSolution: '$(solution)'
+    
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    
+    - task: NuGetCommand@2
+      displayName: 'Nuget : do nothing (default restore)'
+      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
+#  condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
+    # - task: NuGetCommand@2
+    #   displayName: 'Nuget : empty'
+    #   condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, false))
+
+    # - task: NuGetCommand@2
+    #   displayName: 'Nuget : pack'
+    #   inputs:
+    #     command: 'pack'
+    #     packagesToPack: '**/StoreLake.Sdk.csproj'
+    #     versioningScheme: 'off'
+    #     verbosityPack: 'Detailed'
+        
+    
+  # - job: Windows
+  #   pool:
+  #     vmImage: windows-latest
+  #   steps:
+    - template: azure-pipelines-template/run.yml
+      parameters:
+        operatingSystem: Windows
+        runtimeIdentifier: win-x64
+        configuration: ${{ variables.buildConfiguration }}
+        codeCoverageEngine: ${{ variables.codeCoverageEngine }}
+    
+    - script: echo "skip nuget push due to parameter value"
+      displayName: "Nuget : push-skipped"
+      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, false))
+
+    - task: NuGetCommand@2
+      displayName: 'Nuget : push'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+        nuGetFeedType: 'external'  
+        publishFeedCredentials: 'nuget.org'
+        verbosityPush: 'Detailed'
+      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
+
+    - task: GitHubRelease@1
+      displayName: ?? Create GitHub release
+      inputs:
+        gitHubConnection: 'benhauman'
+        repositoryName: $(Build.Repository.Name)
+        #target: $(resources.pipeline.CI.sourceCommit)
+        target: $(Build.SourceVersion)
+        tagSource: userSpecifiedTag
+        #tag: v$(resources.pipeline.CI.runName)
+        tag: 'v$(Build.BuildNumber)'
+        #title: v$(resources.pipeline.CI.runName)
+        title: 'v$(Build.BuildNumber)'
+        #isPreRelease: $(IsPreRelease)
+        #isDraft: $(IsPreview)
+        assets: |
+          $(Pipeline.Workspace)/CI/NuGet packages/*.nupkg
+          $(Pipeline.Workspace)/CI/Publish output*/*.zip
+        changeLogCompareToRelease: lastFullRelease
+        changeLogCompareToReleaseTag: v$(NBGV_MAJORMINORVERSION)\.\d+$
+        changeLogType: commitBased
+      condition: and(succeeded(), eq(${{ parameters.createGitHubRelease }}, true))
