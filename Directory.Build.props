@@ -1,0 +1,44 @@
+<Project>
+  <PropertyGroup>
+    <Product>Skrypton</Product>
+    <Company>BENLENA</Company>
+    <Authors>Ben Hauman</Authors>
+    <Copyright>© $([System.DateTime]::Today.Year) BENLENA.</Copyright>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!--
+      Only sign runtime NuGet packages for compatibility reasons.
+      For these projects we will explicitly enable it.
+      Currently the only unsigned third party reference is 'Harmony', which is only used in the SDK.
+    -->
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)build\signing-key.snk</AssemblyOriginatorKeyFile>
+
+    <ManagePackageVersionsCentrally>True</ManagePackageVersionsCentrally>
+    <CentralPackageVersionOverrideEnabled>False</CentralPackageVersionOverrideEnabled>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NuGetAudit>true</NuGetAudit>
+
+    <RootDirectory>$(MSBuildThisFileDirectory)</RootDirectory>
+    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+
+    <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">true</ContinuousIntegrationBuild>
+    <DefineConstants Condition="'$(ContinuousIntegrationBuild)' == 'true'">$(DefineConstants);CI_BUILD</DefineConstants>
+
+    <PackageProjectUrl>https://github.com/benhauman/Skrypton</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageTags>Skrypton</PackageTags>
+    <Description>Seamlessly create use case oriented REST APIs based on T-SQL stored procedures.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="" Visible="False" />
+  </ItemGroup>
+</Project>
