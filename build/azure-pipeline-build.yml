@@ -66,6 +66,18 @@ stages:
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+        resultsFolder: '$(System.DefaultWorkingDirectory)/TestResults'
+
+    - task: PublishTestResults@2
+      displayName: 📗 Publish test results
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/TestResults/*.trx'
+        testRunTitle: ${{ project }} ($(operatingSystem))
+        buildConfiguration: ${{ parameters.configuration }}
+        buildPlatform: $(operatingSystem)
+        mergeTestResults: true
+        failTaskOnFailedTests: false
     
     - task: NuGetCommand@2
       displayName: 'Nuget : do nothing (default restore)'
