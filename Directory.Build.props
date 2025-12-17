@@ -16,7 +16,7 @@
       Currently the only unsigned third party reference is 'Harmony', which is only used in the SDK.
     -->
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)build\signing-key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)build\Skrypton.snk</AssemblyOriginatorKeyFile>
 
     <ManagePackageVersionsCentrally>True</ManagePackageVersionsCentrally>
     <CentralPackageVersionOverrideEnabled>False</CentralPackageVersionOverrideEnabled>
