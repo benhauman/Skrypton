@@ -1,0 +1,28 @@
+<Project>
+  <ItemGroup>
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.9.50" />
+    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="18.0.2" />
+    <!--
+      Be careful to update this package, because it might require a newer version of the compiler:
+      Therefore, the .NET SDK version needs to be updated in the global.json, this also requires the build machines to have this version installed.
+      The UseDotNet@2 task can help here, but it might also require a newer version of MSBuild, therefore requiring a VS update:
+      Version 8.0.400 of the .NET SDK requires at least version 17.9.5 of MSBuild. The current available version of MSBuild is 17.8.3.51904. Change the .NET SDK specified in global.json to an older version that requires the MSBuild version currently available.
+    -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="4.0.2" />
+    <PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="Newtonsoft.Json.Schema" Version="4.0.1" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageVersion Include="System.IO.Packaging" Version="10.0.0" />
+    <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageVersion Include="System.Reflection.Metadata" Version="10.0.0" />
+  </ItemGroup>
+</Project>

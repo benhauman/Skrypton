@@ -5,6 +5,8 @@ VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skrypton", "src\Skrypton\Skrypton.csproj", "{BA9B8048-EF26-3785-99AE-6244D904BB8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skrypton.Tests", "tests\Skrypton.Tests\Skrypton.Tests.csproj", "{9EFA1C52-010D-F1B5-EADA-B38D9B34A2C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BA9B8048-EF26-3785-99AE-6244D904BB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9B8048-EF26-3785-99AE-6244D904BB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9B8048-EF26-3785-99AE-6244D904BB8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFA1C52-010D-F1B5-EADA-B38D9B34A2C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFA1C52-010D-F1B5-EADA-B38D9B34A2C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFA1C52-010D-F1B5-EADA-B38D9B34A2C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFA1C52-010D-F1B5-EADA-B38D9B34A2C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
