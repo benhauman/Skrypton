@@ -8,6 +8,7 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
         {
+            //1
         }
     }
 }
