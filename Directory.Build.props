@@ -33,7 +33,7 @@
     <RepositoryType>Git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>Skrypton</PackageTags>
-    <Description>Seamlessly create use case oriented REST APIs based on T-SQL stored procedures.</Description>
+    <Description>You know VBS - thats enough</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
