@@ -33,39 +33,35 @@ stages:
   - job: JobInit1
     displayName: "Job Init (1) this"
     steps:
-#     - script: echo "Initializing the application in Job Init1. publishNuGetPackages:${{ parameters.publishNuGetPackages }}, buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)"
-#       displayName: "Initializing 'this' in step1"
-#   - job: JobInit2
-#     displayName: "Job Init (2) that"
-#     steps:
+
+    # FIX for Nerdbank.GitVersioning: disable shallow clone
+    - checkout: self
+      clean: true
+      fetchDepth: 0
+
     - script: echo "Running init in Job Init2"
       displayName: "Init 'that'"
+
     - template: azure-pipelines-template/initialize.yml
+
     - script: |
         echo Add publishNuGetPackages:${{ parameters.publishNuGetPackages }}...
         echo See buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)...
       displayName: 'Run a multiline script'
 
-# - stage: Run
-#   displayName: "Stage 'Run'"
-#   jobs:
-#   - job: DefaultSingeJob
-#     displayName: "JobRun - brumm brumm..."
-#     steps:
-    
     - task: NuGetToolInstaller@1
-    
+
     - task: NuGetCommand@2
       displayName: 'Nuget : restore solution'
       inputs:
         restoreSolution: '$(solution)'
-    
+
     - task: VSBuild@1
       inputs:
         solution: '$(solution)'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-    
+
     - task: VSTest@2
       inputs:
         platform: '$(buildPlatform)'
@@ -98,7 +94,7 @@ stages:
         runtimeIdentifier: win-x64
         configuration: ${{ variables.buildConfiguration }}
         codeCoverageEngine: ${{ variables.codeCoverageEngine }}
-    
+
     - script: echo "skip nuget push due to parameter value"
       displayName: "Nuget : push-skipped"
       condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, false))
@@ -108,7 +104,7 @@ stages:
       inputs:
         command: 'push'
         packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-        nuGetFeedType: 'external'  
+        nuGetFeedType: 'external'
         publishFeedCredentials: 'nuget.org'
         verbosityPush: 'Detailed'
       condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
