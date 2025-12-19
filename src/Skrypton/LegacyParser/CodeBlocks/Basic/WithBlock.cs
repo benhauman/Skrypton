@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
+
+namespace Skrypton.LegacyParser.CodeBlocks.Basic
+{
+    [Serializable]
+    [DataContract(Namespace = "http://vbs")]
+    public class WithBlock : IHaveNestedContent
+    {
+        public WithBlock(Expression target, IEnumerable<ICodeBlock> content)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+            if (content == null)
+                throw new ArgumentNullException("content");
+
+            Target = target;
+            Content = content.ToArray();
+            if (Content.Any(c => c == null))
+                throw new ArgumentException("Null reference encountered in content set");
+        }
+
+        /// <summary>
+        /// This will never be null
+        /// </summary>
+        [DataMember] public Expression Target { get; private set; }
+
+        /// <summary>
+        /// This will never be null nor contain any null references
+        /// </summary>
+        [DataMember] public IEnumerable<ICodeBlock> Content { get; private set; }
+
+        /// <summary>
+        /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it
+        /// would include the statements inside the conditions but also the conditions themselves. It will never be null nor contain any nulls.
+        /// Note that this does not recursively drill down through nested code blocks so there will be cases where there are more executable
+        /// blocks within child code blocks.
+        /// </summary>
+        IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
+        {
+            get
+            {
+                yield return Target;
+                foreach (var statement in Content)
+                    yield return statement;
+            }
+        }
+
+        /// <summary>
+        /// Re-generate equivalent VBScript source code for this block - there should not be a line return at the end of the content
+        /// </summary>
+        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        {
+            var output = new StringBuilder();
+
+            output.Append(indenter.Indent);
+            output.Append("WITH ");
+            output.AppendLine(Target.GenerateBaseSource(NullIndenter.Instance));
+
+            foreach (var statement in Content)
+                output.AppendLine(statement.GenerateBaseSource(indenter.Increase()));
+
+            output.Append(indenter.Indent);
+            output.Append("END WITH");
+            return output.ToString();
+        }
+    }
+}

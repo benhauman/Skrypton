@@ -1,0 +1,173 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using Skrypton.LegacyParser.Tokens.Basic;
+
+namespace Skrypton.LegacyParser.CodeBlocks.Basic
+{
+    [Serializable]
+    [DataContract(Namespace = "http://vbs")]
+    public abstract class AbstractFunctionBlock : ICodeBlock, IDefineScope
+    {
+        // =======================================================================================
+        // CLASS INITIALISATION
+        // =======================================================================================
+        public AbstractFunctionBlock(
+            bool isPublic,
+            bool isDefault,
+            bool hasReturnValue,
+            NameToken name,
+            IEnumerable<Parameter> parameters,
+            IEnumerable<ICodeBlock> statements)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            if (!isPublic && isDefault)
+                throw new ArgumentException("Can not be default AND private");
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
+            if (statements == null)
+                throw new ArgumentNullException("statements");
+
+            Parameters = parameters.ToList().AsReadOnly();
+            if (Parameters.Any(p => p == null))
+                throw new ArgumentException("Null reference encountered in parameters set");
+            Statements = statements.ToList().AsReadOnly();
+            if (Statements.Any(s => s == null))
+                throw new ArgumentException("Null reference encountered in Statements set");
+
+            IsPublic = isPublic;
+            IsDefault = isDefault;
+            HasReturnValue = hasReturnValue;
+            Name = name;
+        }
+
+        protected abstract string keyWord { get; }
+
+        public override string ToString()
+        {
+            return base.ToString() + ":" + Name.Content;
+        }
+
+        // =======================================================================================
+        // PUBLIC DATA ACCESS
+        // =======================================================================================
+        [DataMember] public bool IsPublic { get; private set; }
+
+        [DataMember] public bool IsDefault { get; private set; }
+
+        [DataMember] public bool HasReturnValue { get; private set; }
+
+        /// <summary>
+        /// This will never be null
+        /// </summary>
+        [DataMember] public NameToken Name { get; private set; }
+
+        /// <summary>
+        /// This will never be null nor contain any null references
+        /// </summary>
+        [DataMember] public IEnumerable<Parameter> Parameters { get; private set; }
+
+        /// <summary>
+        /// This will never be null nor contain any null references
+        /// </summary>
+        [DataMember] public IEnumerable<ICodeBlock> Statements { get; private set; }
+
+        /// <summary>
+        /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
+        /// </summary>
+        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions { get { return Parameters.Select(p => p.Name); } }
+
+        /// <summary>
+        /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it
+        /// would include the statements inside the conditions but also the conditions themselves. It will never be null nor contain any nulls.
+        /// Note that this does not recursively drill down through nested code blocks so there will be cases where there are more executable
+        /// blocks within child code blocks.
+        /// </summary>
+        IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
+        {
+            get { return Statements; }
+        }
+
+        ScopeLocationOptions IDefineScope.Scope { get { return ScopeLocationOptions.WithinFunctionOrPropertyOrWith; } }
+
+        // =======================================================================================
+        // DESCRIPTION CLASSES
+        // =======================================================================================
+
+        [DataContract(Namespace = "http://vbs")]
+        public class Parameter
+        {
+            public Parameter(bool byRef, NameToken name, bool isArray)
+            {
+                if (name == null)
+                    throw new ArgumentNullException("name");
+
+                this.ByRef = byRef;
+                this.Name = name;
+                this.IsArray = isArray;
+            }
+
+            [DataMember] public bool ByRef { get; private set; }
+
+            /// <summary>
+            /// This will never be null
+            /// </summary>
+            [DataMember] public NameToken Name { get; private set; }
+
+            [DataMember] public bool IsArray { get; private set; }
+        }
+
+        // =======================================================================================
+        // VBScript BASE SOURCE RE-GENERATION
+        // =======================================================================================
+        /// <summary>
+        /// Re-generate equivalent VBScript source code for this block - there
+        /// should not be a line return at the end of the content
+        /// </summary>
+        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        {
+            // Ensure derived class has behaved itself
+            if ((this.keyWord ?? "").Trim() == "")
+                throw new Exception("Derived class has not defined non-blank/null keyWord");
+
+            // Render opening declaration (scope, name, arguments)
+            StringBuilder output = new StringBuilder();
+            output.Append(indenter.Indent);
+            if (IsPublic)
+                output.Append("Public ");
+            else
+                output.Append("Private ");
+            if (IsDefault)
+                output.Append("Default ");
+            output.Append(this.keyWord + " ");
+            output.Append(Name.Content);
+            output.Append("(");
+            var numberOfParameters = Parameters.Count();
+            for (int index = 0; index < numberOfParameters; index++)
+            {
+                Parameter parameter = Parameters.ElementAt(index);
+                if (parameter.ByRef)
+                    output.Append("ByRef ");
+                else
+                    output.Append("ByVal ");
+                output.Append(parameter.Name.Content);
+                if (parameter.IsArray)
+                    output.Append("()");
+                if (index < (numberOfParameters - 1))
+                    output.Append(", ");
+            }
+            output.AppendLine(")");
+
+            // Render content
+            foreach (var block in Statements)
+                output.AppendLine(block.GenerateBaseSource(indenter.Increase()));
+
+            // Close
+            output.Append(indenter.Indent + "End " + this.keyWord);
+            return output.ToString();
+        }
+    }
+}

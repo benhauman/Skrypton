@@ -1,0 +1,16 @@
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace Skrypton.LegacyParser.Tokens.Basic
+{
+    [Serializable]
+    [DataContract(Namespace = "http://vbs")]
+    public class OpenBrace : AtomToken
+    {
+        /// <summary>
+        /// This inherits from AtomToken since a lot of processing would consider them the
+        /// same token type while parsing the original content.
+        /// </summary>
+        public OpenBrace(int lineIndex) : base("(".ToUpperX(), WhiteSpaceBehaviourOptions.Disallow, lineIndex) { }
+    }
+}
