@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
@@ -26,6 +27,7 @@ namespace Skrypton.CSharpWriter
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
         public static NonNullImmutableList<TranslatedStatement> Translate(
+            CultureInfo culture,
             string scriptContent,
             NonNullImmutableList<string> externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
@@ -37,7 +39,7 @@ namespace Skrypton.CSharpWriter
             else
                 logger = new NullLogger();
 
-            return Translate(scriptContent, externalDependencies, outputType, logger);
+            return Translate(culture, scriptContent, externalDependencies, outputType, logger);
         }
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace Skrypton.CSharpWriter
         /// there's a way to get to translating before worrying about what the NonNullImmutableList type is all about
         /// </summary>
         public static NonNullImmutableList<TranslatedStatement> Translate(
+            CultureInfo culture,
             string scriptContent,
             string[] externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable,
@@ -53,7 +56,7 @@ namespace Skrypton.CSharpWriter
             if (externalDependencies == null)
                 throw new ArgumentNullException("externalDependencies");
 
-            return Translate(scriptContent, externalDependencies.ToNonNullImmutableList(), outputType);
+            return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType);
         }
 
         /// <summary>
@@ -61,6 +64,7 @@ namespace Skrypton.CSharpWriter
         /// rather than having to provide an ILogInformation implementation)
         /// </summary>
         public static NonNullImmutableList<TranslatedStatement> Translate(
+            CultureInfo culture,
             string scriptContent,
             string[] externalDependencies,
             Action<string> warningLogger,
@@ -71,7 +75,7 @@ namespace Skrypton.CSharpWriter
             if (warningLogger == null)
                 throw new ArgumentNullException("warningLogger");
 
-            return Translate(scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, new DelegateWrappingWarningLogger(warningLogger));
+            return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, new DelegateWrappingWarningLogger(warningLogger));
         }
 
         /// <summary>
@@ -79,10 +83,12 @@ namespace Skrypton.CSharpWriter
         /// of strings and it requires an ILogInformation implementation to deal with logging warnings
         /// </summary>
         public static NonNullImmutableList<TranslatedStatement> Translate(
+            CultureInfo culture,
             string scriptContent,
             NonNullImmutableList<string> externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
-            ILogInformation logger)
+            ILogInformation logger
+            )
         {
             if (scriptContent == null)
                 throw new ArgumentNullException("scriptContent");
@@ -132,7 +138,7 @@ namespace Skrypton.CSharpWriter
             );
 
             return codeBlockTranslator.Translate(
-                Parse(scriptContent).ToNonNullImmutableList()
+                Parse(culture, scriptContent).ToNonNullImmutableList()
             );
         }
 
@@ -140,13 +146,13 @@ namespace Skrypton.CSharpWriter
         /// This will return just the parsed VBScript content, it will not attempt any translation. It will never return null nor a set containing
         /// any null references. This may be used to analyse the structure of a script, if so desired.
         /// </summary>
-        public static IEnumerable<ICodeBlock> Parse(string scriptContent)
+        public static IEnumerable<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
         {
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
             string[] endSequenceMet;
             var handler = new CodeBlockHandler(null);
             return handler.Process(
-                GetTokens(scriptContent).ToList(),
+                GetTokens(culture, scriptContent).ToList(),
                 out endSequenceMet
             );
         }
@@ -173,10 +179,10 @@ namespace Skrypton.CSharpWriter
             }
         }
 
-        private static IEnumerable<IToken> GetTokens(string scriptContent)
+        private static IEnumerable<IToken> GetTokens(CultureInfo culture, string scriptContent)
         {
             // Break down content into String, Comment and UnprocessedContent tokens
-            var tokens = StringBreaker.SegmentString(scriptContent);
+            var tokens = StringBreaker.SegmentString(culture, scriptContent);
 
             // Break down further into String, Comment, Atom and AbstractEndOfStatement tokens
             var atomTokens = new List<IToken>();

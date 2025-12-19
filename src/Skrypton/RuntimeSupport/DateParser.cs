@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Skrypton.RuntimeSupport
 {
-    public class DateParser
+    public sealed class DateParser
     {
         private const string ONE_OR_MORE_DIGITS = @"\d+";
         private const string SOME_WHITESPACE_OR_NOTHING = @"\s*";
@@ -146,10 +146,10 @@ namespace Skrypton.RuntimeSupport
         /// then a date calculated by taking the number of days from VBScript's "zero date". If a date outside of VBScript's expressible range is described then an
         /// OverflowException will be thrown. This will never return null.
         /// </summary>
-        public DateTime Parse(string value)
+        public DateTime Parse(string value, CultureInfo culture)
         {
             if (value != null)
-                return CDateNew(value, _defaultYearRetriever());
+                return CDateNew(value, _defaultYearRetriever(), culture);
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Null/blank value specified");
 
@@ -162,7 +162,7 @@ namespace Skrypton.RuntimeSupport
 
             return date.Add(time);
         }
-        private static DateTime CDateNew(string input, int defaultYear)
+        private static DateTime CDateNew(string input, int defaultYear, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Invalid input");
@@ -171,7 +171,7 @@ namespace Skrypton.RuntimeSupport
             var parts = input.Split(new[] { ' ', '-', '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Try direct parse first (handles ISO formats like 2009-7-6)
-            if (DateTime.TryParse(input, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+            if (DateTime.TryParse(input, culture, DateTimeStyles.None, out var dt))
             {
                 if (defaultYear != DateTime.UtcNow.Year)
                 {

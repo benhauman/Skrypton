@@ -1230,7 +1230,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return false;
                 if (value is DateTime)
                     return true;
-                DateParser.Default.Parse(value.ToString()); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
+                DateParser.Default.Parse(value.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
                 return true;
             }
             catch (Exception e)
@@ -1611,7 +1611,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 try
                 {
-                    dateValue = DateParser.Default.Parse(value.ToString());
+                    dateValue = DateParser.Default.Parse(value.ToString(), _culture);
                 }
                 catch (Exception e)
                 {
@@ -1672,7 +1672,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 try
                 {
-                    dateValue = DateParser.Default.Parse(value.ToString());
+                    dateValue = DateParser.Default.Parse(value.ToString(), _culture);
                 }
                 catch (Exception e)
                 {

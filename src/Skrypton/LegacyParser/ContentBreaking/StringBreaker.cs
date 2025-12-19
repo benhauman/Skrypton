@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
@@ -36,7 +37,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// Break down scriptContent into a combination of StringToken, CommentToken, UnprocessedContentToken and EndOfStatementNewLine instances (the
         /// end of statement tokens will not have been comprehensively handled).  This will never return null nor a set containing any null references.
         /// </summary>
-        public static IEnumerable<IToken> SegmentString(string scriptContent)
+        public static IEnumerable<IToken> SegmentString(CultureInfo culture, string scriptContent)
         {
             if (scriptContent == null)
                 throw new ArgumentNullException("scriptContent");
@@ -252,13 +253,13 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             // to checked at runtime (see the notes around the instantiation of the limitedDateParser).
                             try
                             {
-                                _limitedDateParser.Parse(tokenContent);
+                                _limitedDateParser.Parse(tokenContent, culture);
                             }
                             catch (Exception e)
                             {
                                 throw new ArgumentException("Invalid date literal content encountered on line " + lineIndex + ": #" + tokenContent + "#", e);
                             }
-                            tokens.Add(new DateLiteralToken(tokenContent, lineIndexForStartOfContent));
+                            tokens.Add(new DateLiteralToken(tokenContent, lineIndexForStartOfContent, culture));
                             tokenContent = "";
                             lineIndexForStartOfContent = lineIndex;
                             index = indexString;

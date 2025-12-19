@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Skrypton.RuntimeSupport;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
@@ -13,7 +14,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     [Serializable]
     public class DateLiteralToken : IToken
     {
-        public DateLiteralToken(string content, int lineIndex)
+        public DateLiteralToken(string content, int lineIndex, CultureInfo culture)
         {
             if (content == null)
                 throw new ArgumentNullException("content");
@@ -40,7 +41,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             );
             try
             {
-                limitedDateParser.Parse(content);
+                limitedDateParser.Parse(content, culture);
             }
             catch (Exception e)
             {

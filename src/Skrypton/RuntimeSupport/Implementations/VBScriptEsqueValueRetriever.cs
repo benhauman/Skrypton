@@ -439,7 +439,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 if (numericValue != null)
                     return DateParser.Default.Parse(numericValue.Value);
-                return DateParser.Default.Parse(o.ToString());
+                return DateParser.Default.Parse(o.ToString(), _culture);
             }
             catch (OverflowException e)
             {
