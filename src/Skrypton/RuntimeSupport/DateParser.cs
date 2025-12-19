@@ -203,7 +203,11 @@ namespace Skrypton.RuntimeSupport
                     return new DateTime(p1, p2, p3);
 
                 if (p3 > 99) // dd mm yyyy
+                {
+                    if (p1 > 12)
+                        return new DateTime(p3, p2, p1);
                     return new DateTime(p3, p1, p2);
+                }
 
                 // VBScript year rules
                 int year;
