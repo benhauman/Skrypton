@@ -112,7 +112,9 @@ namespace Skrypton.RuntimeSupport
                 fractionalPortion = Math.Truncate(fractionalPortion * Math.Pow(10, numberOfDigitsToAllow)) / Math.Pow(10, numberOfDigitsToAllow);
             }
             else
+            {
                 fractionalPortion = Math.Abs(value - integerPortion);
+            }
             var isEarliestPossibleDate = (integerPortion == Math.Truncate(VBScriptConstants.EarliestPossibleDate.Subtract(VBScriptConstants.ZeroDate).TotalDays));
             if (isEarliestPossibleDate)
             {
@@ -132,7 +134,10 @@ namespace Skrypton.RuntimeSupport
                 // that 2958465.9 results in the time "21:35:59" and not "21:36:00".
                 calculatedTimeComponent = calculatedTimeComponent.Subtract(TimeSpan.FromMilliseconds(calculatedTimeComponent.Millisecond));
             }
-            return calculatedTimeComponent.AddDays(integerPortion);
+            DateTime resultDateTimeOld = calculatedTimeComponent.AddDays(integerPortion);
+            // lubo
+            DateTime resultDateTime = DateTime.FromOADate(value); // // Treat as OLE Automation Date
+            return resultDateTime;
         }
 
         /// <summary>
