@@ -16,7 +16,7 @@ using Skrypton.StageTwoParser.TokenCombining.OperatorCombinations;
 
 namespace Skrypton.CSharpWriter
 {
-    public class DefaultTranslator
+    public sealed class DefaultTranslator
     {
         /// <summary>
         /// This will attempt to translate VBScript content into C# using the default configurations, probably the best place to start (it uses the
@@ -102,7 +102,7 @@ namespace Skrypton.CSharpWriter
             var envRefName = new CSharpName("_env");
             var outerClassName = new CSharpName("GlobalReferences");
             var outerRefName = new CSharpName("_outer");
-            VBScriptNameRewriter nameRewriter = name => new CSharpName(DefaultRuntimeSupportClassFactory.DefaultNameRewriter(name.Content));
+            VBScriptNameRewriter nameRewriter = name => new CSharpName(DefaultRuntimeSupportClassFactory.RewriteName(name.Content));
             var tempNameGeneratorNextNumber = 0;
             TempValueNameGenerator tempNameGenerator = (optionalPrefix, scopeAccessInformation) =>
             {

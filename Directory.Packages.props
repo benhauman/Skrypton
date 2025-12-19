@@ -3,7 +3,6 @@
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.9.50" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="18.0.2" />
     <!--
@@ -24,5 +23,6 @@
     <PackageVersion Include="System.IO.Packaging" Version="10.0.0" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="10.0.0" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.1" />
   </ItemGroup>
 </Project>

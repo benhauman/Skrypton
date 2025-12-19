@@ -501,8 +501,59 @@ namespace Skrypton.RuntimeSupport
             // not sure how to improve it at this time (plus it will deal with American, who prefer month-first, and "everyone else", who prefer day first, so I think
             // that the bases are covered for the vast majority of use cases.. for mine at least! :)
             var sampleDate = new DateTime(2015, 5, 1); // The month and day values must be different in this sample date, obviously!
-            var dateValuesMatchResult = _simpleThreeSegmentNumberExtractor.Match(sampleDate.ToShortDateString());
+            var dateValuesMatchResult = _simpleThreeSegmentNumberExtractor.Match(sampleDate.ToShortDateString()); // see 'DateTimeToShortDateString'
             return dateValuesMatchResult.Success && (int.Parse(dateValuesMatchResult.Groups[1].Value) == sampleDate.Month);
+        }
+
+        internal static string DateTimeToShortDateString(DateTime dt, CultureInfo culture, bool includeTime)
+        {
+
+            // Get the short date pattern and short time pattern from the culture
+            //string datePattern = culture.DateTimeFormat.ShortDatePattern;
+            //string timePattern = culture.DateTimeFormat.ShortTimePattern;
+
+            // Combine them like "5/28/2015 6:54 PM"
+            //string format = $"{datePattern} {timePattern}";
+            // Start with the culture's short date pattern
+            string format = culture.DateTimeFormat.ShortDatePattern;
+
+            if (includeTime)
+            {
+                // Append the short time pattern from the culture
+                // Ensures correct 12-hour / 24-hour format and AM/PM
+                format += " " + culture.DateTimeFormat.ShortTimePattern;
+            }
+
+            string text = dt.ToString(format, culture); // !!! ignores the thread’s current culture used by 'DateTime.ToShortDateString'
+            return text;
+        }
+
+        /// <summary>
+        /// Returns the long time string for the specified culture, ignoring thread culture.
+        /// Correctly renders AM/PM for 12-hour cultures.
+        /// </summary>
+        internal static string DateTimeToLongTimeString(DateTime dt, CultureInfo culture)
+        {
+            if (culture == null) throw new ArgumentNullException(nameof(culture));
+
+            // Use the culture's LongTimePattern
+            string format = culture.DateTimeFormat.LongTimePattern;
+
+            string text = dt.ToString(format, culture);
+            return text;
+        }
+
+        /// <summary>
+        /// Optional: short time string, culture-aware
+        /// </summary>
+        internal static string DateTimeToShortTimeString(DateTime dt, CultureInfo culture)
+        {
+            if (culture == null) throw new ArgumentNullException(nameof(culture));
+
+            string format = culture.DateTimeFormat.ShortTimePattern;
+
+            string text = dt.ToString(format, culture);
+            return text;
         }
     }
 }

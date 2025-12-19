@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -27,11 +28,12 @@ namespace Skrypton.RuntimeSupport.Implementations
         // once this situation is reached.
         private readonly Func<string, string> _nameRewriter;
         private readonly AbsentDefaultMemberOnComObjectCacheOptions _absentDefaultMemberOnComObjectCacheOptions;
+        private readonly CultureInfo _culture;
         private readonly ConcurrentDictionary<InvokerCacheKey, GetInvoker> _getInvokerCache;
         private readonly ConcurrentDictionary<InvokerCacheKey, SetInvoker> _setInvokerCache;
         private readonly ConcurrentDictionary<string, bool> _absentDefaultMemberCache;
         private readonly ConcurrentDictionary<Type, Func<object, IEnumerator>> _duckTypeEnumeratorBuilderCache;
-        public VBScriptEsqueValueRetriever(Func<string, string> nameRewriter, AbsentDefaultMemberOnComObjectCacheOptions absentDefaultMemberOnComObjectCacheOptions)
+        public VBScriptEsqueValueRetriever(Func<string, string> nameRewriter, AbsentDefaultMemberOnComObjectCacheOptions absentDefaultMemberOnComObjectCacheOptions, CultureInfo culture)
         {
             if (nameRewriter == null)
                 throw new ArgumentNullException("nameRewriter");
@@ -41,6 +43,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             _nameRewriter = nameRewriter;
             _absentDefaultMemberOnComObjectCacheOptions = absentDefaultMemberOnComObjectCacheOptions;
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _getInvokerCache = new ConcurrentDictionary<InvokerCacheKey, GetInvoker>();
             _setInvokerCache = new ConcurrentDictionary<InvokerCacheKey, SetInvoker>();
             _absentDefaultMemberCache = new ConcurrentDictionary<string, bool>();
@@ -566,14 +569,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Dates should be the only data type we have to special-case - booleans, for example, are fine (the casing is consistent between C# and
             // VBScript)
             if (o is DateTime)
-                return DateToString((DateTime)o);
+                return DateToString((DateTime)o, _culture);
             return o.ToString();
         }
 
-        private string DateToString(DateTime value)
+        private string DateToString(DateTime value, CultureInfo culture)
         {
-            var dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : value.ToShortDateString();
-            var timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : value.ToLongTimeString();
+            var dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : DateParser.DateTimeToShortDateString(value, culture, false);
+            var timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : DateParser.DateTimeToLongTimeString(value, culture);
             if ((dateComponent != "") && (timeComponent != ""))
                 return dateComponent + " " + timeComponent;
             return dateComponent + timeComponent;

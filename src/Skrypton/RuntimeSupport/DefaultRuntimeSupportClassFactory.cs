@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.RuntimeSupport
 {
-    public class DefaultRuntimeSupportClassFactory
+    public sealed class DefaultRuntimeSupportClassFactory
     {
-        private static Regex _multipleUnderscoreCondenser;
-        private static HashSet<string> _caseInsensitiveCSharpKeywordMatcher;
-        static DefaultRuntimeSupportClassFactory()
-        {
-            _multipleUnderscoreCondenser = new Regex("_{2,}", RegexOptions.Compiled);
-            _caseInsensitiveCSharpKeywordMatcher = GetCSharpKeywords(StringComparer.OrdinalIgnoreCase);
-            DefaultNameRewriter = RewriteName;
+        private readonly CultureInfo _culture;
+        private static readonly Regex _multipleUnderscoreCondenser = new ("_{2,}", RegexOptions.Compiled);
+        private static readonly HashSet<string> _caseInsensitiveCSharpKeywordMatcher = GetCSharpKeywords(StringComparer.OrdinalIgnoreCase);
 
+        private DefaultRuntimeSupportClassFactory(CultureInfo culture)
+        {
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
+            DefaultNameRewriter = RewriteName;
             // The VBScriptEsqueValueRetriever will cache meta data about what types do and don't have default members, which makes subsequent lookups much
             // faster (which will make calls to methods such as IsEmpty and IsNull, which will consider default members on object references, faster). It
             // can do the same for COM components, based upon the ClassName reported by the TypeDescription - these are not guaranteed to be unique, so
@@ -23,32 +24,34 @@ namespace Skrypton.RuntimeSupport
             // worth enabling by default for the performance gains.
             DefaultVBScriptValueRetriever = new VBScriptEsqueValueRetriever(
                 DefaultNameRewriter,
-                VBScriptEsqueValueRetriever.AbsentDefaultMemberOnComObjectCacheOptions.CacheByTypeDescriptorClassName
+                VBScriptEsqueValueRetriever.AbsentDefaultMemberOnComObjectCacheOptions.CacheByTypeDescriptorClassName,
+                _culture
             );
         }
+        public static DefaultRuntimeSupportClassFactory Create(CultureInfo culture) => new DefaultRuntimeSupportClassFactory(culture);
 
         /// <summary>
         /// Each compat functionality provider instance should be disposed of after the request has completed to ensure that any managed resources are tidied
         /// up (this is an approximation of VBScript's deterministic reference-counting garbage collector - it doesn't dispose of the resources as quickly,
         /// but at least they're guaranteed to be dealt with after the request ends if this is disposed).
         /// </summary>
-        public static IProvideVBScriptCompatFunctionalityToIndividualRequests Get()
+        public IProvideVBScriptCompatFunctionalityToIndividualRequests Get()
         {
-            return new DefaultRuntimeFunctionalityProvider(DefaultNameRewriter, DefaultVBScriptValueRetriever);
+            return new DefaultRuntimeFunctionalityProvider(DefaultNameRewriter, DefaultVBScriptValueRetriever, _culture);
         }
 
         /// <summary>
         /// This is a static reference as it will build up an member access cache so that subsequent requests for a given method signature on a particular
         /// type does not need to be determined from scratch. The implementation is thread safe and may be shared between requests.
         /// </summary>
-        public static IAccessValuesUsingVBScriptRules DefaultVBScriptValueRetriever { get; private set; }
+        public IAccessValuesUsingVBScriptRules DefaultVBScriptValueRetriever { get; private set; }
 
         /// <summary>
         /// This is a static reference since its implementation does not change and may be shared across all requests. It has no state and so is thread safe.
         /// </summary>
-        public static Func<string, string> DefaultNameRewriter { get; private set; }
+        public Func<string, string> DefaultNameRewriter { get; private set; }
 
-        private static string RewriteName(string value)
+        internal static string RewriteName(string value)
         {
             if (value == null)
                 throw new ArgumentNullException("value");

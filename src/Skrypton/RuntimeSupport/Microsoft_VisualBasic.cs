@@ -15,7 +15,7 @@ namespace Skrypton.RuntimeSupport
         /// <PermissionSet>
         ///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
         /// </PermissionSet>
-        public static string TypeName(object VarName)
+        public static string TypeName(object VarName, CultureInfo culture)
         {
             checked
             {
@@ -102,7 +102,7 @@ namespace Skrypton.RuntimeSupport
                         {
                             text = text + "[" + new string(',', array.Rank - 1) + "]";
                         }
-                        text = Information.OldVBFriendlyNameOfTypeName(text);
+                        text = Information.OldVBFriendlyNameOfTypeName(text, culture);
                     }
                     result = text;
                 }
@@ -111,7 +111,7 @@ namespace Skrypton.RuntimeSupport
         }
 
         // Microsoft.VisualBasic.Information
-        internal static string OldVBFriendlyNameOfTypeName(string typename)
+        internal static string OldVBFriendlyNameOfTypeName(string typename, CultureInfo culture)
         {
             string text = null;
             checked
@@ -130,7 +130,7 @@ namespace Skrypton.RuntimeSupport
                     }
                     typename = typename.Substring(0, num2);
                 }
-                string text2 = Information.OldVbTypeName(typename);
+                string text2 = Information.OldVbTypeName(typename, culture);
                 if (text2 == null)
                 {
                     text2 = typename;
@@ -338,7 +338,7 @@ namespace Skrypton.RuntimeSupport
 
         class Operators
         {
-            public static int CompareString(string Left, string Right, bool TextCompare)
+            public static int CompareString(string Left, string Right, bool TextCompare, CultureInfo culture) // System.Threading.Thread.CurrentThread.CurrentCulture
             {
                 int result;
                 if (Left == Right)
@@ -372,8 +372,8 @@ namespace Skrypton.RuntimeSupport
                     int num;
                     if (TextCompare)
                     {
-                        CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentCulture;
-                        num = ci.CompareInfo.Compare(Left, Right, CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth);
+                        //CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                        num = culture.CompareInfo.Compare(Left, Right, CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth);
                     }
                     else
                     {
@@ -395,10 +395,10 @@ namespace Skrypton.RuntimeSupport
                 return result;
             }
         }
-        internal static string OldVbTypeName(string UrtName)
+        internal static string OldVbTypeName(string UrtName, CultureInfo culture)
         {
             UrtName = Strings.Trim(UrtName).ToUpperInvariant();
-            if (Operators.CompareString(Strings.Left(UrtName, 7), "SYSTEM.", false) == 0)
+            if (Operators.CompareString(Strings.Left(UrtName, 7), "SYSTEM.", false, culture) == 0)
             {
                 UrtName = Strings.Mid(UrtName, 8);
             }
@@ -415,20 +415,20 @@ namespace Skrypton.RuntimeSupport
                         {
                             if (num == 268302705u)
                             {
-                                if (Operators.CompareString(text, "INT16", false) == 0)
+                                if (Operators.CompareString(text, "INT16", false, culture) == 0)
                                 {
                                     result = "Short";
                                     return result;
                                 }
                             }
                         }
-                        else if (Operators.CompareString(text, "BYTE", false) == 0)
+                        else if (Operators.CompareString(text, "BYTE", false, culture) == 0)
                         {
                             result = "Byte";
                             return result;
                         }
                     }
-                    else if (Operators.CompareString(text, "INT64", false) == 0)
+                    else if (Operators.CompareString(text, "INT64", false, culture) == 0)
                     {
                         result = "Long";
                         return result;
@@ -440,20 +440,20 @@ namespace Skrypton.RuntimeSupport
                     {
                         if (num == 1219467820u)
                         {
-                            if (Operators.CompareString(text, "DECIMAL", false) == 0)
+                            if (Operators.CompareString(text, "DECIMAL", false, culture) == 0)
                             {
                                 result = "Decimal";
                                 return result;
                             }
                         }
                     }
-                    else if (Operators.CompareString(text, "OBJECT", false) == 0)
+                    else if (Operators.CompareString(text, "OBJECT", false, culture) == 0)
                     {
                         result = "Object";
                         return result;
                     }
                 }
-                else if (Operators.CompareString(text, "SINGLE", false) == 0)
+                else if (Operators.CompareString(text, "SINGLE", false, culture) == 0)
                 {
                     result = "Single";
                     return result;
@@ -467,20 +467,20 @@ namespace Skrypton.RuntimeSupport
                     {
                         if (num == 2472002000u)
                         {
-                            if (Operators.CompareString(text, "DATETIME", false) == 0)
+                            if (Operators.CompareString(text, "DATETIME", false, culture) == 0)
                             {
                                 result = "Date";
                                 return result;
                             }
                         }
                     }
-                    else if (Operators.CompareString(text, "BOOLEAN", false) == 0)
+                    else if (Operators.CompareString(text, "BOOLEAN", false, culture) == 0)
                     {
                         result = "Boolean";
                         return result;
                     }
                 }
-                else if (Operators.CompareString(text, "INT32", false) == 0)
+                else if (Operators.CompareString(text, "INT32", false, culture) == 0)
                 {
                     result = "Integer";
                     return result;
@@ -492,20 +492,20 @@ namespace Skrypton.RuntimeSupport
                 {
                     if (num == 4127814520u)
                     {
-                        if (Operators.CompareString(text, "STRING", false) == 0)
+                        if (Operators.CompareString(text, "STRING", false, culture) == 0)
                         {
                             result = "String";
                             return result;
                         }
                     }
                 }
-                else if (Operators.CompareString(text, "DOUBLE", false) == 0)
+                else if (Operators.CompareString(text, "DOUBLE", false, culture) == 0)
                 {
                     result = "Double";
                     return result;
                 }
             }
-            else if (Operators.CompareString(text, "CHAR", false) == 0)
+            else if (Operators.CompareString(text, "CHAR", false, culture) == 0)
             {
                 result = "Char";
                 return result;

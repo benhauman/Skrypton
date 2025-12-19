@@ -29,18 +29,20 @@ namespace Skrypton.RuntimeSupport.Implementations
         private static readonly int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
 
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
+        private readonly CultureInfo _culture;
         private readonly List<IDisposable> _disposableReferencesToClearAfterTheRequest;
         private readonly Queue<int> _availableErrorTokens;
         private readonly Dictionary<int, ErrorTokenState> _activeErrorTokens;
         private readonly DefaultArithmeticFunctionalityProvider _arithmeticHandler;
         private int _randomSeed;
         private Exception _trappedErrorIfAny;
-        public DefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, IAccessValuesUsingVBScriptRules valueRetriever)
+        public DefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
             if (valueRetriever == null)
                 throw new ArgumentNullException("valueRetriever");
 
             _valueRetriever = valueRetriever;
+            _culture = culture;
             _disposableReferencesToClearAfterTheRequest = new List<IDisposable>();
             _availableErrorTokens = new Queue<int>();
             _activeErrorTokens = new Dictionary<int, ErrorTokenState>();
@@ -693,14 +695,40 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return (short)s[0];
         }
-        public string CHR(object value)
+        public string CHR(object value) // lubo:return the character associated with a specific ASCII (or ANSI) code. test with 125 : vbscript(Windows-1252) is different than (char)155 in .net (Unicode)
         {
+            //lubo:Encoding.Default on Windows corresponds to ANSI code page (e.g. Windows-1252 for en-US).
+            // Windows-1252 maps '€' (Unicode U+20AC = 8364) to a single byte 0x80. => cannot just cast 8364 to byte! => encode the character to bytes using Encoding!
             try
             {
-                // Need to use Encoding.Default.GetChars so that we can reliably get the information back out using ASC (if used something that seems simple like
-                // "return new string((char)CBYTE(value), 1);" then the correct value won't always be returned from ASC - eg. 155)
-                var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
-                return new string(c, 1);
+                //if (value != null)
+                {
+                    Encoding.RegisterProvider(provider: CodePagesEncodingProvider.Instance); // from nuget package 'System.Text.Encoding.CodePages'
+                    Encoding windows1252 = Encoding.GetEncoding("Windows-1252");
+
+                    // Convert the int code point to char
+                    byte b;
+                    if (value is int valueInt32)
+                    {
+                        char c = (char)(int)valueInt32; // 8364 -> '€'
+                        b = windows1252.GetBytes(new[] { c })[0];
+                    }
+                    else
+                    {
+                        b = Convert.ToByte(value); // double, null, empty
+                    }
+                    //byte b = Convert.ToByte(value);
+                    char result = windows1252.GetChars(new[] { b })[0]; // not Encoding.UTF8 for VBSCript
+                    return new string(result, 1);
+                }
+                //else
+                //{
+                //
+                //    // Need to use Encoding.Default.GetChars so that we can reliably get the information back out using ASC (if used something that seems simple like
+                //    // "return new string((char)CBYTE(value), 1);" then the correct value won't always be returned from ASC - eg. 155)
+                //    var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
+                //    return new string(c, 1);
+                //}
             }
             catch (VBScriptOverflowException e)
             {
@@ -1296,7 +1324,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return "Date";
                 if (type == typeof(Decimal))
                     return "Currency";
-                return Information.TypeName(value);
+                return Information.TypeName(value, _culture);
             }
 
             if (type.IsCOMObject)
