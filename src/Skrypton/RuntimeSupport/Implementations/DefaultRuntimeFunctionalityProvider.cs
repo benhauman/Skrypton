@@ -715,7 +715,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                     else
                     {
-                        b = Convert.ToByte(value); // double, null, empty
+                        try
+                        {
+                            b = Convert.ToByte(value); // double, null, empty
+                        }
+                        catch (System.OverflowException e) // for -0.6
+                        {
+                            throw new InvalidProcedureCallOrArgumentException("'CHR'", e);
+                        }
                     }
                     //byte b = Convert.ToByte(value);
                     char result = windows1252.GetChars(new[] { b })[0]; // not Encoding.UTF8 for VBSCript
