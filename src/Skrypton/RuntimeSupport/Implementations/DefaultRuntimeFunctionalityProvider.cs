@@ -81,7 +81,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
         }
 
-        // Arithemetic operators
+        // Arithmetic operators
         public object ADD(object l, object r) { return _arithmeticHandler.ADD(l, r); }
         public object SUBT(object o) { return _arithmeticHandler.SUBT(o); }
         public object SUBT(object l, object r) { return _arithmeticHandler.SUBT(l, r); }

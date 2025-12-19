@@ -23,8 +23,34 @@ namespace Skrypton.RuntimeSupport.Implementations
             _valueRetriever = valueRetriever;
         }
 
-        public object ADD(object l, object r)
+        public object ADD(object a, object b)
         {
+            //lubo
+            // C# '+' operator conversion rules (mapped from VBScript behavior)
+            //
+            // int + int           -> int        // Both operands are 32‑bit integers; result is int.
+            // short + int         -> int        // short widened to int; result is int.
+            // byte + int          -> int        // byte widened to int; result is int.
+            // long + int          -> long       // int widened to long; result is long.
+            // float + int         -> float      // int widened to float; result is float.
+            // double + int        -> double     // int widened to double; result is double.
+            // decimal + int       -> decimal    // int widened to decimal; result is decimal.
+            //
+            // string + string     -> string     // '+' is overloaded for string concatenation.
+            // string + int        -> string     // int converted to string; concatenation performed.
+            //
+            // DateTime + TimeSpan -> DateTime   // DateTime plus TimeSpan is defined; result is DateTime.
+            // TimeSpan + TimeSpan -> TimeSpan   // Addition of two TimeSpan values; result is TimeSpan.
+            // DateTime + DateTime -> ❌ Error    // No '+' operator defined between two DateTime values.
+            // object + object     -> ❌ Error    // Unless both are string references, '+' is not defined.
+            //
+            // Key differences vs VBScript:
+            // - VBScript '+' prefers numeric addition, coercing strings to numbers if possible.
+            // - C# '+' is strongly typed; numeric promotion follows CLR rules.
+            // - If either operand is string, C# resolves to string concatenation.
+            // - VBScript allows Date + Number (OLE Automation Date math); C# requires DateTime + TimeSpan.
+            ///////////////////////////////////////
+
             // While there is information about this operation at https://msdn.microsoft.com/en-us/library/kd1e4aey(v=vs.84).aspx, it is lacking on details such as what
             // happens when both values are numbers (or dates) of different types (or what happens if they're the same type but their addition would result in an overflow).
             // See the test suite for further details.
@@ -32,14 +58,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Address simplest cases first - ensure both values are non-object references (or may be coerced into value types), then check for double-Empty (Integer zero),
             // one-or-both-Null (Null), both-strings (concatenate) or one-string-with-Empty (return string). Note that single-Empty is not a simple case - for most values
             // it is (CInt(1) + Empty = CInt(1), for example) but when Empty is added to a Boolean then the type changes to an Integer.
-            l = _valueRetriever.VAL(l);
-            r = _valueRetriever.VAL(r);
+            object l = _valueRetriever.VAL(a);
+            object r = _valueRetriever.VAL(b);
             if ((l == DBNull.Value) || (r == DBNull.Value))
                 return DBNull.Value;
             if ((l == null) && (r == null))
                 return (Int16)0;
-            var lString = l as string;
-            var rString = r as string;
+            string lString = l as string;
+            string rString = r as string;
             if ((lString != null) && (rString != null))
                 return lString + rString;
             else if (((lString != null) && (r == null)) || ((rString != null) && (l == null)))
@@ -49,15 +75,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             // range that Currency can describe (whereas other types will move up to the next biggest type - Currency COULD do this with Double, but doesn't). The notable
             // exception is that if a Currency is added to a Date then the result will be a date.. unless the result would overflow the expressible Date range, in which
             // case it will be a Double.
-            var lCurrency = TryToCoerceIntoCurrency(l);
-            var rCurrency = TryToCoerceIntoCurrency(r);
-            var lDate = TryToCoerceInto<DateTime>(l);
-            var rDate = TryToCoerceInto<DateTime>(r);
+            decimal? lCurrency = TryToCoerceIntoCurrency(l);
+            decimal? rCurrency = TryToCoerceIntoCurrency(r);
+            DateTime? lDate = TryToCoerceInto<DateTime>(l);
+            DateTime? rDate = TryToCoerceInto<DateTime>(r);
             if (((lCurrency != null) && (rDate != null)) || ((rCurrency != null) && (lDate != null)))
             {
-                var currencyValue = lCurrency ?? rCurrency.Value;
-                var dateValue = lDate ?? rDate.Value;
-                var result = (double)currencyValue + dateValue.Subtract(VBScriptConstants.ZeroDate).TotalDays;
+                decimal currencyValue = lCurrency ?? rCurrency.Value;
+                DateTime dateValue = lDate ?? rDate.Value;
+                double result = (double)currencyValue + dateValue.Subtract(VBScriptConstants.ZeroDate).TotalDays;
                 if ((result >= MIN_DATE_VALUE_AS_DOUBLE) && (result <= MAX_DATE_VALUE_AS_DOUBLE))
                     return VBScriptConstants.ZeroDate.AddDays(result);
                 return result;
@@ -103,17 +129,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             // (unlike Currency, which will throw an overflow exception rather than move up to a Double)
             if ((lDate != null) || (rDate != null))
             {
-                var firstDoubleValue = (lDate != null) ? lDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(l);
-                var secondDoubleValue = (rDate != null) ? rDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(r);
-                var result = firstDoubleValue + secondDoubleValue;
+                double firstDoubleValue = (lDate != null) ? lDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(l);
+                double secondDoubleValue = (rDate != null) ? rDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(r);
+                double result = firstDoubleValue + secondDoubleValue;
                 if ((result >= MIN_DATE_VALUE_AS_DOUBLE) && (result <= MAX_DATE_VALUE_AS_DOUBLE))
                     return VBScriptConstants.ZeroDate.AddDays(result);
                 return result;
             }
 
             // The simplest case is both-Booleans
-            var lBoolean = TryToCoerceInto<bool>(l);
-            var rBoolean = TryToCoerceInto<bool>(r);
+            bool? lBoolean = TryToCoerceInto<bool>(l);
+            bool? rBoolean = TryToCoerceInto<bool>(r);
             if ((lBoolean != null) && (rBoolean != null))
             {
                 if (!lBoolean.Value && !rBoolean.Value)
@@ -125,11 +151,11 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // The next smallest type is Byte, which would make it simple except that the case of Byte + Boolean is special since that must overflow into Integer (since the
             // type Byte, which is 0-255, can not contain all values of Boolean, which are 0 or -1)
-            var lByte = TryToCoerceInto<byte>(l);
-            var rByte = TryToCoerceInto<byte>(r);
+            byte? lByte = TryToCoerceInto<byte>(l);
+            byte? rByte = TryToCoerceInto<byte>(r);
             if ((lByte != null) && (rByte != null))
             {
-                var overflowSafeResult = (Int16)((Int16)lByte.Value + (Int16)rByte.Value);
+                short overflowSafeResult = (Int16)((Int16)lByte.Value + (Int16)rByte.Value);
                 if ((overflowSafeResult >= byte.MinValue) && (overflowSafeResult <= byte.MaxValue))
                     return (byte)overflowSafeResult;
                 return overflowSafeResult;
@@ -146,8 +172,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Next up is VBScript's Integer - aka C#'s Int16. If both values are Integer then the result will be Integer, unless it would overflow, in which case
             // it will become a Long (Int32). If one value is an Integer and the other is Empty then it's a no-op. If One value is an Integer and the other a
             // Boolean or Byte, then they will be promoted to an Integer and then it's a two-Integer operation.
-            var lInteger = TryToCoerceInto<Int16>(l);
-            var rInteger = TryToCoerceInto<Int16>(r);
+            short? lInteger = TryToCoerceInto<Int16>(l);
+            short? rInteger = TryToCoerceInto<Int16>(r);
             if (((lInteger != null) && (r == null)) || ((rInteger != null) && (l == null)))
                 return lInteger ?? rInteger.Value;
             if (lInteger == null)
@@ -166,7 +192,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             if ((lInteger != null) && (rInteger != null))
             {
-                var result = (Int32)lInteger.Value + (Int32)rInteger.Value;
+                int result = (Int32)lInteger.Value + (Int32)rInteger.Value;
                 if ((result >= Int16.MinValue) && (result <= Int16.MaxValue))
                     return (Int16)result;
                 return result;
@@ -175,8 +201,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return lInteger ?? rInteger.Value;
 
             // Long (aka Int32) is handled in the same manner similar as Integer (Int16), it will overflow into Double if required
-            var lLong = TryToCoerceInto<Int32>(l);
-            var rLong = TryToCoerceInto<Int32>(r);
+            int? lLong = TryToCoerceInto<Int32>(l);
+            int? rLong = TryToCoerceInto<Int32>(r);
             if (((lLong != null) && (r == null)) || ((rLong != null) && (l == null)))
                 return lLong ?? rLong.Value;
             if ((lLong == null) && (lInteger != null))
@@ -185,9 +211,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 rLong = (Int32)rInteger; // This will already have considered rBoolean and rByte values where applicable (see above)
             if ((lLong != null) && (rLong != null))
             {
-                var result = (Double)lLong.Value + (Double)rLong.Value;
+                double result = (Double)lLong.Value + (Double)rLong.Value;
                 if ((result >= Int32.MinValue) && (result <= Int32.MaxValue))
-                    return (Int32)result;
+                {
+                    int resultInt32 = (Int32)result;
+                    return resultInt32;
+                }
                 return result;
             }
 
