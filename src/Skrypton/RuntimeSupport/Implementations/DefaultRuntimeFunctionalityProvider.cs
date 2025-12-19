@@ -701,6 +701,16 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Windows-1252 maps '€' (Unicode U+20AC = 8364) to a single byte 0x80. => cannot just cast 8364 to byte! => encode the character to bytes using Encoding!
             try
             {
+                if (value == null)
+                {
+                    char c = (char)0;// Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
+                    return new string(c, 1);
+                }
+                if (value == DBNull.Value)
+                {
+                    var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
+                    return new string(c, 1);
+                }
                 //if (value != null)
                 {
                     Encoding.RegisterProvider(provider: CodePagesEncodingProvider.Instance); // from nuget package 'System.Text.Encoding.CodePages'
@@ -715,6 +725,30 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                     else
                     {
+                        if (value is not IConvertible)
+                        {
+                            // try get default property's value and convert it to byte
+                            var pis = value.GetType().GetProperties();
+                            if (pis.Length == 1)
+                            {
+                                var pi = pis[0];
+                                var propertyValue = pi.GetValue(value);
+                                if (propertyValue == null)
+                                {
+                                    return new string((char)0, 1);
+                                }
+                                if (propertyValue == DBNull.Value)
+                                {
+                                    var c = Encoding.Default.GetChars(new[] { CBYTE(propertyValue) })[0];
+                                    return new string(c, 1);
+                                }
+                                b = Convert.ToByte(propertyValue); // double, null, empty
+                            }
+                            else
+                            {
+                                b = Convert.ToByte(value); // double, null, empty
+                            }
+                        }
                         try
                         {
                             b = Convert.ToByte(value); // double, null, empty
