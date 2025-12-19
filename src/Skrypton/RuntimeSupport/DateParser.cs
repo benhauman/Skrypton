@@ -148,6 +148,8 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public DateTime Parse(string value)
         {
+            if (value != null)
+                return CDateNew(value, _defaultYearRetriever());
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Null/blank value specified");
 
@@ -159,6 +161,60 @@ namespace Skrypton.RuntimeSupport
                 throw new OverflowException();
 
             return date.Add(time);
+        }
+        private static DateTime CDateNew(string input, int defaultYear)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                throw new ArgumentException("Invalid input");
+
+            // Split by space or dash
+            var parts = input.Split(new[] { ' ', '-', '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Try direct parse first (handles ISO formats like 2009-7-6)
+            if (DateTime.TryParse(input, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+            {
+                if (defaultYear != DateTime.UtcNow.Year)
+                {
+                    // If input had only 2 parts (month/day), force default year
+                    if (parts.Length == 2)
+                    {
+                        return new DateTime(defaultYear, dt.Month, dt.Day);
+                    }
+                }
+
+                return dt;
+            }
+
+            if (parts.Length == 2)
+            {
+                // Assume month/day with default year
+                int p1 = int.Parse(parts[0]);
+                int p2 = int.Parse(parts[1]);
+                return new DateTime(defaultYear, p1, p2);
+            }
+            else if (parts.Length == 3)
+            {
+                int p1 = int.Parse(parts[0]);
+                int p2 = int.Parse(parts[1]);
+                int p3 = int.Parse(parts[2]);
+
+                // Decide which is year
+                if (p1 > 999) // yyyy-mm-dd
+                    return new DateTime(p1, p2, p3);
+
+                if (p3 > 99) // dd mm yyyy
+                    return new DateTime(p3, p1, p2);
+
+                // VBScript year rules
+                int year;
+                if (p3 < 30) year = 2000 + p3;
+                else if (p3 <= 99) year = 1900 + p3;
+                else year = p3;
+
+                return new DateTime(year, p1, p2);
+            }
+
+            throw new FormatException("Unsupported format");
         }
 
         private DateTime ParseDateOnly(string value)
