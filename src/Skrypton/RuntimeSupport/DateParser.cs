@@ -178,7 +178,7 @@ namespace Skrypton.RuntimeSupport
                     // If input had only 2 parts (month/day), force default year
                     if (parts.Length == 2)
                     {
-                        return new DateTime(defaultYear, dt.Month, dt.Day);
+                        return NewDateTime(input, defaultYear, dt.Month, dt.Day);
                     }
                 }
 
@@ -190,7 +190,7 @@ namespace Skrypton.RuntimeSupport
                 // Assume month/day with default year
                 int p1 = int.Parse(parts[0]);
                 int p2 = int.Parse(parts[1]);
-                return new DateTime(defaultYear, p1, p2);
+                return NewDateTime(input, defaultYear, p1, p2);
             }
             else if (parts.Length == 3)
             {
@@ -200,25 +200,48 @@ namespace Skrypton.RuntimeSupport
 
                 // Decide which is year
                 if (p1 > 999) // yyyy-mm-dd
-                    return new DateTime(p1, p2, p3);
+                    return NewDateTime(input, p1, p2, p3);
 
                 if (p3 > 99) // dd mm yyyy
                 {
                     if (p1 > 12)
-                        return new DateTime(p3, p2, p1);
-                    return new DateTime(p3, p1, p2);
+                    {
+                        return NewDateTime(input, p3, p2, p1);
+                    }
+                    return NewDateTime(input, p3, p1, p2);
                 }
 
                 // VBScript year rules
                 int year;
-                if (p3 < 30) year = 2000 + p3;
-                else if (p3 <= 99) year = 1900 + p3;
-                else year = p3;
+                if (p3 < 30)
+                {
+                    year = 2000 + p3;
+                }
+                else if (p3 <= 99)
+                {
+                    year = 1900 + p3;
+                }
+                else
+                {
+                    year = p3;
+                }
 
-                return new DateTime(year, p1, p2);
+                return NewDateTime(input, year, p1, p2);
             }
 
             throw new FormatException("Unsupported format");
+        }
+
+        private static DateTime NewDateTime(string input, int year, int month, int day)
+        {
+            try
+            {
+                return new DateTime(year, month, day);
+            }
+            catch (System.ArgumentOutOfRangeException ex) // 29.Feb.2006
+            {
+                throw new ArgumentException($"input:'{input}', year:{year}, month:{month}, day:{year}", ex);
+            }
         }
 
         private DateTime ParseDateOnly(string value)
