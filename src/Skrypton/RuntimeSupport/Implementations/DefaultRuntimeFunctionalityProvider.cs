@@ -431,8 +431,61 @@ namespace Skrypton.RuntimeSupport.Implementations
         // Builtin functions - TODO: These are not fully specified yet (eg. LEFT requires more than one parameter and INSTR requires multiple parameters and
         // overloads to deal with optional parameters)
         // - Type conversions
-        public byte CBYTE(object value) { return CBYTE(value, "'CByte'"); }
-        private byte CBYTE(object value, string exceptionMessageForInvalidContent) { return GetAsNumber<byte>(value, exceptionMessageForInvalidContent, Convert.ToByte); }
+        public byte CBYTE(object value) { return CBYTECore(value, "'CByte'"); }
+
+        private static readonly Encoding Windows1252 = InitializeEncodingWindows1252();
+
+        private static Encoding InitializeEncodingWindows1252()
+        {
+            Encoding.RegisterProvider(provider: CodePagesEncodingProvider.Instance); // from nuget package 'System.Text.Encoding.CodePages'
+            Encoding windows1252 = Encoding.GetEncoding("Windows-1252");
+            return windows1252;
+        }
+
+        private byte CBYTECore(object value, string exceptionMessageForInvalidContent)
+        {
+            if (value == null)
+            {
+                return 0;
+            }
+            if (value == DBNull.Value)
+            {
+                return 0;
+            }
+            if (value is string and "")
+            {
+                return 0;
+            }
+
+            object valueX = _valueRetriever.VAL(value, exceptionMessageForInvalidContent);
+            //return GetAsNumber<byte>(valueX, exceptionMessageForInvalidContent, Convert.ToByte);
+            return GetAsNumber<byte>(valueX, exceptionMessageForInvalidContent, ConvertToByte, true);
+        }
+#pragma warning disable SA1204 // Static elements should appear before instance elements
+        private static byte ConvertToByte(object value)
+#pragma warning restore SA1204 // Static elements should appear before instance elements
+        {
+            // Convert the int code point to char
+            byte b;
+            if (value is int valueInt32)
+            {
+                char c = (char)(int)valueInt32; // 8364 -> '€'
+                b = Windows1252.GetBytes(new[] { c })[0];
+                return b;
+            }
+            else
+            {
+                try
+                {
+                    b = Convert.ToByte(value); // double, null, empty
+                    return b;
+                }
+                catch (System.OverflowException e) // for -0.6
+                {
+                    throw new InvalidProcedureCallOrArgumentException("'CHR'", e);
+                }
+            }
+        }
         public bool CBOOL(object value) { return BOOL(value, "'CBool'"); }
         private bool CBOOL(object value, string exceptionMessageForInvalidContent) { return _valueRetriever.BOOL(value, exceptionMessageForInvalidContent); }
         public decimal CCUR(object value) { return CCUR(value, "'CCur'"); }
@@ -701,6 +754,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Windows-1252 maps '€' (Unicode U+20AC = 8364) to a single byte 0x80. => cannot just cast 8364 to byte! => encode the character to bytes using Encoding!
             try
             {
+                //if (value != null)
+                //{
+                byte b = CBYTECore(value, "'CHR'");
+                char result = Windows1252.GetChars([b])[0]; // not Encoding.UTF8 for VBScript
+                return new string(result, 1);
+                //}
+                /*
                 if (value != null && value is not IConvertible && value is DispatchWrapper dwY)
                 {
                     value = dwY.WrappedObject;
@@ -708,25 +768,26 @@ namespace Skrypton.RuntimeSupport.Implementations
 
                 if (value == null)
                 {
-                    char c = (char)0;// Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
-                    return new string(c, 1);
+                    //char c = (char)0;// Encoding.Default.GetChars(new[] { CBYTECore(value, "'CHR'") })[0];
+                    return new string((char)0, 1);
                 }
                 if (value == DBNull.Value)
                 {
-                    var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
+                    var c = Encoding.Default.GetChars(new[] { CBYTECore(value, "'CHR'") })[0];
                     return new string(c, 1);
+                }
+                if (value is string valueString && valueString == string.Empty)
+                {
+                    return new string((char)0, 1);
                 }
                 //if (value != null)
                 {
-                    Encoding.RegisterProvider(provider: CodePagesEncodingProvider.Instance); // from nuget package 'System.Text.Encoding.CodePages'
-                    Encoding windows1252 = Encoding.GetEncoding("Windows-1252");
-
                     // Convert the int code point to char
                     byte b;
                     if (value is int valueInt32)
                     {
                         char c = (char)(int)valueInt32; // 8364 -> '€'
-                        b = windows1252.GetBytes(new[] { c })[0];
+                        b = Windows1252.GetBytes(new[] { c })[0];
                     }
                     else
                     {
@@ -766,7 +827,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         }
                     }
                     //byte b = Convert.ToByte(value);
-                    char result = windows1252.GetChars(new[] { b })[0]; // not Encoding.UTF8 for VBSCript
+                    char result = Windows1252.GetChars(new[] { b })[0]; // not Encoding.UTF8 for VBSCript
                     return new string(result, 1);
                 }
                 //else
@@ -776,7 +837,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 //    // "return new string((char)CBYTE(value), 1);" then the correct value won't always be returned from ASC - eg. 155)
                 //    var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
                 //    return new string(c, 1);
-                //}
+                //}*/
             }
             catch (VBScriptOverflowException e)
             {
@@ -2172,7 +2233,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// translated into the desired type. If there are no applicable special cases then the value will be passed through the VAL function and then through
         /// the processor (if this fails then a TypeMismatchException will be raised).
         /// </summary>
-        private T GetAsNumber<T>(object value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter) where T : struct
+        private T GetAsNumber<T>(object value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
         {
             if (converter == null)
                 throw new ArgumentNullException("nonSpecialCaseProcessor");
@@ -2193,7 +2254,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             catch (Exception e)
             {
-                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent, e);
+                if (rethrowUn)
+                    throw;
+                else
+                    throw new TypeMismatchException(optionalExceptionMessageForInvalidContent, e);
             }
         }
 
