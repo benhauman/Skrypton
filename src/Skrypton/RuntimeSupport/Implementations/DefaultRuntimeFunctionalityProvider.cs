@@ -701,6 +701,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Windows-1252 maps '€' (Unicode U+20AC = 8364) to a single byte 0x80. => cannot just cast 8364 to byte! => encode the character to bytes using Encoding!
             try
             {
+                if (value != null && value is not IConvertible && value is DispatchWrapper dwY)
+                {
+                    value = dwY.WrappedObject;
+                }
+
                 if (value == null)
                 {
                     char c = (char)0;// Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
@@ -733,6 +738,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                             {
                                 var pi = pis[0];
                                 var propertyValue = pi.GetValue(value);
+                                if (propertyValue != null && propertyValue is DispatchWrapper dwX)
+                                    propertyValue = dwX.WrappedObject;
                                 if (propertyValue == null)
                                 {
                                     return new string((char)0, 1);
