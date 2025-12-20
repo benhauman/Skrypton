@@ -1869,7 +1869,12 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             var approximateValue = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
             if (value.Millisecond >= 500) // TODO: Check whether this rounding is correct, should it be banker's rounding?
-                approximateValue = approximateValue.AddSeconds(1);
+            {
+                if ((DateTime.MaxValue - approximateValue).TotalSeconds > 1.0)
+                {
+                    approximateValue = approximateValue.AddSeconds(1);
+                }
+            }
             return approximateValue;
         }
         // - Object creation

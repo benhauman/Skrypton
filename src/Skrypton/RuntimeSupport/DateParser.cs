@@ -136,9 +136,25 @@ namespace Skrypton.RuntimeSupport
             }
             DateTime resultDateTimeOld = calculatedTimeComponent.AddDays(integerPortion);
             // lubo
+            value = CleanOADate(value);
             DateTime resultDateTime = DateTime.FromOADate(value); // // Treat as OLE Automation Date
             return resultDateTime;
         }
+        private static double CleanOADate(double value)
+        {
+            // Remove floating‑point noise
+            value = Math.Round(value, 6);
+
+            // Clamp to valid OADate range
+            const double min = -657435.0; // Minimum allowed –657435 (1 Jan 0100)
+            const double max = 2958465.999999; // Maximum allowed 2958465 (31 Dec 9999)
+
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+
+
 
         /// <summary>
         /// This will throw an exception if the value can not be interpreted as a DateTime following VBScript's rules or if the value is null. Note that this ONLY supports
