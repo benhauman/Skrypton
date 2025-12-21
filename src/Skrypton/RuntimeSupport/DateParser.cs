@@ -200,7 +200,12 @@ namespace Skrypton.RuntimeSupport
 
                 return dt;
             }
-
+            (int year, int month, int day) = ParseVbDate(input, defaultYear, parts.Length,
+                p1: int.Parse(parts[0]),
+                p2: parts.Length >= 2 ? int.Parse(parts[1]) : 0,
+                p3: parts.Length >= 3 ? int.Parse(parts[2]) : 0);
+            return NewDateTime(input, year, month, day);
+            /*
             if (parts.Length == 2)
             {
                 // Assume month/day with default year
@@ -245,8 +250,70 @@ namespace Skrypton.RuntimeSupport
                 return NewDateTime(input, year, p1, p2);
             }
 
-            throw new FormatException("Unsupported format");
+            throw new FormatException("Unsupported format:" + input);
+            */
         }
+        private static (int year, int month, int day) ParseVbDate(string input, int defaultYear, int partsLength, int p1, int p2, int p3)
+        {
+            if (partsLength == 2)
+            {
+                //int p1 = parts[0], p2 = parts[1];
+                int year = defaultYear;
+
+                int month, day;
+                if (p1 <= 12)
+                {
+                    month = p1;
+                    day = p2;
+                }
+                else
+                {
+                    day = p1;
+                    month = p2;
+                }
+
+                return (year, month, day);
+            }
+
+            if (partsLength == 3)
+            {
+                int year;
+
+                // 4-digit year detection
+                if (p1 >= 1000)
+                {
+                    year = p1;
+                    return (year, p2, p3);
+                }
+                if (p3 >= 1000)
+                {
+                    year = p3;
+                    // p1/p2 still need month/day logic
+                }
+                else
+                {
+                    // 2-digit year sliding window
+                    year = p3 <= 29 ? 2000 + p3 : 1900 + p3;
+                }
+
+                int month, day;
+                if (p1 <= 12)
+                {
+                    month = p1;
+                    day = p2;
+                }
+                else
+                {
+                    day = p1;
+                    month = p2;
+                }
+
+                return (year, month, day);
+            }
+
+            throw new FormatException("Unsupported format:" + input);
+        }
+
 
         private static DateTime NewDateTime(string input, int year, int month, int day)
         {
