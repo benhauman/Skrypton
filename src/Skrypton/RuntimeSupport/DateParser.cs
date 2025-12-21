@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Transactions;
 
 namespace Skrypton.RuntimeSupport
 {
@@ -380,17 +381,19 @@ namespace Skrypton.RuntimeSupport
                         return false;
                     nums.Add(n);
                 }
-
-                bool useFormatDayMonth = DetermineUseFormatDayMonth(culture);
+                bool useISOymd = input.IndexOf('-') > 0; // // This uses hyphens, which VBScript treats as an ISO‑like format
+                bool useFormatDayMonth = !useISOymd && DetermineUseFormatDayMonth(culture);
                 return nums.Count switch
                 {
                     2 => TryParse2Part(culture, input, useFormatDayMonth, nums, defaultYear, out result),
-                    3 => TryParse3Part(culture, input, useFormatDayMonth, nums, defaultYear, out result),
+                    3 => TryParse3Part(culture, input, useFormatDayMonth, useISOymd, nums, defaultYear, out result),
                     _ => false
                 };
             }
             private static bool DetermineUseFormatDayMonth(CultureInfo culture)
             {
+                // This uses spaces, which VBScript treats as a locale‑dependent date.
+
                 // 'en-US':M/d/yyyy, 'en-GB':dd/MM/yyyy
                 if (culture.DateTimeFormat.ShortDatePattern == null)
                     return true;// default
@@ -462,11 +465,23 @@ namespace Skrypton.RuntimeSupport
                 return true;
             }
 
-            private static bool TryParse3Part(CultureInfo culture, string input, bool useFormatDayMonth, List<int> p, int defaultYear, out DateTimeParts result)
+            private static bool TryParse3Part(CultureInfo culture, string input, bool useFormatDayMonth, bool useISOymd, List<int> p, int defaultYear, out DateTimeParts result)
             {
                 result = default;
 
                 int p1 = p[0], p2 = p[1], p3 = p[2];
+
+                if (p1 == 0 || p1 > 31 || useISOymd)
+                {
+                    // VBScript’s date parser uses these heuristics:
+                    // - If the first number is > 31, treat it as a year.
+                    // - If the first number is 0, treat it as a year.
+                    // - Year 0 is mapped to 1900 (VBScript’s base date system).
+                    // - Remaining numbers become month and day in order.
+                    //    + Locale does not matter here because the parser has already decided the structure:
+                    int yearx = p1 == 0 ? 1900 : p1;
+                    return MakeDate(culture, input, yearx, p2, p3, out result);
+                }
 
                 int pmax = Math.Max(Math.Max(p1, p2), p3);
                 if (pmax == 0)
@@ -482,7 +497,7 @@ namespace Skrypton.RuntimeSupport
                     if (pmax == p3) // year at the end
                     {
                         // 1, 2
-                        if (useFormatDayMonth)
+                        if (useFormatDayMonth && p2 <= 12)
                         {
                             month = p2;
                             day = p1;
