@@ -504,11 +504,19 @@ namespace Skrypton.RuntimeSupport
                         }
                         else
                         {
-                            month = p1;
-                            day = p2;
+                            if (p1 <= 12) //?!?!?
+                            {
+                                month = p1;
+                                day = p2;
+                            }
+                            else
+                            {
+                                month = p2;
+                                day = p1;
+                            }
                         }
 
-                    }
+                        }
                     else if (pmax == p1) // year at the beginning
                     {
                         // 2, 3
