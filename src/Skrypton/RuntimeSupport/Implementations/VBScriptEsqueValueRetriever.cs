@@ -1399,14 +1399,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // If there is a non-null optionalMemberAccessor and there are arguments then no defaults are considered and the member accessor
                 // must be an indexed property, it can not be an array (see note above about the only place that array access is permitted).
                 method = GetNamedSetMethods(targetType, optionalMemberAccessor, argumentsArray.Length, allowPrivateAccess).FirstOrDefault();
+                if (method == null)
+                    throw new MissingMemberException(targetType.FullName, optionalMemberAccessor);
             }
             else
             {
                 // Try accessing a default indexed property (either a a native C# property or a method with IsDefault and TranslatedProperty attributes)
-                method = GetDefaultSetMethods(targetType, argumentsArray.Length, allowPrivateAccess).FirstOrDefault();
+                var mis = GetDefaultSetMethods(targetType, argumentsArray.Length, allowPrivateAccess);
+                method = mis.FirstOrDefault();
+                if (method == null)
+                    throw new MissingMemberException(targetType.FullName, "(?)");
             }
-            if (method == null)
-                throw new MissingMemberException(targetType.FullName, optionalMemberAccessor);
 
             // Rather than trying to do more LINQ Expression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
             // that the index-arguments-plus-value get flattened into a single arguments array
@@ -1559,7 +1562,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return GetGetMethods(type, null, DefaultMemberBehaviourOptions.MustBeDefault, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess);
         }
 
-        private IEnumerable<MethodInfo> GetDefaultSetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
+        private MethodInfo[] GetDefaultSetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
@@ -1735,7 +1738,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return (parameter.ParameterType == typeof(object[])) && (parameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0);
         }
 
-        private IEnumerable<MethodInfo> GetSetMethods(
+        private MethodInfo[] GetSetMethods(
             Type type,
             string optionalName,
             DefaultMemberBehaviourOptions defaultMemberBehaviour,
@@ -1773,7 +1776,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                             (p.GetCustomAttributes(true).Cast<Attribute>().Any(a => a is IsDefault))
                         )
                         .Select(p => p.GetSetMethod())
-                );
+                )
+                .ToArray();
         }
 
         private IEnumerable<MethodInfo> GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
@@ -1784,9 +1788,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             var bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static; // This gets all public methods, whether they're declared in the specified type or anywhere in its inheritance tree
             if (allowPrivateAccess)
                 bindingFlags = bindingFlags | BindingFlags.NonPublic;
-            return type.GetMethods(bindingFlags)
+            var mis = type.GetMethods(bindingFlags)
                 .Except(type.GetProperties().Where(p => p.CanRead).Select(p => p.GetGetMethod()))
-                .Except(type.GetProperties().Where(p => p.CanWrite).Select(p => p.GetSetMethod()));
+                .Except(type.GetProperties().Where(p => p.CanWrite).Select(p => p.GetSetMethod()))
+                .ToArray();
+            return mis;
         }
 
         private int GetMemberInheritanceDepth(MemberInfo memberInfo, Type type)
