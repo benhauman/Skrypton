@@ -185,11 +185,11 @@ End Sub
 'SACM
 '----------------------------------------------------------------------------------------------------------
 'Globale Konstanten für freie Assoziationsdefinitionen
-Const VBScriptTranslator.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseFolderView = VBScriptTranslator.LegacyParser.Tokens.Basic.StringToken:LicenseFolderView
+Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseFolderView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseFolderView
 
-Const VBScriptTranslator.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseGroupView = VBScriptTranslator.LegacyParser.Tokens.Basic.StringToken:LicenseGroupView
+Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseGroupView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseGroupView
 
-Const VBScriptTranslator.LegacyParser.Tokens.Basic.NameToken:HLASC_Software2Computer = VBScriptTranslator.LegacyParser.Tokens.Basic.StringToken:Software2Computer
+Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_Software2Computer = Skrypton.LegacyParser.Tokens.Basic.StringToken:Software2Computer
 
 '----------------------------------------------------------------------------------------------------------
 'Prozedur füllt die Umzugshistorie für das entsprechende Objekt

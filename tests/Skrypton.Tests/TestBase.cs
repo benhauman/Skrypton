@@ -1,11 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Skrypton.RuntimeSupport;
 
 namespace Skrypton.Tests
 {
     public abstract class TestBase
     {
+        public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public TestContext TestContext { get; set; }
         protected void SaveExpectedActualFiles(string testName, string workItemName
                 , string fileName
@@ -20,7 +26,7 @@ namespace Skrypton.Tests
 
             string expectedDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "expected");
             string actualDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "actual");
-            string startCommand = "\"C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe\" \"" + expectedDirPath + "\" \"" + actualDirPath + "\"";
+            string startCommand = "\"C:\\Program Files\\WinMerge\\WinMergeU.exe\" \"" + expectedDirPath + "\" \"" + actualDirPath + "\"";
 
             SaveContentToFile(null, "winMergeStarter.bat", startCommand);
 
@@ -59,5 +65,17 @@ namespace Skrypton.Tests
             }
         }
 
+        private DefaultRuntimeSupportClassFactory _defaultRuntimeSupportClassFactoryInstance;
+        protected DefaultRuntimeSupportClassFactory DefaultRuntimeSupportClassFactoryInstance
+        {
+            get
+            {
+                if (_defaultRuntimeSupportClassFactoryInstance == null)
+                {
+                    _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(TestCulture);
+                }
+                return _defaultRuntimeSupportClassFactoryInstance;
+            }
+        }
     }
 }

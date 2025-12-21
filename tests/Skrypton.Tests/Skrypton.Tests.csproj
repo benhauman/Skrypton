@@ -7,16 +7,17 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Skrypton\Skrypton.csproj" />
 
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="VbsResources\DC_DATA__hlsysscript_cncIN.vbs" />
-    <EmbeddedResource Include="VbsResources\DC_DATA__hlsysscript_cncIN.generated.vbs" />
-    <EmbeddedResource Include="VbsResources\TextFile1.generated.vbs" />
-    <EmbeddedResource Include="VbsResources\TextFile1.vbs" />
+    <EmbeddedResource Include="VbsResources\**\*.sql" />
+    <EmbeddedResource Include="VbsResources\**\*.vbs" />
+    <EmbeddedResource Include="VbsResources\**\*.xml" />
+    <EmbeddedResource Include="VbsResources\**\*.cstxt" />
   </ItemGroup>
 
 </Project>
