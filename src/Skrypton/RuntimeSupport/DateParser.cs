@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Skrypton.RuntimeSupport
@@ -183,6 +185,10 @@ namespace Skrypton.RuntimeSupport
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Invalid input");
 
+            if (VbDateParser.TryParseVbDate(input, defaultYear, out var dtParts))
+            {
+                return NewDateTime(input, dtParts.Year, dtParts.Month, dtParts.Day);
+            }
             // Split by space or dash
             var parts = input.Split(new[] { ' ', '-', '/' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -200,6 +206,7 @@ namespace Skrypton.RuntimeSupport
 
                 return dt;
             }
+
             (int year, int month, int day) = ParseVbDate(input, defaultYear, parts.Length,
                 p1: int.Parse(parts[0]),
                 p2: parts.Length >= 2 ? int.Parse(parts[1]) : 0,
@@ -327,6 +334,200 @@ namespace Skrypton.RuntimeSupport
             }
         }
 
+
+        private static class VbDateParser
+        {
+            private static readonly Dictionary<string, int> MonthNames = Enumerable.Range(1, 12).SelectMany(i =>
+                {
+                    var dt = new DateTime(2000, i, 1);
+                    return new[]
+                    {
+                (dt.ToString("MMMM"), i),
+                (dt.ToString("MMM"), i),
+                (dt.ToString("MMMM").ToLowerInvariant(), i),
+                (dt.ToString("MMM").ToLowerInvariant(), i),
+                (dt.ToString("MMMM").ToUpperInvariant(), i),
+                (dt.ToString("MMM").ToUpperInvariant(), i)
+                    };
+                })
+                .Distinct()
+                .ToDictionary(x => x.Item1, x => x.Item2);
+
+            public static bool TryParseVbDate(string input, int defaultYear, out DateTimeParts result)
+            {
+                result = default;
+
+                if (string.IsNullOrWhiteSpace(input))
+                    return false;
+
+                var tokens = input
+                    .Replace('-', ' ')
+                    .Split([' '], StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
+
+                // Identify month names
+                var monthNameIndex = tokens.FindIndex(t => MonthNames.ContainsKey(t));
+
+                if (monthNameIndex >= 0)
+                    return TryParseWithMonthName(tokens, monthNameIndex, defaultYear, out result);
+
+                // Numeric-only parsing
+                var nums = new List<int>();
+                foreach (var t in tokens)
+                {
+                    if (!int.TryParse(t, out var n))
+                        return false;
+                    nums.Add(n);
+                }
+
+                return nums.Count switch
+                {
+                    2 => TryParse2Part(nums, defaultYear, out result),
+                    3 => TryParse3Part(nums, defaultYear, out result),
+                    _ => false
+                };
+            }
+
+            private static bool TryParse2Part(List<int> p, int defaultYear, out DateTimeParts result)
+            {
+                result = null;
+
+                int a = p[0], b = p[1];
+
+                // Year = 0 → 2000
+                if (a == 0) a = 2000; //?day
+                if (b == 0) b = 2000; //?month
+
+                // If one part is a valid year (>= 100), treat as year-month
+                if (a >= 100)
+                {
+                    result = new DateTimeParts(a, b, 1);
+                    return true;
+                }
+                if (b >= 100)
+                {
+                    result = new DateTimeParts(b, a, 1);
+                    return true;
+                }
+
+                // Otherwise: Day/Month or Month/Day
+                int year = defaultYear;
+
+                if (a > 12)
+                {
+                    result = new DateTimeParts(year, b, a);
+                }
+                else
+                {
+                    if (b <= 12)
+                    {
+                        result = new DateTimeParts(year, b, a);
+                    }
+                    else
+                    {
+                        result = new DateTimeParts(year, a, b);
+                    }
+                }
+
+                return true;
+            }
+
+            private static bool TryParse3Part(List<int> p, int defaultYear, out DateTimeParts result)
+            {
+                result = default;
+
+                int p1 = p[0], p2 = p[1], p3 = p[2];
+
+                // Year = 0 → 2000
+                if (p1 == 0) p1 = 2000;
+                if (p2 == 0) p2 = 2000;
+                if (p3 == 0) p3 = 2000;
+
+                // 4-digit year detection
+                if (p1 >= 1000)
+                    return MakeDate(p1, p2, p3, out result);
+
+                if (p3 >= 1000)
+                    return MakeDate(p3, p1, p2, out result);
+
+                // 2-digit year sliding window
+                int year = p3 <= 29 ? 2000 + p3 : 1900 + p3;
+
+                // Month/day disambiguation
+                if (p1 > 12)
+                {
+                    return MakeDate(year, p2, p1, out result);
+                }
+                if (p2 <= 12)
+                {
+                    return MakeDate(year, p2, p1, out result);
+                }
+                return MakeDate(year, p1, p2, out result);
+            }
+
+            private static bool TryParseWithMonthName(
+                List<string> tokens,
+                int monthIndex,
+                int defaultYear,
+                out DateTimeParts result)
+            {
+                result = default;
+
+                int month = MonthNames[tokens[monthIndex]];
+
+                var nums = tokens
+                    .Where((t, i) => i != monthIndex)
+                    .Select(t => int.TryParse(t, out var n) ? n : -1)
+                    .ToList();
+
+                if (nums.Any(n => n < 0))
+                    return false;
+
+                if (nums.Count == 1)
+                {
+                    int n = nums[0];
+                    if (n >= 100)
+                        result = new DateTimeParts(n, month, 1);
+                    else if (n == 0)
+                        result = new DateTimeParts(2000, month, 1);
+                    else
+                        result = new DateTimeParts(defaultYear, month, n);
+                    return true;
+                }
+
+                if (nums.Count == 2)
+                {
+                    int a = nums[0], b = nums[1];
+
+                    if (a >= 1000)
+                        return MakeDate(a, month, b, out result);
+
+                    if (b >= 1000)
+                        return MakeDate(b, month, a, out result);
+
+                    int year = b <= 29 ? 2000 + b : 1900 + b;
+                    return MakeDate(year, month, a, out result);
+                }
+
+                return false;
+            }
+
+            private static bool MakeDate(int year, int month, int day, out DateTimeParts result)
+            {
+                // VBScript: invalid day → day = 1
+                if (day < 1 || day > DateTime.DaysInMonth(year, month))
+                    day = 1;
+
+                result = new DateTimeParts(year, month, day);
+                return true;
+            }
+            internal sealed class DateTimeParts(int year, int month, int day)
+            {
+                public int Year { get; } = year;
+                public int Month { get; } = month;
+                public int Day { get; } = day;
+            }
+        }
         private DateTime ParseDateOnly(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
