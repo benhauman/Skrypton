@@ -3,7 +3,7 @@
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
     [Serializable]
-    public class KeyWordToken : AtomToken
+    public sealed class KeyWordToken : AtomToken
     {
         /// <summary>
         /// This inherits from AtomToken since a lot of processing would consider them the

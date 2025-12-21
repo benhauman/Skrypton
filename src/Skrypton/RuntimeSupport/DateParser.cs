@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -185,7 +186,7 @@ namespace Skrypton.RuntimeSupport
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Invalid input");
 
-            if (VbDateParser.TryParseVbDate(input, defaultYear, out var dtParts))
+            if (VbDateParser.TryParseVbDate(culture, input, defaultYear, out var dtParts))
             {
                 return NewDateTime(input, dtParts.Year, dtParts.Month, dtParts.Day);
             }
@@ -353,7 +354,7 @@ namespace Skrypton.RuntimeSupport
                 .Distinct()
                 .ToDictionary(x => x.Item1, x => x.Item2);
 
-            public static bool TryParseVbDate(string input, int defaultYear, out DateTimeParts result)
+            public static bool TryParseVbDate(CultureInfo culture, string input, int defaultYear, out DateTimeParts result)
             {
                 result = default;
 
@@ -369,7 +370,7 @@ namespace Skrypton.RuntimeSupport
                 var monthNameIndex = tokens.FindIndex(t => MonthNames.ContainsKey(t));
 
                 if (monthNameIndex >= 0)
-                    return TryParseWithMonthName(tokens, monthNameIndex, defaultYear, out result);
+                    return TryParseWithMonthName(culture, input, tokens, monthNameIndex, defaultYear, out result);
 
                 // Numeric-only parsing
                 var nums = new List<int>();
@@ -380,15 +381,44 @@ namespace Skrypton.RuntimeSupport
                     nums.Add(n);
                 }
 
+                bool useFormatDayMonth = DetermineUseFormatDayMonth(culture);
                 return nums.Count switch
                 {
-                    2 => TryParse2Part(nums, defaultYear, out result),
-                    3 => TryParse3Part(nums, defaultYear, out result),
+                    2 => TryParse2Part(culture, input, useFormatDayMonth, nums, defaultYear, out result),
+                    3 => TryParse3Part(culture, input, useFormatDayMonth, nums, defaultYear, out result),
                     _ => false
                 };
             }
+            private static bool DetermineUseFormatDayMonth(CultureInfo culture)
+            {
+                // 'en-US':M/d/yyyy, 'en-GB':dd/MM/yyyy
+                if (culture.DateTimeFormat.ShortDatePattern == null)
+                    return true;// default
+                int ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('d');
+                if (ixDay < 0)
+                    ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('D');
 
-            private static bool TryParse2Part(List<int> p, int defaultYear, out DateTimeParts result)
+                int ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('m');
+                if (ixMonth < 0)
+                    ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
+
+                if (ixDay < 0 && ixMonth < 0)
+                {
+                    return true; // default
+                }
+                else
+                {
+                    if (ixDay < 0)
+                        return false; // day no specified, month specified
+                    // both specified
+                    if (ixDay < ixMonth)
+                        return true; // day before month
+                    else
+                        return false; // month before day
+                }
+            }
+
+            private static bool TryParse2Part(CultureInfo culture, string input, bool useFormatDayMonth, List<int> p, int defaultYear, out DateTimeParts result)
             {
                 result = null;
 
@@ -419,7 +449,7 @@ namespace Skrypton.RuntimeSupport
                 }
                 else
                 {
-                    if (b <= 12)
+                    if (b <= 12 && useFormatDayMonth)
                     {
                         result = new DateTimeParts(year, b, a);
                     }
@@ -432,23 +462,83 @@ namespace Skrypton.RuntimeSupport
                 return true;
             }
 
-            private static bool TryParse3Part(List<int> p, int defaultYear, out DateTimeParts result)
+            private static bool TryParse3Part(CultureInfo culture, string input, bool useFormatDayMonth, List<int> p, int defaultYear, out DateTimeParts result)
             {
                 result = default;
 
                 int p1 = p[0], p2 = p[1], p3 = p[2];
+
+                int pmax = Math.Max(Math.Max(p1, p2), p3);
+                if (pmax == 0)
+                {
+                    // all are zero => 2000-01-01
+                    pmax = 2000;
+                }
+                // 4-digit year detection
+                if (pmax >= 1000)
+                {
+                    int month;
+                    int day;
+                    if (pmax == p3) // year at the end
+                    {
+                        // 1, 2
+                        if (useFormatDayMonth)
+                        {
+                            month = p2;
+                            day = p1;
+                        }
+                        else
+                        {
+                            month = p1;
+                            day = p2;
+                        }
+
+                    }
+                    else if (pmax == p1) // year at the beginning
+                    {
+                        // 2, 3
+                        if (useFormatDayMonth)
+                        {
+                            month = p3;
+                            day = p2;
+                        }
+                        else
+                        {
+                            month = p2;
+                            day = p3;
+                        }
+
+                    }
+                    else
+                    {
+                        // year in the middle
+                        if (useFormatDayMonth)
+                        {
+                            month = p3;
+                            day = p1;
+                        }
+                        else
+                        {
+                            month = p1;
+                            day = p3;
+                        }
+                    }
+                    // Year = 0 → 2000
+                    //if (p1 == 0) p1 = 2000;
+                    //if (p2 == 0) p2 = 2000;
+                    //if (p3 == 0) p3 = 2000;
+
+                    //return MakeDate(pmax, p2, p3, out result);
+                    return MakeDate(culture, input, pmax, month, day, out result);
+                }
 
                 // Year = 0 → 2000
                 if (p1 == 0) p1 = 2000;
                 if (p2 == 0) p2 = 2000;
                 if (p3 == 0) p3 = 2000;
 
-                // 4-digit year detection
-                if (p1 >= 1000)
-                    return MakeDate(p1, p2, p3, out result);
-
                 if (p3 >= 1000)
-                    return MakeDate(p3, p1, p2, out result);
+                    return MakeDate(culture, input, p3, p1, p2, out result);
 
                 // 2-digit year sliding window
                 int year = p3 <= 29 ? 2000 + p3 : 1900 + p3;
@@ -456,16 +546,17 @@ namespace Skrypton.RuntimeSupport
                 // Month/day disambiguation
                 if (p1 > 12)
                 {
-                    return MakeDate(year, p2, p1, out result);
+                    return MakeDate(culture, input, year, p2, p1, out result);
                 }
-                if (p2 <= 12)
+                if (p2 <= 12 && useFormatDayMonth)
                 {
-                    return MakeDate(year, p2, p1, out result);
+                    return MakeDate(culture, input, year, p2, p1, out result);
                 }
-                return MakeDate(year, p1, p2, out result);
+                return MakeDate(culture, input, year, p1, p2, out result);
             }
 
             private static bool TryParseWithMonthName(
+                CultureInfo culture, string input,
                 List<string> tokens,
                 int monthIndex,
                 int defaultYear,
@@ -500,27 +591,36 @@ namespace Skrypton.RuntimeSupport
                     int a = nums[0], b = nums[1];
 
                     if (a >= 1000)
-                        return MakeDate(a, month, b, out result);
+                        return MakeDate(culture, input, a, month, b, out result);
 
                     if (b >= 1000)
-                        return MakeDate(b, month, a, out result);
+                        return MakeDate(culture, input, b, month, a, out result);
 
                     int year = b <= 29 ? 2000 + b : 1900 + b;
-                    return MakeDate(year, month, a, out result);
+                    return MakeDate(culture, input, year, month, a, out result);
                 }
 
                 return false;
             }
 
-            private static bool MakeDate(int year, int month, int day, out DateTimeParts result)
+            private static bool MakeDate(CultureInfo culture, string input, int year, int month, int day, out DateTimeParts result)
             {
+                month = month <= 0 ? 1 : month; // VBScript: invalid month → month = 1
                 // VBScript: invalid day → day = 1
-                if (day < 1 || day > DateTime.DaysInMonth(year, month))
-                    day = 1;
+                try
+                {
+                    if (day < 1 || day > DateTime.DaysInMonth(year, month))
+                        day = 1;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    throw new ArgumentException($"Input:'{input}', culture:{culture.Name}", ex);
+                }
 
                 result = new DateTimeParts(year, month, day);
                 return true;
             }
+            [DebuggerDisplay("y:{Year}, m:{Month}, d:{Day}")]
             internal sealed class DateTimeParts(int year, int month, int day)
             {
                 public int Year { get; } = year;

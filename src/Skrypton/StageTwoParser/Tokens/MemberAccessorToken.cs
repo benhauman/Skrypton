@@ -8,7 +8,7 @@ namespace Skrypton.StageTwoParser.Tokens
     /// This is more specific than MemberAccessorOrDecimalPointToken, which may be an accessor or a decimal place (eg. the "." in "1.1")
     /// </summary>
     [Serializable]
-    public class MemberAccessorToken : MemberAccessorOrDecimalPointToken
+    public sealed class MemberAccessorToken : MemberAccessorOrDecimalPointToken
     {
         public MemberAccessorToken(int lineIndex) : base(".".ToUpperX(), lineIndex) { }
     }
