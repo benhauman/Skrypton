@@ -142,75 +142,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For Each value In Array(1, 2)
 				Next
 			";
-			var expected = @"
-				using System;
-				using System.Collections;
-				using System.Runtime.InteropServices;
-				using Skrypton.RuntimeSupport;
-				using Skrypton.RuntimeSupport.Attributes;
-				using Skrypton.RuntimeSupport.Exceptions;
-				using Skrypton.RuntimeSupport.Compat;
-				namespace TranslatedProgram
-				{
-					public class Runner
-					{
-						private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-						public Runner(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
-						{
-							if (compatLayer == null)
-								throw new ArgumentNullException(""compatLayer"");
-							_ = compatLayer;
-						}
-						public GlobalReferences Go()
-						{
-							return Go(new EnvironmentReferences());
-						}
-						public GlobalReferences Go(EnvironmentReferences env)
-						{
-							if (env == null)
-								throw new ArgumentNullException(""env"");
-							var _env = env;
-							var _outer = new GlobalReferences(_, _env);
-							var enumerationContent1 = _.ENUMERABLE(_.CALL(this, _, ""ARRAY"", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();
-							while (true)
-							{
-								if (!enumerationContent1.MoveNext())
-									break;
-								_env.value = enumerationContent1.Current;
-							}
-							return _outer;
-						}
-						public class GlobalReferences
-						{
-							private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-							private readonly GlobalReferences _outer;
-							private readonly EnvironmentReferences _env;
-							public GlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env)
-							{
-								if (compatLayer == null)
-									throw new ArgumentNullException(""compatLayer"");
-								if (env == null)
-									throw new ArgumentNullException(""env"");
-								_ = compatLayer;
-								_env = env;
-								_outer = this;
-							}
-						}
-						public class EnvironmentReferences
-						{
-							public object value { get; set; }
-						}
-					}
-				}";
-			var output = DefaultTranslator
+            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+
+            var output = DefaultTranslator
 				.Translate(TestCulture, source, new string[0], renderCommentsAboutUndeclaredVariables: false)
 				.Select(s => s.Content)
 				.Where(s => s != "")
 				.ToArray();
-			myAssert.AreEqual(
-				expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+			base.AreEqualStringArray(TestName, ".cstxt",
+                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
 				output.Select(s => s.Trim()).Where(s => s != "").ToArray()
 			);
-		}
+        }
 	}
 }

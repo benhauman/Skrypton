@@ -8,24 +8,17 @@ using Skrypton.RuntimeSupport.Compat;
 
 namespace TranslatedProgram
 {
-    public class Runner
+    public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
     {
         private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-        public Runner(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
+        public Runner(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
         {
-            if (compatLayer == null)
-                throw new ArgumentNullException("compatLayer");
-            _ = compatLayer;
-        }
-
-        public GlobalReferences Go()
-        {
-            return Go(new EnvironmentReferences());
+            _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
         public GlobalReferences Go(EnvironmentReferences env)
         {
             if (env == null)
-                throw new ArgumentNullException("env");
+                throw new ArgumentNullException(nameof(env));
 
             var _env = env;
             var _outer = new GlobalReferences(_, _env);
@@ -50,1446 +43,1441 @@ namespace TranslatedProgram
             //---------------------------------------------------------------------
             return _outer;
         }
-
-        public class GlobalReferences
+    }
+    public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
+    {
+        private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
+        private readonly GlobalReferences _outer;
+        private readonly EnvironmentReferences _env;
+        public GlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) : base(compatLayer, env)
         {
-            private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-            private readonly GlobalReferences _outer;
-            private readonly EnvironmentReferences _env;
-            public GlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env)
+            _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _outer = this;
+            hlasc_softwarelicensefolderview = null;
+            hlasc_softwarelicensegroupview = null;
+            hlasc_software2computer = null;
+        }
+
+        public object hlasc_softwarelicensefolderview { get; set; }
+        public object hlasc_softwarelicensegroupview { get; set; }
+        public object hlasc_software2computer { get; set; }
+
+        //---------------------------------------------------------------
+        //Diese Funktion ermittelt den Standard-Eintrag zum angegebenen Attribut aus
+        //dem Dictionary.
+        //Wenn der Parameter "GetAll" auf False steht wird als Rückgabewert für die Funktion
+        //ebenfalls "False" ausgegben, wenn mehr als ein Standardeintrag gefunden wird.
+        //Wenn für den Parameter "True" angeben wird, prüft die Funktion ob es tatsächlich
+        //nur einen Standard-Eintrag gibt, sonst "False".
+        public object getcommunicationdefault(ref object hlcontext, ref object hlobject, ref object dict, ref object getall)
+        {
+            object retVal1 = null;
+            object itemcount = null;
+            object strvalue = null;
+            object itemids = null;
+            object item = null;
+            object defitem = null;
+            retVal1 = false;
+            itemcount = (Int16)0;
+            strvalue = "";
+
+            itemids = "";
+            object byrefalias2 = dict;
+            try
             {
-                if (compatLayer == null)
-                    throw new ArgumentNullException("compatLayer");
-                if (env == null)
-                    throw new ArgumentNullException("env");
-                _ = compatLayer;
-                _env = env;
-                _outer = this;
-                hlasc_softwarelicensefolderview = null;
-                hlasc_softwarelicensegroupview = null;
-                hlasc_software2computer = null;
+                itemids = _.VAL(_.CALL(this, hlobject, "GetContentIDs", _.ARGS.RefIfArray(byrefalias2, _.ARGS.Val("Compound")).Val((Int16)0)));
             }
+            finally { dict = byrefalias2; }
 
-            public object hlasc_softwarelicensefolderview { get; set; }
-            public object hlasc_softwarelicensegroupview { get; set; }
-            public object hlasc_software2computer { get; set; }
-
-            //---------------------------------------------------------------
-            //Diese Funktion ermittelt den Standard-Eintrag zum angegebenen Attribut aus
-            //dem Dictionary.
-            //Wenn der Parameter "GetAll" auf False steht wird als Rückgabewert für die Funktion
-            //ebenfalls "False" ausgegben, wenn mehr als ein Standardeintrag gefunden wird.
-            //Wenn für den Parameter "True" angeben wird, prüft die Funktion ob es tatsächlich
-            //nur einen Standard-Eintrag gibt, sonst "False".
-            public object getcommunicationdefault(ref object hlcontext, ref object hlobject, ref object dict, ref object getall)
+            item = (Int16)0;
+            var enumerationContent3 = _.ENUMERABLE(itemids).GetEnumerator();
+            while (true)
             {
-                object retVal1 = null;
-                object itemcount = null;
-                object strvalue = null;
-                object itemids = null;
-                object item = null;
-                object defitem = null;
-                retVal1 = false;
-                itemcount = (Int16)0;
-                strvalue = "";
-
-                itemids = "";
-                object byrefalias2 = dict;
+                if (!enumerationContent3.MoveNext())
+                    break;
+                item = enumerationContent3.Current;
+                defitem = false;
+                object byrefalias4 = hlcontext, byrefalias5 = hlobject, byrefalias6 = dict;
                 try
                 {
-                    itemids = _.VAL(_.CALL(this, hlobject, "GetContentIDs", _.ARGS.RefIfArray(byrefalias2, _.ARGS.Val("Compound")).Val((Int16)0)));
+                    defitem = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias4, v7 => { byrefalias4 = v7; }).Ref(byrefalias5, v8 => { byrefalias5 = v8; }).RefIfArray(byrefalias6, _.ARGS.Val("Default")).Ref(item, v9 => { item = v9; }).Val((Int16)0)));
                 }
-                finally { dict = byrefalias2; }
-
-                item = (Int16)0;
-                var enumerationContent3 = _.ENUMERABLE(itemids).GetEnumerator();
-                while (true)
+                finally { hlcontext = byrefalias4; hlobject = byrefalias5; dict = byrefalias6; }
+                if (_.IF(_.EQ(_.CBOOL(defitem), true)))
                 {
-                    if (!enumerationContent3.MoveNext())
-                        break;
-                    item = enumerationContent3.Current;
-                    defitem = false;
-                    object byrefalias4 = hlcontext, byrefalias5 = hlobject, byrefalias6 = dict;
+                    itemcount = _.ADD(itemcount, (Int16)1);
+                    object byrefalias10 = dict;
                     try
                     {
-                        defitem = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias4, v7 => { byrefalias4 = v7; }).Ref(byrefalias5, v8 => { byrefalias5 = v8; }).RefIfArray(byrefalias6, _.ARGS.Val("Default")).Ref(item, v9 => { item = v9; }).Val((Int16)0)));
+                        strvalue = _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.RefIfArray(byrefalias10, _.ARGS.Val("Value")).Val((Int16)0).Ref(item, v11 => { item = v11; }).Val((Int16)0).Val((Int16)0)));
                     }
-                    finally { hlcontext = byrefalias4; hlobject = byrefalias5; dict = byrefalias6; }
-                    if (_.IF(_.EQ(_.CBOOL(defitem), true)))
+                    finally { dict = byrefalias10; }
+                    if (_.IF(_.EQ(_.CBOOL(getall), false)))
                     {
-                        itemcount = _.ADD(itemcount, (Int16)1);
-                        object byrefalias10 = dict;
-                        try
-                        {
-                            strvalue = _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.RefIfArray(byrefalias10, _.ARGS.Val("Value")).Val((Int16)0).Ref(item, v11 => { item = v11; }).Val((Int16)0).Val((Int16)0)));
-                        }
-                        finally { dict = byrefalias10; }
-                        if (_.IF(_.EQ(_.CBOOL(getall), false)))
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
-                if (_.IF(_.GT(_.NullableNUM(itemcount), (Int16)1)))
-                {
-                    retVal1 = false;
-                    return retVal1;
-                }
-                else
-                {
-                    retVal1 = true;
-                    _.SET(_.VAL(strvalue), this, dict, null, _.ARGS.Val("DefValue"));
-                }
+            }
+            if (_.IF(_.GT(_.NullableNUM(itemcount), (Int16)1)))
+            {
+                retVal1 = false;
                 return retVal1;
             }
-
-            //----------------------------------------------------------------------------------------------------------
-            //Deaktivieren bzw. aktivieren aller Traces, Text = Logtext im App.Log
-            public void trace(ref object hlcontext, ref object text)
+            else
             {
-                object byrefalias12 = text;
-                try
-                {
-                    _.CALL(this, hlcontext, "trace", _.ARGS.Val((Int16)1).Ref(byrefalias12, v13 => { byrefalias12 = v13; }));
-                }
-                finally { text = byrefalias12; }
+                retVal1 = true;
+                _.SET(_.VAL(strvalue), this, dict, null, _.ARGS.Val("DefValue"));
+            }
+            return retVal1;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //Deaktivieren bzw. aktivieren aller Traces, Text = Logtext im App.Log
+        public void trace(ref object hlcontext, ref object text)
+        {
+            object byrefalias12 = text;
+            try
+            {
+                _.CALL(this, hlcontext, "trace", _.ARGS.Val((Int16)1).Ref(byrefalias12, v13 => { byrefalias12 = v13; }));
+            }
+            finally { text = byrefalias12; }
+        }
+
+        //---------------------------------------------------------------
+        //Setzt den vorhandenen Wert aus dem VB-Dictionary in die ODE "PersonInformation".
+        public void setpersoninformation(ref object hlcontext, ref object hlobject, ref object dict)
+        {
+            object attrdef = null;
+            object strattrvalue = null;
+            //Aus dem Dictionary wird das Attribut und der dazugehörige Wert ermittelt.
+            attrdef = "";
+            attrdef = _.CONCAT("PersonInformation.", _.CALL(this, dict, _.ARGS.Val("PersInfoAttr")));
+
+            strattrvalue = "";
+            strattrvalue = _.VAL(_.CALL(this, dict, _.ARGS.Val("DefValue")));
+
+            if (_.IF(_.EQ(_.NullableSTR(strattrvalue), "")))
+            {
+                strattrvalue = "-";
+            }
+            _.CALL(this, hlobject, "SetValue", _.ARGS.Ref(attrdef, v14 => { attrdef = v14; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strattrvalue, v15 => { strattrvalue = v15; }));
+        }
+
+        //---------------------------------------------------------------
+        public object ishlobject(ref object hlcontext, ref object hlobject)
+        {
+            object retVal16 = null;
+            //	Trace hlContext, "IsObject " & IsObject(hlObject)
+            //	Trace hlContext, "IsNull " & IsNull(hlObject)
+            //	Trace hlContext, "IsEmpty " & IsEmpty(hlObject)
+            //	Trace hlContext, "Leerstring "
+            //	Trace hlContext, "Leerstring " & hlObject = ""
+            object byrefalias17 = hlcontext;
+            try
+            {
+                _.CALL(this, _outer, "Trace", _.ARGS.Ref(byrefalias17, v18 => { byrefalias17 = v18; }).Val(_.CONCAT("Type ", _.VARTYPE(hlobject))));
+            }
+            finally { hlcontext = byrefalias17; }
+            retVal16 = _.VAL(_.AND(_.EQ(_.ISOBJECT(hlobject), true), _.EQ(_.IS(hlobject, VBScriptConstants.Nothing), false)));
+            return retVal16;
+        }
+
+        //-------------------------------------------------------------------
+        public object getbasetype(ref object hlcontext, ref object hlobject)
+        {
+            return _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.Val("HLOBJECTINFO.BASETYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+        }
+
+        //---------------------------------------------------------------
+        //Dies ist eine rekursive Function zum ermitteln der Organisationshierarchie,
+        //ausgehend vom der ersten OU überhalb einer Person.
+        //Die Variable "strOrgUnits" ist der Out-Parameter der Function.
+        public object getpersonorganisation(ref object hlcontext, ref object hlorgunit, ref object strorgunits)
+        {
+            object retVal20 = null;
+            object retval = null;
+            object nextorgunit = null;
+            object orgatype = null;
+            retVal20 = (Int16)0;
+            retval = (Int16)0;
+
+            //Wenn noch keine OU ermittelt wurde, wird der Name der ersten OU eingetragen.
+            //Andernfalls, wird jede weitere OU einfach angehangen.
+            if (_.IF(_.EQ(_.NullableSTR(strorgunits), "")))
+            {
+                strorgunits = _.VAL(_.CALL(this, hlorgunit, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            }
+            else
+            {
+                strorgunits = _.CONCAT(strorgunits, ", ", _.CALL(this, hlorgunit, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             }
 
-            //---------------------------------------------------------------
-            //Setzt den vorhandenen Wert aus dem VB-Dictionary in die ODE "PersonInformation".
-            public void setpersoninformation(ref object hlcontext, ref object hlobject, ref object dict)
+            //Erst prüfen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
+            //für die nächste Abfrage gewählt werden kann.
+            orgatype = "";
+            orgatype = _.VAL(_.CALL(this, hlorgunit, "GetType"));
+            if (_.IF(_.EQ(_.NullableSTR(orgatype), "Division")))
             {
-                object attrdef = null;
-                object strattrvalue = null;
-                //Aus dem Dictionary wird das Attribut und der dazugehörige Wert ermittelt.
-                attrdef = "";
-                attrdef = _.CONCAT("PersonInformation.", _.CALL(this, dict, _.ARGS.Val("PersInfoAttr")));
-
-                strattrvalue = "";
-                strattrvalue = _.VAL(_.CALL(this, dict, _.ARGS.Val("DefValue")));
-
-                if (_.IF(_.EQ(_.NullableSTR(strattrvalue), "")))
-                {
-                    strattrvalue = "-";
-                }
-                _.CALL(this, hlobject, "SetValue", _.ARGS.Ref(attrdef, v14 => { attrdef = v14; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strattrvalue, v15 => { strattrvalue = v15; }));
+                nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("CompanyView")));
+            }
+            if (_.IF(_.EQ(_.NullableSTR(orgatype), "Site")))
+            {
+                nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Site2Company")));
+            }
+            if (_.IF(_.EQ(_.NullableSTR(orgatype), "Company")))
+            {
+                nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Company2Company")));
             }
 
-            //---------------------------------------------------------------
-            public object ishlobject(ref object hlcontext, ref object hlobject)
+            //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
+            //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
+            if (_.IF(_.ISARRAY(nextorgunit)))
             {
-                object retVal16 = null;
-                //	Trace hlContext, "IsObject " & IsObject(hlObject)
-                //	Trace hlContext, "IsNull " & IsNull(hlObject)
-                //	Trace hlContext, "IsEmpty " & IsEmpty(hlObject)
-                //	Trace hlContext, "Leerstring "
-                //	Trace hlContext, "Leerstring " & hlObject = ""
-                object byrefalias17 = hlcontext;
-                try
+                if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextorgunit)), (Int16)0)))
                 {
-                    _.CALL(this, _outer, "Trace", _.ARGS.Ref(byrefalias17, v18 => { byrefalias17 = v18; }).Val(_.CONCAT("Type ", _.VARTYPE(hlobject))));
-                }
-                finally { hlcontext = byrefalias17; }
-                retVal16 = _.VAL(_.AND(_.EQ(_.ISOBJECT(hlobject), true), _.EQ(_.IS(hlobject, VBScriptConstants.Nothing), false)));
-                return retVal16;
-            }
-
-            //-------------------------------------------------------------------
-            public object getbasetype(ref object hlcontext, ref object hlobject)
-            {
-                return _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.Val("HLOBJECTINFO.BASETYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-            }
-
-            //---------------------------------------------------------------
-            //Dies ist eine rekursive Function zum ermitteln der Organisationshierarchie,
-            //ausgehend vom der ersten OU überhalb einer Person.
-            //Die Variable "strOrgUnits" ist der Out-Parameter der Function.
-            public object getpersonorganisation(ref object hlcontext, ref object hlorgunit, ref object strorgunits)
-            {
-                object retVal20 = null;
-                object retval = null;
-                object nextorgunit = null;
-                object orgatype = null;
-                retVal20 = (Int16)0;
-                retval = (Int16)0;
-
-                //Wenn noch keine OU ermittelt wurde, wird der Name der ersten OU eingetragen.
-                //Andernfalls, wird jede weitere OU einfach angehangen.
-                if (_.IF(_.EQ(_.NullableSTR(strorgunits), "")))
-                {
-                    strorgunits = _.VAL(_.CALL(this, hlorgunit, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                }
-                else
-                {
-                    strorgunits = _.CONCAT(strorgunits, ", ", _.CALL(this, hlorgunit, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                }
-
-                //Erst prüfen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
-                //für die nächste Abfrage gewählt werden kann.
-                orgatype = "";
-                orgatype = _.VAL(_.CALL(this, hlorgunit, "GetType"));
-                if (_.IF(_.EQ(_.NullableSTR(orgatype), "Division")))
-                {
-                    nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("CompanyView")));
-                }
-                if (_.IF(_.EQ(_.NullableSTR(orgatype), "Site")))
-                {
-                    nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Site2Company")));
-                }
-                if (_.IF(_.EQ(_.NullableSTR(orgatype), "Company")))
-                {
-                    nextorgunit = _.VAL(_.CALL(this, hlorgunit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Company2Company")));
-                }
-
-                //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
-                //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
-                if (_.IF(_.ISARRAY(nextorgunit)))
-                {
-                    if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextorgunit)), (Int16)0)))
-                    {
-                        object byrefalias21 = hlcontext, byrefalias22 = strorgunits;
-                        try
-                        {
-                            retval = _.VAL(_.CALL(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias21, v23 => { byrefalias21 = v23; }).RefIfArray(nextorgunit, _.ARGS.Val((Int16)0)).Ref(byrefalias22, v24 => { byrefalias22 = v24; })));
-                        }
-                        finally { hlcontext = byrefalias21; strorgunits = byrefalias22; }
-                    }
-                    else
-                    {
-                        return retVal20;
-                    }
-                }
-                return retVal20;
-            }
-
-            //---------------------------------------------------------------
-            //Über diese Function wird für ein Flag Attribut immer der Wert
-            //True oder False ausgegeben.
-            public object getflagvalue(ref object hlcontext, ref object hlobject, ref object hlattribute, ref object hlcontentid, ref object hlsuid)
-            {
-                object retVal25 = null;
-                object byrefalias26 = hlattribute, byrefalias27 = hlcontentid, byrefalias28 = hlsuid;
-                try
-                {
-                    retVal25 = _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.Ref(byrefalias26, v29 => { byrefalias26 = v29; }).Val((Int16)0).Ref(byrefalias27, v30 => { byrefalias27 = v30; }).Ref(byrefalias28, v31 => { byrefalias28 = v31; }).Val((Int16)0)));
-                }
-                finally { hlattribute = byrefalias26; hlcontentid = byrefalias27; hlsuid = byrefalias28; }
-                if (_.IF(_.EQ(_.NullableSTR(retVal25), "")))
-                {
-                    retVal25 = false;
-                }
-                return retVal25;
-            }
-
-            //-------------------------------------------------------------------
-            //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
-            //Wörterbuch ohne Parameter.
-            public object geterrmsg0(ref object hlcontext, ref object localeid, ref object errcode)
-            {
-                object retVal32 = null;
-                object strerrmsg = null;
-                retVal32 = "";
-
-                strerrmsg = "";
-                object byrefalias33 = errcode, byrefalias34 = localeid;
-                try
-                {
-                    strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias33, v35 => { byrefalias33 = v35; }).Ref(byrefalias34, v36 => { byrefalias34 = v36; })));
-                }
-                finally { errcode = byrefalias33; localeid = byrefalias34; }
-                strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbNewLine, "(Code: ", errcode, ")");
-
-                //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
-                //Rückgabewert der Function ist die Fehlermeldung.
-                retVal32 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
-                return retVal32;
-            }
-
-            //Das Script ermittelt auf Basis der ersten übergeordneten OU den gesamten Pfad bis zur Firma oder Konzern
-            //und speichert diesen in das Hilfsattribut PersonInformation.PersonOrganisation.
-            //This script detects the entire path based on the first parent OU up to the company or holding
-            //and saves them into the attribute PersonInformation.PersonOrganisation.
-            public void setpersonorganization(ref object hlcontext, ref object hlperson, ref object dict)
-            {
-                object firstorgunit = null;
-                object rsltorgunit = null;
-                object retval = null;
-                object strorgunits = null;
-                firstorgunit = VBScriptConstants.Nothing;
-                firstorgunit = _.OBJ(_.CALL(this, hlcontext, "GetRelatedObject"));
-
-                bool ifResult40;
-                object byrefalias39 = hlcontext;
-                try
-                {
-                    ifResult40 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias39, v41 => { byrefalias39 = v41; }).Ref(firstorgunit, v42 => { firstorgunit = v42; })), true));
-                }
-                finally { hlcontext = byrefalias39; }
-                if (ifResult40)
-                {
-                    if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.CALL(this, firstorgunit, "GetType")), "Company"), _.NOTEQ(_.NullableSTR(_.CALL(this, firstorgunit, "GetType")), "Division"))))
-                    {
-                        firstorgunit = VBScriptConstants.Nothing;
-                    }
-                }
-
-                bool ifResult46;
-                object byrefalias45 = hlcontext;
-                try
-                {
-                    ifResult46 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias45, v47 => { byrefalias45 = v47; }).Ref(firstorgunit, v48 => { firstorgunit = v48; })), false));
-                }
-                finally { hlcontext = byrefalias45; }
-                if (ifResult46)
-                {
-                    rsltorgunit = "";
-                    rsltorgunit = _.VAL(_.CALL(this, hlperson, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Person2Organization")));
-                    if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltorgunit)), (Int16)0)))
-                    {
-                        firstorgunit = _.OBJ(_.CALL(this, rsltorgunit, _.ARGS.Val((Int16)0)));
-                    }
-                }
-
-                bool ifResult52;
-                object byrefalias51 = hlcontext;
-                try
-                {
-                    ifResult52 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias51, v53 => { byrefalias51 = v53; }).Ref(firstorgunit, v54 => { firstorgunit = v54; })), true));
-                }
-                finally { hlcontext = byrefalias51; }
-                if (ifResult52)
-                {
-                    bool ifResult58;
-                    object byrefalias57 = hlcontext;
+                    object byrefalias21 = hlcontext, byrefalias22 = strorgunits;
                     try
                     {
-                        ifResult58 = _.IF(_.EQ(_.NullableSTR(_.CALL(this, _outer, "GetBaseType", _.ARGS.Ref(byrefalias57, v59 => { byrefalias57 = v59; }).Ref(firstorgunit, v60 => { firstorgunit = v60; }))), "ORGANISATION"));
+                        retval = _.VAL(_.CALL(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias21, v23 => { byrefalias21 = v23; }).RefIfArray(nextorgunit, _.ARGS.Val((Int16)0)).Ref(byrefalias22, v24 => { byrefalias22 = v24; })));
                     }
-                    finally { hlcontext = byrefalias57; }
-                    if (ifResult58)
-                    {
-                        retval = "";
-                        strorgunits = "";
-                        object byrefalias61 = hlcontext;
-                        try
-                        {
-                            retval = _.VAL(_.CALL(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias61, v62 => { byrefalias61 = v62; }).Ref(firstorgunit, v63 => { firstorgunit = v63; }).Ref(strorgunits, v64 => { strorgunits = v64; })));
-                        }
-                        finally { hlcontext = byrefalias61; }
-
-                        _.SET(_.VAL(strorgunits), this, dict, null, _.ARGS.Val("DefValue"));
-                        _.SET("PersonOrganization", this, dict, null, _.ARGS.Val("PersInfoAttr"));
-                        object byrefalias65 = hlcontext, byrefalias66 = hlperson, byrefalias67 = dict;
-                        try
-                        {
-                            _.CALL(this, _outer, "SetPersonInformation", _.ARGS.Ref(byrefalias65, v68 => { byrefalias65 = v68; }).Ref(byrefalias66, v69 => { byrefalias66 = v69; }).Ref(byrefalias67, v70 => { byrefalias67 = v70; }));
-                        }
-                        finally { hlcontext = byrefalias65; hlperson = byrefalias66; dict = byrefalias67; }
-                    }
-                }
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //Prozedur füllt die Umzugshistorie für das entsprechende Objekt
-            public void setassethistory(ref object hlcontext, ref object hlobjecta, ref object hlobjectb, ref object created)
-            {
-                object productdefname = null;
-                object agentid = null;
-                object contentid = null;
-                object personofagent = null;
-                object personname = null;
-                object orgunitname = null;
-                object strerrmsg = null;
-
-                productdefname = _.VAL(_.CALL(this, hlobjectb, "GetType", _.ARGS.ForceBrackets()));
-
-                if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(productdefname), "Software"), _.NOTEQ(_.NullableSTR(productdefname), "SoftwareLicence"))))
-                {
-                    contentid = _.VAL(_.CALL(this, hlobjectb, "GenerateContentID", _.ARGS.ForceBrackets()));
-                    agentid = _.VAL(_.CALL(this, hlcontext, "GetAgentID", _.ARGS.ForceBrackets()));
-                    orgunitname = _.VAL(_.CALL(this, hlobjecta, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                    personofagent = _.OBJ(_.CALL(this, hlcontext, "GetPersonOfAgent", _.ARGS.Ref(agentid, v71 => { agentid = v71; })));
-                    if (_.IF(_.IS(personofagent, VBScriptConstants.Nothing)))
-                    {
-                        object byrefalias72 = hlcontext;
-                        try
-                        {
-                            strerrmsg = _.VAL(_.CALL(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias72, v73 => { byrefalias72 = v73; }).Val(_.CALL(this, byrefalias72, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
-                        }
-                        finally { hlcontext = byrefalias72; }
-                        object byrefalias74 = hlcontext;
-                        try
-                        {
-                            _.CALL(this, _outer, "Trace", _.ARGS.Ref(byrefalias74, v75 => { byrefalias74 = v75; }).Ref(strerrmsg, v76 => { strerrmsg = v76; }));
-                        }
-                        finally { hlcontext = byrefalias74; }
-                        //hlContext.abortcommand strErrMsg
-                    }
-                    else
-                    {
-                        personname = _.VAL(_.CALL(this, personofagent, "GetValue", _.ARGS.Val("PersonGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                        personname = _.CONCAT(personname, ", ");
-                        personname = _.CONCAT(personname, _.CALL(this, personofagent, "GetValue", _.ARGS.Val("PersonGeneral.GivenName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                    }
-                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentid, v77 => { contentid = v77; }).Val((Int16)0).Ref(personname, v78 => { personname = v78; }));
-                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentid, v79 => { contentid = v79; }).Val((Int16)0).Ref(agentid, v80 => { agentid = v80; }));
-                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentid, v81 => { contentid = v81; }).Val((Int16)0).Val(_.NOW()));
-                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentid, v82 => { contentid = v82; }).Val((Int16)0).Ref(orgunitname, v83 => { orgunitname = v83; }));
-                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentid, v84 => { contentid = v84; }).Val((Int16)0).Val(_.CALL(this, hlobjecta, "GetID", _.ARGS.ForceBrackets())));
-
-                    if (_.IF(_.EQ(created, true)))
-                    {
-                        _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentid, v85 => { contentid = v85; }).Val((Int16)0).Val("HistoryActionCreated"));
-                    }
-                    else
-                    {
-                        _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentid, v86 => { contentid = v86; }).Val((Int16)0).Val("HistoryActionDeleted"));
-                    }
-                }
-            }
-
-            //---------------------------------------------------------------
-            //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
-            //Wörterbuch mit einem Parameter.
-            public object geterrmsg1(ref object hlcontext, ref object localeid, ref object errcode, ref object arg1)
-            {
-                object retVal87 = null;
-                object strerrmsg = null;
-                retVal87 = "";
-
-                strerrmsg = "";
-                object byrefalias88 = errcode, byrefalias89 = localeid;
-                try
-                {
-                    strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias88, v90 => { byrefalias88 = v90; }).Ref(byrefalias89, v91 => { byrefalias89 = v91; })));
-                }
-                finally { errcode = byrefalias88; localeid = byrefalias89; }
-                strerrmsg = _.REPLACE(strerrmsg, "%1", arg1);
-                strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbLf, "(Code: ", errcode, ")");
-
-                //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
-                //Rückgabewert der Function ist die Fehlermeldung.
-                retVal87 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
-                return retVal87;
-            }
-
-            public object geterrmsg2(ref object hlcontext, ref object localeid, ref object errcode, ref object arg1, ref object arg2)
-            {
-                object retVal92 = null;
-                object strerrmsg = null;
-                retVal92 = "";
-
-                strerrmsg = "";
-                object byrefalias93 = errcode, byrefalias94 = localeid;
-                try
-                {
-                    strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias93, v95 => { byrefalias93 = v95; }).Ref(byrefalias94, v96 => { byrefalias94 = v96; })));
-                }
-                finally { errcode = byrefalias93; localeid = byrefalias94; }
-                strerrmsg = _.REPLACE(strerrmsg, "%1", arg1);
-                strerrmsg = _.REPLACE(strerrmsg, "%2", arg2);
-                strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbLf, "(Code: ", errcode, ")");
-
-                //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
-                //Rückgabewert der Function ist die Fehlermeldung.
-                retVal92 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
-                return retVal92;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //In dieser Funktion wird geprüft, ob es unterhalb einer Software Suite
-            //bereits Lizenzumschläge mit Lizenzen gibt.
-            public object getreferencelicensecount(ref object hlcontext, ref object hlswfolder, ref object chkfolderonly, ref object hlasc_softwarelicensefolderview)
-            {
-                object retVal97 = null;
-                object rsltswfolders = null;
-                object softwarelicense = null;
-                object objtype = null;
-                retVal97 = (Int16)0;
-
-                rsltswfolders = "";
-                softwarelicense = VBScriptConstants.Nothing;
-                objtype = "";
-
-                //Prüfen ob es Software Lizenzobjekte/Lizenzumschläge unterhalb des Folders gibt.
-                object byrefalias98 = hlasc_softwarelicensefolderview;
-                try
-                {
-                    rsltswfolders = _.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias98, v99 => { byrefalias98 = v99; })));
-                }
-                finally { hlasc_softwarelicensefolderview = byrefalias98; }
-
-                var enumerationContent100 = _.ENUMERABLE(rsltswfolders).GetEnumerator();
-                while (true)
-                {
-                    if (!enumerationContent100.MoveNext())
-                        break;
-                    softwarelicense = enumerationContent100.Current;
-                    objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
-                    if (_.IF(_.EQ(_.NullableSTR(objtype), "LicenseFolder")))
-                    {
-                        object byrefalias101 = hlcontext;
-                        try
-                        {
-                            retVal97 = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias101, v102 => { byrefalias101 = v102; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                        }
-                        finally { hlcontext = byrefalias101; }
-                        if (_.IF(_.GT(_.NullableNUM(retVal97), (Int16)0)))
-                        {
-                            return retVal97;
-                        }
-                    }
-                    if (_.IF(_.AND(_.EQ(_.NullableSTR(objtype), "SoftwareLicense"), _.EQ(_.CBOOL(chkfolderonly), false))))
-                    {
-                        object byrefalias103 = hlcontext;
-                        try
-                        {
-                            retVal97 = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias103, v104 => { byrefalias103 = v104; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                        }
-                        finally { hlcontext = byrefalias103; }
-                        if (_.IF(_.GT(_.NullableNUM(retVal97), (Int16)0)))
-                        {
-                            return retVal97;
-                        }
-                    }
-                }
-                return retVal97;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
-            //den obersten Lizenz Umschlag ermittelt. Auf dem Weg dort hin wird geprüft ob einer
-            //der Lizenzumschläge eine Software Suite ist.
-            public object checkforsoftwaresuitefolder(ref object hlcontext, ref object hlparentswfolder, ref object pdict, ref object hlasc_softwarelicensefolderview)
-            {
-                object retVal105 = null;
-                object retval = null;
-                object nextswfolder = null;
-                object checksoftwaresuite = null;
-                retVal105 = "";
-                retval = (Int16)0;
-                nextswfolder = "";
-
-                //Festhalten auf welcher Ebene ggf. eine Software Suite oberhalb des
-                //Start Folders existiert. Die Variable muss von außen mit einem Startwert
-                //initialisiert werden.
-                if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
-                {
-                    _.SET((Int16)1, this, pdict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+                    finally { hlcontext = byrefalias21; strorgunits = byrefalias22; }
                 }
                 else
                 {
-                    _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pdict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+                    return retVal20;
                 }
+            }
+            return retVal20;
+        }
 
-                //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
-                //gekennzeichnet ist. Falls Ja, Name des Umschlags auslesen und Funktion abbrechen.
-                checksoftwaresuite = false;
-                object byrefalias106 = hlcontext, byrefalias107 = hlparentswfolder;
+        //---------------------------------------------------------------
+        //Über diese Function wird für ein Flag Attribut immer der Wert
+        //True oder False ausgegeben.
+        public object getflagvalue(ref object hlcontext, ref object hlobject, ref object hlattribute, ref object hlcontentid, ref object hlsuid)
+        {
+            object retVal25 = null;
+            object byrefalias26 = hlattribute, byrefalias27 = hlcontentid, byrefalias28 = hlsuid;
+            try
+            {
+                retVal25 = _.VAL(_.CALL(this, hlobject, "GetValue", _.ARGS.Ref(byrefalias26, v29 => { byrefalias26 = v29; }).Val((Int16)0).Ref(byrefalias27, v30 => { byrefalias27 = v30; }).Ref(byrefalias28, v31 => { byrefalias28 = v31; }).Val((Int16)0)));
+            }
+            finally { hlattribute = byrefalias26; hlcontentid = byrefalias27; hlsuid = byrefalias28; }
+            if (_.IF(_.EQ(_.NullableSTR(retVal25), "")))
+            {
+                retVal25 = false;
+            }
+            return retVal25;
+        }
+
+        //-------------------------------------------------------------------
+        //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
+        //Wörterbuch ohne Parameter.
+        public object geterrmsg0(ref object hlcontext, ref object localeid, ref object errcode)
+        {
+            object retVal32 = null;
+            object strerrmsg = null;
+            retVal32 = "";
+
+            strerrmsg = "";
+            object byrefalias33 = errcode, byrefalias34 = localeid;
+            try
+            {
+                strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias33, v35 => { byrefalias33 = v35; }).Ref(byrefalias34, v36 => { byrefalias34 = v36; })));
+            }
+            finally { errcode = byrefalias33; localeid = byrefalias34; }
+            strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbNewLine, "(Code: ", errcode, ")");
+
+            //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
+            //Rückgabewert der Function ist die Fehlermeldung.
+            retVal32 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
+            return retVal32;
+        }
+
+        //Das Script ermittelt auf Basis der ersten übergeordneten OU den gesamten Pfad bis zur Firma oder Konzern
+        //und speichert diesen in das Hilfsattribut PersonInformation.PersonOrganisation.
+        //This script detects the entire path based on the first parent OU up to the company or holding
+        //and saves them into the attribute PersonInformation.PersonOrganisation.
+        public void setpersonorganization(ref object hlcontext, ref object hlperson, ref object dict)
+        {
+            object firstorgunit = null;
+            object rsltorgunit = null;
+            object retval = null;
+            object strorgunits = null;
+            firstorgunit = VBScriptConstants.Nothing;
+            firstorgunit = _.OBJ(_.CALL(this, hlcontext, "GetRelatedObject"));
+
+            bool ifResult40;
+            object byrefalias39 = hlcontext;
+            try
+            {
+                ifResult40 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias39, v41 => { byrefalias39 = v41; }).Ref(firstorgunit, v42 => { firstorgunit = v42; })), true));
+            }
+            finally { hlcontext = byrefalias39; }
+            if (ifResult40)
+            {
+                if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.CALL(this, firstorgunit, "GetType")), "Company"), _.NOTEQ(_.NullableSTR(_.CALL(this, firstorgunit, "GetType")), "Division"))))
+                {
+                    firstorgunit = VBScriptConstants.Nothing;
+                }
+            }
+
+            bool ifResult46;
+            object byrefalias45 = hlcontext;
+            try
+            {
+                ifResult46 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias45, v47 => { byrefalias45 = v47; }).Ref(firstorgunit, v48 => { firstorgunit = v48; })), false));
+            }
+            finally { hlcontext = byrefalias45; }
+            if (ifResult46)
+            {
+                rsltorgunit = "";
+                rsltorgunit = _.VAL(_.CALL(this, hlperson, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Person2Organization")));
+                if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltorgunit)), (Int16)0)))
+                {
+                    firstorgunit = _.OBJ(_.CALL(this, rsltorgunit, _.ARGS.Val((Int16)0)));
+                }
+            }
+
+            bool ifResult52;
+            object byrefalias51 = hlcontext;
+            try
+            {
+                ifResult52 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias51, v53 => { byrefalias51 = v53; }).Ref(firstorgunit, v54 => { firstorgunit = v54; })), true));
+            }
+            finally { hlcontext = byrefalias51; }
+            if (ifResult52)
+            {
+                bool ifResult58;
+                object byrefalias57 = hlcontext;
                 try
                 {
-                    checksoftwaresuite = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias106, v108 => { byrefalias106 = v108; }).Ref(byrefalias107, v109 => { byrefalias107 = v109; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
+                    ifResult58 = _.IF(_.EQ(_.NullableSTR(_.CALL(this, _outer, "GetBaseType", _.ARGS.Ref(byrefalias57, v59 => { byrefalias57 = v59; }).Ref(firstorgunit, v60 => { firstorgunit = v60; }))), "ORGANISATION"));
                 }
-                finally { hlcontext = byrefalias106; hlparentswfolder = byrefalias107; }
-                if (_.IF(_.EQ(_.CBOOL(checksoftwaresuite), true)))
+                finally { hlcontext = byrefalias57; }
+                if (ifResult58)
                 {
-                    _.SET(_.VAL(_.CALL(this, hlparentswfolder, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), this, pdict, null, _.ARGS.Val("SoftwareSuiteFolder"));
-                    return retVal105;
-                }
-
-                //Wenn sich mindestens noch ein weiterer Lizenzumschlag oberhalb der aktuellen befindet,
-                //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
-                object byrefalias110 = hlasc_softwarelicensefolderview;
-                try
-                {
-                    nextswfolder = _.VAL(_.CALL(this, hlparentswfolder, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias110, v111 => { byrefalias110 = v111; })));
-                }
-                finally { hlasc_softwarelicensefolderview = byrefalias110; }
-                if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextswfolder)), (Int16)0)))
-                {
-                    object byrefalias112 = hlcontext, byrefalias113 = pdict, byrefalias114 = hlasc_softwarelicensefolderview;
+                    retval = "";
+                    strorgunits = "";
+                    object byrefalias61 = hlcontext;
                     try
                     {
-                        retval = _.VAL(_.CALL(this, _outer, "CheckForSoftwareSuiteFolder", _.ARGS.Ref(byrefalias112, v115 => { byrefalias112 = v115; }).RefIfArray(nextswfolder, _.ARGS.Val((Int16)0)).Ref(byrefalias113, v116 => { byrefalias113 = v116; }).Ref(byrefalias114, v117 => { byrefalias114 = v117; })));
+                        retval = _.VAL(_.CALL(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias61, v62 => { byrefalias61 = v62; }).Ref(firstorgunit, v63 => { firstorgunit = v63; }).Ref(strorgunits, v64 => { strorgunits = v64; })));
                     }
-                    finally { hlcontext = byrefalias112; pdict = byrefalias113; hlasc_softwarelicensefolderview = byrefalias114; }
+                    finally { hlcontext = byrefalias61; }
+
+                    _.SET(_.VAL(strorgunits), this, dict, null, _.ARGS.Val("DefValue"));
+                    _.SET("PersonOrganization", this, dict, null, _.ARGS.Val("PersInfoAttr"));
+                    object byrefalias65 = hlcontext, byrefalias66 = hlperson, byrefalias67 = dict;
+                    try
+                    {
+                        _.CALL(this, _outer, "SetPersonInformation", _.ARGS.Ref(byrefalias65, v68 => { byrefalias65 = v68; }).Ref(byrefalias66, v69 => { byrefalias66 = v69; }).Ref(byrefalias67, v70 => { byrefalias67 = v70; }));
+                    }
+                    finally { hlcontext = byrefalias65; hlperson = byrefalias66; dict = byrefalias67; }
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //Prozedur füllt die Umzugshistorie für das entsprechende Objekt
+        public void setassethistory(ref object hlcontext, ref object hlobjecta, ref object hlobjectb, ref object created)
+        {
+            object productdefname = null;
+            object agentid = null;
+            object contentid = null;
+            object personofagent = null;
+            object personname = null;
+            object orgunitname = null;
+            object strerrmsg = null;
+
+            productdefname = _.VAL(_.CALL(this, hlobjectb, "GetType", _.ARGS.ForceBrackets()));
+
+            if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(productdefname), "Software"), _.NOTEQ(_.NullableSTR(productdefname), "SoftwareLicence"))))
+            {
+                contentid = _.VAL(_.CALL(this, hlobjectb, "GenerateContentID", _.ARGS.ForceBrackets()));
+                agentid = _.VAL(_.CALL(this, hlcontext, "GetAgentID", _.ARGS.ForceBrackets()));
+                orgunitname = _.VAL(_.CALL(this, hlobjecta, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                personofagent = _.OBJ(_.CALL(this, hlcontext, "GetPersonOfAgent", _.ARGS.Ref(agentid, v71 => { agentid = v71; })));
+                if (_.IF(_.IS(personofagent, VBScriptConstants.Nothing)))
+                {
+                    object byrefalias72 = hlcontext;
+                    try
+                    {
+                        strerrmsg = _.VAL(_.CALL(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias72, v73 => { byrefalias72 = v73; }).Val(_.CALL(this, byrefalias72, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
+                    }
+                    finally { hlcontext = byrefalias72; }
+                    object byrefalias74 = hlcontext;
+                    try
+                    {
+                        _.CALL(this, _outer, "Trace", _.ARGS.Ref(byrefalias74, v75 => { byrefalias74 = v75; }).Ref(strerrmsg, v76 => { strerrmsg = v76; }));
+                    }
+                    finally { hlcontext = byrefalias74; }
+                    //hlContext.abortcommand strErrMsg
                 }
                 else
                 {
-                    return retVal105;
+                    personname = _.VAL(_.CALL(this, personofagent, "GetValue", _.ARGS.Val("PersonGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                    personname = _.CONCAT(personname, ", ");
+                    personname = _.CONCAT(personname, _.CALL(this, personofagent, "GetValue", _.ARGS.Val("PersonGeneral.GivenName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 }
+                _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentid, v77 => { contentid = v77; }).Val((Int16)0).Ref(personname, v78 => { personname = v78; }));
+                _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentid, v79 => { contentid = v79; }).Val((Int16)0).Ref(agentid, v80 => { agentid = v80; }));
+                _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentid, v81 => { contentid = v81; }).Val((Int16)0).Val(_.NOW()));
+                _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentid, v82 => { contentid = v82; }).Val((Int16)0).Ref(orgunitname, v83 => { orgunitname = v83; }));
+                _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentid, v84 => { contentid = v84; }).Val((Int16)0).Val(_.CALL(this, hlobjecta, "GetID", _.ARGS.ForceBrackets())));
+
+                if (_.IF(_.EQ(created, true)))
+                {
+                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentid, v85 => { contentid = v85; }).Val((Int16)0).Val("HistoryActionCreated"));
+                }
+                else
+                {
+                    _.CALL(this, hlobjectb, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentid, v86 => { contentid = v86; }).Val((Int16)0).Val("HistoryActionDeleted"));
+                }
+            }
+        }
+
+        //---------------------------------------------------------------
+        //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
+        //Wörterbuch mit einem Parameter.
+        public object geterrmsg1(ref object hlcontext, ref object localeid, ref object errcode, ref object arg1)
+        {
+            object retVal87 = null;
+            object strerrmsg = null;
+            retVal87 = "";
+
+            strerrmsg = "";
+            object byrefalias88 = errcode, byrefalias89 = localeid;
+            try
+            {
+                strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias88, v90 => { byrefalias88 = v90; }).Ref(byrefalias89, v91 => { byrefalias89 = v91; })));
+            }
+            finally { errcode = byrefalias88; localeid = byrefalias89; }
+            strerrmsg = _.REPLACE(strerrmsg, "%1", arg1);
+            strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbLf, "(Code: ", errcode, ")");
+
+            //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
+            //Rückgabewert der Function ist die Fehlermeldung.
+            retVal87 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
+            return retVal87;
+        }
+
+        public object geterrmsg2(ref object hlcontext, ref object localeid, ref object errcode, ref object arg1, ref object arg2)
+        {
+            object retVal92 = null;
+            object strerrmsg = null;
+            retVal92 = "";
+
+            strerrmsg = "";
+            object byrefalias93 = errcode, byrefalias94 = localeid;
+            try
+            {
+                strerrmsg = _.VAL(_.CALL(this, hlcontext, "GetTranslation", _.ARGS.Ref(byrefalias93, v95 => { byrefalias93 = v95; }).Ref(byrefalias94, v96 => { byrefalias94 = v96; })));
+            }
+            finally { errcode = byrefalias93; localeid = byrefalias94; }
+            strerrmsg = _.REPLACE(strerrmsg, "%1", arg1);
+            strerrmsg = _.REPLACE(strerrmsg, "%2", arg2);
+            strerrmsg = _.CONCAT(strerrmsg, VBScriptConstants.vbLf, "(Code: ", errcode, ")");
+
+            //Den Paramenter %LF% durch Zeilenumbrüche ersetzen.
+            //Rückgabewert der Function ist die Fehlermeldung.
+            retVal92 = _.REPLACE(strerrmsg, "%LF%", VBScriptConstants.vbNewLine);
+            return retVal92;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //In dieser Funktion wird geprüft, ob es unterhalb einer Software Suite
+        //bereits Lizenzumschläge mit Lizenzen gibt.
+        public object getreferencelicensecount(ref object hlcontext, ref object hlswfolder, ref object chkfolderonly, ref object hlasc_softwarelicensefolderview)
+        {
+            object retVal97 = null;
+            object rsltswfolders = null;
+            object softwarelicense = null;
+            object objtype = null;
+            retVal97 = (Int16)0;
+
+            rsltswfolders = "";
+            softwarelicense = VBScriptConstants.Nothing;
+            objtype = "";
+
+            //Prüfen ob es Software Lizenzobjekte/Lizenzumschläge unterhalb des Folders gibt.
+            object byrefalias98 = hlasc_softwarelicensefolderview;
+            try
+            {
+                rsltswfolders = _.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias98, v99 => { byrefalias98 = v99; })));
+            }
+            finally { hlasc_softwarelicensefolderview = byrefalias98; }
+
+            var enumerationContent100 = _.ENUMERABLE(rsltswfolders).GetEnumerator();
+            while (true)
+            {
+                if (!enumerationContent100.MoveNext())
+                    break;
+                softwarelicense = enumerationContent100.Current;
+                objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
+                if (_.IF(_.EQ(_.NullableSTR(objtype), "LicenseFolder")))
+                {
+                    object byrefalias101 = hlcontext;
+                    try
+                    {
+                        retVal97 = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias101, v102 => { byrefalias101 = v102; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                    }
+                    finally { hlcontext = byrefalias101; }
+                    if (_.IF(_.GT(_.NullableNUM(retVal97), (Int16)0)))
+                    {
+                        return retVal97;
+                    }
+                }
+                if (_.IF(_.AND(_.EQ(_.NullableSTR(objtype), "SoftwareLicense"), _.EQ(_.CBOOL(chkfolderonly), false))))
+                {
+                    object byrefalias103 = hlcontext;
+                    try
+                    {
+                        retVal97 = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias103, v104 => { byrefalias103 = v104; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                    }
+                    finally { hlcontext = byrefalias103; }
+                    if (_.IF(_.GT(_.NullableNUM(retVal97), (Int16)0)))
+                    {
+                        return retVal97;
+                    }
+                }
+            }
+            return retVal97;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
+        //den obersten Lizenz Umschlag ermittelt. Auf dem Weg dort hin wird geprüft ob einer
+        //der Lizenzumschläge eine Software Suite ist.
+        public object checkforsoftwaresuitefolder(ref object hlcontext, ref object hlparentswfolder, ref object pdict, ref object hlasc_softwarelicensefolderview)
+        {
+            object retVal105 = null;
+            object retval = null;
+            object nextswfolder = null;
+            object checksoftwaresuite = null;
+            retVal105 = "";
+            retval = (Int16)0;
+            nextswfolder = "";
+
+            //Festhalten auf welcher Ebene ggf. eine Software Suite oberhalb des
+            //Start Folders existiert. Die Variable muss von außen mit einem Startwert
+            //initialisiert werden.
+            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
+            {
+                _.SET((Int16)1, this, pdict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+            }
+            else
+            {
+                _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pdict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+            }
+
+            //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
+            //gekennzeichnet ist. Falls Ja, Name des Umschlags auslesen und Funktion abbrechen.
+            checksoftwaresuite = false;
+            object byrefalias106 = hlcontext, byrefalias107 = hlparentswfolder;
+            try
+            {
+                checksoftwaresuite = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias106, v108 => { byrefalias106 = v108; }).Ref(byrefalias107, v109 => { byrefalias107 = v109; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
+            }
+            finally { hlcontext = byrefalias106; hlparentswfolder = byrefalias107; }
+            if (_.IF(_.EQ(_.CBOOL(checksoftwaresuite), true)))
+            {
+                _.SET(_.VAL(_.CALL(this, hlparentswfolder, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), this, pdict, null, _.ARGS.Val("SoftwareSuiteFolder"));
                 return retVal105;
             }
 
-            //----------------------------------------------------------------------------------------------------------
-            //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
-            //den obersten Lizenz Umschlag ermittelt und neu berechnet hat.
-            public object setlicensecounter(ref object hlcontext, ref object hlswfolder, ref object pdict, ref object assocname)
+            //Wenn sich mindestens noch ein weiterer Lizenzumschlag oberhalb der aktuellen befindet,
+            //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
+            object byrefalias110 = hlasc_softwarelicensefolderview;
+            try
             {
-                object retVal118 = null;
-                object retval = null;
-                object checksoftwaresuite = null;
-                object checkliccontrbyserver = null;
-                object nextswfolder = null;
-                object a = null;
-                retVal118 = (Int16)0;
-                retval = (Int16)0;
+                nextswfolder = _.VAL(_.CALL(this, hlparentswfolder, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias110, v111 => { byrefalias110 = v111; })));
+            }
+            finally { hlasc_softwarelicensefolderview = byrefalias110; }
+            if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextswfolder)), (Int16)0)))
+            {
+                object byrefalias112 = hlcontext, byrefalias113 = pdict, byrefalias114 = hlasc_softwarelicensefolderview;
+                try
+                {
+                    retval = _.VAL(_.CALL(this, _outer, "CheckForSoftwareSuiteFolder", _.ARGS.Ref(byrefalias112, v115 => { byrefalias112 = v115; }).RefIfArray(nextswfolder, _.ARGS.Val((Int16)0)).Ref(byrefalias113, v116 => { byrefalias113 = v116; }).Ref(byrefalias114, v117 => { byrefalias114 = v117; })));
+                }
+                finally { hlcontext = byrefalias112; pdict = byrefalias113; hlasc_softwarelicensefolderview = byrefalias114; }
+            }
+            else
+            {
+                return retVal105;
+            }
+            return retVal105;
+        }
 
-                //Dictionary Einträge initalisieren
-                _.SET("", this, pdict, null, _.ARGS.Val("SoftwareLicenses"));
-                _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
-                _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
-                _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
+        //----------------------------------------------------------------------------------------------------------
+        //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
+        //den obersten Lizenz Umschlag ermittelt und neu berechnet hat.
+        public object setlicensecounter(ref object hlcontext, ref object hlswfolder, ref object pdict, ref object assocname)
+        {
+            object retVal118 = null;
+            object retval = null;
+            object checksoftwaresuite = null;
+            object checkliccontrbyserver = null;
+            object nextswfolder = null;
+            object a = null;
+            retVal118 = (Int16)0;
+            retval = (Int16)0;
 
-                //Prüfen ob es Software Lizenzobjekte unterhalb des Folders gibt.
-                object byrefalias119 = assocname;
-                try
-                {
-                    _.SET(_.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias119, v120 => { byrefalias119 = v120; }))), this, pdict, null, _.ARGS.Val("SoftwareLicenses"));
-                }
-                finally { assocname = byrefalias119; }
+            //Dictionary Einträge initalisieren
+            _.SET("", this, pdict, null, _.ARGS.Val("SoftwareLicenses"));
+            _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
+            _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
+            _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
 
-                //Amhand des Flags "Software Suite" entscheiden ob alle Objekte oder nur Folder
-                //Objekte gezählt werden müssen
-                checksoftwaresuite = false;
-                object byrefalias121 = hlcontext, byrefalias122 = hlswfolder;
-                try
-                {
-                    checksoftwaresuite = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias121, v123 => { byrefalias121 = v123; }).Ref(byrefalias122, v124 => { byrefalias122 = v124; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
-                }
-                finally { hlcontext = byrefalias121; hlswfolder = byrefalias122; }
+            //Prüfen ob es Software Lizenzobjekte unterhalb des Folders gibt.
+            object byrefalias119 = assocname;
+            try
+            {
+                _.SET(_.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias119, v120 => { byrefalias119 = v120; }))), this, pdict, null, _.ARGS.Val("SoftwareLicenses"));
+            }
+            finally { assocname = byrefalias119; }
 
-                bool ifResult126;
-                object byrefalias125 = pdict;
-                try
-                {
-                    ifResult126 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALL(this, byrefalias125, _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
-                }
-                finally { pdict = byrefalias125; }
-                if (ifResult126)
-                {
-                    if (_.IF(_.EQ(_.CBOOL(checksoftwaresuite), false)))
-                    {
-                        object byrefalias127 = hlcontext, byrefalias128 = pdict;
-                        try
-                        {
-                            _.CALL(this, _outer, "CalcAllLicCounter", _.ARGS.Ref(byrefalias127, v129 => { byrefalias127 = v129; }).Ref(byrefalias128, v130 => { byrefalias128 = v130; }));
-                        }
-                        finally { hlcontext = byrefalias127; pdict = byrefalias128; }
-                    }
-                    else
-                    {
-                        object byrefalias131 = hlcontext, byrefalias132 = pdict;
-                        try
-                        {
-                            _.CALL(this, _outer, "CalcFolderLicCounter", _.ARGS.Ref(byrefalias131, v133 => { byrefalias131 = v133; }).Ref(byrefalias132, v134 => { byrefalias132 = v134; }));
-                        }
-                        finally { hlcontext = byrefalias131; pdict = byrefalias132; }
-                    }
-                }
-                //Gesatmzahl der Lizenzen in den Lizenzumschlag zurückschreiben
-                object byrefalias135 = pdict;
-                try
-                {
-                    _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias135, _.ARGS.Val("SumRefLicCounter")));
-                }
-                finally { pdict = byrefalias135; }
-                object byrefalias136 = pdict;
-                try
-                {
-                    _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias136, _.ARGS.Val("SumInstLicCounter")));
-                }
-                finally { pdict = byrefalias136; }
+            //Amhand des Flags "Software Suite" entscheiden ob alle Objekte oder nur Folder
+            //Objekte gezählt werden müssen
+            checksoftwaresuite = false;
+            object byrefalias121 = hlcontext, byrefalias122 = hlswfolder;
+            try
+            {
+                checksoftwaresuite = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias121, v123 => { byrefalias121 = v123; }).Ref(byrefalias122, v124 => { byrefalias122 = v124; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
+            }
+            finally { hlcontext = byrefalias121; hlswfolder = byrefalias122; }
 
-                //Wenn die Lizenzkontrolle durch den Applikations Server erfolgt ("Lizenzkontrolle durch Server")
-                //dann die Anzahl freier Lizenzen immer auf den Wert "0" setzen.
-                checkliccontrbyserver = false;
-                object byrefalias137 = hlcontext, byrefalias138 = hlswfolder;
-                try
+            bool ifResult126;
+            object byrefalias125 = pdict;
+            try
+            {
+                ifResult126 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALL(this, byrefalias125, _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
+            }
+            finally { pdict = byrefalias125; }
+            if (ifResult126)
+            {
+                if (_.IF(_.EQ(_.CBOOL(checksoftwaresuite), false)))
                 {
-                    checkliccontrbyserver = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias137, v139 => { byrefalias137 = v139; }).Ref(byrefalias138, v140 => { byrefalias138 = v140; }).Val("SoftwareLicenseFolderDetail.FlagLicenseControlledByServer").Val((Int16)0).Val((Int16)0)));
-                }
-                finally { hlcontext = byrefalias137; hlswfolder = byrefalias138; }
-                if (_.IF(_.EQ(_.CBOOL(checkliccontrbyserver), true)))
-                {
-                    _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
-                }
-                object byrefalias141 = pdict;
-                try
-                {
-                    _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias141, _.ARGS.Val("SumFreeLicCounter")));
-                }
-                finally { pdict = byrefalias141; }
-
-                //Erst prüfen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
-                //für die nächste Abfrage gewählt werden kann.
-                nextswfolder = "";
-                a = "";
-                a = _.VAL(_.CALL(this, hlswfolder, "GetType"));
-                if (_.IF(_.EQ(_.NullableSTR(a), "LicenseFolder")))
-                {
-                    object byrefalias142 = assocname;
+                    object byrefalias127 = hlcontext, byrefalias128 = pdict;
                     try
                     {
-                        nextswfolder = _.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(byrefalias142, v143 => { byrefalias142 = v143; })));
+                        _.CALL(this, _outer, "CalcAllLicCounter", _.ARGS.Ref(byrefalias127, v129 => { byrefalias127 = v129; }).Ref(byrefalias128, v130 => { byrefalias128 = v130; }));
                     }
-                    finally { assocname = byrefalias142; }
-                }
-                //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
-                //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
-                if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextswfolder)), (Int16)0)))
-                {
-                    object byrefalias144 = hlcontext, byrefalias145 = pdict, byrefalias146 = assocname;
-                    try
-                    {
-                        retval = _.VAL(_.CALL(this, _outer, "SetLicenseCounter", _.ARGS.Ref(byrefalias144, v147 => { byrefalias144 = v147; }).RefIfArray(nextswfolder, _.ARGS.Val((Int16)0)).Ref(byrefalias145, v148 => { byrefalias145 = v148; }).Ref(byrefalias146, v149 => { byrefalias146 = v149; })));
-                    }
-                    finally { hlcontext = byrefalias144; pdict = byrefalias145; assocname = byrefalias146; }
+                    finally { hlcontext = byrefalias127; pdict = byrefalias128; }
                 }
                 else
                 {
-                    return retVal118;
+                    object byrefalias131 = hlcontext, byrefalias132 = pdict;
+                    try
+                    {
+                        _.CALL(this, _outer, "CalcFolderLicCounter", _.ARGS.Ref(byrefalias131, v133 => { byrefalias131 = v133; }).Ref(byrefalias132, v134 => { byrefalias132 = v134; }));
+                    }
+                    finally { hlcontext = byrefalias131; pdict = byrefalias132; }
                 }
+            }
+            //Gesatmzahl der Lizenzen in den Lizenzumschlag zurückschreiben
+            object byrefalias135 = pdict;
+            try
+            {
+                _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias135, _.ARGS.Val("SumRefLicCounter")));
+            }
+            finally { pdict = byrefalias135; }
+            object byrefalias136 = pdict;
+            try
+            {
+                _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias136, _.ARGS.Val("SumInstLicCounter")));
+            }
+            finally { pdict = byrefalias136; }
+
+            //Wenn die Lizenzkontrolle durch den Applikations Server erfolgt ("Lizenzkontrolle durch Server")
+            //dann die Anzahl freier Lizenzen immer auf den Wert "0" setzen.
+            checkliccontrbyserver = false;
+            object byrefalias137 = hlcontext, byrefalias138 = hlswfolder;
+            try
+            {
+                checkliccontrbyserver = _.VAL(_.CALL(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias137, v139 => { byrefalias137 = v139; }).Ref(byrefalias138, v140 => { byrefalias138 = v140; }).Val("SoftwareLicenseFolderDetail.FlagLicenseControlledByServer").Val((Int16)0).Val((Int16)0)));
+            }
+            finally { hlcontext = byrefalias137; hlswfolder = byrefalias138; }
+            if (_.IF(_.EQ(_.CBOOL(checkliccontrbyserver), true)))
+            {
+                _.SET((Int16)0, this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
+            }
+            object byrefalias141 = pdict;
+            try
+            {
+                _.CALL(this, hlswfolder, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(byrefalias141, _.ARGS.Val("SumFreeLicCounter")));
+            }
+            finally { pdict = byrefalias141; }
+
+            //Erst prüfen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
+            //für die nächste Abfrage gewählt werden kann.
+            nextswfolder = "";
+            a = "";
+            a = _.VAL(_.CALL(this, hlswfolder, "GetType"));
+            if (_.IF(_.EQ(_.NullableSTR(a), "LicenseFolder")))
+            {
+                object byrefalias142 = assocname;
+                try
+                {
+                    nextswfolder = _.VAL(_.CALL(this, hlswfolder, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(byrefalias142, v143 => { byrefalias142 = v143; })));
+                }
+                finally { assocname = byrefalias142; }
+            }
+            //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
+            //dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
+            if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(nextswfolder)), (Int16)0)))
+            {
+                object byrefalias144 = hlcontext, byrefalias145 = pdict, byrefalias146 = assocname;
+                try
+                {
+                    retval = _.VAL(_.CALL(this, _outer, "SetLicenseCounter", _.ARGS.Ref(byrefalias144, v147 => { byrefalias144 = v147; }).RefIfArray(nextswfolder, _.ARGS.Val((Int16)0)).Ref(byrefalias145, v148 => { byrefalias145 = v148; }).Ref(byrefalias146, v149 => { byrefalias146 = v149; })));
+                }
+                finally { hlcontext = byrefalias144; pdict = byrefalias145; assocname = byrefalias146; }
+            }
+            else
+            {
                 return retVal118;
             }
+            return retVal118;
+        }
 
-            //----------------------------------------------------------------------------------------------------------
-            public object isvalidobject(ref object obj)
+        //----------------------------------------------------------------------------------------------------------
+        public object isvalidobject(ref object obj)
+        {
+            return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        public void calcallliccounter(ref object hlcontext, ref object pdict)
+        {
+            object swrefliccounter = null;
+            object swinstcounter = null;
+            object softwarelicense = null;
+            object objtype = null;
+            object lstlicstatus = null;
+            swrefliccounter = (Int16)0;
+            swinstcounter = (Int16)0;
+            softwarelicense = VBScriptConstants.Nothing;
+            objtype = "";
+            lstlicstatus = "";
+
+            var enumerationContent151 = _.ENUMERABLE(_.CALL(this, pdict, _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            while (true)
             {
-                return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            public void calcallliccounter(ref object hlcontext, ref object pdict)
-            {
-                object swrefliccounter = null;
-                object swinstcounter = null;
-                object softwarelicense = null;
-                object objtype = null;
-                object lstlicstatus = null;
-                swrefliccounter = (Int16)0;
-                swinstcounter = (Int16)0;
-                softwarelicense = VBScriptConstants.Nothing;
-                objtype = "";
-                lstlicstatus = "";
-
-                var enumerationContent151 = _.ENUMERABLE(_.CALL(this, pdict, _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
-                while (true)
+                if (!enumerationContent151.MoveNext())
+                    break;
+                softwarelicense = enumerationContent151.Current;
+                objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
+                if (_.IF(_.EQ(_.NullableSTR(objtype), "SoftwareLicense")))
                 {
-                    if (!enumerationContent151.MoveNext())
-                        break;
-                    softwarelicense = enumerationContent151.Current;
-                    objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
-                    if (_.IF(_.EQ(_.NullableSTR(objtype), "SoftwareLicense")))
+                    lstlicstatus = _.VAL(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseDetail.LicenseStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                    if (_.IF(_.EQ(_.NullableSTR(lstlicstatus), "LicenseStatusValid")))
                     {
-                        lstlicstatus = _.VAL(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseDetail.LicenseStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                        if (_.IF(_.EQ(_.NullableSTR(lstlicstatus), "LicenseStatusValid")))
-                        {
-                            object byrefalias152 = hlcontext;
-                            try
-                            {
-                                swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias152, v153 => { byrefalias152 = v153; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                            }
-                            finally { hlcontext = byrefalias152; }
-                            _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
-                        }
-                    }
-                    else
-                    {
-                        if (_.IF(_.OR(_.EQ(_.NullableSTR(objtype), "LicenseFolder"), _.EQ(_.NullableSTR(objtype), "Software"))))
-                        {
-                            object byrefalias154 = hlcontext;
-                            try
-                            {
-                                swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias154, v155 => { byrefalias154 = v155; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                            }
-                            finally { hlcontext = byrefalias154; }
-                            _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
-                            object byrefalias156 = hlcontext;
-                            try
-                            {
-                                swinstcounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias156, v157 => { byrefalias156 = v157; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                            }
-                            finally { hlcontext = byrefalias156; }
-                            _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter")), swinstcounter), this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
-                        }
-                    }
-                }
-                //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-                _.SET(_.SUBT(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter"))), this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
-
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            public void calcfolderliccounter(ref object hlcontext, ref object pdict)
-            {
-                object swrefliccounter = null;
-                object swinstcounter = null;
-                object softwarelicense = null;
-                object objtype = null;
-                object lstlicstatus = null;
-
-                swrefliccounter = (Int16)0;
-                swinstcounter = (Int16)0;
-                softwarelicense = VBScriptConstants.Nothing;
-                objtype = "";
-                lstlicstatus = "";
-
-                var enumerationContent158 = _.ENUMERABLE(_.CALL(this, pdict, _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
-                while (true)
-                {
-                    if (!enumerationContent158.MoveNext())
-                        break;
-                    softwarelicense = enumerationContent158.Current;
-                    objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
-                    if (_.IF(_.OR(_.EQ(_.NullableSTR(objtype), "LicenseFolder"), _.EQ(_.NullableSTR(objtype), "Software"))))
-                    {
-                        object byrefalias159 = hlcontext;
+                        object byrefalias152 = hlcontext;
                         try
                         {
-                            swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias159, v160 => { byrefalias159 = v160; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                            swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias152, v153 => { byrefalias152 = v153; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
-                        finally { hlcontext = byrefalias159; }
+                        finally { hlcontext = byrefalias152; }
                         _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
-
-                        object byrefalias161 = hlcontext;
-                        try
-                        {
-                            swinstcounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias161, v162 => { byrefalias161 = v162; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                        }
-                        finally { hlcontext = byrefalias161; }
-                        if (_.IF(_.GT(swinstcounter, _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter")))))
-                        {
-                            _.SET(_.VAL(swinstcounter), this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
-                        }
                     }
-                    if (_.IF(_.EQ(_.NullableSTR(objtype), "SoftwareLicense")))
-                    {
-                        lstlicstatus = _.VAL(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseDetail.LicenseStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                        if (_.IF(_.EQ(_.NullableSTR(lstlicstatus), "LicenseStatusValid")))
-                        {
-                            object byrefalias163 = hlcontext;
-                            try
-                            {
-                                swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias163, v164 => { byrefalias163 = v164; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
-                            }
-                            finally { hlcontext = byrefalias163; }
-                            _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
-                        }
-                    }
-                }
-                //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-                _.SET(_.SUBT(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter"))), this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //Diese Function überprüft den ganzzahligen Wert (Integer).
-            public object checkintegervalue(ref object hlcontext, ref object intval)
-            {
-                object retVal165 = null;
-                if (_.IF(_.OR(_.EQ(_.NullableSTR(intval), ""), _.EQ(_.ISNUMERIC(intval), false))))
-                {
-                    retVal165 = (Int16)0;
                 }
                 else
                 {
-                    retVal165 = _.CLNG(intval);
-                }
-                return retVal165;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            public object oncreate_hasassociationtodelete(ref object hlcontext, ref object ascdefname, ref object hlobjb)
-            {
-                object retVal166 = null;
-                object result = null;
-                object cassociationchanges = null;
-                object oassociationchange = null;
-                object ascdefnamechange = null;
-                object ixac = null;
-                result = false;
-                cassociationchanges = (Int16)0;
-                cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
-
-                oassociationchange = VBScriptConstants.Nothing;
-                ascdefnamechange = "";
-                ixac = (Int16)0;
-
-                var loopEnd167 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
-                var loopStart168 = _.NUM((Int16)0, loopEnd167, (Int16)1);
-                if (_.StrictLTE(loopStart168, loopEnd167))
-                {
-                    for (ixac = loopStart168; _.StrictLTE(ixac, loopEnd167); ixac = _.ADD(ixac, (Int16)1))
+                    if (_.IF(_.OR(_.EQ(_.NullableSTR(objtype), "LicenseFolder"), _.EQ(_.NullableSTR(objtype), "Software"))))
                     {
-                        oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v169 => { ixac = v169; })));
-
-                        ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
-
-                        if (_.IF(_.CALL(this, oassociationchange, "IsToDelete")))
-                        {
-                            if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
-                            {
-                                if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
-                                {
-                                    result = true;
-                                    break;
-                                } //check the ids
-                            } // check the defnames
-                        } // is to create
-                    }
-                }
-                retVal166 = _.VAL(result);
-                return retVal166;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            public object oncreate_hasassociationtocreate(ref object hlcontext, ref object ascdefname, ref object hlobjb)
-            {
-                object retVal170 = null;
-                object result = null;
-                object cassociationchanges = null;
-                object oassociationchange = null;
-                object ascdefnamechange = null;
-                object ixac = null;
-                result = false;
-                cassociationchanges = (Int16)0;
-                cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
-
-                oassociationchange = VBScriptConstants.Nothing;
-                ascdefnamechange = "";
-                ixac = (Int16)0;
-
-                var loopEnd171 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
-                var loopStart172 = _.NUM((Int16)0, loopEnd171, (Int16)1);
-                if (_.StrictLTE(loopStart172, loopEnd171))
-                {
-                    for (ixac = loopStart172; _.StrictLTE(ixac, loopEnd171); ixac = _.ADD(ixac, (Int16)1))
-                    {
-                        oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v173 => { ixac = v173; })));
-
-                        ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
-
-                        if (_.IF(_.CALL(this, oassociationchange, "IsToCreate")))
-                        {
-                            if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
-                            {
-                                if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
-                                {
-                                    result = true;
-                                    break;
-                                } //check the ids
-                            } // check the defnames
-                        } // is to create
-                    }
-                }
-                retVal170 = _.VAL(result);
-                return retVal170;
-            }
-
-            public object ondelete_hasassociationtocreate(ref object hlcontext, ref object ascdefname, ref object hlobjb)
-            {
-                object retVal174 = null;
-                object result = null;
-                object cassociationchanges = null;
-                object oassociationchange = null;
-                object ascdefnamechange = null;
-                object ixac = null;
-                // bool
-                result = false;
-
-                //Anzahl der zu erstellenden oder löschenden Assoziationen
-                cassociationchanges = (Int16)0;
-                cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
-
-                oassociationchange = VBScriptConstants.Nothing;
-                ascdefnamechange = "";
-                ixac = (Int16)0;
-
-                var loopEnd175 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
-                var loopStart176 = _.NUM((Int16)0, loopEnd175, (Int16)1);
-                if (_.StrictLTE(loopStart176, loopEnd175))
-                {
-                    for (ixac = loopStart176; _.StrictLTE(ixac, loopEnd175); ixac = _.ADD(ixac, (Int16)1))
-                    {
-
-                        //Für jede Assoziations Änderung wird das entsprechende Infos (Objekt    ) ausgelsen.
-                        oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v177 => { ixac = v177; })));
-                        //Def Name der Assoc ermitteln, die angelegt werden soll
-                        ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
-
-                        if (_.IF(_.CALL(this, oassociationchange, "IsToCreate")))
-                        {
-                            //Überprüfen ob die gewünschte Assoc auch angelegt werden soll.
-                            if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
-                            {
-                                if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
-                                {
-                                    result = true;
-                                    break;
-                                } //check the ids
-                            } // check the defnames
-                        } // is to create
-                    }
-                }
-                retVal174 = _.VAL(result);
-                return retVal174;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            public object getassociatedorganizationalunit(ref object hlcontext, ref object lcid, ref object hlchild, ref object pdict, ref object outparentdefname)
-            {
-                object retVal178 = null;
-                object rsltparent = null;
-                object objparent = null;
-                retVal178 = "";
-                outparentdefname = "";
-
-                rsltparent = "";
-                object byrefalias179 = pdict;
-                try
-                {
-                    rsltparent = _.VAL(_.CALL(this, hlchild, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(byrefalias179, _.ARGS.Val("AssocID"))));
-                }
-                finally { pdict = byrefalias179; }
-                if (_.IF(_.GTE(_.UBOUND(rsltparent), _.CALL(this, pdict, _.ARGS.Val("ParentCounter")))))
-                {
-                    objparent = VBScriptConstants.Nothing;
-                    var enumerationContent180 = _.ENUMERABLE(rsltparent).GetEnumerator();
-                    while (true)
-                    {
-                        if (!enumerationContent180.MoveNext())
-                            break;
-                        objparent = enumerationContent180.Current;
-                        object byrefalias181 = pdict;
+                        object byrefalias154 = hlcontext;
                         try
                         {
-                            retVal178 = _.VAL(_.CALL(this, objparent, "GetValue", _.ARGS.RefIfArray(byrefalias181, _.ARGS.Val("AttrName")).Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                            swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias154, v155 => { byrefalias154 = v155; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
-                        finally { pdict = byrefalias181; }
-                        object byrefalias182 = lcid;
+                        finally { hlcontext = byrefalias154; }
+                        _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
+                        object byrefalias156 = hlcontext;
                         try
                         {
-                            outparentdefname = _.VAL(_.CALL(this, hlcontext, "GetDisplayName", _.ARGS.Val(_.CALL(this, objparent, "GetValue", _.ARGS.Val("HLOBJECTINFO.DEFID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))).Ref(byrefalias182, v183 => { byrefalias182 = v183; })));
+                            swinstcounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias156, v157 => { byrefalias156 = v157; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
-                        finally { lcid = byrefalias182; }
+                        finally { hlcontext = byrefalias156; }
+                        _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter")), swinstcounter), this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
+                    }
+                }
+            }
+            //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
+            _.SET(_.SUBT(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter"))), this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
+
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        public void calcfolderliccounter(ref object hlcontext, ref object pdict)
+        {
+            object swrefliccounter = null;
+            object swinstcounter = null;
+            object softwarelicense = null;
+            object objtype = null;
+            object lstlicstatus = null;
+
+            swrefliccounter = (Int16)0;
+            swinstcounter = (Int16)0;
+            softwarelicense = VBScriptConstants.Nothing;
+            objtype = "";
+            lstlicstatus = "";
+
+            var enumerationContent158 = _.ENUMERABLE(_.CALL(this, pdict, _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            while (true)
+            {
+                if (!enumerationContent158.MoveNext())
+                    break;
+                softwarelicense = enumerationContent158.Current;
+                objtype = _.VAL(_.CALL(this, softwarelicense, "GetType", _.ARGS.ForceBrackets()));
+                if (_.IF(_.OR(_.EQ(_.NullableSTR(objtype), "LicenseFolder"), _.EQ(_.NullableSTR(objtype), "Software"))))
+                {
+                    object byrefalias159 = hlcontext;
+                    try
+                    {
+                        swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias159, v160 => { byrefalias159 = v160; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                    }
+                    finally { hlcontext = byrefalias159; }
+                    _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
+
+                    object byrefalias161 = hlcontext;
+                    try
+                    {
+                        swinstcounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias161, v162 => { byrefalias161 = v162; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                    }
+                    finally { hlcontext = byrefalias161; }
+                    if (_.IF(_.GT(swinstcounter, _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter")))))
+                    {
+                        _.SET(_.VAL(swinstcounter), this, pdict, null, _.ARGS.Val("SumInstLicCounter"));
+                    }
+                }
+                if (_.IF(_.EQ(_.NullableSTR(objtype), "SoftwareLicense")))
+                {
+                    lstlicstatus = _.VAL(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseDetail.LicenseStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                    if (_.IF(_.EQ(_.NullableSTR(lstlicstatus), "LicenseStatusValid")))
+                    {
+                        object byrefalias163 = hlcontext;
+                        try
+                        {
+                            swrefliccounter = _.VAL(_.CALL(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias163, v164 => { byrefalias163 = v164; }).Val(_.CALL(this, softwarelicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                        }
+                        finally { hlcontext = byrefalias163; }
+                        _.SET(_.ADD(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), swrefliccounter), this, pdict, null, _.ARGS.Val("SumRefLicCounter"));
+                    }
+                }
+            }
+            //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
+            _.SET(_.SUBT(_.CALL(this, pdict, _.ARGS.Val("SumRefLicCounter")), _.CALL(this, pdict, _.ARGS.Val("SumInstLicCounter"))), this, pdict, null, _.ARGS.Val("SumFreeLicCounter"));
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //Diese Function überprüft den ganzzahligen Wert (Integer).
+        public object checkintegervalue(ref object hlcontext, ref object intval)
+        {
+            object retVal165 = null;
+            if (_.IF(_.OR(_.EQ(_.NullableSTR(intval), ""), _.EQ(_.ISNUMERIC(intval), false))))
+            {
+                retVal165 = (Int16)0;
+            }
+            else
+            {
+                retVal165 = _.CLNG(intval);
+            }
+            return retVal165;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        public object oncreate_hasassociationtodelete(ref object hlcontext, ref object ascdefname, ref object hlobjb)
+        {
+            object retVal166 = null;
+            object result = null;
+            object cassociationchanges = null;
+            object oassociationchange = null;
+            object ascdefnamechange = null;
+            object ixac = null;
+            result = false;
+            cassociationchanges = (Int16)0;
+            cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
+
+            oassociationchange = VBScriptConstants.Nothing;
+            ascdefnamechange = "";
+            ixac = (Int16)0;
+
+            var loopEnd167 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
+            var loopStart168 = _.NUM((Int16)0, loopEnd167, (Int16)1);
+            if (_.StrictLTE(loopStart168, loopEnd167))
+            {
+                for (ixac = loopStart168; _.StrictLTE(ixac, loopEnd167); ixac = _.ADD(ixac, (Int16)1))
+                {
+                    oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v169 => { ixac = v169; })));
+
+                    ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
+
+                    if (_.IF(_.CALL(this, oassociationchange, "IsToDelete")))
+                    {
+                        if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
+                        {
+                            if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
+                            {
+                                result = true;
+                                break;
+                            } //check the ids
+                        } // check the defnames
+                    } // is to create
+                }
+            }
+            retVal166 = _.VAL(result);
+            return retVal166;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        public object oncreate_hasassociationtocreate(ref object hlcontext, ref object ascdefname, ref object hlobjb)
+        {
+            object retVal170 = null;
+            object result = null;
+            object cassociationchanges = null;
+            object oassociationchange = null;
+            object ascdefnamechange = null;
+            object ixac = null;
+            result = false;
+            cassociationchanges = (Int16)0;
+            cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
+
+            oassociationchange = VBScriptConstants.Nothing;
+            ascdefnamechange = "";
+            ixac = (Int16)0;
+
+            var loopEnd171 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
+            var loopStart172 = _.NUM((Int16)0, loopEnd171, (Int16)1);
+            if (_.StrictLTE(loopStart172, loopEnd171))
+            {
+                for (ixac = loopStart172; _.StrictLTE(ixac, loopEnd171); ixac = _.ADD(ixac, (Int16)1))
+                {
+                    oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v173 => { ixac = v173; })));
+
+                    ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
+
+                    if (_.IF(_.CALL(this, oassociationchange, "IsToCreate")))
+                    {
+                        if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
+                        {
+                            if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
+                            {
+                                result = true;
+                                break;
+                            } //check the ids
+                        } // check the defnames
+                    } // is to create
+                }
+            }
+            retVal170 = _.VAL(result);
+            return retVal170;
+        }
+
+        public object ondelete_hasassociationtocreate(ref object hlcontext, ref object ascdefname, ref object hlobjb)
+        {
+            object retVal174 = null;
+            object result = null;
+            object cassociationchanges = null;
+            object oassociationchange = null;
+            object ascdefnamechange = null;
+            object ixac = null;
+            // bool
+            result = false;
+
+            //Anzahl der zu erstellenden oder löschenden Assoziationen
+            cassociationchanges = (Int16)0;
+            cassociationchanges = _.VAL(_.CALL(this, hlcontext, "GetAssociationChangesCount"));
+
+            oassociationchange = VBScriptConstants.Nothing;
+            ascdefnamechange = "";
+            ixac = (Int16)0;
+
+            var loopEnd175 = _.NUM(_.SUBT(cassociationchanges, (Int16)1));
+            var loopStart176 = _.NUM((Int16)0, loopEnd175, (Int16)1);
+            if (_.StrictLTE(loopStart176, loopEnd175))
+            {
+                for (ixac = loopStart176; _.StrictLTE(ixac, loopEnd175); ixac = _.ADD(ixac, (Int16)1))
+                {
+
+                    //Für jede Assoziations Änderung wird das entsprechende Infos (Objekt    ) ausgelsen.
+                    oassociationchange = _.OBJ(_.CALL(this, hlcontext, "GetAssociationChangeAt", _.ARGS.Ref(ixac, v177 => { ixac = v177; })));
+                    //Def Name der Assoc ermitteln, die angelegt werden soll
+                    ascdefnamechange = _.VAL(_.CALL(this, oassociationchange, "AssociationType"));
+
+                    if (_.IF(_.CALL(this, oassociationchange, "IsToCreate")))
+                    {
+                        //Überprüfen ob die gewünschte Assoc auch angelegt werden soll.
+                        if (_.IF(_.EQ(ascdefnamechange, ascdefname)))
+                        {
+                            if (_.IF(_.EQ(_.CALL(this, hlobjb, "GetID"), _.CALL(this, oassociationchange, "EndB", "GetID"))))
+                            {
+                                result = true;
+                                break;
+                            } //check the ids
+                        } // check the defnames
+                    } // is to create
+                }
+            }
+            retVal174 = _.VAL(result);
+            return retVal174;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        public object getassociatedorganizationalunit(ref object hlcontext, ref object lcid, ref object hlchild, ref object pdict, ref object outparentdefname)
+        {
+            object retVal178 = null;
+            object rsltparent = null;
+            object objparent = null;
+            retVal178 = "";
+            outparentdefname = "";
+
+            rsltparent = "";
+            object byrefalias179 = pdict;
+            try
+            {
+                rsltparent = _.VAL(_.CALL(this, hlchild, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(byrefalias179, _.ARGS.Val("AssocID"))));
+            }
+            finally { pdict = byrefalias179; }
+            if (_.IF(_.GTE(_.UBOUND(rsltparent), _.CALL(this, pdict, _.ARGS.Val("ParentCounter")))))
+            {
+                objparent = VBScriptConstants.Nothing;
+                var enumerationContent180 = _.ENUMERABLE(rsltparent).GetEnumerator();
+                while (true)
+                {
+                    if (!enumerationContent180.MoveNext())
                         break;
-                    }
-                }
-                return retVal178;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //----------------------------------------------------------------------------------------------------------
-            public object mig_createxmldocument(ref object hlsrvcontext, ref object pdict)
-            {
-                object retVal184 = null;
-                object objxmldoc = null;
-                object xmlproinc = null;
-                object xmlroot = null;
-                object nodesession = null;
-
-                //XML-Objekt erstellen
-                objxmldoc = VBScriptConstants.Nothing;
-                objxmldoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
-
-                //XML-Processing Instruction hinzufügen
-                xmlproinc = VBScriptConstants.Nothing;
-                xmlproinc = _.OBJ(_.CALL(this, objxmldoc, "createProcessingInstruction", _.ARGS.Val("xml").Val("version='1.0' encoding='UTF-8'")));
-                _.CALL(this, objxmldoc, "insertBefore", _.ARGS.Ref(xmlproinc, v185 => { xmlproinc = v185; }).Val(_.CALL(this, objxmldoc, "firstChild")));
-
-                //Root-Element erstellen
-                xmlroot = _.OBJ(_.CALL(this, objxmldoc, "CreateElement", _.ARGS.Val("ASAPBatch")));
-                _.CALL(this, objxmldoc, "AppendChild", _.ARGS.Val(xmlroot));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1"));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns:dt").Val("http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1"));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns:xsi").Val("http://www.w3.org/2001/XMLSchema-instance"));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xsi:schemaLocation").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd"));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("version").Val("1.1"));
-                _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("responseRequired").Val("Yes"));
-
-                //Das Node Session hinzufügen
-                nodesession = _.OBJ(_.CALL(this, objxmldoc, "CreateElement", _.ARGS.Val("Session")));
-                _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodesession));
-                _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("id").Val("s1"));
-                _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("loginname").Val("foreignSystems\\assetcolumbus"));
-                _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("password").Val(""));
-
-                //XML Dokument inkl. Header an das Dictionary übergeben
-                _.SET(_.OBJ(objxmldoc), this, pdict, null, _.ARGS.Val("XMLDocument"));
-                return retVal184;
-            }
-
-            //---------------------------------------------------------------------
-            public object mig_createaddxml2columbus(ref object hlsrvcontext, ref object pdict)
-            {
-                object retVal186 = null;
-                object xmlroot = null;
-                object nodecreateinstancerq = null;
-                object nodeobserverkey = null;
-                object nodecontextdata = null;
-                object nodeadddeviceactualparams = null;
-                object nodedeviceidentification = null;
-                object nodedevicename = null;
-                object nodecmpyname = null;
-                object nodedomain = null;
-                object nodecostcenter = null;
-                object nodemacaddress = null;
-                object nodesubnetmask = null;
-                object nodehwtype = null;
-                object nodeostype = null;
-                object nodeactstate = null;
-
-                //Root Element aus dem XML ermitteln.
-                xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
-
-                //Das Node CreateInstanceReq hinzufügen
-                nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-                _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_adddevice"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
-
-                //Das Node ObserverKey hinzufügen
-                nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
-
-                //Das Container Node ContextData hinzufügen
-                nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
-
-                //Das Container Node AddDeviceActualParams hinzufügen
-                nodeadddeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:AddDeviceActualParams")));
-                _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(nodeadddeviceactualparams));
-
-                //Das Container Node DeviceIdentification hinzufügen
-                nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
-
-                //Das Node DeviceName hinzufügen
-                nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
-
-                //Das Node CompanyName hinzufügen
-                nodecmpyname = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodecmpyname));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CompanyName"))), this, nodecmpyname, "Text");
-
-                //Das Node Domain hinzufügen
-                nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
-
-                //Das Node CostCenter hinzufügen
-                nodecostcenter = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodecostcenter));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CostCenter"))), this, nodecostcenter, "Text");
-
-                //Das Node MACAdess hinzufügen
-                nodemacaddress = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodemacaddress));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("MACAddress"))), this, nodemacaddress, "Text");
-
-                //Das Node SubnetMask hinzufügen
-                nodesubnetmask = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodesubnetmask));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("SubnetMask"))), this, nodesubnetmask, "Text");
-
-                //Das Node HwTypeId hinzufügen
-                nodehwtype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodehwtype));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("HwTypeId"))), this, nodehwtype, "Text");
-
-                //Das Node OsTypeId hinzufügen
-                nodeostype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodeostype));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("OsTypeId"))), this, nodeostype, "Text");
-
-                //Das Node ActivationState hinzufügen
-                nodeactstate = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
-                _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodeactstate));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ActivationState"))), this, nodeactstate, "Text");
-
-                return retVal186;
-            }
-
-            //---------------------------------------------------------------------
-            public object mig_createchgxml2columbus(ref object hlsrvcontext, ref object pdict)
-            {
-                object retVal187 = null;
-                object xmlroot = null;
-                object nodecreateinstancerq = null;
-                object nodeobserverkey = null;
-                object nodecontextdata = null;
-                object nodechgdeviceactualparams = null;
-                object nodedeviceidentification = null;
-                object nodedevicename = null;
-                object nodedomain = null;
-                object nodecmpyname = null;
-                object nodecostcenter = null;
-                object nodemacaddress = null;
-                object nodesubnetmask = null;
-                object nodehwtype = null;
-                object nodeostype = null;
-                object nodeactstate = null;
-
-                //Root Element aus dem XML ermitteln.
-                xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
-
-                //Das Node CreateInstanceReq hinzufügen
-                nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-                _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_chgdevice"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
-
-                //Das Node ObserverKey hinzufügen
-                nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
-
-                //Das Container Node ContextData hinzufügen
-                nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
-
-                //Das Container Node AddDeviceActualParams hinzufügen
-                nodechgdeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ChangeDeviceActualParams")));
-                _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(nodechgdeviceactualparams));
-
-                //Das Container Node DeviceIdentification hinzufügen
-                nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
-
-                //Das Node DeviceName hinzufügen
-                nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
-
-                //Das Node Domain hinzufügen
-                nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
-
-                //Das Node CompanyName hinzufügen
-                nodecmpyname = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodecmpyname));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CompanyName"))), this, nodecmpyname, "Text");
-
-                //Das Node CostCenter hinzufügen
-                nodecostcenter = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodecostcenter));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CostCenter"))), this, nodecostcenter, "Text");
-
-                //Das Node MACAdess hinzufügen
-                nodemacaddress = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodemacaddress));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("MACAddress"))), this, nodemacaddress, "Text");
-
-                //Das Node SubnetMask hinzufügen
-                nodesubnetmask = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodesubnetmask));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("SubnetMask"))), this, nodesubnetmask, "Text");
-
-                //Das Node HwTypeId hinzufügen
-                nodehwtype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodehwtype));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("HwTypeId"))), this, nodehwtype, "Text");
-
-                //Das Node OsTypeId hinzufügen
-                nodeostype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodeostype));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("OsTypeId"))), this, nodeostype, "Text");
-
-                //Das Node ActivationState hinzufügen
-                nodeactstate = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
-                _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodeactstate));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ActivationState"))), this, nodeactstate, "Text");
-
-                return retVal187;
-            }
-
-            //---------------------------------------------------------------------
-            public object mig_createdelxml2columbus(ref object hlsrvcontext, ref object pdict)
-            {
-                object retVal188 = null;
-                object xmlroot = null;
-                object nodecreateinstancerq = null;
-                object nodeobserverkey = null;
-                object nodecontextdata = null;
-                object noderemovedeviceactualparams = null;
-                object nodedeviceidentification = null;
-                object nodedevicename = null;
-                object nodedomain = null;
-
-                //Root Element aus dem XML ermitteln.
-                xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
-
-                //Das Node CreateInstanceReq hinzufügen
-                nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-                _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_removedevice"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-                _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
-
-                //Das Node ObserverKey hinzufügen
-                nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
-
-                //Das Container Node ContextData hinzufügen
-                nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-                _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
-
-                //Das Container Node AddDeviceActualParams hinzufügen
-                noderemovedeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:RemoveDeviceActualParams")));
-                _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(noderemovedeviceactualparams));
-
-                //Das Container Node DeviceIdentification hinzufügen
-                nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-                _.CALL(this, noderemovedeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
-
-                //Das Node DeviceName hinzufügen
-                nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
-
-                //Das Node CompanyName hinzufügen
-                //Dim nodeCmpyName : Set nodeCmpyName = pDict("XMLDocument").CreateElement("dt:CompanyName")
-                //nodeDeviceIdentification.AppendChild (nodeCmpyName)
-                //nodeCmpyName.Text = pDict("CompanyName")
-
-                //Das Node Domain hinzufügen
-                nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-                _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
-                _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
-
-                return retVal188;
-            }
-
-            //----------------------------------------------------------------------------------------------------------
-            //Wenn beide Werte ein Datum sind, muss geprüft werden ob das Enddatum nach dem
-            //Start Datum liegt. Falls nicht wird "False" zurückgegeben.
-            public object migcheckdateperiod(ref object hlcontext, ref object startdate, ref object enddate)
-            {
-                object retVal189 = null;
-                retVal189 = false;
-
-                if (_.IF(_.NOTEQ(_.NullableSTR(_.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(startdate)))), "0")))
-                {
-                    if (_.IF(_.LT(_.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(enddate))))))
+                    objparent = enumerationContent180.Current;
+                    object byrefalias181 = pdict;
+                    try
                     {
-                        retVal189 = false;
+                        retVal178 = _.VAL(_.CALL(this, objparent, "GetValue", _.ARGS.RefIfArray(byrefalias181, _.ARGS.Val("AttrName")).Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                    }
+                    finally { pdict = byrefalias181; }
+                    object byrefalias182 = lcid;
+                    try
+                    {
+                        outparentdefname = _.VAL(_.CALL(this, hlcontext, "GetDisplayName", _.ARGS.Val(_.CALL(this, objparent, "GetValue", _.ARGS.Val("HLOBJECTINFO.DEFID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))).Ref(byrefalias182, v183 => { byrefalias182 = v183; })));
+                    }
+                    finally { lcid = byrefalias182; }
+                    break;
+                }
+            }
+            return retVal178;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        public object mig_createxmldocument(ref object hlsrvcontext, ref object pdict)
+        {
+            object retVal184 = null;
+            object objxmldoc = null;
+            object xmlproinc = null;
+            object xmlroot = null;
+            object nodesession = null;
+
+            //XML-Objekt erstellen
+            objxmldoc = VBScriptConstants.Nothing;
+            objxmldoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
+
+            //XML-Processing Instruction hinzufügen
+            xmlproinc = VBScriptConstants.Nothing;
+            xmlproinc = _.OBJ(_.CALL(this, objxmldoc, "createProcessingInstruction", _.ARGS.Val("xml").Val("version='1.0' encoding='UTF-8'")));
+            _.CALL(this, objxmldoc, "insertBefore", _.ARGS.Ref(xmlproinc, v185 => { xmlproinc = v185; }).Val(_.CALL(this, objxmldoc, "firstChild")));
+
+            //Root-Element erstellen
+            xmlroot = _.OBJ(_.CALL(this, objxmldoc, "CreateElement", _.ARGS.Val("ASAPBatch")));
+            _.CALL(this, objxmldoc, "AppendChild", _.ARGS.Val(xmlroot));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1"));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns:dt").Val("http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1"));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xmlns:xsi").Val("http://www.w3.org/2001/XMLSchema-instance"));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("xsi:schemaLocation").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd"));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("version").Val("1.1"));
+            _.CALL(this, xmlroot, "SetAttribute", _.ARGS.Val("responseRequired").Val("Yes"));
+
+            //Das Node Session hinzufügen
+            nodesession = _.OBJ(_.CALL(this, objxmldoc, "CreateElement", _.ARGS.Val("Session")));
+            _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodesession));
+            _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("id").Val("s1"));
+            _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("loginname").Val("foreignSystems\\assetcolumbus"));
+            _.CALL(this, nodesession, "SetAttribute", _.ARGS.Val("password").Val(""));
+
+            //XML Dokument inkl. Header an das Dictionary übergeben
+            _.SET(_.OBJ(objxmldoc), this, pdict, null, _.ARGS.Val("XMLDocument"));
+            return retVal184;
+        }
+
+        //---------------------------------------------------------------------
+        public object mig_createaddxml2columbus(ref object hlsrvcontext, ref object pdict)
+        {
+            object retVal186 = null;
+            object xmlroot = null;
+            object nodecreateinstancerq = null;
+            object nodeobserverkey = null;
+            object nodecontextdata = null;
+            object nodeadddeviceactualparams = null;
+            object nodedeviceidentification = null;
+            object nodedevicename = null;
+            object nodecmpyname = null;
+            object nodedomain = null;
+            object nodecostcenter = null;
+            object nodemacaddress = null;
+            object nodesubnetmask = null;
+            object nodehwtype = null;
+            object nodeostype = null;
+            object nodeactstate = null;
+
+            //Root Element aus dem XML ermitteln.
+            xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
+
+            //Das Node CreateInstanceReq hinzufügen
+            nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
+            _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_adddevice"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+
+            //Das Node ObserverKey hinzufügen
+            nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
+
+            //Das Container Node ContextData hinzufügen
+            nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
+
+            //Das Container Node AddDeviceActualParams hinzufügen
+            nodeadddeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:AddDeviceActualParams")));
+            _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(nodeadddeviceactualparams));
+
+            //Das Container Node DeviceIdentification hinzufügen
+            nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
+
+            //Das Node DeviceName hinzufügen
+            nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
+
+            //Das Node CompanyName hinzufügen
+            nodecmpyname = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodecmpyname));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CompanyName"))), this, nodecmpyname, "Text");
+
+            //Das Node Domain hinzufügen
+            nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
+
+            //Das Node CostCenter hinzufügen
+            nodecostcenter = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodecostcenter));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CostCenter"))), this, nodecostcenter, "Text");
+
+            //Das Node MACAdess hinzufügen
+            nodemacaddress = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodemacaddress));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("MACAddress"))), this, nodemacaddress, "Text");
+
+            //Das Node SubnetMask hinzufügen
+            nodesubnetmask = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodesubnetmask));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("SubnetMask"))), this, nodesubnetmask, "Text");
+
+            //Das Node HwTypeId hinzufügen
+            nodehwtype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodehwtype));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("HwTypeId"))), this, nodehwtype, "Text");
+
+            //Das Node OsTypeId hinzufügen
+            nodeostype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodeostype));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("OsTypeId"))), this, nodeostype, "Text");
+
+            //Das Node ActivationState hinzufügen
+            nodeactstate = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
+            _.CALL(this, nodeadddeviceactualparams, "AppendChild", _.ARGS.Val(nodeactstate));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ActivationState"))), this, nodeactstate, "Text");
+
+            return retVal186;
+        }
+
+        //---------------------------------------------------------------------
+        public object mig_createchgxml2columbus(ref object hlsrvcontext, ref object pdict)
+        {
+            object retVal187 = null;
+            object xmlroot = null;
+            object nodecreateinstancerq = null;
+            object nodeobserverkey = null;
+            object nodecontextdata = null;
+            object nodechgdeviceactualparams = null;
+            object nodedeviceidentification = null;
+            object nodedevicename = null;
+            object nodedomain = null;
+            object nodecmpyname = null;
+            object nodecostcenter = null;
+            object nodemacaddress = null;
+            object nodesubnetmask = null;
+            object nodehwtype = null;
+            object nodeostype = null;
+            object nodeactstate = null;
+
+            //Root Element aus dem XML ermitteln.
+            xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
+
+            //Das Node CreateInstanceReq hinzufügen
+            nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
+            _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_chgdevice"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+
+            //Das Node ObserverKey hinzufügen
+            nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
+
+            //Das Container Node ContextData hinzufügen
+            nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
+
+            //Das Container Node AddDeviceActualParams hinzufügen
+            nodechgdeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ChangeDeviceActualParams")));
+            _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(nodechgdeviceactualparams));
+
+            //Das Container Node DeviceIdentification hinzufügen
+            nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
+
+            //Das Node DeviceName hinzufügen
+            nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
+
+            //Das Node Domain hinzufügen
+            nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
+
+            //Das Node CompanyName hinzufügen
+            nodecmpyname = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodecmpyname));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CompanyName"))), this, nodecmpyname, "Text");
+
+            //Das Node CostCenter hinzufügen
+            nodecostcenter = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodecostcenter));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("CostCenter"))), this, nodecostcenter, "Text");
+
+            //Das Node MACAdess hinzufügen
+            nodemacaddress = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodemacaddress));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("MACAddress"))), this, nodemacaddress, "Text");
+
+            //Das Node SubnetMask hinzufügen
+            nodesubnetmask = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodesubnetmask));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("SubnetMask"))), this, nodesubnetmask, "Text");
+
+            //Das Node HwTypeId hinzufügen
+            nodehwtype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodehwtype));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("HwTypeId"))), this, nodehwtype, "Text");
+
+            //Das Node OsTypeId hinzufügen
+            nodeostype = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodeostype));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("OsTypeId"))), this, nodeostype, "Text");
+
+            //Das Node ActivationState hinzufügen
+            nodeactstate = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
+            _.CALL(this, nodechgdeviceactualparams, "AppendChild", _.ARGS.Val(nodeactstate));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ActivationState"))), this, nodeactstate, "Text");
+
+            return retVal187;
+        }
+
+        //---------------------------------------------------------------------
+        public object mig_createdelxml2columbus(ref object hlsrvcontext, ref object pdict)
+        {
+            object retVal188 = null;
+            object xmlroot = null;
+            object nodecreateinstancerq = null;
+            object nodeobserverkey = null;
+            object nodecontextdata = null;
+            object noderemovedeviceactualparams = null;
+            object nodedeviceidentification = null;
+            object nodedevicename = null;
+            object nodedomain = null;
+
+            //Root Element aus dem XML ermitteln.
+            xmlroot = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
+
+            //Das Node CreateInstanceReq hinzufügen
+            nodecreateinstancerq = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
+            _.CALL(this, xmlroot, "AppendChild", _.ARGS.Val(nodecreateinstancerq));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_removedevice"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
+            _.CALL(this, nodecreateinstancerq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+
+            //Das Node ObserverKey hinzufügen
+            nodeobserverkey = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodeobserverkey));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("ObserverKey"))), this, nodeobserverkey, "Text");
+
+            //Das Container Node ContextData hinzufügen
+            nodecontextdata = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
+            _.CALL(this, nodecreateinstancerq, "AppendChild", _.ARGS.Val(nodecontextdata));
+
+            //Das Container Node AddDeviceActualParams hinzufügen
+            noderemovedeviceactualparams = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:RemoveDeviceActualParams")));
+            _.CALL(this, nodecontextdata, "AppendChild", _.ARGS.Val(noderemovedeviceactualparams));
+
+            //Das Container Node DeviceIdentification hinzufügen
+            nodedeviceidentification = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
+            _.CALL(this, noderemovedeviceactualparams, "AppendChild", _.ARGS.Val(nodedeviceidentification));
+
+            //Das Node DeviceName hinzufügen
+            nodedevicename = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedevicename));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("DeviceName"))), this, nodedevicename, "Text");
+
+            //Das Node CompanyName hinzufügen
+            //Dim nodeCmpyName : Set nodeCmpyName = pDict("XMLDocument").CreateElement("dt:CompanyName")
+            //nodeDeviceIdentification.AppendChild (nodeCmpyName)
+            //nodeCmpyName.Text = pDict("CompanyName")
+
+            //Das Node Domain hinzufügen
+            nodedomain = _.OBJ(_.CALL(this, _.CALL(this, pdict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
+            _.CALL(this, nodedeviceidentification, "AppendChild", _.ARGS.Val(nodedomain));
+            _.SET(_.VAL(_.CALL(this, pdict, _.ARGS.Val("Domain"))), this, nodedomain, "Text");
+
+            return retVal188;
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        //Wenn beide Werte ein Datum sind, muss geprüft werden ob das Enddatum nach dem
+        //Start Datum liegt. Falls nicht wird "False" zurückgegeben.
+        public object migcheckdateperiod(ref object hlcontext, ref object startdate, ref object enddate)
+        {
+            object retVal189 = null;
+            retVal189 = false;
+
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(startdate)))), "0")))
+            {
+                if (_.IF(_.LT(_.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(enddate))))))
+                {
+                    retVal189 = false;
+                }
+                else
+                {
+                    retVal189 = true;
+                }
+
+                if (_.IF(_.GT(_.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(enddate))))))
+                {
+                    retVal189 = false;
+                }
+                else
+                {
+                    if (_.IF(_.GT(_.CALL(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(enddate))))))
+                    {
+                        if (_.IF(_.LT(_.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(enddate))))))
+                        {
+                            retVal189 = true;
+                        }
+                        else
+                        {
+                            retVal189 = false;
+                        }
                     }
                     else
                     {
                         retVal189 = true;
                     }
-
-                    if (_.IF(_.GT(_.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(enddate))))))
-                    {
-                        retVal189 = false;
-                    }
-                    else
-                    {
-                        if (_.IF(_.GT(_.CALL(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(enddate))))))
-                        {
-                            if (_.IF(_.LT(_.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(startdate))), _.CALL(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(enddate))))))
-                            {
-                                retVal189 = true;
-                            }
-                            else
-                            {
-                                retVal189 = false;
-                            }
-                        }
-                        else
-                        {
-                            retVal189 = true;
-                        }
-                    }
                 }
-                return retVal189;
+            }
+            return retVal189;
+        }
+
+        //---------------------------------------------------------------------
+        public object mig_checkcostcenter(ref object hlsrvcontext, ref object strcostcenter)
+        {
+            object retVal190 = null;
+            object srchquery = null;
+            object qry = null;
+            object rsltquery = null;
+            retVal190 = false;
+
+            srchquery = "";
+            srchquery = _.CONCAT("SEARCH Division WHERE OrganizationBilling.CostCenter_CA.CostCenter = \"", strcostcenter, "\"");
+            qry = VBScriptConstants.Nothing;
+            rsltquery = "";
+            qry = _.OBJ(_.CALL(this, hlsrvcontext, "OpenSearch", _.ARGS.Ref(srchquery, v191 => { srchquery = v191; })));
+            rsltquery = _.VAL(_.CALL(this, qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+            if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltquery)), (Int16)0)))
+            {
+                retVal190 = true;
             }
 
-            //---------------------------------------------------------------------
-            public object mig_checkcostcenter(ref object hlsrvcontext, ref object strcostcenter)
+            return retVal190;
+        }
+
+        public object checkagenthasmigpartnerid(ref object hlcontext, ref object relobjmigpartnerid)
+        {
+            object retVal192 = null;
+            object flagauthorized = null;
+            object intagentid = null;
+            object objperson = null;
+            object strpersoninternalmigpartnerids = null;
+            //BOOL
+
+            flagauthorized = false;
+            intagentid = _.VAL(_.CALL(this, hlcontext, "GetAgentID", _.ARGS.ForceBrackets()));
+            objperson = VBScriptConstants.Nothing;
+
+            objperson = _.OBJ(_.CALL(this, hlcontext, "GetPersonOfAgent", _.ARGS.Ref(intagentid, v193 => { intagentid = v193; })));
+
+            bool ifResult197;
+            object byrefalias196 = hlcontext;
+            try
             {
-                object retVal190 = null;
-                object srchquery = null;
-                object qry = null;
-                object rsltquery = null;
-                retVal190 = false;
-
-                srchquery = "";
-                srchquery = _.CONCAT("SEARCH Division WHERE OrganizationBilling.CostCenter_CA.CostCenter = \"", strcostcenter, "\"");
-                qry = VBScriptConstants.Nothing;
-                rsltquery = "";
-                qry = _.OBJ(_.CALL(this, hlsrvcontext, "OpenSearch", _.ARGS.Ref(srchquery, v191 => { srchquery = v191; })));
-                rsltquery = _.VAL(_.CALL(this, qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
-                if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltquery)), (Int16)0)))
-                {
-                    retVal190 = true;
-                }
-
-                return retVal190;
+                ifResult197 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias196, v198 => { byrefalias196 = v198; }).Ref(objperson, v199 => { objperson = v199; })), true));
             }
-
-            public object checkagenthasmigpartnerid(ref object hlcontext, ref object relobjmigpartnerid)
+            finally { hlcontext = byrefalias196; }
+            if (ifResult197)
             {
-                object retVal192 = null;
-                object flagauthorized = null;
-                object intagentid = null;
-                object objperson = null;
-                object strpersoninternalmigpartnerids = null;
-                //BOOL
 
-                flagauthorized = false;
-                intagentid = _.VAL(_.CALL(this, hlcontext, "GetAgentID", _.ARGS.ForceBrackets()));
-                objperson = VBScriptConstants.Nothing;
-
-                objperson = _.OBJ(_.CALL(this, hlcontext, "GetPersonOfAgent", _.ARGS.Ref(intagentid, v193 => { intagentid = v193; })));
-
-                bool ifResult197;
-                object byrefalias196 = hlcontext;
-                try
-                {
-                    ifResult197 = _.IF(_.EQ(_.CALL(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias196, v198 => { byrefalias196 = v198; }).Ref(objperson, v199 => { objperson = v199; })), true));
-                }
-                finally { hlcontext = byrefalias196; }
-                if (ifResult197)
+                if (_.IF(_.NOTEQ(_.NullableSTR(relobjmigpartnerid), "")))
                 {
 
-                    if (_.IF(_.NOTEQ(_.NullableSTR(relobjmigpartnerid), "")))
-                    {
+                    strpersoninternalmigpartnerids = _.VAL(_.CALL(this, objperson, "GetValue", _.ARGS.Val("MIGAgentInformation.InternalMIGPartnerID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
 
-                        strpersoninternalmigpartnerids = _.VAL(_.CALL(this, objperson, "GetValue", _.ARGS.Val("MIGAgentInformation.InternalMIGPartnerID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-
-                        if (_.IF(_.GT(_.NullableNUM(_.INSTR(strpersoninternalmigpartnerids, relobjmigpartnerid)), (Int16)0)))
-                        {
-                            flagauthorized = true;
-                        }
-                    }
-                    else
+                    if (_.IF(_.GT(_.NullableNUM(_.INSTR(strpersoninternalmigpartnerids, relobjmigpartnerid)), (Int16)0)))
                     {
-                        //If relObjMIGPartnerID is Null or empty, modification allowed
                         flagauthorized = true;
                     }
-
+                }
+                else
+                {
+                    //If relObjMIGPartnerID is Null or empty, modification allowed
+                    flagauthorized = true;
                 }
 
-                //return
-                retVal192 = _.VAL(flagauthorized);
-                return retVal192;
             }
-        }
 
-        public class EnvironmentReferences
-        {
-            public object hlcontext { get; set; }
+            //return
+            retVal192 = _.VAL(flagauthorized);
+            return retVal192;
         }
+    }
+
+    public sealed class EnvironmentReferences : EnvironmentReferencesBase
+    {
+        public object hlcontext { get; set; }
     }
 }

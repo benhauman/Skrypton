@@ -47,7 +47,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             _availableErrorTokens = new Queue<int>();
             _activeErrorTokens = new Dictionary<int, ErrorTokenState>();
             _arithmeticHandler = new DefaultArithmeticFunctionalityProvider(valueRetriever);
-            DateLiteralParser = new DateParser(DateParser.DefaultMonthNameTranslator, DateTime.Now.Year);
+            DateLiteralParser = DateParser.ForCulture(culture);
             _randomSeed = 0; // Doesn't really matter what this is initially, just that it's always the same
             _trappedErrorIfAny = null;
         }
@@ -1332,7 +1332,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return false;
                 if (value is DateTime)
                     return true;
-                DateParser.Default.Parse(value.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
+                DateParser.ForCulture(_culture).Parse(value.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
                 return true;
             }
             catch (Exception e)
@@ -1713,7 +1713,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 try
                 {
-                    dateValue = DateParser.Default.Parse(value.ToString(), _culture);
+                    dateValue = DateParser.ForCulture(_culture).Parse(value.ToString(), _culture);
                 }
                 catch (Exception e)
                 {
@@ -1774,7 +1774,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 try
                 {
-                    dateValue = DateParser.Default.Parse(value.ToString(), _culture);
+                    dateValue = DateParser.ForCulture(_culture).Parse(value.ToString(), _culture);
                 }
                 catch (Exception e)
                 {
@@ -1822,7 +1822,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (vbsFirstDayOfWeek < 0 || vbsFirstDayOfWeek > 7)
                 throw new InvalidProcedureCallOrArgumentException("'Weekday'");
             if (vbsFirstDayOfWeek == VBScriptConstants.vbUseSystemDayOfWeek)
-                vbsFirstDayOfWeek = (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek + 1;
+                vbsFirstDayOfWeek = (int)_culture.DateTimeFormat.FirstDayOfWeek + 1;
 
             return (((int)date.DayOfWeek + (8 - vbsFirstDayOfWeek)) % 7) + 1;
         }

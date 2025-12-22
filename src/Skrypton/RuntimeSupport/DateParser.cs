@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -45,44 +46,122 @@ namespace Skrypton.RuntimeSupport
         private static readonly Regex _wholeStringNumberThenMonthNameThenNumberDateComponent = new Regex("^" + NUMBER_THEN_MONTHNAME_THEN_NUMBERS_DATE + "$", RegexOptions.Compiled);
         private static readonly Regex _wholeStringTwoNumbersThenMonthNameDateComponent = new Regex("^" + TWO_NUMBERS_THEN_MONTHNAME_DATE + "$", RegexOptions.Compiled);
 
-        private static DateParser _default = new DateParser(DefaultMonthNameTranslator, () => DateTime.Now.Year);
-        public static DateParser Default { get { return _default; } }
+        //private static DateParser _default = new DateParser(DefaultMonthNameTranslator, () => DateTime.Now.Year);
+        //public static DateParser Default { get { return _default; } }
 
+        private static readonly ConcurrentDictionary<int, DateParser> _cultureParsers = new ConcurrentDictionary<int, DateParser>();
+        internal static DateParser ForCulture(CultureInfo culture)
+        {
+            return _cultureParsers.GetOrAdd(culture.LCID, lcid =>
+            {
+                return new DateParser(new DateMonthNameTranslatorDefault(culture), () => DateTime.Now.Year);
+            });
+        }
+
+        public static DateParser TestCreateDateParserTest(CultureInfo culture, int? defaultYearOverride)
+        {
+            return defaultYearOverride != null ? new DateParser(new DateMonthNameTranslatorDefault(culture), defaultYearOverride.Value) : ForCulture(culture);
+        }
+
+        private readonly DateMonthNameTranslator _monthNameTranslator;
+        private readonly Func<int> _defaultYearRetriever;
         /// <summary>
         /// This constructor should only be used for testing purposes, the static Default instance is appropriate for most other uses
         /// </summary>
-        public DateParser(Func<string, int> monthNameTranslator, int defaultYearOverride) : this(monthNameTranslator, () => defaultYearOverride)
+        internal DateParser(DateMonthNameTranslator monthNameTranslator, int defaultYearOverride) : this(monthNameTranslator, () => defaultYearOverride)
         {
             if ((defaultYearOverride < VBScriptConstants.EarliestPossibleDate.Year) || (defaultYearOverride > VBScriptConstants.LatestPossibleDate.Year))
                 throw new ArgumentOutOfRangeException("defaultYearOverride must be a value that VBScript can represent");
         }
-        private readonly Func<string, int> _monthNameTranslator;
-        private readonly Func<int> _defaultYearRetriever;
-        private DateParser(Func<string, int> monthNameTranslator, Func<int> defaultYearRetriever)
+        private DateParser(DateMonthNameTranslator monthNameTranslator, Func<int> defaultYearRetriever)
         {
-            if (monthNameTranslator == null)
-                throw new ArgumentNullException("monthNameTranslator");
-            if (defaultYearRetriever == null)
-                throw new ArgumentNullException("defaultYearRetriever");
-
-            _monthNameTranslator = monthNameTranslator;
-            _defaultYearRetriever = defaultYearRetriever;
+            _monthNameTranslator = monthNameTranslator ?? throw new ArgumentNullException(nameof(monthNameTranslator));
+            _defaultYearRetriever = defaultYearRetriever ?? throw new ArgumentNullException(nameof(defaultYearRetriever));
         }
 
-        /// <summary>
-        /// This translates month names using the current culture - it supports full and abbreviated month names
-        /// </summary>
-        public static int DefaultMonthNameTranslator(string monthName)
+        internal sealed class DateMonthNameTranslatorDefault : DateMonthNameTranslator
         {
-            if (string.IsNullOrWhiteSpace(monthName))
-                throw new ArgumentException("Null/blank monthName specified");
-
-            DateTime date;
-            if (DateTime.TryParseExact(monthName, "MMM", CultureInfo.CurrentCulture, DateTimeStyles.None, out date)
-            || DateTime.TryParseExact(monthName, "MMMM", CultureInfo.CurrentCulture, DateTimeStyles.None, out date))
-                return date.Month;
-            throw new ArgumentException("Invalid monthName specified (for current culture \"" + CultureInfo.CurrentCulture.DisplayName + "\"): \"" + monthName + "\"");
+            internal DateMonthNameTranslatorDefault(CultureInfo culture) : base(culture)
+            { }
         }
+
+        internal sealed class DateMonthNameTranslatorLimited : DateMonthNameTranslator
+        {
+            private readonly Func<string, int, int> _translator;
+
+            internal DateMonthNameTranslatorLimited(CultureInfo culture, Func<string, int, int> translator) : base(culture)
+            {
+                _translator = translator ?? throw new ArgumentNullException(nameof(translator));
+            }
+            internal override int TranslateMonthName(string monthName)
+            {
+                int idx = base.TranslateMonthName(monthName);
+                return _translator(monthName, idx);
+            }
+        }
+
+        [DebuggerDisplay("{_culture.Name}")]
+        internal abstract class DateMonthNameTranslator
+        {
+            private readonly Dictionary<string, int> _monthNames;
+            private readonly CultureInfo _culture;
+
+            public DateMonthNameTranslator(CultureInfo culture)
+            {
+                _culture = culture ?? throw new ArgumentNullException(nameof(culture));
+                _monthNames = BuildMonthNamesDictionary(culture);
+            }
+
+            private static Dictionary<string, int> BuildMonthNamesDictionary(CultureInfo culture)
+            {
+                return Enumerable.Range(1, 12).SelectMany(i =>
+                        {
+                            var dt = new DateTime(2000, i, 1);
+                            return new[]
+                            {
+                            (dt.ToString("MMMM", culture), i),
+                            (dt.ToString("MMM", culture), i),
+                            (dt.ToString("MMMM", culture).ToLowerInvariant(), i),
+                            (dt.ToString("MMM", culture).ToLowerInvariant(), i),
+                            (dt.ToString("MMMM", culture).ToUpperInvariant(), i),
+                            (dt.ToString("MMM", culture).ToUpperInvariant(), i)
+                            };
+                        })
+                        .Distinct()
+                        .ToDictionary(x => x.Item1, x => x.Item2);
+            }
+
+            /// <summary>
+            /// This translates month names using the culture - it supports full and abbreviated month names
+            /// </summary>
+            internal virtual int TranslateMonthName(string monthName)
+            {
+                if (string.IsNullOrWhiteSpace(monthName))
+                    throw new ArgumentException("Null/blank monthName specified");
+
+                if (_monthNames.TryGetValue(monthName, out int monthIndex))
+                {
+                    return monthIndex;
+                }
+
+                DateTime date;
+                if (DateTime.TryParseExact(monthName, "MMM", _culture, DateTimeStyles.None, out date)
+                    || DateTime.TryParseExact(monthName, "MMMM", _culture, DateTimeStyles.None, out date))
+                    return date.Month;
+
+                throw new ArgumentException("Invalid monthName specified (for current culture \"" + _culture.DisplayName + "\"): \"" + monthName + "\"");
+            }
+
+            internal bool ContainsMonthName(string monthName)
+            {
+                return _monthNames.ContainsKey(monthName);
+            }
+        }
+
+        //public static int DefaultMonthNameTranslator(CultureInfo culture, string monthName)
+        //{
+        //    return new DateMonthNameTranslatorDefault(culture).TranslateMonthName(culture, monthName);
+        //}
 
         /// <summary>
         /// Translate a numeric value into a date, following VBScript's logic. This will throw an OverflowException for a number outside of the acceptable range.
@@ -169,25 +248,25 @@ namespace Skrypton.RuntimeSupport
         public DateTime Parse(string value, CultureInfo culture)
         {
             if (value != null)
-                return CDateNew(value, _defaultYearRetriever(), culture);
+                return CDateNew(_monthNameTranslator, value, _defaultYearRetriever(), culture);
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Null/blank value specified");
 
             TimeSpan time;
             value = ExtractAnyTimeComponent(value, out time).Trim();
 
-            var date = ParseDateOnly(value);
+            var date = ParseDateOnly(value, culture);
             if ((date < VBScriptConstants.EarliestPossibleDate.Date) || (date > VBScriptConstants.LatestPossibleDate.Date))
                 throw new OverflowException();
 
             return date.Add(time);
         }
-        private static DateTime CDateNew(string input, int defaultYear, CultureInfo culture)
+        private static DateTime CDateNew(DateMonthNameTranslator monthNameTranslator, string input, int defaultYear, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Invalid input");
 
-            if (VbDateParser.TryParseVbDate(culture, input, defaultYear, out var dtParts))
+            if (VbDateParser.TryParseVbDate(monthNameTranslator, culture, input, defaultYear, out var dtParts))
             {
                 return NewDateTime(input, dtParts.Year, dtParts.Month, dtParts.Day);
             }
@@ -339,23 +418,23 @@ namespace Skrypton.RuntimeSupport
 
         private static class VbDateParser
         {
-            private static readonly Dictionary<string, int> MonthNames = Enumerable.Range(1, 12).SelectMany(i =>
-                {
-                    var dt = new DateTime(2000, i, 1);
-                    return new[]
-                    {
-                (dt.ToString("MMMM"), i),
-                (dt.ToString("MMM"), i),
-                (dt.ToString("MMMM").ToLowerInvariant(), i),
-                (dt.ToString("MMM").ToLowerInvariant(), i),
-                (dt.ToString("MMMM").ToUpperInvariant(), i),
-                (dt.ToString("MMM").ToUpperInvariant(), i)
-                    };
-                })
-                .Distinct()
-                .ToDictionary(x => x.Item1, x => x.Item2);
+            //private static readonly Dictionary<string, int> MonthNames = Enumerable.Range(1, 12).SelectMany(i =>
+            //    {
+            //        var dt = new DateTime(2000, i, 1);
+            //        return new[]
+            //        {
+            //    (dt.ToString("MMMM"), i),
+            //    (dt.ToString("MMM"), i),
+            //    (dt.ToString("MMMM").ToLowerInvariant(), i),
+            //    (dt.ToString("MMM").ToLowerInvariant(), i),
+            //    (dt.ToString("MMMM").ToUpperInvariant(), i),
+            //    (dt.ToString("MMM").ToUpperInvariant(), i)
+            //        };
+            //    })
+            //    .Distinct()
+            //    .ToDictionary(x => x.Item1, x => x.Item2);
 
-            public static bool TryParseVbDate(CultureInfo culture, string input, int defaultYear, out DateTimeParts result)
+            public static bool TryParseVbDate(DateMonthNameTranslator monthNameTranslator, CultureInfo culture, string input, int defaultYear, out DateTimeParts result)
             {
                 result = default;
 
@@ -368,10 +447,10 @@ namespace Skrypton.RuntimeSupport
                     .ToList();
 
                 // Identify month names
-                var monthNameIndex = tokens.FindIndex(t => MonthNames.ContainsKey(t));
-
+                //var monthNameIndex = tokens.FindIndex(t => MonthNames.ContainsKey(t));
+                var monthNameIndex = tokens.FindIndex(t => monthNameTranslator.ContainsMonthName(t));
                 if (monthNameIndex >= 0)
-                    return TryParseWithMonthName(culture, input, tokens, monthNameIndex, defaultYear, out result);
+                    return TryParseWithMonthName(monthNameTranslator, culture, input, tokens, monthNameIndex, defaultYear, out result);
 
                 // Numeric-only parsing
                 var nums = new List<int>();
@@ -516,7 +595,7 @@ namespace Skrypton.RuntimeSupport
                             }
                         }
 
-                        }
+                    }
                     else if (pmax == p1) // year at the beginning
                     {
                         // 2, 3
@@ -578,7 +657,7 @@ namespace Skrypton.RuntimeSupport
                 return MakeDate(culture, input, year, p1, p2, out result);
             }
 
-            private static bool TryParseWithMonthName(
+            private static bool TryParseWithMonthName(DateMonthNameTranslator monthNameTranslator,
                 CultureInfo culture, string input,
                 List<string> tokens,
                 int monthIndex,
@@ -587,7 +666,8 @@ namespace Skrypton.RuntimeSupport
             {
                 result = default;
 
-                int month = MonthNames[tokens[monthIndex]];
+                //int month = MonthNames[tokens[monthIndex]];
+                int month = monthNameTranslator.TranslateMonthName(tokens[monthIndex]);
 
                 var nums = tokens
                     .Where((t, i) => i != monthIndex)
@@ -651,7 +731,7 @@ namespace Skrypton.RuntimeSupport
                 public int Day { get; } = day;
             }
         }
-        private DateTime ParseDateOnly(string value)
+        private DateTime ParseDateOnly(string value, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Null/blank value specified");
@@ -702,7 +782,7 @@ namespace Skrypton.RuntimeSupport
             }
             if (monthNameFromTwoSegmentFormat != null)
             {
-                var month = _monthNameTranslator(monthNameFromTwoSegmentFormat);
+                var month = _monthNameTranslator.TranslateMonthName(monthNameFromTwoSegmentFormat);
                 var defaultYear = _defaultYearRetriever();
                 if ((numericValueFromTwoSegmentFormat >= 1) && (numericValueFromTwoSegmentFormat <= GetNumberOfDaysInMonth(month, defaultYear)))
                     return new DateTime(defaultYear, month, numericValueFromTwoSegmentFormat);
@@ -747,7 +827,7 @@ namespace Skrypton.RuntimeSupport
             }
             if (monthNameFromThreeSegmentFormat != null)
             {
-                var month = _monthNameTranslator(monthNameFromThreeSegmentFormat);
+                var month = _monthNameTranslator.TranslateMonthName(monthNameFromThreeSegmentFormat);
                 var date = firstNumericValueFromThreeSegmentFormat;
                 var year = EnsureIsFourDigitYear(secondNumericValueFromThreeSegmentFormat);
                 if ((date >= 1) && (date <= GetNumberOfDaysInMonth(month, year)))

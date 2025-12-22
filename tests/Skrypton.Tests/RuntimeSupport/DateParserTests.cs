@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, string value, int defaultYear, DateTime expectedDate)
         {
-            myAssert.AreEqual(expectedDate, (new DateParser(DateParser.DefaultMonthNameTranslator, defaultYearOverride: defaultYear)).Parse(value, TestCulture));
+            myAssert.AreEqual(expectedDate, DateParser.TestCreateDateParserTest(TestCulture, defaultYearOverride: defaultYear).Parse(value, TestCulture));
         }
 
         [TestMethod, MyTheory, MyMemberData(nameof(ErrorData))]
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport
         {
             myAssert.Throws<ArgumentException>(() =>
             {
-                (new DateParser(DateParser.DefaultMonthNameTranslator, defaultYearOverride: defaultYear)).Parse(value, TestCulture);
+                DateParser.TestCreateDateParserTest(TestCulture, defaultYearOverride: defaultYear).Parse(value, TestCulture);
             });
         }
 
@@ -106,7 +106,7 @@ namespace Skrypton.Tests.RuntimeSupport
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, string value, int defaultYear, DateTime expectedDate)
         {
-            myAssert.AreEqualDateTime(description, expectedDate, (new DateParser(DateParser.DefaultMonthNameTranslator, defaultYearOverride: 2015)).Parse(value, TestCulture));
+            myAssert.AreEqualDateTime(description, expectedDate, DateParser.TestCreateDateParserTest(TestCulture, defaultYearOverride: 2015).Parse(value, TestCulture));
         }
 
         public static IEnumerable<object[]> SuccessData

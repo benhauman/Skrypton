@@ -164,24 +164,6 @@ namespace Skrypton.Tests
         {
             Assert.AreEqual<DateTime>(expected, actual, myAssert.GetEqualityComparer<DateTime>(null), msg);
         }
-        public static void AreEqualStringArray(string[] arr_expected, string[] arr_actual)
-        {
-            string text_e = arr_expected == null ? null : string.Join("\r\n", arr_expected);
-            string text_a = arr_actual == null ? null : string.Join("\r\n", arr_actual);
-            if (arr_expected != null)
-            {
-                Assert.IsNotNull(arr_actual, nameof(arr_actual));
-                for (int idx = 0; idx < arr_actual.Length; idx++)
-                {
-                    Assert.AreEqual(arr_actual[idx], arr_actual[idx]);
-                }
-                return;
-            }
-            else
-            {
-                Assert.IsTrue(arr_actual == null || arr_actual.Length == 0);
-            }
-        }
         public static void AreEqualString(string expected, string actual)
         {
             Assert.AreEqual(expected, actual);
@@ -195,7 +177,7 @@ namespace Skrypton.Tests
                     string[] arr_a = actual as string[];
                     for (int idx = 0; idx < arr_e.Length; idx++)
                     {
-                        Assert.AreEqual(arr_e[idx], arr_a[idx]);
+                        Assert.AreEqual(arr_e[idx], arr_a[idx], message:$"index:{idx}");
                     }
                     return;
                 }

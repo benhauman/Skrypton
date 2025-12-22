@@ -31,37 +31,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
             ILogInformation logger)
         {
-            if (supportRefName == null)
-                throw new ArgumentNullException("supportRefName");
-            if (envClassName == null)
-                throw new ArgumentNullException("envClassName");
-            if (envRefName == null)
-                throw new ArgumentNullException("envRefName");
-            if (outerClassName == null)
-                throw new ArgumentNullException("outerClassName");
-            if (outerRefName == null)
-                throw new ArgumentNullException("outerRefName");
-            if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
-            if (tempNameGenerator == null)
-                throw new ArgumentNullException("tempNameGenerator");
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (valueSettingStatementTranslator == null)
-                throw new ArgumentNullException("valueSettingStatementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _supportRefName = supportRefName;
-            _envClassName = envClassName;
-            _envRefName = envRefName;
-            _outerClassName = outerClassName;
-            _outerRefName = outerRefName;
-            _nameRewriter = nameRewriter;
-            _tempNameGenerator = tempNameGenerator;
-            _statementTranslator = statementTranslator;
-            _valueSettingStatementTranslator = valueSettingStatementTranslator;
-            _logger = logger;
+            _supportRefName = supportRefName ?? throw new ArgumentNullException(nameof(supportRefName));
+            _envClassName = envClassName ?? throw new ArgumentNullException(nameof(envClassName));
+            _envRefName = envRefName ?? throw new ArgumentNullException(nameof(envRefName));
+            _outerClassName = outerClassName ?? throw new ArgumentNullException(nameof(outerClassName));
+            _outerRefName = outerRefName ?? throw new ArgumentNullException(nameof(outerRefName));
+            _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
+            _tempNameGenerator = tempNameGenerator ?? throw new ArgumentNullException(nameof(tempNameGenerator));
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _valueSettingStatementTranslator = valueSettingStatementTranslator ?? throw new ArgumentNullException(nameof(valueSettingStatementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>

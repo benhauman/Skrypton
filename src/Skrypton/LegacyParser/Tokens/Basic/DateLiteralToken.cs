@@ -32,11 +32,11 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // month-name-containing formats (eg. "May June" or "42 May 99") and where it's NOT possible, we can identify the literal as requiring a runtime
             // check, using whatever culture is in use at that time.
             var limitedDateParser = new DateParser(
-                monthNameTranslator: monthName =>
+                monthNameTranslator: new DateParser.DateMonthNameTranslatorLimited(culture , (monthName, idx) =>
                 {
                     RequiresRuntimeValidation = true;
                     return 1;
-                },
+                }),
                 defaultYearOverride: 2015 // This value doesn't really matter for this process
             );
             try

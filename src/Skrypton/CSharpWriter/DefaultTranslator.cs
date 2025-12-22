@@ -63,20 +63,20 @@ namespace Skrypton.CSharpWriter
         /// This Translate signature exists to provide a slightly-simpler way to specify a custom warning logger (by providing a simple delegate,
         /// rather than having to provide an ILogInformation implementation)
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> Translate(
-            CultureInfo culture,
-            string scriptContent,
-            string[] externalDependencies,
-            Action<string> warningLogger,
-            OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable)
-        {
-            if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
-            if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
-
-            return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, new DelegateWrappingWarningLogger(warningLogger));
-        }
+        //lubo:public static NonNullImmutableList<TranslatedStatement> Translate(
+        //lubo:    CultureInfo culture,
+        //lubo:    string scriptContent,
+        //lubo:    string[] externalDependencies,
+        //lubo:    Action<string> warningLogger,
+        //lubo:    OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable)
+        //lubo:{
+        //lubo:    if (externalDependencies == null)
+        //lubo:        throw new ArgumentNullException("externalDependencies");
+        //lubo:    if (warningLogger == null)
+        //lubo:        throw new ArgumentNullException("warningLogger");
+        //lubo:
+        //lubo:    return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, new DelegateWrappingWarningLogger(warningLogger));
+        //lubo:}
 
         /// <summary>
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList

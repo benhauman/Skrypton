@@ -21,7 +21,7 @@ namespace Skrypton.Tests.LegacyParser
                     new StringToken("Test string with \"quoted\" content", 0),
                     new UnprocessedContentToken("\n", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "strValue = \"Test string with \"\"quoted\"\" content\"\n"
                 ),
                 new TokenSetComparer()
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EscapedNameToken("[]", 0),
                     new UnprocessedContentToken(" = 1", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "[] = 1"
                 ),
                 new TokenSetComparer()
@@ -62,7 +62,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EscapedNameToken("[]", 0),
                     new UnprocessedContentToken(" = 1", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "Dim []: [] = 1"
                 ),
                 new TokenSetComparer()
@@ -81,7 +81,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EndOfStatementSameLineToken(0),
                     new InlineCommentToken(" Test", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "WScript.Echo 1 ' Test"
                 ),
                 new TokenSetComparer()
@@ -104,7 +104,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EndOfStatementSameLineToken(0),
                     new InlineCommentToken(" Test", 1)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "\nWScript.Echo 1 ' Test"
                 ),
                 new TokenSetComparer()
@@ -120,7 +120,7 @@ namespace Skrypton.Tests.LegacyParser
                     new CommentToken(" Test", 0),
                     new UnprocessedContentToken("WScript.Echo 1", 1)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "REM Test\nWScript.Echo 1"
                 ),
                 new TokenSetComparer()
@@ -137,7 +137,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EndOfStatementSameLineToken(0),
                     new InlineCommentToken(" Test", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "WScript.Echo 1 REM Test"
                 ),
                 new TokenSetComparer()
@@ -158,7 +158,7 @@ namespace Skrypton.Tests.LegacyParser
                     new CommentToken(" Comment 1", 0),
                     new CommentToken(" Comment 2", 1)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "' Comment 1\n ' Comment 2"
                 ),
                 new TokenSetComparer()
@@ -181,7 +181,7 @@ namespace Skrypton.Tests.LegacyParser
                     new EndOfStatementSameLineToken(0),
                     new CommentToken(" Comment", 0)
                 },
-                StringBreaker.SegmentString(TestCulture,
+                StringBreaker.TestSegmentStringTest(TestCulture,
                     "a = \"\" ' Comment"
                 ),
                 new TokenSetComparer()

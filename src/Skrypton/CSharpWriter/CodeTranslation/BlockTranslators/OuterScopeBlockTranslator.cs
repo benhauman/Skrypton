@@ -220,56 +220,45 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement("using " + typeof(SourceClassName).Namespace + ";", 0, 0),
                     new TranslatedStatement("using " + typeof(SpecificVBScriptException).Namespace + ";", 0, 0),
                     new TranslatedStatement("using " + typeof(TranslatedPropertyIReflectImplementation).Namespace + ";", 0, 0),
-                    new TranslatedStatement("", 0, 0),
+                    EmptyLine,
                     new TranslatedStatement("namespace " + _startNamespace.Name, 0, 0),
                     new TranslatedStatement("{", 0, 0),
-                    new TranslatedStatement("public class " + _startClassName.Name, 1, 0),
+                });
+                // Runner
+                translatedStatements = translatedStatements.AddRange(new[]
+                {
+                    new TranslatedStatement($"public sealed class {_startClassName.Name} : RunnerBaseT<{_envClassName.Name}, {_outerClassName.Name}>", 1, 0), // 'public sealed class Runner : '
                     new TranslatedStatement("{", 1, 0),
                     new TranslatedStatement("private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
-                    new TranslatedStatement("public " + _startClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer)", 2, 0),
+                    new TranslatedStatement($"public " + _startClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer) : base(compatLayer)", 2, 0),
                     new TranslatedStatement("{", 2, 0),
-                    new TranslatedStatement("if (compatLayer == null)", 3, 0),
-                    new TranslatedStatement("throw new ArgumentNullException(\"compatLayer\");", 4, 0),
-                    new TranslatedStatement(_supportRefName.Name + " = compatLayer;", 3, 0),
-                    new TranslatedStatement("}", 2, 0)
+                    new TranslatedStatement(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
+                    new TranslatedStatement("}", 2, 0) // end of ctor
                 });
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement("", 0, 0),
+                    //EmptyLine,
+                    //new TranslatedStatement(
+                    //    $"public {_outerClassName.Name} {_startMethodName.Name}()",
+                    //    2,
+                    //    0
+                    //),
+                    //new TranslatedStatement("{", 2, 0),
+                    //new TranslatedStatement(
+                    //    $"return {_startMethodName.Name}(new {_envClassName.Name}());",
+                    //    3,
+                    //    0
+                    //),
+                    //new TranslatedStatement("}", 2, 0),
                     new TranslatedStatement(
-                        string.Format(
-                            "public {0} {1}()",
-                            _outerClassName.Name,
-                            _startMethodName.Name
-                        ),
-                        2,
-                        0
-                    ),
-                    new TranslatedStatement("{", 2, 0),
-                    new TranslatedStatement(
-                        string.Format(
-                            "return {0}(new {1}());",
-                            _startMethodName.Name,
-                            _envClassName.Name
-                        ),
-                        3,
-                        0
-                    ),
-                    new TranslatedStatement("}", 2, 0),
-                    new TranslatedStatement(
-                        string.Format(
-                            "public {0} {1}({2} env)",
-                            _outerClassName.Name,
-                            _startMethodName.Name,
-                            _envClassName.Name
-                        ),
+                        $"public {_outerClassName.Name} {_startMethodName.Name}({_envClassName.Name} env)",
                         2,
                         0
                     ),
                     new TranslatedStatement("{", 2, 0),
                     new TranslatedStatement("if (env == null)", 3, 0),
-                    new TranslatedStatement("throw new ArgumentNullException(\"env\");", 4, 0),
-                    new TranslatedStatement("", 0, 0),
+                    new TranslatedStatement("throw new ArgumentNullException(nameof(env));", 4, 0),
+                    EmptyLine,
                     new TranslatedStatement(
                         string.Format("var {0} = env;", _envRefName.Name),
                         3,
@@ -289,27 +278,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // the VBScript interpreter reading the script for every execution and validating date literals against the current culture - if it finds
                     // any of them to be invalid then it will raise a syntax error and not attempt to execute any of the script).
                     translatedStatements = translatedStatements.Add(new TranslatedStatement(
-                        string.Format(
-                            "{0}.ValidateAgainstCurrentCulture({1});",
-                            _runtimeDateLiteralValidatorClassName.Name,
-                            _supportRefName.Name
-                        ),
+                        $"{_runtimeDateLiteralValidatorClassName.Name}.ValidateAgainstCurrentCulture({_supportRefName.Name});",
                         3,
                         0
                     ));
                 }
-                translatedStatements = translatedStatements.Add(new TranslatedStatement("", 0, 0));
+                translatedStatements = translatedStatements.Add(EmptyLine);
             }
 
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 translatedStatements = translatedStatements
                     .Add(new TranslatedStatement(
-                        string.Format(
-                            "var {0} = {1}.GETERRORTRAPPINGTOKEN();",
-                            scopeAccessInformation.ErrorRegistrationTokenIfAny.Name,
-                            _supportRefName.Name
-                        ),
+                        $"var {scopeAccessInformation.ErrorRegistrationTokenIfAny.Name} = {_supportRefName.Name}.GETERRORTRAPPINGTOKEN();",
                         3,
                         0
                     ));
@@ -321,15 +302,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 translatedStatements = translatedStatements
                     .Add(new TranslatedStatement(
-                        string.Format(
-                            "{0}.RELEASEERRORTRAPPINGTOKEN({1});",
-                            _supportRefName.Name,
-                            scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
-                        ),
+                        $"{_supportRefName.Name}.RELEASEERRORTRAPPINGTOKEN({scopeAccessInformation.ErrorRegistrationTokenIfAny.Name});",
                         3,
                         0
                     ));
             }
+
             if (_outputType == OutputTypeOptions.Executable)
             {
                 // Close the main "TranslatedProgram" function and then write out the runtime-date-literal-validation logic and the global references class (when a complete executable
@@ -339,7 +317,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     new TranslatedStatement(string.Format("return {0};", _outerRefName.Name), 3, 0),
                     new TranslatedStatement("}", 2, 0),
-                    new TranslatedStatement("", 0, 0)
+                    //?!?EmptyLine
                 });
 
                 if (dateLiteralsToValidateAtRuntime.Any())
@@ -362,18 +340,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     foreach (var indexedDateLiteralToValidate in dateLiteralsToValidateAtRuntime.Select((d, i) => new { Index = i, DateLiteralValue = d.DateLiteralValue, LineNumbers = d.LineNumbers }))
                     {
                         translatedStatements = translatedStatements.Add(new TranslatedStatement(
-                            string.Format(
-                                "Tuple.Create({0}, new[] {{ {1} }}){2}",
-                                indexedDateLiteralToValidate.DateLiteralValue.ToLiteral(),
-                                string.Join<int>(", ", indexedDateLiteralToValidate.LineNumbers),
-                                (indexedDateLiteralToValidate.Index < (dateLiteralsToValidateAtRuntime.Length - 1)) ? "," : ""
-                            ),
+                            $"Tuple.Create({indexedDateLiteralToValidate.DateLiteralValue.ToLiteral()}, new[] {{ {string.Join<int>(", ", indexedDateLiteralToValidate.LineNumbers)} }}){((indexedDateLiteralToValidate.Index < (dateLiteralsToValidateAtRuntime.Length - 1)) ? "," : "")}",
                             4,
                             0
                         ));
                     }
                     translatedStatements = translatedStatements.Add(new TranslatedStatement("});", 3, 0));
-                    translatedStatements = translatedStatements.Add(new TranslatedStatement("", 0, 0));
+                    translatedStatements = translatedStatements.Add(EmptyLine);
 
                     // Declare the function that reads the data above and performs the validation work
                     translatedStatements = translatedStatements.AddRange(new[]
@@ -381,7 +354,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         new TranslatedStatement("public static void ValidateAgainstCurrentCulture(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)", 3, 0),
                         new TranslatedStatement("{", 3, 0),
                         new TranslatedStatement("if (compatLayer == null)", 4, 0),
-                        new TranslatedStatement("throw new ArgumentNullException(\"compatLayer\");", 5, 0),
+                        new TranslatedStatement("throw new ArgumentNullException(nameof(compatLayer));", 5, 0),
                         new TranslatedStatement("foreach (var dateLiteralValueAndLineNumbers in _literalsToValidate)", 4, 0),
                         new TranslatedStatement("{", 4, 0),
                         new TranslatedStatement(
@@ -404,26 +377,27 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         new TranslatedStatement("}", 4, 0),
                         new TranslatedStatement("}", 3, 0),
                         new TranslatedStatement("}", 2, 0),
-                        new TranslatedStatement("", 0, 0)
+                        EmptyLine
                     });
                 }
+                if (_outputType == OutputTypeOptions.Executable)
+                {
+                    translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close outer class 'Runner'
 
+                    //translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 0, 0)); // Close namespace
+                }
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement("public class " + _outerClassName.Name, 2, 0),
+                    new TranslatedStatement($"public sealed class {_outerClassName.Name} : GlobalReferencesBaseT<{_envClassName.Name}>", 1, 0), // 'public sealed class GlobalReferences'
+                    new TranslatedStatement("{", 1, 0),
+                    new TranslatedStatement("private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
+                    new TranslatedStatement("private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", 2, 0),
+                    new TranslatedStatement("private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 2, 0),
+                    new TranslatedStatement("public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env) : base(compatLayer, env)", 2, 0),
                     new TranslatedStatement("{", 2, 0),
-                    new TranslatedStatement("private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 3, 0),
-                    new TranslatedStatement("private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", 3, 0),
-                    new TranslatedStatement("private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 3, 0),
-                    new TranslatedStatement("public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env)", 3, 0),
-                    new TranslatedStatement("{", 3, 0),
-                    new TranslatedStatement("if (compatLayer == null)", 4, 0),
-                    new TranslatedStatement("throw new ArgumentNullException(\"compatLayer\");", 5, 0),
-                    new TranslatedStatement("if (env == null)", 4, 0),
-                    new TranslatedStatement("throw new ArgumentNullException(\"env\");", 5, 0),
-                    new TranslatedStatement(_supportRefName.Name + " = compatLayer;", 4, 0),
-                    new TranslatedStatement(_envRefName.Name + " = env;", 4, 0),
-                    new TranslatedStatement(_outerRefName.Name + " = this;", 4, 0)
+                    new TranslatedStatement(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
+                    new TranslatedStatement(_envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 3, 0),
+                    new TranslatedStatement(_outerRefName.Name + " = this;", 3, 0)
                 });
 
                 // Note: Any repeated "explicitVariableDeclarationsFromWithOuterScope" entries are ignored - this makes the ReDim translation process easier (where ReDim statements
@@ -434,7 +408,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     var variableInitialisationStatement = new TranslatedStatement(
                         base.TranslateVariableInitialisation(explicitVariableDeclaration, ScopeLocationOptions.OutermostScope),
-                        4,
+                        3,
                         explicitVariableDeclaration.Name.LineIndex
                     );
                     if (!variableInitialisationStatements.Any(s => s.Content == variableInitialisationStatement.Content))
@@ -443,17 +417,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translatedStatements = translatedStatements.AddRange(variableInitialisationStatements);
                 translatedStatements = translatedStatements
                     .Add(
-                        new TranslatedStatement("}", 3, 0)
+                        new TranslatedStatement("}", 2, 0)
                     );
                 if (explicitVariableDeclarationsFromWithOuterScope.Any())
                 {
-                    translatedStatements = translatedStatements.Add(new TranslatedStatement("", 0, 0));
+                    translatedStatements = translatedStatements.Add(EmptyLine);
                     var variableDeclarationStatements = new NonNullImmutableList<TranslatedStatement>();
                     foreach (var explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                     {
                         var variableDeclarationStatement = new TranslatedStatement(
                             "public object " + _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name) + " { get; set; }",
-                            3,
+                            2,
                             explicitVariableDeclaration.Name.LineIndex
                         );
                         if (!variableDeclarationStatements.Any(s => s.Content == variableDeclarationStatement.Content))
@@ -474,7 +448,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     Translate(
                         annotatedFunctionBlock.LeadingComments.Cast<ICodeBlock>().Concat(new[] { annotatedFunctionBlock.CodeBlock }).ToNonNullImmutableList(),
                         scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed),
-                        3 // indentationDepth
+                        2 // indentationDepth
                     ).TranslatedStatements
                 );
             }
@@ -489,8 +463,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement("}", 2, 0),
-                    new TranslatedStatement("", 0, 0)
+                    new TranslatedStatement("}", 1, 0), // Close 'GlobalReferences' class
+                    EmptyLine
                 });
 
                 // This has to be generated after all of the Translate calls to ensure that the UndeclaredVariablesAccessed data for all of the TranslationResults is available
@@ -501,10 +475,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             .Add(classBlocksTranslationResult)
                             .UndeclaredVariablesAccessed
                     );
+                // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement("public class " + _envClassName.Name, 2, 0),
-                    new TranslatedStatement("{", 2, 0)
+                    new TranslatedStatement($"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
+                    new TranslatedStatement("{", 1, 0)
                 });
                 var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex });
                 var environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
@@ -513,20 +488,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
                         continue;
                     translatedStatements = translatedStatements.Add(
-                        new TranslatedStatement("public object " + v.RewrittenName + " { get; set; }", 3, v.LineIndex)
+                        new TranslatedStatement("public object " + v.RewrittenName + " { get; set; }", 2, v.LineIndex)
                     );
                     environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
                 }
-                translatedStatements = translatedStatements.Add(
-                    new TranslatedStatement("}", 2, 0)
-                );
+                translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close 'EnvironmentReferences' class
             }
 
             if (classBlocksTranslationResult.TranslatedStatements.Any())
             {
-                translatedStatements = translatedStatements.Add(
-                    new TranslatedStatement("", 0, 0)
-                );
+                translatedStatements = translatedStatements.Add(EmptyLine);
                 translatedStatements = translatedStatements.AddRange(
                     classBlocksTranslationResult.TranslatedStatements
                 );
@@ -534,11 +505,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             if (_outputType == OutputTypeOptions.Executable)
             {
-                translatedStatements = translatedStatements.AddRange(new[]
-                {
-                    new TranslatedStatement("}", 1, 0), // Close outer class
-					new TranslatedStatement("}", 0, 0), // Close namespace
-				});
+                //translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close outer class
+                translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 0, 0)); // Close namespace
             }
 
             // Moving the functions and classes around can sometimes leaving extraneous blank lines in their wake. This tidies them up. (This would also result in
@@ -546,6 +514,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // could be a big problem).
             return RemoveRunsOfBlankLines(translatedStatements);
         }
+        private static readonly TranslatedStatement EmptyLine = new TranslatedStatement("", 0, 0);
 
         private NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {
@@ -639,6 +608,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("blocks");
 
+            var allBlocks = blocks.EnumerateAllTokens().ToArray();
             return blocks.EnumerateAllTokens().OfType<DateLiteralToken>();
 
 

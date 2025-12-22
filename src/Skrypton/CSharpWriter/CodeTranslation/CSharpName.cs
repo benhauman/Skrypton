@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class CSharpName
+    [DebuggerDisplay("{Name}")]
+    public sealed class CSharpName
     {
         public CSharpName(string name)
         {

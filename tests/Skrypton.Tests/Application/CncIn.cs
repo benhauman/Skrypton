@@ -42,7 +42,7 @@ namespace Skrypton.Tests.Application
             //
             Assembly asm = CompileCSharpProgram(chainName);
             Type tRunner = asm.GetType("TranslatedProgram.Runner", true);
-            Type tEnvironmentReferences = asm.GetType("TranslatedProgram.Runner+EnvironmentReferences", true); // nested
+            Type tEnvironmentReferences = asm.GetType("TranslatedProgram.EnvironmentReferences", true);
             object environmentReferences = Activator.CreateInstance(tEnvironmentReferences);
             foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
             {

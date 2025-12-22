@@ -13,6 +13,7 @@ namespace Skrypton.Tests
     {
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public TestContext TestContext { get; set; }
+        protected string TestName => this.TestContext!.TestName;
         protected void SaveExpectedActualFiles(string testName, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml
@@ -75,6 +76,49 @@ namespace Skrypton.Tests
                     _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(TestCulture);
                 }
                 return _defaultRuntimeSupportClassFactoryInstance;
+            }
+        }
+
+        public void AreEqualStringArray(string chainName, string fileSuffix, string[] arr_expected, string[] arr_actual)
+        {
+            string workItemName = "Script";// TestContext.TestName;
+            string text_e = arr_expected == null ? null : string.Join("\r\n", arr_expected);
+            string text_a = arr_actual == null ? null : string.Join("\r\n", arr_actual);
+            if (arr_expected != null)
+            {
+                if (text_e != text_a)
+                {
+                    int? diffAtIndex = null;
+                    if (arr_actual != null)
+                    {
+                        for (int idx = 0; idx < arr_actual.Length; idx++)
+                        {
+                            if (idx >= arr_expected.Length)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if (arr_expected[idx] != arr_actual[idx])
+                                {
+                                    diffAtIndex = idx;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, text_e, text_a);
+                    Assert.Fail($"File content different at index:{diffAtIndex}");
+                }
+                else
+                {
+                }
+                return;
+            }
+            else
+            {
+                Assert.IsTrue(arr_actual == null || arr_actual.Length == 0);
             }
         }
     }

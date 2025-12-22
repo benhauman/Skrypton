@@ -101,7 +101,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 yield return new object[] { "A Date with Friday week start", new DateTime(2009, 7, 6, 20, 12, 44), VBScriptConstants.vbFriday, 4 };
                 yield return new object[] { "A Date with Saturday week start", new DateTime(2009, 7, 6, 20, 12, 44), VBScriptConstants.vbSaturday, 3 };
                 yield return new object[] { "A Date with Sunday week start", new DateTime(2009, 7, 6, 20, 12, 44), VBScriptConstants.vbSunday, 2 };
-                yield return new object[] { "A Date with *System* week start", new DateTime(2009, 7, 6, 20, 12, 44), VBScriptConstants.vbUseSystemDayOfWeek, 2 }; //lubo old:1
+                yield return new object[] { "A Date with *System* week start", new DateTime(2009, 7, 6, 20, 12, 44), VBScriptConstants.vbUseSystemDayOfWeek, 1 };
 
                 yield return new object[] { "Object with default property which is Empty", new exampledefaultpropertytype(), DefaultFirstDayOfWeek, VBScriptConstants.vbSaturday };
                 yield return new object[] { "Object with default property which is Null", new exampledefaultpropertytype { result = DBNull.Value }, DefaultFirstDayOfWeek, DBNull.Value };

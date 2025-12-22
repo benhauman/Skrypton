@@ -28,19 +28,22 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// names, but it's better than nothing. This compromise means that runtime checks are required at the start of the translated program, ensuring
         /// that an exception is raised before any work is performed if there are any invalid date literals present, considering the runtime culture.
         /// </summary>
-        private static DateParser _limitedDateParser = new DateParser(
-            monthNameTranslator: monthName => 1,
-            defaultYearOverride: 2015
-        );
+        private static DateParser CreateLimitedDateParser(CultureInfo culture) => new DateParser(monthNameTranslator: new DateParser.DateMonthNameTranslatorLimited(culture, (monthName, idx) => 1), defaultYearOverride: 2015);
 
+        public static IEnumerable<IToken> TestSegmentStringTest(CultureInfo culture, string scriptContent)
+        {
+            return SegmentString(culture, scriptContent);
+        }
         /// <summary>
         /// Break down scriptContent into a combination of StringToken, CommentToken, UnprocessedContentToken and EndOfStatementNewLine instances (the
         /// end of statement tokens will not have been comprehensively handled).  This will never return null nor a set containing any null references.
         /// </summary>
-        public static IEnumerable<IToken> SegmentString(CultureInfo culture, string scriptContent)
+        internal static IEnumerable<IToken> SegmentString(CultureInfo culture, string scriptContent)
         {
             if (scriptContent == null)
                 throw new ArgumentNullException("scriptContent");
+
+            DateParser limitedDateParser = CreateLimitedDateParser(culture);
 
             // Normalise line returns
             scriptContent = scriptContent.Replace("\r\n", "\n").Replace('\r', '\n');
@@ -253,7 +256,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             // to checked at runtime (see the notes around the instantiation of the limitedDateParser).
                             try
                             {
-                                _limitedDateParser.Parse(tokenContent, culture);
+                                limitedDateParser.Parse(tokenContent, culture);
                             }
                             catch (Exception e)
                             {
