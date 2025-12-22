@@ -291,15 +291,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     classBlock.Name.LineIndex
                 ),
                 new TranslatedStatement("{", indentationDepth + 1, classBlock.Name.LineIndex),
-                new TranslatedStatement("if (compatLayer == null)", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement("throw new ArgumentNullException(nameof(compatLayer));", indentationDepth + 3, classBlock.Name.LineIndex),
-                new TranslatedStatement("if (env == null)", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement("throw new ArgumentNullException(nameof(env));", indentationDepth + 3, classBlock.Name.LineIndex),
-                new TranslatedStatement("if (outer == null)", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement("throw new ArgumentNullException(nameof(outer));", indentationDepth + 3, classBlock.Name.LineIndex),
-                new TranslatedStatement(_supportRefName.Name + " = compatLayer;", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement(_envRefName.Name + " = env;", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement(_outerRefName.Name + " = outer;", indentationDepth + 2, classBlock.Name.LineIndex)
+                new TranslatedStatement(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", indentationDepth + 2, classBlock.Name.LineIndex),
+                new TranslatedStatement(_envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", indentationDepth + 2, classBlock.Name.LineIndex),
+                new TranslatedStatement(_outerRefName.Name + " = outer ?? throw new ArgumentNullException(nameof(outer));", indentationDepth + 2, classBlock.Name.LineIndex)
             });
             if (disposedFlagNameIfAny != null)
             {

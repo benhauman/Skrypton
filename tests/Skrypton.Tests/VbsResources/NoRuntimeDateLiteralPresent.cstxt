@@ -17,10 +17,7 @@ namespace TranslatedProgram
 		}
 		public GlobalReferences Go(EnvironmentReferences env)
 		{
-			if (env == null)
-				throw new ArgumentNullException(nameof(env));
-
-			var _env = env;
+			var _env = env ?? throw new ArgumentNullException(nameof(env));
 			var _outer = new GlobalReferences(_, _env);
 
 			if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("29 5 2015"))))

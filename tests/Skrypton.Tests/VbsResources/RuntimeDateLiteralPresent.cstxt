@@ -19,10 +19,7 @@ namespace TranslatedProgram
 
 		public GlobalReferences Go(EnvironmentReferences env)
 		{
-			if (env == null)
-				throw new ArgumentNullException(nameof(env));
-
-			var _env = env;
+			var _env = env ?? throw new ArgumentNullException(nameof(env));
 			var _outer = new GlobalReferences(_, _env);
 			RuntimeDateLiteralValidator.ValidateAgainstCurrentCulture(_);
 

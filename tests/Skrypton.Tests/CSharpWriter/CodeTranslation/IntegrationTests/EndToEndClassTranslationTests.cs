@@ -32,15 +32,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 
 					[TranslatedProperty(""Name"")]
@@ -82,15 +76,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private bool _disposed1;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 						_disposed1 = false;
 					}
 
@@ -154,15 +142,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 						try { class_initialize(); }
 						catch(Exception e)
 						{
@@ -202,15 +184,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 						mname = null;
 						try { class_initialize(); }
 						catch(Exception e)
@@ -255,15 +231,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
 					public object name()
@@ -302,15 +272,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
 					public object name()
@@ -350,15 +314,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
 					public void name(ref object value)
@@ -397,15 +355,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
 					public void name(ref object value)
@@ -443,15 +395,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
 					public void name(ref object value)
@@ -489,15 +435,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly GlobalReferences _outer;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
-						if (compatLayer == null)
-							throw new ArgumentNullException(nameof(compatLayer));
-						if (env == null)
-							throw new ArgumentNullException(nameof(env));
-						if (outer == null)
-							throw new ArgumentNullException(nameof(outer));
-						_ = compatLayer;
-						_env = env;
-						_outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 
 					[TranslatedProperty(""Blah"")]

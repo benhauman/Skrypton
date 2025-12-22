@@ -256,11 +256,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         0
                     ),
                     new TranslatedStatement("{", 2, 0),
-                    new TranslatedStatement("if (env == null)", 3, 0),
-                    new TranslatedStatement("throw new ArgumentNullException(nameof(env));", 4, 0),
-                    EmptyLine,
                     new TranslatedStatement(
-                        string.Format("var {0} = env;", _envRefName.Name),
+                        string.Format("var {0} = env ?? throw new ArgumentNullException(nameof(env));", _envRefName.Name),
                         3,
                         0
                     ),

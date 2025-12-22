@@ -456,15 +456,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     private readonly GlobalReferences _outer;
                     public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
                     {
-                        if (compatLayer == null)
-                            throw new ArgumentNullException(nameof(compatLayer));
-                        if (env == null)
-                            throw new ArgumentNullException(nameof(env));
-                        if (outer == null)
-                            throw new ArgumentNullException(nameof(outer));
-                        _ = compatLayer;
-                        _env = env;
-                        _outer = outer;
+						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+						_env = env ?? throw new ArgumentNullException(nameof(env));
+						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
                         c = null;
                     }
                     private object c { get; set; }
