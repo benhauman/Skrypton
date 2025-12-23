@@ -9,6 +9,7 @@ namespace Helpline.Application.ScriptingModel
     class CncObj : IConnectivityDomainObject // IHLCncHLObj
     {
         internal const string szPNODEWFINSTANCEID = "79F2D5E4-0307-44D3-AF55-51D16604C97B";
+        internal const string wfInstanceId = "AAAAAAAA-BBBB-CCCC-DDDD-111166778899";
 
         internal string controllerId;
         internal string referenceNumber;

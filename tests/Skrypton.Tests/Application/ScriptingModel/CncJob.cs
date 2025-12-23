@@ -67,7 +67,7 @@ namespace Helpline.Application.ScriptingModel
 
         private void SetProcessTextImpl(object value)
         {
-            Console.WriteLine((string)value);
+            Console.WriteLine("CNC-Log:" + (string)value);
         }
 
 
@@ -77,10 +77,21 @@ namespace Helpline.Application.ScriptingModel
             return null;
         }
 
+        public bool CanExtendWorkflowCase(object objIdentity)
+        {
+            Console.WriteLine("CanExtendWorkflowCase:" + objIdentity);
+            return true;
+        }
+        public string DoExtendWorkflowCase(object objIdentity)
+        {
+            Console.WriteLine("DoExtendWorkflowCase:" + objIdentity);
+            return null;
+        }
+
         public CncObj GetCaseByReferenceNumber(string referenceNumber)
         {
             var oi = new HLOBJECTID(191, 23822);
-            return new CncObj(cncTestContext, oi) { controllerId = CncObj.szPNODEWFINSTANCEID, referenceNumber = referenceNumber };
+            return new CncObj(cncTestContext, oi) { controllerId = CncObj.wfInstanceId, referenceNumber = referenceNumber };
         }
 
         public bool IsBuiltinCase(object objIdentity)
@@ -93,7 +104,7 @@ namespace Helpline.Application.ScriptingModel
         {
             var oi = new HLOBJECTID(22292, 55555);
             return new EblSearchResult().AddLoadedItem(
-                new CncObj(cncTestContext, oi) { controllerId = CncObj.szPNODEWFINSTANCEID, referenceNumber = "aaaaaaaaaaaaaaaaa1" }
+                new CncObj(cncTestContext, oi) { controllerId = CncObj.wfInstanceId, referenceNumber = "aaaaaaaaaaaaaaaaa1" }
                 );
         }
 

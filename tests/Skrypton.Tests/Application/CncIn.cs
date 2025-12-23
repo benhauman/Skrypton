@@ -34,10 +34,10 @@ namespace Skrypton.Tests.Application
         {
             DoCncInTest();
         }
-        //[TestMethod]
+        [TestMethod]
         public void LUNA12_quxDATA__hlsysscript_cncIN()
         {
-            ChainsTest.TestCncInChain(this, TestName, false);
+            ChainsTest.TestCncInChain(this, TestName, true);
             DoCncInTest();
         }
         private void DoCncInTest()
@@ -55,7 +55,7 @@ namespace Skrypton.Tests.Application
             ExecuteTranslatedProgram(TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
 
             // assert
-            Assert.IsTrue(mergeSU_called, "mergeSU_called");
+            Assert.IsFalse(mergeSU_called, "mergeSU_called");
 
         }
         internal static void ExecuteTranslatedProgram(CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)
