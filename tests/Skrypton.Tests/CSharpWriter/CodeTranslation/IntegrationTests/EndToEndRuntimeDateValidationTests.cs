@@ -18,11 +18,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void NoRuntimeDateLiteralPresent()
         {
             var source = "If (a = #29 5 2015#) Then\nEnd If";
-            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
-            base.AreEqualStringArray(TestName, ".cstxt",
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
-                DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable).Select(s => s.Content.Trim()).Where(s => s != "").ToArray()
-            );
+            TestCSharpCodeTranslation(source);
+            //string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+            //base.AreEqualStringArray(TestName, ".cstxt",
+            //    expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+            //    DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable).Select(s => s.Content.Trim()).Where(s => s != "").ToArray()
+            //);
         }
 
         /// <summary>
@@ -31,14 +32,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void RuntimeDateLiteralPresent()
         {
-            TestCulture = CultureInfo.GetCultureInfo("en-GB");
+            //TestCulture = CultureInfo.GetCultureInfo("en-GB");
             var source = "If (a = #29 May 2015#) Then\nEnd If";
-
-            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
-            base.AreEqualStringArray(TestName, ".cstxt",
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
-                DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable).Select(s => s.Content.Trim()).Where(s => s != "").ToArray()
-            );
+            TestCSharpCodeTranslation(source);
+            //
+            //string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+            //base.AreEqualStringArray(TestName, ".cstxt",
+            //    expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+            //    DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable).Select(s => s.Content.Trim()).Where(s => s != "").ToArray()
+            //);
         }
     }
 }

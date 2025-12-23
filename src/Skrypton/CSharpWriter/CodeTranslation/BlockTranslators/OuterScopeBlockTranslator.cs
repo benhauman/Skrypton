@@ -469,7 +469,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     annotatedClasses.SelectMany(c => c.LeadingComments.Cast<ICodeBlock>().Concat(new[] { c.CodeBlock })).ToNonNullImmutableList()
                 ),
                 scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed), // See comment above relating to ExternalDependencies for function blocks
-                2 // indentationDepth
+                1 // indentationDepth
             );
             if (_outputType == OutputTypeOptions.Executable)
             {

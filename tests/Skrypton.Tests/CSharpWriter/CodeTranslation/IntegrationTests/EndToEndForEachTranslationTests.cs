@@ -142,17 +142,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For Each value In Array(1, 2)
 				Next
 			";
-            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+			TestCSharpCodeTranslation(source);
+   //         string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
 
-            var output = DefaultTranslator
-				.Translate(TestCulture, source, new string[0], renderCommentsAboutUndeclaredVariables: false)
-				.Select(s => s.Content)
-				.Where(s => s != "")
-				.ToArray();
-			base.AreEqualStringArray(TestName, ".cstxt",
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
-				output.Select(s => s.Trim()).Where(s => s != "").ToArray()
-			);
+   //         var output = DefaultTranslator
+			//	.Translate(TestCulture, source, new string[0], renderCommentsAboutUndeclaredVariables: false)
+			//	.Select(s => s.Content)
+			//	.Where(s => s != "")
+			//	.ToArray();
+			//base.AreEqualStringArray(TestName, ".cstxt",
+   //             expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+			//	output.Select(s => s.Trim()).Where(s => s != "").ToArray()
+			//);
         }
 	}
 }

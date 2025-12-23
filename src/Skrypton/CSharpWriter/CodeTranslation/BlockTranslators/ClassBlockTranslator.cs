@@ -253,10 +253,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 inheritanceChainIfAny += "IDisposable";
             }
 
+            string sourceClassNameArg = classBlock.Name.Content == className
+                ? $"nameof({className})"
+                : classBlock.Name.Content.ToLiteral();
+
             // The class is sealed to make the IDisposable implementation easier (where appropriate) - the recommended way to implement IDisposable
             // is for there to be a "protected virtual void Dispose(bool disposing)" method, for use by the IDisposable's public Dispose() method,
-            // by the finaliser and by any derived types. However, there may be a "Dispose" method that comes from the VBScript source. We can work
-            // around this by explicitly implementating "IDisposable.Dispose" and by using the "_tempNameGenerator" reference to get a safe-to-use
+            // by the finalizer and by any derived types. However, there may be a "Dispose" method that comes from the VBScript source. We can work
+            // around this by explicitly implementing "IDisposable.Dispose" and by using the "_tempNameGenerator" reference to get a safe-to-use
             // method name, for the boolean argument "Dispose" method - but then it won't follow the recommended pattern and be a method name
             // "Dispose" that derived types can use. The easiest way around that is to make the classes sealed and then there are no derived
             // types to worry about (this could be seen to be a limitation on the translated code, but since it's all being translated from
@@ -265,7 +269,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var classHeaderStatements = new List<TranslatedStatement>
             {
                 new TranslatedStatement("[ComVisible(true)]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("[SourceClassName(" + classBlock.Name.Content.ToLiteral() + ")]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement("[ClassInterface(ClassInterfaceType.AutoDispatch)]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement("[SourceClassName(" + sourceClassNameArg + ")]", indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement("public sealed class " + className + inheritanceChainIfAny, indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement("{", indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement("private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),

@@ -329,6 +329,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Class";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{

@@ -15,9 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="VbsResources\**\*.cs" />
     <EmbeddedResource Include="VbsResources\**\*.sql" />
     <EmbeddedResource Include="VbsResources\**\*.vbs" />
     <EmbeddedResource Include="VbsResources\**\*.xml" />
+    <EmbeddedResource Include="VbsResources\**\*.cs" />
     <EmbeddedResource Include="VbsResources\**\*.cstxt" />
   </ItemGroup>
 

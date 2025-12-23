@@ -24,6 +24,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -67,6 +68,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1 : IDisposable
 				{
@@ -134,6 +136,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -176,6 +179,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -223,6 +227,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				END CLASS";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -264,6 +269,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				END CLASS";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -306,6 +312,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				END CLASS";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -347,6 +354,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				END CLASS";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -387,6 +395,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				END CLASS";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1
 				{
@@ -427,6 +436,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				[ComVisible(true)]
+				[ClassInterface(ClassInterfaceType.AutoDispatch)]
 				[SourceClassName(""C1"")]
 				public sealed class c1 : TranslatedPropertyIReflectImplementation
 				{

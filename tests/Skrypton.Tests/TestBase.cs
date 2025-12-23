@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.RuntimeSupport;
 
 namespace Skrypton.Tests
@@ -79,8 +80,33 @@ namespace Skrypton.Tests
             }
         }
 
-        public void AreEqualStringArray(string chainName, string fileSuffix, string[] arr_expected, string[] arr_actual)
+        private static string RenderTranslatedStatement(TranslatedStatement s)
         {
+            if (s.IndentationDepth == 0)
+                return s.Content;
+            string txt = new string(' ', s.IndentationDepth * 4) + s.Content;
+            return txt;
+        }
+
+        protected void TestCSharpCodeTranslation(string vbsSource)
+        {
+            string[] output = Skrypton.CSharpWriter.DefaultTranslator
+                .Translate(TestCulture, vbsSource, new string[0], renderCommentsAboutUndeclaredVariables: false)
+                .Select(s => RenderTranslatedStatement(s))
+                .ToArray();
+
+            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+
+            string chainName = TestName;
+            string fileSuffix = ".cstxt";
+            //    AreEqualStringArray(TestName, ".cstxt",
+            string[] arr_expected = expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string text_a_raw = string.Join("\r\n", output);
+            //    );
+            //}
+            //private void AreEqualStringArray(string chainName, string fileSuffix, string[] arr_expected, string[] arr_actual)
+            //{
             string workItemName = "Script";// TestContext.TestName;
             string text_e = arr_expected == null ? null : string.Join("\r\n", arr_expected);
             string text_a = arr_actual == null ? null : string.Join("\r\n", arr_actual);
@@ -108,7 +134,7 @@ namespace Skrypton.Tests
                         }
                     }
 
-                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, text_e, text_a);
+                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, expected, text_a_raw);
                     Assert.Fail($"File content different at index:{diffAtIndex}");
                 }
                 else

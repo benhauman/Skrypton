@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
+    [DebuggerDisplay("{Content}")]
     public class TranslatedStatement
     {
         public TranslatedStatement(string content, int indentationDepth, int lineIndexOfStatementStartInSource)
         {
             if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             if (content != content.Trim())
                 throw new ArgumentException("content may be blank but may not have any leading or trailing whitespace");
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
             if (lineIndexOfStatementStartInSource < 0)
-                throw new ArgumentOutOfRangeException("lineIndexOfStatementStartInSource", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndexOfStatementStartInSource), "must be zero or greater");
 
             Content = content;
             IndentationDepth = indentationDepth;

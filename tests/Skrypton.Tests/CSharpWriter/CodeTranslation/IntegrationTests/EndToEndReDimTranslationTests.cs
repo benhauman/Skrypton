@@ -424,7 +424,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// parent scope was only IMPLICITLY declared - ie. accessed but never DIM'd)
         /// </summary>
         [TestMethod, MyFact]
-        public void ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables()
+        public void ReDimsWithinFuncCanPointToImplicitlyDeclOuterMostScopeVars() // ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables
         {
             var source = @"
                 a = 1
@@ -439,43 +439,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim c(3) ' This refers to the explicitly-declared variable ""c"" in the containing class
                     End Function
                 End Class";
-            var expected = @"
-                _env.a = (Int16)1;
-                public object f1()
-                {
-                    object retVal1 = null;
-                    _env.a = _.NEWARRAY(new object[] { (Int16)2 }); // This refers to the implicitly-declared variable ""a"" in the outermost scope
-                    return retVal1;
-                }
-                [ComVisible(true)]
-                [SourceClassName(""C1"")]
-                public sealed class c1
-                {
-                    private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-                    private readonly EnvironmentReferences _env;
-                    private readonly GlobalReferences _outer;
-                    public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-                    {
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-                        c = null;
-                    }
-                    private object c { get; set; }
-                    public object cf1()
-                    {
-                        object retVal2 = null;
-                        object b = null;
-                        _env.a = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the implicitly-declared variable ""a"" in the outermost scope
-                        b = _.NEWARRAY(new object[] { (Int16)3 }); // There is no reference for this to relate to, so it acts as new explicit variable declaration
-                        c = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the explicitly-declared variable ""c"" in the containing class
-                        return retVal2;
-                    }
-                }";
-            myAssert.AreEqual(
-                SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslation(source);
         }
 
         private static IEnumerable<string> SplitOnNewLinesSkipFirstLineAndTrimAll(string value)
