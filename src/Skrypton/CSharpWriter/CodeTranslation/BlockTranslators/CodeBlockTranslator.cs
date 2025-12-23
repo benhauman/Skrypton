@@ -155,21 +155,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (commentBlock == null)
                 return null;
 
-            var translatedCommentContent = "//" + commentBlock.Content;
+            string translatedCommentContent = "//" + commentBlock.Content;
             if (block is InlineCommentStatement)
             {
                 var lastTranslatedStatement = translationResult.TranslatedStatements.LastOrDefault();
-                if ((lastTranslatedStatement != null) && (lastTranslatedStatement.HasContent))
+                if ((lastTranslatedStatement != null))// && (lastTranslatedStatement.HasContent))
                 {
-                    translationResult = new TranslationResult(
-                        // re-add the last statement with the comment appended to it
-                        translationResult.TranslatedStatements.RemoveLast().Add(new TranslatedStatement(lastTranslatedStatement.Content + " " + translatedCommentContent,
-                                lastTranslatedStatement.IndentationDepth,
-                                commentBlock.LineIndex
-                            )),
-                        translationResult.ExplicitVariableDeclarations,
-                        translationResult.UndeclaredVariablesAccessed
-                    );
+                    // see 'ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables'
+                    lastTranslatedStatement.AppendInlineComment(translatedCommentContent);
                     return translationResult;
                 }
             }
@@ -1079,18 +1072,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         protected static string TranslateVariableInitialization(VariableDeclaration variableDeclaration, string variableAccessTokenName, ScopeLocationOptions scopeLocation)
         {
             if (variableDeclaration == null)
-                throw new ArgumentNullException("variableDeclaration");
+                throw new ArgumentNullException(nameof(variableDeclaration));
             if (!Enum.IsDefined(typeof(ScopeLocationOptions), scopeLocation))
-                throw new ArgumentOutOfRangeException("scopeLocation");
+                throw new ArgumentOutOfRangeException(nameof(scopeLocation));
 
             // For variables declared in the outermost scope or within functions, this could have been simplified such that a "Dim a()"
             // be rewritten as "object a = null;" and "a = _.NEWARRAY();" separately, which would mean that the VariableDeclaration
             // class need not have an IsArray method. But for statements within a class, such as "Private mValue()", this would not
-            // be possible since the separate setter statement could not exist outside of a method.
+            // be possible since the separate setter statement could not exist outside a method.
             // 2014-04-24 DWR: Can't use NEWARRAY here since it relies upon an IProvideVBScriptCompatFunctionality instance, which
-            // won't be available when initialising class members, so need to replicate the logic for an array initialisation that
+            // won't be available when initializing class members, so need to replicate the logic for an array initialization that
             // doesn't have any dimensions here.
-            // 2014-04-28 DWR: And can't set to null if there are array dimensions to set since class member array initialisations
+            // 2014-04-28 DWR: And can't set to null if there are array dimensions to set since class member array initializations
             // will not be able to be set in a second pass so "Private a(1)" must be translated direct into "object a = new object[2]"
             // (noting that the dimension size is one more in C# since it is specifies the number of items in the array rather than
             // the upper bound).

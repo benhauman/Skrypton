@@ -39,6 +39,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// zero, since they are not of any significant importance). This value will always be zero or greater.
         /// </summary>
         public int LineIndexOfStatementStartInSource { get; private set; }
+
+        internal void AppendInlineComment(string translatedCommentContent)
+        {
+            if (Content != "")
+            {
+                Content += " ";
+            }
+            Content += translatedCommentContent;
+        }
     }
 
     public sealed class TranslatedVariableDeclarationStatement : TranslatedStatement

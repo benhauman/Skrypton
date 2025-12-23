@@ -431,8 +431,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                     {
                         string variableAccessToken = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
-                        TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken,
-                            "public object " + variableAccessToken + " { get; set; }",
+                        TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken, "public object " + variableAccessToken + " { get; set; }",
                             2,
                             explicitVariableDeclaration.Name.LineIndex
                         );
