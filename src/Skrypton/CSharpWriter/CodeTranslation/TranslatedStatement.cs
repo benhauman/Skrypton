@@ -25,6 +25,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// This will never be null, though it may be blank if it represents a blank line. It will never have any leading or trailing whitespace.
         /// </summary>
         public string Content { get; private set; }
+        public bool HasContent => Content != "";
 
         /// <summary>
         /// This will always be zero or greater
@@ -38,5 +39,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// zero, since they are not of any significant importance). This value will always be zero or greater.
         /// </summary>
         public int LineIndexOfStatementStartInSource { get; private set; }
+    }
+
+    public sealed class TranslatedVariableDeclarationStatement : TranslatedStatement
+    {
+        public TranslatedVariableDeclarationStatement(string variableAccessToken, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+            : base(content, indentationDepth, lineIndexOfStatementStartInSource)
+        {
+            if (string.IsNullOrEmpty(variableAccessToken))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(variableAccessToken));
+            VariableAccessToken = variableAccessToken;
+        }
+        public string VariableAccessToken { get; private set; }
     }
 }

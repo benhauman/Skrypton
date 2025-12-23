@@ -7,6 +7,7 @@ using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Attributes;
@@ -113,26 +114,26 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             // Group the code blocks that need to be executed (the functions from the outermost scope need to go into a "global references" class
             // which will appear after any other classes, which will appear after everything else)
-            var commentBuffer = new NonNullImmutableList<CommentStatement>();
-            var annotatedFunctions = new NonNullImmutableList<Annotated<AbstractFunctionBlock>>();
-            var annotatedClasses = new NonNullImmutableList<Annotated<ClassBlock>>();
-            var otherBlocks = new NonNullImmutableList<ICodeBlock>();
-            foreach (var block in blocks)
+            NonNullImmutableList<CommentStatement> commentBuffer = new NonNullImmutableList<CommentStatement>();
+            NonNullImmutableList<Annotated<AbstractFunctionBlock>> annotatedFunctions = new NonNullImmutableList<Annotated<AbstractFunctionBlock>>();
+            NonNullImmutableList<Annotated<ClassBlock>> annotatedClasses = new NonNullImmutableList<Annotated<ClassBlock>>();
+            NonNullImmutableList<ICodeBlock> otherBlocks = new NonNullImmutableList<ICodeBlock>();
+            foreach (ICodeBlock block in blocks)
             {
-                var comment = block as CommentStatement;
+                CommentStatement comment = block as CommentStatement;
                 if (comment != null)
                 {
                     commentBuffer = commentBuffer.Add(comment);
                     continue;
                 }
-                var functionBlock = block as AbstractFunctionBlock;
+                AbstractFunctionBlock functionBlock = block as AbstractFunctionBlock;
                 if (functionBlock != null)
                 {
                     annotatedFunctions = annotatedFunctions.Add(new Annotated<AbstractFunctionBlock>(commentBuffer, functionBlock));
                     commentBuffer = new NonNullImmutableList<CommentStatement>();
                     continue;
                 }
-                var classBlock = block as ClassBlock;
+                ClassBlock classBlock = block as ClassBlock;
                 if (classBlock != null)
                 {
                     annotatedClasses = annotatedClasses.Add(new Annotated<ClassBlock>(commentBuffer, classBlock));
@@ -176,7 +177,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 })
                 .ToNonNullImmutableList();
 
-            var scopeAccessInformation = ScopeAccessInformation.FromOutermostScope(
+            ScopeAccessInformation scopeAccessInformation = ScopeAccessInformation.FromOutermostScope(
                 _startClassName, // A placeholder name is required for an OutermostScope instance and so is required by this method
                 blocks,
                 _externalDependencies
@@ -188,19 +189,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 );
             }
 
-            var outerExecutableBlocksTranslationResult = Translate(
+            TranslationResult outerExecutableBlocksTranslationResult = Translate(
                 otherBlocks.ToNonNullImmutableList(),
                 scopeAccessInformation,
                 3 // indentationDepth
             );
-            var explicitVariableDeclarationsFromWithOuterScope = outerExecutableBlocksTranslationResult.ExplicitVariableDeclarations;
+            NonNullImmutableList<VariableDeclaration> explicitVariableDeclarationsFromWithOuterScope = outerExecutableBlocksTranslationResult.ExplicitVariableDeclarations;
             outerExecutableBlocksTranslationResult = new TranslationResult(
                 outerExecutableBlocksTranslationResult.TranslatedStatements,
                 new NonNullImmutableList<VariableDeclaration>(),
                 outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed
             );
 
-            var translatedStatements = new NonNullImmutableList<TranslatedStatement>();
+            NonNullImmutableList<TranslatedStatement> translatedStatements = new NonNullImmutableList<TranslatedStatement>();
             if (_outputType == OutputTypeOptions.Executable)
             {
                 translatedStatements = translatedStatements.AddRange(new[]
@@ -400,18 +401,25 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Note: Any repeated "explicitVariableDeclarationsFromWithOuterScope" entries are ignored - this makes the ReDim translation process easier (where ReDim statements
                 // may target already-declared variables or they may be considered to implicitly declare them) but it means that the Dim translation has to do some extra work to
                 // pick up on "Name redefined" scenarios.
-                var variableInitialisationStatements = new NonNullImmutableList<TranslatedStatement>();
-                foreach (var explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+                Dictionary<string, TranslatedVariableDeclarationStatement> variableInitializationStatements = [];
+                foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                 {
-                    var variableInitialisationStatement = new TranslatedStatement(
-                        base.TranslateVariableInitialisation(explicitVariableDeclaration, ScopeLocationOptions.OutermostScope),
+                    string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
+
+                    TranslatedVariableDeclarationStatement variableInitializationStatement = new TranslatedVariableDeclarationStatement(variableAccessTokenName, TranslateVariableInitialization(explicitVariableDeclaration, variableAccessTokenName, ScopeLocationOptions.OutermostScope),
                         3,
                         explicitVariableDeclaration.Name.LineIndex
                     );
-                    if (!variableInitialisationStatements.Any(s => s.Content == variableInitialisationStatement.Content))
-                        variableInitialisationStatements = variableInitialisationStatements.Add(variableInitialisationStatement);
+                    if (!variableInitializationStatements.ContainsKey(variableAccessTokenName))
+                    {
+                        variableInitializationStatements.Add(variableAccessTokenName, variableInitializationStatement);
+                    }
+                    else
+                    {
+                        //already registered. see 'RepeatedReDimInOutermostScope1, RepeatedReDimInOutermostScope2'
+                    }
                 }
-                translatedStatements = translatedStatements.AddRange(variableInitialisationStatements);
+                translatedStatements = translatedStatements.AddRange(variableInitializationStatements.Values);
                 translatedStatements = translatedStatements
                     .Add(
                         new TranslatedStatement("}", 2, 0)
@@ -419,21 +427,29 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (explicitVariableDeclarationsFromWithOuterScope.Any())
                 {
                     translatedStatements = translatedStatements.Add(EmptyLine);
-                    var variableDeclarationStatements = new NonNullImmutableList<TranslatedStatement>();
-                    foreach (var explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+                    Dictionary<string, TranslatedVariableDeclarationStatement> variableDeclarationStatements = [];
+                    foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                     {
-                        var variableDeclarationStatement = new TranslatedStatement(
-                            "public object " + _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name) + " { get; set; }",
+                        string variableAccessToken = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
+                        TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken,
+                            "public object " + variableAccessToken + " { get; set; }",
                             2,
                             explicitVariableDeclaration.Name.LineIndex
                         );
-                        if (!variableDeclarationStatements.Any(s => s.Content == variableDeclarationStatement.Content))
-                            variableDeclarationStatements = variableDeclarationStatements.Add(variableDeclarationStatement);
+
+                        if (!variableDeclarationStatements.ContainsKey(variableAccessToken))
+                        {
+                            variableDeclarationStatements.Add(variableAccessToken, variableDeclarationStatement);
+                        }
+                        else
+                        {
+                            // already registered. see 'RepeatedReDimInOutermostScope1'
+                        }
                     }
-                    translatedStatements = translatedStatements.AddRange(variableDeclarationStatements);
+                    translatedStatements = translatedStatements.AddRange(variableDeclarationStatements.Values);
                 }
             }
-            foreach (var annotatedFunctionBlock in annotatedFunctions)
+            foreach (Annotated<AbstractFunctionBlock> annotatedFunctionBlock in annotatedFunctions)
             {
                 // Note that any variables that were accessed by code in the outermost scope, but that were not explicitly declared, are considered to be IMPLICITLY declared.
                 // So, if they are referenced within any of the functions, they must share the same reference unless explicit declared within those functions (so if "a" is
@@ -449,7 +465,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ).TranslatedStatements
                 );
             }
-            var classBlocksTranslationResult = Translate(
+            TranslationResult classBlocksTranslationResult = Translate(
                 TrimTrailingBlankLines(
                     annotatedClasses.SelectMany(c => c.LeadingComments.Cast<ICodeBlock>().Concat(new[] { c.CodeBlock })).ToNonNullImmutableList()
                 ),
@@ -465,31 +481,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 });
 
                 // This has to be generated after all of the Translate calls to ensure that the UndeclaredVariablesAccessed data for all of the TranslationResults is available
-                var allEnvironmentVariablesAccessed =
+                NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed =
                     scopeAccessInformation.ExternalDependencies
                     .AddRange(
                         outerExecutableBlocksTranslationResult
                             .Add(classBlocksTranslationResult)
                             .UndeclaredVariablesAccessed
                     );
-                // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
-                translatedStatements = translatedStatements.AddRange(new[]
-                {
-                    new TranslatedStatement($"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
-                    new TranslatedStatement("{", 1, 0)
-                });
-                var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex });
-                var environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
-                foreach (var v in allEnvironmentVariableNames)
-                {
-                    if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
-                        continue;
-                    translatedStatements = translatedStatements.Add(
-                        new TranslatedStatement("public object " + v.RewrittenName + " { get; set; }", 2, v.LineIndex)
-                    );
-                    environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
-                }
-                translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close 'EnvironmentReferences' class
+                translatedStatements = RenderClassEnvironmentReferences(translatedStatements, allEnvironmentVariablesAccessed);
             }
 
             if (classBlocksTranslationResult.TranslatedStatements.Any())
@@ -511,6 +510,31 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // could be a big problem).
             return RemoveRunsOfBlankLines(translatedStatements);
         }
+
+        private NonNullImmutableList<TranslatedStatement> RenderClassEnvironmentReferences(NonNullImmutableList<TranslatedStatement> translatedStatements, NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed)
+        {
+            // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
+            translatedStatements = translatedStatements.AddRange(new[]
+            {
+                new TranslatedStatement($"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
+                new TranslatedStatement("{", 1, 0)
+            });
+            var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex }).ToArray();
+            HashSet<string> environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
+            foreach (var v in allEnvironmentVariableNames)
+            {
+                if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
+                    continue;
+                translatedStatements = translatedStatements.Add(
+                    new TranslatedStatement("public object " + v.RewrittenName + " { get; set; }", 2, v.LineIndex)
+                );
+                environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
+            }
+            translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close 'EnvironmentReferences' class
+            return translatedStatements;
+
+        }
+
         private static readonly TranslatedStatement EmptyLine = new TranslatedStatement("", 0, 0);
 
         private NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
@@ -518,10 +542,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("blocks");
 
-            var result = new NonNullImmutableList<ICodeBlock>();
-            foreach (var block in blocks.Reverse())
+            NonNullImmutableList<ICodeBlock> result = new NonNullImmutableList<ICodeBlock>();
+            foreach (ICodeBlock block in blocks.Reverse())
             {
-                var isBlankLine = block is BlankLine;
+                bool isBlankLine = block is BlankLine;
                 if (!isBlankLine || result.Any())
                     result = result.Insert(block, 0);
             }
@@ -530,11 +554,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private NonNullImmutableList<TranslatedStatement> RemoveRunsOfBlankLines(NonNullImmutableList<TranslatedStatement> translatedStatements)
         {
-            if (translatedStatements == null)
-                throw new ArgumentNullException("translatedStatements");
+            if (translatedStatements == null) throw new ArgumentNullException(nameof(translatedStatements));
 
             return translatedStatements
-                .Select((s, i) => ((i == 0) || (s.Content != "") || (translatedStatements[i - 1].Content != "")) ? s : null)
+                .Select((s, i) => ((i == 0) || (s.HasContent) || (translatedStatements[i - 1].HasContent)) ? s : null)
                 .Where(s => s != null)
                 .ToNonNullImmutableList();
         }
@@ -569,14 +592,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("blocks");
 
-            var removeAtLocations = new List<int>();
-            foreach (var block in blocks)
+            List<int> removeAtLocations = new List<int>();
+            foreach (ICodeBlock block in blocks)
             {
-                var functionBlock = block as AbstractFunctionBlock;
+                AbstractFunctionBlock functionBlock = block as AbstractFunctionBlock;
                 if (functionBlock == null)
                     continue;
 
-                var functionName = _nameRewriter.GetMemberAccessTokenName(functionBlock.Name);
+                string functionName = _nameRewriter.GetMemberAccessTokenName(functionBlock.Name);
                 removeAtLocations.AddRange(
                     blocks
                         .Select((b, blockIndex) => new { Index = blockIndex, Block = b })
@@ -586,7 +609,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         .OrderByDescending(blockIndex => blockIndex).Skip(1) // Leave the last one intact
                 );
             }
-            foreach (var removeIndex in removeAtLocations.Distinct().OrderByDescending(i => i))
+            foreach (int removeIndex in removeAtLocations.Distinct().OrderByDescending(i => i))
                 blocks = blocks.RemoveAt(removeIndex);
             return blocks;
         }
@@ -605,7 +628,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("blocks");
 
-            var allBlocks = blocks.EnumerateAllTokens().ToArray();
+            IToken[] allBlocks = blocks.EnumerateAllTokens().ToArray();
             return blocks.EnumerateAllTokens().OfType<DateLiteralToken>();
 
 

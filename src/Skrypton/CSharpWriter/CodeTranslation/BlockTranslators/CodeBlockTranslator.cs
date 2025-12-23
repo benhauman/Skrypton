@@ -159,13 +159,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (block is InlineCommentStatement)
             {
                 var lastTranslatedStatement = translationResult.TranslatedStatements.LastOrDefault();
-                if ((lastTranslatedStatement != null) && (lastTranslatedStatement.Content != ""))
+                if ((lastTranslatedStatement != null) && (lastTranslatedStatement.HasContent))
                 {
                     translationResult = new TranslationResult(
-                        translationResult.TranslatedStatements
-                            .RemoveLast()
-                            .Add(new TranslatedStatement(
-                                lastTranslatedStatement.Content + " " + translatedCommentContent,
+                        // re-add the last statement with the comment appended to it
+                        translationResult.TranslatedStatements.RemoveLast().Add(new TranslatedStatement(lastTranslatedStatement.Content + " " + translatedCommentContent,
                                 lastTranslatedStatement.IndentationDepth,
                                 commentBlock.LineIndex
                             )),
@@ -1074,6 +1072,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// </summary>
         protected string TranslateVariableInitialisation(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation)
         {
+            if (variableDeclaration == null) throw new ArgumentNullException(nameof(variableDeclaration));
+            string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
+            return TranslateVariableInitialization(variableDeclaration, variableAccessTokenName, scopeLocation);
+        }
+        protected static string TranslateVariableInitialization(VariableDeclaration variableDeclaration, string variableAccessTokenName, ScopeLocationOptions scopeLocation)
+        {
             if (variableDeclaration == null)
                 throw new ArgumentNullException("variableDeclaration");
             if (!Enum.IsDefined(typeof(ScopeLocationOptions), scopeLocation))
@@ -1090,7 +1094,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // will not be able to be set in a second pass so "Private a(1)" must be translated direct into "object a = new object[2]"
             // (noting that the dimension size is one more in C# since it is specifies the number of items in the array rather than
             // the upper bound).
-            var rewrittenName = _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
+            string rewrittenName = variableAccessTokenName;// _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
             if (variableDeclaration.ConstantDimensionsIfAny == null)
             {
                 return string.Format(

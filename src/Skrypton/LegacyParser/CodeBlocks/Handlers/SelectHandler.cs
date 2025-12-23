@@ -14,12 +14,19 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         public override ICodeBlock Process(List<IToken> tokens)
         {
             if (tokens == null)
+            {
                 throw new ArgumentNullException("tokens");
+            }
+
             if (tokens.Count == 0)
+            {
                 return null;
+            }
 
             if (!base.checkAtomTokenPattern(tokens, new string[] { "SELECT", "CASE" }, false))
+            {
                 return null;
+            }
 
             // Trim out "SELECT CASE" tokens
             tokens.RemoveRange(0, 2);
@@ -49,7 +56,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 IToken token = tokens[index];
                 if (token is CommentToken)
+                {
                     openingComments.Add(new CommentStatement(token.Content, token.LineIndex));
+                }
                 else if (token is AbstractEndOfStatementToken)
                 {
                     // Ignore blank lines
@@ -58,21 +67,34 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 else if (token is AtomToken)
                 {
                     if (token.Content.ToUpper() == "CASE")
+                    {
                         break;
+                    }
                     else if (token.Content.ToUpper() == "END")
                     {
                         if (index == (tokens.Count - 1))
+                        {
                             throw new Exception("Error processing SELECT CASE block - reached end of token stream");
+                        }
+
                         IToken tokenNext = tokens[index + 1];
                         if (!(tokenNext is AtomToken))
+                        {
                             throw new Exception("Error processing SELECT CASE block - reached END followed invalid token [" + tokenNext.GetType().ToString() + "]");
+                        }
+
                         if (tokenNext.Content.ToUpper() != "SELECT")
+                        {
                             throw new Exception("Error processing SELECT CASE block - reached non-SELECT END tokens");
+                        }
+
                         break;
                     }
                 }
                 else
+                {
                     throw new Exception("Invalid token encountered in SELECT CASE block [" + token.GetType().ToString() + "]");
+                }
             }
             tokens.RemoveRange(0, openingComments.Count + tokensIgnored.Count);
 
@@ -106,14 +128,19 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     // Quick check that it appears valid
                     bool caseElse = false;
                     if (exprValues.Count == 0)
+                    {
                         throw new Exception("CASE block with no comparison value");
+                    }
                     else
                     {
                         IToken firstExprToken = exprValues[0][0];
                         if ((firstExprToken is AtomToken) && (firstExprToken.Content.ToUpper() == "ELSE"))
                         {
                             if ((exprValues.Count > 1) || (exprValues[0].Count != 1))
+                            {
                                 throw new Exception("Invalid CASE ELSE opening statement");
+                            }
+
                             caseElse = true;
                         }
                     }
@@ -121,11 +148,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     // Try to grab single CASE block content
                     List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
                     if (endSequenceMet == null)
+                    {
                         throw new Exception("Didn't find end sequence!");
+                    }
 
                     // Add to CASE block list
                     if (caseElse)
+                    {
                         content.Add(new SelectBlock.CaseBlockElseSegment(blockContent));
+                    }
                     else
                     {
                         List<Expression> values = new List<Expression>();
@@ -142,9 +173,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         if (tokens.Count > 0)
                         {
                             if (!(tokens[0] is AbstractEndOfStatementToken))
+                            {
                                 throw new Exception("EndOfStatementToken missing after END FUNCTION");
+                            }
                             else
+                            {
                                 tokens.RemoveAt(0);
+                            }
                         }
                         break;
                     }

@@ -5,7 +5,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class InlineCommentStatement : CommentStatement
+    public sealed class InlineCommentStatement : CommentStatement
     {
         public InlineCommentStatement(string content, int lineIndex) : base(content, lineIndex) { }
     }
