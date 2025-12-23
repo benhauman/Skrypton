@@ -4,10 +4,11 @@ using Skrypton.CSharpWriter.Lists;
 using System;
 using System.Globalization;
 using System.Linq;
+using Skrypton.CSharpWriter.CodeTranslation;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
-    public static class WithoutScaffoldingTranslator
+    public static class WithoutScaffoldingTranslator // use 'DefaultCSharpTranslation'
     {
         public static NonNullImmutableList<string> DefaultConsoleExternalDependencies = new NonNullImmutableList<string>().Add("wscript");
 
@@ -32,6 +33,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 .Select(s => s.Content)
                 .Where(s => s != "")
                 .ToArray();
+        }
+    }
+
+    internal static class DefaultCSharpTranslation
+    {
+        internal static string[] GetTranslatedStatements(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
+        {
+            string[] output = Skrypton.CSharpWriter.DefaultTranslator.Translate(culture, vbsSource, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, true)
+                .Select(s => RenderTranslatedStatement(s))
+                .ToArray();
+            return output;
+        }
+        private static string RenderTranslatedStatement(TranslatedStatement s)
+        {
+            if (s.IndentationDepth == 0)
+                return s.Content;
+            string txt = new string(' ', s.IndentationDepth * 4) + s.Content;
+            return txt;
         }
     }
 }

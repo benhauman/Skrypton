@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.RuntimeSupport;
+using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 
 namespace Skrypton.Tests
 {
@@ -80,20 +81,9 @@ namespace Skrypton.Tests
             }
         }
 
-        private static string RenderTranslatedStatement(TranslatedStatement s)
+        protected void TestCSharpCodeTranslation(string vbsSource) // TODO remove 'WithoutScaffoldingTranslator'
         {
-            if (s.IndentationDepth == 0)
-                return s.Content;
-            string txt = new string(' ', s.IndentationDepth * 4) + s.Content;
-            return txt;
-        }
-
-        protected void TestCSharpCodeTranslation(string vbsSource)
-        {
-            string[] output = Skrypton.CSharpWriter.DefaultTranslator
-                .Translate(TestCulture, vbsSource, new string[0], renderCommentsAboutUndeclaredVariables: false)
-                .Select(s => RenderTranslatedStatement(s))
-                .ToArray();
+            string[] output = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
 
             string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
 
