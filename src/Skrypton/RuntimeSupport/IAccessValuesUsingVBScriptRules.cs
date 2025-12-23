@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Skrypton.RuntimeSupport
 {
@@ -17,7 +18,7 @@ namespace Skrypton.RuntimeSupport
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider);
+        object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 
         /// <summary>
         /// This will throw an exception for null target or arguments references or if the setting fails (eg. invalid number of arguments,

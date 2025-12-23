@@ -3383,6 +3383,6 @@ namespace TranslatedProgram
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object session { get; set; }
+        public object hlcontext { get; set; }
     }
 }

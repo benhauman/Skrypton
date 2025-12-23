@@ -394,7 +394,10 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //   WScript.Echo a.1()
             //   WScript.Echo 1.a
             if ((tokensList.Count() > 1) && tokensList.Any(t => t is NumericValueToken))
-                throw new ArgumentException("Invalid member access - involving numeric literal (this is VBScript compile time error \"Expected end of statement\")");
+            {
+                var tokenF = tokensList.First();
+                throw new ArgumentException($"Invalid member access - involving numeric literal (this is VBScript compile time error \"Expected end of statement\"). LineIndex:{tokenF.LineIndex}: {tokenF.Content}");
+            }
 
             // If there are no arguments and no brackets then there's a chance of representing this as a constant-type expression or as a new instance request
             // - If there are brackets following a number literal then it's a runtime error ("Type mismatch")

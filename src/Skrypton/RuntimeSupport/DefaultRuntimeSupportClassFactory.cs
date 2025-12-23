@@ -37,7 +37,7 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public IProvideVBScriptCompatFunctionalityToIndividualRequests Get()
         {
-            return new DefaultRuntimeFunctionalityProvider(DefaultNameRewriter, DefaultVBScriptValueRetriever, _culture);
+            return new DefaultRuntimeFunctionalityProvider(DefaultVBScriptValueRetriever, _culture);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public Func<string, string> DefaultNameRewriter { get; private set; }
 
-        internal static string RewriteName(string value)
+        internal static string RewriteName(string value)//, int lineIndex)
         {
             if (value == null)
                 throw new ArgumentNullException("value");

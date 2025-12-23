@@ -25,7 +25,7 @@
         public static TextReader LoadResourceString(Type typeFromResourceAssembly, string resourceName)
         {
             Stream resourceStream = GetResourceStream(typeFromResourceAssembly, resourceName);
-            TextReader textReader = new StreamReader(resourceStream);
+            TextReader textReader = new StreamReader(resourceStream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             return textReader;
         }
 

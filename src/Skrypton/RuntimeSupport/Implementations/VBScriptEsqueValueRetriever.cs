@@ -773,7 +773,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider)
+        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int callerLineNum = 0)
         {
             if (members == null)
                 throw new ArgumentNullException("members");
@@ -785,7 +785,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             var arguments = argumentProvider.GetInitialValues().ToArray();
             try
             {
-                return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments);
+                return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, callerLineNum);
             }
             finally
             {
@@ -798,7 +798,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments)
+        private object CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException("members");
@@ -825,7 +825,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 else
                     targetDescription = STR(target);
                 if (memberAccessorsArray.Any())
-                    throw new ObjectRequiredException("'" + targetDescription + "'");
+                    throw new ObjectRequiredException("'" + targetDescription + $"'. CallerLineNo:{callerLineNum}");
                 if (arguments.Any() || useBracketsWhereZeroArguments)
                     throw new TypeMismatchException("'" + targetDescription + "'");
             }

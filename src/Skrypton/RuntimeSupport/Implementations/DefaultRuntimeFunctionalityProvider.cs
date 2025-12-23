@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -36,7 +37,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private readonly DefaultArithmeticFunctionalityProvider _arithmeticHandler;
         private int _randomSeed;
         private Exception _trappedErrorIfAny;
-        public DefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        public DefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
             if (valueRetriever == null)
                 throw new ArgumentNullException("valueRetriever");
@@ -2383,7 +2384,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get { return _valueRetriever.ARGS; }
         }
-        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider)
+        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider);
         }

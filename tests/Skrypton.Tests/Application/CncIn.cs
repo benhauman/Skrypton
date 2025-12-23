@@ -18,8 +18,29 @@ namespace Skrypton.Tests.Application
     [TestClass]
     public class CncIn : TestBase
     {
+        /*
+            SELECT scriptid   = scr.id
+                , scripttext = scr.script
+             FROM [dbo].[hlsysscript] AS scr
+            WHERE scr.active      = 1
+              AND scr.objectdefid = 900 -- 900:connectivity
+              AND scr.[type]      = 16 -- 16:ScriptTypeConnectivityIn
+              AND scr.scriptmode  = 0 -- 0:eScriptMode.ScriptModeWorking
+              AND LEN(ISNULL(scr.script,N'')) > 0 -- TODO: CK_
+              ;
+         */
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
+        {
+            DoCncInTest();
+        }
+        //[TestMethod]
+        public void LUNA12_quxDATA__hlsysscript_cncIN()
+        {
+            ChainsTest.TestCncInChain(this, TestName, false);
+            DoCncInTest();
+        }
+        private void DoCncInTest()
         {
             bool mergeSU_called = false;
             Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext = Helpline.Application.ScriptingModel.ApplicationTestContext.Create(ctx =>
@@ -75,7 +96,7 @@ namespace Skrypton.Tests.Application
         class MyDefaultRuntimeFunctionalityProvider : Skrypton.RuntimeSupport.Implementations.DefaultRuntimeFunctionalityProvider
         {
             public MyDefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, Skrypton.RuntimeSupport.IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
-                : base(nameRewriter, valueRetriever, culture)
+                : base(valueRetriever, culture)
             {
 
             }

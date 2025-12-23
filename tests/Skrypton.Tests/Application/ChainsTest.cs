@@ -8,19 +8,22 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Skrypton.CSharpWriter.CodeTranslation;
+using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
+using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Skrypton.Tests.Application
 {
     // D:\zapechene.2015\VBScript.Parse\LuboVBParser1\TestResources
     [TestClass]
-    public class ChainsTest : TestBase
+    public sealed class ChainsTest : TestBase
     {
         [TestMethod, MyMemberData(nameof(ChainNames))]
-        public void Chains(string chainName)
+        public void Chains(string chainName, bool isCnc)
         {
-            TestCncInChain(chainName);
+            TestCncInChain(this, chainName, isCnc);
         }
 
         public static object[][] ChainNames
@@ -28,7 +31,6 @@ namespace Skrypton.Tests.Application
             get
             {
                 List<string> names = new List<string>();
-                ///names.Add("aaaaaa");
 
                 Assembly resourceAssembly = typeof(CncIn).Assembly;
                 string[] resource_names = resourceAssembly.GetManifestResourceNames()
@@ -55,17 +57,18 @@ namespace Skrypton.Tests.Application
                 }
 
                 List<object[]> result = new List<object[]>();
-                foreach (var arg0 in names)
+                foreach (string chainName in names)
                 {
-                    result.Add(new object[] { arg0 });
+                    bool isCnc = chainName.Contains("_cncIN", StringComparison.OrdinalIgnoreCase) || chainName.Contains("_900_");
+                    //scriptContent.Contains("hlContext")
+                    result.Add(new object[] { chainName, isCnc });
                 }
 
                 return result.ToArray();
             }
         }
 
-
-        public void TestCncInChain(string chainName)
+        public static void TestCncInChain(TestBase tst, string chainName, bool isCnc)
         {
             string x_ressource_name = chainName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
@@ -73,14 +76,14 @@ namespace Skrypton.Tests.Application
             string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".cstxt");
             string xml_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".xml");
 
-            List<string> externalDependencies = new List<string>();
-            if (scriptContent.Contains("hlContext"))
-                externalDependencies.Add("hlContext"); // EBL
+            NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
+            if (!isCnc)//(scriptContent.Contains("hlContext"))
+                externalDependencies = externalDependencies.Add("hlContext"); // EBL
             else
-                externalDependencies.Add("session"); // Connectivity IN/OUT
+                externalDependencies = externalDependencies.Add("session"); // Connectivity IN/OUT
 
             //Console.WriteLine("parsing...");
-            var parsed_items = Skrypton.LegacyParser.Parser.Parse(TestCulture, scriptContent);
+            var parsed_items = Skrypton.LegacyParser.Parser.Parse(tst.TestCulture, scriptContent);
 
             StringBuilder parsed_output = new StringBuilder();
             ISourceIndentHandler parsed_intender = new Skrypton.LegacyParser.CodeBlocks.SourceRendering.SourceIndentHandler();
@@ -96,48 +99,90 @@ namespace Skrypton.Tests.Application
 
             if (generated_vbs_expected != generated_vbs_actual)
             {
-                SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
+                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
                 failed_text = "VBS generation failed. See 'Output' for more information.";
             }
 
-            var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(TestCulture, scriptContent);
+            var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(tst.TestCulture, scriptContent);
             var xml_actual = ToXml(outermostBlock, x => failed_text = x);
 
             if (xml_expected != xml_actual)
             {
-                SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
+                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
                 failed_text = "Xml generation failed. See 'Output' for more information.";
             }
 
 
             Console.WriteLine("translating...");
-            IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(TestCulture, scriptContent, externalDependencies.ToArray());
+            var csLines = DefaultCSharpTranslation.GetTranslatedStatements(tst.TestCulture, scriptContent, externalDependencies);
+            string translated_cs_actual = string.Join("\r\n", csLines);
 
-            StringBuilder translated_buffer = new StringBuilder();
-            foreach (var translated_item in translated_items)
-            {
-                if (translated_item.Content.Length == 0)
-                {
-                    translated_buffer.AppendLine("");
-                }
-                else
-                {
-                    string indent = translated_item.IndentationDepth == 0 ? "" : new string(' ', translated_item.IndentationDepth * 4);
-                    translated_buffer.Append(indent).AppendLine(translated_item.Content);
-                }
-            }
+            //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
+            //
+            //StringBuilder translated_buffer = new StringBuilder();
+            //foreach (var translated_item in translated_items)
+            //{
+            //    if (translated_item.Content.Length == 0)
+            //    {
+            //        translated_buffer.AppendLine("");
+            //    }
+            //    else
+            //    {
+            //        string indent = translated_item.IndentationDepth == 0 ? "" : new string(' ', translated_item.IndentationDepth * 4);
+            //        translated_buffer.Append(indent).AppendLine(translated_item.Content);
+            //    }
+            //}
 
-            string translated_cs_actual = translated_buffer.ToString();
+            //string translated_cs_actual = translated_buffer.ToString();
             if (translated_cs_expected != translated_cs_actual)
             {
-                SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs.txt", translated_cs_expected, translated_cs_actual);
-                failed_text = "C# translation failed. See 'Output' for more information.";
+                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs.txt", translated_cs_expected, translated_cs_actual);
+                int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
+                string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
+                string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
+                failed_text = $"C# translation failed. See 'Output' for more information. \r\nMismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'";
             }
 
             if (!string.IsNullOrEmpty(failed_text))
             {
                 Assert.Fail(failed_text);
             }
+        }
+        private static int FindFirstMismatchIndex(string a, string b, out int line, out int column)
+        {
+            line = 1;
+            column = 1;
+
+            int minLength = Math.Min(a.Length, b.Length);
+            for (int i = 0; i < minLength; i++)
+            {
+                if (a[i] != b[i])
+                    return i;
+                if (a[i] == '\n') // handle windows and unix line endings
+                {
+                    line++;
+                    column = 1;
+                }
+                else if (a[i] != '\r') // ignore carriage return
+                {
+                    column++;
+                }
+            }
+            if (a.Length != b.Length)
+                return minLength;
+            return -1; // no mismatch
+        }
+        private static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
+        {
+            if (startIndex > s.Length)
+                return "";
+            int endOfLine = s.IndexOfAny(new char[] { '\r', '\n' }, startIndex);
+            if (endOfLine == -1)
+                endOfLine = s.Length;
+
+            //int remaining  = s.Length - startIndex;
+            int take = Math.Min(maxLength, endOfLine - startIndex);
+            return s.Substring(startIndex, take);
         }
 
         private static IOutermostScope FromXml(string xmlA)
@@ -153,7 +198,7 @@ namespace Skrypton.Tests.Application
             }
         }
 
-        private string ToXml(IOutermostScope outermostBlock, Action<string> failed_handler)
+        private static string ToXml(IOutermostScope outermostBlock, Action<string> failed_handler)
         {
             string xmlA = ToXmlImpl(outermostBlock);
             var blockB = FromXml(xmlA);

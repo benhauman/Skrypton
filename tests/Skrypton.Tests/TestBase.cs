@@ -16,7 +16,7 @@ namespace Skrypton.Tests
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public TestContext TestContext { get; set; }
         protected string TestName => this.TestContext!.TestName;
-        protected void SaveExpectedActualFiles(string testName, string workItemName
+        internal void SaveExpectedActualFiles(string testName, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml
             )
