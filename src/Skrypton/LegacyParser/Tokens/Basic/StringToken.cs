@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
@@ -8,7 +9,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// </summary>
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class StringToken : IToken
+    [DebuggerDisplay("{Content}")]
+    public sealed class StringToken : IToken
     {
         public StringToken(string content, int lineIndex)
         {

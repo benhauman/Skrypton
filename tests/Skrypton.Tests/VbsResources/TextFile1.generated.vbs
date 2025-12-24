@@ -185,11 +185,11 @@ End Sub
 'SACM
 '----------------------------------------------------------------------------------------------------------
 'Globale Konstanten für freie Assoziationsdefinitionen
-Const HLASC_SoftwareLicenseFolderView = LicenseFolderView
+Const HLASC_SoftwareLicenseFolderView = "LicenseFolderView"
 
-Const HLASC_SoftwareLicenseGroupView = LicenseGroupView
+Const HLASC_SoftwareLicenseGroupView = "LicenseGroupView"
 
-Const HLASC_Software2Computer = Software2Computer
+Const HLASC_Software2Computer = "Software2Computer"
 
 '----------------------------------------------------------------------------------------------------------
 'Prozedur füllt die Umzugshistorie für das entsprechende Objekt

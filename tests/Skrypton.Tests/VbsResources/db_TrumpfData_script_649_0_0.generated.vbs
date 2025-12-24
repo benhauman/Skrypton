@@ -721,6 +721,6 @@ Public Sub AppendTextNode(ByRef hlContext, ByRef xmldoc, ByRef nodeObject, ByRef
 End Sub
 
 Public Function DBConnectionString(ByRef hlContext)
-  Const DBConnection = Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2
+  Const DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2"
 
 End Function

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 
@@ -75,8 +76,29 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             return string.Format(
                 "{0}Const {1}",
                 indenter.Indent,
-                string.Join(", ", Values.Select(v => v.Name.Content + " = " + v.Value.Content))
+                string.Join(", ", Values.Select(v => v.Name.Content + " = " + TokenValueAsVbsCode(v.Value)))
             );
+        }
+
+        private static string TokenValueAsVbsCode(IToken token)
+        {
+            if (token is StringToken stringToken)
+            {
+                return String_Extensions.ToLiteral(stringToken.Content);
+            }
+            else if (token is NumericValueToken numericToken)
+            {
+                return numericToken.Content;
+            }
+            else if (token is DateLiteralToken dateToken)
+            {
+                return dateToken.Content;
+            }
+            else if (token is BuiltInValueToken builtInValueToken)
+            {
+                return builtInValueToken.Content;
+            }
+            throw new NotSupportedException($"{token.GetType().Name} : {token.Content}");
         }
     }
 }
