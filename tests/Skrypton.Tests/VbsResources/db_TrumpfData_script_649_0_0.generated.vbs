@@ -14,9 +14,9 @@ Public Function hlITIL2()
 End Function
 '----------------------------------------------------------------------------------------------------------
 'Globale Konstanten fuer freie Assoziationsdefinitionen
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseFolderView = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:110941
+Const HLASC_SoftwareLicenseFolderView = 110941
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseGroupView = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:110944
+Const HLASC_SoftwareLicenseGroupView = 110944
 
 '----------------------------------------------------------------------------------------------------------
 'Deaktivieren bzw. aktivieren aller Traces, Text = Logtext im App.Log
@@ -50,13 +50,13 @@ Public Sub InfoMail(ByRef hlContext, ByRef hlCase, ByRef Subject, ByRef MailSend
     Next
   END IF
 
-  IF MailSender < > "" THEN
+  IF MailSender <> "" THEN
     Email.SenderMail = MailSender
   END IF
   Email.To = Receiver
   Email.Subject = Subject
   Email.Body = body
-  IF CC < > "" THEN
+  IF CC <> "" THEN
     Email.CC = CC
   END IF
   Call hlContext.SendRequestMail(Email)
@@ -235,7 +235,7 @@ Public Sub MyTask1(ByRef hlContext)
 
   Dim hasContent
   hasContent = hlObj.HasContent("TaskDesignWorkflow.TaskWorkflow_CA", 0, 0)
-  IF hasContent < > 0 THEN
+  IF hasContent <> 0 THEN
     Dim contentIDs
     Dim contentID
     Dim newContentID
@@ -721,6 +721,6 @@ Public Sub AppendTextNode(ByRef hlContext, ByRef xmldoc, ByRef nodeObject, ByRef
 End Sub
 
 Public Function DBConnectionString(ByRef hlContext)
-  Const Skrypton.LegacyParser.Tokens.Basic.NameToken:DBConnection = Skrypton.LegacyParser.Tokens.Basic.StringToken:Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2
+  Const DBConnection = Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2
 
 End Function

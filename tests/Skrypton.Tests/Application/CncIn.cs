@@ -48,13 +48,13 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void LUNA12_quxDATA__hlsysscript_cncIN()
         {
-            ChainsTest.TestCncInChain(this, TestName, true);
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.Connectivity);
             DoCncInTest();
         }
         [TestMethod]
         public void CT98__hlsysscript_cncIN()
         {
-            ChainsTest.TestCncInChain(this, TestName, true);
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.Connectivity);
             DoCncInTest();
         }
 

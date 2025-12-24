@@ -21,9 +21,9 @@ namespace Skrypton.Tests.Application
     public sealed class ChainsTest : TestBase
     {
         [TestMethod, MyMemberData(nameof(ChainNames))]
-        public void Chains(string chainName, bool isCnc)
+        public void Chains(string chainName, ScriptUsageKind scriptUsage)
         {
-            TestCncInChain(this, chainName, isCnc);
+            TestScriptChain(this, chainName, scriptUsage);
         }
 
         public static object[][] ChainNames
@@ -60,15 +60,21 @@ namespace Skrypton.Tests.Application
                 foreach (string chainName in names)
                 {
                     bool isCnc = chainName.Contains("_cncIN", StringComparison.OrdinalIgnoreCase) || chainName.Contains("_900_");
+                    bool isDialog = chainName.Contains("_Dialog", StringComparison.OrdinalIgnoreCase) || chainName.Contains("_Web", StringComparison.OrdinalIgnoreCase);
+                    //bool isEBL = chainName.Contains("_EBL", StringComparison.OrdinalIgnoreCase);
+                    ScriptUsageKind scriptUsage = isCnc
+                        ? ScriptUsageKind.Connectivity
+                        : isDialog
+                            ? ScriptUsageKind.DialogGui
+                            : ScriptUsageKind.EBL;
                     //scriptContent.Contains("hlContext")
-                    result.Add(new object[] { chainName, isCnc });
+                    result.Add(new object[] { chainName, scriptUsage });
                 }
 
                 return result.ToArray();
             }
         }
-
-        public static void TestCncInChain(TestBase tst, string chainName, bool isCnc)
+        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, Dictionary<string, object> externalRefs = null)
         {
             string x_ressource_name = chainName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
@@ -77,10 +83,17 @@ namespace Skrypton.Tests.Application
             string xml_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".xml");
 
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
-            if (!isCnc)//(scriptContent.Contains("hlContext"))
+            if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
                 externalDependencies = externalDependencies.Add("hlContext"); // EBL
-            else
+            if (scrUsage == ScriptUsageKind.Connectivity)
                 externalDependencies = externalDependencies.Add("session"); // Connectivity IN/OUT
+            if (externalRefs != null)
+            {
+                foreach (string externalRefName in externalRefs.Keys)
+                {
+                    externalDependencies = externalDependencies.Add(externalRefName);
+                }
+            }
 
             //Console.WriteLine("parsing...");
             var parsed_items = Skrypton.LegacyParser.Parser.Parse(tst.TestCulture, scriptContent);
@@ -233,5 +246,13 @@ namespace Skrypton.Tests.Application
         }
 
 
+    }
+    public enum ScriptUsageKind
+    {
+        Unknown,
+        Connectivity,
+        EBL,
+        DialogGui, // model, named symboles, controls
+        DiagloWeb
     }
 }

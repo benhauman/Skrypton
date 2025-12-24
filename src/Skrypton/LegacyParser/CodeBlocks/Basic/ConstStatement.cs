@@ -75,7 +75,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             return string.Format(
                 "{0}Const {1}",
                 indenter.Indent,
-                string.Join(", ", Values.Select(v => v.Name + " = " + v.Value))
+                string.Join(", ", Values.Select(v => v.Name.Content + " = " + v.Value.Content))
             );
         }
     }

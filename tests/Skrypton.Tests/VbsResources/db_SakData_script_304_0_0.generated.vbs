@@ -150,7 +150,7 @@ Public Sub SetPersonOrganization(ByRef hlContext, ByRef hlPerson, ByRef dict)
   Set FirstOrgUnit = hlContext.GetRelatedObject
 
   IF IsHLObject(hlContext, FirstOrgUnit) = True THEN
-    IF FirstOrgUnit.GetType < > "Company" And FirstOrgUnit.GetType < > "Division" THEN
+    IF FirstOrgUnit.GetType <> "Company" And FirstOrgUnit.GetType <> "Division" THEN
       Set FirstOrgUnit = Nothing
     END IF
   END IF
@@ -182,11 +182,11 @@ End Sub
 'SACM
 '----------------------------------------------------------------------------------------------------------
 'Globale Konstanten fuer freie Assoziationsdefinitionen
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseFolderView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseFolderView
+Const HLASC_SoftwareLicenseFolderView = LicenseFolderView
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseGroupView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseGroupView
+Const HLASC_SoftwareLicenseGroupView = LicenseGroupView
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_Software2Computer = Skrypton.LegacyParser.Tokens.Basic.StringToken:Software2Computer
+Const HLASC_Software2Computer = Software2Computer
 
 '----------------------------------------------------------------------------------------------------------
 'Prozedur fuellt die Umzugshistorie fuer das entsprechende Objekt
@@ -195,7 +195,7 @@ Public Sub SetAssetHistory(ByRef hlContext, ByRef hlObjectA, ByRef hlObjectB, By
   Dim productDefName
   productDefName = hlObjectB.GetType()
 
-  IF (productDefName < > "Software" And productDefName < > "SoftwareLicence") THEN
+  IF (productDefName <> "Software" And productDefName <> "SoftwareLicence") THEN
     Dim agentID, contentID, personOfAgent, personName, orgUnitName
     contentID = hlObjectB.GenerateContentID()
     agentID = hlContext.GetAgentID()

@@ -45,13 +45,13 @@ Dim InterfaceVersion
 
 InterfaceVersion = 1
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:BOOKING_Local = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:0
+Const BOOKING_Local = 0
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:BOOKING_Eviivo = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:1
+Const BOOKING_Eviivo = 1
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:BOOKING_Redirect = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:2
+Const BOOKING_Redirect = 2
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:BOOKING_PollingRedirect = Skrypton.LegacyParser.Tokens.Basic.NumericValueToken:3
+Const BOOKING_PollingRedirect = 3
 
 
 'nasty globals
@@ -332,7 +332,7 @@ Private Function RenderBookingInfoForm(ByVal pO, ByVal intProdKey, ByVal objRend
 
   ' We need all this when using VB Polling, even it it is an external booking, as we aren't
   ' going to leave the site yet (there's an interim stage)
-  IF (intBookingType < > BOOKING_Redirect) THEN
+  IF (intBookingType <> BOOKING_Redirect) THEN
     ' NB: "package" parameter removed - it's now passed as "offer", and only when
     ' customer is going for a "Conference Booking" discount product.
     ' 2008-11-07 DWR: This used to referer to a "strRewriteUrl" value that was never defined.
@@ -439,12 +439,12 @@ Private Function GetPostUrl(ByVal bSecure)
     strURL = Page.URL.Real
   END IF
 
-  IF (Left(strUrl, 1) < > "/") THEN
+  IF (Left(strUrl, 1) <> "/") THEN
     strUrl = "/" & strUrl
   END IF
 
   strPostUrl = strPostUrl & strUrl
-  IF (UCase(Left(strPostUrl, 7)) < > "HTTP://") And(UCase(Left(strPostUrl, 8)) < > "HTTPS://") THEN
+  IF (UCase(Left(strPostUrl, 7)) <> "HTTP://") And(UCase(Left(strPostUrl, 8)) <> "HTTPS://") THEN
     strPostUrl = "http://" & strPostUrl
   END IF
 
@@ -756,7 +756,7 @@ End Function
 Private Function BookingUI_RenderAvailCalKey(ByRef sb)
   Dim strCalKey
   strCalKey = Page.Resource("bookonline/unitselection/availcalendar/calkey", "")
-  IF Trim(strCalKey) < > "" THEN
+  IF Trim(strCalKey) <> "" THEN
     sb.AppendLine("<div class="CalKey">" & strCalKey & "</div>")
   END IF
 End Function
@@ -815,7 +815,7 @@ Private Function BookingUI_RenderAvailCalLink(ByRef dCalStartDate, ByRef strTitl
     strLink = strLink & "&amp;isostartdate=" & Server.UrlEncode(Page.Functions.Dates.ISODate(dCalStartDate))
   END IF
 
-  IF Trim("" & strLink) < > "" THEN
+  IF Trim("" & strLink) <> "" THEN
     strLink = Replace(strLink, "&amp;", "?", 1, 1, 0)
   END IF
 
@@ -864,7 +864,7 @@ Private Function BookingUI_StayMain_Polling(ByRef objData, ByRef objRenderSettin
   Set objDictAvaiStays = Server.CreateObject("Scripting.Dictionary")
 
   ' Quick situation assertion
-  IF (objRenderSettings.BookingType < > "accommodation") THEN
+  IF (objRenderSettings.BookingType <> "accommodation") THEN
     Err.Raise vbObjectError, "ETWP.BookingUnitSelection", "BookingUI_StayMain_Polling: BookingType not supported ("" & BookingType & "")"
   END IF
   IF (objRenderSettings.BookingRequirement.Offer > 0) THEN
@@ -1472,7 +1472,7 @@ Private Function BookingUI_UnitSel_AddReqUnitSelection(ByRef arrReqUnitSelection
   ' strUnitSelInfo should be of the form "UnitKey,NumAdults,NumChildren"
   ' Exit if not
   arrSegments = Split(strUnitSelInfo, ",")
-  IF (UBound(arrSegments) < > 2) THEN
+  IF (UBound(arrSegments) <> 2) THEN
     Exit Function
   END IF
 
@@ -1662,7 +1662,7 @@ Private Function BookingUI_StaySummary(ByRef dtReqFirstNight, ByRef iReqNights, 
 
   ' Render each stay result with link to further details
   ' - 2009-08-10 DWR: Why do we not render this if "_stay" is in the querystring???
-  IF (Request("_stay") < > "") THEN
+  IF (Request("_stay") <> "") THEN
     Exit Function
   END IF
 
@@ -1670,7 +1670,7 @@ Private Function BookingUI_StaySummary(ByRef dtReqFirstNight, ByRef iReqNights, 
   pO.Write "<div class="StayCandidatesTtl">"
   pO.Write "<p>" & Page.Resource("bookonline/unitselection/flexiblesearchresults", "Flexible Search Results") & "</p>"
   pO.Write "</div>"
-  IF (dtStayFirstNight < > dtReqFirstNight) Or(iReqnights < > iStayNights) THEN
+  IF (dtStayFirstNight <> dtReqFirstNight) Or(iReqnights <> iStayNights) THEN
     pO.Write "<div class="cell">"
     pO.Write "<div class="pnStayTtl">"
     pO.Write BookingUI_StayTtl(dtStayFirstNight, iStayNights)
@@ -1734,7 +1734,7 @@ Private Function BookingUI_StayDetails(ByVal objAvailEntry, ByVal iStayNum, ByVa
     ' Check whether we're moving into a new requirement (if so, default to having
     ' the first unit appear selected) and render the "Room 1 - for 1 Guest"
     ' content
-    IF iThisReqmnt < > iLastReqmnt THEN
+    IF iThisReqmnt <> iLastReqmnt THEN
 
       ' If we've already got one of these containers open, close its tags
       IF (bGotOpenReqContainer) THEN
@@ -1753,7 +1753,7 @@ Private Function BookingUI_StayDetails(ByVal objAvailEntry, ByVal iStayNum, ByVa
     ' unit appears selected (this only applies when iRemoteUnitKey is not zero, meaning that
     ' a unit selection exists - note: eviivo units always appear with unit key zero)
     iUnitKey = objUnit.UnitKey
-    IF (iRemoteUnitKey < > 0) THEN
+    IF (iRemoteUnitKey <> 0) THEN
       bSelected =(iUnitKey = iRemoteUnitKey)
     END IF
 
@@ -1811,7 +1811,7 @@ Private Function BookingUI_StayDetails(ByVal objAvailEntry, ByVal iStayNum, ByVa
   ' Product List or Detail Control, which would be better avoided. A much better solution is to enable VB Polling and avoid this legacy mechanism entirely.
   ' Note: We could potentially render the button for Local Avail and not for Eviivo but I think that that's more confusing than helpful, particularly since
   ' it's inconsistent with the Product List / Detail implementation (which bases its decision upon whether the Product has an Eviivo Id).
-  IF (Not Page.Site.Params("Booking_EnablePolling")) And(Trim("" & strEviivoIdIfAny) < > "") And Page.Site.Params("Integration_Eviivo_ExtBooking_Enable") THEN
+  IF (Not Page.Site.Params("Booking_EnablePolling")) And(Trim("" & strEviivoIdIfAny) <> "") And Page.Site.Params("Integration_Eviivo_ExtBooking_Enable") THEN
     Page.PrintTraceWarning "Not rendering any Book buttons for Unit Selection since the legacy Eviivo External Booking configuration is enabled (the recommended alternative is to use the deep-link-supporting Eviivo External Booking configuration, this may be done by enabling VB Polling)"
     Exit Function
   END IF
@@ -1822,7 +1822,7 @@ Private Function BookingUI_StayDetails(ByVal objAvailEntry, ByVal iStayNum, ByVa
   ' website, but that is understood and how it works - see FogBugz 10367). I've tried to make the markup for this button reminiscent of
   ' that in Product List and Detail to try to make any additional styling requirements as low as possible.
   strProductBookingWebIfAny = Trim("" & strProductBookingWebIfAny)
-  IF (bTeleBooking And Page.Site.Params("Booking_EnableByPhone") And Page.Site.Params("Booking_AllowOffSiteTelephoneBookings") And(strProductBookingWebIfAny < > "")) THEN
+  IF (bTeleBooking And Page.Site.Params("Booking_EnableByPhone") And Page.Site.Params("Booking_AllowOffSiteTelephoneBookings") And(strProductBookingWebIfAny <> "")) THEN
     Page.PrintTrace "Since this is a Telephone Booking Product with a Booking Website and the 'Allow Offsite Booking Web Booking for Telephone Bookings' parameter is enabled, a button to the Booking Website is being rendered"
     pO.Write "<div class="pnStayButtons">"
     pO.Write "<p class="bookonline">"
@@ -1928,7 +1928,7 @@ Private Function BookingUI_StayDetails_PollingHeader(ByVal objAvailEntry, ByVal 
     pO.Write " AvailExternal"
   END IF
   pO.Write "">"
-  IF (strSupplierLogo < > "") THEN
+  IF (strSupplierLogo <> "") THEN
     pO.Write "<img src="" & strSupplierLogo & "" alt="" & strSupplierName & "" />"
   END IF
   pO.Write "<h2>" & strSupplierName & "</h2>"
@@ -1943,7 +1943,7 @@ Private Function GetSupplierLogo(ByRef strProductEstateID)
     strSupplierLogo = Page.ImageResource("bookonline/unitselection/polling/localsupplier/estate_" & strProductEstateID & "/logo", "")
     IF (strSupplierLogo = "") THEN
       strSupplierLogo = Page.Resource("bookonline/unitselection/polling/localsupplier/estate_" & strProductEstateID & "/logo", "")
-      IF strSupplierLogo < > "" THEN
+      IF strSupplierLogo <> "" THEN
         Page.PrintTraceWarning "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file"
       END IF
     END IF
@@ -1952,7 +1952,7 @@ Private Function GetSupplierLogo(ByRef strProductEstateID)
     strSupplierLogo = Page.ImageResource("bookonline/unitselection/polling/localsupplier/logo", "")
     IF (strSupplierLogo = "") THEN
       strSupplierLogo = Page.Resource("bookonline/unitselection/polling/localsupplier/logo", "")
-      IF strSupplierLogo < > "" THEN
+      IF strSupplierLogo <> "" THEN
         Page.PrintTraceWarning "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file"
       END IF
     END IF
@@ -2472,10 +2472,10 @@ Private Function GetExtBookUrlFromProductEstate(ByRef asEstateID)
     END IF
   Next
 
-  IF strPostUrl_Ext < > "" THEN
+  IF strPostUrl_Ext <> "" THEN
     GetExtBookUrlFromProductEstate = strPostUrl_Ext
     Page.PrintTrace "GetExtBookUrlFromProductEstate: Product Estate ID = " & asEstateID & ", External Book Url = " & strPostUrl_Ext
-  ELSEIF strPostUrl_ExtDflt < > "" THEN
+  ELSEIF strPostUrl_ExtDflt <> "" THEN
     GetExtBookUrlFromProductEstate = strPostUrl_ExtDflt
     Page.PrintTrace "GetExtBookUrlFromProductEstate: Product Estate ID = " & asEstateID & ", Using Default External Book Url = " & strPostUrl_ExtDflt
   ELSE
@@ -2486,7 +2486,7 @@ Private Function GetExtBookUrlFromProductEstate(ByRef asEstateID)
 End Function
 
 Private Function InitExternalBookingSettings()
-  IF Page.Site.Params("Booking_ForceExternal") And Trim("" & Page.Site.Params("Booking_ExtBookEstateMapping")) < > "" THEN
+  IF Page.Site.Params("Booking_ForceExternal") And Trim("" & Page.Site.Params("Booking_ExtBookEstateMapping")) <> "" THEN
     IsExternalBooking = True
   ELSE
     IsExternalBooking = False

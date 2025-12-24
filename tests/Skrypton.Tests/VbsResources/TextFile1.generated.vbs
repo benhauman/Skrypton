@@ -153,7 +153,7 @@ Public Sub SetPersonOrganization(ByRef hlContext, ByRef hlPerson, ByRef dict)
   Set FirstOrgUnit = hlContext.GetRelatedObject
 
   IF IsHLObject(hlContext, FirstOrgUnit) = True THEN
-    IF FirstOrgUnit.GetType < > "Company" And FirstOrgUnit.GetType < > "Division" THEN
+    IF FirstOrgUnit.GetType <> "Company" And FirstOrgUnit.GetType <> "Division" THEN
       Set FirstOrgUnit = Nothing
     END IF
   END IF
@@ -185,11 +185,11 @@ End Sub
 'SACM
 '----------------------------------------------------------------------------------------------------------
 'Globale Konstanten für freie Assoziationsdefinitionen
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseFolderView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseFolderView
+Const HLASC_SoftwareLicenseFolderView = LicenseFolderView
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_SoftwareLicenseGroupView = Skrypton.LegacyParser.Tokens.Basic.StringToken:LicenseGroupView
+Const HLASC_SoftwareLicenseGroupView = LicenseGroupView
 
-Const Skrypton.LegacyParser.Tokens.Basic.NameToken:HLASC_Software2Computer = Skrypton.LegacyParser.Tokens.Basic.StringToken:Software2Computer
+Const HLASC_Software2Computer = Software2Computer
 
 '----------------------------------------------------------------------------------------------------------
 'Prozedur füllt die Umzugshistorie für das entsprechende Objekt
@@ -198,7 +198,7 @@ Public Sub SetAssetHistory(ByRef hlContext, ByRef hlObjectA, ByRef hlObjectB, By
   Dim productDefName
   productDefName = hlObjectB.GetType()
 
-  IF (productDefName < > "Software" And productDefName < > "SoftwareLicence") THEN
+  IF (productDefName <> "Software" And productDefName <> "SoftwareLicence") THEN
     Dim agentID, contentID, personOfAgent, personName, orgUnitName
     contentID = hlObjectB.GenerateContentID()
     agentID = hlContext.GetAgentID()
@@ -883,7 +883,7 @@ End Function
 Public Function MigCheckDatePeriod(ByRef hlContext, ByRef StartDate, ByRef EndDate)
   MigCheckDatePeriod = False
 
-  IF DatePart("d", CDate(StartDate)) < > "0" THEN
+  IF DatePart("d", CDate(StartDate)) <> "0" THEN
     IF DatePart("d", CDate(StartDate)) < DatePart("d", CDate(EndDate)) THEN
       MigCheckDatePeriod = False
     ELSE
@@ -943,7 +943,7 @@ Public Function CheckAgentHasMIGPartnerID(ByRef hlContext, ByRef relObjMIGPartne
 
   IF IsHLObject(hlContext, objPerson) = True THEN
 
-    IF relObjMIGPartnerID < > "" THEN
+    IF relObjMIGPartnerID <> "" THEN
 
       strPersonInternalMIGPartnerIDs = objPerson.GetValue("MIGAgentInformation.InternalMIGPartnerID", 0, 0, 0, 0)
 

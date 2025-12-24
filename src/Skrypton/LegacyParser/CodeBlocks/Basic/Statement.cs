@@ -118,6 +118,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 || (nextToken is CloseBrace))
                     continue;
 
+                if (token is ComparisonOperatorToken cmp1 && nextToken is ComparisonOperatorToken cmp2
+                    && cmp1.Content == "<" && cmp2.Content == ">")
+                {
+                    continue;
+                }
+
                 output.Append(" ");
             }
             return output.ToString().TrimEnd();

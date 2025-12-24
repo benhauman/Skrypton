@@ -170,7 +170,7 @@ For Each PosID In OrderPosIDs
   CreateCI = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.CreateCI", 0, PosID, 0, 0)
   'Pruefen ob CI bereits erzeugt wurde
   CIisCreated = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.CIisCreated", 0, PosID, 0, 0)
-  IF CreateCI = "1" And CIisCreated < > "1" And strOrdReqStatus = "OrderRequestStatusOrdered" THEN
+  IF CreateCI = "1" And CIisCreated <> "1" And strOrdReqStatus = "OrderRequestStatusOrdered" THEN
     'CI-Typ ermitteln
     CIType = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.CIType", 0, PosID, 0, 0)
     'Anzahl der zu erstellenden CI`s ermitteln
@@ -2798,7 +2798,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -2854,7 +2854,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -2910,7 +2910,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -2967,7 +2967,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3024,7 +3024,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3081,7 +3081,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3138,7 +3138,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3195,7 +3195,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3252,7 +3252,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3309,7 +3309,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3366,7 +3366,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3423,7 +3423,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3480,7 +3480,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3537,7 +3537,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3594,7 +3594,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3651,7 +3651,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3708,7 +3708,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3765,7 +3765,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3822,7 +3822,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3879,7 +3879,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3936,7 +3936,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -3993,7 +3993,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -4050,7 +4050,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -4107,7 +4107,7 @@ For Each PosID In OrderPosIDs
             IF clng(OrderPosID) = clng(PosID) THEN
               'Ist Geraet eliminiert?
               cistatus = obj.GetValue("TrumpfAssetStatus.CIElimination", 0, 0, 0, 0)
-              IF cistatus < > "1" THEN
+              IF cistatus <> "1" THEN
                 obj.SetValue "TrumpfAssetStatus.CIElimination", 0, 0, 0, "1"
                 obj.SetValue "TrumpfAssetStatus.CISubStatus", 0, 0, 0, "CISubStatusStorno"
                 obj.SetValue "TrumpfAssetStatus.CIEliminationAgent", 0, 0, 0, "System"
@@ -4174,7 +4174,7 @@ Dim DescrTextalt
 DescrTextalt = hlCase.GetValue("OrderRequestSUAttribute.CaseDescriptionSU", 0, 0, LastSU, 0)
 IF LastSU > 0 THEN
   'Pruefen, ob Beschreibungstext sich geaendert hat
-  IF DescrText < > sumindescr THEN
+  IF DescrText <> sumindescr THEN
     Agent = hlcase.GetValue("SUINFO.EDITOR", 0, 0, Last1SUIdx, 0)
     Dim DescriptionAll
     DescriptionAll = ""
@@ -4201,10 +4201,10 @@ IF LastSU > 0 THEN
     'Problem-, Diagnose- und Loesungstext auslesen und zusammenfassen
     Problem = DescrText
     Problem = Replace(Problem, Chr(13) & Chr(10), " ")
-    IF Problem < > "" THEN
+    IF Problem <> "" THEN
       ProblemAll1 = ProblemtitleNew & Problem & vbNewLine & String(80, "-") & vbNewLine
     END IF
-    IF sumindescr < > "" THEN
+    IF sumindescr <> "" THEN
       ProblemAll = Problemtitle & sumindescr & vbNewLine & String(80, "-") & vbNewLine
     END IF
 
@@ -4225,7 +4225,7 @@ IF LastSU > 0 THEN
     Next
     Solution = hlcase.GetValue("CaseSolution.SolutionText", 0, 0, 0, 0)
     Solution = Replace(Solution, Chr(13) & Chr(10), " ")
-    IF LTrim(RTrim(Solution)) < > "" THEN
+    IF LTrim(RTrim(Solution)) <> "" THEN
       SolutionAll = SolutionAll & Solutiontitle & Solution
     END IF
     'Gesammelte Texte in das uebersicht-Textfeld schreiben
@@ -4248,7 +4248,7 @@ IF sumindescr = DescrText THEN
   'Problem-, Diagnose- und Loesungstext auslesen und zusammenfassen
   Problem = DescrText
   Problem = Replace(Problem, Chr(13) & Chr(10), " ")
-  IF LTrim(RTrim(Problem)) < > "" THEN
+  IF LTrim(RTrim(Problem)) <> "" THEN
     ProblemAll = Problemtitle & Problem & vbNewLine & String(80, "-") & vbNewLine
   END IF
 
@@ -4269,7 +4269,7 @@ IF sumindescr = DescrText THEN
   Next
   Solution = hlcase.GetValue("CaseSolution.SolutionText", 0, 0, 0, 0)
   Solution = Replace(Solution, Chr(13) & Chr(10), " ")
-  IF LTrim(RTrim(Solution)) < > "" THEN
+  IF LTrim(RTrim(Solution)) <> "" THEN
     SolutionAll = SolutionAll & Solutiontitle & Solution
   END IF
   'Gesammelte Texte in das uebersicht-Textfeld schreiben
