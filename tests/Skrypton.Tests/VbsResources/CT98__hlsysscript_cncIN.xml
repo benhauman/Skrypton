@@ -1,0 +1,3310 @@
+﻿<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://vbs" i:type="d1p1:OutermostScope" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+  <d1p1:AllExecutableBlocks xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:anyType i:type="d1p1:OptionExplicit" />
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- ProcessIn ---</d1p1:Content>
+      <d1p1:LineIndex>2</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>ProcessIn</d1p1:Content>
+        <d1p1:LineIndex>3</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters />
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>4</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>ProcessRequestMail start.</d1p1:Content>
+              <d1p1:LineIndex>4</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>mailRequest</d1p1:Content>
+                <d1p1:LineIndex>6</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>8</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>8</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>mailrequest</d1p1:Content>
+                <d1p1:LineIndex>8</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>8</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Set</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>mailRequest</d1p1:Content>
+                <d1p1:LineIndex>8</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>mail subject: </d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OperatorToken">
+              <d1p1:Content>&amp;</d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>mailRequest</d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+              <d1p1:Content>.</d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>subject</d1p1:Content>
+              <d1p1:LineIndex>10</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>mail To: </d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OperatorToken">
+              <d1p1:Content>&amp;</d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>mailRequest</d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+              <d1p1:Content>.</d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType xmlns:d7p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.Tokens.Basic" i:type="d7p1:KeyWordToken">
+              <d1p1:Content>To</d1p1:Content>
+              <d1p1:LineIndex>11</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsAutoReplyMail</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailRequest</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                    <d1p1:Content>.</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>Subject</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>13</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>14</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:StringToken">
+                      <d1p1:Content>Out of Office AutoReply</d1p1:Content>
+                      <d1p1:LineIndex>14</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>15</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>extendCaseSuccess</d1p1:Content>
+                <d1p1:LineIndex>18</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>TryExtendCase</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>mailRequest</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                <d1p1:Content>.</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>Subject</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>extendCaseSuccess</d1p1:Content>
+                <d1p1:LineIndex>19</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>extendCaseSuccess</d1p1:Content>
+                    <d1p1:LineIndex>20</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>20</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>False</d1p1:Content>
+                    <d1p1:LineIndex>20</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>21</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:StringToken">
+                      <d1p1:Content>Extend case failed. Start new process</d1p1:Content>
+                      <d1p1:LineIndex>21</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:IfBlock">
+                  <d1p1:ConditionalClauses>
+                    <d1p1:IfBlock.IfBlockConditionSegment>
+                      <d1p1:Condition>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>IsFMMail</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>mailRequest</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                            <d1p1:Content>.</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType xmlns:d14p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.Tokens.Basic" i:type="d14p1:KeyWordToken">
+                            <d1p1:Content>To</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>22</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Condition>
+                      <d1p1:Statements>
+                        <d2p1:anyType i:type="d1p1:Statement">
+                          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                          <d1p1:Tokens>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>StartNewFMWorkflow</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:OpenBrace">
+                              <d1p1:Content>(</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>mailRequest</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                              <d1p1:Content>.</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>Subject</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:CloseBrace">
+                              <d1p1:Content>)</d1p1:Content>
+                              <d1p1:LineIndex>23</d1p1:LineIndex>
+                            </d2p1:anyType>
+                          </d1p1:Tokens>
+                        </d2p1:anyType>
+                      </d1p1:Statements>
+                    </d1p1:IfBlock.IfBlockConditionSegment>
+                    <d1p1:IfBlock.IfBlockConditionSegment>
+                      <d1p1:Condition>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>IsHRMail</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>mailRequest</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                            <d1p1:Content>.</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType xmlns:d14p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.Tokens.Basic" i:type="d14p1:KeyWordToken">
+                            <d1p1:Content>To</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>24</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Condition>
+                      <d1p1:Statements>
+                        <d2p1:anyType i:type="d1p1:Statement">
+                          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                          <d1p1:Tokens>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>StartNewHRWorkflow</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:OpenBrace">
+                              <d1p1:Content>(</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>mailRequest</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                              <d1p1:Content>.</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>Subject</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:CloseBrace">
+                              <d1p1:Content>)</d1p1:Content>
+                              <d1p1:LineIndex>25</d1p1:LineIndex>
+                            </d2p1:anyType>
+                          </d1p1:Tokens>
+                        </d2p1:anyType>
+                      </d1p1:Statements>
+                    </d1p1:IfBlock.IfBlockConditionSegment>
+                  </d1p1:ConditionalClauses>
+                  <d1p1:OptionalElseClause>
+                    <d1p1:Statements>
+                      <d2p1:anyType i:type="d1p1:Statement">
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>StartNewWorkflow</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>mailRequest</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                            <d1p1:Content>.</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>Subject</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>27</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d2p1:anyType>
+                    </d1p1:Statements>
+                  </d1p1:OptionalElseClause>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>31</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>ProcessRequestMail end.</d1p1:Content>
+              <d1p1:LineIndex>31</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- IsAutoReplyMail ---</d1p1:Content>
+      <d1p1:LineIndex>34</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>IsAutoReplyMail</d1p1:Content>
+        <d1p1:LineIndex>35</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>35</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>autoReplyList</d1p1:Content>
+                <d1p1:LineIndex>36</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>item</d1p1:Content>
+                <d1p1:LineIndex>37</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>38</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>False</d1p1:Content>
+                <d1p1:LineIndex>38</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>38</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Out of Office:</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Abwesend:</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>autoReplyList</d1p1:Content>
+                <d1p1:LineIndex>39</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ForEachBlock">
+          <d1p1:LoopSrc>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>autoReplyList</d1p1:Content>
+                <d1p1:LineIndex>41</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:LoopSrc>
+          <d1p1:LoopVar>
+            <d1p1:Content>item</d1p1:Content>
+            <d1p1:LineIndex>41</d1p1:LineIndex>
+          </d1p1:LoopVar>
+          <d1p1:Statements>
+            <d2p1:anyType i:type="d1p1:IfBlock">
+              <d1p1:ConditionalClauses>
+                <d1p1:IfBlock.IfBlockConditionSegment>
+                  <d1p1:Condition>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                        <d1p1:Content>InStr</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>1</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>mailSubject</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>item</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>1</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                        <d1p1:Content>&gt;</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>0</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>42</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Condition>
+                  <d1p1:Statements>
+                    <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                      <d1p1:Expression>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                            <d1p1:Content>True</d1p1:Content>
+                            <d1p1:LineIndex>43</d1p1:LineIndex>
+                            <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Expression>
+                      <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                      <d1p1:ValueToSet>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>retVal</d1p1:Content>
+                            <d1p1:LineIndex>43</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:ValueToSet>
+                    </d2p1:anyType>
+                  </d1p1:Statements>
+                </d1p1:IfBlock.IfBlockConditionSegment>
+              </d1p1:ConditionalClauses>
+              <d1p1:OptionalElseClause i:nil="true" />
+            </d2p1:anyType>
+          </d1p1:Statements>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>46</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>IsAutoReplyMail</d1p1:Content>
+                <d1p1:LineIndex>46</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- TryExtendCase ---</d1p1:Content>
+      <d1p1:LineIndex>49</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>TryExtendCase</d1p1:Content>
+        <d1p1:LineIndex>50</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>50</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>refNumber</d1p1:Content>
+                <d1p1:LineIndex>51</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>caseToExtend</d1p1:Content>
+                <d1p1:LineIndex>52</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>53</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>54</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>False</d1p1:Content>
+                <d1p1:LineIndex>54</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>54</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>ExtractRefNumber</d1p1:Content>
+                <d1p1:LineIndex>56</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>56</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>mailSubject</d1p1:Content>
+                <d1p1:LineIndex>56</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>56</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>refNumber</d1p1:Content>
+                <d1p1:LineIndex>56</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                    <d1p1:Content>Len</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>refNumber</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>&gt;</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NumericValueToken">
+                    <d1p1:Content>0</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>57</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>58</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:StringToken">
+                      <d1p1:Content>RefNumber &gt; 0</d1p1:Content>
+                      <d1p1:LineIndex>58</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>GetCaseByReferenceNumber</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>refNumber</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Set</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>caseToExtend</d1p1:Content>
+                        <d1p1:LineIndex>59</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:IfBlock">
+                  <d1p1:ConditionalClauses>
+                    <d1p1:IfBlock.IfBlockConditionSegment>
+                      <d1p1:Condition>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>session</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                            <d1p1:Content>.</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>CanExtendWorkflowCase</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>caseToExtend</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>60</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Condition>
+                      <d1p1:Statements>
+                        <d2p1:anyType i:type="d1p1:Statement">
+                          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                          <d1p1:Tokens>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>LogText</d1p1:Content>
+                              <d1p1:LineIndex>61</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:StringToken">
+                              <d1p1:Content>CanExtend</d1p1:Content>
+                              <d1p1:LineIndex>61</d1p1:LineIndex>
+                            </d2p1:anyType>
+                          </d1p1:Tokens>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                          <d1p1:Expression>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>session</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                                <d1p1:Content>.</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>DoExtendWorkflowCase</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:OpenBrace">
+                                <d1p1:Content>(</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>caseToExtend</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:CloseBrace">
+                                <d1p1:Content>)</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:Expression>
+                          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                          <d1p1:ValueToSet>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>reportText</d1p1:Content>
+                                <d1p1:LineIndex>62</d1p1:LineIndex>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:ValueToSet>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:Statement">
+                          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                          <d1p1:Tokens>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>LogText</d1p1:Content>
+                              <d1p1:LineIndex>63</d1p1:LineIndex>
+                            </d2p1:anyType>
+                            <d2p1:anyType i:type="d1p1:NameToken">
+                              <d1p1:Content>reportText</d1p1:Content>
+                              <d1p1:LineIndex>63</d1p1:LineIndex>
+                            </d2p1:anyType>
+                          </d1p1:Tokens>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                          <d1p1:Expression>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                                <d1p1:Content>True</d1p1:Content>
+                                <d1p1:LineIndex>64</d1p1:LineIndex>
+                                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:Expression>
+                          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                          <d1p1:ValueToSet>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>retVal</d1p1:Content>
+                                <d1p1:LineIndex>64</d1p1:LineIndex>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:ValueToSet>
+                        </d2p1:anyType>
+                      </d1p1:Statements>
+                    </d1p1:IfBlock.IfBlockConditionSegment>
+                  </d1p1:ConditionalClauses>
+                  <d1p1:OptionalElseClause i:nil="true" />
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>67</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>TryExtendCase</d1p1:Content>
+                <d1p1:LineIndex>67</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- StartNewWorkflow ---</d1p1:Content>
+      <d1p1:LineIndex>70</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>StartNewWorkflow</d1p1:Content>
+        <d1p1:LineIndex>71</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>71</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>imKeywords</d1p1:Content>
+                <d1p1:LineIndex>72</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>rfKeywords</d1p1:Content>
+                <d1p1:LineIndex>73</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>cmKeywords</d1p1:Content>
+                <d1p1:LineIndex>74</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>fmKeywords</d1p1:Content>
+                <d1p1:LineIndex>75</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>hrKeywords</d1p1:Content>
+                <d1p1:LineIndex>76</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>77</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[ServiceRequest]</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Anfrage</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>request</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Frage</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>question</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>rfKeywords</d1p1:Content>
+                <d1p1:LineIndex>78</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[Incident]</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Incident</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Störung</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Hilfe</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>help</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>imKeywords</d1p1:Content>
+                <d1p1:LineIndex>79</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[RFC]</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Änderung</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Change</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>cmKeywords</d1p1:Content>
+                <d1p1:LineIndex>80</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[Facility]</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Haustechnik</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>FM</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>fmKeywords</d1p1:Content>
+                <d1p1:LineIndex>81</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>Array</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[HR]</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Personal</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>hrKeywords</d1p1:Content>
+                <d1p1:LineIndex>82</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsWFEmail</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailSubject</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                    <d1p1:Content>,</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>rfKeywords</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>True</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>84</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>RequestFulfillment</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>reportText</d1p1:Content>
+                        <d1p1:LineIndex>85</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>86</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>reportText</d1p1:Content>
+                      <d1p1:LineIndex>86</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>87</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsWFEmail</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailSubject</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                    <d1p1:Content>,</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>imKeywords</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>True</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>89</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>IncidentManagement</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>reportText</d1p1:Content>
+                        <d1p1:LineIndex>90</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>91</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>reportText</d1p1:Content>
+                      <d1p1:LineIndex>91</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>92</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsWFEmail</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailSubject</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                    <d1p1:Content>,</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>cmKeywords</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>True</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>94</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>ChangeManagement</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>reportText</d1p1:Content>
+                        <d1p1:LineIndex>95</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>96</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>reportText</d1p1:Content>
+                      <d1p1:LineIndex>96</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>97</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsWFEmail</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailSubject</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                    <d1p1:Content>,</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>fmKeywords</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>True</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>99</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>FacilityIncidentManagement</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>reportText</d1p1:Content>
+                        <d1p1:LineIndex>100</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>101</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>reportText</d1p1:Content>
+                      <d1p1:LineIndex>101</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>102</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>IsWFEmail</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailSubject</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                    <d1p1:Content>,</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>hrKeywords</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                    <d1p1:Content>True</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                    <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>104</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>session</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>HRRequestManagement</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>reportText</d1p1:Content>
+                        <d1p1:LineIndex>105</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:Statement">
+                  <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                  <d1p1:Tokens>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>LogText</d1p1:Content>
+                      <d1p1:LineIndex>106</d1p1:LineIndex>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:NameToken">
+                      <d1p1:Content>reportText</d1p1:Content>
+                      <d1p1:LineIndex>106</d1p1:LineIndex>
+                    </d2p1:anyType>
+                  </d1p1:Tokens>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ExitStatement">
+                  <d1p1:LineIndex>107</d1p1:LineIndex>
+                  <d1p1:StatementType>Sub</d1p1:StatementType>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                <d1p1:Content>.</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>Request</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>109</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>110</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>reportText</d1p1:Content>
+              <d1p1:LineIndex>110</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- StartNewFMWorkflow ---</d1p1:Content>
+      <d1p1:LineIndex>113</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>StartNewFMWorkflow</d1p1:Content>
+        <d1p1:LineIndex>114</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>114</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>115</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                <d1p1:Content>.</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>FacilityIncidentManagement</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>117</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>118</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>reportText</d1p1:Content>
+              <d1p1:LineIndex>118</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- StartNewHRWorkflow ---</d1p1:Content>
+      <d1p1:LineIndex>121</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>StartNewHRWorkflow</d1p1:Content>
+        <d1p1:LineIndex>122</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>122</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>123</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                <d1p1:Content>.</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>NewWorkflowFromMail</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>HRRequestManagement</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>reportText</d1p1:Content>
+                <d1p1:LineIndex>125</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>126</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>reportText</d1p1:Content>
+              <d1p1:LineIndex>126</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- LogText ---</d1p1:Content>
+      <d1p1:LineIndex>129</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>LogText</d1p1:Content>
+        <d1p1:LineIndex>130</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>sText</d1p1:Content>
+            <d1p1:LineIndex>130</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:CommentStatement">
+          <d1p1:Content>Uncomment to enable logging</d1p1:Content>
+          <d1p1:LineIndex>131</d1p1:LineIndex>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>processtext</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OperatorToken">
+                <d1p1:Content>&amp;</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>sText</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OperatorToken">
+                <d1p1:Content>&amp;</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>vbNewLine</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>false</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>session</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>processtext</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>132</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>---------------------------------------------------------------------------------------- ExtractRefNumber ---</d1p1:Content>
+      <d1p1:LineIndex>135</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>ExtractRefNumber</d1p1:Content>
+        <d1p1:LineIndex>136</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>136</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>refNum</d1p1:Content>
+                <d1p1:LineIndex>137</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content></d1p1:Content>
+                <d1p1:LineIndex>137</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>refNum</d1p1:Content>
+                <d1p1:LineIndex>137</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>startPos</d1p1:Content>
+                <d1p1:LineIndex>138</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>endPos</d1p1:Content>
+                <d1p1:LineIndex>139</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                <d1p1:Content>InStr</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:OpenBrace">
+                <d1p1:Content>(</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NumericValueToken">
+                <d1p1:Content>1</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>mailSubject</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:StringToken">
+                <d1p1:Content>[#</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                <d1p1:Content>,</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NumericValueToken">
+                <d1p1:Content>1</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:CloseBrace">
+                <d1p1:Content>)</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>startPos</d1p1:Content>
+                <d1p1:LineIndex>141</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:OpenBrace">
+                    <d1p1:Content>(</d1p1:Content>
+                    <d1p1:LineIndex>142</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>startPos</d1p1:Content>
+                    <d1p1:LineIndex>142</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>&gt;</d1p1:Content>
+                    <d1p1:LineIndex>142</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:NumericValueToken">
+                    <d1p1:Content>0</d1p1:Content>
+                    <d1p1:LineIndex>142</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:CloseBrace">
+                    <d1p1:Content>)</d1p1:Content>
+                    <d1p1:LineIndex>142</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>startPos</d1p1:Content>
+                        <d1p1:LineIndex>143</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OperatorToken">
+                        <d1p1:Content>+</d1p1:Content>
+                        <d1p1:LineIndex>143</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>2</d1p1:Content>
+                        <d1p1:LineIndex>143</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>startPos</d1p1:Content>
+                        <d1p1:LineIndex>143</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:InlineCommentStatement">
+                  <d1p1:Content> skip "[#"</d1p1:Content>
+                  <d1p1:LineIndex>143</d1p1:LineIndex>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                        <d1p1:Content>InStr</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>startPos</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>mailSubject</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:StringToken">
+                        <d1p1:Content>]</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>1</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>endPos</d1p1:Content>
+                        <d1p1:LineIndex>144</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+                <d2p1:anyType i:type="d1p1:IfBlock">
+                  <d1p1:ConditionalClauses>
+                    <d1p1:IfBlock.IfBlockConditionSegment>
+                      <d1p1:Condition>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>145</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>endPos</d1p1:Content>
+                            <d1p1:LineIndex>145</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                            <d1p1:Content>&gt;</d1p1:Content>
+                            <d1p1:LineIndex>145</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NumericValueToken">
+                            <d1p1:Content>0</d1p1:Content>
+                            <d1p1:LineIndex>145</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>145</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Condition>
+                      <d1p1:Statements>
+                        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                          <d1p1:Expression>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                                <d1p1:Content>Mid</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:OpenBrace">
+                                <d1p1:Content>(</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>mailSubject</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                                <d1p1:Content>,</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>startPos</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                                <d1p1:Content>,</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>endPos</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:OperatorToken">
+                                <d1p1:Content>-</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>startPos</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                              <d2p1:anyType i:type="d1p1:CloseBrace">
+                                <d1p1:Content>)</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:Expression>
+                          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                          <d1p1:ValueToSet>
+                            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                            <d1p1:Tokens>
+                              <d2p1:anyType i:type="d1p1:NameToken">
+                                <d1p1:Content>refNum</d1p1:Content>
+                                <d1p1:LineIndex>146</d1p1:LineIndex>
+                              </d2p1:anyType>
+                            </d1p1:Tokens>
+                          </d1p1:ValueToSet>
+                        </d2p1:anyType>
+                      </d1p1:Statements>
+                    </d1p1:IfBlock.IfBlockConditionSegment>
+                  </d1p1:ConditionalClauses>
+                  <d1p1:OptionalElseClause i:nil="true" />
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>refNum</d1p1:Content>
+                <d1p1:LineIndex>149</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>extractRefNumber</d1p1:Content>
+                <d1p1:LineIndex>149</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- IsFMMail ---</d1p1:Content>
+      <d1p1:LineIndex>152</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>IsFMMail</d1p1:Content>
+        <d1p1:LineIndex>153</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailTo</d1p1:Content>
+            <d1p1:LineIndex>153</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>154</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OpenBrace">
+              <d1p1:Content>(</d1p1:Content>
+              <d1p1:LineIndex>154</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>IsFMMail called</d1p1:Content>
+              <d1p1:LineIndex>154</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:CloseBrace">
+              <d1p1:Content>)</d1p1:Content>
+              <d1p1:LineIndex>154</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>155</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>False</d1p1:Content>
+                <d1p1:LineIndex>155</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>155</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailTo</d1p1:Content>
+                    <d1p1:LineIndex>156</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>156</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:StringToken">
+                    <d1p1:Content>haustechnik@helplinedemo.de</d1p1:Content>
+                    <d1p1:LineIndex>156</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                        <d1p1:Content>True</d1p1:Content>
+                        <d1p1:LineIndex>157</d1p1:LineIndex>
+                        <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>retVal</d1p1:Content>
+                        <d1p1:LineIndex>157</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>160</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>IsFMMail</d1p1:Content>
+                <d1p1:LineIndex>160</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>--------------------------------------------------------------------------------------- IsFMMail ---</d1p1:Content>
+      <d1p1:LineIndex>163</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>IsHRMail</d1p1:Content>
+        <d1p1:LineIndex>164</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailTo</d1p1:Content>
+            <d1p1:LineIndex>164</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>165</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OpenBrace">
+              <d1p1:Content>(</d1p1:Content>
+              <d1p1:LineIndex>165</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>IsHRMail called</d1p1:Content>
+              <d1p1:LineIndex>165</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:CloseBrace">
+              <d1p1:Content>)</d1p1:Content>
+              <d1p1:LineIndex>165</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>166</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>False</d1p1:Content>
+                <d1p1:LineIndex>166</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>166</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:IfBlock">
+          <d1p1:ConditionalClauses>
+            <d1p1:IfBlock.IfBlockConditionSegment>
+              <d1p1:Condition>
+                <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                <d1p1:Tokens>
+                  <d2p1:anyType i:type="d1p1:NameToken">
+                    <d1p1:Content>mailTo</d1p1:Content>
+                    <d1p1:LineIndex>167</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:LineIndex>167</d1p1:LineIndex>
+                  </d2p1:anyType>
+                  <d2p1:anyType i:type="d1p1:StringToken">
+                    <d1p1:Content>personal@helplinedemo.de</d1p1:Content>
+                    <d1p1:LineIndex>167</d1p1:LineIndex>
+                  </d2p1:anyType>
+                </d1p1:Tokens>
+              </d1p1:Condition>
+              <d1p1:Statements>
+                <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                  <d1p1:Expression>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                        <d1p1:Content>True</d1p1:Content>
+                        <d1p1:LineIndex>168</d1p1:LineIndex>
+                        <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Expression>
+                  <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                  <d1p1:ValueToSet>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>retVal</d1p1:Content>
+                        <d1p1:LineIndex>168</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:ValueToSet>
+                </d2p1:anyType>
+              </d1p1:Statements>
+            </d1p1:IfBlock.IfBlockConditionSegment>
+          </d1p1:ConditionalClauses>
+          <d1p1:OptionalElseClause i:nil="true" />
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>171</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>IsHRMail</d1p1:Content>
+                <d1p1:LineIndex>171</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:BlankLine" />
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>---------------------------------------------------------------------------------------- IsWorkflowEmail ---</d1p1:Content>
+      <d1p1:LineIndex>174</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:FunctionBlock">
+      <d1p1:HasReturnValue>true</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>IsWFEmail</d1p1:Content>
+        <d1p1:LineIndex>175</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>mailSubject</d1p1:Content>
+            <d1p1:LineIndex>175</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+        <d1p1:AbstractFunctionBlock.Parameter>
+          <d1p1:ByRef>true</d1p1:ByRef>
+          <d1p1:IsArray>false</d1p1:IsArray>
+          <d1p1:Name>
+            <d1p1:Content>keywordList</d1p1:Content>
+            <d1p1:LineIndex>175</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:AbstractFunctionBlock.Parameter>
+      </d1p1:Parameters>
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>LogText</d1p1:Content>
+              <d1p1:LineIndex>176</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OpenBrace">
+              <d1p1:Content>(</d1p1:Content>
+              <d1p1:LineIndex>176</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>IsWFEmail called</d1p1:Content>
+              <d1p1:LineIndex>176</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:CloseBrace">
+              <d1p1:Content>)</d1p1:Content>
+              <d1p1:LineIndex>176</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>item</d1p1:Content>
+                <d1p1:LineIndex>177</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:DimStatement">
+          <d1p1:Variables>
+            <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+              <d1p1:Dimensions i:nil="true" />
+              <d1p1:Name>
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>178</d1p1:LineIndex>
+              </d1p1:Name>
+            </d1p1:DimVariable>
+          </d1p1:Variables>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>False</d1p1:Content>
+                <d1p1:LineIndex>178</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>178</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:BlankLine" />
+        <d2p1:anyType i:type="d1p1:ForEachBlock">
+          <d1p1:LoopSrc>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>keywordList</d1p1:Content>
+                <d1p1:LineIndex>180</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:LoopSrc>
+          <d1p1:LoopVar>
+            <d1p1:Content>item</d1p1:Content>
+            <d1p1:LineIndex>180</d1p1:LineIndex>
+          </d1p1:LoopVar>
+          <d1p1:Statements>
+            <d2p1:anyType i:type="d1p1:IfBlock">
+              <d1p1:ConditionalClauses>
+                <d1p1:IfBlock.IfBlockConditionSegment>
+                  <d1p1:Condition>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:BuiltInFunctionToken">
+                        <d1p1:Content>InStr</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>1</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>mailSubject</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>item</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+                        <d1p1:Content>,</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>1</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                        <d1p1:Content>&gt;</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>0</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>181</d1p1:LineIndex>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Condition>
+                  <d1p1:Statements>
+                    <d2p1:anyType i:type="d1p1:Statement">
+                      <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                      <d1p1:Tokens>
+                        <d2p1:anyType i:type="d1p1:NameToken">
+                          <d1p1:Content>LogText</d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:OpenBrace">
+                          <d1p1:Content>(</d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:StringToken">
+                          <d1p1:Content>IsWFEmail - </d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:OperatorToken">
+                          <d1p1:Content>&amp;</d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:NameToken">
+                          <d1p1:Content>item</d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:CloseBrace">
+                          <d1p1:Content>)</d1p1:Content>
+                          <d1p1:LineIndex>182</d1p1:LineIndex>
+                        </d2p1:anyType>
+                      </d1p1:Tokens>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                      <d1p1:Expression>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                            <d1p1:Content>True</d1p1:Content>
+                            <d1p1:LineIndex>183</d1p1:LineIndex>
+                            <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Expression>
+                      <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                      <d1p1:ValueToSet>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>retVal</d1p1:Content>
+                            <d1p1:LineIndex>183</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:ValueToSet>
+                    </d2p1:anyType>
+                    <d2p1:anyType i:type="d1p1:ExitStatement">
+                      <d1p1:LineIndex>184</d1p1:LineIndex>
+                      <d1p1:StatementType>For</d1p1:StatementType>
+                    </d2p1:anyType>
+                  </d1p1:Statements>
+                </d1p1:IfBlock.IfBlockConditionSegment>
+              </d1p1:ConditionalClauses>
+              <d1p1:OptionalElseClause i:nil="true" />
+            </d2p1:anyType>
+          </d1p1:Statements>
+        </d2p1:anyType>
+        <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+          <d1p1:Expression>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>retVal</d1p1:Content>
+                <d1p1:LineIndex>187</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Expression>
+          <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+          <d1p1:ValueToSet>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>IsWFEmail</d1p1:Content>
+                <d1p1:LineIndex>187</d1p1:LineIndex>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:ValueToSet>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:CommentStatement">
+      <d1p1:Content>---------------------------------------------------------------------------------------- main ---</d1p1:Content>
+      <d1p1:LineIndex>189</d1p1:LineIndex>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:Statement">
+      <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+      <d1p1:Tokens>
+        <d2p1:anyType i:type="d1p1:NameToken">
+          <d1p1:Content>ProcessIn</d1p1:Content>
+          <d1p1:LineIndex>190</d1p1:LineIndex>
+        </d2p1:anyType>
+      </d1p1:Tokens>
+    </d2p1:anyType>
+  </d1p1:AllExecutableBlocks>
+  <d1p1:Name i:type="d1p1:DoNotRenameNameToken">
+    <d1p1:Content>Root</d1p1:Content>
+    <d1p1:LineIndex>0</d1p1:LineIndex>
+  </d1p1:Name>
+</z:anyType>

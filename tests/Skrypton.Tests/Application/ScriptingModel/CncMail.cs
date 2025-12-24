@@ -18,5 +18,7 @@ namespace Helpline.Application.ScriptingModel
         internal string data_From;
         public string SenderMail => data_From;
 
+        public string To { get; internal set; }
+
     }
 }

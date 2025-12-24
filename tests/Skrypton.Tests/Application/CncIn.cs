@@ -29,6 +29,17 @@ namespace Skrypton.Tests.Application
               AND LEN(ISNULL(scr.script,N'')) > 0 -- TODO: CK_
               ;
          */
+        /* --> row number is the customer index : 98:PsoShow
+        SELECT [dbname]
+               ,[sizebytes_before]
+               ,[sizebytes_after]
+               ,[hasfilestreamfilegroup]
+               ,[sizegb_before]
+               ,[sizegb_after]
+               ,[deltamb]
+           FROM [CustomerAnalytics].[dbo].[_DatabaseStats]
+
+         */
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
         {
@@ -40,6 +51,13 @@ namespace Skrypton.Tests.Application
             ChainsTest.TestCncInChain(this, TestName, true);
             DoCncInTest();
         }
+        [TestMethod]
+        public void CT98__hlsysscript_cncIN()
+        {
+            ChainsTest.TestCncInChain(this, TestName, true);
+            DoCncInTest();
+        }
+
         private void DoCncInTest()
         {
             bool mergeSU_called = false;
