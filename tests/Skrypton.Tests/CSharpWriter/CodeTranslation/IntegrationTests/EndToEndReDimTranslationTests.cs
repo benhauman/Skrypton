@@ -17,10 +17,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope()
         {
-            var source = @"
+            string source = @"
                     ReDim a(0)
                 ";
-            var expected = new[] {
+            string[] expected = new[] {
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
                 };
             myAssert.AreEqual(
@@ -32,10 +32,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope()
         {
-            var source = @"
+            string source = @"
                     ReDim Preserve a(0)
                 ";
-            var expected = new[] {
+            string[] expected = new[] {
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
                 };
             myAssert.AreEqual(
@@ -47,11 +47,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfUndeclaredVariableInFunctionShouldImplicitlyDeclareTheVariableInLocalScope()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim a(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -68,11 +68,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfUndeclaredVariableInFunctionShouldImplicitlyDeclareTheVariableInLocalScope()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim Preserve a(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -89,11 +89,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfFunctionReturnValue()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim F1(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -109,11 +109,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfFunctionReturnValue()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim Preserve F1(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -133,17 +133,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void RepeatedReDimInOutermostScope1()
         {
-            var source = @"
+            string source = @"
                     ReDim a(0)
                     ReDim a(1)
                     ReDim a(2)";
 
-            var trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable)
+            string[] trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable)
                 .Select(s => s.Content.Trim())
                 .ToArray();
+            string text_a_raw = string.Join("\r\n", trimmedTranslatedStatements);
 
             myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "a = null;"));
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "public object a { get; set; }"));
+            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "internal object a { get; set; }"));
         }
 
         /// <summary>
@@ -153,13 +154,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void RepeatedReDimInFunction1()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim a(0)
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -181,11 +182,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope1()
         {
-            var source = @"
+            string source = @"
                     Dim a
                     ReDim a(0)
                 ";
-            var expected = new[] {
+            string[] expected = new[] {
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
                 };
             myAssert.AreEqual(
@@ -197,11 +198,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfDeclaredVariableInTheOutermostScope1()
         {
-            var source = @"
+            string source = @"
                     Dim a
                     ReDim Preserve a(0)
                 ";
-            var expected = new[] {
+            string[] expected = new[] {
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
                 };
             myAssert.AreEqual(
@@ -213,12 +214,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInFunction1()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         Dim a
                         ReDim a(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -235,12 +236,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfDeclaredVariableInFunction1()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         Dim a
                         ReDim Preserve a(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -261,18 +262,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void RepeatedReDimInOutermostScope2()
         {
-            var source = @"
+            string source = @"
                     Dim a
                     ReDim a(0)
                     ReDim a(1)
                     ReDim a(2)";
 
-            var trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable)
+            string[] trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable)
                 .Select(s => s.Content.Trim())
                 .ToArray();
+            string text_a_raw = string.Join("\r\n", trimmedTranslatedStatements);
 
             myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "a = null;"));
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "public object a { get; set; }"));
+            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "internal object a { get; set; }"));
         }
 
         /// <summary>
@@ -282,14 +284,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void RepeatedReDimInFunction2()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         Dim a
                         ReDim a(0)
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -313,12 +315,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void ReDimFollowingNonDimensionalArrayDimInFunction()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         Dim a()
                         ReDim a(0)
                     End Function";
-            var expected = @"
+            string expected = @"
                     public object f1()
                     {
                       object retVal1 = null;
@@ -342,7 +344,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope2()
         {
-            var source = @"
+            string source = @"
                     ReDim a(0)
                     Dim a
                 ";
@@ -355,7 +357,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfDeclaredVariableInTheOutermostScope2()
         {
-            var source = @"
+            string source = @"
                     ReDim Preserve a(0)
                     Dim a
                 ";
@@ -368,7 +370,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInFunction2()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim a(0)
                         Dim a
@@ -382,7 +384,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void PreserveReDimOfDeclaredVariableInFunction2()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         ReDim Preserve a(0)
                         Dim a
@@ -400,7 +402,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void ReDimBeforeDimButOnDifferentCodePath()
         {
-            var source = @"
+            string source = @"
                     Function F1()
                         If (True) Then
                             ReDim a(0)
@@ -426,7 +428,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void ReDimsWithinFuncCanPointToImplicitlyDeclOuterMostScopeVars() // ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables
         {
-            var source = @"
+            string source = @"
                 a = 1
                 Function F1()
                     ReDim a(2) ' This refers to the implicitly-declared variable ""a"" in the outermost scope

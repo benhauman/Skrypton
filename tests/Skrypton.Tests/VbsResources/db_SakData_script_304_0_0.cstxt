@@ -51,9 +51,9 @@ namespace TranslatedProgram
             hlasc_software2computer = null;
         }
 
-        public object hlasc_softwarelicensefolderview { get; set; }
-        public object hlasc_softwarelicensegroupview { get; set; }
-        public object hlasc_software2computer { get; set; }
+        internal object hlasc_softwarelicensefolderview { get; set; }
+        internal object hlasc_softwarelicensegroupview { get; set; }
+        internal object hlasc_software2computer { get; set; }
 
         //---------------------------------------------------------------
         //Diese Funktion ermittelt den Standard-Eintrag zum angegebenen Attribut aus
@@ -1058,6 +1058,6 @@ namespace TranslatedProgram
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object hlcontext { get; set; }
+        public object hlcontext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

@@ -431,7 +431,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                     {
                         string variableAccessToken = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
-                        TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken, "public object " + variableAccessToken + " { get; set; }",
+                        TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken, "internal object " + variableAccessToken + " { get; set; }",
                             2,
                             explicitVariableDeclaration.Name.LineIndex
                         );
@@ -525,7 +525,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
                     continue;
                 translatedStatements = translatedStatements.Add(
-                    new TranslatedStatement("public object " + v.RewrittenName + " { get; set; }", 2, v.LineIndex)
+                    new TranslatedStatement("public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex)
                 );
                 environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
             }

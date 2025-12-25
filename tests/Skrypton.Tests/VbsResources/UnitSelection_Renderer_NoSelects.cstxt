@@ -88,24 +88,24 @@ namespace TranslatedProgram
             bprodhasavail = null;
         }
 
-        public object page { get; set; }
-        public object request { get; set; }
-        public object context { get; set; }
-        public object server { get; set; }
-        public object dms { get; set; }
-        public object interfaceversion { get; set; }
-        public object booking_local { get; set; }
-        public object booking_eviivo { get; set; }
-        public object booking_redirect { get; set; }
-        public object booking_pollingredirect { get; set; }
-        public object isexternalbooking { get; set; }
-        public object strextbookurl { get; set; }
-        public object strproductestateid { get; set; }
-        public object bformrendered { get; set; }
-        public object isvbpollingenabled { get; set; }
-        public object brenderascalendar { get; set; }
-        public object g_inumberofcalendarsrendered { get; set; }
-        public object bprodhasavail { get; set; }
+        internal object page { get; set; }
+        internal object request { get; set; }
+        internal object context { get; set; }
+        internal object server { get; set; }
+        internal object dms { get; set; }
+        internal object interfaceversion { get; set; }
+        internal object booking_local { get; set; }
+        internal object booking_eviivo { get; set; }
+        internal object booking_redirect { get; set; }
+        internal object booking_pollingredirect { get; set; }
+        internal object isexternalbooking { get; set; }
+        internal object strextbookurl { get; set; }
+        internal object strproductestateid { get; set; }
+        internal object bformrendered { get; set; }
+        internal object isvbpollingenabled { get; set; }
+        internal object brenderascalendar { get; set; }
+        internal object g_inumberofcalendarsrendered { get; set; }
+        internal object bprodhasavail { get; set; }
 
         public object getprodhasavail()
         {
@@ -3383,6 +3383,6 @@ namespace TranslatedProgram
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object hlcontext { get; set; }
+        public object hlcontext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

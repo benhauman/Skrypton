@@ -7,23 +7,6 @@ using Skrypton.RuntimeSupport.Attributes;
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
     [SourceClassName("Dictionary")] // for TYPENAME(CreateObject("Scripting.Dictionary"))
-    internal sealed class MyScriptingDictionary1  // lubo: Type.GetTypeFromProgID("Scripting.Dictionary")
-    {
-        //[id(0x00000005), propget]
-        private readonly Dictionary<object, object> _inner = new Dictionary<object, object>();
-        public int Count => _inner.Count;
-        public void Add(object key, object value)
-        {
-            if (_inner.ContainsKey(key))
-                //throw new COMException("Key already exists", unchecked((int)0x800A01C9));
-                throw new InvalidOperationException("Key already exists");
-            // 0x800A01C9 = VBScript runtime error 457
-
-            _inner.Add(key, value);
-        }
-
-    }
-    [SourceClassName("Dictionary")] // for TYPENAME(CreateObject("Scripting.Dictionary"))
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [DefaultMember("Item")]

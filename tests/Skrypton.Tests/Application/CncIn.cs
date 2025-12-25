@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport;
+using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.Application
 {
@@ -80,24 +81,32 @@ namespace Skrypton.Tests.Application
         {
             //
             Assembly asm = CompileCSharpProgram(chainName);
-            Type tRunner = asm.GetType("TranslatedProgram.Runner", true);
-            Type tEnvironmentReferences = asm.GetType("TranslatedProgram.EnvironmentReferences", true);
-            object environmentReferences = Activator.CreateInstance(tEnvironmentReferences);
+
+            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(culture);
+
+            Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
+            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
+            object runnerUnk = Activator.CreateInstance(tRunner!, new object[] { compatLayer });
+            RunnerBase runner = (RunnerBase)runnerUnk!;
+
+            EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
+
+            var properties = environmentReferences.GetType().GetProperties();
+            var propertiesNameInfo = properties.ToDictionary(x => x.Name, x => x, StringComparer.OrdinalIgnoreCase);
+
             foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
             {
                 string externalReferenceName = externalReferencesEntry.Key;
                 object externalReferenceInstance = externalReferencesEntry.Value;
-                PropertyInfo pi_externalReference1 = environmentReferences.GetType().GetProperty(externalReferenceName);
-                if (pi_externalReference1 == null)
-                    throw new InvalidOperationException("Invalid exernal reference:" + externalReferenceName);
-                pi_externalReference1.SetValue(environmentReferences, externalReferenceInstance);
+                environmentReferences.InitializeExternalReference(externalReferenceName, externalReferenceInstance);
+
+                if (!propertiesNameInfo.TryGetValue(externalReferenceName, out PropertyInfo pi_externalReference1))
+                    throw new InvalidOperationException($"Invalid external reference '{externalReferenceName}'.");
+                // sanity check
+                _ = pi_externalReference1.GetValue(environmentReferences);
             }
 
-            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(culture);
-
             //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(TestCulture).Get();
-            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = new MyDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultNameRewriter, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
-            object runner = Activator.CreateInstance(tRunner, new object[] { compatLayer });
             MethodInfo mi_GO = runner.GetType().GetMethods().Single(x => x.Name == "Go" && x.GetParameters().Length == 1);
             ///try
             ///{
@@ -110,25 +119,31 @@ namespace Skrypton.Tests.Application
             ///}
             ///
         }
-
-        class MyDefaultRuntimeFunctionalityProvider : Skrypton.RuntimeSupport.Implementations.DefaultRuntimeFunctionalityProvider
+        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
-            public MyDefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, Skrypton.RuntimeSupport.IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
-                : base(valueRetriever, culture)
-            {
-
-            }
-
-            public override object CREATEOBJECT(object value)
-            {
-                string progid = (string)value;
-                if (string.Equals(progid, "Scripting.Dictionary", StringComparison.OrdinalIgnoreCase))
-                {
-                    return new ScriptingDictionary();
-                }
-                return base.CREATEOBJECT(value);
-            }
+            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(valueRetriever, culture);
+            provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionary());
+            provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
+            return provider;
         }
+
+        //class MyDefaultRuntimeFunctionalityProvider : Skrypton.RuntimeSupport.Implementations.DefaultRuntimeFunctionalityProvider
+        //{
+        //    public MyDefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, Skrypton.RuntimeSupport.IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        //        : base(valueRetriever, culture)
+        //    {
+        //    }
+        //
+        //    //public override object CREATEOBJECT(object value)
+        //    //{
+        //    //    string progid = (string)value;
+        //    //    if (string.Equals(progid, "Scripting.Dictionary", StringComparison.OrdinalIgnoreCase))
+        //    //    {
+        //    //        return new ScriptingDictionary();
+        //    //    }
+        //    //    return base.CREATEOBJECT(value);
+        //    //}
+        //}
 
         internal static Assembly CompileCSharpProgram(string chainName)
         {

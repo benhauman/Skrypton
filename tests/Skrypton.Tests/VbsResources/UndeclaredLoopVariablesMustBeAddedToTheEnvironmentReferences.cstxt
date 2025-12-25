@@ -42,6 +42,6 @@ namespace TranslatedProgram
 	}
 	public sealed class EnvironmentReferences : EnvironmentReferencesBase
 	{
-		public object value { get; set; }
+		public object value { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
 	}
 }

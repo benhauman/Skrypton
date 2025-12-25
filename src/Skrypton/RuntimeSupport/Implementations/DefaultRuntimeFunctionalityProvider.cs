@@ -53,6 +53,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             _trappedErrorIfAny = null;
         }
 
+        private readonly Dictionary<string, Func<object>> _objectCreateFactories = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+        public void RegisterObjectCreateFactory(string progId, Func<object> factory)
+        {
+            if (string.IsNullOrEmpty(progId))
+                throw new ArgumentException("Value can not be null or empty", nameof(progId));
+            _objectCreateFactories[progId] = factory ?? throw new ArgumentNullException(nameof(factory));
+        }
+
         private enum ErrorTokenState
         {
             OnErrorResumeNext,
@@ -1879,8 +1887,30 @@ namespace Skrypton.RuntimeSupport.Implementations
             return approximateValue;
         }
         // - Object creation
-        public virtual object CREATEOBJECT(object value) { throw new NotImplementedException("" + value); }
-        public object GETOBJECT(object value) { throw new NotImplementedException(); }
+        public virtual object CREATEOBJECT(object value)
+        {
+            // Creates a new instance of the specified COM object
+            // => Set obj = CreateObject("Excel.Application") → always starts a new Excel process
+            // => for files: Cannot open persisted objects from file
+            // => Works as long as the ProgID is valid
+            // Automating applications by starting fresh
+
+            string classProgId = _valueRetriever.STR(value);
+            if (string.IsNullOrEmpty(classProgId))
+                throw new InvalidOperationException("object id:" + value);
+            if (_objectCreateFactories.TryGetValue(classProgId, out var objectFactory))
+                return objectFactory();
+            throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
+        }
+        public object GETOBJECT(object value)
+        {
+            // Retrieves an existing instance of a running object, or loads from a file
+            // => Set obj = GetObject(, "Excel.Application") → attaches to an already running Excel
+            // => Can open objects stored in files (e.g., GetObject("C:\MyDoc.doc"))
+            // => Fails if no instance exists and no file is specified (Run-time error 429)
+            // Controlling or reusing an already running application instance
+            throw new NotImplementedException();
+        }
         public object EVAL(object value) { throw new NotImplementedException(); }
         public object EXECUTE(object value) { throw new NotImplementedException(); }
         public object EXECUTEGLOBAL(object value) { throw new NotImplementedException(); }
