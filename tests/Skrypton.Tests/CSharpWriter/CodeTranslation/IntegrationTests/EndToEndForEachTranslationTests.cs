@@ -143,17 +143,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
 			TestCSharpCodeTranslation(source);
-   //         string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+            //         string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
 
-   //         var output = DefaultTranslator
-			//	.Translate(TestCulture, source, new string[0], renderCommentsAboutUndeclaredVariables: false)
-			//	.Select(s => s.Content)
-			//	.Where(s => s != "")
-			//	.ToArray();
-			//base.AreEqualStringArray(TestName, ".cstxt",
-   //             expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
-			//	output.Select(s => s.Trim()).Where(s => s != "").ToArray()
-			//);
+            //         var output = DefaultTranslator
+            //	.Translate(TestCulture, source, new string[0], renderCommentsAboutUndeclaredVariables: false)
+            //	.Select(s => s.Content)
+            //	.Where(s => s != "")
+            //	.ToArray();
+            //base.AreEqualStringArray(TestName, CSFileExtension,
+            //             expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+            //	output.Select(s => s.Trim()).Where(s => s != "").ToArray()
+            //);
         }
-	}
+    }
 }

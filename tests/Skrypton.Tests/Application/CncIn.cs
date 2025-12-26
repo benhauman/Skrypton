@@ -147,7 +147,7 @@ namespace Skrypton.Tests.Application
 
         internal static Assembly CompileCSharpProgram(string chainName)
         {
-            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".cstxt");
+            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
             return CompileCSharpProgram(chainName, translated_cs_expected);
         }
         internal static Assembly CompileCSharpProgram(string chainName, string translated_cs)

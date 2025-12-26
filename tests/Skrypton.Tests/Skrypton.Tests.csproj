@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Compile Remove="VbsResources\**\*.cs" />
+    <None Include="VbsResources\**\*.cs" />
     <EmbeddedResource Include="VbsResources\**\*.sql" />
     <EmbeddedResource Include="VbsResources\**\*.vbs" />
     <EmbeddedResource Include="VbsResources\**\*.xml" />

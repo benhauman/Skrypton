@@ -13,6 +13,7 @@ namespace Skrypton.Tests
 {
     public abstract class TestBase
     {
+        public const string CSFileExtension = ".cs"; // ".cstxt"
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public TestContext TestContext { get; set; }
         protected string TestName => this.TestContext!.TestName;
@@ -85,11 +86,11 @@ namespace Skrypton.Tests
         {
             string[] output = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
 
-            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + ".cstxt");
+            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
 
             string chainName = TestName;
-            string fileSuffix = ".cstxt";
-            //    AreEqualStringArray(TestName, ".cstxt",
+            string fileSuffix = CSFileExtension;
+            //    AreEqualStringArray(TestName, CSFileExtension,
             string[] arr_expected = expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
             string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
             string text_a_raw = string.Join("\r\n", output);
