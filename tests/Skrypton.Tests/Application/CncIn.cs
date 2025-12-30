@@ -108,24 +108,7 @@ namespace Skrypton.Tests.Application
                     _ = pi_externalReference1.GetValue(environmentReferences);
                 }
 
-                //asmctx.UnloadContextCollectAndWait();
-                if (!weakRef.IsAlive)
-                    Console.WriteLine("ALC successfully unloaded");
-                else
-                    Console.WriteLine("ALC still alive");
-
-                //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(TestCulture).Get();
-                MethodInfo mi_GO = runner.GetType().GetMethods().Single(x => x.Name == "Go" && x.GetParameters().Length == 1);
-                ///try
-                ///{
-                mi_GO.Invoke(runner, new object[] { environmentReferences });
-                ///}
-                ///catch (Exception ex)
-                ///{
-                ///    Console.WriteLine(ex);
-                ///    throw;
-                ///}
-                ///
+                runner.Run(environmentReferences);
             }
             asmctx.UnloadContextCollectAndWait();
 
@@ -185,7 +168,7 @@ namespace Skrypton.Tests.Application
             );
 
             CSharpCompilation compilation = CSharpCompilation.Create(
-                "InMemoryAssembly",
+                "InMemDynAsmKey2",
                 new[] { syntaxTree },
                 references,
                 options

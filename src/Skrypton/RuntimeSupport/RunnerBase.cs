@@ -19,10 +19,7 @@ namespace Skrypton.RuntimeSupport
             return (RunnerBase)Activator.CreateInstance(runnerType, [compatLayer]);
         }
 
-        public void Run()
-        {
-            // Go();
-        }
+        public abstract GlobalReferencesBase Run(EnvironmentReferencesBase environmentReferences);
     }
 
     public abstract class RunnerBaseT<TEnvironmentReferences, TGlobalReferencesBase> : RunnerBase
@@ -36,6 +33,13 @@ namespace Skrypton.RuntimeSupport
         {
             return new TEnvironmentReferences();
         }
+
+        public override GlobalReferencesBase Run(EnvironmentReferencesBase environmentReferences)
+        {
+            return Go((TEnvironmentReferences)environmentReferences);
+        }
+
+        protected abstract TGlobalReferencesBase Go(TEnvironmentReferences environmentReferences);
     }
 
     public abstract class EnvironmentReferencesBase

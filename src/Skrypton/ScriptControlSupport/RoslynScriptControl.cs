@@ -117,7 +117,7 @@ namespace Skrypton.ScriptControlSupport
             );
 
             CSharpCompilation compilation = CSharpCompilation.Create(
-                "InMemoryAssembly",
+                "InMemDynAsmKey1",
                 new[] { syntaxTree },
                 references,
                 options

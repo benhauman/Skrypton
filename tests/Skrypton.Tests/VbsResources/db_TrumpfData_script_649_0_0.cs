@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
-        public GlobalReferences Go(EnvironmentReferences env)
+        protected override GlobalReferences Go(EnvironmentReferences env)
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = new GlobalReferences(_, _env);

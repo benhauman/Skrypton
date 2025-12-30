@@ -14,8 +14,8 @@ namespace TranslatedProgram
 		{
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 		}
-		public GlobalReferences Go(EnvironmentReferences env)
-		{
+        protected override GlobalReferences Go(EnvironmentReferences env)
+        {
 			var _env = env ?? throw new ArgumentNullException(nameof(env));
 			var _outer = new GlobalReferences(_, _env);
 			var enumerationContent1 = _.ENUMERABLE(_.CALL(this, _, "ARRAY", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();

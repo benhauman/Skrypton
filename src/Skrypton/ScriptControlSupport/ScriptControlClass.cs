@@ -142,7 +142,7 @@ namespace Skrypton.ScriptControlSupport
                     environmentReferences.InitializeExternalReference(externalReferencesEntry.Key, externalReferencesEntry.Value);
                 }
 
-                runner.Run();
+                var globalRefs = runner.Run(environmentReferences);
             }
             finally
             {

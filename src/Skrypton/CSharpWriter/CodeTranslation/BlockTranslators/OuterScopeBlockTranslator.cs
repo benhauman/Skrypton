@@ -252,7 +252,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     //),
                     //new TranslatedStatement("}", 2, 0),
                     new TranslatedStatement(
-                        $"public {_outerClassName.Name} {_startMethodName.Name}({_envClassName.Name} env)",
+                        $"protected override {_outerClassName.Name} {_startMethodName.Name}({_envClassName.Name} env)",
                         2,
                         0
                     ),
