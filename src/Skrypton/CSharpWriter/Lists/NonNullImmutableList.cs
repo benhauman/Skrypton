@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Skrypton.CSharpWriter.Lists
 {
-    public class NonNullImmutableList<T> : ImmutableList<T> where T : class
+    [DebuggerDisplay("{Count}")]
+    public sealed class NonNullImmutableList<T> : ImmutableList<T> where T : class
     {
         private readonly static Validator _defaultValidator = new Validator(null);
         private IValueValidator<T> _optionalValueValidator;

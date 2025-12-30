@@ -13,6 +13,16 @@ namespace Skrypton.RuntimeSupport
         }
 
         public abstract EnvironmentReferencesBase CreateEnvironmentReferencesInstance();
+
+        public static RunnerBase CreateRunnerInstanceForType(Type runnerType, IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
+        {
+            return (RunnerBase)Activator.CreateInstance(runnerType, [compatLayer]);
+        }
+
+        public void Run()
+        {
+            // Go();
+        }
     }
 
     public abstract class RunnerBaseT<TEnvironmentReferences, TGlobalReferencesBase> : RunnerBase

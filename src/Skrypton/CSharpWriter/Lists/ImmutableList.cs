@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Skrypton.CSharpWriter.Lists
 {
+    [DebuggerDisplay("{Count}")]
     public class ImmutableList<T> : IEnumerable<T>
     {
         private readonly Node _tail;

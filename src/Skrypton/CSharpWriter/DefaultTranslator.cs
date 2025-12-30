@@ -26,38 +26,29 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> Translate(
-            CultureInfo culture,
-            string scriptContent,
-            NonNullImmutableList<string> externalDependencies,
-            OuterScopeBlockTranslator.OutputTypeOptions outputType,
-            bool renderCommentsAboutUndeclaredVariables = true)
-        {
-            ILogInformation logger;
-            if (renderCommentsAboutUndeclaredVariables)
-                logger = new CSharpCommentMakingLogger(new ConsoleLogger());
-            else
-                logger = new NullLogger();
-
-            return Translate(culture, scriptContent, externalDependencies, outputType, logger);
-        }
-
-        /// <summary>
-        /// This Translate signature exists to provide an extremely simple way to get code translated - it is used in some of the examples so that
-        /// there's a way to get to translating before worrying about what the NonNullImmutableList type is all about
-        /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> Translate(
-            CultureInfo culture,
-            string scriptContent,
-            string[] externalDependencies,
+        public static NonNullImmutableList<TranslatedStatement> Translate(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable,
             bool renderCommentsAboutUndeclaredVariables = true)
         {
-            if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
-
-            return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType);
+            return TranslateCore(culture, scriptContent, externalDependencies, outputType, CommentsLogger(renderCommentsAboutUndeclaredVariables));
         }
+        internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation logger = null) => renderCommentsAboutUndeclaredVariables
+            ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
+            : new NullLogger();
+
+        ///// <summary>
+        ///// This Translate signature exists to provide an extremely simple way to get code translated - it is used in some of the examples so that
+        ///// there's a way to get to translating before worrying about what the NonNullImmutableList type is all about
+        ///// </summary>
+        //internal static NonNullImmutableList<TranslatedStatement> TranslateX(CultureInfo culture, string scriptContent, string[] externalDependencies,
+        //    OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable,
+        //    bool renderCommentsAboutUndeclaredVariables = true)
+        //{
+        //    if (externalDependencies == null)
+        //        throw new ArgumentNullException("externalDependencies");
+
+        //    return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, true);
+        //}
 
         /// <summary>
         /// This Translate signature exists to provide a slightly-simpler way to specify a custom warning logger (by providing a simple delegate,
@@ -82,7 +73,7 @@ namespace Skrypton.CSharpWriter
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList
         /// of strings and it requires an ILogInformation implementation to deal with logging warnings
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> Translate(
+        public static NonNullImmutableList<TranslatedStatement> TranslateCore(
             CultureInfo culture,
             string scriptContent,
             NonNullImmutableList<string> externalDependencies,
@@ -197,7 +188,7 @@ namespace Skrypton.CSharpWriter
             return NumberRebuilder.Rebuild(OperatorCombiner.Combine(atomTokens)).ToList();
         }
 
-        private sealed class DelegateWrappingWarningLogger : ILogInformation
+        internal sealed class DelegateWrappingWarningLogger : ILogInformation
         {
             private readonly Action<string> _warningLogger;
             public DelegateWrappingWarningLogger(Action<string> warningLogger)

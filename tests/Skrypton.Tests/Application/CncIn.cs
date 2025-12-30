@@ -80,44 +80,59 @@ namespace Skrypton.Tests.Application
         internal static void ExecuteTranslatedProgram(CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)
         {
             //
-            Assembly asm = CompileCSharpProgram(chainName);
-
-            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(culture);
-
-            Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
-            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
-            object runnerUnk = Activator.CreateInstance(tRunner!, new object[] { compatLayer });
-            RunnerBase runner = (RunnerBase)runnerUnk!;
-
-            EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
-
-            var properties = environmentReferences.GetType().GetProperties();
-            var propertiesNameInfo = properties.ToDictionary(x => x.Name, x => x, StringComparer.OrdinalIgnoreCase);
-
-            foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
+            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(chainName);
+            WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             {
-                string externalReferenceName = externalReferencesEntry.Key;
-                object externalReferenceInstance = externalReferencesEntry.Value;
-                environmentReferences.InitializeExternalReference(externalReferenceName, externalReferenceInstance);
+                Assembly asm = asmctx.LoadedAssembly;
 
-                if (!propertiesNameInfo.TryGetValue(externalReferenceName, out PropertyInfo pi_externalReference1))
-                    throw new InvalidOperationException($"Invalid external reference '{externalReferenceName}'.");
-                // sanity check
-                _ = pi_externalReference1.GetValue(environmentReferences);
+                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(culture);
+                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
+
+                Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
+                RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
+
+                EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
+
+                var properties = environmentReferences.GetType().GetProperties();
+                var propertiesNameInfo = properties.ToDictionary(x => x.Name, x => x, StringComparer.OrdinalIgnoreCase);
+
+                foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
+                {
+                    string externalReferenceName = externalReferencesEntry.Key;
+                    object externalReferenceInstance = externalReferencesEntry.Value;
+                    environmentReferences.InitializeExternalReference(externalReferenceName, externalReferenceInstance);
+
+                    if (!propertiesNameInfo.TryGetValue(externalReferenceName, out PropertyInfo pi_externalReference1))
+                        throw new InvalidOperationException($"Invalid external reference '{externalReferenceName}'.");
+                    // sanity check
+                    _ = pi_externalReference1.GetValue(environmentReferences);
+                }
+
+                //asmctx.UnloadContextCollectAndWait();
+                if (!weakRef.IsAlive)
+                    Console.WriteLine("ALC successfully unloaded");
+                else
+                    Console.WriteLine("ALC still alive");
+
+                //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(TestCulture).Get();
+                MethodInfo mi_GO = runner.GetType().GetMethods().Single(x => x.Name == "Go" && x.GetParameters().Length == 1);
+                ///try
+                ///{
+                mi_GO.Invoke(runner, new object[] { environmentReferences });
+                ///}
+                ///catch (Exception ex)
+                ///{
+                ///    Console.WriteLine(ex);
+                ///    throw;
+                ///}
+                ///
             }
+            asmctx.UnloadContextCollectAndWait();
 
-            //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(TestCulture).Get();
-            MethodInfo mi_GO = runner.GetType().GetMethods().Single(x => x.Name == "Go" && x.GetParameters().Length == 1);
-            ///try
-            ///{
-            mi_GO.Invoke(runner, new object[] { environmentReferences });
-            ///}
-            ///catch (Exception ex)
-            ///{
-            ///    Console.WriteLine(ex);
-            ///    throw;
-            ///}
-            ///
+            if (!weakRef.IsAlive)
+                Console.WriteLine("ALC successfully unloaded");
+            else
+                Console.WriteLine("ALC still alive");
         }
         internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
@@ -145,12 +160,12 @@ namespace Skrypton.Tests.Application
         //    //}
         //}
 
-        internal static Assembly CompileCSharpProgram(string chainName)
+        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName)
         {
             string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
             return CompileCSharpProgram(chainName, translated_cs_expected);
         }
-        internal static Assembly CompileCSharpProgram(string chainName, string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName, string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
             PortableExecutableReference[] references = new[]
@@ -217,8 +232,39 @@ namespace Skrypton.Tests.Application
 
             // Load assembly from memory
             peStream.Seek(0, SeekOrigin.Begin);
-            return Assembly.Load(peStream.ToArray());
+            // return Assembly.Load(peStream.ToArray());
+            var assemblyBytes = peStream.ToArray();
+            var context = new UnloadableAssemblyLoadContextContext();
+            context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
+            //context.LoadFromAssemblyPath
+            return context;
         }
+        internal sealed class UnloadableAssemblyLoadContextContext : System.Runtime.Loader.AssemblyLoadContext
+        {
+            public Assembly LoadedAssembly { get; set; }
+
+            public UnloadableAssemblyLoadContextContext() : base(isCollectible: true)
+            {
+            }
+            protected override Assembly Load(AssemblyName assemblyName)
+            {
+                return base.Load(assemblyName);
+            }
+
+            protected override nint LoadUnmanagedDll(string unmanagedDllName)
+            {
+                return base.LoadUnmanagedDll(unmanagedDllName);
+            }
+
+            internal void UnloadContextCollectAndWait()
+            {
+                this.Unload();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+
 
         internal static Helpline.Application.ScriptingModel.CncJob CreateSampleConnectivityJob(Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext)
         {

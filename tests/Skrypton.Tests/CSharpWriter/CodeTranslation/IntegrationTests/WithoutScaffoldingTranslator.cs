@@ -24,10 +24,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 throw new ArgumentNullException("externalDependencies");
 
             return DefaultTranslator
-                .Translate(culture,
-                    content,
-                    externalDependencies,
-                    OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, // Executable:159 tests
+                .Translate(culture, content, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, // Executable:159 tests
                     renderCommentsAboutUndeclaredVariables: false
                 )
                 .Select(s => s.Content)

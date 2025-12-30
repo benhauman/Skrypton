@@ -20,7 +20,7 @@ namespace Skrypton.RuntimeSupport.Implementations
     /// subsequent requests for the same type and member will be faster. The intention is that an instance of this be used across all requests that may
     /// be executing and so is written to be thread safe.
     /// </summary>
-    public class VBScriptEsqueValueRetriever : IAccessValuesUsingVBScriptRules
+    public sealed class VBScriptEsqueValueRetriever : IAccessValuesUsingVBScriptRules
     {
         // It's feasible that access to the invoker cacher will need to support multi-threaded access depending upon the application in question, so the
         // ConcurrentDictionary seems like a good choice. The most common cases I'm envisaging are for the cache to be built up as various execution paths

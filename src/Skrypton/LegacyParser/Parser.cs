@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser
             //CodeBlockCollection rootStatements = new CodeBlockCollection(rootCodeBlocks);
             return new CSharpWriter.CodeTranslation.OutermostScope(rootName, new CSharpWriter.Lists.NonNullImmutableList<ICodeBlock>(rootCodeBlocks));
         }
-        public static IEnumerable<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
+        public static IReadOnlyCollection<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
         {
             if (string.IsNullOrWhiteSpace(scriptContent))
                 throw new ArgumentException("Null/blank scriptContent specified");
