@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Helpline.Application.ScriptingModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.ScriptControlSupport;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,10 @@ namespace Skrypton.Tests.Application
     [TestClass]
     public sealed class ScriptControlTests : TestBase
     {
-        [TestMethod]
-        public void DC_DATA__hlsysscript_cncIN()
-        {
-            DoScriptControlTest();
-        }
+        [TestMethod] public void CT98__hlsysscript_cncIN() => DoScriptControlTest();
+        [TestMethod] public void DC_DATA__hlsysscript_cncIN() => DoScriptControlTest();
+        [TestMethod] public void LUNA12_quxDATA__hlsysscript_cncIN() => DoScriptControlTest();
+
 
         private void DoScriptControlTest() // see 'ExecuteScriptByNameAsync'
         {
@@ -28,6 +28,11 @@ namespace Skrypton.Tests.Application
                 };
             });
             var session = Skrypton.Tests.Application.CncIn.CreateSampleConnectivityJob(cncTestContext);
+            CncObj DoExtendWorkflowCaseIdentity = null;
+            session.DoExtendWorkflowCaseOverride = (oi) =>
+            {
+                DoExtendWorkflowCaseIdentity = (CncObj)oi;
+            };
 
             //ExecuteTranslatedProgram(TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
 
@@ -48,6 +53,8 @@ object[] args = new object[0];
 string tmp = ScriptEnginePrefix + scriptName;
 scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName, ref args);
              */
+
+            Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
         }
     }
 

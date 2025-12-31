@@ -70,11 +70,16 @@ namespace Skrypton.Tests.Application
                 };
             });
             CncJob session = CreateSampleConnectivityJob(cncTestContext);
-
+            CncObj DoExtendWorkflowCaseIdentity = null;
+            session.DoExtendWorkflowCaseOverride = (oi) =>
+            {
+                DoExtendWorkflowCaseIdentity = (CncObj)oi;
+            };
             ExecuteTranslatedProgram(TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
+            Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
         internal static void ExecuteTranslatedProgram(CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)

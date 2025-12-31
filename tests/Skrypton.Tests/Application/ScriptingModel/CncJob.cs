@@ -82,9 +82,11 @@ namespace Helpline.Application.ScriptingModel
             Console.WriteLine("CanExtendWorkflowCase:" + objIdentity);
             return true;
         }
+        public Action<object> DoExtendWorkflowCaseOverride { get; set; }
         public string DoExtendWorkflowCase(object objIdentity)
         {
             Console.WriteLine("DoExtendWorkflowCase:" + objIdentity);
+            DoExtendWorkflowCaseOverride(objIdentity);
             return null;
         }
 
