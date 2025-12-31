@@ -15,10 +15,11 @@ namespace TranslatedProgram
         {
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
-        protected override GlobalReferences Go(EnvironmentReferences env)
+        protected override GlobalReferences CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) => new GlobalReferences(compatLayer, env);
+        protected override void Go(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences globalReferences)
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
-            var _outer = new GlobalReferences(_, _env);
+            var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             _outer.hlasc_software2computer = "Software2Computer";
             _outer.hlasc_softwarelicensegroupview = "LicenseGroupView";
@@ -38,7 +39,6 @@ namespace TranslatedProgram
             // on the InternalMIGPartnerID of the contact and the MIGPartnerID of the object
 
             //---------------------------------------------------------------------
-            return _outer;
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

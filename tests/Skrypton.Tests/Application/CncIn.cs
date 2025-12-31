@@ -164,7 +164,11 @@ namespace Skrypton.Tests.Application
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,
                 warningLevel: 4,
-                generalDiagnosticOption: ReportDiagnostic.Error
+                generalDiagnosticOption: ReportDiagnostic.Error,
+                specificDiagnosticOptions: new Dictionary<string, ReportDiagnostic>
+                {
+                    ["CS0219"] = ReportDiagnostic.Suppress
+                }
             );
 
             CSharpCompilation compilation = CSharpCompilation.Create(

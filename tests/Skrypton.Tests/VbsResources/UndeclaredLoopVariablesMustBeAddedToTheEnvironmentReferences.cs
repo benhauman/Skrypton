@@ -14,18 +14,18 @@ namespace TranslatedProgram
 		{
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 		}
-        protected override GlobalReferences Go(EnvironmentReferences env)
+        protected override GlobalReferences CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) => new GlobalReferences(compatLayer, env);
+        protected override void Go(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences globalReferences)
         {
-			var _env = env ?? throw new ArgumentNullException(nameof(env));
-			var _outer = new GlobalReferences(_, _env);
-			var enumerationContent1 = _.ENUMERABLE(_.CALL(this, _, "ARRAY", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();
+            var _env = env ?? throw new ArgumentNullException(nameof(env));
+            var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
+            var enumerationContent1 = _.ENUMERABLE(_.CALL(this, _, "ARRAY", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();
 			while (true)
 			{
 				if (!enumerationContent1.MoveNext())
 					break;
 				_env.value = enumerationContent1.Current;
 			}
-			return _outer;
 		}
 	}
 	public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

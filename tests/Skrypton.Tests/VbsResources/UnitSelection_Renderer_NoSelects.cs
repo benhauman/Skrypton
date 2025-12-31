@@ -15,10 +15,11 @@ namespace TranslatedProgram
         {
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
-        protected override GlobalReferences Go(EnvironmentReferences env)
+        protected override GlobalReferences CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) => new GlobalReferences(compatLayer, env);
+        protected override void Go(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences globalReferences)
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
-            var _outer = new GlobalReferences(_, _env);
+            var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             _outer.booking_pollingredirect = (Int16)3;
             _outer.booking_redirect = (Int16)2;
@@ -55,7 +56,6 @@ namespace TranslatedProgram
             // this often isn't the case.
             // ==========================================================================================================
 
-            return _outer;
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

@@ -251,8 +251,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     //    0
                     //),
                     //new TranslatedStatement("}", 2, 0),
+                    new TranslatedStatement($"protected override {_outerClassName.Name} CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env) => new {_outerClassName.Name}(compatLayer, env);", 2, 0),
+
                     new TranslatedStatement(
-                        $"protected override {_outerClassName.Name} {_startMethodName.Name}({_envClassName.Name} env)",
+                        $"protected override void {_startMethodName.Name}(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env, {_outerClassName.Name} globalReferences)", // "GO"
                         2,
                         0
                     ),
@@ -263,7 +265,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         0
                     ),
                     new TranslatedStatement(
-                        string.Format("var {0} = new {1}({2}, {3});", _outerRefName.Name, _outerClassName.Name, _supportRefName.Name, _envRefName.Name),
+                        //string.Format("var {0} = new {1}({2}, {3});", _outerRefName.Name, _outerClassName.Name, _supportRefName.Name, _envRefName.Name),
+                        $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",
                         3,
                         0
                     )
@@ -313,7 +316,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Executable so that just the real meat of the source code is generated)
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement(string.Format("return {0};", _outerRefName.Name), 3, 0),
+                    //new TranslatedStatement(string.Format("return {0};", _outerRefName.Name), 3, 0),
                     new TranslatedStatement("}", 2, 0),
                     //?!?EmptyLine
                 });
@@ -406,7 +409,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
 
-                    TranslatedVariableDeclarationStatement variableInitializationStatement = new TranslatedVariableDeclarationStatement(variableAccessTokenName, TranslateVariableInitialization(explicitVariableDeclaration, variableAccessTokenName, ScopeLocationOptions.OutermostScope),
+                    TranslatedVariableDeclarationStatement variableInitializationStatement = new TranslatedVariableDeclarationStatement(variableAccessTokenName, TranslateVariableInitialization(explicitVariableDeclaration, variableAccessTokenName, ScopeLocationOptions.OutermostScope, asUnreferencedVar: true, 3),
                         3,
                         explicitVariableDeclaration.Name.LineIndex
                     );

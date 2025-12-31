@@ -7,9 +7,10 @@ namespace Skrypton.RuntimeSupport
 {
     public abstract class RunnerBase
     {
+        internal IProvideVBScriptCompatFunctionalityToIndividualRequests CompatLayer { get; } // rename it to '_'
         public RunnerBase(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
         {
-            if (compatLayer == null) throw new ArgumentNullException(nameof(compatLayer));
+            CompatLayer = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
 
         public abstract EnvironmentReferencesBase CreateEnvironmentReferencesInstance();
@@ -22,9 +23,9 @@ namespace Skrypton.RuntimeSupport
         public abstract GlobalReferencesBase Run(EnvironmentReferencesBase environmentReferences);
     }
 
-    public abstract class RunnerBaseT<TEnvironmentReferences, TGlobalReferencesBase> : RunnerBase
+    public abstract class RunnerBaseT<TEnvironmentReferences, TGlobalReferences> : RunnerBase
         where TEnvironmentReferences : EnvironmentReferencesBase, new()
-        where TGlobalReferencesBase : GlobalReferencesBase
+        where TGlobalReferences : GlobalReferencesBase
     {
         public RunnerBaseT(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
         {
@@ -34,12 +35,16 @@ namespace Skrypton.RuntimeSupport
             return new TEnvironmentReferences();
         }
 
+        protected abstract TGlobalReferences CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, TEnvironmentReferences environmentReferences);
+
         public override GlobalReferencesBase Run(EnvironmentReferencesBase environmentReferences)
         {
-            return Go((TEnvironmentReferences)environmentReferences);
+            TGlobalReferences globalReferences = CreateGlobalReferences(CompatLayer, (TEnvironmentReferences)environmentReferences);
+            Go(CompatLayer, (TEnvironmentReferences)environmentReferences, globalReferences);
+            return globalReferences;
         }
 
-        protected abstract TGlobalReferencesBase Go(TEnvironmentReferences environmentReferences);
+        protected abstract void Go(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, TEnvironmentReferences environmentReferences, TGlobalReferences globalReferences);
     }
 
     public abstract class EnvironmentReferencesBase

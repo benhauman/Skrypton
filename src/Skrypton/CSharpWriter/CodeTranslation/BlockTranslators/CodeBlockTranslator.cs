@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
@@ -1063,13 +1064,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// (eg. "v = null" or "v = new object[1, 2]") since the variable will be declared in a structure elsewhere (in an
         /// "OuterReferences" class, for example).
         /// </summary>
-        protected string TranslateVariableInitialisation(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation)
+        protected string TranslateVariableInitialization(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation, bool asUnreferencedVar, int indentationDepth)
         {
             if (variableDeclaration == null) throw new ArgumentNullException(nameof(variableDeclaration));
             string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
-            return TranslateVariableInitialization(variableDeclaration, variableAccessTokenName, scopeLocation);
+            return TranslateVariableInitialization(variableDeclaration, variableAccessTokenName, scopeLocation, asUnreferencedVar, indentationDepth);
         }
-        protected static string TranslateVariableInitialization(VariableDeclaration variableDeclaration, string variableAccessTokenName, ScopeLocationOptions scopeLocation)
+        protected static string TranslateVariableInitialization(VariableDeclaration variableDeclaration, string variableAccessTokenName, ScopeLocationOptions scopeLocation, bool asUnreferencedVar, int indentationDepth)
         {
             if (variableDeclaration == null)
                 throw new ArgumentNullException(nameof(variableDeclaration));
@@ -1087,14 +1088,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // will not be able to be set in a second pass so "Private a(1)" must be translated direct into "object a = new object[2]"
             // (noting that the dimension size is one more in C# since it is specifies the number of items in the array rather than
             // the upper bound).
+            // ? #pragma warning disable CS0219
             string rewrittenName = variableAccessTokenName;// _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
             if (variableDeclaration.ConstantDimensionsIfAny == null)
             {
-                return string.Format(
-                    "{0}{1} = null;",
-                    (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
-                    rewrittenName
-                );
+                return RenderBlockCS0219(variableDeclaration, scopeLocation, asUnreferencedVar, indentationDepth, () => {
+                    return string.Format(
+                        "{0}{1} = null;",
+                        (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
+                        rewrittenName
+                    );
+                    });
             }
             else if (!variableDeclaration.ConstantDimensionsIfAny.Any())
             {
@@ -1110,6 +1114,32 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 rewrittenName,
                 string.Join(", ", variableDeclaration.ConstantDimensionsIfAny.Select(d => d + 1))
             );
+        }
+
+        private static string RenderBlockCS0219(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation, bool asUnreferencedVar, int indentationDepth, Func<string> renderer)
+        {
+//#pragma warning disable CS0168 // Variable is declared but never used
+//            int xxx;
+//#pragma warning restore CS0168 // Variable is declared but never used
+            if (asUnreferencedVar && scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith && variableDeclaration.Scope == VariableDeclarationScopeOptions.Public && variableDeclaration.ConstantDimensionsIfAny == null)
+            {
+                // test with 'TextFile2'
+                /*
+                string indentionText = indentationDepth == 0 ? "" : new string(' ', indentationDepth * 4);
+
+                StringBuilder txt = new StringBuilder();
+                // indentationDepth
+                txt.AppendLine("#pragma warning disable CS0219"); // indented by the caller : see 'TranslatedStatement'
+                txt.Append(indentionText).AppendLine(renderer());
+                txt.Append(indentionText).Append("#pragma warning restore CS0219");
+                return txt.ToString();
+                */
+                return renderer(); // TODO: analyze the actual usage and remove the declaration at all => comment it out
+            }
+            else
+            {
+                return renderer();
+            }
         }
 
         /// <summary>
@@ -1145,7 +1175,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             foreach (var explicitVariableDeclaration in uniqueExplicitVariableDeclarations)
             {
                 variableDeclarationStatements = variableDeclarationStatements.Add(new TranslatedStatement(
-                    TranslateVariableInitialisation(explicitVariableDeclaration, ScopeLocationOptions.WithinFunctionOrPropertyOrWith),
+                    TranslateVariableInitialization(explicitVariableDeclaration, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: true, indentationDepthForExplicitVariableDeclarations),
                     indentationDepthForExplicitVariableDeclarations,
                     explicitVariableDeclaration.Name.LineIndex
                 ));
@@ -1201,7 +1231,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 uniqueVariables
                     .Select(v =>
                         new TranslatedStatement(
-                            TranslateVariableInitialisation(v, ScopeLocationOptions.WithinFunctionOrPropertyOrWith) + " /* Undeclared in source */",
+                            TranslateVariableInitialization(v, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: true, indentationDepthForExplicitVariableDeclarations) + " /* Undeclared in source */",
                             indentationDepthForExplicitVariableDeclarations,
                             v.Name.LineIndex
                         )

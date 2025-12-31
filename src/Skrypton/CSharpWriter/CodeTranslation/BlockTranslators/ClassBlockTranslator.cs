@@ -309,7 +309,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             classHeaderStatements.AddRange(
                 explicitVariableDeclarationsFromWithinClass.Select(
                     v => new TranslatedStatement(
-                        base.TranslateVariableInitialisation(v, ScopeLocationOptions.WithinClass),
+                        base.TranslateVariableInitialization(v, ScopeLocationOptions.WithinClass, asUnreferencedVar: false, indentationDepth + 2),
                         indentationDepth + 2,
                         v.Name.LineIndex
                     )

@@ -207,7 +207,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var content = new StringBuilder();
             content.Append(functionBlock.IsPublic ? "public" : "private");
             content.Append(" ");
-            content.Append(functionBlock.HasReturnValue ? "object" : "void");
+            content.Append(functionBlock.HasReturnValue ? "object" : "void");  // #pragma warning disable CS0219
             content.Append(" ");
             content.Append(_nameRewriter.GetMemberAccessTokenName(functionBlock.Name));
             content.Append("(");
@@ -252,7 +252,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (functionBlock.HasReturnValue && functionBlock.Statements.Any() && !IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation))
             {
                 translatedStatements.Add(new TranslatedStatement(
-                    base.TranslateVariableInitialisation(
+                    base.TranslateVariableInitialization(
                         new VariableDeclaration(
                             new DoNotRenameNameToken(
                                 returnValueNameIfAny.Name.ToUpperX(),
@@ -261,7 +261,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             VariableDeclarationScopeOptions.Private,
                             null // Not declared as an array
                         ),
-                        ScopeLocationOptions.WithinFunctionOrPropertyOrWith
+                        ScopeLocationOptions.WithinFunctionOrPropertyOrWith,
+                        asUnreferencedVar: false,
+                        indentationDepth + 1
                     ),
                     indentationDepth + 1,
                     functionBlock.Name.LineIndex

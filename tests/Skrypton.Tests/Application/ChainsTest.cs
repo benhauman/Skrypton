@@ -160,6 +160,8 @@ namespace Skrypton.Tests.Application
             {
                 Assert.Fail(failed_text);
             }
+
+            _ = CncIn.CompileCSharpProgram(chainName, translated_cs_actual);
         }
         private static int FindFirstMismatchIndex(string a, string b, out int line, out int column)
         {

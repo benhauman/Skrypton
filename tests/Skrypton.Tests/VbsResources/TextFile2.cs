@@ -21,7 +21,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _env.a = (Int16)1;
+            _outer.bprodhasavail = false;
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -34,47 +34,37 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
+            page = null;
+            request = null;
+            context = null;
+            server = null;
+            dms = null;
+            bprodhasavail = null;
         }
-    
-        public object f1()
+
+        internal object page { get; set; }
+        internal object request { get; set; }
+        internal object context { get; set; }
+        internal object server { get; set; }
+        internal object dms { get; set; }
+        internal object bprodhasavail { get; set; }
+
+        public void doprodhasavail()
+        {
+            object bmuku = null;
+        }
+
+        public object getprodhasavail()
         {
             object retVal1 = null;
-            _env.a = _.NEWARRAY(new object[] { (Int16)2 }); // This refers to the implicitly-declared variable "a" in the outermost scope
+            object bkuku = null;
+            retVal1 = false;
             return retVal1;
         }
     }
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-    }
-
-    [ComVisible(true)]
-	[ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [SourceClassName("C1")]
-    public sealed class c1
-    {
-        private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-        private readonly EnvironmentReferences _env;
-        private readonly GlobalReferences _outer;
-        public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-        {
-            _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-            _env = env ?? throw new ArgumentNullException(nameof(env));
-            _outer = outer ?? throw new ArgumentNullException(nameof(outer));
-            c = null;
-        }
-        
-        private object c { get; set; }
-
-        public object cf1()
-        {
-            object retVal2 = null;
-            object b = null;
-            _env.a = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the implicitly-declared variable "a" in the outermost scope
-            b = _.NEWARRAY(new object[] { (Int16)3 }); // There is no reference for this to relate to, so it acts as new explicit variable declaration
-            c = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the explicitly-declared variable "c" in the containing class
-            return retVal2;
-        }
+        public object hlcontext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }
