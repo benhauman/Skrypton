@@ -50,7 +50,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var isSingleReturnValueStatementFunction = IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation);
             var returnValueName = functionBlock.HasReturnValue
-                ? _tempNameGenerator(new CSharpName("retVal"), scopeAccessInformation.Extend(functionBlock, functionBlock.Statements.ToNonNullImmutableList())) // Ensure call Extend so that ScopeDefiningParent is the current function
+                ? _tempNameGenerator(new CSharpName($"{functionBlock.Name.Content}_retVal"), scopeAccessInformation.Extend(functionBlock, functionBlock.Statements.ToNonNullImmutableList())) // Ensure call Extend so that ScopeDefiningParent is the current function
                 : null;
             var translationResult = TranslationResult.Empty.Add(
                 TranslateFunctionHeader(

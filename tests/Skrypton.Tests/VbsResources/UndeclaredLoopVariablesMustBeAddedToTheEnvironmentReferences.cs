@@ -5,43 +5,46 @@ using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Exceptions;
 using Skrypton.RuntimeSupport.Compat;
+
 namespace TranslatedProgram
 {
-	public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
-	{
-		private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-		public Runner(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
-		{
+    public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
+    {
+        private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
+        public Runner(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
+        {
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-		}
+        }
         protected override GlobalReferences CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) => new GlobalReferences(compatLayer, env);
         protected override void Go(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences globalReferences)
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            var enumerationContent1 = _.ENUMERABLE(_.CALL(this, _, "ARRAY", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();
-			while (true)
-			{
-				if (!enumerationContent1.MoveNext())
-					break;
-				_env.value = enumerationContent1.Current;
-			}
-		}
-	}
-	public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
-	{
-		private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-		private readonly GlobalReferences _outer;
-		private readonly EnvironmentReferences _env;
-		public GlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) : base(compatLayer, env)
-		{
-			_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-			_env = env ?? throw new ArgumentNullException(nameof(env));
-			_outer = this;
-		}
-	}
-	public sealed class EnvironmentReferences : EnvironmentReferencesBase
-	{
-		public object value { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-	}
+
+            var enumerationContent = _.ENUMERABLE(_.CALL(this, _, "ARRAY", _.ARGS.Val((Int16)1).Val((Int16)2))).GetEnumerator();
+            while (true)
+            {
+                if (!enumerationContent.MoveNext())
+                    break;
+                _env.value = enumerationContent.Current;
+            }
+        }
+    }
+    public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
+    {
+        private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
+        private readonly GlobalReferences _outer;
+        private readonly EnvironmentReferences _env;
+        public GlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env) : base(compatLayer, env)
+        {
+            _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _outer = this;
+        }
+    }
+
+    public sealed class EnvironmentReferences : EnvironmentReferencesBase
+    {
+        public object value { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+    }
 }

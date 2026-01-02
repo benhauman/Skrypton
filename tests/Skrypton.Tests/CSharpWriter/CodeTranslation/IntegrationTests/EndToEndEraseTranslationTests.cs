@@ -23,8 +23,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 yield return new object[] { "Empty ERASE is a runtime error", "ERASE", new[] { "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
                 yield return new object[] { "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
 
-                yield return new object[] { "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v1 => { _env.a = v1; });" } };
-                yield return new object[] { "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v1 => { _env.a = v1; });" } };
+                yield return new object[] { "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
+                yield return new object[] { "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
 
                 // If the target is specified with arguments, then it must be an array where the arguments are indices. The non-by-ref ERASE method signature is used and validation of the
                 // target (whether it's an array and whether the indices are valid) is handled at runtime.
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Error if the target is known not to be a variable",
                     "ERASE a\nFUNCTION a\nEND FUNCTION",
                     new[] {
-                        "var invalidEraseTarget1 = _.CALL(this, _outer, \"a\");",
+                        "var invalidEraseTarget = _.CALL(this, _outer, \"a\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");",
                         "public object a()",
                         "{",
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Error if the target is known not to be a variable (takes precedence over other ERASE a() error case)",
                     "ERASE a()\nFUNCTION a\nEND FUNCTION",
                     new[] {
-                        "var invalidEraseTarget1 = _.CALL(this, _outer, \"a\", _.ARGS.ForceBrackets());",
+                        "var invalidEraseTarget = _.CALL(this, _outer, \"a\", _.ARGS.ForceBrackets());",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");",
                         "public object a()",
                         "{",
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Brackets around target (would be by-val => invalid)",
                     "ERASE (a)",
                     new[] {
-                        "var invalidEraseTarget1 = _env.a;",
+                        "var invalidEraseTarget = _env.a;",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");"
                     }
                 };
@@ -76,7 +76,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Multiple targets",
                     "ERASE a, b",
                     new[] {
-                        "var invalidEraseTarget1 = _env.a;",
+                        "var invalidEraseTarget = _env.a;",
                         "var invalidEraseTarget2 = _env.b;",
                         "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");"
                     }
@@ -85,7 +85,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Member access target",
                     "ERASE a.Name",
                     new[] {
-                        "var invalidEraseTarget1 = _.CALL(this, _env.a, \"Name\");",
+                        "var invalidEraseTarget = _.CALL(this, _env.a, \"Name\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");"
                     }
                 };
@@ -102,14 +102,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
                 public object f1(ref object a)
                 {
-                    object retVal1 = null;
-                    object byrefalias2 = a;
+                    object F1_retVal = null;
+                    object byrefalias = a;
                     try
                     {
-                        _.ERASE(byrefalias2, v3 => { byrefalias2 = v3; });
+                        _.ERASE(byrefalias, v => { byrefalias = v; });
                     }
-                    finally { a = byrefalias2; }
-                    return retVal1;
+                    finally { a = byrefalias; }
+                    return F1_retVal;
                 }";
             myAssert.AreEqual(
                 expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).Select(v => v.Trim()).ToArray(),

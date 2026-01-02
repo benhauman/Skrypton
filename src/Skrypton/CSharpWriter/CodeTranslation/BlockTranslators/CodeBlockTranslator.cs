@@ -212,11 +212,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             //
             //   public object f1()
             //   {
-            //     object retVal1 = null;
+            //     object F1_retVal = null;
             //     object cn1 = null;
             //     cn1 = 123;
             //     _.CALL(this, "F2", _.ARGS.Val(cn1));
-            //     return retVal1;
+            //     return F1_retVal;
             //   }
             //
             // The value "cn1" is set to 123 immediately, before any other processing (ie. the call to F2) occurs.

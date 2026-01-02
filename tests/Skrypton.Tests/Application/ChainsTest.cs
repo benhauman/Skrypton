@@ -149,7 +149,7 @@ namespace Skrypton.Tests.Application
             //string translated_cs_actual = translated_buffer.ToString();
             if (translated_cs_expected != translated_cs_actual)
             {
-                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs.txt", translated_cs_expected, translated_cs_actual);
+                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
                 int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
                 string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
                 string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
@@ -162,42 +162,6 @@ namespace Skrypton.Tests.Application
             }
 
             _ = CncIn.CompileCSharpProgram(chainName, translated_cs_actual);
-        }
-        private static int FindFirstMismatchIndex(string a, string b, out int line, out int column)
-        {
-            line = 1;
-            column = 1;
-
-            int minLength = Math.Min(a.Length, b.Length);
-            for (int i = 0; i < minLength; i++)
-            {
-                if (a[i] != b[i])
-                    return i;
-                if (a[i] == '\n') // handle windows and unix line endings
-                {
-                    line++;
-                    column = 1;
-                }
-                else if (a[i] != '\r') // ignore carriage return
-                {
-                    column++;
-                }
-            }
-            if (a.Length != b.Length)
-                return minLength;
-            return -1; // no mismatch
-        }
-        private static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
-        {
-            if (startIndex > s.Length)
-                return "";
-            int endOfLine = s.IndexOfAny(new char[] { '\r', '\n' }, startIndex);
-            if (endOfLine == -1)
-                endOfLine = s.Length;
-
-            //int remaining  = s.Length - startIndex;
-            int take = Math.Min(maxLength, endOfLine - startIndex);
-            return s.Substring(startIndex, take);
         }
 
         private static IOutermostScope FromXml(string xmlA)

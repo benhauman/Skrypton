@@ -22,12 +22,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test1""
 			";
             var expected = @"
-				var errOn1 = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);
-				_.HANDLEERROR(errOn1, () => {
+				var errOn = _.GETERRORTRAPPINGTOKEN();
+				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+				_.HANDLEERROR(errOn, () => {
 					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn1);";
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -49,15 +49,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test3""
 			";
             var expected = @"
-				var errOn1 = _.GETERRORTRAPPINGTOKEN();
+				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);
-				_.HANDLEERROR(errOn1, () => {
+				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+				_.HANDLEERROR(errOn, () => {
 					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test2""));
 				});
-				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn1);
+				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test3""));
-				_.RELEASEERRORTRAPPINGTOKEN(errOn1);";
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -81,15 +81,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test1""
 			";
             var expected = @"
-				var errOn1 = _.GETERRORTRAPPINGTOKEN();
+				var errOn = _.GETERRORTRAPPINGTOKEN();
 				if (_.IF(false))
 				{
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				}
-				_.HANDLEERROR(errOn1, () => {
+				_.HANDLEERROR(errOn, () => {
 					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn1);";
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -107,17 +107,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				var errOn1 = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);
-				_.HANDLEERROR(errOn1, () => {
+				var errOn = _.GETERRORTRAPPINGTOKEN();
+				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+				_.HANDLEERROR(errOn, () => {
 					_.CALL(this, _outer, ""Func1"");
 				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn1);
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);
 				public object func1()
 				{
-					object retVal2 = null;
+					object Func1_retVal = null;
 					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
-					return retVal2;
+					return Func1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -141,14 +141,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test2""));
 				public object func1()
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					_.HANDLEERROR(errOn2, () => {
+					object Func1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					_.HANDLEERROR(errOn, () => {
 						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
 					});
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return Func1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -217,17 +217,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
-					object byrefalias3 = x;
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
+					object byrefalias = x;
 					try
 					{
-						byrefalias3 = VBScriptConstants.Nothing;
+						byrefalias = VBScriptConstants.Nothing;
 					}
-					finally { x = byrefalias3; }
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					finally { x = byrefalias; }
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -253,9 +253,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					x = VBScriptConstants.Nothing;
-					return retVal1;
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -281,18 +281,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(object value)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					if (_.IF(() => true, errOn2))
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					if (_.IF(() => true, errOn))
 					{
-						_.HANDLEERROR(errOn2, () => {
-							retVal1 = _.DATEVALUE(value);
+						_.HANDLEERROR(errOn, () => {
+							F1_retVal = _.DATEVALUE(value);
 						});
 					}
-					_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -321,20 +321,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(object value)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
 					if (_.IF(true))
 					{
-						retVal1 = _.DATEVALUE(value);
-						_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-						return retVal1;
+						F1_retVal = _.DATEVALUE(value);
+						_.RELEASEERRORTRAPPINGTOKEN(errOn);
+						return F1_retVal;
 					}
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					_.HANDLEERROR(errOn2, () => {
-						retVal1 = _.DATE();
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					_.HANDLEERROR(errOn, () => {
+						F1_retVal = _.DATE();
 					});
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -366,29 +366,29 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(object value)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
 					i = (Int16)1;
 					while (true)
 					{
-						if (_.IF(() => true, errOn2))
+						if (_.IF(() => true, errOn))
 						{
-							_.HANDLEERROR(errOn2, () => {
-								retVal1 = _.DATEVALUE(value);
+							_.HANDLEERROR(errOn, () => {
+								F1_retVal = _.DATEVALUE(value);
 							});
 						}
-						_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-						var continueLoop3 = false;
-						_.HANDLEERROR(errOn2, () => {
+						_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+						var continueLoop = false;
+						_.HANDLEERROR(errOn, () => {
 							i = _.ADD(i, (Int16)1);
-							continueLoop3 = _.StrictLTE(i, 1);
+							continueLoop = _.StrictLTE(i, 1);
 						});
-						if (!continueLoop3)
+						if (!continueLoop)
 							break;
 					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),

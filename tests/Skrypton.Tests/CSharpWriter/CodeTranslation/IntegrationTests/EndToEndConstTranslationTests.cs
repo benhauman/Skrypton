@@ -97,10 +97,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
 				public object f1()
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					object a = null;
 					a = (Int16)1;
-					return retVal1;
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 expected.Replace(Environment.NewLine, "\n").Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),

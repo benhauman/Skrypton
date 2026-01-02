@@ -44,8 +44,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var loopStart1 = _.NUM((Int16)1, 32768);",
-                "for (_outer.i = loopStart1; _.StrictLTE(_outer.i, 32768); _outer.i = _.ADD(_outer.i, (Int16)1))",
+                "var loopStart = _.NUM((Int16)1, 32768);",
+                "for (_outer.i = loopStart; _.StrictLTE(_outer.i, 32768); _outer.i = _.ADD(_outer.i, (Int16)1))",
                 "{",
                 "}"
             };
@@ -103,8 +103,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var loopStart1 = _.NUM((Int16)1, (Int16)5, 0.1);",
-                "for (_outer.i = loopStart1; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, 0.1))",
+                "var loopStart = _.NUM((Int16)1, (Int16)5, 0.1);",
+                "for (_outer.i = loopStart; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, 0.1))",
                 "{",
                 "}"
             };
@@ -234,15 +234,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var loopEnd1 = _.NUM(_env.b);",
-                "var loopStep2 = _.NUM(_env.c);",
-                "var loopStart3 = _.NUM(_env.a, loopEnd1, loopStep2);",
-                "if ((_.StrictLTE(loopStart3, loopEnd1) && _.StrictGTE(loopStep2, 0))",
-                "|| (_.StrictGT(loopStart3, loopEnd1) && _.StrictLT(loopStep2, 0)))",
+                "var loopEnd = _.NUM(_env.b);",
+                "var loopStep = _.NUM(_env.c);",
+                "var loopStart = _.NUM(_env.a, loopEnd, loopStep);",
+                "if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))",
+                "|| (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))",
                 "{",
-                "for (_env.i = loopStart3;",
-                "    (_.StrictGTE(loopStep2, 0) && _.StrictLTE(_env.i, loopEnd1)) || (_.StrictLT(loopStep2, 0) && _.StrictGTE(_env.i, loopEnd1));",
-                "     _env.i = _.ADD(_env.i, loopStep2))",
+                "for (_env.i = loopStart;",
+                "    (_.StrictGTE(loopStep, 0) && _.StrictLTE(_env.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_env.i, loopEnd));",
+                "     _env.i = _.ADD(_env.i, loopStep))",
                 "{",
                 "}",
                 "}"
@@ -275,39 +275,39 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-                "object loopEnd2 = 0, loopStart3 = 0;",
-                "var loopConstraintsInitialised4 = false;",
-                "_.HANDLEERROR(errOn1, () => {",
-                "   loopEnd2 = _.NUM(_env.b);",
-                "   loopStart3 = _.NUM(_env.a);",
-                "   if ((loopStart3 is DateTime) || (loopStart3 is Decimal))",
-                "       _env.i = loopStart3;",
-                "   loopStart3 = _.NUM(_env.a, loopEnd2, (Int16)1);",
-                "   loopConstraintsInitialised4 = true;",
+                "var errOn = _.GETERRORTRAPPINGTOKEN();",
+                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
+                "object loopEnd = 0, loopStart = 0;",
+                "var loopConstraintsInitialized = false;",
+                "_.HANDLEERROR(errOn, () => {",
+                "   loopEnd = _.NUM(_env.b);",
+                "   loopStart = _.NUM(_env.a);",
+                "   if ((loopStart is DateTime) || (loopStart is Decimal))",
+                "       _env.i = loopStart;",
+                "   loopStart = _.NUM(_env.a, loopEnd, (Int16)1);",
+                "   loopConstraintsInitialized = true;",
                 "});",
-                "if (_.StrictLTE(loopStart3, loopEnd2))",
+                "if (_.StrictLTE(loopStart, loopEnd))",
                 "{",
-                "   if (loopConstraintsInitialised4)",
-                "       _env.i = loopStart3;",
+                "   if (loopConstraintsInitialized)",
+                "       _env.i = loopStart;",
                 "   while (true)",
                 "   {",
-                "       _.HANDLEERROR(errOn1, () => {",
-                "           _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v5 => { _env.i = v5; }));",
+                "       _.HANDLEERROR(errOn, () => {",
+                "           _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "       });",
-                "       if (!loopConstraintsInitialised4)",
+                "       if (!loopConstraintsInitialized)",
                 "           break;",
-                "       var continueLoop6 = false;",
-                "       _.HANDLEERROR(errOn1, () => {",
+                "       var continueLoop = false;",
+                "       _.HANDLEERROR(errOn, () => {",
                 "           _env.i = _.ADD(_env.i, (Int16)1);",
-                "           continueLoop6 = _.StrictLTE(_env.i, loopEnd2);",
+                "           continueLoop = _.StrictLTE(_env.i, loopEnd);",
                 "       });",
-                "       if (!continueLoop6)",
+                "       if (!continueLoop)",
                 "           break;",
                 "   }",
                 "}",
-                "_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+                "_.RELEASEERRORTRAPPINGTOKEN(errOn);"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -332,23 +332,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
+                "var errOn = _.GETERRORTRAPPINGTOKEN();",
+                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
                 "_env.i = (Int16)1;",
                 "while (true)",
                 "{",
-                "   _.HANDLEERROR(errOn1, () => {",
-                "       _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v2 => { _env.i = v2; }));",
+                "   _.HANDLEERROR(errOn, () => {",
+                "       _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "   });",
-                "   var continueLoop3 = false;",
-                "   _.HANDLEERROR(errOn1, () => {",
+                "   var continueLoop = false;",
+                "   _.HANDLEERROR(errOn, () => {",
                 "       _env.i = _.ADD(_env.i, (Int16)1);",
-                "       continueLoop3 = _.StrictLTE(_env.i, 10);",
+                "       continueLoop = _.StrictLTE(_env.i, 10);",
                 "   });",
-                "   if (!continueLoop3)",
+                "   if (!continueLoop)",
                 "       break;",
                 "}",
-                "_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+                "_.RELEASEERRORTRAPPINGTOKEN(errOn);"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -371,11 +371,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var loopEnd1 = _.CBYTE(5);",
-                "var loopStart2 = _.NUM(_.CBYTE(1), loopEnd1, (Int16)1);",
-                "if (_.StrictLTE(loopStart2, loopEnd1))",
+                "var loopEnd = _.CBYTE(5);",
+                "var loopStart = _.NUM(_.CBYTE(1), loopEnd, (Int16)1);",
+                "if (_.StrictLTE(loopStart, loopEnd))",
                 "{",
-                "    for (_outer.i = loopStart2; _.StrictLTE(_outer.i, loopEnd1); _outer.i = _.ADD(_outer.i, (Int16)1))",
+                "    for (_outer.i = loopStart; _.StrictLTE(_outer.i, loopEnd); _outer.i = _.ADD(_outer.i, (Int16)1))",
                 "    {",
                 "    }",
                 "}"
@@ -399,19 +399,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var loopEnd1 = _.CBYTE(5);",
-                "var loopStep2 = _.CBYTE(1);",
-                "var loopStart3 = _.NUM(_.CBYTE(1), loopEnd1, loopStep2);",
-                "if ((_.StrictLTE(loopStart3, loopEnd1) && _.StrictGTE(loopStep2, 0))",
-                "|| (_.StrictGT(loopStart3, loopEnd1) && _.StrictLT(loopStep2, 0)))",
+                "var loopEnd = _.CBYTE(5);",
+                "var loopStep = _.CBYTE(1);",
+                "var loopStart = _.NUM(_.CBYTE(1), loopEnd, loopStep);",
+                "if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))",
+                "|| (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))",
                 "{",
-                "    for (_outer.i = loopStart3;",
-                "        (_.StrictGTE(loopStep2, 0) && _.StrictLTE(_outer.i, loopEnd1)) || (_.StrictLT(loopStep2, 0) && _.StrictGTE(_outer.i, loopEnd1));",
-                "         _outer.i = _.ADD(_outer.i, loopStep2))",
+                "    for (_outer.i = loopStart;",
+                "        (_.StrictGTE(loopStep, 0) && _.StrictLTE(_outer.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_outer.i, loopEnd));",
+                "         _outer.i = _.ADD(_outer.i, loopStep))",
                 "    {",
                 "    }",
                 "}"
             };
+            //base.TestCSharpCodeTranslationWithoutScaffoldingTranslator(source, expected);
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -439,14 +440,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "public object f1()",
                 "{",
-                "    object retVal1 = null;",
+                "    object F1_retVal = null;",
                 "    object j = null; /* Undeclared in source */",
                 "    object i = null; /* Undeclared in source */",
                 "    for (i = (Int16)1; _.StrictLTE(i, 5); i = _.ADD(i, (Int16)1))",
                 "    {",
-                "        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(j, v2 => { j = v2; }));",
+                "        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(j, v => { j = v; }));",
                 "    }",
-                "    return retVal1;",
+                "    return F1_retVal;",
                 "}"
             };
             myAssert.AreEqual(
@@ -476,28 +477,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					object i = null;
-					object loopEnd4 = 0, loopStart5 = 0;
-					var loopConstraintsInitialised6 = false;
-					object byrefalias2 = x;
+					object loopEnd = 0, loopStart = 0;
+					var loopConstraintsInitialized = false;
+					object byrefalias = x;
 					try
 					{
-						loopEnd4 = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias2, v3 => { byrefalias2 = v3; })));
-						loopStart5 = _.NUM((Int16)1);
-						if ((loopStart5 is DateTime) || (loopStart5 is Decimal))
-							i = loopStart5;
-						loopStart5 = _.NUM((Int16)1, loopEnd4);
-						loopConstraintsInitialised6 = true;
+						loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+						loopStart = _.NUM((Int16)1);
+						if ((loopStart is DateTime) || (loopStart is Decimal))
+							i = loopStart;
+						loopStart = _.NUM((Int16)1, loopEnd);
+						loopConstraintsInitialized = true;
 					}
-					finally { x = byrefalias2; }
-					if (_.StrictLTE(loopStart5, loopEnd4))
+					finally { x = byrefalias; }
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						for (i = loopStart5; _.StrictLTE(i, loopEnd4); i = _.ADD(i, (Int16)1))
+						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
 						{
 						}
 					}
-					return retVal1;
+					return F1_retVal;
 				}
 
 				public object f2(ref object value)
@@ -532,17 +533,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					object i = null;
-					var loopEnd3 = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(x, v2 => { x = v2; })));
-					var loopStart4 = _.NUM((Int16)1, loopEnd3);
-					if (_.StrictLTE(loopStart4, loopEnd3))
+					var loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(x, v => { x = v; })));
+					var loopStart = _.NUM((Int16)1, loopEnd);
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						for (i = loopStart4; _.StrictLTE(i, loopEnd3); i = _.ADD(i, (Int16)1))
+						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
 						{
 						}
 					}
-					return retVal1;
+					return F1_retVal;
 				}
 
 				public object f2(ref object value)
@@ -578,28 +579,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					object i = null;
-					object loopEnd4 = 0, loopStart5 = 0;
-					var loopConstraintsInitialised6 = false;
-					object byrefalias2 = x;
+					object loopEnd = 0, loopStart = 0;
+					var loopConstraintsInitialized = false;
+					object byrefalias = x;
 					try
 					{
-						loopEnd4 = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias2, v3 => { byrefalias2 = v3; })));
-						loopStart5 = _.NUM((Int16)1);
-						if ((loopStart5 is DateTime) || (loopStart5 is Decimal))
-							i = loopStart5;
-						loopStart5 = _.NUM((Int16)1, loopEnd4);
-						loopConstraintsInitialised6 = true;
+						loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+						loopStart = _.NUM((Int16)1);
+						if ((loopStart is DateTime) || (loopStart is Decimal))
+							i = loopStart;
+						loopStart = _.NUM((Int16)1, loopEnd);
+						loopConstraintsInitialized = true;
 					}
-					finally { x = byrefalias2; }
-					if (_.StrictLTE(loopStart5, loopEnd4))
+					finally { x = byrefalias; }
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						for (i = loopStart5; _.StrictLTE(i, loopEnd4); i = _.ADD(i, (Int16)1))
+						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
 						{
 						}
 					}
-					return retVal1;
+					return F1_retVal;
 				}
 
 				public object f2(object value)
@@ -629,17 +630,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					object i = null;
-					var loopEnd2 = _.UBOUND(x);
-					var loopStart3 = _.NUM((Int16)1, loopEnd2);
-					if (_.StrictLTE(loopStart3, loopEnd2))
+					var loopEnd = _.UBOUND(x);
+					var loopStart = _.NUM((Int16)1, loopEnd);
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						for (i = loopStart3; _.StrictLTE(i, loopEnd2); i = _.ADD(i, (Int16)1))
+						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
 						{
 						}
 					}
-					return retVal1;
+					return F1_retVal;
 				}";
 
             myAssert.AreEqual(
@@ -670,52 +671,52 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					object loopEnd5 = 0, loopStart6 = 0;
-					var loopConstraintsInitialised7 = false;
-					object byrefalias3 = x;
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					object loopEnd = 0, loopStart = 0;
+					var loopConstraintsInitialized = false;
+					object byrefalias = x;
 					try
 					{
-						_.HANDLEERROR(errOn2, () => {
-							loopEnd5 = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias3, v4 => { byrefalias3 = v4; })));
-							loopStart6 = _.NUM((Int16)1);
-							if ((loopStart6 is DateTime) || (loopStart6 is Decimal))
-								i = loopStart6;
-							loopStart6 = _.NUM((Int16)1, loopEnd5);
-							loopConstraintsInitialised7 = true;
+						_.HANDLEERROR(errOn, () => {
+							loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+							loopStart = _.NUM((Int16)1);
+							if ((loopStart is DateTime) || (loopStart is Decimal))
+								i = loopStart;
+							loopStart = _.NUM((Int16)1, loopEnd);
+							loopConstraintsInitialized = true;
 						});
 					}
-					finally { x = byrefalias3; }
-					if (_.StrictLTE(loopStart6, loopEnd5))
+					finally { x = byrefalias; }
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						if (loopConstraintsInitialised7)
-							i = loopStart6;
+						if (loopConstraintsInitialized)
+							i = loopStart;
 						while (true)
 						{
-							if (!loopConstraintsInitialised7)
+							if (!loopConstraintsInitialized)
 								break;
-							var continueLoop8 = false;
-							_.HANDLEERROR(errOn2, () => {
+							var continueLoop = false;
+							_.HANDLEERROR(errOn, () => {
 								i = _.ADD(i, (Int16)1);
-								continueLoop8 = _.StrictLTE(i, loopEnd5);
+								continueLoop = _.StrictLTE(i, loopEnd);
 							});
-							if (!continueLoop8)
+							if (!continueLoop)
 								break;
 						}
 					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}
 
 				public object f2(ref object value)
 				{
-					object retVal9 = null;
-					retVal9 = _.VAL(value);
+					object F2_retVal = null;
+					F2_retVal = _.VAL(value);
 					value = (Int16)123;
-					return retVal9;
+					return F2_retVal;
 				}";
 
             myAssert.AreEqual(
@@ -743,40 +744,40 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					object loopEnd4 = 0, loopStart5 = 0;
-					var loopConstraintsInitialised6 = false;
-					object byrefalias3 = x;
-					_.HANDLEERROR(errOn2, () => {
-						loopEnd4 = _.NUM(_.ADD(byrefalias3, (Int16)1));
-						loopStart5 = _.NUM((Int16)1);
-						if ((loopStart5 is DateTime) || (loopStart5 is Decimal))
-							i = loopStart5;
-						loopStart5 = _.NUM((Int16)1, loopEnd4);
-						loopConstraintsInitialised6 = true;
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					object loopEnd = 0, loopStart = 0;
+					var loopConstraintsInitialized = false;
+					object byrefalias = x;
+					_.HANDLEERROR(errOn, () => {
+						loopEnd = _.NUM(_.ADD(byrefalias, (Int16)1));
+						loopStart = _.NUM((Int16)1);
+						if ((loopStart is DateTime) || (loopStart is Decimal))
+							i = loopStart;
+						loopStart = _.NUM((Int16)1, loopEnd);
+						loopConstraintsInitialized = true;
 					});
-					if (_.StrictLTE(loopStart5, loopEnd4))
+					if (_.StrictLTE(loopStart, loopEnd))
 					{
-						if (loopConstraintsInitialised6)
-							i = loopStart5;
+						if (loopConstraintsInitialized)
+							i = loopStart;
 						while (true)
 						{
-							if (!loopConstraintsInitialised6)
+							if (!loopConstraintsInitialized)
 								break;
-							var continueLoop7 = false;
-							_.HANDLEERROR(errOn2, () => {
+							var continueLoop = false;
+							_.HANDLEERROR(errOn, () => {
 								i = _.ADD(i, (Int16)1);
-								continueLoop7 = _.StrictLTE(i, loopEnd4);
+								continueLoop = _.StrictLTE(i, loopEnd);
 							});
-							if (!continueLoop7)
+							if (!continueLoop)
 								break;
 						}
 					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
 
             myAssert.AreEqual(

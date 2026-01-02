@@ -86,14 +86,32 @@ namespace Skrypton.Tests
         {
             string[] output = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
 
-            string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
+            string expectedCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
+            string[] arr_expected = expectedCs.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string text_a_raw = string.Join("\r\n", output);
+            TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
+        }
+        protected void TestCSharpCodeTranslationWithoutScaffoldingTranslator(string vbsSource, string[] arr_expected) // TODO remove 'WithoutScaffoldingTranslator'
+        {
+            string expectedCs = string.Join("\r\n", arr_expected);
+            //myAssert.AreEqual(
+            //expected.Select(s => s.Trim()).ToArray(),
+            var output = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+            //);
+            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string text_a_raw = string.Join("\r\n", output);
+            TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
+        }
+        private void TestCSharpCodeTranslationCore(string vbsSource, string text_a_raw, string[] arr_expected, string[] arr_actual, string expectedCs) // TODO remove 'WithoutScaffoldingTranslator'
+        {
 
             string chainName = TestName;
             string fileSuffix = CSFileExtension;
             //    AreEqualStringArray(TestName, CSFileExtension,
-            string[] arr_expected = expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string text_a_raw = string.Join("\r\n", output);
+            //string[] arr_expected = expectedCs.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
+            //string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
+            //string text_a_raw = string.Join("\r\n", output);
             //    );
             //}
             //private void AreEqualStringArray(string chainName, string fileSuffix, string[] arr_expected, string[] arr_actual)
@@ -125,8 +143,16 @@ namespace Skrypton.Tests
                         }
                     }
 
-                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, expected, text_a_raw);
-                    Assert.Fail($"File content different at index:{diffAtIndex}");
+                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, expectedCs, text_a_raw);
+
+                    string translated_cs_expected = expectedCs;
+                    string translated_cs_actual = text_a_raw;
+                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
+                    string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
+                    string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
+                    string failed_text = $"C# translation failed. Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'";
+
+                    Assert.Fail(failed_text);// $"File content different at index:{diffAtIndex}");
                 }
                 else
                 {
@@ -137,6 +163,43 @@ namespace Skrypton.Tests
             {
                 Assert.IsTrue(arr_actual == null || arr_actual.Length == 0);
             }
+        }
+
+        internal static int FindFirstMismatchIndex(string a, string b, out int line, out int column)
+        {
+            line = 1;
+            column = 1;
+
+            int minLength = Math.Min(a.Length, b.Length);
+            for (int i = 0; i < minLength; i++)
+            {
+                if (a[i] != b[i])
+                    return i;
+                if (a[i] == '\n') // handle windows and unix line endings
+                {
+                    line++;
+                    column = 1;
+                }
+                else if (a[i] != '\r') // ignore carriage return
+                {
+                    column++;
+                }
+            }
+            if (a.Length != b.Length)
+                return minLength;
+            return -1; // no mismatch
+        }
+        internal static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
+        {
+            if (startIndex > s.Length)
+                return "";
+            int endOfLine = s.IndexOfAny(new char[] { '\r', '\n' }, startIndex);
+            if (endOfLine == -1)
+                endOfLine = s.Length;
+
+            //int remaining  = s.Length - startIndex;
+            int take = Math.Min(maxLength, endOfLine - startIndex);
+            return s.Substring(startIndex, take);
         }
     }
 }

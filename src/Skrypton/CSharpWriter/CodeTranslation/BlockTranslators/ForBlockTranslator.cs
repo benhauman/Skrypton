@@ -285,7 +285,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forBlock.LoopVar.LineIndex // This statement doesn't directly exist in the source, so we'll have to approximate here
                     ));
                 }
-                constraintsInitialisedFlagNameIfAny = _tempNameGenerator(new CSharpName("loopConstraintsInitialised"), scopeAccessInformation);
+                constraintsInitialisedFlagNameIfAny = _tempNameGenerator(new CSharpName("loopConstraintsInitialized"), scopeAccessInformation);
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
                         string.Format(

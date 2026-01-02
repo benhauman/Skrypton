@@ -56,10 +56,10 @@ namespace TranslatedProgram
 
         public object getprodhasavail()
         {
-            object retVal1 = null;
+            object GetProdHasAvail_retVal = null;
             object bkuku = null;
-            retVal1 = false;
-            return retVal1;
+            GetProdHasAvail_retVal = false;
+            return GetProdHasAvail_retVal;
         }
     }
 

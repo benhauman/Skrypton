@@ -19,13 +19,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
 			var expected = new[]
 			{
-				"var enumerationContent1 = _.ENUMERABLE(_env.values).GetEnumerator();",
+				"var enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
 				"while (true)",
 				"{",
-				"    if (!enumerationContent1.MoveNext())",
+				"    if (!enumerationContent.MoveNext())",
 				"        break;",
-				"    _env.value = enumerationContent1.Current;",
-				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v2 => { _env.value = v2; }));",
+				"    _env.value = enumerationContent.Current;",
+				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"}"
 			};
 			myAssert.AreEqual(
@@ -57,27 +57,27 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
 			var expected = new[]
 			{
-				"var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-				"IEnumerator enumerationContent2 = null;",
-				"_.HANDLEERROR(errOn1, () => {",
-				"    enumerationContent2 = _.ENUMERABLE(_env.values).GetEnumerator();",
+				"var errOn = _.GETERRORTRAPPINGTOKEN();",
+				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
+				"IEnumerator enumerationContent = null;",
+				"_.HANDLEERROR(errOn, () => {",
+                "    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
 				"});",
 				"while (true)",
 				"{",
-				"    if (enumerationContent2 != null)",
+                "    if (enumerationContent != null)",
 				"    {",
-				"        if (!enumerationContent2.MoveNext())",
+				"        if (!enumerationContent.MoveNext())",
 				"            break;",
-				"        _env.value = enumerationContent2.Current;",
+				"        _env.value = enumerationContent.Current;",
 				"    }",
-				"    _.HANDLEERROR(errOn1, () => {",
-				"        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v3 => { _env.value = v3; }));",
+				"    _.HANDLEERROR(errOn, () => {",
+				"        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"    });",
-				"    if (enumerationContent2 == null)",
+				"    if (enumerationContent == null)",
 				"        break;",
 				"}",
-				"_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
 			};
 			myAssert.AreEqual(
 				expected.Select(s => s.Trim()).ToArray(),
@@ -105,26 +105,26 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
 			var expected = new[]
 			{
-				"var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-				"_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-				"IEnumerator enumerationContent2 = null;",
-				"_.HANDLEERROR(errOn1, () => {",
-				"    enumerationContent2 = _.ENUMERABLE(_env.values).GetEnumerator();",
+				"var errOn = _.GETERRORTRAPPINGTOKEN();",
+				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
+				"_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);",
+				"IEnumerator enumerationContent = null;",
+				"_.HANDLEERROR(errOn, () => {",
+				"    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
 				"});",
 				"while (true)",
 				"{",
-				"    if (enumerationContent2 != null)",
+				"    if (enumerationContent != null)",
 				"    {",
-				"        if (!enumerationContent2.MoveNext())",
+				"        if (!enumerationContent.MoveNext())",
 				"            break;",
-				"        _env.value = enumerationContent2.Current;",
+				"        _env.value = enumerationContent.Current;",
 				"    }",
-				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v3 => { _env.value = v3; }));",
-				"    if (enumerationContent2 == null)",
+				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+				"    if (enumerationContent == null)",
 				"        break;",
 				"}",
-				"_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
 			};
 			myAssert.AreEqual(
 				expected.Select(s => s.Trim()).ToArray(),

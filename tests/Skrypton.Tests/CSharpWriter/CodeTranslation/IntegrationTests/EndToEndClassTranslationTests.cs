@@ -75,18 +75,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					private bool _disposed1;
+					private bool _disposed;
 					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						_disposed1 = false;
+						_disposed = false;
 					}
 
 					~c1()
 					{
-						try { Dispose2(false); }
+						try { Dispose(false); }
 						catch(Exception e)
 						{
 							try { _.SETERROR(e); } catch { }
@@ -95,17 +95,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
 					void IDisposable.Dispose()
 					{
-						Dispose2(true);
+						Dispose(true);
 						GC.SuppressFinalize(this);
 					}
 
-					private void Dispose2(bool disposing)
+					private void Dispose(bool disposing)
 					{
-						if (_disposed1)
+						if (_disposed)
 							return;
 						if (disposing)
 							class_terminate();
-						_disposed1 = true;
+						_disposed = true;
 					}
 
 					public void class_terminate()
@@ -285,10 +285,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					[TranslatedProperty(""Name"")]
 					public object name()
 					{
-						object retVal1 = null;
+						object Name_retVal = null;
 						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""get_Name""));
-						retVal1 = ""C1"";
-						return retVal1;
+						Name_retVal = ""C1"";
+						return Name_retVal;
 					}
 				}";
             myAssert.AreEqual(

@@ -20,9 +20,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "public object f1()",
                 "{",
-                "object retVal1 = null;",
+                "object F1_retVal = null;",
                 "object myvariable = null;",
-                "return retVal1;",
+                "return F1_retVal;",
                 "}"
             };
             myAssert.AreEqual(
@@ -43,9 +43,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "public object f1()",
                 "{",
-                "object retVal1 = null;",
+                "object F1_retVal = null;",
                 "object myarray = new object[64];",
-                "return retVal1;",
+                "return F1_retVal;",
                 "}"
             };
             myAssert.AreEqual(

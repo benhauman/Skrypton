@@ -55,10 +55,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return retVal1;
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -76,10 +76,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.RESIZEARRAY(a, new object[] { (Int16)0 });
-                      return retVal1;
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -97,9 +97,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
-                      retVal1 = _.NEWARRAY(new object[] { (Int16)0 });
-                      return retVal1;
+                      object F1_retVal = null;
+                      F1_retVal = _.NEWARRAY(new object[] { (Int16)0 });
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -117,9 +117,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
-                      retVal1 = _.RESIZEARRAY(retVal1, new object[] { (Int16)0 });
-                      return retVal1;
+                      object F1_retVal = null;
+                      F1_retVal = _.RESIZEARRAY(F1_retVal, new object[] { (Int16)0 });
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -164,12 +164,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.NEWARRAY(new object[] { (Int16)0 });
                       a = _.NEWARRAY(new object[] { (Int16)1 });
                       a = _.NEWARRAY(new object[] { (Int16)2 });
-                      return retVal1;
+                      return F1_retVal;
                    }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -223,10 +223,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return retVal1;
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -245,10 +245,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.RESIZEARRAY(a, new object[] { (Int16)0 });
-                      return retVal1;
+                      return F1_retVal;
                     }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -295,12 +295,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = null;
                       a = _.NEWARRAY(new object[] { (Int16)0 });
                       a = _.NEWARRAY(new object[] { (Int16)1 });
                       a = _.NEWARRAY(new object[] { (Int16)2 });
-                      return retVal1;
+                      return F1_retVal;
                    }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -324,10 +324,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string expected = @"
                     public object f1()
                     {
-                      object retVal1 = null;
+                      object F1_retVal = null;
                       object a = (object[])null;
                       a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return retVal1;
+                      return F1_retVal;
                    }";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),

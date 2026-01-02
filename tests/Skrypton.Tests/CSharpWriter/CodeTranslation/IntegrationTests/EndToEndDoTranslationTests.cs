@@ -111,12 +111,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-                "while (_.IF(() => _.IF(_.DIV((Int16)1, (Int16)0)), errOn1))",
+                "var errOn = _.GETERRORTRAPPINGTOKEN();",
+                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
+                "while (_.IF(() => _.IF(_.DIV((Int16)1, (Int16)0)), errOn))",
                 "{",
                 "}",
-                "_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+                "_.RELEASEERRORTRAPPINGTOKEN(errOn);"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -134,12 +134,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "var errOn1 = _.GETERRORTRAPPINGTOKEN();",
-                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn1);",
-                "while (_.IF(() => !_.IF(_.DIV((Int16)1, (Int16)0)), errOn1))",
+                "var errOn = _.GETERRORTRAPPINGTOKEN();",
+                "_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
+                "while (_.IF(() => !_.IF(_.DIV((Int16)1, (Int16)0)), errOn))",
                 "{",
                 "}",
-                "_.RELEASEERRORTRAPPINGTOKEN(errOn1);"
+                "_.RELEASEERRORTRAPPINGTOKEN(errOn);"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),

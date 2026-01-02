@@ -27,7 +27,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v1 => { _env.i = v1; }));"
+                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -53,10 +53,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "_.CALL(this, _outer, \"Test1\");",
                 "public object test1()",
                 "{",
-                "    object retVal1 = null;",
+                "    object Test1_retVal = null;",
                 "    object i = null; /* Undeclared in source */",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v2 => { i = v2; }));",
-                "    return retVal1;",
+                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
+                "    return Test1_retVal;",
                 "}"
             };
             myAssert.AreEqual(
@@ -84,10 +84,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "_.CALL(this, _outer, \"Test1\");",
                 "public object test1()",
                 "{",
-                "    object retVal1 = null;",
+                "    object Test1_retVal = null;",
                 "    object i = null;",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v2 => { i = v2; }));",
-                "    return retVal1;",
+                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
+                "    return Test1_retVal;",
                 "}"
             };
             myAssert.AreEqual(
@@ -115,9 +115,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "_.CALL(this, _outer, \"Test1\");",
                 "public object test1()",
                 "{",
-                "    object retVal1 = null;",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_outer.i, v2 => { _outer.i = v2; }));",
-                "    return retVal1;",
+                "    object Test1_retVal = null;",
+                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_outer.i, v => { _outer.i = v; }));",
+                "    return Test1_retVal;",
                 "}"
             };
             myAssert.AreEqual(
@@ -345,10 +345,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
 					public object go()
 					{
-						object retVal1 = null;
+						object Go_retVal = null;
 						object a = null; /* Undeclared in source */
 						a = _.OBJ(_.CALL(this, this, ""GetSomething"", ""Name""));
-						return retVal1;
+						return Go_retVal;
 					}
 					public object getsomething()
 					{
@@ -378,9 +378,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
+					object F1_retVal = null;
 					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(x)));
-					return retVal1;
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
@@ -406,14 +406,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
-					object byrefalias2 = x;
+					object F1_retVal = null;
+					object byrefalias = x;
 					try
 					{
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias2, v3 => { byrefalias2 = v3; })))));
+						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })))));
 					}
-					finally { x = byrefalias2; }
-					return retVal1;
+					finally { x = byrefalias; }
+					return F1_retVal;
 				}
 
 				public object f2(ref object x)
@@ -441,19 +441,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object f1(ref object x)
 				{
-					object retVal1 = null;
-					var errOn2 = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
-					object byrefalias3 = x;
+					object F1_retVal = null;
+					var errOn = _.GETERRORTRAPPINGTOKEN();
+					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+					object byrefalias = x;
 					try
 					{
-						_.HANDLEERROR(errOn2, () => {
-							_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(byrefalias3)));
+						_.HANDLEERROR(errOn, () => {
+							_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(byrefalias)));
 						});
 					}
-					finally { x = byrefalias3; }
-					_.RELEASEERRORTRAPPINGTOKEN(errOn2);
-					return retVal1;
+					finally { x = byrefalias; }
+					_.RELEASEERRORTRAPPINGTOKEN(errOn);
+					return F1_retVal;
 				}";
             myAssert.AreEqual(
                 expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
@@ -497,10 +497,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				public object render(ref object x)
 				{
-					object retVal1 = null;
-					var with2 = _.OBJ(x);
-					_.CALL(this, with2, ""Draw"", _.ARGS.Val(""Test""));
-					return retVal1;
+					object Render_retVal = null;
+					var with = _.OBJ(x);
+					_.CALL(this, with, ""Draw"", _.ARGS.Val(""Test""));
+					return Render_retVal;
 				}";
             myAssert.AreEqual(
                 expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
@@ -508,7 +508,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             );
         }
 
-        [TestMethod, MyTheory, MyMemberData("VariousBracketDeterminedRefValArgumentData")]
+        [TestMethod, MyTheory, MyMemberData(nameof(VariousBracketDeterminedRefValArgumentData))]
         public void VariousBracketDeterminedRefValArgumentCases(string source, string expectedResult)
         {
             var translatedContent = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
@@ -519,16 +519,16 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             get
             {
-                yield return new object[] { "func x", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v1 => { _env.x = v1; }));" };
+                yield return new object[] { "func x", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }));" };
                 yield return new object[] { "func (x)", "_.CALL(this, _env.func, _.ARGS.Val(_env.x));" };
 
-                yield return new object[] { "func x, y", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v1 => { _env.x = v1; }).Ref(_env.y, v2 => { _env.y = v2; }));" };
-                yield return new object[] { "func (x), y", "_.CALL(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v1 => { _env.y = v1; }));" };
-                yield return new object[] { "func x, (y)", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v1 => { _env.x = v1; }).Val(_env.y));" };
+                yield return new object[] { "func x, y", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; }));" };
+                yield return new object[] { "func (x), y", "_.CALL(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; }));" };
+                yield return new object[] { "func x, (y)", "_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Val(_env.y));" };
 
-                yield return new object[] { "z = func(x)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v1 => { _env.x = v1; })));" };
-                yield return new object[] { "z = func(x, y)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v1 => { _env.x = v1; }).Ref(_env.y, v2 => { _env.y = v2; })));" };
-                yield return new object[] { "z = func((x), y)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v1 => { _env.y = v1; })));" };
+                yield return new object[] { "z = func(x)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; })));" };
+                yield return new object[] { "z = func(x, y)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; })));" };
+                yield return new object[] { "z = func((x), y)", "_env.z = _.VAL(_.CALL(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; })));" };
             }
         }
 

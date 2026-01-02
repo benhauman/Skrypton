@@ -100,14 +100,7 @@ namespace Skrypton.CSharpWriter
             var outerClassName = new CSharpName("GlobalReferences");
             var outerRefName = new CSharpName("_outer");
             VBScriptNameRewriter nameRewriter = name => new CSharpName(DefaultRuntimeSupportClassFactory.RewriteName(name.Content));
-            var tempNameGeneratorNextNumber = 0;
-            TempValueNameGenerator tempNameGenerator = (optionalPrefix, scopeAccessInformation) =>
-            {
-                // To get unique names for any given translation, a running counter is maintained and appended to the end of the generated
-                // name. This is only run during translation (this code is not used during execution) so there will be a finite number of
-                // times that this is called (so there should be no need to worry about the int value overflowing!)
-                return new CSharpName(((optionalPrefix == null) ? "temp" : optionalPrefix.Name) + (++tempNameGeneratorNextNumber).ToString());
-            };
+            TempValueNameGenerator tempNameGenerator = new DefaultTempValueNameGenerator().GenerateTempValueName;
             var statementTranslator = new StatementTranslator(supportRefName, envRefName, outerRefName, nameRewriter, tempNameGenerator, logger);
             var codeBlockTranslator = new OuterScopeBlockTranslator(
                 startNamespace,
@@ -203,6 +196,36 @@ namespace Skrypton.CSharpWriter
             {
                 _warningLogger(content);
             }
+        }
+    }
+
+    internal sealed class DefaultTempValueNameGenerator
+    {
+        private readonly Dictionary<string, string> _names = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        //private int _tempNameGeneratorNextNumber;
+        public DefaultTempValueNameGenerator()
+        {
+        }
+        public CSharpName GenerateTempValueName(CSharpName optionalPrefix, ScopeAccessInformation scopeAccessInformation)
+        {
+            // To get unique names for any given translation, a running counter is maintained and appended to the end of the generated
+            // name. This is only run during translation (this code is not used during execution) so there will be a finite number of
+            // times that this is called (so there should be no need to worry about the int value overflowing!)
+            //_tempNameGeneratorNextNumber++;
+            //string numberSuffix = (_tempNameGeneratorNextNumber == 1) ? "" : _tempNameGeneratorNextNumber.ToString(CultureInfo.InvariantCulture);
+            //string name = ((optionalPrefix == null) ? "temp" : optionalPrefix.Name) + numberSuffix;
+            //return new CSharpName(name);
+            int tempNameGeneratorNextNumber = 1;
+            string prefix = optionalPrefix?.Name ?? "temp";
+            string name = prefix;
+            while (_names.ContainsKey(name))
+            {
+                tempNameGeneratorNextNumber++;
+                string numberSuffix = (tempNameGeneratorNextNumber == 1) ? "" : tempNameGeneratorNextNumber.ToString(CultureInfo.InvariantCulture);
+                name = prefix + numberSuffix;
+            }
+            _names.Add(name, prefix);
+            return new CSharpName(name);
         }
     }
 }
