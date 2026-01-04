@@ -31,7 +31,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             var nameToken = (token as NameToken) ?? new ForRenamingNameToken(token.ContentUpperX(), token.LineIndex);
             if (nameToken is DoNotRenameNameToken)
                 return nameToken.Content;
-            return nameRewriter(nameToken).Name;
+            return nameRewriter.RewriteVBScriptName(nameToken).Name;
         }
 
         public static bool AreNamesEquivalent(this VBScriptNameRewriter nameRewriter, NameToken x, NameToken y)

@@ -37,7 +37,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private readonly NonNullImmutableList<NameToken> _externalDependencies;
         private readonly OutputTypeOptions _outputType;
         private readonly ILogInformation _logger;
-        public OuterScopeBlockTranslator(
+        internal OuterScopeBlockTranslator(
             CSharpName startNamespace,
             CSharpName startClassName,
             CSharpName startMethodName,
@@ -80,7 +80,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             _logger = logger;
         }
 
-        public enum OutputTypeOptions
+        internal enum OutputTypeOptions
         {
             /// <summary>
             /// This is the default option, a fully-executable class definition will be returned

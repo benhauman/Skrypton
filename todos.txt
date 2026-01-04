@@ -1,0 +1,23 @@
+TODO:
+1) Loop index : 1, 2, 3
+-loopEnd4 => loopXEnd, loopXStart, loopXConstraintsInitialized, loopXContinue (continueLoop7)
+
+2) byrefalias
+object byrefalias = x;
+object byrefalias2 = y;
+object x_byrefalias = x;
+object y_byrefalias = y;
+
+v2 => { byrefalias = v2; })
+x_val => { x_byrefalias = x_val; })
+
+3) ifResult4
+
+
+
+4) sort the properties a-z of EnvironmentReferences
+
+5) move 'value' after target arguments
+_.SET("#5b5b5b", this, _env.buttongeneralinfo, "BackColor");
+
+_.SET(this, _env.buttongeneralinfo, "BackColor", "#5b5b5b");

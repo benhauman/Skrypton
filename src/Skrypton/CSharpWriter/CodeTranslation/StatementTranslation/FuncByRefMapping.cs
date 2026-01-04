@@ -32,6 +32,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// cases, however, any changes to the alias must be reflected back onto the original reference - this is only applicable when the alis is passed as a
         /// "ref" argument to another function. In the first case, this value will be true, the mapped value IS ready only, while in the second case this
         /// value will be false.
+        /// true:Relevant for error handling and what happens on 'restore'
         /// </summary>
         public bool MappedValueIsReadOnly { get; private set; }
     }

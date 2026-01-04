@@ -37,12 +37,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return new ByRefReplacementTranslationResultDetails(translationResult, 0);
 
             var lineIndexForStartOfContent = byRefArgumentsToRewrite.Min(a => a.From.LineIndex);
-            translationResult = translationResult.Add(new TranslatedStatement(
-                string.Format(
-                    "object {0};",
+            translationResult = translationResult.Add(new TranslatedStatement(string.Format("object {0};",
                     string.Join(
                         ", ",
-                        byRefArgumentsToRewrite.Select(r => r.To.Name + " = " + nameRewriter(r.From).Name)
+                        byRefArgumentsToRewrite.Select(r => r.To.Name + " = " + nameRewriter.RewriteVBScriptName(r.From).Name)
                     )
                 ),
                 indentationDepth,
@@ -146,12 +144,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var lineIndexForEndOfContent = byRefArgumentsToRewrite.Max(a => a.From.LineIndex);
             return translationResult
                 .Add(new TranslatedStatement("}", indentationDepth, lineIndexForEndOfContent))
-                .Add(new TranslatedStatement(
-                    string.Format(
-                        "finally {{ {0}; }}",
+                .Add(new TranslatedStatement(string.Format("finally {{ {0}; }}",
                         string.Join(
                             "; ",
-                            byRefArgumentsToRewrite.Select(r => nameRewriter(r.From).Name + " = " + r.To.Name)
+                            byRefArgumentsToRewrite.Select(r => nameRewriter.RewriteVBScriptName(r.From).Name + " = " + r.To.Name)
                         )
                     ),
                     indentationDepth,

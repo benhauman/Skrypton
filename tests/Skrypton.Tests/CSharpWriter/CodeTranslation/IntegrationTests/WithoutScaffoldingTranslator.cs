@@ -23,10 +23,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             if (externalDependencies == null)
                 throw new ArgumentNullException("externalDependencies");
 
-            return DefaultTranslator
-                .Translate(culture, content, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, // Executable:159 tests
-                    renderCommentsAboutUndeclaredVariables: false
-                )
+            return DefaultTranslator.TranslateWithoutScaffolding(culture, content, externalDependencies) // Executable:159 tests
                 .Select(s => s.Content)
                 .Where(s => s != "") // 129 tests
                 .ToArray();
@@ -37,7 +34,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     {
         internal static string[] GetTranslatedStatements(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
         {
-            string[] output = Skrypton.CSharpWriter.DefaultTranslator.Translate(culture, vbsSource, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, true)
+            string[] output = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies)
                 .Select(s => RenderTranslatedStatement(s))
                 .ToArray();
             return output; // later: string.Join("\r\n", output)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.CSharpWriter;
 using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
@@ -330,7 +332,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         private static CSharpName DefaultsupportRefName = new CSharpName("_");
         private static CSharpName DefaultSupportEnvName = new CSharpName("_env");
         private static CSharpName DefaultOuterScopeName = new CSharpName("_outer");
-        private static VBScriptNameRewriter DefaultNameRewriter = nameToken => new CSharpName(nameToken.Content.ToLower());
+        private static VBScriptNameRewriter DefaultNameRewriter = new DefaultVBScriptNameRewriter();// nameToken => new CSharpName(nameToken.Content.ToLower());
         private static TempValueNameGenerator GetDefaultTempValueNameGenerator()
         {
             var index = 0;

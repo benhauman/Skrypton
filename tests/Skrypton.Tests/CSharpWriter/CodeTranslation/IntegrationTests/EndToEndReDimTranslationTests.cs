@@ -139,7 +139,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     ReDim a(1)
                     ReDim a(2)";
 
-            string[] trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new NonNullImmutableList<string>(), OuterScopeBlockTranslator.OutputTypeOptions.Executable)
+            string[] trimmedTranslatedStatements = DefaultTranslator.TranslateExecutable(TestCulture, source, new NonNullImmutableList<string>())
                 .Select(s => s.Content.Trim())
                 .ToArray();
             string text_a_raw = string.Join("\r\n", trimmedTranslatedStatements);
@@ -269,7 +269,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     ReDim a(1)
                     ReDim a(2)";
 
-            string[] trimmedTranslatedStatements = DefaultTranslator.Translate(TestCulture, source, new NonNullImmutableList<string>(), OuterScopeBlockTranslator.OutputTypeOptions.Executable)
+            string[] trimmedTranslatedStatements = DefaultTranslator.TranslateExecutable(TestCulture, source, new NonNullImmutableList<string>())
                 .Select(s => s.Content.Trim())
                 .ToArray();
             string text_a_raw = string.Join("\r\n", trimmedTranslatedStatements);

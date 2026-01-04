@@ -7,8 +7,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     /// reference and must never return a null value. It is responsible for returning consistent names regardless of the case of the input value, to deal
     /// with the fact that C# is case-sensitive and VBScript is not.
     /// </summary>
-    public delegate CSharpName VBScriptNameRewriter(NameToken name);
-
+    public abstract class VBScriptNameRewriter
+    {
+        public abstract CSharpName RewriteVBScriptName(NameToken name);
+    }
     /// <summary>
     /// During translation, temporary variables may be required. This delegate is responsible for returning names that are guaranteed to be unique. The
     /// mechanism for implementing this must work with the VBScriptNameRewriter mechanism since there must be no overlap in the returned values. If an

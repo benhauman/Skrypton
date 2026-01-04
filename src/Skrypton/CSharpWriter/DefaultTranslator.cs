@@ -26,11 +26,13 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> Translate(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies,
-            OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable,
-            bool renderCommentsAboutUndeclaredVariables = true)
+        public static NonNullImmutableList<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, outputType, CommentsLogger(renderCommentsAboutUndeclaredVariables));
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+        }
+        public static NonNullImmutableList<TranslatedStatement> TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+        {
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
@@ -73,7 +75,7 @@ namespace Skrypton.CSharpWriter
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList
         /// of strings and it requires an ILogInformation implementation to deal with logging warnings
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> TranslateCore(
+        internal static NonNullImmutableList<TranslatedStatement> TranslateCore(
             CultureInfo culture,
             string scriptContent,
             NonNullImmutableList<string> externalDependencies,
@@ -99,7 +101,7 @@ namespace Skrypton.CSharpWriter
             var envRefName = new CSharpName("_env");
             var outerClassName = new CSharpName("GlobalReferences");
             var outerRefName = new CSharpName("_outer");
-            VBScriptNameRewriter nameRewriter = name => new CSharpName(DefaultRuntimeSupportClassFactory.RewriteName(name.Content));
+            VBScriptNameRewriter nameRewriter = new DefaultVBScriptNameRewriter();
             TempValueNameGenerator tempNameGenerator = new DefaultTempValueNameGenerator().GenerateTempValueName;
             var statementTranslator = new StatementTranslator(supportRefName, envRefName, outerRefName, nameRewriter, tempNameGenerator, logger);
             var codeBlockTranslator = new OuterScopeBlockTranslator(
@@ -226,6 +228,17 @@ namespace Skrypton.CSharpWriter
             }
             _names.Add(name, prefix);
             return new CSharpName(name);
+        }
+    }
+
+    public sealed class DefaultVBScriptNameRewriter : VBScriptNameRewriter
+    {
+        public DefaultVBScriptNameRewriter()
+        {
+        }
+        public override CSharpName RewriteVBScriptName(NameToken name)
+        {
+            return new CSharpName(DefaultRuntimeSupportClassFactory.RewriteName(name.Content));
         }
     }
 }
