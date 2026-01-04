@@ -24,7 +24,7 @@ namespace Skrypton.Tests.Application
         }
         public DialogBuilder AddTabControl(string controlName)
         {
-            return AddControlCore(controlName, new DialogGuiTabPage() { ShowControl = true });
+            return AddControlCore(controlName, new DialogGuiTabPage() { });
         }
 
         public DialogBuilder AddTextControl(string controlName)

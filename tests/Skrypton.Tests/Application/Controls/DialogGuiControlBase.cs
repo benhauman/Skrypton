@@ -11,11 +11,11 @@ namespace Skrypton.Tests.Application.Controls
         }
 
 
-        private bool _valueShowControl;
-        public bool ShowControl
+        private ShowControlType _valueShowControl;
+        public byte ShowControl // see ShowControlType
         {
-            get => _valueShowControl;
-            set => _valueShowControl = value;
+            get => (byte)_valueShowControl;
+            set => _valueShowControl = (ShowControlType)value;
         }
 
         private string _valueBackColor;
@@ -31,5 +31,12 @@ namespace Skrypton.Tests.Application.Controls
             get => _valueRequestFocus;
             set => _valueRequestFocus = value;
         }
+    }
+    public enum ShowControlType
+    {
+        GuiOnly = 0,
+        Always = 1,
+        WebOnly = 2,
+        Never = 3
     }
 }
