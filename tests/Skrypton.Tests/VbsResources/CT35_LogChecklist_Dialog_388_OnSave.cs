@@ -79,7 +79,10 @@ namespace TranslatedProgram
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object dict { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object match { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object model { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object objregex { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object textboxchecklist10url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object textboxchecklist1url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object textboxchecklist2url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object textboxchecklist3url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
@@ -89,8 +92,5 @@ namespace TranslatedProgram
         public object textboxchecklist7url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object textboxchecklist8url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object textboxchecklist9url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxchecklist10url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object match { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object model { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

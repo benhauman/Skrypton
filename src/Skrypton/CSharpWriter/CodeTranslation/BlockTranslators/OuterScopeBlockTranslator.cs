@@ -523,7 +523,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             });
             var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex }).ToArray();
             HashSet<string> environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
-            foreach (var v in allEnvironmentVariableNames)
+            foreach (var v in allEnvironmentVariableNames.OrderBy(x => x.RewrittenName))
             {
                 if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
                     continue;
