@@ -378,19 +378,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (exitStatement.StatementType == ExitStatement.ExitableStatementType.Function)
             {
                 if ((scopeAccessInformation.ScopeDefiningParent as FunctionBlock) == null)
-                    throw new ArgumentException("Encountered EXIT FUNCTION that was not within a function");
+                    throw new ArgumentException($"Encountered EXIT FUNCTION that was not within a function. Line:{exitStatement.LineIndex}");
                 isValidatedFunctionTypeExit = true;
             }
             else if (exitStatement.StatementType == ExitStatement.ExitableStatementType.Property)
             {
                 if ((scopeAccessInformation.ScopeDefiningParent as PropertyBlock) == null)
-                    throw new ArgumentException("Encountered EXIT PROPERTY that was not within a property");
+                    throw new ArgumentException($"Encountered EXIT PROPERTY that was not within a property. Line:{exitStatement.LineIndex}");
                 isValidatedFunctionTypeExit = true;
             }
             else if (exitStatement.StatementType == ExitStatement.ExitableStatementType.Sub)
             {
                 if ((scopeAccessInformation.ScopeDefiningParent as SubBlock) == null)
-                    throw new ArgumentException("Encountered EXIT SUB that was not within a sub");
+                    throw new ArgumentException($"Encountered EXIT SUB that was not within a sub. Line:{exitStatement.LineIndex}");
                 isValidatedFunctionTypeExit = true;
             }
             else
@@ -432,7 +432,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     e => e.StructureType == ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions.Do
                 );
                 if (correspondingExitableStructureDetails == null)
-                    throw new ArgumentException("Encountered EXIT DO that was not within a do loop");
+                    throw new ArgumentException($"Encountered EXIT DO that was not within a do loop. Line:{exitStatement.LineIndex}");
                 exitEarlyFlagForValidatedLoopTypeExitIfAny = correspondingExitableStructureDetails.ExitEarlyBooleanNameIfAny;
             }
             else if (exitStatement.StatementType == ExitStatement.ExitableStatementType.For)
@@ -441,11 +441,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     e => e.StructureType == ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions.For
                 );
                 if (correspondingExitableStructureDetails == null)
-                    throw new ArgumentException("Encountered EXIT FOR that was not within a for loop");
+                    throw new ArgumentException($"Encountered EXIT FOR that was not within a for loop. Line:{exitStatement.LineIndex}");
                 exitEarlyFlagForValidatedLoopTypeExitIfAny = correspondingExitableStructureDetails.ExitEarlyBooleanNameIfAny;
             }
             else
-                throw new ArgumentException("Unsupported ExitableStatementType: " + exitStatement.StatementType);
+                throw new ArgumentException($"Unsupported ExitableStatementType: {exitStatement.StatementType}. Line:{exitStatement.LineIndex}");
             if (exitEarlyFlagForValidatedLoopTypeExitIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(

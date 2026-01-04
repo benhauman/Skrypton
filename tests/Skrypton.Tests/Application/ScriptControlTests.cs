@@ -62,6 +62,7 @@ scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName
 TODO:
 On Error Resume Next
     what, db, dialogid
+ok:64bit! CreateObject("VBScript.RegExp")
 CreateObject("Acceptance")       _CustomerTest_VRPayment21, 386
 CreateObject("ADODB.Command")    _CustomerTest_DeutschePost, 337
 CreateObject("ADODB.Connection") _CustomerTest_Mainova,	2
