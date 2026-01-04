@@ -676,7 +676,8 @@ namespace Skrypton.RuntimeSupport
 
             /// [System.Security.SecurityCritical]
             [PreserveSig]
-            int GetIDsOfNames();
+            //int GetIDsOfNames();
+            int GetIDsOfNames(ref Guid riid, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames, int cNames, int lcid, out int rgDispId);
 
             /// [System.Security.SecurityCritical]
             [PreserveSig]

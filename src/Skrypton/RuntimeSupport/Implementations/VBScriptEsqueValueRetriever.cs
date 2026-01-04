@@ -904,10 +904,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider)
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
-            if (argumentProvider == null)
-                throw new ArgumentNullException("argumentProvider");
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
 
             var arguments = argumentProvider.GetInitialValues().ToArray();
             if ((optionalMemberAccessor == null) && !arguments.Any())
@@ -1584,13 +1582,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             // There the nameRewriter WILL be considered in case it's trying to access classes we've translated. However, there's also a chance that
             // we could be accessing a non-IDispatch CLR type from somewhere, so GetNamedGetMethods will try to match using the nameRewriter first and
             // then fallback to a perfect match non-rewritten name and finally to a case-insensitive match to a non-rewritten name.
-            return GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.UseNameRewriter, numberOfArguments, allowPrivateAccess)
-                .Concat(
-                    GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess)
-                )
-                .Concat(
-                    GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.CaseInsensitive, numberOfArguments, allowPrivateAccess)
-                );
+            var mis1 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.UseNameRewriter, numberOfArguments, allowPrivateAccess).ToArray();
+            //.Concat(
+            var mis2 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess).ToArray();
+            //)
+            //.Concat(
+            var mis3 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.CaseInsensitive, numberOfArguments, allowPrivateAccess).ToArray();
+            //);
+            return mis1.Concat(mis2).Concat(mis3);
         }
 
         private IEnumerable<MethodInfo> GetNamedSetMethods(Type type, string name, int numberOfArguments, bool allowPrivateAccess)
@@ -1614,7 +1613,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 );
         }
 
-        private IEnumerable<MethodInfo> GetGetMethods(
+        private MethodInfo[] GetGetMethods(
             Type type,
             string optionalName,
             DefaultMemberBehaviourOptions defaultMemberBehaviour,
@@ -1695,16 +1694,17 @@ namespace Skrypton.RuntimeSupport.Implementations
 
                 return false;
             };
-            var applicableMethods = allMethods
+            MethodInfo[] applicableMethods = allMethods
                     .Where(m => nameMatcher(m.Name))
                     .Where(m =>
                         (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
                         (m.GetCustomAttributes(typeof(IsDefault), true).Any()) ||
                         (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(m) || IsDefaultMember(m)))
                     )
-                    .Where(m => matchesArgumentCount(m));
-            var readableProperties = type.GetProperties().Where(p => p.CanRead);
-            var applicableProperties = readableProperties
+                    .Where(m => matchesArgumentCount(m))
+                    .ToArray();
+            PropertyInfo[] readableProperties = type.GetProperties().Where(p => p.CanRead).ToArray();
+            MethodInfo[] applicableProperties = readableProperties
                 .Where(p => nameMatcher(p.Name))
                 .Where(p =>
                     (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
@@ -1712,22 +1712,24 @@ namespace Skrypton.RuntimeSupport.Implementations
                     (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(p) || IsDefaultMember(p)))
                 )
                 .Select(p => p.GetGetMethod())
-                .Where(m => matchesArgumentCount(m));
+                .Where(m => matchesArgumentCount(m))
+                .ToArray();
 
             // If no matches were found and we're looking for a parameter-less default member access and the target type was not translated from VBScript
             // source, then apply the other fallbacks that the C# compiler would have added to the IDispatch interface
-            var allOptions = applicableMethods.Concat(applicableProperties);
+            MethodInfo[] allOptions = applicableMethods.Concat(applicableProperties).ToArray();
             if (!allOptions.Any() && (defaultMemberBehaviour == DefaultMemberBehaviourOptions.MustBeDefault) && (numberOfArguments == 0) && !typeWasTranslatedFromVBScript && typeIsComVisible)
             {
                 allOptions = allMethods.Where(m => !m.GetParameters().Any() && m.Name.Equals("Value", StringComparison.OrdinalIgnoreCase))
-                    .Concat(readableProperties.Where(p => !p.GetIndexParameters().Any() && p.Name.Equals("Value", StringComparison.OrdinalIgnoreCase)).Select(p => p.GetGetMethod()));
+                    .Concat(readableProperties.Where(p => !p.GetIndexParameters().Any() && p.Name.Equals("Value", StringComparison.OrdinalIgnoreCase)).Select(p => p.GetGetMethod()))
+                    .ToArray();
                 if (!allOptions.Any())
                     allOptions = new[] { type.GetMethod("ToString", Type.EmptyTypes) };
             }
 
             // In the cases where multiple options are identified, sort by the most specific (members declared on the current type those declared further
             // down in the inheritance tree)
-            return allOptions.OrderByDescending(m => GetMemberInheritanceDepth(m, type));
+            return allOptions.OrderByDescending(m => GetMemberInheritanceDepth(m, type)).ToArray();
         }
 
         private bool ParameterIsObjectParamsArray(ParameterInfo parameter)

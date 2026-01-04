@@ -10,7 +10,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [DefaultMember("Item")]
-    internal sealed class MyScriptingDictionary : System.Collections.IEnumerable//, IDispatch  // lubo: Type.GetTypeFromProgID("Scripting.Dictionary")
+    internal sealed class MyScriptingDictionaryCpuAny : System.Collections.IEnumerable//, IDispatch  // lubo: Type.GetTypeFromProgID("Scripting.Dictionary")
     {
         // Name → DISPID map
         private readonly Dictionary<string, int> _dispIds =
@@ -39,10 +39,11 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         private Dictionary<string, object> _dict;
         private CompareMethod _compareMode;
 
-        public MyScriptingDictionary()
+        public MyScriptingDictionaryCpuAny()
         {
             _compareMode = CompareMethod.BinaryCompare;
             _dict = CreateDictionary(_compareMode);
+            //throw new NotSupportedException();
         }
 
         private static Dictionary<string, object> CreateDictionary(CompareMethod mode)
@@ -88,6 +89,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         // --- Item(key) getter/setter (VBScript-style default property) ---
         // --- Default property: Item ---
         [DispId(0)]  // This makes it the default VBScript property
+        [IsDefault] // needed for enumeration : dict[currentkey]
         public object Item(object key)
         {
             string k = key.ToString();

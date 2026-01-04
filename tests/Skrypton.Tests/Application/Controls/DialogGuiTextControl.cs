@@ -5,9 +5,10 @@ namespace Skrypton.Tests.Application.Controls
     [ComVisible(true)]
     internal sealed class DialogGuiTextControl // <ControlName>HelpLineTextBox</ControlName>
     {
+        public string ControlName { get; }
         public DialogGuiTextControl(string name)
         {
-
+            ControlName = name;
         }
         internal DialogGuiTextControl InitializeTextControl(string valueText)
         {

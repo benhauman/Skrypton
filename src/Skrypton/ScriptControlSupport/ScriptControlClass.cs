@@ -155,8 +155,8 @@ namespace Skrypton.ScriptControlSupport
         internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
             DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(valueRetriever, culture);
-            //provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionary());
-            //provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
+            //provider.RegisterObjectCreateFactory();
+            //provider.RegisterObjectCreateFactory();
             return provider;
         }
 

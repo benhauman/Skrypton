@@ -46,7 +46,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 yield return new object[] { "Date", new DateTime(2015, 5, 18, 20, 35, 0), "Date" };
                 yield return new object[] { "Date without time component", new DateTime(2015, 5, 18), "Date" };
                 yield return new object[] { "VBScript time (ZeroDate with time component)", VBScriptConstants.ZeroDate.Add(new TimeSpan(20, 35, 0)), "Date" };
-                yield return new object[] { "Scripting Dictionary", Activator.CreateInstance(typeof(MyScriptingDictionary)), "Dictionary" };
+                yield return new object[] { "Scripting Dictionary", Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny)), "Dictionary" };
                 yield return new object[] { "Translated Class", new exampledefaultpropertytype(), "ExampleDefaultPropertyType" };
                 yield return new object[] { "COM Visible Class", new ComVisibleClass(), "ComVisibleClass" };
                 yield return new object[] { "Non-COM-Visible Class derived from a COM Visible Class", new NonComVisibleClassDerivedFromComVisibleClass(), "ComVisibleClass" };

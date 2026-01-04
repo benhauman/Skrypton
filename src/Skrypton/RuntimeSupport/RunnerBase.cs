@@ -71,9 +71,18 @@ namespace Skrypton.RuntimeSupport
         protected void RestoreExternalReferenceAsObject(object newInstance, [CallerMemberName] string referenceName = "")
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
-            var current = GetExternalReferenceAsObject(referenceName);
-            if (current != newInstance)
+            object current = GetExternalReferenceAsObject(referenceName);
+            if (current != null && newInstance != null && current != newInstance)
+            {
                 throw new InvalidOperationException("not same");
+            }
+            else
+            {
+                if (newInstance == null)
+                    _externalReferences.Remove(referenceName);
+                else
+                    _externalReferences[referenceName] = newInstance;
+            }
         }
     }
     public abstract class GlobalReferencesBase

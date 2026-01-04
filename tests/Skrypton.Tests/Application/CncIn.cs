@@ -30,7 +30,7 @@ namespace Skrypton.Tests.Application
               AND LEN(ISNULL(scr.script,N'')) > 0 -- TODO: CK_
               ;
          */
-        /* --> row number is the customer index : 98:PsoShow
+        /* --> row number is the customer index : 98:PsoShow, 35:DFSnDLNeu
         SELECT [dbname]
                ,[sizebytes_before]
                ,[sizebytes_after]
@@ -125,7 +125,7 @@ namespace Skrypton.Tests.Application
         internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
             DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(valueRetriever, culture);
-            provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionary());
+            provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             return provider;
         }

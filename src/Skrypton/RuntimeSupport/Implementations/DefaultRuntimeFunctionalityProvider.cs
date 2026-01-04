@@ -1900,7 +1900,11 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidOperationException("object id:" + value);
             if (_objectCreateFactories.TryGetValue(classProgId, out var objectFactory))
                 return objectFactory();
-            throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
+
+            MyComProxy proxy = MyComProxy.CreateComProxy(classProgId);//"Scripting.Dictionary"
+            return proxy._comInstance;
+
+            //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
         }
         public object GETOBJECT(object value)
         {
