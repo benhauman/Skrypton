@@ -231,7 +231,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                             // correctly which will result in the request failing. If an exception has been raised then we can confirm if this is the
                             // problem by trying to pull the arguments back out of the "rgvarg", if this operation fails then the absence of this
                             // build option is most likely the cause.
-                            message += " - this may be due to the \"Prefer 32-bit\" option not being enabled.";// in Visual Studio";
+                            message += $" - this may be due to the \"Prefer 32-bit\" option not being enabled. (Is64BitProcess:{Environment.Is64BitProcess})";// in Visual Studio";
                         }
                     }
                     throw new IDispatchAccessException(message, source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);
