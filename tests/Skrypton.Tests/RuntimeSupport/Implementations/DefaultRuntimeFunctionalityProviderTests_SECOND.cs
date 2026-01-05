@@ -21,7 +21,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object value, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().SECOND(value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().SECOND(value));
         }
 
         [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().SECOND(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().SECOND(value);
             });
         }
 
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().SECOND(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().SECOND(value);
             });
         }
 
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().SECOND(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().SECOND(value);
             });
         }
 

@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			[TestMethod, MyTheory, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object hours, object minutes, object seconds, DateTime expectedResult)
 			{
-				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMESERIAL(hours, minutes, seconds));
+				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds));
 			}
 
 			[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMESERIAL(hours, minutes, seconds);
+					DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds);
 				});
 			}
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<InvalidUseOfNullException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMESERIAL(hours, minutes, seconds);
+					DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds);
 				});
 			}
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMESERIAL(hours, minutes, seconds);
+					DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds);
 				});
 			}
 
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMESERIAL(hours, minutes, seconds);
+					DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds);
 				});
 			}
 

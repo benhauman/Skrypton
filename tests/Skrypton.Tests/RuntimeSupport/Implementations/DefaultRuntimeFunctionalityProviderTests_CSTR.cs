@@ -12,14 +12,12 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
     [TestClass] // public static partial class DefaultRuntimeFunctionalityProviderTests
                 //{
-    public class CSTR
+    public sealed class CSTR : TestBase
     {
-        private readonly CultureInfo TestCulture = CultureInfo.InvariantCulture;
-
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, string expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR(value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value));
         }
 
         [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -27,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value);
             });
         }
 
@@ -36,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value);
             });
         }
 
@@ -45,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value);
             });
         }
 
@@ -97,7 +95,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyTheory, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, string expectedResult)
             {
-                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR(value));
+                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value));
             }
 
             public static IEnumerable<object[]> SuccessData
@@ -121,7 +119,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyTheory, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, string expectedResult)
             {
-                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CSTR((DateTime)value));
+                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR((DateTime)value));
             }
 
             public static IEnumerable<object[]> SuccessData

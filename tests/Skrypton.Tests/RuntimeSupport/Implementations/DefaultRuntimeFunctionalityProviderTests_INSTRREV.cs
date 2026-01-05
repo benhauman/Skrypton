@@ -16,13 +16,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object valueToSearch, object valueToSearchFor, object startIndex, object compareMode, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode));
         }
 
         [TestMethod, MyTheory, MyMemberData("SuccessDataWithNoStartIndex")]
         public void SuccessCasesWithoutStartIndexValues(string description, object valueToSearch, object valueToSearchFor, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTRREV(valueToSearch, valueToSearchFor));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor));
         }
 
         [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
                 });
         }
 
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
                 });
         }
 
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
+                DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode);
             });
         }
 

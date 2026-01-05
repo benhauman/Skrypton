@@ -19,26 +19,26 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ArgumentNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ARRAY(null);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().ARRAY(null);
                 });
         }
 
         [TestMethod, MyFact]
         public void ZeroElements()
         {
-            myAssert.AreEqual(new object[0], DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ARRAY());
+            myAssert.AreEqual(new object[0], DefaultRuntimeSupportClassFactoryInstance.Get().ARRAY());
         }
 
         [TestMethod, MyFact]
         public void OneElement()
         {
-            myAssert.AreEqual(new object[] { 1 }, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ARRAY(1));
+            myAssert.AreEqual(new object[] { 1 }, DefaultRuntimeSupportClassFactoryInstance.Get().ARRAY(1));
         }
 
         [TestMethod, MyFact]
         public void TwoElements()
         {
-            myAssert.AreEqual(new object[] { 1, 2 }, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ARRAY(1, 2));
+            myAssert.AreEqual(new object[] { 1, 2 }, DefaultRuntimeSupportClassFactoryInstance.Get().ARRAY(1, 2));
         }
     }
     //}

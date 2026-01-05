@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, DateTime expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMEVALUE(value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().TIMEVALUE(value));
         }
 
         [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMEVALUE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().TIMEVALUE(value);
             });
         }
 
@@ -33,7 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMEVALUE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().TIMEVALUE(value);
             });
         }
 
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TIMEVALUE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().TIMEVALUE(value);
             });
         }
 

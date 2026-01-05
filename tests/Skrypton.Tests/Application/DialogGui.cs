@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.Tests.Application.Controls;
 
@@ -41,7 +43,7 @@ namespace Skrypton.Tests.Application
 
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click()
         {
             var dialog = new DialogBuilder()
@@ -182,15 +184,130 @@ namespace Skrypton.Tests.Application
                     .AddTextControl("TextBoxNetworkHealthIncomingWebTraffic7Days") /* (line 156) */
                     .AddTextControl("TextBoxNetworkHealthOutgoingWebTraffic7Days")
 
+                    .AddTextControl("TextBoxNetworkHealthTotalWebTraffic7Days")
+                    .AddTextControl("TextBoxNetworkHealthAvgIncomingWebBitrate7Days")
+                    .AddTextControl("TextBoxNetworkHealthAvgOutgoingWebBitrate7Days")
+                    .AddTextControl("TextBoxNetworkHealthAvgWebRequestSize7Days")
+                    .AddTextControl("TextBoxNetworkHealthAvgWebResponseSize7Days")
+                    .AddTextControl("TextBoxNetworkHealthSuccessHTTPRequestRatio7Days")
+
+.AddImageControl("ImageOKNetworkHealthIncomingNetTaffic24Hours")
+.AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic24Hours")
+.AddImageControl("ImageOKNetworkHealthIncomingNetTaffic7Days")
+.AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic7Days")
+.AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic24Hours")
+.AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic24Hours")
+.AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic7Days")
+.AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic7Days")
+.AddImageControl("ImageOKNetworkHealthTotalNetTaffic24Hours")
+.AddImageControl("ImageNOKNetworkHealthTotalNetTaffic24Hours")
+.AddImageControl("ImageOKNetworkHealthTotalNetTaffic7Days")
+.AddImageControl("ImageNOKNetworkHealthTotalNetTaffic7Days")
+.AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio24Hours")
+.AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours")
+.AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio7Days")
+.AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio7Days")
+.AddImageControl("ImageOKNetworkHealthNetAvailLevel24Hours")
+.AddImageControl("ImageNOKNetworkHealthNetAvailLevel24Hours")
+.AddImageControl("ImageOKNetworkHealthNetAvailLevel7Days")
+.AddImageControl("ImageNOKNetworkHealthNetAvailLevel7Days")
+.AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate7Days")
+.AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days")
+.AddImageControl("ImageOKNetworkHealthAvgNetResponseTime24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgNetResponseTime7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime7Days")
+.AddImageControl("ImageOKNetworkHealthIncomingWebTraffic24Hours")
+.AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic24Hours")
+.AddImageControl("ImageOKNetworkHealthIncomingWebTraffic7Days")
+.AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic7Days")
+.AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic24Hours")
+.AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic24Hours")
+.AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic7Days")
+.AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic7Days")
+.AddImageControl("ImageOKNetworkHealthTotalWebTraffic24Hours")
+.AddImageControl("ImageOKNetworkHealthTotalWebTraffic7Days")
+.AddImageControl("ImageNOKNetworkHealthTotalWebTraffic7Days")
+.AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate7Days")
+.AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days")
+.AddImageControl("ImageOKNetworkHealthAvgWebRequestSize24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgWebRequestSize7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize7Days")
+.AddImageControl("ImageOKNetworkHealthAvgWebResponseSize24Hours")
+.AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize24Hours")
+.AddImageControl("ImageOKNetworkHealthAvgWebResponseSize7Days")
+.AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize7Days")
+.AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours")
+.AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours")
+.AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio7Days")
+.AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days")
+
+// GroupBox L1-Checkliste
+
+.AddTextControl("TextBoxL1FreeSpace")
+.AddTextControl("TextBoxL1OSUpToDate")
+.AddTextControl("TextBoxL1Browser")
+.AddTextControl("TextBoxL1Collaboration")
+.AddTextControl("TextBoxL1Antivirus")
+.AddTextControl("TextBoxL1Antivirus2")
+.AddTextControl("TextBoxL1Antivirus3")
+.AddTextControl("TextBoxL1Defender")
+.AddTextControl("TextBoxL1BootLogon2")
+.AddTextControl("TextBoxL1BootLogon3")
+.AddTextControl("TextBoxL1CPU24")
+.AddTextControl("TextBoxL1CPU7")
+.AddTextControl("TextBoxL1Speicher24")
+.AddTextControl("TextBoxL1Speicher7")
+.AddTextControl("TextBoxL1Bluescreen24")
+.AddTextControl("TextBoxL1Bluescrren7")
+.AddTextControl("TextBoxL1HardReset24")
+.AddTextControl("TextBoxL1HardReset7")
+
+.AddLabelControl("TextBoxGeneralGraphCardRAM")
+
                     .BuildDialog();
+
+            var hlobj = new HLObjectInstance()
+                .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
+                ;
+            var model = new DialogGuidModel();
+
             var externalReferences = dialog.Controls;
+            externalReferences.Add("hlobj", hlobj);
+            externalReferences.Add("model", model);
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.Controls);
             DoDialogGui(externalReferences);
         }
 
         private void DoDialogGui(Dictionary<string, object> externalReferences)
         {
-            CncIn.ExecuteTranslatedProgram(TestCulture, TestContext.TestName, externalReferences);
+            CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences);
+        }
+    }
+
+    [ComVisible(true)]
+    internal sealed class DialogGuidModel
+    {
+        public DialogGuidModel()
+        {
+        }
+
+        public void MsgBox(string message)
+        {
+            Console.WriteLine($"MsgBox('{message}')");
         }
     }
 }

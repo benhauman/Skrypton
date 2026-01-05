@@ -26,7 +26,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void RoundTripConversionCases()
         {
-            var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get();
+            var _ = DefaultRuntimeSupportClassFactoryInstance.Get();
             var values = new[] { 0, 1, -1, -400, -400.2, -400.008, -400.8, 400.2, 400.8, 40000.001, 40000.01, 40000.02, 40000.08, -400.002, 2000000.002, 2958464.002, -657434.002, -400.9, 2000000.9, 2958464.9, -657434.9, -657434 };
             myAssert.AreEqual(
                 values,
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object value, DateTime expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDATE(value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value));
         }
         public static IEnumerable<object[]> SuccessData
         {
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDATE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value);
             });
         }
 
@@ -96,7 +96,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDATE(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value);
                 });
         }
 
@@ -105,7 +105,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDATE(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value);
                 });
         }
 
@@ -114,7 +114,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDATE(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value);
                 });
         }
 

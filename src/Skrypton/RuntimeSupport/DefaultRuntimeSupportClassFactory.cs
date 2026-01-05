@@ -9,12 +9,14 @@ namespace Skrypton.RuntimeSupport
 {
     public sealed class DefaultRuntimeSupportClassFactory
     {
+        internal IRuntimeLogger RuntimeLogger { get; }
         private readonly CultureInfo _culture;
         private static readonly Regex _multipleUnderscoreCondenser = new ("_{2,}", RegexOptions.Compiled);
         private static readonly HashSet<string> _caseInsensitiveCSharpKeywordMatcher = GetCSharpKeywords(StringComparer.OrdinalIgnoreCase);
 
-        private DefaultRuntimeSupportClassFactory(CultureInfo culture)
+        private DefaultRuntimeSupportClassFactory(IRuntimeLogger runtimeLogger, CultureInfo culture)
         {
+            RuntimeLogger = runtimeLogger ?? throw new ArgumentNullException(nameof(runtimeLogger));
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             DefaultNameRewriter = RewriteName;
             // The VBScriptEsqueValueRetriever will cache meta data about what types do and don't have default members, which makes subsequent lookups much
@@ -28,7 +30,7 @@ namespace Skrypton.RuntimeSupport
                 _culture
             );
         }
-        public static DefaultRuntimeSupportClassFactory Create(CultureInfo culture) => new DefaultRuntimeSupportClassFactory(culture);
+        public static DefaultRuntimeSupportClassFactory Create(IRuntimeLogger runtimeLogger, CultureInfo culture) => new DefaultRuntimeSupportClassFactory(runtimeLogger, culture);
 
         /// <summary>
         /// Each compat functionality provider instance should be disposed of after the request has completed to ensure that any managed resources are tidied
@@ -37,7 +39,7 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public IProvideVBScriptCompatFunctionalityToIndividualRequests Get()
         {
-            return new DefaultRuntimeFunctionalityProvider(DefaultVBScriptValueRetriever, _culture);
+            return new DefaultRuntimeFunctionalityProvider(RuntimeLogger, DefaultVBScriptValueRetriever, _culture);
         }
 
         /// <summary>

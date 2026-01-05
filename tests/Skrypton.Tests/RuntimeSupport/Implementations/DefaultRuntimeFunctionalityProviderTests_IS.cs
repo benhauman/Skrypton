@@ -16,13 +16,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("TrueData")]
         public void TrueCases(string description, object l, object r)
         {
-            myAssert.True(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().IS(l, r));
+            myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().IS(l, r));
         }
 
         [TestMethod, MyTheory, MyMemberData("FalseData")]
         public void FalseCases(string description, object l, object r)
         {
-            myAssert.False(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().IS(l, r));
+            myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().IS(l, r));
         }
 
         [TestMethod, MyTheory, MyMemberData("ObjectRequiredData")]
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectRequiredException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().IS(l, r);
+                DefaultRuntimeSupportClassFactoryInstance.Get().IS(l, r);
             });
         }
 

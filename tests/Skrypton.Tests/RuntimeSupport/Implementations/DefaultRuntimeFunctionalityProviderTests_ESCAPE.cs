@@ -14,31 +14,31 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			[TestMethod, MyFact]
 			public void EmptyResultsInBlankString()
 			{
-				myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ESCAPE(null));
+				myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE(null));
 			}
 
 			[TestMethod, MyFact]
 			public void NullResultsInNull()
 			{
-				myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ESCAPE(DBNull.Value));
+				myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE(DBNull.Value));
 			}
 
 			[TestMethod, MyFact]
 			public void PlainString()
 			{
-				myAssert.AreEqual("test", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ESCAPE("test"));
+				myAssert.AreEqual("test", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("test"));
 			}
 
 			[TestMethod, MyFact]
 			public void ComplexString()
 			{
-				myAssert.AreEqual("%22T%FCst%20the%2Cth+in%252Bg%20%u0107%22", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ESCAPE("\"Tüst the,th+in%2Bg ć\""));
+				myAssert.AreEqual("%22T%FCst%20the%2Cth+in%252Bg%20%u0107%22", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("\"Tüst the,th+in%2Bg ć\""));
 			}
 
 			[TestMethod, MyFact]
 			public void NonEscapedCharacters()
 			{
-				myAssert.AreEqual("@*_+-./", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ESCAPE("@*_+-./"));
+				myAssert.AreEqual("@*_+-./", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("@*_+-./"));
 			}
 		}
 	//}

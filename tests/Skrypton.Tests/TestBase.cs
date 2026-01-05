@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.RuntimeSupport;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
+using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests
 {
@@ -15,6 +16,7 @@ namespace Skrypton.Tests
     {
         public const string CSFileExtension = ".cs"; // ".cstxt"
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
+        public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
         public TestContext TestContext { get; set; }
         protected string TestName => this.TestContext!.TestName;
         internal void SaveExpectedActualFiles(string testName, string workItemName
@@ -33,7 +35,6 @@ namespace Skrypton.Tests
             string startCommand = "\"C:\\Program Files\\WinMerge\\WinMergeU.exe\" \"" + expectedDirPath + "\" \"" + actualDirPath + "\"";
 
             SaveContentToFile(null, "winMergeStarter.bat", startCommand);
-
         }
 
 
@@ -76,7 +77,7 @@ namespace Skrypton.Tests
             {
                 if (_defaultRuntimeSupportClassFactoryInstance == null)
                 {
-                    _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(TestCulture);
+                    _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(RuntimeLogger, TestCulture);
                 }
                 return _defaultRuntimeSupportClassFactoryInstance;
             }
@@ -200,6 +201,19 @@ namespace Skrypton.Tests
             //int remaining  = s.Length - startIndex;
             int take = Math.Min(maxLength, endOfLine - startIndex);
             return s.Substring(startIndex, take);
+        }
+    }
+
+    internal sealed class TestRuntimeLogger : IRuntimeLogger
+    {
+        public TestRuntimeLogger(TestBase tst)
+        {
+        }
+
+        public void LogException(Exception exception)
+        {
+            if (exception == null) throw new ArgumentNullException(nameof(exception));
+            Console.WriteLine("VBS-Exception:" + exception);
         }
     }
 }

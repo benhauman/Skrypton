@@ -18,7 +18,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object interval, object date1, object date2, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEDIFF(interval, date1, date2));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2));
         }
 
         //[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -26,7 +26,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEDIFF(interval, date1, date2);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2);
             });
         }
 
@@ -35,7 +35,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEDIFF(interval, date1, date2);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2);
             });
         }
 
@@ -44,7 +44,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEDIFF(interval, date1, date2);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2);
             });
         }
 
@@ -53,7 +53,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEDIFF(interval, date1, date2);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2);
             });
         }
 

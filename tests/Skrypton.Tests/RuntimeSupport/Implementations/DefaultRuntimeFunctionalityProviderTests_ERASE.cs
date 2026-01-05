@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public void ArrayTargetShouldBeReplacedWithEmptyArray()
             {
                 object target = new object[] { 123 };
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ERASE(target, erasedTarget => { target = erasedTarget; });
+                DefaultRuntimeSupportClassFactoryInstance.Get().ERASE(target, erasedTarget => { target = erasedTarget; });
                 myAssert.AreEqual(new object[0], target);
             }
 
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ERASE(target, erasedTarget => { target = erasedTarget; });
+                    DefaultRuntimeSupportClassFactoryInstance.Get().ERASE(target, erasedTarget => { target = erasedTarget; });
                 });
             }
 
@@ -55,7 +55,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public void NestedArrayTargetShouldBeReplacedWithEmptyArray()
             {
                 object target = new object[] { new object[] { 123 } };
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ERASE(target, 0);
+                DefaultRuntimeSupportClassFactoryInstance.Get().ERASE(target, 0);
                 myAssert.AreEqual(new object[0], ((object[])target)[0]);
             }
 
@@ -64,7 +64,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ERASE(value, arguments);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().ERASE(value, arguments);
                 });
             }
 
@@ -73,7 +73,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<SubscriptOutOfRangeException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ERASE(value, arguments);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().ERASE(value, arguments);
                 });
             }
 

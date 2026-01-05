@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object value, object firstDayOfWeek, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().WEEKDAY(value, firstDayOfWeek));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().WEEKDAY(value, firstDayOfWeek));
         }
 
         [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().WEEKDAY(value, firstDayOfWeek);
+                DefaultRuntimeSupportClassFactoryInstance.Get().WEEKDAY(value, firstDayOfWeek);
             });
         }
 
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().WEEKDAY(value, firstDayOfWeek);
+                DefaultRuntimeSupportClassFactoryInstance.Get().WEEKDAY(value, firstDayOfWeek);
             });
         }
 
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().WEEKDAY(value, firstDayOfWeek);
+                DefaultRuntimeSupportClassFactoryInstance.Get().WEEKDAY(value, firstDayOfWeek);
             });
         }
 
@@ -65,7 +65,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().WEEKDAY(value, firstDayOfWeek);
+                DefaultRuntimeSupportClassFactoryInstance.Get().WEEKDAY(value, firstDayOfWeek);
             });
         }
 

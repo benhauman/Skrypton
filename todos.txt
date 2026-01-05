@@ -21,3 +21,8 @@ x_val => { x_byrefalias = x_val; })
 _.SET("#5b5b5b", this, _env.buttongeneralinfo, "BackColor");
 
 _.SET(this, _env.buttongeneralinfo, "BackColor", "#5b5b5b");
+
+6) extend 'CALL' parameter 'target' as CallTarget(string name, object target)  to catch/rethrow the name of the undeclared(or null) function (or externalreference)
+see: 
+object getnexthinkpassword = null; /* Undeclared in source */
+_.CALL(this, getnexthinkpassword, _.ARGS.ForceBrackets())

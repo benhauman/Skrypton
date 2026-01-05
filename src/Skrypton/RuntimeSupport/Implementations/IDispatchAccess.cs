@@ -47,7 +47,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return Invoke<T>(source, InvokeFlags.DISPATCH_METHOD, GetDispId(source, name), args);
+            return Invoke<T>(source, InvokeFlags.DISPATCH_METHOD, name, GetDispId(source, name), args);
         }
 
         public static object CallMethod(object source, string name, params object[] args)
@@ -69,7 +69,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
 
-            return Invoke<T>(source, InvokeFlags.DISPATCH_PROPERTYGET, GetDispId(source, name));
+            return Invoke<T>(source, InvokeFlags.DISPATCH_PROPERTYGET, name, GetDispId(source, name));
         }
 
         public static object GetProperty(object source, string name)
@@ -113,7 +113,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return rgDispId[0];
         }
 
-        public static T Invoke<T>(object source, InvokeFlags invokeFlags, int dispId, params object[] args)
+        public static T Invoke<T>(object source, InvokeFlags invokeFlags, string memberName, int dispId, params object[] args)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
@@ -211,7 +211,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                     var errorType = GetErrorMessageForHResult(hrRet);
                     if (errorType == CommonErrors.DISP_E_MEMBERNOTFOUND)
                         throw new IDispatchAccessException("Member not found", source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);
-                    var message = "Failing attempting to invoke method with DispId " + dispId + ": ";
+
+                    string memberNameX = memberName ?? Skrypton.RuntimeSupport.Information.TryGetIDispatchMemberName(source, dispId);
+
+                    var message = $"Failing attempting to invoke member '{memberNameX}' with DispId '" + dispId + "': ";
                     if ((excepInfo.bstrDescription ?? "").Trim() == "")
                         message += "Unspecified error";
                     else
@@ -221,13 +224,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                     if (args.Length > 0)
                     {
                         try { Marshal.GetObjectsForNativeVariants(rgvarg, args.Length); }
-                        catch (Exception)
+                        catch (Exception exx)
                         {
+                            message += " - " + exx.Message;
                             // In Visual Studio 2012, if the "Prefer 32-bit" build option is not enabled then arguments do not get written into memory
                             // correctly which will result in the request failing. If an exception has been raised then we can confirm if this is the
                             // problem by trying to pull the arguments back out of the "rgvarg", if this operation fails then the absence of this
                             // build option is most likely the cause.
-                            message += " - this may be due to the \"Prefer 32-bit\" option not being enabled in Visual Studio";
+                            message += " - this may be due to the \"Prefer 32-bit\" option not being enabled.";// in Visual Studio";
                         }
                     }
                     throw new IDispatchAccessException(message, source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);

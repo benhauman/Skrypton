@@ -73,7 +73,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 if (!target.GetType().IsArray)
                     passByVal = true;
-                target = _vbscriptValueAccessor.CALL(context, target, new string[0], argumentProvidersArray[index]);
+                target = _vbscriptValueAccessor.CALL(context, target, new string[0], argumentProvidersArray[index], line: 0);
             }
             if (!target.GetType().IsArray)
                 passByVal = true;
@@ -81,7 +81,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Process the final arguments to get the value that should actually be passed as the argument. If we've determined that this
             // value should be passed ByVal then hand straight off to the Val method.
             var lastArgumentProvider = argumentProvidersArray.Last();
-            var valueForArgument = _vbscriptValueAccessor.CALL(context, target, new string[0], lastArgumentProvider);
+            var valueForArgument = _vbscriptValueAccessor.CALL(context, target, new string[0], lastArgumentProvider, line: 0);
             if (passByVal)
                 return Val(valueForArgument);
 

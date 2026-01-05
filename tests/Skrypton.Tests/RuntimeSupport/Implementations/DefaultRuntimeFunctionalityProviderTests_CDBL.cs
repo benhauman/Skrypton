@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     0d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(null)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(null)
                 );
             }
 
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(DBNull.Value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(DBNull.Value);
                 });
             }
 
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL("");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL("");
                 });
             }
 
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL("a");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL("a");
                 });
             }
 
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     123.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL("123.4")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL("123.4")
                 );
             }
 
@@ -65,7 +65,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     123.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(" 123.4 ")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(" 123.4 ")
                 );
             }
 
@@ -74,7 +74,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     0.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(" .4 ")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(" .4 ")
                 );
             }
 
@@ -83,7 +83,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     -0.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(" -.4 ")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(" -.4 ")
                 );
             }
 
@@ -92,7 +92,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     -0.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(" - .4 ")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(" - .4 ")
                 );
             }
 
@@ -101,7 +101,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     -123.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL("-123.4")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL("-123.4")
                 );
             }
 
@@ -111,7 +111,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 var nothing = VBScriptConstants.Nothing;
                 myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(nothing);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(nothing);
                 });
             }
 
@@ -120,7 +120,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(new object());
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(new object());
                 });
             }
 
@@ -130,7 +130,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 var target = new exampledefaultpropertytype { result = 123.4 };
                 myAssert.AreEqual(
                     123.4,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(target)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(target)
                 );
             }
 
@@ -139,7 +139,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     0d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(0)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(0)
                 );
             }
 
@@ -148,7 +148,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     1d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(1)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(1)
                 );
             }
 
@@ -157,7 +157,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     -1d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(-1)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(-1)
                 );
             }
 
@@ -166,7 +166,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     1.1d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(1.1)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(1.1)
                 );
             }
 
@@ -175,7 +175,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqualX(
                     42026.8410300926d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(new DateTime(2015, 1, 22, 20, 11, 5, 0)),
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(new DateTime(2015, 1, 22, 20, 11, 5, 0)),
                     10 // This test fails without specifying precision
                 );
             }
@@ -185,7 +185,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     -1d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(true)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(true)
                 );
             }
 
@@ -194,7 +194,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     0d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CDBL(false)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CDBL(false)
                 );
             }
         }

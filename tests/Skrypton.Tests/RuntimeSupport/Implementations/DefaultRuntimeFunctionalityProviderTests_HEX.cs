@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().HEX(value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().HEX(value));
         }
 
         [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().HEX(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().HEX(value);
             });
         }
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().HEX(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().HEX(value);
             });
         }
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().HEX(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().HEX(value);
             });
         }
 
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().HEX(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().HEX(value);
             });
         }
 

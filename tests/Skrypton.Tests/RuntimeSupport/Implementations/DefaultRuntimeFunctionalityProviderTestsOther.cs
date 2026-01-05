@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 DBNull.Value,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NullableNUM(DBNull.Value)
+                DefaultRuntimeSupportClassFactoryInstance.Get().NullableNUM(DBNull.Value)
             );
         }
     }

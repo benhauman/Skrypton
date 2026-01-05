@@ -15,19 +15,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void EmptyResultsInBlankString()
         {
-            myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LCASE(null));
+            myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().LCASE(null));
         }
 
         [TestMethod, MyFact]
         public void NullResultsInNull()
         {
-            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LCASE(DBNull.Value));
+            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LCASE(DBNull.Value));
         }
 
         [TestMethod, MyFact]
         public void Test()
         {
-            myAssert.AreEqual("test", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LCASE("Test"));
+            myAssert.AreEqual("test", DefaultRuntimeSupportClassFactoryInstance.Get().LCASE("Test"));
         }
     }
     //}

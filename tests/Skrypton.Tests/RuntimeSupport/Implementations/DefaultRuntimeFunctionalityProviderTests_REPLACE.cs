@@ -16,13 +16,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			[TestMethod, MyTheory, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode, string expectedResult)
 			{
-				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode));
+				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode));
 			}
 
 			[TestMethod, MyTheory, MyMemberData("SuccessWithMinimumArgumentsData")]
 			public void SuccessWithMinimumArgumentsCases(string description, object value, object toSearchFor, object toReplaceWith, string expectedResult)
 			{
-				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith));
+				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith));
 			}
 
 			[TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<InvalidUseOfNullException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
+					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
 
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
+					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
 
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
+					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
 
@@ -57,7 +57,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
+					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
 			[TestMethod, MyTheory, MyMemberData("OverflowData")]
@@ -65,7 +65,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
+					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
 

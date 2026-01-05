@@ -19,7 +19,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     (Int16)0,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(null)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(null)
                 );
             }
 
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(DBNull.Value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(DBNull.Value);
                 });
             }
 
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     (Int16)(-1),
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(true)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(true)
                 );
             }
 
@@ -46,7 +46,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     (Int16)0,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(false)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(false)
                 );
             }
 
@@ -55,7 +55,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("");
                 });
             }
 
@@ -64,7 +64,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     12d, // VBScript parses string into Doubles, even if there is no decimal fraction
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("12")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("12")
                 );
             }
 
@@ -73,7 +73,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     12d, // VBScript parses string into Doubles, even if there is no decimal fraction
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(" 12")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(" 12")
                 );
             }
 
@@ -82,7 +82,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     12d, // VBScript parses string into Doubles, even if there is no decimal fraction
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("12 ")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("12 ")
                 );
             }
 
@@ -91,7 +91,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("1 1");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("1 1");
                 });
             }
 
@@ -100,7 +100,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     1.2,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("1.2")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("1.2")
                 );
             }
 
@@ -109,7 +109,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("1.1.0");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("1.1.0");
                 });
             }
 
@@ -119,7 +119,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 var date = new DateTime(2015, 1, 22, 20, 11, 5, 0);
                 myAssert.AreEqual(
                     new DateTime(2015, 1, 22, 20, 11, 5, 0),
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(date)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(date)
                 );
             }
 
@@ -128,7 +128,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     new DateTime(1899, 12, 31), // This is the VBScript "ZeroDate" plus one day (which is what 1 is translated into in order to become a date)
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(1, new DateTime(2015, 1, 22, 20, 11, 5, 0))
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(1, new DateTime(2015, 1, 22, 20, 11, 5, 0))
                 );
             }
 
@@ -140,7 +140,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // a loop variable of type "Byte" the loop would need to be of the form "FOR i = CBYTE(1) TO CBYTE(5) STEP CBYTE(1)".
                 myAssert.AreEqual(
                     (Int16)1,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM((byte)1, (byte)5, (Int16)1)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM((byte)1, (byte)5, (Int16)1)
                 );
             }
 
@@ -150,7 +150,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 var date = new DateTime(2015, 1, 22, 20, 11, 5, 0);
                 myAssert.AreEqual(
                     new DateTime(2015, 1, 22, 20, 11, 5, 0),
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(date, 1d)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(date, 1d)
                 );
             }
 
@@ -159,7 +159,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<VBScriptOverflowException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(new DateTime(2015, 1, 25, 17, 16, 0), double.MaxValue);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(new DateTime(2015, 1, 25, 17, 16, 0), double.MaxValue);
                 });
             }
 
@@ -169,7 +169,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // Strings are always parsed into doubles, regardless of the size of the value they represent
                 myAssert.AreEqual(
                     1d,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM((Int16)1, "2")
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM((Int16)1, "2")
                 );
             }
 
@@ -178,7 +178,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("1/1/2015");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("1/1/2015");
                 });
             }
 
@@ -187,7 +187,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("2015-01-01");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("2015-01-01");
                 });
             }
 
@@ -196,7 +196,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM("True");
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM("True");
                 });
             }
 
@@ -206,7 +206,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // Although the double type can contain a greater range of values than decimal, VBScript prefers decimal if both are present
                 myAssert.AreEqual(
                     1m,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(1m, 2d)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(1m, 2d)
                 );
             }
 
@@ -216,7 +216,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             // See https://msdn.microsoft.com/en-us/library/9e7a57cf%28v=vs.84%29.aspx for limits of the VBScript data types
             myAssert.Throws<VBScriptOverflowException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(
                         922337203685475m, // Toward the top end of the Currency limit
                         1000000000000000d // Definitely past it
                     );
@@ -228,7 +228,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.AreEqual(
                     1m,
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().NUM(1, 2m)
+                    DefaultRuntimeSupportClassFactoryInstance.Get().NUM(1, 2m)
                 );
             }
 

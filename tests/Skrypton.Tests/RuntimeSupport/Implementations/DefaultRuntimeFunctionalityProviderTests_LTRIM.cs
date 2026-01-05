@@ -14,37 +14,37 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void EmptyResultsInBlankString()
         {
-            myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM(null));
+            myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM(null));
         }
 
         [TestMethod, MyFact]
         public void NullResultsInNull()
         {
-            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM(DBNull.Value));
+            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM(DBNull.Value));
         }
 
         [TestMethod, MyFact]
         public void DoesNotRemoveTabs()
         {
-            myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM("\tValue\t"));
+            myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("\tValue\t"));
         }
 
         [TestMethod, MyFact]
         public void DoesNotRemoveLineReturns()
         {
-            myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM("\nValue\n"));
+            myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("\nValue\n"));
         }
 
         [TestMethod, MyFact]
         public void RemovesMultipleLeadingSpaces()
         {
-            myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM("  Value"));
+            myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("  Value"));
         }
 
         [TestMethod, MyFact]
         public void RemovesMultipleLeadingButNotTrailingSpaces()
         {
-            myAssert.AreEqual("Value   ", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LTRIM("  Value   "));
+            myAssert.AreEqual("Value   ", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("  Value   "));
         }
     }
     //}

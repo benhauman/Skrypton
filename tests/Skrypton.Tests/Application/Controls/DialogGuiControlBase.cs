@@ -12,9 +12,9 @@ namespace Skrypton.Tests.Application.Controls
 
 
         private ShowControlType _valueShowControl;
-        public byte ShowControl // see ShowControlType
+        public short ShowControl // see ShowControlType
         {
-            get => (byte)_valueShowControl;
+            get => (short)_valueShowControl;
             set => _valueShowControl = (ShowControlType)value;
         }
 

@@ -1,5 +1,11 @@
 Public Function getNexthinkUser()
-  getNexthinkUser = ""
+  getNexthinkUser = "myusr2"
+End Function
+Public Function getNexthinkBaseURL()
+  getNexthinkBaseURL = ""
+End Function
+Public Function getNexthinkPassword()
+  getNexthinkPassword = "mypwd2"
 End Function
 Public Sub ButtonGeneralInfo_Click()
 
@@ -357,3 +363,4 @@ Public Sub ButtonGeneralInfo_Click()
   TextBoxGeneralGraphCardRAM.Text = ConvertSize(dict.Item("graphical_card_ram"))
 
 End Sub
+ButtonGeneralInfo_Click

@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object numberOfTimesToRepeat, object character, string expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character));
         }
 
         [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 
@@ -33,7 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 
@@ -51,7 +51,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 
@@ -60,7 +60,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 
@@ -69,7 +69,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<OutOfStringSpaceException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().STRING(numberOfTimesToRepeat, character);
+                DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character);
             });
         }
 

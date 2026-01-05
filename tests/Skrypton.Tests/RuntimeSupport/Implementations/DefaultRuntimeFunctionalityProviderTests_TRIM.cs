@@ -14,31 +14,31 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void EmptyResultsInBlankString()
         {
-            myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TRIM(null));
+            myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM(null));
         }
 
         [TestMethod, MyFact]
         public void NullResultsInNull()
         {
-            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TRIM(DBNull.Value));
+            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().TRIM(DBNull.Value));
         }
 
         [TestMethod, MyFact]
         public void DoesNotRemoveTabs()
         {
-            myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TRIM("\tValue\t"));
+            myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("\tValue\t"));
         }
 
         [TestMethod, MyFact]
         public void DoesNotRemoveLineReturns()
         {
-            myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TRIM("\nValue\n"));
+            myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("\nValue\n"));
         }
 
         [TestMethod, MyFact]
         public void RemovesMultipleLeadingAndTrailingSpaces()
         {
-            myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().TRIM("  Value   "));
+            myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("  Value   "));
         }
     }
     //}

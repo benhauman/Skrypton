@@ -10,11 +10,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static bool IsDeclaredReference(this ScopeAccessInformation scopeInformation, NameToken target, VBScriptNameRewriter nameRewriter)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // TargetCurrentClassToken indicates a "Me" reference, which is always valid - TODO: Move this into TryToGetDeclaredReferenceDetails?
             if (target is TargetCurrentClassToken)

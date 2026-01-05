@@ -50,7 +50,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CHR(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CHR(value);
             });
         }
         public static IEnumerable<object[]> InvalidUseOfNullData
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CHR(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CHR(value);
             });
         }
         public static IEnumerable<object[]> TypeMismatchData
@@ -85,7 +85,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CHR(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CHR(value);
                 });
         }
         public static IEnumerable<object[]> ObjectVariableNotSetData
@@ -102,7 +102,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CHR(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CHR(value);
                 });
         }
 

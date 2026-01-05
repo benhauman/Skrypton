@@ -606,7 +606,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 object enumerator;
                 try
                 {
-                    enumerator = IDispatchAccess.Invoke<object>(o, IDispatchAccess.InvokeFlags.DISPATCH_METHOD, -4);
+                    enumerator = IDispatchAccess.Invoke<object>(o, IDispatchAccess.InvokeFlags.DISPATCH_METHOD, null, -4);
                 }
                 catch (IDispatchAccess.IDispatchAccessException e)
                 {
@@ -825,9 +825,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 else
                     targetDescription = STR(target);
                 if (memberAccessorsArray.Any())
-                    throw new ObjectRequiredException("'" + targetDescription + $"'. CallerLineNo:{callerLineNum}");
+                    throw new ObjectRequiredException($"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
                 if (arguments.Any() || useBracketsWhereZeroArguments)
-                    throw new TypeMismatchException("'" + targetDescription + "'");
+                    throw new TypeMismatchException($"'{targetDescription}'");
             }
 
             // Deal with special case of a delegate first (as of May 2015, there should't be any way for one of these to sneak in here, but if
@@ -1026,6 +1026,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         onlyConsiderMethods
                             ? IDispatchAccess.InvokeFlags.DISPATCH_METHOD
                             : IDispatchAccess.InvokeFlags.DISPATCH_METHOD | IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYGET,
+                        optionalName,
                         dispId,
                         invokeArguments.ToArray()
                     );
@@ -1359,6 +1360,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     IDispatchAccess.Invoke<object>(
                         invokeTarget,
                         IsVBScriptValueType(value) ? IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYPUT : IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYPUTREF,
+                        optionalMemberAccessor,
                         dispId,
                         invokeArguments.Concat(new[] { value }).ToArray()
                     );

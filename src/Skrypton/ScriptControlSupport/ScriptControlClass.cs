@@ -130,8 +130,8 @@ namespace Skrypton.ScriptControlSupport
             UnloadableAssemblyLoadContextContext asmctx = RoslynScriptControl.CompileCSharpProgram(csCode);
             try
             {
-                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineCulture);
-                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
+                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeLogger, EngineCulture);
+                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
                 Type tRunner = asmctx.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
@@ -152,9 +152,9 @@ namespace Skrypton.ScriptControlSupport
                 GC.WaitForPendingFinalizers();
             }
         }
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
-            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(valueRetriever, culture);
+            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);
             //provider.RegisterObjectCreateFactory();
             //provider.RegisterObjectCreateFactory();
             return provider;
@@ -166,6 +166,7 @@ namespace Skrypton.ScriptControlSupport
             throw new NotImplementedException();
         }
 
+        public IRuntimeLogger EngineRuntimeLogger { get; set; }
         public CultureInfo EngineCulture { get; set; }
         /*private Task<RoslynScriptControl> StartAsync(string statementOrNull, CancellationToken cancellationToken)
         {

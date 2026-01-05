@@ -16,13 +16,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("TrueData")]
         public void TrueCases(string description, object value)
         {
-            myAssert.True(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ISNULL(value));
+            myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().ISNULL(value));
         }
 
         [TestMethod, MyTheory, MyMemberData("FalseData")]
         public void FalseCases(string description, object value)
         {
-            myAssert.False(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ISNULL(value));
+            myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().ISNULL(value));
         }
 
         public static IEnumerable<object[]> TrueData

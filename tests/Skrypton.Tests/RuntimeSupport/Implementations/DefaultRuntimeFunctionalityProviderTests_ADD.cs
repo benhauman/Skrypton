@@ -159,7 +159,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ADD(l, r);
+                DefaultRuntimeSupportClassFactoryInstance.Get().ADD(l, r);
             });
         }
 
@@ -168,7 +168,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().ADD(l, r);
+                DefaultRuntimeSupportClassFactoryInstance.Get().ADD(l, r);
             });
         }
 

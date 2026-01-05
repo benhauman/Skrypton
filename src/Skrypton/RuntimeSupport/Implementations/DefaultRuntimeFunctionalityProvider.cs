@@ -20,7 +20,7 @@ namespace Skrypton.RuntimeSupport.Implementations
     /// cleaned up. VBScript's deterministic garbage collector can tidy up more aggressively, relying upon reference counting, the best that we can do
     /// with the C# code is for this to implement IDiposable and to ensure that everything is tidy when the request completes and Dispose is called.
     /// </summary>
-    public class DefaultRuntimeFunctionalityProvider : IProvideVBScriptCompatFunctionalityToIndividualRequests
+    public sealed class DefaultRuntimeFunctionalityProvider : IProvideVBScriptCompatFunctionalityToIndividualRequests
     {
         /// <summary>
         /// VBScript has a string length limited by its data storage mechanism; each character is represented by two bytes and the index into that
@@ -29,6 +29,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private static readonly int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
 
+        private readonly IRuntimeLogger _runtimeLogger;
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
         private readonly CultureInfo _culture;
         private readonly List<IDisposable> _disposableReferencesToClearAfterTheRequest;
@@ -37,13 +38,12 @@ namespace Skrypton.RuntimeSupport.Implementations
         private readonly DefaultArithmeticFunctionalityProvider _arithmeticHandler;
         private int _randomSeed;
         private Exception _trappedErrorIfAny;
-        public DefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
-        {
-            if (valueRetriever == null)
-                throw new ArgumentNullException("valueRetriever");
 
-            _valueRetriever = valueRetriever;
-            _culture = culture;
+        public DefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        {
+            _runtimeLogger = runtimeLogger ?? throw new ArgumentNullException(nameof(runtimeLogger));
+            _valueRetriever = valueRetriever ?? throw new ArgumentNullException(nameof(valueRetriever));
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _disposableReferencesToClearAfterTheRequest = new List<IDisposable>();
             _availableErrorTokens = new Queue<int>();
             _activeErrorTokens = new Dictionary<int, ErrorTokenState>();
@@ -521,8 +521,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return GetAsNumber<double>(value, optionalExceptionMessageForInvalidContent, Convert.ToDouble);
         }
-        public DateTime CDATE(object value) { return CDATE(value, "'CDate'"); }
-        private DateTime CDATE(object value, string exceptionMessageForInvalidContent)
+        public DateTime CDATE(object value) { return CDATECore(value, "'CDate'"); }
+        private DateTime CDATECore(object value, string exceptionMessageForInvalidContent)
         {
             if (string.IsNullOrWhiteSpace(exceptionMessageForInvalidContent))
                 throw new ArgumentException("Null/blank exceptionMessageForInvalidContent specified");
@@ -857,7 +857,65 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object CHRW(object value) { throw new NotImplementedException(); }
         public object FILTER(object value) { throw new NotImplementedException(); }
         public object FORMATCURRENCY(object value) { throw new NotImplementedException(); }
-        public object FORMATDATETIME(object value) { throw new NotImplementedException(); }
+
+        public object FORMATDATETIME(object value)
+        {
+            return FORMATDATETIMECore(value, VbDateTimeFormat.vbGeneralDate);
+        }
+        public object FORMATDATETIME(object value, int format)
+        {
+            return FORMATDATETIMECore(value, Enum.IsDefined(typeof(VbDateTimeFormat), format) ? (VbDateTimeFormat)format : VbDateTimeFormat.vbGeneralDate);
+        }
+
+        private enum VbDateTimeFormat
+        {
+            vbGeneralDate = 0,
+            vbLongDate = 1,
+            vbShortDate = 2,
+            vbLongTime = 3,
+            vbShortTime = 4
+        }
+        private string FORMATDATETIMECore(object value, VbDateTimeFormat format)
+        {
+            DateTime dt = CDATECore(value, "FORMATDATETIME");
+            //d = "2026-01-05 15:42"
+            //
+            //WScript.Echo FormatDateTime(d)        ' => 0
+            //WScript.Echo FormatDateTime(d, 0)     ' 0:vbGeneralDate : General date/time : Short date + long time
+            //WScript.Echo FormatDateTime(d, 1)     ' 1:vbLongDate  : Long date
+            //WScript.Echo FormatDateTime(d, 2)     ' 2:vbShortDate : Short date
+            //WScript.Echo FormatDateTime(d, 3)     ' 3:vbLongTime  : Long time
+            //WScript.Echo FormatDateTime(d, 4)     ' 4:vbShortTime :  Short time
+
+            switch (format)
+            {
+                case VbDateTimeFormat.vbLongDate:
+                    return dt.ToString("D", _culture);
+
+                case VbDateTimeFormat.vbShortDate:
+                    return dt.ToString("d", _culture);
+
+                case VbDateTimeFormat.vbLongTime:
+                    return dt.ToString("T", _culture);
+
+                case VbDateTimeFormat.vbShortTime:
+                    return dt.ToString("t", _culture);
+
+                case VbDateTimeFormat.vbGeneralDate:
+                default:
+                    // VBScript behavior:
+                    // - If time present → short date + long time
+                    // - If only date → short date
+                    // - If only time → long time
+                    if (dt.Date == DateTime.MinValue.Date)
+                        return dt.ToString("T", _culture); // time only
+
+                    if (dt.TimeOfDay == TimeSpan.Zero)
+                        return dt.ToString("d", _culture); // date only
+
+                    return dt.ToString("g", _culture); // short date + short time (closest)
+            }
+        }
         public object FORMATNUMBER(object value) { throw new NotImplementedException(); }
         public object FORMATPERCENT(object value) { throw new NotImplementedException(); }
         public object HEX(object value)
@@ -1586,7 +1644,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'DateAdd'");
             if (value == DBNull.Value)
                 return DBNull.Value; // Don't even check the other arguments if we got a Null value argument
-            var dateValue = CDATE(value, "'DateAdd'");
+            var dateValue = CDATECore(value, "'DateAdd'");
             // The MSDN documentation (for VBA, but which is the closest I could find: https://msdn.microsoft.com/en-us/library/aa262710%28v=vs.60%29.aspx) says that "If
             // number isn't a Long value, it is rounded to the nearest whole number before being evaluated." However, testing with VBScript shows this not to be the case.
             // For example, adding (for any interval) 103, 103.1, 103.5 or 103.9 all have the same effect, as do adding 102, 102.1, 102.5 or 102.9, which indicates that
@@ -1660,8 +1718,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // TODO: Need to confirm that arguments are evaluated in the correct order (if date1 and date2 are invalid, which is reported?)
             // TODO: Document that it returns VBScript "Long" (aka .NET Int32)
             var i = CSTR(interval, "'DateDiff'");
-            var d1 = CDATE(date1, "'DateDiff'");
-            var d2 = CDATE(date2, "'DateDiff'");
+            var d1 = CDATECore(date1, "'DateDiff'");
+            var d2 = CDATECore(date2, "'DateDiff'");
 
             var difference = d2.Subtract(d1);
             switch (i)
@@ -1798,14 +1856,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'Day'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Day'")).Day;
+            return ToClosestSecond(CDATECore(value, "'Day'")).Day;
         }
         public object MONTH(object value)
         {
             value = _valueRetriever.VAL(value, "'Month'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Month'")).Month;
+            return ToClosestSecond(CDATECore(value, "'Month'")).Month;
         }
         public object MONTHNAME(object value) { throw new NotImplementedException(); }
         public object YEAR(object value)
@@ -1813,7 +1871,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'Year'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Year'")).Year;
+            return ToClosestSecond(CDATECore(value, "'Year'")).Year;
         }
         public object WEEKDAY(object value)
         {
@@ -1824,7 +1882,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'Weekday'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            var date = ToClosestSecond(CDATE(value, "'Weekday'"));
+            var date = ToClosestSecond(CDATECore(value, "'Weekday'"));
 
             // NOTE: VBScript weekdays go from Sunday (1) to Saturday (7) (unless overriden by firstDayOfWeek), while .NET DayOfWeek goes from Sunday (0) to Saturday (6)
             var vbsFirstDayOfWeek = CLNG(firstDayOfWeek, "'Weekday'");
@@ -1858,21 +1916,21 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'Hour'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Hour'")).Hour;
+            return ToClosestSecond(CDATECore(value, "'Hour'")).Hour;
         }
         public object MINUTE(object value)
         {
             value = _valueRetriever.VAL(value, "'Minute'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Minute'")).Minute;
+            return ToClosestSecond(CDATECore(value, "'Minute'")).Minute;
         }
         public object SECOND(object value)
         {
             value = _valueRetriever.VAL(value, "'Second'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            return ToClosestSecond(CDATE(value, "'Second'")).Second;
+            return ToClosestSecond(CDATECore(value, "'Second'")).Second;
         }
         private DateTime ToClosestSecond(DateTime value)
         {
@@ -1887,7 +1945,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return approximateValue;
         }
         // - Object creation
-        public virtual object CREATEOBJECT(object value)
+        public object CREATEOBJECT(object value)
         {
             // Creates a new instance of the specified COM object
             // => Set obj = CreateObject("Excel.Application") → always starts a new Excel process
@@ -2083,9 +2141,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return ErrorDetails.NoError;
                 var currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
                 return new ErrorDetails(
-                    (currentErrorAsVBScriptSpecificError != null) ? currentErrorAsVBScriptSpecificError.ErrorNumber : currentError.HResult, // TODO: Is HResult appropriate?
-                    currentError.Source,
-                    currentError.Message,
+                    number: (currentErrorAsVBScriptSpecificError != null) ? currentErrorAsVBScriptSpecificError.ErrorNumber : currentError.HResult, // TODO: Is HResult appropriate?
+                    source: currentError.Source,
+                    text: currentError.Message,
+                    description: "",
                     originalExceptionIfKnown: currentError
                 );
             }
@@ -2147,8 +2206,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             // executes code that raises an error but then goes and calls F2() which also raises an error, the error recorded from the code in F1 that
             // occured before calling F2 is lost, it is overwritten by F2. So there is no need to try to map trapped errors onto error tokens, there is
             // only one per request (or zero - if there has been no error trapped, or if there HAS been an error trapped that has then been cleared).
+            SetErrorCore(e);
+        }
+        private void SetErrorCore(Exception e)
+        {
             if (e == null)
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException(nameof(e));
+            _runtimeLogger.LogException(e);
             _trappedErrorIfAny = e;
         }
 
@@ -2420,7 +2484,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
-            return _valueRetriever.CALL(context, target, members, argumentProvider);
+            return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }
         public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider)
         {

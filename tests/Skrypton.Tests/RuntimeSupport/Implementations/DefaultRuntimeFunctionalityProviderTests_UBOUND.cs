@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, int dimension, int expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().UBOUND(value, dimension));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().UBOUND(value, dimension));
         }
 
         [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().UBOUND(value, dimension);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().UBOUND(value, dimension);
                 });
         }
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().UBOUND(value, dimension);
+                DefaultRuntimeSupportClassFactoryInstance.Get().UBOUND(value, dimension);
             });
         }
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<SubscriptOutOfRangeException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().UBOUND(value, dimension);
+                DefaultRuntimeSupportClassFactoryInstance.Get().UBOUND(value, dimension);
             });
         }
 

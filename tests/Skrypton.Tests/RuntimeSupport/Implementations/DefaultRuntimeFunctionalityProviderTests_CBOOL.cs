@@ -17,13 +17,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyTheory, MyMemberData("TrueData")]
             public void TrueCases(string description, object value)
             {
-            myAssert.True(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CBOOL(value));
+            myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value));
             }
 
             [TestMethod, MyTheory, MyMemberData("FalseData")]
             public void FalseCases(string description, object value)
             {
-            myAssert.False(DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CBOOL(value));
+            myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value));
             }
 
             [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -31,7 +31,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CBOOL(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value);
                 });
             }
 
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CBOOL(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value);
                 });
             }
 
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CBOOL(value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value);
                 });
             }
 

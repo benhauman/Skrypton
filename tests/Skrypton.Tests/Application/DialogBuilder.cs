@@ -31,6 +31,10 @@ namespace Skrypton.Tests.Application
         {
             return AddControlCore(controlName, new DialogGuiTextControl() { });
         }
+        public DialogBuilder AddLabelControl(string controlName)
+        {
+            return AddControlCore(controlName, new DialogGuiLabelControl() { });
+        }
 
         public DialogBuilder AddGroupBox(string controlName)
         {

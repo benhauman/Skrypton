@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			[TestMethod, MyTheory, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object l, object r, object expectedResult)
 			{
-				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DIV(l, r));
+				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r));
 			}
 
 			[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DIV(l, r);
+					DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r);
 				});
 			}
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DIV(l, r);
+					DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r);
 				});
 			}
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DIV(l, r);
+					DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r);
 				});
 			}
 
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
 				{
-					DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DIV(l, r);
+					DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r);
 				});
 			}
 

@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 VBScriptConstants.MaxCurrencyValue,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CCUR(VBScriptConstants.MaxCurrencyValue)
+                DefaultRuntimeSupportClassFactoryInstance.Get().CCUR(VBScriptConstants.MaxCurrencyValue)
             );
         }
 
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CCUR(VBScriptConstants.MaxCurrencyValue + 0.000001m);
+                DefaultRuntimeSupportClassFactoryInstance.Get().CCUR(VBScriptConstants.MaxCurrencyValue + 0.000001m);
             });
         }
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 VBScriptConstants.MinCurrencyValue,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CCUR(VBScriptConstants.MinCurrencyValue)
+                DefaultRuntimeSupportClassFactoryInstance.Get().CCUR(VBScriptConstants.MinCurrencyValue)
             );
         }
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().CCUR(VBScriptConstants.MinCurrencyValue - 0.000001m);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().CCUR(VBScriptConstants.MinCurrencyValue - 0.000001m);
                 });
         }
     }

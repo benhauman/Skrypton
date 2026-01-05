@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object startIndex, object valueToSearch, object valueToSearchFor, object compareMode, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode));
         }
 
         [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
                 });
         }
 
@@ -33,7 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
                 });
         }
 
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode);
                 });
         }
 

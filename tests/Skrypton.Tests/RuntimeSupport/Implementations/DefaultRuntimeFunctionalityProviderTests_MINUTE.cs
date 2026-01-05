@@ -71,7 +71,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().MINUTE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().MINUTE(value);
             });
         }
 
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().MINUTE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().MINUTE(value);
             });
         }
 
@@ -89,7 +89,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().MINUTE(value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().MINUTE(value);
             });
         }
 

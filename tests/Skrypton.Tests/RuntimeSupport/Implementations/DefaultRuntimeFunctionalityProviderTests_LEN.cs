@@ -16,25 +16,25 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void EmptyResultsInZero()
         {
-            myAssert.AreEqual((int)0, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LEN(null)); // This should return an int ("Long" in VBScript parlance)
+            myAssert.AreEqual((int)0, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(null)); // This should return an int ("Long" in VBScript parlance)
         }
 
         [TestMethod, MyFact]
         public void NullResultsInNull()
         {
-            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LEN(DBNull.Value));
+            myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(DBNull.Value));
         }
 
         [TestMethod, MyFact]
         public void Test()
         {
-            myAssert.AreEqual(4, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LEN("Test"));
+            myAssert.AreEqual(4, DefaultRuntimeSupportClassFactoryInstance.Get().LEN("Test"));
         }
 
         [TestMethod, MyFact]
         public void NumericValue()
         {
-            myAssert.AreEqual(1, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LEN(4)); // Numbers get cast as strings, so the number 4 becomes the string "4" and so has length 1
+            myAssert.AreEqual(1, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(4)); // Numbers get cast as strings, so the number 4 becomes the string "4" and so has length 1
         }
 
         [TestClass]
@@ -45,7 +45,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyTheory, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, int expectedResult)
             {
-                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LEN(value));
+                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(value));
             }
 
             public static IEnumerable<object[]> SuccessData

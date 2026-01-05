@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 false,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(null, null)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, null)
             );
         }
 
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 DBNull.Value,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(DBNull.Value, DBNull.Value)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(DBNull.Value, DBNull.Value)
             );
         }
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var nothing = VBScriptConstants.Nothing;
             myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(DBNull.Value, nothing);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().LT(DBNull.Value, nothing);
                 });
         }
 
@@ -53,7 +53,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var nothing = VBScriptConstants.Nothing;
             myAssert.Throws<ObjectVariableNotSetException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(nothing, nothing);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().LT(nothing, nothing);
                 });
         }
 
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 false,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(0, null)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(0, null)
             );
         }
         [TestMethod, MyFact]
@@ -71,7 +71,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 false,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(null, 0)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, 0)
             );
         }
         [TestMethod, MyFact]
@@ -79,7 +79,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 true,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(-1, null)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(-1, null)
             );
         }
         [TestMethod, MyFact]
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 false,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(null, -1)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, -1)
             );
         }
         [TestMethod, MyFact]
@@ -95,7 +95,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 true,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(null, 1)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, 1)
             );
         }
         [TestMethod, MyFact]
@@ -103,7 +103,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.AreEqual(
                 false,
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().LT(1, null)
+                DefaultRuntimeSupportClassFactoryInstance.Get().LT(1, null)
             );
         }
     }

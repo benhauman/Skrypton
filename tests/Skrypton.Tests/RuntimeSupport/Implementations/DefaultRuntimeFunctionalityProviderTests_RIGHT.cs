@@ -19,7 +19,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyFact]
             public void EmptyLengthOneReturnsBlankString()
             {
-                myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT(null, 1));
+                myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT(null, 1));
             }
 
             /// <summary>
@@ -28,13 +28,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyFact]
             public void NullLengthOneReturnsNull()
             {
-                myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT(DBNull.Value, 1));
+                myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT(DBNull.Value, 1));
             }
 
             [TestMethod, MyFact]
             public void ZeroLengthIsAcceptable()
             {
-                myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("", 0));
+                myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("", 0));
             }
 
             [TestMethod, MyFact]
@@ -42,20 +42,20 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("", -1);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("", -1);
                 });
             }
 
             [TestMethod, MyFact]
             public void EmptyLengthIsTreatedAsZeroLength()
             {
-                myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abc", null));
+                myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abc", null));
             }
 
             [TestMethod, MyFact]
             public void MaxLengthLongerThanInputStringLengthIsTreatedAsEqualingInputStringLength()
             {
-                myAssert.AreEqual("abc", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abc", 10));
+                myAssert.AreEqual("abc", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abc", 10));
             }
 
             [TestMethod, MyFact]
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<InvalidUseOfNullException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("", DBNull.Value);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("", DBNull.Value);
                 });
             }
 
@@ -72,7 +72,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
             myAssert.Throws<VBScriptOverflowException>(() =>
                 {
-                    DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("", 1000000000000000);
+                    DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("", 1000000000000000);
                 });
             }
 
@@ -80,42 +80,42 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyFact]
             public void LengthZeroPointFiveTreatedAsLengthZero()
             {
-                myAssert.AreEqual("", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 0.5));
+                myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 0.5));
             }
             [TestMethod, MyFact]
             public void LengthZeroPointNineTreatedAsLengthOne()
             {
-                myAssert.AreEqual("d", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 0.9));
+                myAssert.AreEqual("d", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 0.9));
             }
             [TestMethod, MyFact]
             public void LengthOnePointFiveTreatedAsLengthTwo()
             {
-                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 1.5));
+                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 1.5));
             }
             [TestMethod, MyFact]
             public void LengthOnePointNineTreatedAsLengthTwo()
             {
-                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 1.9));
+                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 1.9));
             }
             [TestMethod, MyFact]
             public void LengthTwoPointFiveTreatedAsLengthTwo()
             {
-                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 2.5));
+                myAssert.AreEqual("cd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 2.5));
             }
             [TestMethod, MyFact]
             public void LengthTwoPointNineTreatedAsLengthThree()
             {
-                myAssert.AreEqual("bcd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 2.9));
+                myAssert.AreEqual("bcd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 2.9));
             }
             [TestMethod, MyFact]
             public void LengthThreePointFiveTreatedAsLengthFour()
             {
-                myAssert.AreEqual("abcd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 3.5));
+                myAssert.AreEqual("abcd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 3.5));
             }
             [TestMethod, MyFact]
             public void LengthThreePointNineTreatedAsLengthFour()
             {
-                myAssert.AreEqual("abcd", DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().RIGHT("abcd", 3.9));
+                myAssert.AreEqual("abcd", DefaultRuntimeSupportClassFactoryInstance.Get().RIGHT("abcd", 3.9));
             }
         }
     //}

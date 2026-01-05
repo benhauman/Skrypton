@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object interval, object number, object value, object expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value));
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void PrecisionEdgeCases(string description, object interval, int numberBaseValue, int numberNumberOfNines, object value, object expectedResult)
         {
             var number = Convert.ToDouble(numberBaseValue.ToString() + "." + new string('9', numberNumberOfNines));
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value));
         }
 
         [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
@@ -36,7 +36,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value);
             });
         }
 
@@ -45,7 +45,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value);
             });
         }
 
@@ -54,7 +54,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value);
             });
         }
 
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().DATEADD(interval, number, value);
+                DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value);
             });
         }
 

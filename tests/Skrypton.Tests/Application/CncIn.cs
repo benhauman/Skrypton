@@ -75,14 +75,14 @@ namespace Skrypton.Tests.Application
             {
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
-            ExecuteTranslatedProgram(TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
+            ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)
+        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)
         {
             //
             UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(chainName);
@@ -90,8 +90,8 @@ namespace Skrypton.Tests.Application
             {
                 Assembly asm = asmctx.LoadedAssembly;
 
-                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(culture);
-                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
+                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeLogger, culture);
+                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
 
                 Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
@@ -122,9 +122,9 @@ namespace Skrypton.Tests.Application
             else
                 Console.WriteLine("ALC still alive");
         }
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
-            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(valueRetriever, culture);
+            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             return provider;

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Skrypton.RuntimeSupport
 {
@@ -514,6 +515,52 @@ namespace Skrypton.RuntimeSupport
             return result;
         }
 
+        internal static string TryGetIDispatchMemberName(object source, int dispid)
+        {
+            //string text2 = null;
+            //string text3 = null;
+            //string text4 = null;
+            //int num;
+            if (source is UnsafeNativeMethods.IDispatch dispatch && dispatch.GetTypeInfo(0, 1033, out UnsafeNativeMethods.ITypeInfo typeInfo) >= 0)
+            {
+                //typeInfo.GetTypeAttr(out IntPtr pTypeAttr);
+
+                //&& typeInfo.GetDocumentation(-1, out text2, out text3, out num, out text4) >= 0
+
+                typeInfo.GetTypeAttr(out IntPtr pTypeAttr);
+                var typeAttr = Marshal.PtrToStructure<TYPEATTR>(pTypeAttr);
+
+                try
+                {
+                    for (int i = 0; i < typeAttr.cFuncs; i++)
+                    {
+                        typeInfo.GetFuncDesc(i, out IntPtr pFuncDesc);
+                        var funcDesc = Marshal.PtrToStructure<FUNCDESC>(pFuncDesc);
+
+                        try
+                        {
+                            if (funcDesc.memid == dispid)
+                            {
+                                string[] names = new string[1];
+                                typeInfo.GetNames(funcDesc.memid, names, 1, out int _);
+                                return names[0];
+                            }
+                        }
+                        finally
+                        {
+                            typeInfo.ReleaseFuncDesc(pFuncDesc);
+                        }
+                    }
+                }
+                finally
+                {
+                    typeInfo.ReleaseTypeAttr(pTypeAttr);
+                }
+
+                return null; // not found
+            }
+            return null;
+        }
 
 
         // Microsoft.VisualBasic.Information

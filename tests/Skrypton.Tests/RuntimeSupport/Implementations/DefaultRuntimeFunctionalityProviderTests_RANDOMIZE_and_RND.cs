@@ -15,12 +15,12 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				const int seed = 123;
 				float value1, value2;
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE(seed);
 					value1 = _.RND();
 				}
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE(seed);
 					value2 = _.RND();
@@ -33,7 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				const int seed = 123;
 				float value1, value2;
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE(seed);
 					value1 = _.RND();
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			public void CallingRndWithZeroReturnsPreviousNumber()
 			{
 				float value1, value2;
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					value1 = _.RND();
 					value2 = _.RND(0);
@@ -61,7 +61,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			{
 				const int seed = -123;
 				float[] values1, values2;
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					values1 = new[] { _.RND(seed), _.RND(), _.RND() };
 					values2 = new[] { _.RND(seed), _.RND(), _.RND() };
@@ -82,17 +82,17 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				//  1.1111111
 				// will result in the same random number streams being generated
 				float value1, value2, value3;
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE("1.111111");
 					value1 = _.RND();
 				}
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE("1.1111111");
 					value2 = _.RND();
 				}
-				using (var _ = DefaultRuntimeSupportClassFactory.Create(TestCulture).Get())
+				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
 					_.RANDOMIZE("1.11111");
 					value3 = _.RND();

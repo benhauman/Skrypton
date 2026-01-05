@@ -17,7 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, object delimiter, string expectedResult)
         {
-            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().JOIN(value, delimiter));
+            myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().JOIN(value, delimiter));
         }
 
         [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
@@ -25,7 +25,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().JOIN(value, delimiter);
+                DefaultRuntimeSupportClassFactoryInstance.Get().JOIN(value, delimiter);
             });
         }
 
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<TypeMismatchException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().JOIN(value, delimiter);
+                DefaultRuntimeSupportClassFactoryInstance.Get().JOIN(value, delimiter);
             });
         }
 
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
             {
-                DefaultRuntimeSupportClassFactory.Create(TestCulture).Get().JOIN(value, delimiter);
+                DefaultRuntimeSupportClassFactoryInstance.Get().JOIN(value, delimiter);
             });
         }
 
