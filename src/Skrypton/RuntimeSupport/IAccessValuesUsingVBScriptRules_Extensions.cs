@@ -101,14 +101,14 @@ namespace Skrypton.RuntimeSupport
         // set will not be manipulated (extended). Since there would already trust that these won't manipulate any values if IProvideCallArguments references
         // were passed then this isn't a big deal (strictly speaking these methods express requirements greater than they really need but the shorter code is
         // worth it).
-        public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
             if (argumentProviderBuilder == null)
                 throw new ArgumentNullException("argumentProviderBuilder");
 
-            return source.CALL(context, target, new string[0], argumentProviderBuilder.GetArgs(), line: 0);
+            return source.CALL(context, target, new string[0], argumentProviderBuilder.GetArgs(), line);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {

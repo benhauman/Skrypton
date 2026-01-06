@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -54,6 +55,36 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
 
         private readonly Dictionary<string, Func<object>> _objectCreateFactories = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+
+        private static object HandlePostInitializationHandler(string progId, object objectInstance)
+        {
+            // The behavior comes from three different layers that were never fully documented together:
+            // * 1/3) VBScript’s automatic type coercion rules. Key point: VBScript will coerce strings to booleans, numbers, objects, etc. when calling COM methods. https://learn.microsoft.com/en-us/previous-versions//d1wf56tt(v=vs.85)
+            // * 2/3) MSXML’s COM overloading rules. VBScript uses IDispatch::Invoke with very permissive rules. https://learn.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-idispatch-invoke
+            //  -> unwraps COM objects automatically
+            //  -> chooses the correct overloaded COM method
+            //  -> retries calls with different type coercions
+            //  -> suppresses many COM errors
+            // * 3/3) The IDispatch binder inside Windows Script Host
+
+            if (string.Equals(progId, "Msxml2.DOMDocument", StringComparison.OrdinalIgnoreCase))
+            {
+                // !!!! VBScript silently sets:             xmlDoc.preserveWhiteSpace = False
+                //https://zetcode.com/vbscript/dom-msxml-domdocument/
+                // https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms757828(v=vs.85)
+                //IDispatchAccess.CallPropertySet(objectInstance, "preserveWhiteSpace", new object[] { false });
+                //objectInstance.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+                //domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+
+                // Late‑bind using reflection
+                object elem = objectInstance.GetType().InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, objectInstance, new object[] { false });
+            }
+            //IntPtr pDispatch = Marshal.GetIDispatchForObject(objectInstance);
+            //var disp = Marshal.GetComInterfaceForObject<IDispatchAccess.IDispatch>();
+            //IDispatch disp = (IDispatch)Marshal.GetObjectForIUnknown(pDispatch);
+            return objectInstance;
+        }
+
         public void RegisterObjectCreateFactory(string progId, Func<object> factory)
         {
             if (string.IsNullOrEmpty(progId))
@@ -1522,7 +1553,11 @@ namespace Skrypton.RuntimeSupport.Implementations
                 type = type.BaseType;
             }
         }
-        public object VARTYPE(object value) { throw new NotImplementedException(); }
+        public object VARTYPE(object value)
+        {
+            return (short)IDispatchAccess.GetVariantType(value);
+        }
+
         // - Array functions
         public object ARRAY(params object[] values)
         {
@@ -1957,11 +1992,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (string.IsNullOrEmpty(classProgId))
                 throw new InvalidOperationException("object id:" + value);
             if (_objectCreateFactories.TryGetValue(classProgId, out var objectFactory))
-                return objectFactory();
+                return HandlePostInitializationHandler(classProgId, objectFactory());
 
+            return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId));
+        }
+        private static object CreateComObject(string classProgId)
+        {
             MyComProxy proxy = MyComProxy.CreateComProxy(classProgId);//"Scripting.Dictionary"
             return proxy._comInstance;
-
             //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
         }
         public object GETOBJECT(object value)

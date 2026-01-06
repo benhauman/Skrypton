@@ -36,6 +36,49 @@ namespace TranslatedProgram
             _outer = this;
         }
 
+        public object convertsize(ref object size)
+        {
+            object ConvertSize_retVal = null;
+            object suffix = null; /* Undeclared in source */
+
+            //MsgBox "Converting Size for " & Size
+            size = _.CSNG(_.REPLACE(size, ",", ""));
+
+            if (_.IF(_.NOT(_.EQ(_.VARTYPE(size), VBScriptConstants.vbSingle))))
+            {
+                ConvertSize_retVal = "SIZE INPUT ERROR";
+                return ConvertSize_retVal;
+            }
+
+            suffix = " B";
+            if (_.IF(_.GTE(_.NullableNUM(size), (Int16)1024)))
+            {
+                suffix = " KB";
+            }
+            if (_.IF(_.GTE(_.NullableNUM(size), 1048576)))
+            {
+                suffix = " MB";
+            }
+            if (_.IF(_.GTE(_.NullableNUM(size), 1073741824)))
+            {
+                suffix = " GB";
+            }
+            if (_.IF(_.GTE(_.NullableNUM(size), 1099511627776d)))
+            {
+                suffix = " TB";
+            }
+
+            //Select Case Suffix
+            //	Case " KB" Size = Round(Size / 1024, 2)
+            //	Case " MB" Size = Round(Size / 1048576, 2)
+            //	Case " GB" Size = Round(Size / 1073741824, 2)
+            //	Case " TB" Size = Round(Size / 1099511627776, 2)
+            //End Select
+            //
+            ConvertSize_retVal = _.CONCAT(size, suffix);
+            return ConvertSize_retVal;
+        }
+
         public object getnexthinkuser()
         {
             return "myusr2";
@@ -66,7 +109,6 @@ namespace TranslatedProgram
             object i = null;
             object xmldoc = null; /* Undeclared in source */
             object n = null; /* Undeclared in source */
-            object convertsize = null; /* Undeclared in source */
 
             _.SET((Int16)1, this, _env.tabpagegeneralinfo, "ShowControl");
             _.SET((Int16)3, this, _env.tabpagesoftwareoshealth, "ShowControl");
@@ -334,6 +376,7 @@ namespace TranslatedProgram
             }
 
             nexthinkurl = _.CONCAT(nexthinkbaseurl, _.UCASE(hostname), nexthinkquery);
+            nexthinkurl = "https://httpbin.org/get";
 
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 
@@ -491,14 +534,14 @@ namespace TranslatedProgram
                 _.SET(_.CONCAT(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_frequency")), " MHz"), this, _env.textboxgeneralcpufreq, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, convertsize, _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.textboxgeneraltotalram, "Text");
+                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.textboxgeneraltotalram, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
                 _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_graphical_cards"))), this, _env.textboxgeneralnumberofgraphcards, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, convertsize, _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.textboxgeneralgraphcardram, "Text");
+                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.textboxgeneralgraphcardram, "Text");
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

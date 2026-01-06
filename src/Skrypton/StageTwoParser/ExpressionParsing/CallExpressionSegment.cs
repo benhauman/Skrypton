@@ -9,7 +9,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     /// A standalone CallExpressionSegment is essentially a specialised version of the CallSetItemExpressionSegment where there must be at least one Member
     /// Access Token.
     /// </summary>
-    public class CallExpressionSegment : CallSetItemExpressionSegment
+    public sealed class CallExpressionSegment : CallSetItemExpressionSegment
     {
         public CallExpressionSegment(IEnumerable<IToken> memberAccessTokens, IEnumerable<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
             : base(memberAccessTokens, arguments, zeroArgumentBracketsPresence)

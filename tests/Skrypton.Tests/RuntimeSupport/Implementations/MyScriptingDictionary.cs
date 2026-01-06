@@ -95,7 +95,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string k = key.ToString();
 
             if (!_dict.TryGetValue(k, out var value))
-                throw new KeyNotFoundException("Key not found");
+                throw new KeyNotFoundException($"Key '{key}' not found");
 
             return value;
         }

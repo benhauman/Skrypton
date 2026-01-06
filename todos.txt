@@ -26,3 +26,17 @@ _.SET(this, _env.buttongeneralinfo, "BackColor", "#5b5b5b");
 see: 
 object getnexthinkpassword = null; /* Undeclared in source */
 _.CALL(this, getnexthinkpassword, _.ARGS.ForceBrackets())
+
+7) adjust error source (to the object progid or function or external source name)
+'Error Description: 
+Error Source: Skrypton
+Error HelpFile: 
+Error Context: 0'
+
+8: switch on string
+  Select Case Suffix
+  	Case " KB" Size = Round(Size / 1024, 2)
+  	Case " MB" Size = Round(Size / 1048576, 2)
+  	Case " GB" Size = Round(Size / 1073741824, 2)
+  	Case " TB" Size = Round(Size / 1099511627776, 2)
+  End Select

@@ -539,10 +539,10 @@ namespace Skrypton.RuntimeSupport
 
                         try
                         {
+                            string[] names = new string[1];
+                            typeInfo.GetNames(funcDesc.memid, names, 1, out int _);
                             if (funcDesc.memid == dispid)
                             {
-                                string[] names = new string[1];
-                                typeInfo.GetNames(funcDesc.memid, names, 1, out int _);
                                 return names[0];
                             }
                         }

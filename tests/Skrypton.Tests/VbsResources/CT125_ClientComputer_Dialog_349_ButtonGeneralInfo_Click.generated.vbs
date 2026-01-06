@@ -1,3 +1,36 @@
+Public Function ConvertSize(ByRef Size)
+
+  'MsgBox "Converting Size for " & Size
+  Size = CSng(Replace(Size, ",", ""))
+
+  IF Not VarType(Size) = vbSingle THEN
+    ConvertSize = "SIZE INPUT ERROR"
+    Exit Function
+  END IF
+
+  Suffix = " B"
+  IF Size > = 1024 THEN
+    suffix = " KB"
+  END IF
+  IF Size > = 1048576 THEN
+    suffix = " MB"
+  END IF
+  IF Size > = 1073741824 THEN
+    suffix = " GB"
+  END IF
+  IF Size > = 1099511627776 THEN
+    suffix = " TB"
+  END IF
+
+  'Select Case Suffix
+  '	Case " KB" Size = Round(Size / 1024, 2)
+  '	Case " MB" Size = Round(Size / 1048576, 2)
+  '	Case " GB" Size = Round(Size / 1073741824, 2)
+  '	Case " TB" Size = Round(Size / 1099511627776, 2)
+  'End Select
+
+  ConvertSize = Size & Suffix
+End Function
 Public Function getNexthinkUser()
   getNexthinkUser = "myusr2"
 End Function
@@ -280,6 +313,7 @@ Public Sub ButtonGeneralInfo_Click()
   END IF
 
   nexthinkURL = nexthinkBaseURL & UCase(hostname) & nexthinkQuery
+  nexthinkURL = "https://httpbin.org/get"
 
   ON ERROR RESUME NEXT
 

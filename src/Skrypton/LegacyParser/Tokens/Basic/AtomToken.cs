@@ -25,9 +25,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (!Enum.IsDefined(typeof(WhiteSpaceBehaviourOptions), whiteSpaceBehaviour))
                 throw new ArgumentOutOfRangeException("whiteSpaceBehaviour");
             if ((whiteSpaceBehaviour == WhiteSpaceBehaviourOptions.Disallow) && contentUpper.containsWhiteSpace())
-                throw new ArgumentException("Whitespace encountered in AtomToken - invalid");
+                throw new ArgumentException($"Whitespace encountered in AtomToken - invalid. Line:{lineIndex}");
             if (contentUpper.Length == 0)
-                throw new ArgumentException("Blank content specified for AtomToken - invalid");
+                throw new ArgumentException($"Blank content specified for AtomToken - invalid. Line:{lineIndex}");
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
 

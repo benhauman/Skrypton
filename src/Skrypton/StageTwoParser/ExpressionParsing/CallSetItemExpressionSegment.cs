@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
@@ -11,6 +12,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     /// A CallSetExpressionSegment will contain one of more of these. The first one will always have at least one MemberAccessTokens but subsequent items in the
     /// set may not (eg. "a(0)(1)" is represented by segments for "a(0)" and "(1)", the second segment has no member access token).
     /// </summary>
+    [DebuggerDisplay("{GetType().Name}:{RenderedContent}")]
     public class CallSetItemExpressionSegment : IExpressionSegment
     {
         private static IEnumerable<Type> AllowableTypes = new[] {

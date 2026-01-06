@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport.Attributes
     /// this attribute may be applied to all methods that are translated from VBScript properties. The getter and setter of this methods will have non-void
     /// and void return types, resp.
     /// </summary>
-    public class TranslatedProperty : Attribute
+    public sealed class TranslatedProperty : Attribute
     {
         public TranslatedProperty(string name)
         {

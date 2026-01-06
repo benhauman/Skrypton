@@ -13,7 +13,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private const int LOCALE_SYSTEM_DEFAULT = 2048;
         private const int DISPID_PROPERTYPUT = -3;
-        private const int SizeOfNativeVariant = 16;
+        //private const int SizeOfNativeVariant = 16;
         private static readonly ComTypes.DISPPARAMS EmptyDISPPARAMS = new ComTypes.DISPPARAMS()
         {
             cArgs = 0,
@@ -38,6 +38,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             return source is IDispatch;
         }
 
+        internal static void CallPropertySet(object source, string name, params object[] args)
+        {
+            _ = Invoke<object>(source, InvokeFlags.DISPATCH_PROPERTYPUT, name, GetDispId(source, name), args);
+        }
         public static T CallMethod<T>(object source, string name, params object[] args)
         {
             if (source == null)
@@ -153,6 +157,11 @@ namespace Skrypton.RuntimeSupport.Implementations
                 cNamedArgs = 0;
             }
 
+            // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
+            // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)
+            // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
+            int SizeOfNativeVariant = Marshal.SizeOf<VARIANT>(); // 24 and not 16
+
             var variantsToClear = new List<IntPtr>();
             IntPtr rgvarg;
             if (args.Length == 0)
@@ -256,6 +265,61 @@ namespace Skrypton.RuntimeSupport.Implementations
             return CommonErrors.Unknown;
         }
 
+        internal static VarEnum GetVariantType(object value)
+        {
+            /*
+                    if (value == null)
+                   return VarEnum.VT_EMPTY;
+
+               switch (value)
+               {
+                   case bool _:               return VarEnum.VT_BOOL;
+                   case byte _:               return VarEnum.VT_UI1;
+                   case sbyte _:              return VarEnum.VT_I1;
+                   case short _:              return VarEnum.VT_I2;
+                   case ushort _:             return VarEnum.VT_UI2;
+                   case int _:                return VarEnum.VT_I4;
+                   case uint _:               return VarEnum.VT_UI4;
+                   case long _:               return VarEnum.VT_I8;
+                   case ulong _:              return VarEnum.VT_UI8;
+                   case float _:              return VarEnum.VT_R4;   // System.Single
+                   case double _:             return VarEnum.VT_R8;
+                   case decimal _:            return VarEnum.VT_DECIMAL;
+                   case string _:             return VarEnum.VT_BSTR;
+                   case DateTime _:           return VarEnum.VT_DATE;
+                   case DBNull _:             return VarEnum.VT_NULL;
+
+                   // COM objects
+                   case System.__ComObject _: return VarEnum.VT_DISPATCH;
+
+                   // Arrays
+                   case Array _:              return VarEnum.VT_ARRAY | VarEnum.VT_VARIANT;
+
+                   default:
+                       return VarEnum.VT_VARIANT;
+               }
+
+             */
+            IntPtr ptr = Marshal.AllocCoTaskMem(24); // VARIANT is 16 bytes on Windows
+
+            try
+            {
+                // Write the object into a native VARIANT
+                Marshal.GetNativeVariantForObject(value, ptr);
+
+                // Read the vt field (first 2 bytes)
+                short vt = Marshal.ReadInt16(ptr);
+
+                return (VarEnum)vt;
+            }
+            finally
+            {
+                // Free the VARIANT
+                Marshal.FreeCoTaskMem(ptr);
+            }
+
+        }
+
         // http://blogs.msdn.com/b/eldar/archive/2007/04/03/a-lot-of-hresult-codes.aspx
         public enum CommonErrors
         {
@@ -296,7 +360,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         [ComImport()]
         [Guid("00020400-0000-0000-C000-000000000046")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IDispatch
+        public interface IDispatch
         {
             [PreserveSig]
             int GetTypeInfoCount(out int Count);
@@ -370,6 +434,52 @@ namespace Skrypton.RuntimeSupport.Implementations
             public int? DispIdIfKnown { get; private set; }
 
             public CommonErrors ErrorType { get; private set; }
+        }
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct VARIANT
+    {
+        public ushort vt;
+        public ushort reserved1;
+        public ushort reserved2;
+        public ushort reserved3;
+        public IntPtr data1;
+        public IntPtr data2;
+
+        public static VARIANT FromObject(object value)
+        {
+            VARIANT v = new VARIANT();
+
+            if (value == null)
+            {
+                v.vt = 1; // VT_NULL
+                return v;
+            }
+
+            switch (Type.GetTypeCode(value.GetType()))
+            {
+                case TypeCode.String:
+                    v.vt = 8; // VT_BSTR
+                    v.data1 = Marshal.StringToBSTR((string)value);
+                    break;
+
+                case TypeCode.Boolean:
+                    v.vt = 11; // VT_BOOL
+                    v.data1 = (bool)value ? (IntPtr)(-1) : IntPtr.Zero;
+                    break;
+
+                case TypeCode.Int32:
+                    v.vt = 3; // VT_I4
+                    v.data1 = (IntPtr)(int)value;
+                    break;
+
+                default:
+                    throw new NotSupportedException("Unsupported VARIANT type: " + value.GetType());
+            }
+
+            return v;
         }
     }
 }

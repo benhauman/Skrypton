@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.Tests.Application.Controls;
+using Skrypton.Tests.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.Application
 {
@@ -43,9 +49,228 @@ namespace Skrypton.Tests.Application
 
         }
 
-        //[TestMethod]
+        void XX()
+        {
+            /*
+Dim xmlhttp
+Set xmlhttp = CreateObject("Msxml2.ServerXMLHTTP.6.0")
+
+' Optional: bypass certificate errors (not needed for HTTP, but included for parity)
+xmlhttp.setOption 2, 13056
+
+Dim testUrl
+testUrl = "https://httpbin.org/get"
+
+' Public URL, no authentication required
+xmlhttp.open "GET", testUrl, False, "", ""
+
+xmlhttp.send
+
+WScript.Echo "Status: " & xmlhttp.status
+WScript.Echo "Response:"
+WScript.Echo xmlhttp.responseText
+             */
+        }
+
+        static void TestCS()
+        {
+            // Create COM object
+#pragma warning disable CA1416 // Validate platform compatibility
+            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+#pragma warning restore CA1416 // Validate platform compatibility
+            dynamic xmlhttp = Activator.CreateInstance(t);
+
+            // 2 = SXH_OPTION_IGNORE_SERVER_SSL_CERT_ERROR_FLAGS
+            // 13056 = SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS
+            xmlhttp.setOption(2, 13056);
+
+            string url = "https://httpbin.org/get";
+
+            // Open synchronous GET request, no authentication needed
+            xmlhttp.open("GET", url, false, "myusr2", "mypwd2");
+
+            // Send request
+            xmlhttp.send();
+
+            Console.WriteLine("Status: " + xmlhttp.status);
+            Console.WriteLine("Response:");
+            Console.WriteLine(xmlhttp.responseText);
+        }
+
+        static void TestCS_IDispatch()
+        {
+            // Create COM object
+#pragma warning disable CA1416 // Validate platform compatibility
+            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+#pragma warning restore CA1416 // Validate platform compatibility
+            object xmlhttp = Activator.CreateInstance(t);
+
+            // xmlhttp.setOption(2, 13056)
+            ComInvoke.Call(xmlhttp, "setOption", new object[] { 2, 13056 });
+
+            string url = "https://httpbin.org/get";
+
+            // xmlhttp.open("GET", url, false, "myusr2", "mypwd2")
+            ComInvoke.Call(xmlhttp, "open", new object[] { "GET", url, false, "myusr2", "mypwd2" });
+
+            // xmlhttp.send()
+            ComInvoke.Call(xmlhttp, "send", new object[] { });
+
+            // Read status
+            object status = xmlhttp.GetType().InvokeMember(
+                "status",
+                BindingFlags.GetProperty,
+                null,
+                xmlhttp,
+                null
+            );
+
+            // Read responseText
+            object responseText = xmlhttp.GetType().InvokeMember(
+                "responseText",
+                BindingFlags.GetProperty,
+                null,
+                xmlhttp,
+                null
+            );
+
+            Console.WriteLine("Status: " + status);
+            Console.WriteLine("Response:");
+            Console.WriteLine(responseText);
+        }
+        static void Test_IDispatch_Invoke()
+        {
+            // Create COM object
+#pragma warning disable CA1416 // Validate platform compatibility
+            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+#pragma warning restore CA1416 // Validate platform compatibility
+            object comObj = Activator.CreateInstance(t);
+
+            // Cast to IDispatch
+            //var disp = (IDispatch)comObj;
+            var disp = comObj;
+
+            // --- setOption(2, 13056) ---
+            InvokeMethod(disp, "setOption", 2, 13056);
+            //IDispatchAccess.CallMethod(disp, "setOption", 2, 13056);
+
+            string url = "https://httpbin.org/get";
+
+            // --- open("GET", url, false, "myusr2", "mypwd2") ---
+            //InvokeMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
+            IDispatchAccess.CallMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
+
+            // --- send() ---
+            //InvokeMethod(disp, "send");
+            IDispatchAccess.CallMethod(disp, "send");
+
+            // --- status property ---
+            //object status = GetProperty(disp, "status");
+            object status = IDispatchAccess.GetProperty(disp, "status");
+
+            // --- responseText property ---
+            object responseText = IDispatchAccess.GetProperty(disp, "responseText");
+
+            Console.WriteLine("Status: " + status);
+            Console.WriteLine("Response:");
+            Console.WriteLine(responseText);
+        }
+
+        private static void Test_Xml()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(MyServerXMLHTTP60.SampleResponseXml);
+
+            var dict = new Dictionary<string, string>();
+
+            XmlNodeList headers = xmlDoc.SelectNodes("//table/header/*");
+
+            int i = 0;
+            foreach (XmlNode header in headers)
+            {
+                XmlNode valueNode = xmlDoc.SelectSingleNode($"//table/body/r/c{i}");
+                dict[header.InnerText] = valueNode?.InnerText ?? string.Empty;
+                i++;
+            }
+        }
+
+        private static void Test_Xml_IDispatch()
+        {
+#pragma warning disable CA1416 // Validate platform compatibility
+            Type domType = Type.GetTypeFromProgID("Msxml2.DOMDocument");
+#pragma warning restore CA1416 // Validate platform compatibility
+            object xmlDoc = Activator.CreateInstance(domType);
+
+            domType.InvokeMember("setProperty", BindingFlags.InvokeMethod, null, xmlDoc, new object[] { "SelectionLanguage", "XPath" });
+            // xmlDoc.async = false
+            domType.InvokeMember("async", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+
+            // !!!! VBScript silently sets:             xmlDoc.preserveWhiteSpace = False
+            // The behavior comes from three different layers that were never fully documented together:
+            // * 1/3) VBScript’s automatic type coercion rules. Key point: VBScript will coerce strings to booleans, numbers, objects, etc. when calling COM methods. https://learn.microsoft.com/en-us/previous-versions//d1wf56tt(v=vs.85)
+            // * 2/3) MSXML’s COM overloading rules. VBScript uses IDispatch::Invoke with very permissive rules. https://learn.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-idispatch-invoke
+            //  -> unwraps COM objects automatically
+            //  -> chooses the correct overloaded COM method
+            //  -> retries calls with different type coercions
+            //  -> suppresses many COM errors
+            // * 3/3) The IDispatch binder inside Windows Script Host
+            domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+
+            //object responseXML = MyServerXMLHTTP60.SampleResponseXml;
+            object responseXML = Encoding.UTF8.GetBytes(MyServerXMLHTTP60.SampleResponseXml);
+            //xmlSource[in] An indicator of the source XML to parse. This may be an URL(String / BSTR), a Request object(in an ASP page), an IStream, SAFEARRAY of bytes(VT_ARRAY| VT_UI1), a DOMDocument object, or any object that supports IStream, ISequentialStream, or IPersistStream.See Remarks for more information.
+            domType.InvokeMember("load", BindingFlags.InvokeMethod, null, xmlDoc, new object[] { responseXML });
+
+            // Select header nodes
+            object headerNodes = domType.InvokeMember(
+                "selectNodes",
+                BindingFlags.InvokeMethod,
+                null,
+                xmlDoc,
+                new object[] { "//table/header/*" }
+            );
+            // Iterate header nodes
+            int length = (int)headerNodes.GetType().InvokeMember("length", BindingFlags.GetProperty, null, headerNodes, null);
+            if (length == 0)
+                throw new NotImplementedException(); // loadXML vs load
+
+            // Get documentElement
+            object docElem = domType.InvokeMember("documentElement", BindingFlags.GetProperty, null, xmlDoc, null);
+
+            int i = 0;
+
+            for (int idx = 0; idx < length; idx++)
+            {
+                // n = headerNodes.item(idx)
+                object n = headerNodes.GetType().InvokeMember("item", BindingFlags.InvokeMethod, null, headerNodes, new object[] { idx });
+
+                // curnode = xmlDoc.documentElement.selectSingleNode("//table/body/r/c" & i)
+                object curnode = docElem.GetType().InvokeMember(
+                    "selectSingleNode",
+                    BindingFlags.InvokeMethod,
+                    null,
+                    docElem,
+                    new object[] { "//table/body/r/c" + i }
+                );
+
+                // dict.Add n.text, curnode.text
+
+                var key = n.GetType().InvokeMember("text", BindingFlags.GetProperty, null, n, null);
+                var value = curnode.GetType().InvokeMember("text", BindingFlags.GetProperty, null, curnode, null);
+                Console.WriteLine($"{i} {key}:{value}");
+
+                i++;
+            }
+        }
+
+        [TestMethod]
         public void CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click()
         {
+            Test_Xml_IDispatch();
+            Test_Xml();
+            TestCS();
+            TestCS_IDispatch();
+            Test_IDispatch_Invoke();
             var dialog = new DialogBuilder()
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
@@ -191,92 +416,92 @@ namespace Skrypton.Tests.Application
                     .AddTextControl("TextBoxNetworkHealthAvgWebResponseSize7Days")
                     .AddTextControl("TextBoxNetworkHealthSuccessHTTPRequestRatio7Days")
 
-.AddImageControl("ImageOKNetworkHealthIncomingNetTaffic24Hours")
-.AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic24Hours")
-.AddImageControl("ImageOKNetworkHealthIncomingNetTaffic7Days")
-.AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic7Days")
-.AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic24Hours")
-.AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic24Hours")
-.AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic7Days")
-.AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic7Days")
-.AddImageControl("ImageOKNetworkHealthTotalNetTaffic24Hours")
-.AddImageControl("ImageNOKNetworkHealthTotalNetTaffic24Hours")
-.AddImageControl("ImageOKNetworkHealthTotalNetTaffic7Days")
-.AddImageControl("ImageNOKNetworkHealthTotalNetTaffic7Days")
-.AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio24Hours")
-.AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours")
-.AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio7Days")
-.AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio7Days")
-.AddImageControl("ImageOKNetworkHealthNetAvailLevel24Hours")
-.AddImageControl("ImageNOKNetworkHealthNetAvailLevel24Hours")
-.AddImageControl("ImageOKNetworkHealthNetAvailLevel7Days")
-.AddImageControl("ImageNOKNetworkHealthNetAvailLevel7Days")
-.AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate7Days")
-.AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days")
-.AddImageControl("ImageOKNetworkHealthAvgNetResponseTime24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgNetResponseTime7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime7Days")
-.AddImageControl("ImageOKNetworkHealthIncomingWebTraffic24Hours")
-.AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic24Hours")
-.AddImageControl("ImageOKNetworkHealthIncomingWebTraffic7Days")
-.AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic7Days")
-.AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic24Hours")
-.AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic24Hours")
-.AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic7Days")
-.AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic7Days")
-.AddImageControl("ImageOKNetworkHealthTotalWebTraffic24Hours")
-.AddImageControl("ImageOKNetworkHealthTotalWebTraffic7Days")
-.AddImageControl("ImageNOKNetworkHealthTotalWebTraffic7Days")
-.AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate7Days")
-.AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days")
-.AddImageControl("ImageOKNetworkHealthAvgWebRequestSize24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgWebRequestSize7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize7Days")
-.AddImageControl("ImageOKNetworkHealthAvgWebResponseSize24Hours")
-.AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize24Hours")
-.AddImageControl("ImageOKNetworkHealthAvgWebResponseSize7Days")
-.AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize7Days")
-.AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours")
-.AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours")
-.AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio7Days")
-.AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days")
+    .AddImageControl("ImageOKNetworkHealthIncomingNetTaffic24Hours")
+    .AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthIncomingNetTaffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthIncomingNetTaffic7Days")
+    .AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic24Hours")
+    .AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthOutgoingNetTaffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthOutgoingNetTaffic7Days")
+    .AddImageControl("ImageOKNetworkHealthTotalNetTaffic24Hours")
+    .AddImageControl("ImageNOKNetworkHealthTotalNetTaffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthTotalNetTaffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthTotalNetTaffic7Days")
+    .AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio24Hours")
+    .AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours")
+    .AddImageControl("ImageOKNetworkHealthSuccessNetConnectionRatio7Days")
+    .AddImageControl("ImageNOKNetworkHealthSuccessNetConnectionRatio7Days")
+    .AddImageControl("ImageOKNetworkHealthNetAvailLevel24Hours")
+    .AddImageControl("ImageNOKNetworkHealthNetAvailLevel24Hours")
+    .AddImageControl("ImageOKNetworkHealthNetAvailLevel7Days")
+    .AddImageControl("ImageNOKNetworkHealthNetAvailLevel7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgIncomingNetBitrate7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgIncomingNetBitrate7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgOutgoingNetBitrate7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgNetResponseTime24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgNetResponseTime7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgNetResponseTime7Days")
+    .AddImageControl("ImageOKNetworkHealthIncomingWebTraffic24Hours")
+    .AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthIncomingWebTraffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthIncomingWebTraffic7Days")
+    .AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic24Hours")
+    .AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthOutgoingWebTraffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthOutgoingWebTraffic7Days")
+    .AddImageControl("ImageOKNetworkHealthTotalWebTraffic24Hours")
+    .AddImageControl("ImageOKNetworkHealthTotalWebTraffic7Days")
+    .AddImageControl("ImageNOKNetworkHealthTotalWebTraffic7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgIncomingWebBitrate7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgIncomingWebBitrate7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgOutgoingWebBitrate7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgWebRequestSize24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgWebRequestSize7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgWebRequestSize7Days")
+    .AddImageControl("ImageOKNetworkHealthAvgWebResponseSize24Hours")
+    .AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize24Hours")
+    .AddImageControl("ImageOKNetworkHealthAvgWebResponseSize7Days")
+    .AddImageControl("ImageNOKNetworkHealthAvgWebResponseSize7Days")
+    .AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours")
+    .AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours")
+    .AddImageControl("ImageOKNetworkHealthSuccessHTTPRequestRatio7Days")
+    .AddImageControl("ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days")
 
-// GroupBox L1-Checkliste
+    // GroupBox L1-Checkliste
 
-.AddTextControl("TextBoxL1FreeSpace")
-.AddTextControl("TextBoxL1OSUpToDate")
-.AddTextControl("TextBoxL1Browser")
-.AddTextControl("TextBoxL1Collaboration")
-.AddTextControl("TextBoxL1Antivirus")
-.AddTextControl("TextBoxL1Antivirus2")
-.AddTextControl("TextBoxL1Antivirus3")
-.AddTextControl("TextBoxL1Defender")
-.AddTextControl("TextBoxL1BootLogon2")
-.AddTextControl("TextBoxL1BootLogon3")
-.AddTextControl("TextBoxL1CPU24")
-.AddTextControl("TextBoxL1CPU7")
-.AddTextControl("TextBoxL1Speicher24")
-.AddTextControl("TextBoxL1Speicher7")
-.AddTextControl("TextBoxL1Bluescreen24")
-.AddTextControl("TextBoxL1Bluescrren7")
-.AddTextControl("TextBoxL1HardReset24")
-.AddTextControl("TextBoxL1HardReset7")
+    .AddTextControl("TextBoxL1FreeSpace")
+    .AddTextControl("TextBoxL1OSUpToDate")
+    .AddTextControl("TextBoxL1Browser")
+    .AddTextControl("TextBoxL1Collaboration")
+    .AddTextControl("TextBoxL1Antivirus")
+    .AddTextControl("TextBoxL1Antivirus2")
+    .AddTextControl("TextBoxL1Antivirus3")
+    .AddTextControl("TextBoxL1Defender")
+    .AddTextControl("TextBoxL1BootLogon2")
+    .AddTextControl("TextBoxL1BootLogon3")
+    .AddTextControl("TextBoxL1CPU24")
+    .AddTextControl("TextBoxL1CPU7")
+    .AddTextControl("TextBoxL1Speicher24")
+    .AddTextControl("TextBoxL1Speicher7")
+    .AddTextControl("TextBoxL1Bluescreen24")
+    .AddTextControl("TextBoxL1Bluescrren7")
+    .AddTextControl("TextBoxL1HardReset24")
+    .AddTextControl("TextBoxL1HardReset7")
 
-.AddLabelControl("TextBoxGeneralGraphCardRAM")
+    .AddLabelControl("TextBoxGeneralGraphCardRAM")
 
                     .BuildDialog();
 
@@ -296,6 +521,75 @@ namespace Skrypton.Tests.Application
         {
             CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences);
         }
+
+        // Resolve DISPID and call a method
+
+        static object InvokeMethod(object disp, string name, params object[] args)
+        {
+            int dispid = IDispatchAccess.GetDispId(disp, name);
+
+            // COM expects arguments in reverse order
+            Array.Reverse(args);
+
+            var dispParams = new DISPPARAMS
+            {
+                cArgs = args.Length,
+                rgvarg = MarshalArgs(args),
+                cNamedArgs = 0,
+                rgdispidNamedArgs = IntPtr.Zero
+            };
+            Guid GuidEmpty = Guid.Empty;
+            var excepInfo = new System.Runtime.InteropServices.ComTypes.EXCEPINFO();
+            object result;
+            var hrRet = ((IDispatchAccess.IDispatch)disp).Invoke(
+                dispid,
+                ref GuidEmpty,
+                0,
+                (ushort)INVOKEKIND.INVOKE_FUNC,
+                ref dispParams,
+                out result,
+                ref excepInfo,
+                out var argErr
+            );
+            if (hrRet != 0)
+            {
+                throw new InvalidOperationException($"HR:{hrRet}");
+            }
+
+            FreeArgs(dispParams.rgvarg, args.Length);
+            return result;
+        }
+
+        // Marshal arguments into unmanaged VARIANT array
+        static IntPtr MarshalArgs(object[] args)
+        {
+            int size = Marshal.SizeOf<VARIANT>();
+            IntPtr ptr = Marshal.AllocCoTaskMem(size * args.Length);
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                IntPtr p = IntPtr.Add(ptr, i * size);
+                VARIANT variant = VARIANT.FromObject(args[i]);
+                Marshal.StructureToPtr(variant, p, false);
+            }
+
+            return ptr;
+        }
+
+        // Free VARIANT array
+        static void FreeArgs(IntPtr ptr, int count)
+        {
+            int size = Marshal.SizeOf<VARIANT>();
+            for (int i = 0; i < count; i++)
+            {
+                IntPtr p = IntPtr.Add(ptr, i * size);
+                VariantClear(p);
+            }
+            Marshal.FreeCoTaskMem(ptr);
+        }
+
+        [DllImport("OleAut32.dll")]
+        static extern int VariantClear(IntPtr pvarg);
     }
 
     [ComVisible(true)]
@@ -308,6 +602,79 @@ namespace Skrypton.Tests.Application
         public void MsgBox(string message)
         {
             Console.WriteLine($"MsgBox('{message}')");
+        }
+    }
+
+    static class ComInvoke
+    {
+        public static object Call(object comObj, string method, object[] args,
+            BindingFlags flags = BindingFlags.InvokeMethod)
+        {
+            return comObj.GetType().InvokeMember(
+                method,
+                flags,
+                null,
+                comObj,
+                args
+            );
+        }
+
+        public static void SetProperty(object comObj, string prop, object value)
+        {
+            comObj.GetType().InvokeMember(
+                prop,
+                BindingFlags.SetProperty,
+                null,
+                comObj,
+                new object[] { value }
+            );
+        }
+    }
+
+    // ---------------- VARIANT struct ----------------
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct VARIANT
+    {
+        public ushort vt;
+        public ushort reserved1;
+        public ushort reserved2;
+        public ushort reserved3;
+        public IntPtr data1;
+        public IntPtr data2;
+
+        public static VARIANT FromObject(object value)
+        {
+            VARIANT v = new VARIANT();
+
+            if (value == null)
+            {
+                v.vt = 1; // VT_NULL
+                return v;
+            }
+
+            switch (Type.GetTypeCode(value.GetType()))
+            {
+                case TypeCode.String:
+                    v.vt = 8; // VT_BSTR
+                    v.data1 = Marshal.StringToBSTR((string)value);
+                    break;
+
+                case TypeCode.Boolean:
+                    v.vt = 11; // VT_BOOL
+                    v.data1 = (bool)value ? (IntPtr)(-1) : IntPtr.Zero;
+                    break;
+
+                case TypeCode.Int32:
+                    v.vt = 3; // VT_I4
+                    v.data1 = (IntPtr)(int)value;
+                    break;
+
+                default:
+                    throw new NotSupportedException("Unsupported VARIANT type: " + value.GetType());
+            }
+
+            return v;
         }
     }
 }
