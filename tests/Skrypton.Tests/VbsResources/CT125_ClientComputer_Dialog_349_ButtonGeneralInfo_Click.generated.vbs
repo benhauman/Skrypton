@@ -22,12 +22,17 @@ Public Function ConvertSize(ByRef Size)
     suffix = " TB"
   END IF
 
-  'Select Case Suffix
-  '	Case " KB" Size = Round(Size / 1024, 2)
-  '	Case " MB" Size = Round(Size / 1048576, 2)
-  '	Case " GB" Size = Round(Size / 1073741824, 2)
-  '	Case " TB" Size = Round(Size / 1099511627776, 2)
-  'End Select
+  SELECT CASE Suffix
+
+    CASE " KB"
+      Size = Round(Size / 1024, 2)
+    CASE " MB"
+      Size = Round(Size / 1048576, 2)
+    CASE " GB"
+      Size = Round(Size / 1073741824, 2)
+    CASE " TB"
+      Size = Round(Size / 1099511627776, 2)
+  END SELECT
 
   ConvertSize = Size & Suffix
 End Function

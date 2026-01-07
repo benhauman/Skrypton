@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class SelectHandler : AbstractBlockHandler
+    public sealed class SelectHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -40,6 +41,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     // Remove expression tokens (plus end-of-statement) from stream
                     tokens.RemoveRange(0, expressionTokens.Count + 1);
                     break;
+                }
+
+                if (index == 1)
+                {
+                    throw new NotImplementedException($"Multiple tokens on the 'expression' line. Line:{tokens.ElementAt(index).LineIndex}");
                 }
 
                 // Add token to expression (must be Atom or String)
@@ -118,12 +124,55 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     // - Remove the CASE token
                     tokens.RemoveRange(0, 1);
                     // - Remove the exprValues tokens
+                    bool doRemoveEofToken = true;
                     foreach (List<IToken> valueTokens in exprValues)
-                        tokens.RemoveRange(0, valueTokens.Count);
+                    {
+                        if (valueTokens.Count > 1)
+                        {
+                            // VBScript uses new lines to determine where one statement starts and another one begins, but you can use a colon to terminate a statement instead which allows you to span multiple statements across one line.
+                            //
+                            //     For example:
+                            //
+                            //          Case 0: flag = "af": country = "Afghanistan"
+                            //     Is the equivalent of:
+                            //
+                            //          Case 0
+                            //            flag = "af"
+                            //            country = "Afghanistan"
+                            // + https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/select-case-statement
+                            // You can use multiple expressions or ranges in each Case clause. For example, the following line is valid:
+                            //   Case 1 To 4, 7 To 9, 11, 13, Is > maxNumber
+                            ////////////////////////////////////////////
+                            var firstToken = valueTokens[0]; // StringToken - not 'Is' : The Is keyword used in the Case and Case Else statements is not the same as the Is Operator, which is used for object reference comparison.
+                            var secondToken = valueTokens[1]; // NameToken : NOT a conditional operator after 'Is' or comma ','
+
+                            if (firstToken is StringToken strtkn && secondToken is NameToken nametkn)
+                            {
+                                // Test with 'SelectCaseWithStringTokens'
+                                // condition token and statement tokens on the same line
+                                //    => remove only the condition token and all other token interpret as statement tokens.
+                                doRemoveEofToken = false;
+                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
+                                tokens.RemoveRange(0, valueTokens.Count);
+                            }
+                            else
+                            {
+                                throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}");
+                            }
+                        }
+                        else
+                        {
+                            tokens.RemoveRange(0, valueTokens.Count);
+                        }
+                    }
+
                     // - Remove the commas between expressions
                     tokens.RemoveRange(0, exprValues.Count - 1);
-                    // - Remove the end-of-statement token
-                    tokens.RemoveRange(0, 1);
+                    if (doRemoveEofToken)
+                    {
+                        // - Remove the end-of-statement token
+                        tokens.RemoveRange(0, 1);
+                    }
 
                     // Quick check that it appears valid
                     bool caseElse = false;
@@ -161,7 +210,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     {
                         List<Expression> values = new List<Expression>();
                         foreach (List<IToken> valueTokens in exprValues)
+                        {
                             values.Add(new Expression(valueTokens));
+                        }
+
                         content.Add(new SelectBlock.CaseBlockExpressionSegment(values, blockContent));
                     }
 

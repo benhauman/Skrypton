@@ -46,5 +46,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }
+
+		[TestMethod]
+		public void SelectCaseWithStringTokens()
+		{
+            var source = @"
+    Dim Size : Size = 0
+	Suffix = "" B"" 
+	Select Case Suffix 
+		Case "" KB"" Size = Round(Size / 1024, 2) 
+		Case "" MB""	Size = Round(Size / 1048576, 2) 
+	End Select
+";
+			WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+
+            base.TestCSharpCodeTranslation(source);
+        }
     }
 }

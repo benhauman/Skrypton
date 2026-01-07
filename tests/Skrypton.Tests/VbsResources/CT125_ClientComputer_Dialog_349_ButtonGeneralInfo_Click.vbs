@@ -14,13 +14,13 @@ Function ConvertSize(Size)
 	If Size >= 1073741824 Then suffix = " GB" 
 	If Size >= 1099511627776 Then suffix = " TB" 
 	
-	'Select Case Suffix 
-	'	Case " KB" Size = Round(Size / 1024, 2) 
-	'	Case " MB" Size = Round(Size / 1048576, 2) 
-	'	Case " GB" Size = Round(Size / 1073741824, 2) 
-	'	Case " TB" Size = Round(Size / 1099511627776, 2) 
-	'End Select
-	'
+	Select Case Suffix 
+		Case " KB" Size = Round(Size / 1024, 2) 
+		Case " MB" Size = Round(Size / 1048576, 2) 
+		Case " GB" Size = Round(Size / 1073741824, 2) 
+		Case " TB" Size = Round(Size / 1099511627776, 2) 
+	End Select
+
 	ConvertSize = Size & Suffix 
 End Function
 Function getNexthinkUser()

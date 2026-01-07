@@ -17,7 +17,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
     //  2. Literal target enforces appropriate comparisons, where required
     //  3. VAL is not called on the target (needs to be called for each comparison)
 
-    public class SelectBlockTranslator : CodeBlockTranslator
+    public sealed class SelectBlockTranslator : CodeBlockTranslator
     {
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ILogInformation _logger;

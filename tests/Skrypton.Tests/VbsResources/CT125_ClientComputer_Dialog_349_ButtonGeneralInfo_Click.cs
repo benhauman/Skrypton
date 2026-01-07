@@ -68,13 +68,23 @@ namespace TranslatedProgram
                 suffix = " TB";
             }
 
-            //Select Case Suffix
-            //	Case " KB" Size = Round(Size / 1024, 2)
-            //	Case " MB" Size = Round(Size / 1048576, 2)
-            //	Case " GB" Size = Round(Size / 1073741824, 2)
-            //	Case " TB" Size = Round(Size / 1099511627776, 2)
-            //End Select
-            //
+            if (_.IF(_.EQ(suffix, " KB")))
+            {
+                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, (Int16)1024)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(suffix, " MB")))
+            {
+                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1048576)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(suffix, " GB")))
+            {
+                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1073741824)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(suffix, " TB")))
+            {
+                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1099511627776d)).Val((Int16)2)));
+            }
+
             ConvertSize_retVal = _.CONCAT(size, suffix);
             return ConvertSize_retVal;
         }

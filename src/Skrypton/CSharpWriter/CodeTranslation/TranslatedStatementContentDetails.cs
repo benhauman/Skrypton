@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class TranslatedStatementContentDetails
+    [DebuggerDisplay("({VariablesAccessed.Count}){TranslatedContent}")]
+    public class TranslatedStatementContentDetails // base class of 'TranslatedStatementContentDetailsWithContentType'
     {
         public TranslatedStatementContentDetails(string translatedContent, NonNullImmutableList<NameToken> variablesAccessed)
         {
