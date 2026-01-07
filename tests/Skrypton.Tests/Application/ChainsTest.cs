@@ -53,6 +53,10 @@ namespace Skrypton.Tests.Application
                             {
 
                             }
+                            else if (resAsm_name.EndsWith("_DialogGlobalScript.vbs"))
+                            {
+
+                            }
                             else
                             {
                                 names.Add(resAsm_name.Substring(prefix.Length, resAsm_name.Length - prefix.Length - suffix.Length)); // ".vbs"
@@ -99,6 +103,38 @@ namespace Skrypton.Tests.Application
                 {
                     externalDependencies = externalDependencies.Add(externalRefName);
                 }
+            }
+
+            if (scrUsage == ScriptUsageKind.DialogGui || scrUsage == ScriptUsageKind.DialogWeb)
+            {
+                string[] chainTokens = chainName.Split('_');
+                string customerAlias = chainTokens[0];
+                if (!customerAlias.StartsWith("CT", StringComparison.OrdinalIgnoreCase)) // 'QUX_HLData_Contact_Dialog_2_ButtonShowWebsite_Click' => QUX_HLData
+                {
+                    customerAlias = $"{chainTokens[0]}_{chainTokens[1]}";
+                }
+
+                StringBuilder completeDialogScript = new StringBuilder();
+                string customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
+                if (!string.IsNullOrEmpty(customerDialogGlobalScript))
+                {
+                    if (completeDialogScript.Length > 0)
+                    {
+                        completeDialogScript.AppendLine();
+                    }
+                    completeDialogScript.Append(customerDialogGlobalScript);
+                }
+
+                if (!string.IsNullOrEmpty(scriptContent))
+                {
+                    if (completeDialogScript.Length > 0)
+                    {
+                        completeDialogScript.AppendLine();
+                    }
+                    completeDialogScript.Append(scriptContent);
+                }
+
+                scriptContent = completeDialogScript.ToString();
             }
 
             //Console.WriteLine("parsing...");
@@ -225,6 +261,6 @@ namespace Skrypton.Tests.Application
         Connectivity,
         EBL,
         DialogGui, // model, named symboles, controls
-        DiagloWeb
+        DialogWeb
     }
 }

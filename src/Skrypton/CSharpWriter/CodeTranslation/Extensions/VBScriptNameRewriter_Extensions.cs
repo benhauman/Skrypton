@@ -1,6 +1,7 @@
 ﻿using System;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
+using Skrypton.RuntimeSupport;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
@@ -31,6 +32,38 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             var nameToken = (token as NameToken) ?? new ForRenamingNameToken(token.ContentUpperX(), token.LineIndex);
             if (nameToken is DoNotRenameNameToken)
                 return nameToken.Content;
+            if (token is BuiltInFunctionToken bfun)
+            {
+                if (DefaultRuntimeSupportClassFactory._caseInsensitiveCSharpKeywordMatcher.Contains(nameToken.Content))
+                {
+                    //if (string.Equals("int", nameToken.Content, StringComparison.OrdinalIgnoreCase))
+                    //    return $"int__on_line_{token.LineIndex}"; // dirty fix for : Int ii = 0
+                    // ?!? Int => "rewritten_int"
+                    if (string.Equals("Int", nameToken.Content, StringComparison.Ordinal))
+                    {
+                        // test with 'UnitSelection_Renderer_NoSelects'
+                        // Int(...) in VBScript is a numeric function that takes a number and returns the largest whole number less than or equal to it — in other words, it truncates toward negative infinity.
+                    }
+                    else if (string.Equals("Join", nameToken.Content, StringComparison.Ordinal))
+                    {
+                        // test with 'UnitSelection_Renderer_NoSelects'
+                        // Join(aryFormattedData, "") is a VBScript string‑building function.
+                        // It takes an array of strings and concatenates them into one big string, using the second argument as the separator.
+                        // example: Join(Array("a","b","c"), ",") => a,b,c
+                    }
+                    else
+                    {
+                        // VBScript built‑in functions that appear in your list:
+                        // 'Join' → VBScript string function
+                        // 'Int' → VBScript numeric function(C# has int keyword)
+                        // 'String' → VBScript function String(n, char)(C# keyword string)
+                        // 'TypeOf' → VBScript operator TypeOf x Is Something(C# keyword typeof)
+                        // 'Is' → VBScript comparison operator (C# pattern matching operator)
+
+                        throw new InvalidOperationException($"Invalid name or keyword: '{nameToken.Content}'. Line:{token.LineIndex}");
+                    }
+                }
+            }
             return nameRewriter.RewriteVBScriptName(nameToken).Name;
         }
 

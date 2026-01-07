@@ -233,12 +233,44 @@ namespace Skrypton.CSharpWriter
 
     public sealed class DefaultVBScriptNameRewriter : VBScriptNameRewriter
     {
+        private readonly Dictionary<string, RewriteEntry> _entries = new Dictionary<string, RewriteEntry>();
+        private sealed class RewriteEntry
+        {
+            public string OriginalName { get; }
+            public string RewrittenName { get; }
+            public int LineIndex { get; }
+
+            public RewriteEntry(string originalName, string rewrittenName, int lineIndex)
+            {
+                OriginalName = originalName ?? throw new ArgumentNullException(nameof(originalName));
+                RewrittenName = rewrittenName ?? throw new ArgumentNullException(nameof(rewrittenName));
+                LineIndex = lineIndex;
+            }
+        }
         public DefaultVBScriptNameRewriter()
         {
         }
+        internal string RewriteName(string value, int line)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            string key = value.ToLower();
+            if (_entries.TryGetValue(key, out RewriteEntry entry))
+            {
+                // already registered.
+            }
+            else
+            {
+                string rewrittenName = DefaultRuntimeSupportClassFactory.RewriteName(value);
+                entry = new RewriteEntry(originalName: value, rewrittenName: rewrittenName, 0);
+                _entries.Add(key, entry);
+            }
+            return entry.RewrittenName;
+        }
         public override CSharpName RewriteVBScriptName(NameToken name)
         {
-            return new CSharpName(DefaultRuntimeSupportClassFactory.RewriteName(name.Content));
+            return new CSharpName(RewriteName(name.Content, name.LineIndex));
         }
     }
 }

@@ -26,22 +26,20 @@ namespace Skrypton.RuntimeSupport.Implementations
         // ConcurrentDictionary seems like a good choice. The most common cases I'm envisaging are for the cache to be built up as various execution paths
         // are followed and then for it to essentially become full. The ConcurrentDictionary allows lock-free reading and so doesn't introduce any costs
         // once this situation is reached.
-        private readonly Func<string, string> _nameRewriter;
+        private readonly Func<string, int, string> _nameRewriter;
         private readonly AbsentDefaultMemberOnComObjectCacheOptions _absentDefaultMemberOnComObjectCacheOptions;
         private readonly CultureInfo _culture;
         private readonly ConcurrentDictionary<InvokerCacheKey, GetInvoker> _getInvokerCache;
         private readonly ConcurrentDictionary<InvokerCacheKey, SetInvoker> _setInvokerCache;
         private readonly ConcurrentDictionary<string, bool> _absentDefaultMemberCache;
         private readonly ConcurrentDictionary<Type, Func<object, IEnumerator>> _duckTypeEnumeratorBuilderCache;
-        public VBScriptEsqueValueRetriever(Func<string, string> nameRewriter, AbsentDefaultMemberOnComObjectCacheOptions absentDefaultMemberOnComObjectCacheOptions, CultureInfo culture)
+        public VBScriptEsqueValueRetriever(Func<string, int, string> nameRewriter, AbsentDefaultMemberOnComObjectCacheOptions absentDefaultMemberOnComObjectCacheOptions, CultureInfo culture)
         {
-            if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
             if ((absentDefaultMemberOnComObjectCacheOptions != AbsentDefaultMemberOnComObjectCacheOptions.CacheByTypeDescriptorClassName)
             && (absentDefaultMemberOnComObjectCacheOptions != AbsentDefaultMemberOnComObjectCacheOptions.DoNotCache))
                 throw new ArgumentOutOfRangeException("absentDefaultMemberOnComObjectCacheOptions");
 
-            _nameRewriter = nameRewriter;
+            _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
             _absentDefaultMemberOnComObjectCacheOptions = absentDefaultMemberOnComObjectCacheOptions;
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _getInvokerCache = new ConcurrentDictionary<InvokerCacheKey, GetInvoker>();
@@ -1826,7 +1824,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return n => n.Equals(name, StringComparison.InvariantCultureIgnoreCase);
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.UseNameRewriter)
             {
-                var rewritterName = _nameRewriter(name);
+                var rewritterName = _nameRewriter(name, 0);
                 return n => n == rewritterName;
             }
             throw new ArgumentOutOfRangeException("memberNameMatchBehaviour");
