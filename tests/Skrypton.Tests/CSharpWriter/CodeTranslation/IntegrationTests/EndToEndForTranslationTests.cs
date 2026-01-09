@@ -294,7 +294,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "   while (true)",
                 "   {",
                 "       _.HANDLEERROR(errOn, () => {",
-                "           _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
+                "           _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "       });",
                 "       if (!loopConstraintsInitialized)",
                 "           break;",
@@ -338,7 +338,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "while (true)",
                 "{",
                 "   _.HANDLEERROR(errOn, () => {",
-                "       _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
+                "       _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "   });",
                 "   var continueLoop = false;",
                 "   _.HANDLEERROR(errOn, () => {",
@@ -438,14 +438,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "public object f1()",
+                "public object F1()",
                 "{",
                 "    object F1_retVal = null;",
                 "    object j = null; /* Undeclared in source */",
                 "    object i = null; /* Undeclared in source */",
                 "    for (i = (Int16)1; _.StrictLTE(i, 5); i = _.ADD(i, (Int16)1))",
                 "    {",
-                "        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(j, v => { j = v; }));",
+                "        _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(j, v => { j = v; }));",
                 "    }",
                 "    return F1_retVal;",
                 "}"
@@ -475,7 +475,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					object i = null;
@@ -501,7 +501,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}
 
-				public object f2(ref object value)
+				public object F2(ref object value)
 				{
 					return _.VAL(value);
 				}";
@@ -531,7 +531,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(object x)
+				public object F1(object x)
 				{
 					object F1_retVal = null;
 					object i = null;
@@ -546,7 +546,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}
 
-				public object f2(ref object value)
+				public object F2(ref object value)
 				{
 					return _.VAL(value);
 				}";
@@ -577,7 +577,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					object i = null;
@@ -603,7 +603,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}
 
-				public object f2(object value)
+				public object F2(object value)
 				{
 					return _.VAL(value);
 				}";
@@ -628,7 +628,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					object i = null;
@@ -669,7 +669,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -711,7 +711,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}
 
-				public object f2(ref object value)
+				public object F2(ref object value)
 				{
 					object F2_retVal = null;
 					F2_retVal = _.VAL(value);
@@ -742,7 +742,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();

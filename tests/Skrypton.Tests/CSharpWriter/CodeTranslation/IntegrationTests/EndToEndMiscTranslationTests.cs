@@ -27,7 +27,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));"
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -51,11 +51,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = new[]
             {
                 "_.CALL(this, _outer, \"Test1\");",
-                "public object test1()",
+                "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
                 "    object i = null; /* Undeclared in source */",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
+                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
                 "    return Test1_retVal;",
                 "}"
             };
@@ -82,11 +82,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = new[]
             {
                 "_.CALL(this, _outer, \"Test1\");",
-                "public object test1()",
+                "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
                 "    object i = null;",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
+                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
                 "    return Test1_retVal;",
                 "}"
             };
@@ -113,10 +113,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = new[]
             {
                 "_.CALL(this, _outer, \"Test1\");",
-                "public object test1()",
+                "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
-                "    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_outer.i, v => { _outer.i = v; }));",
+                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_outer.i, v => { _outer.i = v; }));",
                 "    return Test1_retVal;",
                 "}"
             };
@@ -190,7 +190,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _env.b, _env.c, _env.d)));"
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _env.b, _env.c, _env.d)));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -211,7 +211,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d)));"
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d)));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -239,7 +239,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Val(_.CALL(this, _env.a, \"Params\")));"
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALL(this, _env.a, \"Params\")));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -279,7 +279,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Val(_.CALL(this, this, \"Name\")));"
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALL(this, this, \"Name\")));"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -302,7 +302,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = new[]
             {
                 "_env.a = _.OBJ(_.CALL(this, _outer, \"GetSomething\", \"Name\"));",
-                "public object getsomething()",
+                "public object GetSomething()",
                 "{",
                 "    return null;",
                 "}"
@@ -330,27 +330,27 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 
-					public object go()
+					public object Go()
 					{
 						object Go_retVal = null;
 						object a = null; /* Undeclared in source */
 						a = _.OBJ(_.CALL(this, this, ""GetSomething"", ""Name""));
 						return Go_retVal;
 					}
-					public object getsomething()
+					public object GetSomething()
 					{
 						return null;
 					}
@@ -376,10 +376,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo TypeName(x)
 				End Function";
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(x)));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(x)));
 					return F1_retVal;
 				}";
             myAssert.AreEqual(
@@ -404,19 +404,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F2 = x
 				End Function";
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					object byrefalias = x;
 					try
 					{
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })))));
+						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })))));
 					}
 					finally { x = byrefalias; }
 					return F1_retVal;
 				}
 
-				public object f2(ref object x)
+				public object F2(ref object x)
 				{
 					return _.VAL(x);
 				}";
@@ -439,7 +439,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo TypeName(x)
 				End Function";
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -448,7 +448,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					try
 					{
 						_.HANDLEERROR(errOn, () => {
-							_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(_.TYPENAME(byrefalias)));
+							_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(byrefalias)));
 						});
 					}
 					finally { x = byrefalias; }
@@ -473,7 +473,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_outer.some_constant = (Int16)1;"
+                "_outer.SOME_CONSTANT = (Int16)1;"
             };
             myAssert.AreEqual(
                 expected.Select(s => s.Trim()).ToArray(),
@@ -495,7 +495,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End With
 				End Function";
             var expected = @"
-				public object render(ref object x)
+				public object Render(ref object x)
 				{
 					object Render_retVal = null;
 					var with = _.OBJ(x);

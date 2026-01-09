@@ -210,7 +210,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             //
             // is translated into something like
             //
-            //   public object f1()
+            //   public object F1()
             //   {
             //     object F1_retVal = null;
             //     object cn1 = null;

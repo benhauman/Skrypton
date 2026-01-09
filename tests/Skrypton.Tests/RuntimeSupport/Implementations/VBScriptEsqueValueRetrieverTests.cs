@@ -651,13 +651,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             private Dictionary<object, object> _values = new Dictionary<object, object>();
 
             [TranslatedProperty("Test")]
-            private object test(object i)
+            private object Test(object i)
             {
                 return _values.ContainsKey(i) ? _values[i] : null;
             }
 
             [TranslatedProperty("Test")]
-            private void test(object i, object value)
+            private void Test(object i, object value)
             {
                 _values[i] = value;
             }
@@ -697,13 +697,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             private Dictionary<object, object> _values = new Dictionary<object, object>();
 
             [TranslatedProperty("Test")]
-            public object test(object i)
+            public object Test(object i)
             {
                 return _values.ContainsKey(i) ? _values[i] : null;
             }
 
             [TranslatedProperty("Test")]
-            public void test(object i, object value)
+            public void Test(object i, object value)
             {
                 _values[i] = value;
             }
@@ -728,7 +728,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         private class ClassWithPublicIndexedPropertyThatHasByRefArguments : TranslatedPropertyIReflectImplementation
         {
             [TranslatedProperty("Test")]
-            public void test(ref object i, ref object value)
+            public void Test(ref object i, ref object value)
             {
                 i = "456";
             }

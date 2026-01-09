@@ -53,7 +53,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -74,7 +74,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim Preserve a(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -95,7 +95,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim F1(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       F1_retVal = _.NEWARRAY(new object[] { (Int16)0 });
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim Preserve F1(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       F1_retVal = _.RESIZEARRAY(F1_retVal, new object[] { (Int16)0 });
@@ -162,7 +162,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(2)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -221,7 +221,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -243,7 +243,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim Preserve a(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -293,7 +293,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(2)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = null;
@@ -322,7 +322,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(0)
                     End Function";
             string expected = @"
-                    public object f1()
+                    public object F1()
                     {
                       object F1_retVal = null;
                       object a = (object[])null;

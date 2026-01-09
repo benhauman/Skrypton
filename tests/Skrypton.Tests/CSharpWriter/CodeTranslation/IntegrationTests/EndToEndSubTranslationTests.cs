@@ -21,7 +21,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             ";
             var expected = new[]
             {
-                "public void f1()",
+                "public void F1()",
                 "{",
 				"    _.SET(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(\"'F1'\")));",
                 "}"
@@ -46,7 +46,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             ";
             var expected = new[]
             {
-                "public void f1()",
+                "public void F1()",
                 "{",
 				"    _.SET(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")));",
                 "}"

@@ -21,7 +21,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _outer.bprodhasavail = false;
+            _outer.bProdHasAvail = false;
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -34,30 +34,30 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            page = null;
-            request = null;
-            context = null;
-            server = null;
-            dms = null;
-            bprodhasavail = null;
+            Page = null;
+            Request = null;
+            Context = null;
+            Server = null;
+            DMS = null;
+            bProdHasAvail = null;
         }
 
-        internal object page { get; set; }
-        internal object request { get; set; }
-        internal object context { get; set; }
-        internal object server { get; set; }
-        internal object dms { get; set; }
-        internal object bprodhasavail { get; set; }
+        internal object Page { get; set; }
+        internal object Request { get; set; }
+        internal object Context { get; set; }
+        internal object Server { get; set; }
+        internal object DMS { get; set; }
+        internal object bProdHasAvail { get; set; }
 
-        public void doprodhasavail()
+        public void DoProdHasAvail()
         {
-            object bmuku = null;
+            object bMuku = null;
         }
 
-        public object getprodhasavail()
+        public object GetProdHasAvail()
         {
             object GetProdHasAvail_retVal = null;
-            object bkuku = null;
+            object bKuku = null;
             GetProdHasAvail_retVal = false;
             return GetProdHasAvail_retVal;
         }
@@ -65,6 +65,6 @@ namespace TranslatedProgram
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object hlcontext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

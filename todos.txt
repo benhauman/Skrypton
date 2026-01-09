@@ -40,3 +40,8 @@ Error Context: 0'
   	Case " GB" Size = Round(Size / 1073741824, 2)
   	Case " TB" Size = Round(Size / 1099511627776, 2)
   End Select
+
+9: as 'private' : public void Class_Initialize(), Class_Terminate, Class_TERminate = Class_Terminate
+10: use nameof : [TranslatedProperty(""Name"")]
+
+11: keep HEX code: const SOME_CONSTANT = &H0001 => const int SOME_CONSTANT = 0x0001 and not (Int16)1;

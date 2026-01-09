@@ -25,7 +25,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"    if (!enumerationContent.MoveNext())",
 				"        break;",
 				"    _env.value = enumerationContent.Current;",
-				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"}"
 			};
 			myAssert.AreEqual(
@@ -72,7 +72,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"        _env.value = enumerationContent.Current;",
 				"    }",
 				"    _.HANDLEERROR(errOn, () => {",
-				"        _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "        _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"    });",
 				"    if (enumerationContent == null)",
 				"        break;",
@@ -120,7 +120,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"            break;",
 				"        _env.value = enumerationContent.Current;",
 				"    }",
-				"    _.CALL(this, _env.wscript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"    if (enumerationContent == null)",
 				"        break;",
 				"}",

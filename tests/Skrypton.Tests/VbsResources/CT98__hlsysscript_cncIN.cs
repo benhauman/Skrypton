@@ -38,38 +38,38 @@ namespace TranslatedProgram
         }
 
         //--------------------------------------------------------------------------------------- ProcessIn ---
-        public void processin()
+        public void ProcessIn()
         {
-            object mailrequest = null;
-            object extendcasesuccess = null;
+            object mailRequest = null;
+            object extendCaseSuccess = null;
             _.CALL(this, _outer, "LogText", _.ARGS.Val("ProcessRequestMail start."));
 
-            mailrequest = _.OBJ(_.CALL(this, _env.session, _.ARGS.Val("mailrequest")));
+            mailRequest = _.OBJ(_.CALL(this, _env.session, _.ARGS.Val("mailrequest")));
 
-            _.CALL(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail subject: ", _.CALL(this, mailrequest, "subject"))));
-            _.CALL(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail To: ", _.CALL(this, mailrequest, "To"))));
+            _.CALL(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail subject: ", _.CALL(this, mailRequest, "subject"))));
+            _.CALL(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail To: ", _.CALL(this, mailRequest, "To"))));
 
-            if (_.IF(_.CALL(this, _outer, "IsAutoReplyMail", _.ARGS.Val(_.CALL(this, mailrequest, "Subject")))))
+            if (_.IF(_.CALL(this, _outer, "IsAutoReplyMail", _.ARGS.Val(_.CALL(this, mailRequest, "Subject")))))
             {
                 _.CALL(this, _outer, "LogText", _.ARGS.Val("Out of Office AutoReply"));
                 return;
             }
 
-            extendcasesuccess = _.VAL(_.CALL(this, _outer, "TryExtendCase", _.ARGS.Val(_.CALL(this, mailrequest, "Subject"))));
-            if (_.IF(_.EQ(extendcasesuccess, false)))
+            extendCaseSuccess = _.VAL(_.CALL(this, _outer, "TryExtendCase", _.ARGS.Val(_.CALL(this, mailRequest, "Subject"))));
+            if (_.IF(_.EQ(extendCaseSuccess, false)))
             {
                 _.CALL(this, _outer, "LogText", _.ARGS.Val("Extend case failed. Start new process"));
-                if (_.IF(_.CALL(this, _outer, "IsFMMail", _.ARGS.Val(_.CALL(this, mailrequest, "To")))))
+                if (_.IF(_.CALL(this, _outer, "IsFMMail", _.ARGS.Val(_.CALL(this, mailRequest, "To")))))
                 {
-                    _.CALL(this, _outer, "StartNewFMWorkflow", _.ARGS.Val(_.CALL(this, mailrequest, "Subject")));
+                    _.CALL(this, _outer, "StartNewFMWorkflow", _.ARGS.Val(_.CALL(this, mailRequest, "Subject")));
                 }
-                else if (_.IF(_.CALL(this, _outer, "IsHRMail", _.ARGS.Val(_.CALL(this, mailrequest, "To")))))
+                else if (_.IF(_.CALL(this, _outer, "IsHRMail", _.ARGS.Val(_.CALL(this, mailRequest, "To")))))
                 {
-                    _.CALL(this, _outer, "StartNewHRWorkflow", _.ARGS.Val(_.CALL(this, mailrequest, "Subject")));
+                    _.CALL(this, _outer, "StartNewHRWorkflow", _.ARGS.Val(_.CALL(this, mailRequest, "Subject")));
                 }
                 else
                 {
-                    _.CALL(this, _outer, "StartNewWorkflow", _.ARGS.Val(_.CALL(this, mailrequest, "Subject")));
+                    _.CALL(this, _outer, "StartNewWorkflow", _.ARGS.Val(_.CALL(this, mailRequest, "Subject")));
                 }
             }
 
@@ -77,249 +77,249 @@ namespace TranslatedProgram
         }
 
         //--------------------------------------------------------------------------------------- IsAutoReplyMail ---
-        public object isautoreplymail(ref object mailsubject)
+        public object IsAutoReplyMail(ref object mailSubject)
         {
             object IsAutoReplyMail_retVal = null;
-            object autoreplylist = null;
+            object autoReplyList = null;
             object item = null;
-            object retval = null;
-            retval = false;
-            autoreplylist = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("Out of Office:").Val("Abwesend:")));
+            object retVal = null;
+            retVal = false;
+            autoReplyList = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("Out of Office:").Val("Abwesend:")));
 
-            var enumerationContent = _.ENUMERABLE(autoreplylist).GetEnumerator();
+            var enumerationContent = _.ENUMERABLE(autoReplyList).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent.MoveNext())
                     break;
                 item = enumerationContent.Current;
-                if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailsubject, item, (Int16)1)), (Int16)0)))
+                if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {
-                    retval = true;
+                    retVal = true;
                 }
             }
-            IsAutoReplyMail_retVal = _.VAL(retval);
+            IsAutoReplyMail_retVal = _.VAL(retVal);
             return IsAutoReplyMail_retVal;
         }
 
         //--------------------------------------------------------------------------------------- TryExtendCase ---
-        public object tryextendcase(ref object mailsubject)
+        public object TryExtendCase(ref object mailSubject)
         {
             object TryExtendCase_retVal = null;
-            object refnumber = null;
-            object casetoextend = null;
-            object reporttext = null;
-            object retval = null;
-            retval = false;
+            object refNumber = null;
+            object caseToExtend = null;
+            object reportText = null;
+            object retVal = null;
+            retVal = false;
 
-            object byrefalias = mailsubject;
+            object byrefalias = mailSubject;
             try
             {
-                refnumber = _.VAL(_.CALL(this, _outer, "ExtractRefNumber", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+                refNumber = _.VAL(_.CALL(this, _outer, "ExtractRefNumber", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
             }
-            finally { mailsubject = byrefalias; }
-            if (_.IF(_.GT(_.NullableNUM(_.LEN(refnumber)), (Int16)0)))
+            finally { mailSubject = byrefalias; }
+            if (_.IF(_.GT(_.NullableNUM(_.LEN(refNumber)), (Int16)0)))
             {
                 _.CALL(this, _outer, "LogText", _.ARGS.Val("RefNumber > 0"));
-                casetoextend = _.OBJ(_.CALL(this, _env.session, "GetCaseByReferenceNumber", _.ARGS.Ref(refnumber, v2 => { refnumber = v2; })));
-                if (_.IF(_.CALL(this, _env.session, "CanExtendWorkflowCase", _.ARGS.Ref(casetoextend, v3 => { casetoextend = v3; }))))
+                caseToExtend = _.OBJ(_.CALL(this, _env.session, "GetCaseByReferenceNumber", _.ARGS.Ref(refNumber, v2 => { refNumber = v2; })));
+                if (_.IF(_.CALL(this, _env.session, "CanExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v3 => { caseToExtend = v3; }))))
                 {
                     _.CALL(this, _outer, "LogText", _.ARGS.Val("CanExtend"));
-                    reporttext = _.VAL(_.CALL(this, _env.session, "DoExtendWorkflowCase", _.ARGS.Ref(casetoextend, v4 => { casetoextend = v4; })));
-                    _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v5 => { reporttext = v5; }));
-                    retval = true;
+                    reportText = _.VAL(_.CALL(this, _env.session, "DoExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v4 => { caseToExtend = v4; })));
+                    _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v5 => { reportText = v5; }));
+                    retVal = true;
                 }
             }
-            TryExtendCase_retVal = _.VAL(retval);
+            TryExtendCase_retVal = _.VAL(retVal);
             return TryExtendCase_retVal;
         }
 
         //--------------------------------------------------------------------------------------- StartNewWorkflow ---
-        public void startnewworkflow(ref object mailsubject)
+        public void StartNewWorkflow(ref object mailSubject)
         {
-            object imkeywords = null;
-            object rfkeywords = null;
-            object cmkeywords = null;
-            object fmkeywords = null;
-            object hrkeywords = null;
-            object reporttext = null;
-            rfkeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[ServiceRequest]").Val("Anfrage").Val("request").Val("Frage").Val("question")));
-            imkeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[Incident]").Val("Incident").Val("Störung").Val("Hilfe").Val("help")));
-            cmkeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[RFC]").Val("Änderung").Val("Change")));
-            fmkeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[Facility]").Val("Haustechnik").Val("FM")));
-            hrkeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[HR]").Val("Personal")));
+            object imKeywords = null;
+            object rfKeywords = null;
+            object cmKeywords = null;
+            object fmKeywords = null;
+            object hrKeywords = null;
+            object reportText = null;
+            rfKeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[ServiceRequest]").Val("Anfrage").Val("request").Val("Frage").Val("question")));
+            imKeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[Incident]").Val("Incident").Val("Störung").Val("Hilfe").Val("help")));
+            cmKeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[RFC]").Val("Änderung").Val("Change")));
+            fmKeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[Facility]").Val("Haustechnik").Val("FM")));
+            hrKeywords = _.VAL(_.CALL(this, _, "ARRAY", _.ARGS.Val("[HR]").Val("Personal")));
 
             bool ifResult;
-            object byrefalias2 = mailsubject;
+            object byrefalias2 = mailSubject;
             try
             {
-                ifResult = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias2, v8 => { byrefalias2 = v8; }).Ref(rfkeywords, v9 => { rfkeywords = v9; })), true));
+                ifResult = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias2, v8 => { byrefalias2 = v8; }).Ref(rfKeywords, v9 => { rfKeywords = v9; })), true));
             }
-            finally { mailsubject = byrefalias2; }
+            finally { mailSubject = byrefalias2; }
             if (ifResult)
             {
-                reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("RequestFulfillment")));
-                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v10 => { reporttext = v10; }));
+                reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("RequestFulfillment")));
+                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v10 => { reportText = v10; }));
                 return;
             }
             bool ifResult2;
-            object byrefalias3 = mailsubject;
+            object byrefalias3 = mailSubject;
             try
             {
-                ifResult2 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias3, v13 => { byrefalias3 = v13; }).Ref(imkeywords, v14 => { imkeywords = v14; })), true));
+                ifResult2 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias3, v13 => { byrefalias3 = v13; }).Ref(imKeywords, v14 => { imKeywords = v14; })), true));
             }
-            finally { mailsubject = byrefalias3; }
+            finally { mailSubject = byrefalias3; }
             if (ifResult2)
             {
-                reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("IncidentManagement")));
-                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v15 => { reporttext = v15; }));
+                reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("IncidentManagement")));
+                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v15 => { reportText = v15; }));
                 return;
             }
             bool ifResult3;
-            object byrefalias4 = mailsubject;
+            object byrefalias4 = mailSubject;
             try
             {
-                ifResult3 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias4, v18 => { byrefalias4 = v18; }).Ref(cmkeywords, v19 => { cmkeywords = v19; })), true));
+                ifResult3 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias4, v18 => { byrefalias4 = v18; }).Ref(cmKeywords, v19 => { cmKeywords = v19; })), true));
             }
-            finally { mailsubject = byrefalias4; }
+            finally { mailSubject = byrefalias4; }
             if (ifResult3)
             {
-                reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("ChangeManagement")));
-                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v20 => { reporttext = v20; }));
+                reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("ChangeManagement")));
+                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v20 => { reportText = v20; }));
                 return;
             }
             bool ifResult4;
-            object byrefalias5 = mailsubject;
+            object byrefalias5 = mailSubject;
             try
             {
-                ifResult4 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias5, v23 => { byrefalias5 = v23; }).Ref(fmkeywords, v24 => { fmkeywords = v24; })), true));
+                ifResult4 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias5, v23 => { byrefalias5 = v23; }).Ref(fmKeywords, v24 => { fmKeywords = v24; })), true));
             }
-            finally { mailsubject = byrefalias5; }
+            finally { mailSubject = byrefalias5; }
             if (ifResult4)
             {
-                reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
-                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v25 => { reporttext = v25; }));
+                reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
+                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v25 => { reportText = v25; }));
                 return;
             }
             bool ifResult5;
-            object byrefalias6 = mailsubject;
+            object byrefalias6 = mailSubject;
             try
             {
-                ifResult5 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias6, v28 => { byrefalias6 = v28; }).Ref(hrkeywords, v29 => { hrkeywords = v29; })), true));
+                ifResult5 = _.IF(_.EQ(_.CALL(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias6, v28 => { byrefalias6 = v28; }).Ref(hrKeywords, v29 => { hrKeywords = v29; })), true));
             }
-            finally { mailsubject = byrefalias6; }
+            finally { mailSubject = byrefalias6; }
             if (ifResult5)
             {
-                reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
-                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v30 => { reporttext = v30; }));
+                reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
+                _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v30 => { reportText = v30; }));
                 return;
             }
-            reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("Request")));
-            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v31 => { reporttext = v31; }));
+            reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("Request")));
+            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v31 => { reportText = v31; }));
         }
 
         //--------------------------------------------------------------------------------------- StartNewFMWorkflow ---
-        public void startnewfmworkflow(ref object mailsubject)
+        public void StartNewFMWorkflow(ref object mailSubject)
         {
-            object reporttext = null;
+            object reportText = null;
 
-            reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
-            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v32 => { reporttext = v32; }));
+            reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
+            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v32 => { reportText = v32; }));
         }
 
         //--------------------------------------------------------------------------------------- StartNewHRWorkflow ---
-        public void startnewhrworkflow(ref object mailsubject)
+        public void StartNewHRWorkflow(ref object mailSubject)
         {
-            object reporttext = null;
+            object reportText = null;
 
-            reporttext = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
-            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reporttext, v33 => { reporttext = v33; }));
+            reportText = _.VAL(_.CALL(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
+            _.CALL(this, _outer, "LogText", _.ARGS.Ref(reportText, v33 => { reportText = v33; }));
         }
 
         //--------------------------------------------------------------------------------------- LogText ---
-        public void logtext(ref object stext)
+        public void LogText(ref object sText)
         {
             //Uncomment to enable logging
-            _.SET(_.CONCAT(_.CALL(this, _env.session, _.ARGS.Val("processtext")), stext, VBScriptConstants.vbNewLine), this, _env.session, null, _.ARGS.Val("processtext"));
+            _.SET(_.CONCAT(_.CALL(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine), this, _env.session, null, _.ARGS.Val("processtext"));
         }
 
         //---------------------------------------------------------------------------------------- ExtractRefNumber ---
-        public object extractrefnumber(ref object mailsubject)
+        public object ExtractRefNumber(ref object mailSubject)
         {
             object ExtractRefNumber_retVal = null;
-            object refnum = null;
-            object startpos = null;
-            object endpos = null;
-            refnum = "";
+            object refNum = null;
+            object startPos = null;
+            object endPos = null;
+            refNum = "";
 
-            startpos = _.VAL(_.INSTR((Int16)1, mailsubject, "[#", (Int16)1));
-            if (_.IF(_.GT(_.NullableNUM(startpos), (Int16)0)))
+            startPos = _.VAL(_.INSTR((Int16)1, mailSubject, "[#", (Int16)1));
+            if (_.IF(_.GT(_.NullableNUM(startPos), (Int16)0)))
             {
-                startpos = _.ADD(startpos, (Int16)2); // skip "[#"
-                endpos = _.VAL(_.INSTR(startpos, mailsubject, "]", (Int16)1));
-                if (_.IF(_.GT(_.NullableNUM(endpos), (Int16)0)))
+                startPos = _.ADD(startPos, (Int16)2); // skip "[#"
+                endPos = _.VAL(_.INSTR(startPos, mailSubject, "]", (Int16)1));
+                if (_.IF(_.GT(_.NullableNUM(endPos), (Int16)0)))
                 {
-                    refnum = _.VAL(_.MID(mailsubject, startpos, _.SUBT(endpos, startpos)));
+                    refNum = _.VAL(_.MID(mailSubject, startPos, _.SUBT(endPos, startPos)));
                 }
             }
-            ExtractRefNumber_retVal = _.VAL(refnum);
+            ExtractRefNumber_retVal = _.VAL(refNum);
             return ExtractRefNumber_retVal;
         }
 
         //--------------------------------------------------------------------------------------- IsFMMail ---
-        public object isfmmail(ref object mailto)
+        public object IsFMMail(ref object mailTo)
         {
             object IsFMMail_retVal = null;
-            object retval = null;
+            object retVal = null;
             _.CALL(this, _outer, "LogText", _.ARGS.Val("IsFMMail called"));
-            retval = false;
-            if (_.IF(_.EQ(_.NullableSTR(mailto), "haustechnik@helplinedemo.de")))
+            retVal = false;
+            if (_.IF(_.EQ(_.NullableSTR(mailTo), "haustechnik@helplinedemo.de")))
             {
-                retval = true;
+                retVal = true;
             }
 
-            IsFMMail_retVal = _.VAL(retval);
+            IsFMMail_retVal = _.VAL(retVal);
             return IsFMMail_retVal;
         }
 
         //--------------------------------------------------------------------------------------- IsFMMail ---
-        public object ishrmail(ref object mailto)
+        public object IsHRMail(ref object mailTo)
         {
             object IsHRMail_retVal = null;
-            object retval = null;
+            object retVal = null;
             _.CALL(this, _outer, "LogText", _.ARGS.Val("IsHRMail called"));
-            retval = false;
-            if (_.IF(_.EQ(_.NullableSTR(mailto), "personal@helplinedemo.de")))
+            retVal = false;
+            if (_.IF(_.EQ(_.NullableSTR(mailTo), "personal@helplinedemo.de")))
             {
-                retval = true;
+                retVal = true;
             }
 
-            IsHRMail_retVal = _.VAL(retval);
+            IsHRMail_retVal = _.VAL(retVal);
             return IsHRMail_retVal;
         }
 
         //---------------------------------------------------------------------------------------- IsWorkflowEmail ---
-        public object iswfemail(ref object mailsubject, ref object keywordlist)
+        public object IsWFEmail(ref object mailSubject, ref object keywordList)
         {
             object IsWFEmail_retVal = null;
             object item = null;
-            object retval = null;
+            object retVal = null;
             _.CALL(this, _outer, "LogText", _.ARGS.Val("IsWFEmail called"));
-            retval = false;
+            retVal = false;
 
-            var enumerationContent2 = _.ENUMERABLE(keywordlist).GetEnumerator();
+            var enumerationContent2 = _.ENUMERABLE(keywordList).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
                     break;
                 item = enumerationContent2.Current;
-                if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailsubject, item, (Int16)1)), (Int16)0)))
+                if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {
                     _.CALL(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("IsWFEmail - ", item)));
-                    retval = true;
+                    retVal = true;
                     break;
                 }
             }
-            IsWFEmail_retVal = _.VAL(retval);
+            IsWFEmail_retVal = _.VAL(retVal);
             return IsWFEmail_retVal;
         }
     }

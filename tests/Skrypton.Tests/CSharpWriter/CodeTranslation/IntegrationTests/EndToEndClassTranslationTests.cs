@@ -25,13 +25,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					}
 
 					[TranslatedProperty(""Name"")]
-					public object name()
+					public object Name()
 					{
 						return null;
 					}
@@ -61,7 +61,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             var source = @"
 				CLASS C1
-					PUBLIC SUB Class_Terminate
+					PUBLIC SUB ClAsS_TeRmInAtE
 						WScript.Echo ""Gone!""
 					END SUB
 				END CLASS
@@ -69,14 +69,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1 : IDisposable
+				[SourceClassName(nameof(C1))]
+				public sealed class C1 : IDisposable
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
 					private bool _disposed;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
@@ -84,7 +84,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_disposed = false;
 					}
 
-					~c1()
+					~C1()
 					{
 						try { Dispose(false); }
 						catch(Exception e)
@@ -104,13 +104,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						if (_disposed)
 							return;
 						if (disposing)
-							class_terminate();
+							Class_Terminate();
 						_disposed = true;
 					}
 
-					public void class_terminate()
+					public void Class_Terminate()
 					{
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Gone!""));
+						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Gone!""));
 					}
 				}";
             myAssert.AreEqual(
@@ -129,7 +129,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             var source = @"
 				CLASS C1
-					PUBLIC SUB Class_Initialize
+					PUBLIC SUB ClAsS_InItIaLiZe
 						WScript.Echo ""Here!""
 					END SUB
 				END CLASS
@@ -137,27 +137,27 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						try { class_initialize(); }
+						try { Class_Initialize(); }
 						catch(Exception e)
 						{
 							_.SETERROR(e);
 						}
 					}
 
-					public void class_initialize()
+					public void Class_Initialize()
 					{
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Here!""));
+						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Here!""));
 					}
 				}";
             myAssert.AreEqual(
@@ -180,30 +180,30 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						mname = null;
-						try { class_initialize(); }
+						mName = null;
+						try { Class_Initialize(); }
 						catch(Exception e)
 						{
 							_.SETERROR(e);
 						}
 					}
 
-					private object mname { get; set; }
+					private object mName { get; set; }
 
-					public void class_initialize()
+					public void Class_Initialize()
 					{
-						mname = ""Test"";
+						mName = ""Test"";
 					}
 				}";
             myAssert.AreEqual(
@@ -228,20 +228,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
-					public object name()
+					public object Name()
 					{
 						return ""C1"";
 					}
@@ -270,23 +270,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
-					public object name()
+					public object Name()
 					{
 						object Name_retVal = null;
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""get_Name""));
+						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""get_Name""));
 						Name_retVal = ""C1"";
 						return Name_retVal;
 					}
@@ -313,20 +313,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
-					public void name(ref object value)
+					public void Name(ref object value)
 					{
 						_.VAL(""C1"");
 					}
@@ -355,20 +355,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
-					public void name(ref object value)
+					public void Name(ref object value)
 					{
 						_.OBJ(""C1"");
 					}
@@ -396,20 +396,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1
+				[SourceClassName(nameof(C1))]
+				public sealed class C1
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
 						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
 					}
 					[TranslatedProperty(""Name"")]
-					public void name(ref object value)
+					public void Name(ref object value)
 					{
 						_.SET(""C1"", this, this, ""Name"");
 					}
@@ -437,13 +437,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				[ComVisible(true)]
 				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(""C1"")]
-				public sealed class c1 : TranslatedPropertyIReflectImplementation
+				[SourceClassName(nameof(C1))]
+				public sealed class C1 : TranslatedPropertyIReflectImplementation
 				{
 					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
 					private readonly EnvironmentReferences _env;
 					private readonly GlobalReferences _outer;
-					public c1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
+					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
 					{
 						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
 						_env = env ?? throw new ArgumentNullException(nameof(env));
@@ -451,7 +451,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					}
 
 					[TranslatedProperty(""Blah"")]
-					public void blah(object i, object j, object value)
+					public void Blah(object i, object j, object value)
 					{
 					}
 				}";

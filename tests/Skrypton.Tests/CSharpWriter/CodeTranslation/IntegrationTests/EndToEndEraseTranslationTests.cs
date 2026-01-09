@@ -100,7 +100,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     ERASE a
                 End Function";
             var expected = @"
-                public object f1(ref object a)
+                public object F1(ref object a)
                 {
                     object F1_retVal = null;
                     object byrefalias = a;

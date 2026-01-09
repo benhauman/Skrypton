@@ -18,10 +18,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "public object f1()",
+                "public object F1()",
                 "{",
                 "object F1_retVal = null;",
-                "object myvariable = null;",
+                "object myVariable = null;",
                 "return F1_retVal;",
                 "}"
             };
@@ -41,10 +41,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "public object f1()",
+                "public object F1()",
                 "{",
                 "object F1_retVal = null;",
-                "object myarray = new object[64];",
+                "object myArray = new object[64];",
                 "return F1_retVal;",
                 "}"
             };

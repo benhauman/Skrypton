@@ -90,10 +90,14 @@ namespace Skrypton.RuntimeSupport
                 {
                     return "rewritten_" + value; // => rewritten_int or rewritten_join or rewritten_string or rewritten_is or rewritten_typeof
                 }
-                value = value.ToLower(); // TODO: remove it
+                if (string.Equals(value, "Class_Initialize", StringComparison.OrdinalIgnoreCase))
+                    return "Class_Initialize";
+                if (string.Equals(value, "Class_Terminate", StringComparison.OrdinalIgnoreCase))
+                    return "Class_Terminate";
+                //value = value.ToLower(); // TODO: remove it
                 return value;
             }
-            value = value.ToLower(); // TODO: remove it
+            //value = value.ToLower(); // TODO: remove it
 
             // If we have to manipulate the value then we'll perform some replacements and then append the hash code from the original string to the
             // end of it to try to avoid collisions. This will not be perfect but it should be good enough. (Probably the only fool-proof approach

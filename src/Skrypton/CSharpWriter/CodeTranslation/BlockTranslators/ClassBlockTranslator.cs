@@ -85,7 +85,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // properties if required
             scopeAccessInformation = scopeAccessInformation.SetErrorRegistrationToken(null);
 
-            var classContentTranslationResult = TranslateForClass(
+            TranslationResult classContentTranslationResult = TranslateForClass(
                 classBlock.Statements.ToNonNullImmutableList(),
                 scopeAccessInformation.Extend(classBlock, classBlock.Statements.ToNonNullImmutableList()),
                 indentationDepth + 1
@@ -175,7 +175,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var className = _nameRewriter.GetMemberAccessTokenName(classBlock.Name);
             IEnumerable<TranslatedStatement> classInitializeCallStatements;
             if (classInitializeMethodNameIfAny == null)
+            {
                 classInitializeCallStatements = new TranslatedStatement[0];
+            }
             else
             {
                 // When Class_Initialize is called, it is treated as if ON ERROR RESUME NEXT is applied around the call - the first error will

@@ -21,15 +21,15 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _outer.size = (Int16)0;
-            _env.suffix = " B";
-            if (_.IF(_.EQ(_env.suffix, " KB")))
+            _outer.Size = (Int16)0;
+            _env.Suffix = " B";
+            if (_.IF(_.EQ(_env.Suffix, " KB")))
             {
-                _outer.size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.size, (Int16)1024)).Val((Int16)2)));
+                _outer.Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.Size, (Int16)1024)).Val((Int16)2)));
             }
-            else if (_.IF(_.EQ(_env.suffix, " MB")))
+            else if (_.IF(_.EQ(_env.Suffix, " MB")))
             {
-                _outer.size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.size, 1048576)).Val((Int16)2)));
+                _outer.Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.Size, 1048576)).Val((Int16)2)));
             }
         }
     }
@@ -43,14 +43,14 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            size = null;
+            Size = null;
         }
 
-        internal object size { get; set; }
+        internal object Size { get; set; }
     }
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object suffix { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object Suffix { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

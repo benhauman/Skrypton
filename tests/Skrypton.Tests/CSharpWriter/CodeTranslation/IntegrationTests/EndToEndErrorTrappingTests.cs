@@ -25,7 +25,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
@@ -50,13 +50,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				var errOn = _.GETERRORTRAPPINGTOKEN();
-				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
+				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test2""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
 				});
 				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test3""));
+				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test3""));
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
                 SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				}
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             myAssert.AreEqual(
@@ -113,10 +113,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					_.CALL(this, _outer, ""Func1"");
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);
-				public object func1()
+				public object Func1()
 				{
 					object Func1_retVal = null;
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 					return Func1_retVal;
 				}";
             myAssert.AreEqual(
@@ -138,14 +138,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				_.CALL(this, _outer, ""Func1"");
-				_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test2""));
-				public object func1()
+				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
+				public object Func1()
 				{
 					object Func1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					_.HANDLEERROR(errOn, () => {
-						_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Test1""));
+						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 					});
 					_.RELEASEERRORTRAPPINGTOKEN(errOn);
 					return Func1_retVal;
@@ -215,7 +215,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -251,7 +251,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object f1(ref object x)
+				public object F1(ref object x)
 				{
 					object F1_retVal = null;
 					x = VBScriptConstants.Nothing;
@@ -279,7 +279,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object f1(object value)
+				public object F1(object value)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -319,7 +319,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object f1(object value)
+				public object F1(object value)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -364,7 +364,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object f1(object value)
+				public object F1(object value)
 				{
 					object F1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();

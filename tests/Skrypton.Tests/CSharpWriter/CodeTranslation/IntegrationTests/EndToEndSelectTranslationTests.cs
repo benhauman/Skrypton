@@ -30,15 +30,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				if (_.IF(_.EQ(_env.x, ""("")))
 				{
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Open""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Open""));
 				}
 				else if (_.IF(_.EQ(_env.x, "")"")))
 				{
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Close""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Close""));
 				}
 				else if (_.IF(_.EQ(_env.x, "","")))
 				{
-					_.CALL(this, _env.wscript, ""Echo"", _.ARGS.Val(""Split""));
+					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Split""));
 				}";
 
             myAssert.AreEqual(

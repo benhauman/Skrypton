@@ -36,345 +36,345 @@ namespace TranslatedProgram
             _outer = this;
         }
 
-        public object convertsize(ref object size)
+        public object ConvertSize(ref object Size)
         {
             object ConvertSize_retVal = null;
-            object suffix = null; /* Undeclared in source */
+            object Suffix = null; /* Undeclared in source */
 
             //MsgBox "Converting Size for " & Size
-            size = _.CSNG(_.REPLACE(size, ",", ""));
+            Size = _.CSNG(_.REPLACE(Size, ",", ""));
 
-            if (_.IF(_.NOT(_.EQ(_.VARTYPE(size), VBScriptConstants.vbSingle))))
+            if (_.IF(_.NOT(_.EQ(_.VARTYPE(Size), VBScriptConstants.vbSingle))))
             {
                 ConvertSize_retVal = "SIZE INPUT ERROR";
                 return ConvertSize_retVal;
             }
 
-            suffix = " B";
-            if (_.IF(_.GTE(_.NullableNUM(size), (Int16)1024)))
+            Suffix = " B";
+            if (_.IF(_.GTE(_.NullableNUM(Size), (Int16)1024)))
             {
-                suffix = " KB";
+                Suffix = " KB";
             }
-            if (_.IF(_.GTE(_.NullableNUM(size), 1048576)))
+            if (_.IF(_.GTE(_.NullableNUM(Size), 1048576)))
             {
-                suffix = " MB";
+                Suffix = " MB";
             }
-            if (_.IF(_.GTE(_.NullableNUM(size), 1073741824)))
+            if (_.IF(_.GTE(_.NullableNUM(Size), 1073741824)))
             {
-                suffix = " GB";
+                Suffix = " GB";
             }
-            if (_.IF(_.GTE(_.NullableNUM(size), 1099511627776d)))
+            if (_.IF(_.GTE(_.NullableNUM(Size), 1099511627776d)))
             {
-                suffix = " TB";
-            }
-
-            if (_.IF(_.EQ(suffix, " KB")))
-            {
-                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, (Int16)1024)).Val((Int16)2)));
-            }
-            else if (_.IF(_.EQ(suffix, " MB")))
-            {
-                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1048576)).Val((Int16)2)));
-            }
-            else if (_.IF(_.EQ(suffix, " GB")))
-            {
-                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1073741824)).Val((Int16)2)));
-            }
-            else if (_.IF(_.EQ(suffix, " TB")))
-            {
-                size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(size, 1099511627776d)).Val((Int16)2)));
+                Suffix = " TB";
             }
 
-            ConvertSize_retVal = _.CONCAT(size, suffix);
+            if (_.IF(_.EQ(Suffix, " KB")))
+            {
+                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, (Int16)1024)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(Suffix, " MB")))
+            {
+                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1048576)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(Suffix, " GB")))
+            {
+                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1073741824)).Val((Int16)2)));
+            }
+            else if (_.IF(_.EQ(Suffix, " TB")))
+            {
+                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1099511627776d)).Val((Int16)2)));
+            }
+
+            ConvertSize_retVal = _.CONCAT(Size, Suffix);
             return ConvertSize_retVal;
         }
 
-        public object getnexthinkuser()
+        public object getNexthinkUser()
         {
             return "myusr2";
         }
 
-        public object getnexthinkbaseurl()
+        public object getNexthinkBaseURL()
         {
             return "";
         }
 
-        public object getnexthinkpassword()
+        public object getNexthinkPassword()
         {
             return "mypwd2";
         }
 
-        public void buttongeneralinfo_click()
+        public void ButtonGeneralInfo_Click()
         {
             var errOn = _.GETERRORTRAPPINGTOKEN();
-            object nexthinkbaseurl = null;
-            object nexthinkquery = null;
-            object nexthinkurl = null;
-            object colorwarning = null;
-            object colorcheck = null;
+            object nexthinkBaseURL = null;
+            object nexthinkQuery = null;
+            object nexthinkURL = null;
+            object colorWarning = null;
+            object colorCheck = null;
             object hostname = null;
             object xmlhttp = null;
             object dict = null;
             object curnode = null;
             object i = null;
-            object xmldoc = null; /* Undeclared in source */
+            object xmlDoc = null; /* Undeclared in source */
             object n = null; /* Undeclared in source */
 
-            _.SET((Int16)1, this, _env.tabpagegeneralinfo, "ShowControl");
-            _.SET((Int16)3, this, _env.tabpagesoftwareoshealth, "ShowControl");
-            _.SET((Int16)3, this, _env.tabpagesecuritycompliance, "ShowControl");
-            _.SET((Int16)3, this, _env.tabpagetechnicalinfo, "ShowControl");
-            _.SET((Int16)3, this, _env.tabpagenetworkhealth, "ShowControl");
-            _.SET((Int16)3, this, _env.tabpagel1checklist, "ShowControl");
+            _.SET((Int16)1, this, _env.TabPageGeneralInfo, "ShowControl");
+            _.SET((Int16)3, this, _env.TabPageSoftwareOSHealth, "ShowControl");
+            _.SET((Int16)3, this, _env.TabPageSecurityCompliance, "ShowControl");
+            _.SET((Int16)3, this, _env.TabPageTechnicalInfo, "ShowControl");
+            _.SET((Int16)3, this, _env.TabPageNetworkHealth, "ShowControl");
+            _.SET((Int16)3, this, _env.TabPageL1Checklist, "ShowControl");
 
-            _.SET((Int16)1, this, _env.groupboxgeneralinfo, "ShowControl");
-            _.SET((Int16)3, this, _env.groupboxtechnicalinfo, "ShowControl");
-            _.SET((Int16)3, this, _env.groupboxsoftwareoshealth, "ShowControl");
-            _.SET((Int16)3, this, _env.groupboxsecuritycompliance, "ShowControl");
-            _.SET((Int16)3, this, _env.groupboxnetworkhealth, "ShowControl");
-            _.SET((Int16)3, this, _env.groupboxl1checklist, "ShowControl");
+            _.SET((Int16)1, this, _env.GroupBoxGeneralInfo, "ShowControl");
+            _.SET((Int16)3, this, _env.GroupBoxTechnicalInfo, "ShowControl");
+            _.SET((Int16)3, this, _env.GroupBoxSoftwareOSHealth, "ShowControl");
+            _.SET((Int16)3, this, _env.GroupBoxSecurityCompliance, "ShowControl");
+            _.SET((Int16)3, this, _env.GroupBoxNetworkHealth, "ShowControl");
+            _.SET((Int16)3, this, _env.GroupBoxL1Checklist, "ShowControl");
 
-            _.SET("#5b5b5b", this, _env.buttongeneralinfo, "BackColor");
-            _.SET("#1B709F", this, _env.buttontechnicalinfo, "BackColor");
-            _.SET("#1B709F", this, _env.buttonswhealth, "BackColor");
-            _.SET("#1B709F", this, _env.buttonsecuritycompliance, "BackColor");
-            _.SET("#1B709F", this, _env.buttonnetworkhealth, "BackColor");
-            _.SET("#1B709F", this, _env.buttonl1checklist, "BackColor");
+            _.SET("#5b5b5b", this, _env.ButtonGeneralInfo, "BackColor");
+            _.SET("#1B709F", this, _env.ButtonTechnicalInfo, "BackColor");
+            _.SET("#1B709F", this, _env.ButtonSWHealth, "BackColor");
+            _.SET("#1B709F", this, _env.ButtonSecurityCompliance, "BackColor");
+            _.SET("#1B709F", this, _env.ButtonNetworkHealth, "BackColor");
+            _.SET("#1B709F", this, _env.ButtonL1Checklist, "BackColor");
 
-            _.SET((Int16)1, this, _env.tabcontrolnexthink, "ShowControl");
-            _.SET(true, this, _env.tabpagegeneralinfo, "RequestFocus");
+            _.SET((Int16)1, this, _env.TabControlNexthink, "ShowControl");
+            _.SET(true, this, _env.TabPageGeneralInfo, "RequestFocus");
 
             //Clear TextBoxes
 
-            _.SET("", this, _env.textboxgeneralcalltime, "Text");
-            _.SET("", this, _env.textboxgeneralhostname, "Text");
-            _.SET("", this, _env.textboxlgeneraldevicemanufacturer, "Text");
-            _.SET("", this, _env.textboxgeneraldeviceproductversion, "Text");
-            _.SET("", this, _env.textboxgenerallastip, "Text");
-            _.SET("", this, _env.textboxgeneralgroupname, "Text");
-            _.SET("", this, _env.textboxgeneralos, "Text");
-            _.SET("", this, _env.textboxgenerallastboottime, "Text");
-            _.SET("", this, _env.textboxgenerallastlogon, "Text");
-            _.SET("", this, _env.textboxgeneraldevicetype, "Text");
-            _.SET("", this, _env.textboxgeneralbiosserialnumber, "Text");
-            _.SET("", this, _env.textboxgeneralcpumodel, "Text");
-            _.SET("", this, _env.textboxgeneralnumberofcpus, "Text");
-            _.SET("", this, _env.textboxgeneralnumberoflogprocs, "Text");
-            _.SET("", this, _env.textboxgeneralnumberofcores, "Text");
-            _.SET("", this, _env.textboxgeneralcpufreq, "Text");
-            _.SET("", this, _env.textboxgeneraltotalram, "Text");
-            _.SET("", this, _env.textboxgeneralnumberofgraphcards, "Text");
+            _.SET("", this, _env.TextBoxGeneralCallTime, "Text");
+            _.SET("", this, _env.TextBoxGeneralHostName, "Text");
+            _.SET("", this, _env.TextBoxlGeneralDeviceManufacturer, "Text");
+            _.SET("", this, _env.TextBoxGeneralDeviceProductVersion, "Text");
+            _.SET("", this, _env.TextBoxGeneralLastIP, "Text");
+            _.SET("", this, _env.TextBoxGeneralGroupName, "Text");
+            _.SET("", this, _env.TextBoxGeneralOS, "Text");
+            _.SET("", this, _env.TextBoxGeneralLastBootTime, "Text");
+            _.SET("", this, _env.TextBoxGeneralLastLogon, "Text");
+            _.SET("", this, _env.TextBoxGeneralDeviceType, "Text");
+            _.SET("", this, _env.TextBoxGeneralBIOSSerialNumber, "Text");
+            _.SET("", this, _env.TextBoxGeneralCPUModel, "Text");
+            _.SET("", this, _env.TextBoxGeneralNumberOfCPUs, "Text");
+            _.SET("", this, _env.TextBoxGeneralNumberOfLogProcs, "Text");
+            _.SET("", this, _env.TextBoxGeneralNumberOfCores, "Text");
+            _.SET("", this, _env.TextBoxGeneralCPUFreq, "Text");
+            _.SET("", this, _env.TextBoxGeneralTotalRAM, "Text");
+            _.SET("", this, _env.TextBoxGeneralNumberOfGraphCards, "Text");
 
             // --- GroupBoxTechnicalInfo
 
-            _.SET("", this, _env.textboxtechnicalinfototaldrivecapnow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfototalfreespacenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfototaldriveusagenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfosystemdrivecapnow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfosystemdrivefreespacenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighcputimenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighmemorytimenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighiotimenow, "Text");
-            _.SET("", this, _env.textboxtechnicalinfototaldrivecap7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfototalfreespace7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfototaldriveusage7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfosystemdrivecap7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfosystemdrivefreespace7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighcputime7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighmemorytime7days, "Text");
-            _.SET("", this, _env.textboxtechnicalinfohighiotime7days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalDriveCapNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalFreeSpaceNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalDriveUsageNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoSystemDriveCapNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoSystemDriveFreeSpaceNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighCPUTimeNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighMemoryTimeNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighIOTimeNow, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalDriveCap7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalFreeSpace7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoTotalDriveUsage7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoSystemDriveCap7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoSystemDriveFreeSpace7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighCPUTime7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighMemoryTime7Days, "Text");
+            _.SET("", this, _env.TextBoxTechnicalInfoHighIOTime7Days, "Text");
 
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfototalfreespacenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfototalfreespacenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfototaldriveusagenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfototaldriveusagenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfosystemdrivecapnow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfosystemdrivecapnow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfosystemdrivefreespacenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfosystemdrivefreespacenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighcputimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighcputimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighmemorytimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighmemorytimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighiotimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighiotimenow, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfototalfreespace7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfototalfreespace7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfototaldriveusage7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfototaldriveusage7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfosystemdrivecap7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfosystemdrivecap7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfosystemdrivefreespace7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfosystemdrivefreespace7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighcputime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighcputime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighmemorytime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighmemorytime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoktechnicalinfohighiotime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoktechnicalinfohighiotime7days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoTotalFreeSpaceNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoTotalFreeSpaceNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoTotalDriveUsageNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoTotalDriveUsageNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoSystemDriveCapNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoSystemDriveCapNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpaceNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoSystemDriveFreeSpaceNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighCPUTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighCPUTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighMemoryTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighMemoryTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighIOTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighIOTimeNow, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoTotalDriveUsage7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoTotalDriveUsage7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoSystemDriveCap7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoSystemDriveCap7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpace7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoSystemDriveFreeSpace7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighCPUTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighCPUTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighMemoryTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighMemoryTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKTechnicalInfoHighIOTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKTechnicalInfoHighIOTime7Days, "ShowControl");
 
             // GroupBox Software OS Health
 
-            _.SET("", this, _env.textboxsoftwareoshealthosversionarchitecture, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthosname, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthwmistatus, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthlastsystemupdate, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthwindowsupdatestatus, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthnumberofapps, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthnumberofexes, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthnumberofbins, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthosendofsupport, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthosie11support, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthwin10ready, "Text");
-            _.SET("", this, _env.textboxsoftwareoshealthoscomplience, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthOSVersionArchitecture, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthOSName, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthWMIStatus, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthLastSystemUpdate, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthWindowsUpdateStatus, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthNumberOfApps, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthNumberOfExes, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthNumberOfBins, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthOSEndOfSupport, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthOSIE11Support, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthWin10Ready, "Text");
+            _.SET("", this, _env.TextBoxSoftwareOSHealthOSComplience, "Text");
 
             // GroupBox Security Compliance
 
-            _.SET("", this, _env.textboxsecuritycomplianceinetsecuritysettings, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceuseraccountstatus, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantivirusname, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantivirusrtp, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantivirusuptodate, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantivirusnumber, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantivirusall, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantispywarename, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantispywarertp, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantispywareuptodate, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantispywarenumber, "Text");
-            _.SET("", this, _env.textboxsecuritycomplianceantispywareall, "Text");
-            _.SET("", this, _env.textboxsecuritycompliancefirewallname, "Text");
-            _.SET("", this, _env.textboxsecuritycompliancefirewallrtp, "Text");
-            _.SET("", this, _env.textboxsecuritycompliancefirewallnumber, "Text");
-            _.SET("", this, _env.textboxsecuritycompliancefirewallall, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceInetSecuritySettings, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceUserAccountStatus, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntivirusName, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntivirusRTP, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntivirusUpToDate, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntivirusNumber, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntivirusAll, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntispywareName, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntispywareRTP, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntispywareUpToDate, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntispywareNumber, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceAntispywareAll, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceFirewallName, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceFirewallRTP, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceFirewallNumber, "Text");
+            _.SET("", this, _env.TextBoxSecurityComplianceFirewallAll, "Text");
 
             // GroupBox Network Health
-            _.SET("", this, _env.textboxnetworkhealthincomingnettaffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthoutgoingnettaffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthtotalnettaffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthsuccessnetconnectionratio24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthnetavaillevel24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgincomingnetbitrate24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgoutgoingnetbitrate24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgnetresponsetime24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthincomingwebtraffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthoutgoingwebtraffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthtotalwebtraffic24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgincomingwebbitrate24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgoutgoingwebbitrate24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgwebrequestsize24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgwebresponsesize24hours, "Text");
-            _.SET("", this, _env.textboxnetworkhealthsuccesshttprequestratio24hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthIncomingNetTaffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthOutgoingNetTaffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthTotalNetTaffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthNetAvailLevel24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgNetResponseTime24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthIncomingWebTraffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthOutgoingWebTraffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthTotalWebTraffic24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgWebRequestSize24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgWebResponseSize24Hours, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours, "Text");
 
-            _.SET("", this, _env.textboxnetworkhealthincomingnettaffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthoutgoingnettaffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthtotalnettaffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthsuccessnetconnectionratio7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthnetavaillevel7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgincomingnetbitrate7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgoutgoingnetbitrate7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgnetresponsetime7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthincomingwebtraffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthoutgoingwebtraffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthtotalwebtraffic7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgincomingwebbitrate7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgoutgoingwebbitrate7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgwebrequestsize7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthavgwebresponsesize7days, "Text");
-            _.SET("", this, _env.textboxnetworkhealthsuccesshttprequestratio7days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthIncomingNetTaffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthOutgoingNetTaffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthTotalNetTaffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthNetAvailLevel7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgNetResponseTime7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthIncomingWebTraffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthOutgoingWebTraffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthTotalWebTraffic7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgWebRequestSize7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthAvgWebResponseSize7Days, "Text");
+            _.SET("", this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio7Days, "Text");
 
-            _.SET((Int16)3, this, _env.imageoknetworkhealthincomingnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthincomingnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthincomingnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthincomingnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthoutgoingnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthoutgoingnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthoutgoingnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthoutgoingnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthtotalnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthtotalnettaffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthtotalnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthtotalnettaffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthsuccessnetconnectionratio24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthsuccessnetconnectionratio24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthsuccessnetconnectionratio7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthsuccessnetconnectionratio7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthnetavaillevel24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthnetavaillevel24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthnetavaillevel7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthnetavaillevel7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgincomingnetbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgincomingnetbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgincomingnetbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgincomingnetbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgoutgoingnetbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgoutgoingnetbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgoutgoingnetbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgoutgoingnetbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgnetresponsetime24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgnetresponsetime24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgnetresponsetime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgnetresponsetime7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthincomingwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthincomingwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthincomingwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthincomingwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthoutgoingwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthoutgoingwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthoutgoingwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthoutgoingwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthtotalwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthtotalwebtraffic24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthtotalwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthtotalwebtraffic7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgincomingwebbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgincomingwebbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgincomingwebbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgincomingwebbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgoutgoingwebbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgoutgoingwebbitrate24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgoutgoingwebbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgoutgoingwebbitrate7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgwebrequestsize24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgwebrequestsize24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgwebrequestsize7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgwebrequestsize7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgwebresponsesize24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgwebresponsesize24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthavgwebresponsesize7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthavgwebresponsesize7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthsuccesshttprequestratio24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthsuccesshttprequestratio24hours, "ShowControl");
-            _.SET((Int16)3, this, _env.imageoknetworkhealthsuccesshttprequestratio7days, "ShowControl");
-            _.SET((Int16)3, this, _env.imagenoknetworkhealthsuccesshttprequestratio7days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthIncomingNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthIncomingNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthIncomingNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthIncomingNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthOutgoingNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthOutgoingNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthOutgoingNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthOutgoingNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthTotalNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthTotalNetTaffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthTotalNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthTotalNetTaffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthNetAvailLevel24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthNetAvailLevel24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthNetAvailLevel7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthNetAvailLevel7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgNetResponseTime24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgNetResponseTime24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgNetResponseTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgNetResponseTime7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthIncomingWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthIncomingWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthIncomingWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthIncomingWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthOutgoingWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthOutgoingWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthOutgoingWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthOutgoingWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthTotalWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthTotalWebTraffic7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgWebRequestSize24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgWebRequestSize24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgWebRequestSize7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgWebRequestSize7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgWebResponseSize24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgWebResponseSize24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthAvgWebResponseSize7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthAvgWebResponseSize7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio7Days, "ShowControl");
+            _.SET((Int16)3, this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days, "ShowControl");
 
             // GroupBox L1-Checkliste
 
-            _.SET("", this, _env.textboxl1freespace, "Text");
-            _.SET("", this, _env.textboxl1osuptodate, "Text");
-            _.SET("", this, _env.textboxl1browser, "Text");
-            _.SET("", this, _env.textboxl1collaboration, "Text");
-            _.SET("", this, _env.textboxl1antivirus, "Text");
-            _.SET("", this, _env.textboxl1antivirus2, "Text");
-            _.SET("", this, _env.textboxl1antivirus3, "Text");
-            _.SET("", this, _env.textboxl1defender, "Text");
-            _.SET("", this, _env.textboxl1bootlogon2, "Text");
-            _.SET("", this, _env.textboxl1bootlogon3, "Text");
-            _.SET("", this, _env.textboxl1cpu24, "Text");
-            _.SET("", this, _env.textboxl1cpu7, "Text");
-            _.SET("", this, _env.textboxl1speicher24, "Text");
-            _.SET("", this, _env.textboxl1speicher7, "Text");
-            _.SET("", this, _env.textboxl1bluescreen24, "Text");
-            _.SET("", this, _env.textboxl1bluescrren7, "Text");
-            _.SET("", this, _env.textboxl1hardreset24, "Text");
-            _.SET("", this, _env.textboxl1hardreset7, "Text");
+            _.SET("", this, _env.TextBoxL1FreeSpace, "Text");
+            _.SET("", this, _env.TextBoxL1OSUpToDate, "Text");
+            _.SET("", this, _env.TextBoxL1Browser, "Text");
+            _.SET("", this, _env.TextBoxL1Collaboration, "Text");
+            _.SET("", this, _env.TextBoxL1Antivirus, "Text");
+            _.SET("", this, _env.TextBoxL1Antivirus2, "Text");
+            _.SET("", this, _env.TextBoxL1Antivirus3, "Text");
+            _.SET("", this, _env.TextBoxL1Defender, "Text");
+            _.SET("", this, _env.TextBoxL1BootLogon2, "Text");
+            _.SET("", this, _env.TextBoxL1BootLogon3, "Text");
+            _.SET("", this, _env.TextBoxL1CPU24, "Text");
+            _.SET("", this, _env.TextBoxL1CPU7, "Text");
+            _.SET("", this, _env.TextBoxL1Speicher24, "Text");
+            _.SET("", this, _env.TextBoxL1Speicher7, "Text");
+            _.SET("", this, _env.TextBoxL1Bluescreen24, "Text");
+            _.SET("", this, _env.TextBoxL1Bluescrren7, "Text");
+            _.SET("", this, _env.TextBoxL1HardReset24, "Text");
+            _.SET("", this, _env.TextBoxL1HardReset7, "Text");
 
             // --- GroupBoxGeneralInfo
 
-            nexthinkbaseurl = _.CONCAT(_.CALL(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
-            nexthinkquery = "&platform=windows&query=(select (name last_ip_address group_name last_logged_on_user os_version_and_architecture device_manufacturer number_of_cpus cpu_model number_of_cores logical_cpu_number cpu_frequency total_ram number_of_graphical_cards graphical_card_ram last_system_boot last_logon_time bios_serial_number device_model ) (from device (where device (eq name (string %1))) ))&format=xml";
+            nexthinkBaseURL = _.CONCAT(_.CALL(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
+            nexthinkQuery = "&platform=windows&query=(select (name last_ip_address group_name last_logged_on_user os_version_and_architecture device_manufacturer number_of_cpus cpu_model number_of_cores logical_cpu_number cpu_frequency total_ram number_of_graphical_cards graphical_card_ram last_system_boot last_logon_time bios_serial_number device_model ) (from device (where device (eq name (string %1))) ))&format=xml";
 
-            colorwarning = "#F20012";
-            colorcheck = "#1B709F";
+            colorWarning = "#F20012";
+            colorCheck = "#1B709F";
 
             hostname = _.VAL(_.CALL(this, _env.hlobj, "GetValue", _.ARGS.Val("ComputerDetail.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
 
@@ -385,8 +385,8 @@ namespace TranslatedProgram
                 return;
             }
 
-            nexthinkurl = _.CONCAT(nexthinkbaseurl, _.UCASE(hostname), nexthinkquery);
-            nexthinkurl = "https://httpbin.org/get";
+            nexthinkURL = _.CONCAT(nexthinkBaseURL, _.UCASE(hostname), nexthinkQuery);
+            nexthinkURL = "https://httpbin.org/get";
 
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 
@@ -394,7 +394,7 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.NOW()).Val(VBScriptConstants.vbGeneralDate))), this, _env.textboxgeneralcalltime, "Text");
+                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.NOW()).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralCallTime, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
@@ -404,7 +404,7 @@ namespace TranslatedProgram
                 _.CALL(this, xmlhttp, "setOption", _.ARGS.Val((Int16)2).Val((Int16)13056));
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkurl, v => { nexthinkurl = v; }).Val(false).Val(_.CALL(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALL(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
+                _.CALL(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALL(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALL(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
                 _.CALL(this, xmlhttp, "send");
@@ -429,13 +429,13 @@ namespace TranslatedProgram
             });
 
             _.HANDLEERROR(errOn, () => {
-                xmldoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
+                xmlDoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET("false", this, xmldoc, "async");
+                _.SET("false", this, xmlDoc, "async");
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmldoc, "load", _.ARGS.Val(_.CALL(this, xmlhttp, "responseXML")));
+                _.CALL(this, xmlDoc, "load", _.ARGS.Val(_.CALL(this, xmlhttp, "responseXML")));
             });
 
             //Error Handling
@@ -461,7 +461,7 @@ namespace TranslatedProgram
             });
             IEnumerator enumerationContent = null;
             _.HANDLEERROR(errOn, () => {
-                enumerationContent = _.ENUMERABLE(_.CALL(this, xmldoc, "SelectNodes", _.ARGS.Val("//table/header/*"))).GetEnumerator();
+                enumerationContent = _.ENUMERABLE(_.CALL(this, xmlDoc, "SelectNodes", _.ARGS.Val("//table/header/*"))).GetEnumerator();
             });
             while (true)
             {
@@ -472,7 +472,7 @@ namespace TranslatedProgram
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {
-                    curnode = _.OBJ(_.CALL(this, xmldoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
+                    curnode = _.OBJ(_.CALL(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
                 });
                 _.HANDLEERROR(errOn, () => {
                     _.CALL(this, dict, "Add", _.ARGS.Val(_.CALL(this, n, "Text")).Val(_.CALL(this, curnode, "Text")));
@@ -499,59 +499,59 @@ namespace TranslatedProgram
             //fill textboxes
             //LabelNName.Text = dict.key("name")
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("name"))), this, _env.textboxgeneralhostname, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("name"))), this, _env.TextBoxGeneralHostName, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_ip_address"))), this, _env.textboxgenerallastip, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_ip_address"))), this, _env.TextBoxGeneralLastIP, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_manufacturer"))), this, _env.textboxlgeneraldevicemanufacturer, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_manufacturer"))), this, _env.TextBoxlGeneralDeviceManufacturer, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_model"))), this, _env.textboxgeneraldeviceproductversion, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_model"))), this, _env.TextBoxGeneralDeviceProductVersion, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("os_version_and_architecture"))), this, _env.textboxgeneralos, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("os_version_and_architecture"))), this, _env.TextBoxGeneralOS, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("group_name"))), this, _env.textboxgeneralgroupname, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("group_name"))), this, _env.TextBoxGeneralGroupName, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_system_boot")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.textboxgenerallastboottime, "Text");
+                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_system_boot")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastBootTime, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_logon_time")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.textboxgenerallastlogon, "Text");
+                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_logon_time")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastLogon, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_logged_on_user"))), this, _env.textboxgeneraldevicetype, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_logged_on_user"))), this, _env.TextBoxGeneralDeviceType, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("bios_serial_number"))), this, _env.textboxgeneralbiosserialnumber, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("bios_serial_number"))), this, _env.TextBoxGeneralBIOSSerialNumber, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_model"))), this, _env.textboxgeneralcpumodel, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_model"))), this, _env.TextBoxGeneralCPUModel, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cpus"))), this, _env.textboxgeneralnumberofcpus, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cpus"))), this, _env.TextBoxGeneralNumberOfCPUs, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("logical_cpu_number"))), this, _env.textboxgeneralnumberoflogprocs, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("logical_cpu_number"))), this, _env.TextBoxGeneralNumberOfLogProcs, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cores"))), this, _env.textboxgeneralnumberofcores, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cores"))), this, _env.TextBoxGeneralNumberOfCores, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.CONCAT(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_frequency")), " MHz"), this, _env.textboxgeneralcpufreq, "Text");
+                _.SET(_.CONCAT(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_frequency")), " MHz"), this, _env.TextBoxGeneralCPUFreq, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.textboxgeneraltotalram, "Text");
+                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.TextBoxGeneralTotalRAM, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_graphical_cards"))), this, _env.textboxgeneralnumberofgraphcards, "Text");
+                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_graphical_cards"))), this, _env.TextBoxGeneralNumberOfGraphCards, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.textboxgeneralgraphcardram, "Text");
+                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.TextBoxGeneralGraphCardRAM, "Text");
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
@@ -560,230 +560,230 @@ namespace TranslatedProgram
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object buttongeneralinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object buttonl1checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object buttonnetworkhealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object buttonsecuritycompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object buttonswhealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object buttontechnicalinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxgeneralinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxl1checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxnetworkhealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxsecuritycompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxsoftwareoshealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object groupboxtechnicalinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonGeneralInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonL1Checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonNetworkHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonSecurityCompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonSWHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ButtonTechnicalInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxGeneralInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxL1Checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxNetworkHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxSecurityCompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxSoftwareOSHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object GroupBoxTechnicalInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlobj { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgincomingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgincomingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgincomingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgincomingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgnetresponsetime24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgnetresponsetime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgoutgoingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgoutgoingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgoutgoingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgoutgoingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgwebrequestsize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgwebrequestsize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgwebresponsesize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthavgwebresponsesize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthincomingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthincomingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthincomingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthincomingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthnetavaillevel24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthnetavaillevel7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthoutgoingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthoutgoingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthoutgoingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthoutgoingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthsuccesshttprequestratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthsuccesshttprequestratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthsuccessnetconnectionratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthsuccessnetconnectionratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthtotalnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthtotalnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoknetworkhealthtotalwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighcputime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighcputimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighiotime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighiotimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighmemorytime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfohighmemorytimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfosystemdrivecap7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfosystemdrivecapnow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfosystemdrivefreespace7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfosystemdrivefreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfototaldriveusage7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfototaldriveusagenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imagenoktechnicalinfototalfreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgincomingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgincomingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgincomingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgincomingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgnetresponsetime24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgnetresponsetime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgoutgoingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgoutgoingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgoutgoingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgoutgoingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgwebrequestsize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgwebrequestsize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgwebresponsesize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthavgwebresponsesize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthincomingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthincomingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthincomingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthincomingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthnetavaillevel24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthnetavaillevel7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthoutgoingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthoutgoingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthoutgoingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthoutgoingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthsuccesshttprequestratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthsuccesshttprequestratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthsuccessnetconnectionratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthsuccessnetconnectionratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthtotalnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthtotalnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthtotalwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoknetworkhealthtotalwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighcputime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighcputimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighiotime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighiotimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighmemorytime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfohighmemorytimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfosystemdrivecap7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfosystemdrivecapnow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfosystemdrivefreespace7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfosystemdrivefreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfototaldriveusage7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfototaldriveusagenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfototalfreespace7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object imageoktechnicalinfototalfreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgIncomingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgIncomingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgNetResponseTime24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgNetResponseTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgWebRequestSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgWebRequestSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgWebResponseSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthAvgWebResponseSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthIncomingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthIncomingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthIncomingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthIncomingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthNetAvailLevel24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthNetAvailLevel7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthOutgoingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthOutgoingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthOutgoingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthOutgoingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthSuccessNetConnectionRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthTotalNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthTotalNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKNetworkHealthTotalWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighCPUTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighCPUTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighIOTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighIOTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighMemoryTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoHighMemoryTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoSystemDriveCap7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoSystemDriveCapNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoSystemDriveFreeSpace7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoSystemDriveFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoTotalDriveUsage7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoTotalDriveUsageNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageNOKTechnicalInfoTotalFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgIncomingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgIncomingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgIncomingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgIncomingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgNetResponseTime24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgNetResponseTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgOutgoingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgOutgoingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgWebRequestSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgWebRequestSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgWebResponseSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthAvgWebResponseSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthIncomingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthIncomingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthIncomingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthIncomingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthNetAvailLevel24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthNetAvailLevel7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthOutgoingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthOutgoingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthOutgoingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthOutgoingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthSuccessHTTPRequestRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthSuccessNetConnectionRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthSuccessNetConnectionRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthTotalNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthTotalNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthTotalWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKNetworkHealthTotalWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighCPUTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighCPUTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighIOTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighIOTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighMemoryTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoHighMemoryTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoSystemDriveCap7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoSystemDriveCapNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoSystemDriveFreeSpace7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoSystemDriveFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoTotalDriveUsage7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoTotalDriveUsageNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoTotalFreeSpace7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object ImageOKTechnicalInfoTotalFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object model { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabcontrolnexthink { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagegeneralinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagel1checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagenetworkhealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagesecuritycompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagesoftwareoshealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object tabpagetechnicalinfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxchecklist2url { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralbiosserialnumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralcalltime { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralcpufreq { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralcpumodel { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneraldeviceproductversion { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneraldevicetype { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralgraphcardram { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralgroupname { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralhostname { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgenerallastboottime { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgenerallastip { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgenerallastlogon { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralnumberofcores { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralnumberofcpus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralnumberofgraphcards { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralnumberoflogprocs { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneralos { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxgeneraltotalram { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1antivirus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1antivirus2 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1antivirus3 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1bluescreen24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1bluescrren7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1bootlogon2 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1bootlogon3 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1browser { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1collaboration { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1cpu24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1cpu7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1defender { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1freespace { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1hardreset24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1hardreset7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1osuptodate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1speicher24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxl1speicher7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxlgeneraldevicemanufacturer { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgincomingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgincomingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgincomingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgincomingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgnetresponsetime24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgnetresponsetime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgoutgoingnetbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgoutgoingnetbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgoutgoingwebbitrate24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgoutgoingwebbitrate7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgwebrequestsize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgwebrequestsize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgwebresponsesize24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthavgwebresponsesize7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthincomingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthincomingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthincomingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthincomingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthnetavaillevel24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthnetavaillevel7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthoutgoingnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthoutgoingnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthoutgoingwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthoutgoingwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthsuccesshttprequestratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthsuccesshttprequestratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthsuccessnetconnectionratio24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthsuccessnetconnectionratio7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthtotalnettaffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthtotalnettaffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthtotalwebtraffic24hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxnetworkhealthtotalwebtraffic7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantispywareall { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantispywarename { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantispywarenumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantispywarertp { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantispywareuptodate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantivirusall { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantivirusname { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantivirusnumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantivirusrtp { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceantivirusuptodate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycompliancefirewallall { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycompliancefirewallname { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycompliancefirewallnumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycompliancefirewallrtp { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceinetsecuritysettings { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsecuritycomplianceuseraccountstatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthlastsystemupdate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthnumberofapps { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthnumberofbins { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthnumberofexes { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthoscomplience { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthosendofsupport { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthosie11support { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthosname { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthosversionarchitecture { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthwin10ready { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthwindowsupdatestatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxsoftwareoshealthwmistatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighcputime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighcputimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighiotime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighiotimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighmemorytime7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfohighmemorytimenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfosystemdrivecap7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfosystemdrivecapnow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfosystemdrivefreespace7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfosystemdrivefreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototaldrivecap7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototaldrivecapnow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototaldriveusage7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototaldriveusagenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototalfreespace7days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object textboxtechnicalinfototalfreespacenow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabControlNexthink { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageGeneralInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageL1Checklist { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageNetworkHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageSecurityCompliance { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageSoftwareOSHealth { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TabPageTechnicalInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxChecklist2URL { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralBIOSSerialNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralCallTime { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralCPUFreq { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralCPUModel { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralDeviceProductVersion { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralDeviceType { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralGraphCardRAM { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralGroupName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralHostName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralLastBootTime { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralLastIP { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralLastLogon { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralNumberOfCores { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralNumberOfCPUs { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralNumberOfGraphCards { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralNumberOfLogProcs { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralOS { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxGeneralTotalRAM { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Antivirus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Antivirus2 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Antivirus3 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Bluescreen24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Bluescrren7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1BootLogon2 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1BootLogon3 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Browser { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Collaboration { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1CPU24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1CPU7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Defender { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1FreeSpace { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1HardReset24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1HardReset7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1OSUpToDate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Speicher24 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxL1Speicher7 { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxlGeneralDeviceManufacturer { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgIncomingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgIncomingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgIncomingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgIncomingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgNetResponseTime24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgNetResponseTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgOutgoingNetBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgOutgoingWebBitrate7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgWebRequestSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgWebRequestSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgWebResponseSize24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthAvgWebResponseSize7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthIncomingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthIncomingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthIncomingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthIncomingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthNetAvailLevel24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthNetAvailLevel7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthOutgoingNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthOutgoingNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthOutgoingWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthOutgoingWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthSuccessHTTPRequestRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthSuccessNetConnectionRatio24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthSuccessNetConnectionRatio7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthTotalNetTaffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthTotalNetTaffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthTotalWebTraffic24Hours { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxNetworkHealthTotalWebTraffic7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntispywareAll { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntispywareName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntispywareNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntispywareRTP { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntispywareUpToDate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntivirusAll { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntivirusName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntivirusNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntivirusRTP { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceAntivirusUpToDate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceFirewallAll { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceFirewallName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceFirewallNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceFirewallRTP { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceInetSecuritySettings { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSecurityComplianceUserAccountStatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthLastSystemUpdate { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthNumberOfApps { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthNumberOfBins { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthNumberOfExes { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthOSComplience { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthOSEndOfSupport { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthOSIE11Support { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthOSName { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthOSVersionArchitecture { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthWin10Ready { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthWindowsUpdateStatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxSoftwareOSHealthWMIStatus { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighCPUTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighCPUTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighIOTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighIOTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighMemoryTime7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoHighMemoryTimeNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoSystemDriveCap7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoSystemDriveCapNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoSystemDriveFreeSpace7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoSystemDriveFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalDriveCap7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalDriveCapNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalDriveUsage7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalDriveUsageNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalFreeSpace7Days { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object TextBoxTechnicalInfoTotalFreeSpaceNow { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

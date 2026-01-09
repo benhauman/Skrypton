@@ -70,7 +70,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "if (_.IF(true))",
                 "{",
-                "_.CALL(this, _env.wscript, \"Echo\", _.ARGS.Val(true)); //Comment",
+                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(true)); //Comment",
                 "}",
             };
             myAssert.AreEqual(
@@ -124,7 +124,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "public object f1(ref object x)",
+                "public object F1(ref object x)",
                 "{",
                 "    object F1_retVal = null;",
                 "    if (_.IF(true))",
@@ -145,7 +145,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}",
                 "    return F1_retVal;",
                 "}",
-                "public object f2(ref object x)",
+                "public object F2(ref object x)",
                 "{",
                 "    return null;",
                 "}"
@@ -604,7 +604,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				";
                 var expected = new[]
                 {
-                    "public object f1(ref object a)",
+                    "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
                     "    bool ifResult;",
@@ -619,7 +619,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    }",
                     "    return F1_retVal;",
                     "}",
-                    "public object f2(ref object a)",
+                    "public object F2(ref object a)",
                     "{",
                     "    return null;",
                     "}"
@@ -649,7 +649,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				";
                 var expected = new[]
                 {
-                    "public object f1(ref object a)",
+                    "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
                     "    if (_.IF(_.CALL(this, _outer, \"F2\", _.ARGS.Val(_.CALL(this, a, \"Name\")))))",
@@ -657,7 +657,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    }",
                     "    return F1_retVal;",
                     "}",
-                    "public object f2(ref object a)",
+                    "public object F2(ref object a)",
                     "{",
                     "    return null;",
                     "}"
@@ -690,7 +690,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				";
                 var expected = new[]
                 {
-                    "public object f1(ref object a)",
+                    "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
                     "    bool ifResult;",
@@ -705,7 +705,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    }",
                     "    return F1_retVal;",
                     "}",
-                    "public object f2(object a)",
+                    "public object F2(object a)",
                     "{",
                     "    return null;",
                     "}"
@@ -737,7 +737,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				";
                 var expected = new[]
                 {
-                    "public object f1(ref object a)",
+                    "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
                     "    var errOn = _.GETERRORTRAPPINGTOKEN();",
@@ -755,7 +755,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    _.RELEASEERRORTRAPPINGTOKEN(errOn);",
                     "    return F1_retVal;",
                     "}",
-                    "public object f2(object a)",
+                    "public object F2(object a)",
                     "{",
                     "    return null;",
                     "}"
@@ -789,7 +789,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				";
                 var expected = new[]
                 {
-                    "public object f1(ref object a)",
+                    "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
                     "    var errOn = _.GETERRORTRAPPINGTOKEN();",
@@ -803,7 +803,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    _.RELEASEERRORTRAPPINGTOKEN(errOn);",
                     "    return F1_retVal;",
                     "}",
-                    "public object f2(object a)",
+                    "public object F2(object a)",
                     "{",
                     "    return null;",
                     "}"
