@@ -151,7 +151,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             //	.Where(s => s != "")
             //	.ToArray();
             //base.AreEqualStringArray(TestName, CSFileExtension,
-            //             expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray(),
+            //             expected.SplitLines().Select(s => s.Trim()).Where(s => s != "").ToArray(),
             //	output.Select(s => s.Trim()).Where(s => s != "").ToArray()
             //);
         }

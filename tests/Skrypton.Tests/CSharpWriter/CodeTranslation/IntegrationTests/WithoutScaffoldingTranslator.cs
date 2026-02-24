@@ -37,7 +37,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string[] output = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies)
                 .Select(s => RenderTranslatedStatement(s))
                 .ToArray();
-            return output; // later: string.Join("\r\n", output)
+            return output; // later: string.Join(NewLineNormalized, output)
         }
         private static string RenderTranslatedStatement(TranslatedStatement s)
         {

@@ -148,7 +148,7 @@ namespace Skrypton.Tests.Application
             }
 
             string workItemName = "Script";// TestContext.TestName;
-            string generated_vbs_actual = parsed_output.ToString();
+            string generated_vbs_actual = parsed_output.ToString().NormalizeLineEndings();
 
             string failed_text = null;
             string storedFile;
@@ -160,7 +160,7 @@ namespace Skrypton.Tests.Application
             }
 
             var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(tst.TestCulture, scriptContent);
-            var xml_actual = ToXml(outermostBlock, x => failed_text = x);
+            string xml_actual = ToXml(outermostBlock, x => failed_text = x);
 
             if (xml_expected != xml_actual)
             {
@@ -171,7 +171,7 @@ namespace Skrypton.Tests.Application
 
             Console.WriteLine("translating...");
             var csLines = DefaultCSharpTranslation.GetTranslatedStatements(tst.TestCulture, scriptContent, externalDependencies);
-            string translated_cs_actual = string.Join("\r\n", csLines);
+            string translated_cs_actual = string.Join(NewLineNormalized, csLines).NormalizeLineEndings();
 
             //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
             //
@@ -196,7 +196,7 @@ namespace Skrypton.Tests.Application
                 int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
                 string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
                 string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
-                failed_text = $"C# translation failed. See 'Output' for more information. \r\nMismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'. storedFile:" + storedFile;
+                failed_text = $"C# translation failed. See 'Output' for more information. {NewLineNormalized}Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) {NewLineNormalized}E:'{snippetE}' {NewLineNormalized}A:'{snippetA}'. storedFile:" + storedFile;
             }
 
             if (!string.IsNullOrEmpty(failed_text))
@@ -251,7 +251,7 @@ namespace Skrypton.Tests.Application
                 xWriter.Flush();
             }
 
-            return text_buffer.ToString();
+            return text_buffer.ToString().NormalizeLineEndings();
         }
 
 

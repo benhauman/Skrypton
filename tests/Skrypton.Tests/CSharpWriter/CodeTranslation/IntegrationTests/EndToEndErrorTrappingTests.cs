@@ -401,7 +401,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            return value.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n').Skip(1).Select(v => v.Trim());
+            return value.NormalizeLineEndings().SplitLines().Skip(1).Select(v => v.Trim());
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Skrypton.Tests
             return SaveContentToFile(null, "winMergeStarter.bat", startCommand);
         }
 
+        public const char NewLineNormalized = '\n';
+
 
         private string SaveContentToFile(string subdir, string fileName, string content)
         {
@@ -89,41 +91,42 @@ namespace Skrypton.Tests
             string[] output = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
 
             string expectedCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            string[] arr_expected = expectedCs.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string[] arr_expected = expectedCs.SplitLines().Select(s => s.Trim()).Where(s => s != "").ToArray();
             string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string text_a_raw = string.Join("\r\n", output);
+            string text_a_raw = string.Join(NewLineNormalized, output);
             TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
         }
-        protected void TestCSharpCodeTranslationWithoutScaffoldingTranslator(string vbsSource, string[] arr_expected) // TODO remove 'WithoutScaffoldingTranslator'
-        {
-            string expectedCs = string.Join("\r\n", arr_expected);
-            //myAssert.AreEqual(
-            //expected.Select(s => s.Trim()).ToArray(),
-            var output = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
-            //);
-            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string text_a_raw = string.Join("\r\n", output);
-            TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
-        }
+        //protected void TestCSharpCodeTranslationWithoutScaffoldingTranslator(string vbsSource, string[] arr_expected) // TODO remove 'WithoutScaffoldingTranslator'
+        //{
+        //    string expectedCs = string.Join(NewLineNormalized, arr_expected);
+        //    //myAssert.AreEqual(
+        //    //expected.Select(s => s.Trim()).ToArray(),
+        //    var output = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+        //    //);
+        //    string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
+        //    string text_a_raw = string.Join(NewLineNormalized, output);
+        //    TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
+        //}
         private void TestCSharpCodeTranslationCore(string vbsSource, string text_a_raw, string[] arr_expected, string[] arr_actual, string expectedCs) // TODO remove 'WithoutScaffoldingTranslator'
         {
 
             string chainName = TestName;
             string fileSuffix = CSFileExtension;
             //    AreEqualStringArray(TestName, CSFileExtension,
-            //string[] arr_expected = expectedCs.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(s => s.Trim()).Where(s => s != "").ToArray();
+            //string[] arr_expected = expectedCs.SplitLines().Select(s => s.Trim()).Where(s => s != "").ToArray();
             //string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
-            //string text_a_raw = string.Join("\r\n", output);
+            //string text_a_raw = string.Join(NewLineNormalized, output);
             //    );
             //}
             //private void AreEqualStringArray(string chainName, string fileSuffix, string[] arr_expected, string[] arr_actual)
             //{
             string workItemName = "Script";// TestContext.TestName;
-            string text_e = arr_expected == null ? null : string.Join("\r\n", arr_expected);
-            string text_a = arr_actual == null ? null : string.Join("\r\n", arr_actual);
+            string text_e = arr_expected == null ? null : string.Join(NewLineNormalized, arr_expected).NormalizeLineEndings();
+            string text_a = arr_actual == null ? null : string.Join(NewLineNormalized, arr_actual).NormalizeLineEndings();
             if (arr_expected != null)
             {
-                if (text_e != text_a)
+                var cmp = string.CompareOrdinal(text_e, text_a);
+                if (cmp != 0)
                 {
                     int? diffAtIndex = null;
                     if (arr_actual != null)
@@ -136,7 +139,8 @@ namespace Skrypton.Tests
                             }
                             else
                             {
-                                if (arr_expected[idx] != arr_actual[idx])
+                                var cmpItem = string.CompareOrdinal(arr_expected[idx], arr_actual[idx]);
+                                if (arr_expected[idx].NormalizeLineEndings() != arr_actual[idx].NormalizeLineEndings())
                                 {
                                     diffAtIndex = idx;
                                     break;

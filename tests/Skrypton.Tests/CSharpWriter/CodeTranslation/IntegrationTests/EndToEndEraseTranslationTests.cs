@@ -112,7 +112,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     return F1_retVal;
                 }";
             myAssert.AreEqual(
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).Select(v => v.Trim()).ToArray(),
+                expected.SplitLines().Skip(1).Select(v => v.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }

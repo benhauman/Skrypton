@@ -19,9 +19,10 @@
         {
             using (TextReader textReader = LoadResourceString(typeFromResourceAssembly, resourceName))
             {
-                return textReader.ReadToEnd();
+                return textReader.ReadToEnd().NormalizeLineEndings();
             }
         }
+
         public static TextReader LoadResourceString(Type typeFromResourceAssembly, string resourceName)
         {
             Stream resourceStream = GetResourceStream(typeFromResourceAssembly, resourceName);

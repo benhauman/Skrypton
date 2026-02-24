@@ -383,7 +383,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}";
             myAssert.AreEqual(
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+                expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }
@@ -421,7 +421,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return _.VAL(x);
 				}";
             myAssert.AreEqual(
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+                expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }
@@ -456,7 +456,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}";
             myAssert.AreEqual(
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+                expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }
@@ -503,7 +503,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return Render_retVal;
 				}";
             myAssert.AreEqual(
-                expected.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+                expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             );
         }
