@@ -76,7 +76,7 @@ WScript.Echo xmlhttp.responseText
         {
             // Create COM object
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
 #pragma warning restore CA1416 // Validate platform compatibility
             dynamic xmlhttp = Activator.CreateInstance(t);
 
@@ -101,7 +101,7 @@ WScript.Echo xmlhttp.responseText
         {
             // Create COM object
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
 #pragma warning restore CA1416 // Validate platform compatibility
             object xmlhttp = Activator.CreateInstance(t);
 
@@ -142,7 +142,7 @@ WScript.Echo xmlhttp.responseText
         {
             // Create COM object
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type t = Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
 #pragma warning restore CA1416 // Validate platform compatibility
             object comObj = Activator.CreateInstance(t);
 
@@ -197,8 +197,7 @@ WScript.Echo xmlhttp.responseText
         private static void Test_Xml_IDispatch()
         {
 #pragma warning disable CA1416 // Validate platform compatibility
-            //Type domType = Type.GetTypeFromProgID("Msxml2.DOMDocument"); // IXMLDOMDocument
-            Type domType = typeof(MyMsxml2DOMDocument);
+            Type domType = typeof(MyMsxml2DOMDocument); // Type.GetTypeFromProgID("Msxml2.DOMDocument"); // IXMLDOMDocument
 
 #pragma warning restore CA1416 // Validate platform compatibility
             object xmlDoc = Activator.CreateInstance(domType);
