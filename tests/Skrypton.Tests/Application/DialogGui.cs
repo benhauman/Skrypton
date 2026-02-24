@@ -197,7 +197,9 @@ WScript.Echo xmlhttp.responseText
         private static void Test_Xml_IDispatch()
         {
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type domType = Type.GetTypeFromProgID("Msxml2.DOMDocument");
+            //Type domType = Type.GetTypeFromProgID("Msxml2.DOMDocument"); // IXMLDOMDocument
+            Type domType = typeof(MyMsxml2DOMDocument);
+
 #pragma warning restore CA1416 // Validate platform compatibility
             object xmlDoc = Activator.CreateInstance(domType);
 

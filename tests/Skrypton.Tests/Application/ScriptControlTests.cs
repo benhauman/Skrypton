@@ -74,7 +74,7 @@ createobject("Excel.Application") _CustomerTest_Transcat	278
 CreateObject("helpLine.hlcontrols.HLHelperPFA	_CustomerTest_Gazprom	7
 CreateObject("Internetexplorer.application") 	_CustomerTest_PmcsHl2	276
 CreateObject("MAPI.Session") _CustomerTest_KVB	116
-CreateObject("Msxml2.DOMDocument") _CustomerTest_SwissGrid	349
+CreateObject("Msxml2.DOMDocument") _CustomerTest_SwissGrid	349  => IXMLDOMDocument ("Msxml2.DOMDocument.3.0" or "Msxml2.DOMDocument.6.0", "Msxml2.FreeThreadedDOMDocument.3.0", "Msxml2.FreeThreadedDOMDocument.6.0"); CLSID_DOMDocument30, F6D90F11-9C73-11D3-B32E-00C04F990BB4/ 88d96a05-f192-11d4-a65f-0040963251e5	F6D90F12-9C73-11D3-B32E-00C04F990BB4/ 88d96a06-f192-11d4-a65f-0040963251e5, Header and IDL files (C/C++): msxml2.h, msxml2.idl, msxml6.h, msxml6.idl
 CreateObject("MSXML2.XMLHTTP") _CustomerTest_RatioData	692
 CreateObject("NetworkPort") objPort.SetValu	_CustomerTest_Storck	6
 CreateObject("Offsetting") _CustomerTest_Rhomberg	3

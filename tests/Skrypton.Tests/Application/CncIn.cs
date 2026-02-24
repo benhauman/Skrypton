@@ -128,6 +128,7 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
+            provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
             return provider;
         }
 
