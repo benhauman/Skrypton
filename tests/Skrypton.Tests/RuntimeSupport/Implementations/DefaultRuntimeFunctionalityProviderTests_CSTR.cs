@@ -119,7 +119,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             [TestMethod, MyTheory, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, string expectedResult)
             {
-                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR((DateTime)value));
+                myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR((DateTime)value).NormalizeUnicodeNarrowNoBreakSpace());
             }
 
             public static IEnumerable<object[]> SuccessData
