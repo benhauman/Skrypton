@@ -253,6 +253,13 @@ namespace Skrypton.Tests
                 }
             }
             {
+                if (expected is string str_e && actual is string str_a)
+                {
+                    Assert.AreEqual(str_e, str_a);
+                    return;
+                }
+            }
+            {
                 Assert.AreEqual(expected, actual);
             }
         }
