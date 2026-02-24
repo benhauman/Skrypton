@@ -151,11 +151,12 @@ namespace Skrypton.Tests.Application
             string generated_vbs_actual = parsed_output.ToString();
 
             string failed_text = null;
+            string storedFile;
 
             if (generated_vbs_expected != generated_vbs_actual)
             {
-                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
-                failed_text = "VBS generation failed. See 'Output' for more information.";
+                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
+                failed_text = "VBS generation failed. See 'Output' for more information. storedFile:" + storedFile;
             }
 
             var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(tst.TestCulture, scriptContent);
@@ -163,8 +164,8 @@ namespace Skrypton.Tests.Application
 
             if (xml_expected != xml_actual)
             {
-                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
-                failed_text = "Xml generation failed. See 'Output' for more information.";
+                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
+                failed_text = "Xml generation failed. See 'Output' for more information. storedFile:" + storedFile;
             }
 
 
@@ -191,11 +192,11 @@ namespace Skrypton.Tests.Application
             //string translated_cs_actual = translated_buffer.ToString();
             if (translated_cs_expected != translated_cs_actual)
             {
-                tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
+                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
                 int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
                 string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
                 string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
-                failed_text = $"C# translation failed. See 'Output' for more information. \r\nMismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'";
+                failed_text = $"C# translation failed. See 'Output' for more information. \r\nMismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'. storedFile:" + storedFile;
             }
 
             if (!string.IsNullOrEmpty(failed_text))

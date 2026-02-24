@@ -19,7 +19,7 @@ namespace Skrypton.Tests
         public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
         public TestContext TestContext { get; set; }
         protected string TestName => this.TestContext!.TestName;
-        internal void SaveExpectedActualFiles(string testName, string workItemName
+        internal string SaveExpectedActualFiles(string testName, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml
             )
@@ -34,13 +34,13 @@ namespace Skrypton.Tests
             string actualDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "actual");
             string startCommand = "\"C:\\Program Files\\WinMerge\\WinMergeU.exe\" \"" + expectedDirPath + "\" \"" + actualDirPath + "\"";
 
-            SaveContentToFile(null, "winMergeStarter.bat", startCommand);
+            return SaveContentToFile(null, "winMergeStarter.bat", startCommand);
         }
 
 
-        private void SaveContentToFile(string subdir, string fileName, string content)
+        private string SaveContentToFile(string subdir, string fileName, string content)
         {
-            if (this.TestContext != null)
+            //if (this.TestContext != null)
             {
                 string subdirPath = this.TestContext.TestRunResultsDirectory;
                 if (subdir != null)
@@ -67,6 +67,7 @@ namespace Skrypton.Tests
                 System.IO.File.WriteAllText(filePath, content);
 
                 this.TestContext.AddResultFile(filePath);
+                return filePath;
             }
         }
 
