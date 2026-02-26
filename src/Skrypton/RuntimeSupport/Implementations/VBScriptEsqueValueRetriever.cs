@@ -421,15 +421,24 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return VBScriptConstants.ZeroDate;
             if (o == DBNull.Value)
                 throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent);
-            if (o is DateTime)
-                return (DateTime)o;
+            if (o is DateTime valDateTime)
+                return valDateTime;
 
             double? numericValue;
             try
             {
-                numericValue = Convert.ToDouble(o);
+
+                if (o is string valString && double.TryParse(valString, NumberStyles.Any, _culture, out double doubleValue))
+                {
+                    numericValue = doubleValue;
+                }
+                else
+                {
+                    //numericValue = null; // not a number, we'll try to parse as a date string below
+                    numericValue = Convert.ToDouble(o); //throws a FormatException => TryParse
+                }
             }
-            catch
+            catch (FormatException)
             {
                 numericValue = null;
             }
@@ -645,7 +654,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new ManagedEnumeratorWrapper(duckTypedEnumeratorBuilder(o));
 
             // Give up and throw the VBScript error message
-            throw new ObjectNotCollectionException("Object not a collection");
+            throw new ObjectNotCollectionException($"Object not a collection. Type:{o.GetType().FullName}");
         }
 
         private static Func<object, IEnumerator> TryToGetEnumeratorBuilder(Type type)
@@ -1031,7 +1040,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 };
             }
 
-            if (target is IReflect)
+            if (target is IReflect targetIReflect)
             {
                 var ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
                 return (invokeTarget, invokeArguments) =>
@@ -1043,7 +1052,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     var invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.OptionalParamBinding;
                     if (allowPrivateAccess)
                         invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
-                    return ((IReflect)invokeTarget).InvokeMember(
+                    return (targetIReflect).InvokeMember(
                         optionalName ?? "[DISPID=0]",
                         invokeAttributes,
                         binder: null,
@@ -1058,16 +1067,69 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // TODO: There is a problem here with things like "source.Get(abc)" because it could be a call to a method "Get" on the source reference or it could be that "Get"
             // is a property that we need to retrieve and then make a member-less request against
+            //string defaultMemberName = null;
+            //if (optionalName == null)
+            //{
+            //    defaultMemberName = TryGetDefaultMethodName(targetType); // ? [DefaultMember("Item")] or [DispId(0)] [IsDefault]
+            //    if (defaultMemberName != null)
+            //    {
+            //        //optionalName = defaultMemberName;
+            //    }
+            //}
+
             MethodInfo method;
             if (optionalName == null)
+            {
                 method = GetDefaultGetMethods(targetType, argumentsArray.Length, allowPrivateAccess).FirstOrDefault();
+            }
             else
+            {
                 method = GetNamedGetMethods(targetType, optionalName, argumentsArray.Length, allowPrivateAccess).FirstOrDefault();
+            }
             if (method == null)
-                throw new MissingMemberException(targetType.FullName, optionalName);
+            {
+                if (optionalName == null)
+                {
+                    //.throw new MissingMemberException(targetType.FullName);
+                    //throw new IDispatchAccess.IDispatchAccessException($"Missing default member for type '{targetType.FullName}.'", target, null, -99, IDispatchAccess.CommonErrors.DISP_E_MEMBERNOTFOUND);
+                    throw new ObjectDoesNotSupportPropertyOrMemberException($"Missing default member for type '{targetType.FullName}.'", null);
+                }
+                else
+                {
+                    string argstext = "";
+                    for (int aix = 0; aix < argumentsArray.Length; aix++)
+                    {
+                        if (aix > 0)
+                        {
+                            argstext += ", ";
+                        }
+                        var argval = argumentsArray[aix];
+                        string marker = "";
+                        if (argval != null && (argval is string || argval is DateTime || argval is Guid))
+                        {
+                            marker = "\"";
+                        }
+
+                        argstext += marker + argval + marker;
+                    }
+
+                    throw new MissingMemberException(targetType.FullName, $"Name:{optionalName}({argstext})");
+                }
+            }
 
             return GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
         }
+        //private static string TryGetDefaultMethodName(Type targetType)
+        //{
+        //    // ? [DefaultMember("Item")] or [DispId(0)] [IsDefault] for multiples
+        //    DefaultMemberAttribute aDefaultMember = targetType.GetCustomAttribute<DefaultMemberAttribute>();
+        //    if (aDefaultMember != null)
+        //    {
+        //        return aDefaultMember.MemberName;
+        //    }
+
+        //    return null;
+        //}
 
         private GetInvoker GenerateCompiledLinqExpressionGetInvoker(Type targetType, MethodInfo method, int numberOfArguments)
         {
@@ -1729,7 +1791,9 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // In the cases where multiple options are identified, sort by the most specific (members declared on the current type those declared further
             // down in the inheritance tree)
-            return allOptions.OrderByDescending(m => GetMemberInheritanceDepth(m, type)).ToArray();
+            if (allOptions.Length > 1)
+                return allOptions.OrderByDescending(m => GetMemberInheritanceDepth(m, type)).ToArray();
+            return allOptions;
         }
 
         private bool ParameterIsObjectParamsArray(ParameterInfo parameter)
@@ -1918,35 +1982,38 @@ namespace Skrypton.RuntimeSupport.Implementations
             // an ambiguous match (both the property member and the property getter method member will be identified as having [DispId(0)], but they both refere to the
             // same thing).
 
-            var allProperties = type.GetProperties();
-            var dispIdZeroProperties = allProperties.Where(m => MemberHasDispIdZero(m));
+            PropertyInfo[] allProperties = type.GetProperties();
+            PropertyInfo[] dispIdZeroProperties = allProperties.Where(m => MemberHasDispIdZero(m)).ToArray();
 
-            var methodsRelatingToDispIdZeroProperties = dispIdZeroProperties
+            MethodInfo[] methodsRelatingToDispIdZeroProperties = dispIdZeroProperties
                 .SelectMany(p =>
                 {
-                    var relatedMethods = new List<MethodInfo>();
+                    List<MethodInfo> relatedMethods = new List<MethodInfo>();
                     if (p.CanRead)
                         relatedMethods.Add(p.GetGetMethod());
                     if (p.CanWrite)
                         relatedMethods.Add(p.GetSetMethod());
                     return relatedMethods;
-                });
+                }).ToArray();
 
-            var allMethods = type.GetMethods();
-            var dispIdZeroMethodsThatAreNotRelatedToDispIdZeroProperties = allMethods
+            MethodInfo[] allMethods = type.GetMethods();
+            MethodInfo[] dispIdZeroMethodsThatAreNotRelatedToDispIdZeroProperties = allMethods
                 .Where(m => MemberHasDispIdZero(m))
-                .Except(methodsRelatingToDispIdZeroProperties);
+                .Except(methodsRelatingToDispIdZeroProperties)
+                .ToArray();
 
-            var otherDispIdZeroMembers = type.GetMembers()
+            MemberInfo[] otherDispIdZeroMembers = type.GetMembers()
                 .Where(m => MemberHasDispIdZero(m))
                 .Except(allProperties)
-                .Except(allMethods);
+                .Except(allMethods)
+                .ToArray();
 
-            return otherDispIdZeroMembers
+            var rslt = otherDispIdZeroMembers
                 .Cast<MemberInfo>()
                 .Concat(dispIdZeroProperties)
                 .Concat(dispIdZeroMethodsThatAreNotRelatedToDispIdZeroProperties)
-                .Count() > 1;
+                .ToArray();
+            return rslt.Length > 1;
         }
 
         private sealed class InvokerCacheKey

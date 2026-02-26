@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
+    // "Msxml2.ServerXMLHTTP.6.0"
     [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     //[Guid("F5078F35-C551-11D3-89B9-0000F81FE221")]   // CLSID_ServerXMLHTTP60
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal sealed class MyServerXMLHTTP60 // : IServerXMLHTTP60
+    internal sealed class MyServerXMLHTTP60 : IDispatchBase // : IServerXMLHTTP60
     {
         /*
             Summary Table
@@ -54,10 +58,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 method = method,
                 url = url,
-                isasync = (bool)async,
+                isasync = (bool)ToBool(async),
                 user = (string)user,
                 password = (string)password
             };
+        }
+
+        private static bool ToBool(object value)
+        {
+            if (value is short shortValue)
+                return shortValue != 0;
+            if (value is int intValue)
+                return intValue != 0;
+            return (bool)value;
         }
 
         // void setRequestHeader(BSTR header, BSTR value)
@@ -130,13 +143,16 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
 ";
 
+        [DispId(0x00000005)]
+        public void send()
+        {
+            send(null);
+        }
         // void send(VARIANT body)
         [DispId(0x00000005)]
-        public void send(object body = null)
+        public void send(object body) // body can be null
         {
             _request.body = body;
-
-
             _response = new MyResponse() { responseXML = SampleResponseXml };
         }
         private MyResponse _response;
@@ -162,12 +178,24 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [DispId(0x00000007)]
         public string responseText
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return _response.responseText;
+            }
         }
 
         // long status
+        // it is a standard HTTP status code (e.g., 200, 404, 500, etc.).
+        // Represents the HTTP status code returned by a request.
+        // The results of this method are valid only after the send method has been successfully completed.
         [DispId(0x00000008)]
-        public int status { get { throw new NotImplementedException(); } }
+        public int status
+        {
+            get
+            {
+                return _response.status;
+            }
+        }
 
         // BSTR statusText
         [DispId(0x00000009)]

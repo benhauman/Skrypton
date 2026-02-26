@@ -76,7 +76,7 @@ WScript.Echo xmlhttp.responseText
         {
             // Create COM object
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+            Type t = typeof(MyServerXMLHTTP60);//Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
 #pragma warning restore CA1416 // Validate platform compatibility
             dynamic xmlhttp = Activator.CreateInstance(t);
 
@@ -94,7 +94,7 @@ WScript.Echo xmlhttp.responseText
 
             Console.WriteLine("Status: " + xmlhttp.status);
             Console.WriteLine("Response:");
-            Console.WriteLine(xmlhttp.responseText);
+            Console.WriteLine("responseText:" + xmlhttp.responseText);
         }
 
         static void TestCS_IDispatch()

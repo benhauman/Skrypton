@@ -729,7 +729,20 @@ namespace Skrypton.RuntimeSupport.Implementations
             _randomSeed = new Random(_randomSeed).Next();
             return (float)(new Random(_randomSeed)).NextDouble();
         }
-        public object ROUND(object value) { throw new NotImplementedException(); }
+        public object ROUND(object value) => ROUNDCore(value, 0);
+        public object ROUND(object value, object decimals)
+        {
+            int nDecimals = GetAsNumber<int>(decimals, "'ROUND'", Convert.ToInt32);
+            return ROUNDCore(value, nDecimals);
+        }
+        private object ROUNDCore(object value, int nDecimals)
+        {
+            decimal decimalValue = GetAsNumber<decimal>(value, "'ROUND'", Convert.ToDecimal);
+            if (nDecimals < 0)
+                throw new ArgumentOutOfRangeException(nameof(nDecimals), "Must be >= 0 to match VBScript.");
+
+            return Math.Round(decimalValue, nDecimals, MidpointRounding.ToEven);
+        }
         public object SGN(object value) { throw new NotImplementedException(); }
         public object SIN(object value)
         {
@@ -1994,11 +2007,20 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (_objectCreateFactories.TryGetValue(classProgId, out var objectFactory))
                 return HandlePostInitializationHandler(classProgId, objectFactory());
 
-            return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId));
+            try
+            {
+                Type comType = Type.GetTypeFromProgID(classProgId, true);
+
+                return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to create com object for '{classProgId}'", ex);
+            }
         }
-        private static object CreateComObject(string classProgId)
+        private static object CreateComObject(string classProgId, Type comType)
         {
-            MyComProxy proxy = MyComProxy.CreateComProxy(classProgId);//"Scripting.Dictionary"
+            MyComProxy proxy = MyComProxy.CreateComProxy(classProgId, comType);//"Scripting.Dictionary"
             return proxy._comInstance;
             //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
         }

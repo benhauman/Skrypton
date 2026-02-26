@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -99,8 +101,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 return new MyXMLDOMNodeList(null);
             //try
             //{
-                XmlNodeList nodes = _xmldoc.SelectNodes(queryString);
-                return new MyXMLDOMNodeList(nodes);
+            XmlNodeList nodes = _xmldoc.SelectNodes(queryString);
+            return new MyXMLDOMNodeList(nodes);
             //}
             //catch
             //{
@@ -123,17 +125,17 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 return new MyXMLDOMElement(root);
             }
 
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //[DispId(40)]
-        //[param: In]
-        //[param: MarshalAs(UnmanagedType.Interface)]
-        //set;
+            //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+            //[DispId(40)]
+            //[param: In]
+            //[param: MarshalAs(UnmanagedType.Interface)]
+            //set;
+        }
     }
-}
 
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [DefaultMember("Item")]
-    internal sealed class MyXMLDOMNodeList
+    internal sealed class MyXMLDOMNodeList : IEnumerable
     {
         private readonly XmlNodeList _nodes;
 
@@ -174,6 +176,21 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 return new MyXMLDOMNode(_nodes[index]);
             }
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            List<MyXMLDOMNode> resultNodes = new List<MyXMLDOMNode>();
+            var xe = _nodes.GetEnumerator();
+            if (xe != null)
+            {
+                while (xe.MoveNext())
+                {
+                    resultNodes.Add(new MyXMLDOMNode((XmlNode)xe.Current));
+                }
+            }
+
+            return resultNodes.GetEnumerator();
+        }
     }
 
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
@@ -209,12 +226,12 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             //try
             //{
-                XmlNode node = _element.SelectSingleNode(queryString);
+            XmlNode node = _element.SelectSingleNode(queryString);
 
-                if (node == null)
-                    return null;
+            if (node == null)
+                return null;
 
-                return new MyXMLDOMNode(node);
+            return new MyXMLDOMNode(node);
             //}
             //catch
             //{

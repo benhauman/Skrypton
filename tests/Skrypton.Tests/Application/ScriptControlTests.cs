@@ -62,31 +62,31 @@ scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName
 TODO:
 On Error Resume Next
     what, db, dialogid
-ok:64bit! CreateObject("VBScript.RegExp")
-CreateObject("Acceptance")       _CustomerTest_VRPayment21, 386
-CreateObject("ADODB.Command")    _CustomerTest_DeutschePost, 337
-CreateObject("ADODB.Connection") _CustomerTest_Mainova,	2
-CreateObject("ALA") _CustomerTest_Minfoline2021Mar,	297
-CreateObject("CardAccountVRP") _CustomerTest_VRPayment21	391
-CreateObject("ChangeTemplate") _CustomerTest_AYSTest 84
-CreateObject("DYMO.DymoAddIn") _CustomerTest_Webasto	3
-createobject("Excel.Application") _CustomerTest_Transcat	278
-CreateObject("helpLine.hlcontrols.HLHelperPFA	_CustomerTest_Gazprom	7
-CreateObject("Internetexplorer.application") 	_CustomerTest_PmcsHl2	276
-CreateObject("MAPI.Session") _CustomerTest_KVB	116
-CreateObject("Msxml2.DOMDocument") _CustomerTest_SwissGrid	349  => IXMLDOMDocument ("Msxml2.DOMDocument.3.0" or "Msxml2.DOMDocument.6.0", "Msxml2.FreeThreadedDOMDocument.3.0", "Msxml2.FreeThreadedDOMDocument.6.0"); CLSID_DOMDocument30, F6D90F11-9C73-11D3-B32E-00C04F990BB4/ 88d96a05-f192-11d4-a65f-0040963251e5	F6D90F12-9C73-11D3-B32E-00C04F990BB4/ 88d96a06-f192-11d4-a65f-0040963251e5, Header and IDL files (C/C++): msxml2.h, msxml2.idl, msxml6.h, msxml6.idl
-CreateObject("MSXML2.XMLHTTP") _CustomerTest_RatioData	692
-CreateObject("NetworkPort") objPort.SetValu	_CustomerTest_Storck	6
-CreateObject("Offsetting") _CustomerTest_Rhomberg	3
-CreateObject("Outlook.Application") _CustomerTest_PmcsHl2	1185
-CreateObject("Profile") _CustomerTest_SwissGrid	1694
-CreateObject("Scripting.FileSystemObject")  _CustomerTest_Gazprom	3
-CreateObject("Scriptlet.TypeLib") _CustomerTest_SwarovskiNeu	1425
-CreateObject("System.Collections.ArrayList") _CustomerTest_BerlinerFw20211004AL	1316
-CreateObject("WbemScripting.SWbemDateTime")		_CustomerTest_DFSnDL	428
-CreateObject("WinHttp.WinHttpRequest.5.1")	_CustomerTest_HDM	448
-CreateObject("Word.Application")  _CustomerTest_BerlinerFw	393
-CreateObject("WScript.Shell") _CustomerTest_Tamedia	567
+ok:64bit! CreateObject("VBScript.RegExp") - not on linux! C:\Windows\SysWOW64\vbscript.dll   (on 64‑bit Windows); .tlb Embedded. TYPENAME(CreateObject("VBScript.RegExp")), IRegExp2
+!!! CreateObject("Acceptance")       _CustomerTest_VRPayment21, 386
+!!! CreateObject("ADODB.Command")    _CustomerTest_DeutschePost, 337
+!!! CreateObject("ADODB.Connection") _CustomerTest_Mainova,	2
+!!! CreateObject("ALA") _CustomerTest_Minfoline2021Mar,	297
+!!! CreateObject("CardAccountVRP") _CustomerTest_VRPayment21	391
+!!! CreateObject("ChangeTemplate") _CustomerTest_AYSTest 84
+!!! CreateObject("DYMO.DymoAddIn") _CustomerTest_Webasto	3
+!!! createobject("Excel.Application") _CustomerTest_Transcat	278
+!!! CreateObject("helpLine.hlcontrols.HLHelperPFA	_CustomerTest_Gazprom	7
+!!! CreateObject("Internetexplorer.application") 	_CustomerTest_PmcsHl2	276
+!!! CreateObject("MAPI.Session") _CustomerTest_KVB	116
+!!! CreateObject("Msxml2.DOMDocument") _CustomerTest_SwissGrid	349  => IXMLDOMDocument ("Msxml2.DOMDocument.3.0" or "Msxml2.DOMDocument.6.0", "Msxml2.FreeThreadedDOMDocument.3.0", "Msxml2.FreeThreadedDOMDocument.6.0"); CLSID_DOMDocument30, F6D90F11-9C73-11D3-B32E-00C04F990BB4/ 88d96a05-f192-11d4-a65f-0040963251e5	F6D90F12-9C73-11D3-B32E-00C04F990BB4/ 88d96a06-f192-11d4-a65f-0040963251e5, Header and IDL files (C/C++): msxml2.h, msxml2.idl, msxml6.h, msxml6.idl
+!!! CreateObject("MSXML2.XMLHTTP") _CustomerTest_RatioData	692
+!!! CreateObject("NetworkPort") objPort.SetValu	_CustomerTest_Storck	6
+!!! CreateObject("Offsetting") _CustomerTest_Rhomberg	3
+!!! CreateObject("Outlook.Application") _CustomerTest_PmcsHl2	1185
+!!! CreateObject("Profile") _CustomerTest_SwissGrid	1694
+!!! CreateObject("Scripting.FileSystemObject")  _CustomerTest_Gazprom	3
+!!! CreateObject("Scriptlet.TypeLib") _CustomerTest_SwarovskiNeu	1425
+!!! CreateObject("System.Collections.ArrayList") _CustomerTest_BerlinerFw20211004AL	1316
+!!! CreateObject("WbemScripting.SWbemDateTime")		_CustomerTest_DFSnDL	428
+!!! CreateObject("WinHttp.WinHttpRequest.5.1")	_CustomerTest_HDM	448
+!!! CreateObject("Word.Application")  _CustomerTest_BerlinerFw	393
+!!! CreateObject("WScript.Shell") _CustomerTest_Tamedia	567
 
      */
 }

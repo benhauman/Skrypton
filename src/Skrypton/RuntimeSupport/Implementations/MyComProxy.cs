@@ -22,9 +22,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             _comType = comType;
             _comInstance = comInstanceInstance;
         }
-        internal static MyComProxy CreateComProxy(string progId)
+        internal static MyComProxy CreateComProxy(string progId, Type comType)
         {
-            Type comType = Type.GetTypeFromProgID(progId, true);
             object comInstance = Activator.CreateInstance(comType);
             if (IDispatchAccess.ImplementsIDispatch(comInstance))
             {

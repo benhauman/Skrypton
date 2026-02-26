@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
@@ -157,10 +158,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 cNamedArgs = 0;
             }
 
-            // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
-            // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)
-            // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
-            int SizeOfNativeVariant = Marshal.SizeOf<VARIANT>(); // 24 and not 16
+            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 and not 16
 
             var variantsToClear = new List<IntPtr>();
             IntPtr rgvarg;
@@ -437,9 +435,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
     }
 
-
+    /*
     [StructLayout(LayoutKind.Sequential)]
-    public struct VARIANT
+    public struct zzzzVARIANT
     {
         public ushort vt;
         public ushort reserved1;
@@ -481,5 +479,64 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return v;
         }
+
+        public long llVal =>
+            MemoryMarshal.Read<long>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data1, 1)));
+
+        public double dblVal =>
+            MemoryMarshal.Read<double>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data1, 1)));
+
+        public int lVal =>
+            MemoryMarshal.Read<int>(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data1, 1)));
+    }
+    */
+    [StructLayout(LayoutKind.Explicit)]
+    [DebuggerDisplay("{VariantTypeEnum}:")]
+    public struct VARIANT
+    {
+        // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
+        // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)
+        // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
+        public static int MarshalSizeOf = 24; // Marshal.SizeOf<VARIANT>(); // 24 and not 16 because of the 8-byte alignment of the largest field (long/double) in the struct, which causes padding in the native layout.
+
+        internal VarEnum VariantTypeEnum => (VarEnum)vt;
+
+        // The VARTYPE (2 bytes)
+        [FieldOffset(0)]
+        public ushort vt;
+
+        [FieldOffset(2)]
+        public ushort reserved1;
+
+        [FieldOffset(4)]
+        public ushort reserved2;
+
+        [FieldOffset(6)]
+        public ushort reserved3;
+
+        // The value union begins at offset 8
+        [FieldOffset(8)]
+        public long llVal;                 // VT_I8, VT_UI8, VT_INT, VT_UINT
+
+        [FieldOffset(8)]
+        public int lVal;                   // VT_I4, VT_INT
+
+        [FieldOffset(8)]
+        public byte bVal;                  // VT_UI1
+
+        [FieldOffset(8)]
+        public short iVal;                 // VT_I2
+
+        [FieldOffset(8)]
+        public float fltVal;               // VT_R4
+
+        [FieldOffset(8)]
+        public double dblVal;              // VT_R8
+
+        [FieldOffset(8)]
+        public short boolVal;              // VARIANT_BOOL (-1=true, 0=false)
+
+        [FieldOffset(8)]
+        public IntPtr ptr;                 // BSTR, IDispatch*, IUnknown*, arrays, etc.
     }
 }
