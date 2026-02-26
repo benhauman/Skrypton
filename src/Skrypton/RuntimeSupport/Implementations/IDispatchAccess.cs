@@ -248,7 +248,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             finally
             {
                 foreach (var variantToClear in variantsToClear)
-                    VariantClear(variantToClear);
+                {
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Ubuntu: [DllNotFoundException] Unable to load shared library 'OleAuth32.dll' or one of its dependencies.
+                    {
+                        VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
+                    }
+                    Marshal.FreeHGlobal(variantToClear); // Free the memory block
+                }
 
                 foreach (var memoryAllocationToFree in memoryAllocationsToFree)
                     Marshal.FreeCoTaskMem(memoryAllocationToFree);
