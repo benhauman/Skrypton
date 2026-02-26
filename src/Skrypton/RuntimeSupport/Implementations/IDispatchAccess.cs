@@ -163,7 +163,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             var variantsToClear = new List<IntPtr>();
             IntPtr rgvarg;
             if (args.Length == 0)
+            {
                 rgvarg = IntPtr.Zero;
+            }
             else
             {
                 // We need to allocate enough memory to store a variant for each argument (and then populate this memory)
@@ -268,15 +270,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         // Free VARIANT array
         private static void FreeArgs(IntPtr ptr, int count)
         {
-            int size = Marshal.SizeOf<VARIANT>();
+            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 and not 16
             for (int i = 0; i < count; i++)
             {
-                IntPtr variantToClear = IntPtr.Add(ptr, i * size);
+                IntPtr variantToClear = IntPtr.Add(ptr, i * SizeOfNativeVariant);
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Ubuntu: [DllNotFoundException] Unable to load shared library 'OleAuth32.dll' or one of its dependencies.
                 {
                     VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
                 }
-                VariantClear(variantToClear);
+                Marshal.FreeHGlobal(variantToClear); // Free the memory block
             }
             Marshal.FreeCoTaskMem(ptr);
         }
