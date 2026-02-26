@@ -141,9 +141,9 @@ WScript.Echo xmlhttp.responseText
         static void Test_IDispatch_Invoke()
         {
             // Create COM object
-#pragma warning disable CA1416 // Validate platform compatibility
+//#pragma warning disable CA1416 // Validate platform compatibility
             Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
-#pragma warning restore CA1416 // Validate platform compatibility
+//#pragma warning restore CA1416 // Validate platform compatibility
             object comObj = Activator.CreateInstance(t);
 
             // Cast to IDispatch
@@ -557,7 +557,7 @@ WScript.Echo xmlhttp.responseText
                 throw new InvalidOperationException($"HR:{hrRet}");
             }
 
-            FreeArgs(dispParams.rgvarg, args.Length);
+            IDispatchAccess.FreeDISPPARAMS(dispParams);
             return result;
         }
 
@@ -576,21 +576,6 @@ WScript.Echo xmlhttp.responseText
 
             return ptr;
         }
-
-        // Free VARIANT array
-        static void FreeArgs(IntPtr ptr, int count)
-        {
-            int size = Marshal.SizeOf<VARIANT>();
-            for (int i = 0; i < count; i++)
-            {
-                IntPtr p = IntPtr.Add(ptr, i * size);
-                VariantClear(p);
-            }
-            Marshal.FreeCoTaskMem(ptr);
-        }
-
-        [DllImport("OleAut32.dll")]
-        static extern int VariantClear(IntPtr pvarg);
     }
 
     [ComVisible(true)]

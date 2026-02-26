@@ -34,7 +34,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static bool ImplementsIDispatch(object source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source is IDispatch;
         }
@@ -46,11 +46,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static T CallMethod<T>(object source, string name, params object[] args)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             return Invoke<T>(source, InvokeFlags.DISPATCH_METHOD, name, GetDispId(source, name), args);
         }
@@ -58,11 +58,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static object CallMethod(object source, string name, params object[] args)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             return CallMethod<object>(source, name, args);
         }
@@ -70,7 +70,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static T GetProperty<T>(object source, string name)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
 
@@ -80,7 +80,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static object GetProperty(object source, string name)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
 
@@ -93,7 +93,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static int GetDispId(object source, string name)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Null/blank name specified");
 
@@ -121,7 +121,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static T Invoke<T>(object source, InvokeFlags invokeFlags, string memberName, int dispId, params object[] args)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if ((invokeFlags != InvokeFlags.DISPATCH_METHOD)
             && (invokeFlags != InvokeFlags.DISPATCH_PROPERTYGET)
             && (invokeFlags != InvokeFlags.DISPATCH_PROPERTYPUT)
@@ -129,10 +129,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             && (invokeFlags != (InvokeFlags.DISPATCH_METHOD | InvokeFlags.DISPATCH_PROPERTYGET)))
             {
                 // It's acceptable to specify both DISPATCH_METHOD and DISPATCH_PROPERTYGET together
-                throw new ArgumentOutOfRangeException("invokeFlags");
+                throw new ArgumentOutOfRangeException(nameof(invokeFlags));
             }
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             var memoryAllocationsToFree = new List<IntPtr>();
             IntPtr rgdispidNamedArgs;
@@ -259,6 +259,26 @@ namespace Skrypton.RuntimeSupport.Implementations
                 foreach (var memoryAllocationToFree in memoryAllocationsToFree)
                     Marshal.FreeCoTaskMem(memoryAllocationToFree);
             }
+        }
+
+        public static void FreeDISPPARAMS(ComTypes.DISPPARAMS dispParams)
+        {
+            FreeArgs(dispParams.rgvarg, dispParams.cArgs);
+        }
+        // Free VARIANT array
+        private static void FreeArgs(IntPtr ptr, int count)
+        {
+            int size = Marshal.SizeOf<VARIANT>();
+            for (int i = 0; i < count; i++)
+            {
+                IntPtr variantToClear = IntPtr.Add(ptr, i * size);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Ubuntu: [DllNotFoundException] Unable to load shared library 'OleAuth32.dll' or one of its dependencies.
+                {
+                    VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
+                }
+                VariantClear(variantToClear);
+            }
+            Marshal.FreeCoTaskMem(ptr);
         }
 
         private static CommonErrors GetErrorMessageForHResult(int hrRet)
@@ -408,7 +428,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 : base(message, innerException)
             {
                 if (target == null)
-                    throw new ArgumentNullException("target");
+                    throw new ArgumentNullException(nameof(target));
                 if (string.IsNullOrWhiteSpace(memberNameIfSpecified) && (dispIdIfKnown == null))
                     throw new ArgumentException("At least one of memberNameIfSpecified and dispIdIfKnown must be specified");
                 if (!Enum.IsDefined(typeof(CommonErrors), errorType))
