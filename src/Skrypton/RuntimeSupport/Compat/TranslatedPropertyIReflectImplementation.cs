@@ -27,7 +27,7 @@ namespace Skrypton.RuntimeSupport.Compat
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
-            var properties = base.GetProperties(bindingAttr);
+            PropertyInfo[] properties = base.GetProperties(bindingAttr);
             if (IsBindingRequestFor(bindingAttr, BindingFlags.Public | BindingFlags.Instance))
                 properties = _representedPublicProperties.Concat(properties).ToArray();
             if (IsBindingRequestFor(bindingAttr, BindingFlags.NonPublic | BindingFlags.Instance))
@@ -51,7 +51,7 @@ namespace Skrypton.RuntimeSupport.Compat
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
         {
             // See notes in GetProperty method above whose signature includes binder, args, modifiers, etc. as to why we are ignoring them here
-            var representedProperty = TryToGetRepresentedProperty(name, invokeAttr);
+            PropertyInfo representedProperty = TryToGetRepresentedProperty(name, invokeAttr);
             if (representedProperty != null)
             {
                 MethodInfo method;
@@ -66,10 +66,10 @@ namespace Skrypton.RuntimeSupport.Compat
 
         private PropertyInfo TryToGetRepresentedProperty(string name, BindingFlags bindingAttr)
         {
-            var stringComparison = IsBindingRequestFor(bindingAttr, BindingFlags.IgnoreCase)
+            StringComparison stringComparison = IsBindingRequestFor(bindingAttr, BindingFlags.IgnoreCase)
                 ? StringComparison.OrdinalIgnoreCase
                 : StringComparison.Ordinal;
-            var representedProperty = _representedPublicProperties.FirstOrDefault(p => p.Name.Equals(name, stringComparison));
+            PropertyInfo representedProperty = _representedPublicProperties.FirstOrDefault(p => p.Name.Equals(name, stringComparison));
             if (representedProperty == null)
             {
                 if (IsBindingRequestFor(bindingAttr, BindingFlags.NonPublic))
@@ -98,7 +98,7 @@ namespace Skrypton.RuntimeSupport.Compat
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            var bindingFlags = BindingFlags.InvokeMethod | BindingFlags.Instance;
+            BindingFlags bindingFlags = BindingFlags.InvokeMethod | BindingFlags.Instance;
             if (accessibility == Accessibility.Public)
                 bindingFlags = bindingFlags | BindingFlags.Public;
             else if (accessibility == Accessibility.Private)
@@ -110,19 +110,19 @@ namespace Skrypton.RuntimeSupport.Compat
                 .Select(m => new { Method = m, TranslatedPropertyAttribute = GetTranslatedPropertyAttributeIfAny(m) })
                 .Where(m => m.TranslatedPropertyAttribute != null)
                 .GroupBy(m => m.TranslatedPropertyAttribute.Name);
-            var representedProperties = new List<PropertyInfo>();
+            List<PropertyInfo> representedProperties = new List<PropertyInfo>();
             foreach (var methodGroup in propertyTranslatedMethodGroups)
             {
                 if (methodGroup.Count() > 2)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ")");
-                var getters = methodGroup.Where(m => m.Method.ReturnType != typeof(void));
+                var getters = methodGroup.Where(m => m.Method.ReturnType != typeof(void)).ToArray();
                 if (getters.Count() > 1)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ") that have a non-void return type (the getters)");
-                var setters = methodGroup.Where(m => m.Method.ReturnType == typeof(void));
+                var setters = methodGroup.Where(m => m.Method.ReturnType == typeof(void)).ToArray();
                 if (setters.Count() > 1)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ") that have a void return type (the setters)");
-                var getterMethod = (getters.Any() ? getters.Single().Method : null);
-                var setterMethod = (setters.Any() ? setters.Single().Method : null);
+                MethodInfo getterMethod = (getters.Length != 0 ? getters.Single().Method : null);
+                MethodInfo setterMethod = (setters.Length != 0 ? setters.Single().Method : null);
                 representedProperties.Add(
                     new TranslatedPropertyInfo(
                         methodGroup.Key,
@@ -146,8 +146,8 @@ namespace Skrypton.RuntimeSupport.Compat
             if (method == null)
                 throw new ArgumentNullException(nameof(method));
 
-            var translatedPropertyAttributes = method.GetCustomAttributes(typeof(TranslatedProperty), true).Cast<TranslatedProperty>();
-            if (translatedPropertyAttributes.Count() > 1)
+            TranslatedProperty[] translatedPropertyAttributes = method.GetCustomAttributes(typeof(TranslatedProperty), true).Cast<TranslatedProperty>().ToArray();
+            if (translatedPropertyAttributes.Length > 1)
                 throw new ArgumentException("Method " + method.Name + " has multiple TranslatedProperty attributes - invalid");
             return translatedPropertyAttributes.SingleOrDefault();
         }
@@ -176,18 +176,18 @@ namespace Skrypton.RuntimeSupport.Compat
                     throw new ArgumentException("The getter (if non-null) must not have a return type of void");
                 if ((getter != null) && (setter != null))
                 {
-                    var getterParameters = getter.GetParameters();
+                    ParameterInfo[] getterParameters = getter.GetParameters();
                     if (getterParameters.Length != (setterParameters.Length - 1))
                         throw new ArgumentException("Where both getter and setter are non-null, the setter must have one more parameter than the gettter");
 
                     // Ensure setter's last parameter is the same type as the getter's return type
-                    var setterLastParameterType = setterParameters.Last().ParameterType;
+                    Type setterLastParameterType = setterParameters.Last().ParameterType;
                     if (setterLastParameterType.IsByRef)
                         setterLastParameterType = setterLastParameterType.GetElementType(); // Use the element type in case the setter's parameter is passed by reference or pointer
                     if (setterLastParameterType != getter.ReturnType)
                         throw new ArgumentException("Where both getter and setter are non-null, the setter's last parameter's type must match the getter's return type");
 
-                    for (var index = 0; index < getterParameters.Length; index++)
+                    for (int index = 0; index < getterParameters.Length; index++)
                     {
                         if (getterParameters[index].ParameterType != setterParameters[index].ParameterType)
                             throw new ArgumentException("Where both getter and setter are non-null, the parameter types must be consistent");

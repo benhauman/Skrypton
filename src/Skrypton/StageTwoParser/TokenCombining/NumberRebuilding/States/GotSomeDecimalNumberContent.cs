@@ -6,12 +6,12 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
 {
-    public class GotSomeDecimalNumberContent : IAmLookingForNumberContent
+    internal sealed class GotSomeDecimalNumberContent : IAmLookingForNumberContent
     {
         public static GotSomeDecimalNumberContent Instance { get { return new GotSomeDecimalNumberContent(); } }
         private GotSomeDecimalNumberContent() { }
 
-        public TokenProcessResult Process(IEnumerable<IToken> tokens, PartialNumberContent numberContent)
+        public TokenProcessResult Process(IReadOnlyCollection<IToken> tokens, PartialNumberContent numberContent)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

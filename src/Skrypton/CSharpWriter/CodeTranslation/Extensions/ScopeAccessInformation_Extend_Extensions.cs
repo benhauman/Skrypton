@@ -37,6 +37,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                         v.Name.LineIndex,
                         blocksScopeLocation
                     )))
+                    .ToArray()
             );
             if (scopeDefiningParent != null)
             {
@@ -47,7 +48,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                             v.LineIndex,
                             blocksScopeLocation
                         )
-                    )
+                    ).ToArray()
                 );
             }
             var constants = scopeInformation.Constants.AddRange(
@@ -58,6 +59,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                         v.Name.LineIndex,
                         blocksScopeLocation
                     )))
+                    .ToArray()
             );
 
             return new ScopeAccessInformation(
@@ -72,18 +74,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                         .Where(b => b is ClassBlock)
                         .Cast<ClassBlock>()
                         .Select(c => new ScopedNameToken(c.Name.ContentUpperX(), c.Name.LineIndex, ScopeLocationOptions.OutermostScope)) // These are always OutermostScope
+                        .ToArray()
                 ),
                 scopeInformation.Functions.AddRange(
                     blocks
                         .Where(b => (b is FunctionBlock) || (b is SubBlock))
                         .Cast<AbstractFunctionBlock>()
                         .Select(b => new ScopedNameToken(b.Name.ContentUpperX(), b.Name.LineIndex, blocksScopeLocation))
+                        .ToArray()
                 ),
                 scopeInformation.Properties.AddRange(
                     blocks
                         .Where(b => b is PropertyBlock)
                         .Cast<PropertyBlock>()
                         .Select(p => new ScopedNameToken(p.Name.ContentUpperX(), p.Name.LineIndex, ScopeLocationOptions.WithinClass)) // These are always WithinClass
+                        .ToArray()
                 ),
                 constants,
                 variables,

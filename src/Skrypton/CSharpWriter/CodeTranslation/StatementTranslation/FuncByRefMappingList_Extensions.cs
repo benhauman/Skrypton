@@ -84,7 +84,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         r => nameRewriter.GetMemberAccessTokenName(r.From) == nameRewriter.GetMemberAccessTokenName(nameToken)
                     );
                     return (referenceRewriteDetailsIfApplicable == null) ? t : new DoNotRenameNameToken(referenceRewriteDetailsIfApplicable.To.Name.ToUpperX(), t.LineIndex);
-                }),
+                }).ToArray(),
                 statementBlock.CallPrefix
             );
         }
@@ -114,7 +114,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         r => nameRewriter.GetMemberAccessTokenName(r.From) == nameRewriter.GetMemberAccessTokenName(nameToken)
                     );
                     return (referenceRewriteDetailsIfApplicable == null) ? t : new DoNotRenameNameToken(referenceRewriteDetailsIfApplicable.To.Name.ToUpperX(), t.LineIndex);
-                })
+                }).ToArray()
             );
         }
 

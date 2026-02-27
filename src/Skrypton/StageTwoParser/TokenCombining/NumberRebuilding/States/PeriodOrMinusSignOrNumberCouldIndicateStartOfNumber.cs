@@ -6,12 +6,12 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
 {
-    public class PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber : IAmLookingForNumberContent
+    internal sealed class PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber : IAmLookingForNumberContent
     {
         public static PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber Instance { get { return new PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber(); } }
         private PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber() { }
 
-        public TokenProcessResult Process(IEnumerable<IToken> tokens, PartialNumberContent numberContent)
+        public TokenProcessResult Process(IReadOnlyCollection<IToken> tokens, PartialNumberContent numberContent)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

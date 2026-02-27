@@ -89,7 +89,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             var operatorSegmentsWithIndexes = segments
                 .Select((segment, index) => new { Segment = segment as OperationExpressionSegment, Index = index })
-                .Where(s => s.Segment != null);
+                .Where(s => s.Segment != null)
+                .ToArray();
             if (operatorSegmentsWithIndexes.Count() > 1)
             {
                 throw new ArgumentException("Expressions with more than one operators are invalid (they must be broken down further), this one has " + operatorSegmentsWithIndexes.Count());
@@ -342,7 +343,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     returnRequirements,
                     segments[0].AllTokens.First().LineIndex
                 ),
-                resultLeft.VariablesAccessed.AddRange(resultRight.VariablesAccessed)
+                resultLeft.VariablesAccessed.AddRange(resultRight.VariablesAccessed.ToArray())
             );
         }
 
@@ -713,7 +714,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // then the target still needs rewriting from "Err.Raise" to "_.RAISEERROR", but it will have to go through the CALL function. Same goes for "Err.Clear".
             TranslatedStatementContentDetailsWithContentType specialErrorHandlingFunctionStatementIfApplicable;
             NameToken target;
-            var memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1);
+            var memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1).ToArray();
             if (targetIsErrReference)
             {
                 string specialErrorHandlingFunctionNameIfApplicable;
@@ -782,7 +783,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 if ((targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Function) || (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Property))
                 {
-                    memberAccessors = new[] { target }.Concat(memberAccessors);
+                    memberAccessors = new[] { target }.Concat(memberAccessors).ToArray();
                     if (targetReferenceDetails.ScopeLocation == ScopeLocationOptions.OutermostScope)
                     {
                         target = new ProcessedNameToken(_outerRefName.Name.ToUpperX(), target.LineIndex);
@@ -843,8 +844,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             var supportFunctionMatches = typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests)
                 .GetMethods(BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
-                .Where(m => m.Name.Equals(builtInFunctionToken.Content, StringComparison.OrdinalIgnoreCase));
-            if (!supportFunctionMatches.Any())
+                .Where(m => m.Name.Equals(builtInFunctionToken.Content, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            if (supportFunctionMatches.Length == 0)
             {
                 throw new NotSupportedException("Unsupported BuiltInFunctionToken content: " + builtInFunctionToken.Content);
             }
@@ -1412,7 +1414,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // access or a function/property call then it would ignore whether the (0, 1) arguments were for array access or function/property.
             // - Note: This RefIfArray call relies upon the extension method that takes a param array instead of an IEnumerable
             var translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
-                .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false));
+                .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false)).ToArray();
             return new TranslatedStatementContentDetails(
                 string.Format(CultureInfo.InvariantCulture,
                     ".RefIfArray({0}, {1})",
@@ -1423,7 +1425,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     )
                 ),
                 possibleByRefTarget.VariablesAccessed.AddRange(
-                    translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed)
+                    translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray()
                 )
             );
         }
@@ -1935,13 +1937,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // The even segments must be values and the odd segments must all be concat operators
-            var evenSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 0);
+            var evenSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 0).ToArray();
             if (evenSegments.Any(s => s is OperationExpressionSegment))
             {
                 return null;
             }
 
-            var oddSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 1);
+            var oddSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 1).ToArray();
             if (!oddSegments.All(s => s is OperationExpressionSegment) || oddSegments.OfType<OperationExpressionSegment>().Any(s => s.Token.Content != "&"))
             {
                 return null;

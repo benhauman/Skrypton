@@ -21,7 +21,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// It is recommended to pass any tokens that are thought to be one Statement through the StatementHandler, which will break down the
         /// content into multiple Statements (if there are any AbstractEndOfStatementToken tokens).
         /// </summary>
-        public Statement(IEnumerable<IToken> tokens, CallPrefixOptions callPrefix)
+        public Statement(IReadOnlyCollection<IToken> tokens, CallPrefixOptions callPrefix)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -314,8 +314,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                         var lineIndexForInsertedCloseBrace = remainingTokens.Length != 0 ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
                         if (bracketDepth != 0)
                             throw new InvalidOperationException("Invalid content - mismatched brackets ending on line " + (lineIndexForInsertedCloseBrace + 1));
-                        var remainingTokensAfterBracketedContent = remainingTokens.Skip(bracketedContent.Count);
-                        if (remainingTokensAfterBracketedContent.Any() && (remainingTokensAfterBracketedContent.First() is MemberAccessorOrDecimalPointToken))
+                        var remainingTokensAfterBracketedContent = remainingTokens.Skip(bracketedContent.Count).ToArray();
+                        if (remainingTokensAfterBracketedContent.Length != 0 && (remainingTokensAfterBracketedContent.First() is MemberAccessorOrDecimalPointToken))
                         {
                             // If there is a member accessor (a ".") after the bracketed content, then the brackets were a necessary part of a value-returning
                             // function call and not the "optional" brackets which mean that an argument was being forced to be passed ByVal.

@@ -7,7 +7,7 @@ using System.Linq;
 namespace Skrypton.CSharpWriter.Lists
 {
     [DebuggerDisplay("{Count}")]
-    public class ImmutableList<T> : IEnumerable<T>
+    public class ImmutableList<T> : IReadOnlyCollection<T>
     {
         private readonly Node _tail;
         private readonly IValueValidator<T> _optionalValueValidator;
@@ -93,11 +93,11 @@ namespace Skrypton.CSharpWriter.Lists
             );
         }
 
-        public ImmutableList<T> AddRange(IEnumerable<T> values)
+        public ImmutableList<T> AddRange(IReadOnlyCollection<T> values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
-            if (!values.Any())
+            if (values.Count == 0)
                 return this;
 
             // AddRange is easy for the same reason as Add
@@ -111,7 +111,7 @@ namespace Skrypton.CSharpWriter.Lists
             return new ImmutableList<T>(node, _optionalValueValidator);
         }
 
-        public ImmutableList<T> Insert(IEnumerable<T> values, int insertAtIndex)
+        public ImmutableList<T> Insert(IReadOnlyCollection<T> values, int insertAtIndex)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -124,11 +124,11 @@ namespace Skrypton.CSharpWriter.Lists
             return Insert(null, value, insertAtIndex);
         }
 
-        private ImmutableList<T> Insert(IEnumerable<T> multipleValuesToAdd, T singleValueToAdd, int insertAtIndex)
+        private ImmutableList<T> Insert(IReadOnlyCollection<T> multipleValuesToAdd, T singleValueToAdd, int insertAtIndex)
         {
             if ((insertAtIndex < 0) || (insertAtIndex > Count))
                 throw new ArgumentOutOfRangeException(nameof(insertAtIndex));
-            if ((multipleValuesToAdd != null) && !multipleValuesToAdd.Any())
+            if ((multipleValuesToAdd != null) && multipleValuesToAdd.Count == 0)
                 return this;
 
             // If the insertion is at the end of the list then we can use Add or AddRange which may allow some optimisation

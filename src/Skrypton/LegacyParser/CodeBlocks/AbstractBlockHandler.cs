@@ -24,7 +24,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// order to be valid. Will raise an exception if there are no more tokens available,
         /// or if a AtomToken was required but the next token was of a different type.
         /// </summary>
-        protected IToken getToken(IEnumerable<IToken> tokens, int offset, IEnumerable<Type> allowedTokenTypes)
+        protected IToken getToken(IReadOnlyCollection<IToken> tokens, int offset, IReadOnlyCollection<Type> allowedTokenTypes)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -32,7 +32,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 throw new ArgumentException("Negative offset specified - invalid");
             if (offset >= tokens.Count())
                 throw new ArgumentException("Insufficient tokens - invalid");
-            if ((allowedTokenTypes != null) && !allowedTokenTypes.Any())
+            if ((allowedTokenTypes != null) && allowedTokenTypes.Count == 0)
                 throw new ArgumentException("No allowed tokens types (pass as null to set no restriction");
             var token = tokens.ElementAt(offset);
             if (allowedTokenTypes != null)
@@ -69,7 +69,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
         }
 
-        protected IToken getToken_AtomOnly(IEnumerable<IToken> tokens, int offset)
+        protected IToken getToken_AtomOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {
@@ -77,7 +77,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             });
         }
 
-        protected IToken getToken_AtomOrDateStringLiteralOnly(IEnumerable<IToken> tokens, int offset)
+        protected IToken getToken_AtomOrDateStringLiteralOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {
@@ -87,7 +87,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             });
         }
 
-        protected bool isEndOfStatement(IEnumerable<IToken> tokens, int offset)
+        protected bool isEndOfStatement(IReadOnlyCollection<IToken> tokens, int offset)
         {
             var token = getToken(tokens, offset, null);
             return (token is AbstractEndOfStatementToken);
@@ -100,7 +100,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// optional offset value is less than zero. (If the offset value is too far along for
         /// the content to be matched, false will be returned).
         /// </summary>
-        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, string[] values, bool matchCase)
+        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string[] values, bool matchCase)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -109,7 +109,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (values.Length == 0)
                 throw new ArgumentException("Zero values to match");
 
-            var tokensToConsider = tokens.Take(values.Length);
+            var tokensToConsider = tokens.Take(values.Length).ToArray();
             if (tokensToConsider.Count() < values.Length)
                 return false;
 
@@ -134,12 +134,12 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
             return true;
         }
-        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, string matchPattern, bool matchCase)
+        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string matchPattern, bool matchCase)
         {
             return checkAtomTokenPattern(tokens, [matchPattern], matchCase);
         }
 
-        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, int offset, string[] matchPatterns, bool matchCase)
+        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, int offset, string[] matchPatterns, bool matchCase)
         {
             // Validate input - throw exception if conditions not met
             if (tokens == null)
@@ -152,7 +152,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 throw new ArgumentException("Invalid offset value < 0 [" + offset.ToString() + "]", nameof(offset));
 
             // If there are insufficient tokens, return false rather than throwing an exception (this method is supposed to be flexible)
-            return checkAtomTokenPattern(tokens.Skip(offset), matchPatterns, matchCase);
+            return checkAtomTokenPattern(tokens.Skip(offset).ToArray(), matchPatterns, matchCase);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// in the token stream that are to be handled here, with the exception of the optional
         /// use of an EndOfStatementToken for the endMarker.
         /// </summary>
-        protected List<List<IToken>> getEntryList(IEnumerable<IToken> tokens, int offset, IToken endMarker)
+        protected List<List<IToken>> getEntryList(IReadOnlyCollection<IToken> tokens, int offset, IToken endMarker)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -240,7 +240,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list
         /// </summary>
-        protected List<IToken> getTokenListSection(IEnumerable<IToken> tokens, int start, int count)
+        protected List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start, int count)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -257,7 +257,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list - taken from the start position to the end of the token list
         /// </summary>
-        protected List<IToken> getTokenListSection(IEnumerable<IToken> tokens, int start)
+        protected List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

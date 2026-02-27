@@ -10,7 +10,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     public class BracketedExpressionSegment : IExpressionSegment
     {
         private readonly ReadOnlyCollection<IToken> _allTokens;
-        public BracketedExpressionSegment(IEnumerable<IExpressionSegment> segments)
+        public BracketedExpressionSegment(IReadOnlyCollection<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
@@ -18,7 +18,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             Segments = segments.ToList().AsReadOnly();
             if (Segments.Any(e => e == null))
                 throw new ArgumentException("Null reference encountered in segments set");
-            if (!Segments.Any())
+            if (Segments.Count == 0)
                 throw new ArgumentException("Empty segments set specified - invalid");
 
             // 2015-03-23 DWR: For deeply-nested bracketed segments, it can be very expensive to enumerate over their AllTokens sets repeatedly so it's worth preparing the data once and
@@ -36,7 +36,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
 		/// This will never be null, empty or contain any null references
 		/// </summary>
-		public IEnumerable<IExpressionSegment> Segments { get; private set; }
+		public IReadOnlyCollection<IExpressionSegment> Segments { get; private set; }
 
         /// <summary>
         /// This will never be null, empty or contain any null references

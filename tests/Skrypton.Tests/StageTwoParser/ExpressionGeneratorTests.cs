@@ -1141,17 +1141,17 @@ namespace Skrypton.Tests.StageTwoParser
 		/// <summary>
 		/// Create a BracketedExpressionSegment from a set of expressions
 		/// </summary>
-		private static BracketedExpressionSegment BR(IEnumerable<IExpressionSegment> segments)
-		{
-			return new BracketedExpressionSegment(segments);
-		}
+		//private static BracketedExpressionSegment BR(IReadOnlyCollection<IExpressionSegment> segments)
+		//{
+		//	return new BracketedExpressionSegment(segments);
+		//}
 
 		/// <summary>
 		/// Create a BracketedExpressionSegment from a set of expressions
 		/// </summary>
 		private static BracketedExpressionSegment BR(params IExpressionSegment[] segments)
 		{
-			return new BracketedExpressionSegment((IEnumerable<IExpressionSegment>)segments);
+			return new BracketedExpressionSegment((IReadOnlyCollection<IExpressionSegment>)segments);
 		}
 
 		private static CallSetExpressionSegment CALLSET(params IExpressionSegment[] segments)

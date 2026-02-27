@@ -58,7 +58,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     var argumentTokens = targetExpressionsTokenSets[0];
                     var terminator = new EndOfStatementNewLineToken(argumentTokens.Last().LineIndex);
                     targetExpressionsTokenSets = base.getEntryList(
-                        argumentTokens.Skip(1).Take(argumentTokens.Count - 2).Concat(new[] { terminator }),
+                        argumentTokens.Skip(1).Take(argumentTokens.Count - 2).Concat(new[] { terminator }).ToArray(),
                         0,
                         terminator
                     );
@@ -92,7 +92,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// ERASE a.Name) and non-array-index calls (eg. a(0) if a is not an array). These failure cases will bw checked for and expressed by the translation
         /// process, for now we just to represent what is present.
         /// </summary>
-        private Tuple<EraseStatement.TargetDetails, int> GetTargetExpressionDetailsWithNumberOfTokensConsumed(IEnumerable<IToken> tokens)
+        private Tuple<EraseStatement.TargetDetails, int> GetTargetExpressionDetailsWithNumberOfTokensConsumed(IReadOnlyCollection<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -136,10 +136,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             var targetTokens = tokensArray.TakeWhile(token => !(token is OpenBrace)).ToArray();
-            var targetArgumentTokens = tokensArray.Skip(targetTokens.Length);
+            var targetArgumentTokens = tokensArray.Skip(targetTokens.Length).ToArray();
             IEnumerable<Expression> targetArgumentsIfAny;
             int numberOfTokensInArguments;
-            if (targetArgumentTokens.Any())
+            if (targetArgumentTokens.Length != 0)
             {
                 var openBrace = (OpenBrace)targetArgumentTokens.First();
                 var closeBrace = targetArgumentTokens.Last() as CloseBrace;

@@ -15,6 +15,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// An expression is code that evalutes to a value
         /// </summary>
-        public Expression(IEnumerable<IToken> tokens) : base(tokens, CallPrefixOptions.Absent) { }
+        public Expression(IReadOnlyCollection<IToken> tokens) : base(tokens, CallPrefixOptions.Absent) { }
     }
 }

@@ -138,11 +138,11 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         /// <summary>
         /// These will reduce streams of addition and/or subtraction OperationTokens to the minimum representation that won't affect the meaning
         /// </summary>
-        private static OperatorToken CondenseNegations(IEnumerable<OperatorToken> tokens)
+        private static OperatorToken CondenseNegations(List<OperatorToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
-            if (!tokens.Any())
+            if (tokens.Count == 0)
                 throw new ArgumentException("Empty tokens set specified - invalid");
 
             var isNegative = false;

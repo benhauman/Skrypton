@@ -39,7 +39,7 @@ namespace Skrypton.CSharpWriter.Lists
         {
             return ToNonNullImmutableList(base.Add(value));
         }
-        public new NonNullImmutableList<T> AddRange(IEnumerable<T> values)
+        public new NonNullImmutableList<T> AddRange(IReadOnlyCollection<T> values)
         {
             return ToNonNullImmutableList(base.AddRange(values));
         }
@@ -47,7 +47,7 @@ namespace Skrypton.CSharpWriter.Lists
         {
             return ToNonNullImmutableList(base.Insert(value, insertAtIndex));
         }
-        public new NonNullImmutableList<T> Insert(IEnumerable<T> values, int insertAtIndex)
+        public new NonNullImmutableList<T> Insert(IReadOnlyCollection<T> values, int insertAtIndex)
         {
             return ToNonNullImmutableList(base.Insert(values, insertAtIndex));
         }

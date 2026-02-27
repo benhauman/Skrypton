@@ -328,8 +328,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             // If there are no related values or if all of the related value have the same type as the primary value then nothing has to
             // change. Otherwise we need to ensure that the type we return can contain them all..
             var relatedNumericValues = (numericValuesTheTypeMustBeAbleToContain ?? new object[0])
-                .Select(v => NUM(v));
-            if (!relatedNumericValues.Any() || relatedNumericValues.All(v => v.GetType() == valueToConvert.GetType()))
+                .Select(v => NUM(v))
+                .ToArray();
+            if (relatedNumericValues.Length == 0 || relatedNumericValues.All(v => v.GetType() == valueToConvert.GetType()))
                 return valueToConvert;
 
             // DateTime is a special case here - if any of the values (whether the target "o" or any of the related values) is a DateTime
@@ -342,8 +343,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 var relatedNonDateNumericValuesAsDouble = relatedNumericValues
                     .Where(v => !(v is DateTime)) // Ignore Dates since they obviously can't cause a Date overflow!
-                    .Select(v => Convert.ToDouble(v));
-                if (relatedNonDateNumericValuesAsDouble.Any())
+                    .Select(v => Convert.ToDouble(v))
+                    .ToArray();
+                if (relatedNonDateNumericValuesAsDouble.Length != 0)
                 {
                     if (relatedNonDateNumericValuesAsDouble.Min() < DateToDouble(VBScriptConstants.EarliestPossibleDate))
                         throw new VBScriptOverflowException(relatedNonDateNumericValuesAsDouble.Min());
@@ -359,10 +361,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             // of the values are dates then we will have exited above, so we don't have to worry about doing a TotalDays calculation
             // rather than calling Convert.ToDouble for everything).
             var relatedNumericValuesAsDouble = relatedNumericValues
-                .Select(v => Convert.ToDouble(v));
+                .Select(v => Convert.ToDouble(v))
+                .ToArray();
             if ((valueToConvert is Decimal) || relatedNumericValues.Any(v => v is Decimal))
             {
-                if (relatedNumericValues.Any())
+                if (relatedNumericValues.Length != 0)
                 {
                     if (relatedNumericValuesAsDouble.Min() < (double)VBScriptConstants.MinCurrencyValue)
                         throw new VBScriptOverflowException(relatedNumericValuesAsDouble.Min());
@@ -671,7 +674,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return null;
 
             var enumeratorType = getEnumeratorMethod.ReturnType;
-            var implementedTypes = GetAllImplementedTypes(enumeratorType);
+            var implementedTypes = GetAllImplementedTypes(enumeratorType).ToArray();
             var moveNextMethod = implementedTypes
                 .Select(t => t.GetMethod("MoveNext", Type.EmptyTypes))
                 .FirstOrDefault(m => (m != null) && !m.IsStatic && (m.ReturnType == typeof(bool)));

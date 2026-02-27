@@ -1879,8 +1879,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // ensure that the seconds and minutes values are smaller than sixty - for example, (2, 0, -8000) is adjusted by realising that -8000s is the same
             // as -2h, -13m and -20s and so the hours value is cancelled out (2 - 2), leaving the three time values as (0, -13, -20) and so the final result
             // from VBScript is 1899-12-30 00:13:20.
-            var nonZeroTermsInDescendingMagnitude = new[] { days, hoursAsNumber, minutesAsNumber, secondsAsNumber }.Where(value => value != 0);
-            var multiplier = (nonZeroTermsInDescendingMagnitude.Any() && (nonZeroTermsInDescendingMagnitude.First() < 0)) ? -1 : 1;
+            var nonZeroTermsInDescendingMagnitude = new[] { days, hoursAsNumber, minutesAsNumber, secondsAsNumber }.Where(value => value != 0).ToArray();
+            var multiplier = (nonZeroTermsInDescendingMagnitude.Length != 0 && (nonZeroTermsInDescendingMagnitude.First() < 0)) ? -1 : 1;
             return VBScriptConstants.ZeroDate
                 .AddDays(days)
                 .AddHours(hoursAsNumber * multiplier)

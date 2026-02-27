@@ -233,10 +233,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // If there are zero or one operators in the expression content then we don't need to do any bracketing to guarantee operator precedence
             var operatorSegments = segmentsArray
                 .Select((s, index) => Tuple.Create(s as OperationExpressionSegment, index))
-                .Where(s => s.Item1 != null);
+                .Where(s => s.Item1 != null)
+                .ToArray();
             if (operatorSegments.Count() < 2)
             {
-                if (operatorSegments.Any())
+                if (operatorSegments.Length != 0)
                 {
                     // While it's true that we don't need to apply any more wrapping to expressions if there is only a single operator, we do want to UNWRAP any
                     // unnecessarily-wrapped segments, which the WrapExpressionSegments function achieves (when unwrapSingleBracketedTerm is true). This deals
@@ -356,8 +357,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// exception if unable to process the content (including cases where the content would result in a compile time error in VBScript).
         /// </summary>
         private static IExpressionSegment GetCallOrNewOrValueExpressionSegment(
-            IEnumerable<IToken> tokens,
-            IEnumerable<Expression> arguments,
+            IReadOnlyCollection<IToken> tokens,
+            Expression[] arguments,
             IToken directedWithReferenceIfAny,
             bool argumentsAreBracketed,
             bool willBeFirstSegmentInCallExpression,
@@ -405,7 +406,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // - If there are brackets following a class instantiation then it's a compile time error
             // Note: This only covers the zero-argument cases with brackets - runtime errors will be raised if "vbObjectError(F1())" or "vbObjectError(F1())"
             // calls were attempted, but these need to be dealt with by the "CALL" method since the arguments must be evaluated before the error raised.
-            if (!arguments.Any())
+            if (arguments.Length == 0)
             {
                 if (tokensList.Count == 1)
                 {
@@ -488,7 +489,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             }
 
             CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence;
-            if (arguments.Any())
+            if (arguments.Length != 0)
                 zeroArgumentBracketsPresence = null;
             else if (argumentsAreBracketed)
                 zeroArgumentBracketsPresence = CallExpressionSegment.ArgumentBracketPresenceOptions.Present;

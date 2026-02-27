@@ -21,7 +21,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             );
         }
 
-        public static TranslationResult Add(this TranslationResult source, IEnumerable<TranslatedStatement> toAdd)
+        public static TranslationResult Add(this TranslationResult source, IReadOnlyCollection<TranslatedStatement> toAdd)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

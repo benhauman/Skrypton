@@ -51,7 +51,7 @@ namespace TranslatedProgram
                     {
                         _outer.errMsg = _.VAL(_.CALL(this, _env.model, "Translate", _.ARGS.Val("#ERR_Checklists_InvalidChars")));
                         _outer.errMsg = _.REPLACE(_outer.errMsg, "{0}", _outer.element);
-                        _.CALL(this, _env.model, "MsgBox", _.ARGS.Ref(_outer.errMsg, v5 => { _outer.errMsg = v5; }));
+                        _.CALL(this, _env.model, "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
                         _.CALL(this, _env.model, "CurrentCommand", "Abort", _.ARGS.Val("OnSave"));
                     }
                 }

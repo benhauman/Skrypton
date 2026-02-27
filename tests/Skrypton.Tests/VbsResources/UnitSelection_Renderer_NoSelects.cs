@@ -2077,7 +2077,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(_.CALL(this, _.CALL(this, objEntry, _.ARGS.Val("PossReqNos")), "Count")), (Int16)0)))
             {
                 object byrefalias33 = arrReqUnitSelections;
-                _.CALL(this, byrefalias33, "Add", _.ARGS.Ref(objEntry, v146 => { objEntry = v146; }));
+                _.CALL(this, byrefalias33, "Add", _.ARGS.Ref(objEntry, v144 => { objEntry = v144; }));
             }
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
@@ -2128,7 +2128,7 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart17; _.StrictLTE(intIndexSel, loopEnd17); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    lsPossReqNos = _.OBJ(_.CALL(this, _.CALL(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v147 => { intIndexSel = v147; })), _.ARGS.Val("PossReqNos")));
+                    lsPossReqNos = _.OBJ(_.CALL(this, _.CALL(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v145 => { intIndexSel = v145; })), _.ARGS.Val("PossReqNos")));
                     if (_.IF(_.EQ(_.NullableNUM(_.CALL(this, lsPermutations, "Count")), (Int16)0)))
                     {
                         // This is the first pass, so initialise the permutations list with
@@ -2139,7 +2139,7 @@ namespace TranslatedProgram
                         {
                             for (intIndexPoss = loopStart18; _.StrictLTE(intIndexPoss, loopEnd18); intIndexPoss = _.ADD(intIndexPoss, (Int16)1))
                             {
-                                _.CALL(this, lsPermutations, "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v148 => { intIndexPoss = v148; })));
+                                _.CALL(this, lsPermutations, "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v146 => { intIndexPoss = v146; })));
                             }
                         }
                     }
@@ -2155,7 +2155,7 @@ namespace TranslatedProgram
                         {
                             for (intIndexPerm = loopStart19; _.StrictLTE(intIndexPerm, loopEnd19); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                             {
-                                _.CALL(this, lsTemp, "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v151 => { intIndexPerm = v151; })));
+                                _.CALL(this, lsTemp, "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v147 => { intIndexPerm = v147; })));
                             }
                         }
                         // - Clear out permutation list
@@ -2173,7 +2173,7 @@ namespace TranslatedProgram
                                 {
                                     for (intIndexPerm = loopStart21; _.StrictLTE(intIndexPerm, loopEnd21); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                                     {
-                                        _.CALL(this, lsPermutations, "Add", _.ARGS.Val(_.CONCAT(_.CALL(this, lsTemp, _.ARGS.Ref(intIndexPerm, v154 => { intIndexPerm = v154; })), ",", _.CALL(this, lsPossReqNos, _.ARGS.Ref(intIndexPoss, v155 => { intIndexPoss = v155; })))));
+                                        _.CALL(this, lsPermutations, "Add", _.ARGS.Val(_.CONCAT(_.CALL(this, lsTemp, _.ARGS.Ref(intIndexPerm, v148 => { intIndexPerm = v148; })), ",", _.CALL(this, lsPossReqNos, _.ARGS.Ref(intIndexPoss, v149 => { intIndexPoss = v149; })))));
                                     }
                                 }
                             }
@@ -2190,11 +2190,11 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart22; _.StrictLTE(intIndex, loopEnd22); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    intScore = _.VAL(_.CALL(this, _outer, "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v158 => { intIndex = v158; }))));
+                    intScore = _.VAL(_.CALL(this, _outer, "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v152 => { intIndex = v152; }))));
                     if (_.IF(_.GT(intScore, intBestScore)))
                     {
                         intBestScore = _.VAL(intScore);
-                        strBestPermutation = _.VAL(_.CALL(this, lsPermutations, _.ARGS.Ref(intIndex, v161 => { intIndex = v161; })));
+                        strBestPermutation = _.VAL(_.CALL(this, lsPermutations, _.ARGS.Ref(intIndex, v153 => { intIndex = v153; })));
                     }
                 }
             }
@@ -2227,9 +2227,9 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart24; _.StrictLTE(intIndexSel, loopEnd24); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    intIndexOption = _.SUBT(_.CALL(this, arrMatches, _.ARGS.Ref(intIndexSel, v162 => { intIndexSel = v162; })), (Int16)1);
-                    intUnitKey = _.VAL(_.CALL(this, _.CALL(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v163 => { intIndexSel = v163; })), _.ARGS.Val("UnitKey")));
-                    _.SET(_.VAL(intUnitKey), this, lsUnitKeys, null, _.ARGS.Ref(intIndexOption, v165 => { intIndexOption = v165; }));
+                    intIndexOption = _.SUBT(_.CALL(this, arrMatches, _.ARGS.Ref(intIndexSel, v154 => { intIndexSel = v154; })), (Int16)1);
+                    intUnitKey = _.VAL(_.CALL(this, _.CALL(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v155 => { intIndexSel = v155; })), _.ARGS.Val("UnitKey")));
+                    _.SET(_.VAL(intUnitKey), this, lsUnitKeys, null, _.ARGS.Ref(intIndexOption, v157 => { intIndexOption = v157; }));
                 }
             }
 
@@ -2260,10 +2260,10 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart25; _.StrictLTE(intIndex, loopEnd25); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.NOT(_.CALL(this, lsReqNos, "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v166 => { intIndex = v166; }))))))
+                    if (_.IF(_.NOT(_.CALL(this, lsReqNos, "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v158 => { intIndex = v158; }))))))
                     {
                         intScore = _.ADD(intScore, (Int16)1);
-                        _.CALL(this, lsReqNos, "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v169 => { intIndex = v169; })));
+                        _.CALL(this, lsReqNos, "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v159 => { intIndex = v159; })));
                     }
                 }
             }
@@ -2302,14 +2302,14 @@ namespace TranslatedProgram
                 object byrefalias34 = dtStayFirstNight, byrefalias35 = iStayNights;
                 try
                 {
-                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayTtl", _.ARGS.Ref(byrefalias34, v172 => { byrefalias34 = v172; }).Ref(byrefalias35, v173 => { byrefalias35 = v173; }))));
+                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayTtl", _.ARGS.Ref(byrefalias34, v160 => { byrefalias34 = v160; }).Ref(byrefalias35, v161 => { byrefalias35 = v161; }))));
                 }
                 finally { dtStayFirstNight = byrefalias34; iStayNights = byrefalias35; }
                 _.CALL(this, pO, "Write", _.ARGS.Val("</div>"));
                 object byrefalias36 = dtReqFirstNight, byrefalias37 = dtStayFirstNight, byrefalias38 = iReqNights, byrefalias39 = iStayNights;
                 try
                 {
-                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(byrefalias36, v174 => { byrefalias36 = v174; }).Ref(byrefalias37, v175 => { byrefalias37 = v175; }).Ref(byrefalias38, v176 => { byrefalias38 = v176; }).Ref(byrefalias39, v177 => { byrefalias39 = v177; }))));
+                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(byrefalias36, v162 => { byrefalias36 = v162; }).Ref(byrefalias37, v163 => { byrefalias37 = v163; }).Ref(byrefalias38, v164 => { byrefalias38 = v164; }).Ref(byrefalias39, v165 => { byrefalias39 = v165; }))));
                 }
                 finally { dtReqFirstNight = byrefalias36; dtStayFirstNight = byrefalias37; iReqNights = byrefalias38; iStayNights = byrefalias39; }
                 _.CALL(this, pO, "Write", _.ARGS.Val("</div>"));
@@ -2358,7 +2358,7 @@ namespace TranslatedProgram
             }
 
             // This method opens a new div - we'll need to close it later
-            _.CALL(this, _outer, "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v178 => { objAvailEntry = v178; }).Ref(iStayNum, v179 => { iStayNum = v179; }).Ref(adtStartNight, v180 => { adtStartNight = v180; }).Ref(aiReqNights, v181 => { aiReqNights = v181; }).Ref(pO, v182 => { pO = v182; }));
+            _.CALL(this, _outer, "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v166 => { objAvailEntry = v166; }).Ref(iStayNum, v167 => { iStayNum = v167; }).Ref(adtStartNight, v168 => { adtStartNight = v168; }).Ref(aiReqNights, v169 => { aiReqNights = v169; }).Ref(pO, v170 => { pO = v170; }));
 
             iMaxRq = (Int16)0;
             iLastReqmnt = (Int16)0;
@@ -2372,7 +2372,7 @@ namespace TranslatedProgram
             {
                 for (intIndexUnit = loopStart26; _.StrictLTE(intIndexUnit, loopEnd26); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                 {
-                    objUnit = _.OBJ(_.CALL(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v183 => { intIndexUnit = v183; })));
+                    objUnit = _.OBJ(_.CALL(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v171 => { intIndexUnit = v171; })));
 
                     iThisReqmnt = _.VAL(_.CALL(this, objUnit, "ReqNo"));
                     if (_.IF(_.GT(iThisReqmnt, iMaxRq)))
@@ -2380,7 +2380,7 @@ namespace TranslatedProgram
                         // Moved on to next requirement, get key of pre-selected unit - iRemoteUnitKey
                         // will be zero if no selection has been passed in (applies to deep-linking)
                         iMaxRq = _.VAL(iThisReqmnt);
-                        iRemoteUnitKey = _.VAL(_.CALL(this, _outer, "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v184 => { lsRemoteUnitSelections = v184; }).Ref(iThisReqmnt, v185 => { iThisReqmnt = v185; })));
+                        iRemoteUnitKey = _.VAL(_.CALL(this, _outer, "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v172 => { lsRemoteUnitSelections = v172; }).Ref(iThisReqmnt, v173 => { iThisReqmnt = v173; })));
                     }
 
                     // Check whether we're moving into a new requirement (if so, default to having
@@ -2394,7 +2394,7 @@ namespace TranslatedProgram
                         {
                             _.CALL(this, pO, "Write", _.ARGS.Val("</div></div>"));
                         }
-                        _.CALL(this, _outer, "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v186 => { objUnit = v186; }).Ref(iStayNum, v187 => { iStayNum = v187; }).Ref(iThisReqmnt, v188 => { iThisReqmnt = v188; }).Val(_.NOT(_.CALL(this, objAvailEntry, "IsLocal"))).Ref(pO, v189 => { pO = v189; }));
+                        _.CALL(this, _outer, "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v174 => { objUnit = v174; }).Ref(iStayNum, v175 => { iStayNum = v175; }).Ref(iThisReqmnt, v176 => { iThisReqmnt = v176; }).Val(_.NOT(_.CALL(this, objAvailEntry, "IsLocal"))).Ref(pO, v177 => { pO = v177; }));
                         bGotOpenReqContainer = true;
 
                         bSelected = true;
@@ -2439,7 +2439,7 @@ namespace TranslatedProgram
                     // state of the whole stay - this was causing all units to be rendered as indicative if any
                     // one of them was, now we take the indicative state from each unit (but keep the indicative
                     // "validity" from the whole stay, where required)
-                    _.CALL(this, _outer, "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v190 => { iStayNum = v190; }).Ref(iThisReqmnt, v191 => { iThisReqmnt = v191; }).Ref(bSelected, v192 => { bSelected = v192; }).Ref(objAvailEntry, v193 => { objAvailEntry = v193; }).Ref(objUnit, v194 => { objUnit = v194; }).Ref(objAllUnits, v195 => { objAllUnits = v195; }).Val(_.CALL(this, _outer, "BookingUI_AvailClassName", _.ARGS.Val(_.CALL(this, objUnit, "Indicative")).Ref(bIndicativeValid, v196 => { bIndicativeValid = v196; }).Ref(bTeleBooking, v197 => { bTeleBooking = v197; }))).Ref(pO, v198 => { pO = v198; }).Ref(bRenderMaximumUnitsAvailable, v199 => { bRenderMaximumUnitsAvailable = v199; }));
+                    _.CALL(this, _outer, "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v178 => { iStayNum = v178; }).Ref(iThisReqmnt, v179 => { iThisReqmnt = v179; }).Ref(bSelected, v180 => { bSelected = v180; }).Ref(objAvailEntry, v181 => { objAvailEntry = v181; }).Ref(objUnit, v182 => { objUnit = v182; }).Ref(objAllUnits, v183 => { objAllUnits = v183; }).Val(_.CALL(this, _outer, "BookingUI_AvailClassName", _.ARGS.Val(_.CALL(this, objUnit, "Indicative")).Ref(bIndicativeValid, v184 => { bIndicativeValid = v184; }).Ref(bTeleBooking, v185 => { bTeleBooking = v185; }))).Ref(pO, v186 => { pO = v186; }).Ref(bRenderMaximumUnitsAvailable, v187 => { bRenderMaximumUnitsAvailable = v187; }));
 
                 }
             }
@@ -2494,7 +2494,7 @@ namespace TranslatedProgram
                 _.CALL(this, pO, "Write", _.ARGS.Val("<div class=\"pnStayButtons\">"));
                 _.CALL(this, pO, "Write", _.ARGS.Val("<p class=\"bookonline\">"));
                 _.CALL(this, pO, "Write", _.ARGS.Val("<a href=\""));
-                _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v200 => { strProductBookingWebIfAny = v200; }))));
+                _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v188 => { strProductBookingWebIfAny = v188; }))));
                 _.CALL(this, pO, "Write", _.ARGS.Val("\""));
                 if (_.IF(_.OR(_.CALL(this, _outer.Page, "IsPartialRender"), _.EQ(_.NullableSTR(_.CALL(this, _outer.Request, _.ARGS.Val("PartialRenderType"))), "html"))))
                 {
@@ -2512,9 +2512,9 @@ namespace TranslatedProgram
                 }
                 _.CALL(this, pO, "Write", _.ARGS.Val(" class=\"ProvClickCustom\" name=\"PROBWEBREF|"));
                 // This is the "Provider Booking Website Referral" statistic, as required by the SharePoint document for FogBugz 10367
-                _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strChannel, v201 => { strChannel = v201; }))));
+                _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strChannel, v189 => { strChannel = v189; }))));
                 _.CALL(this, pO, "Write", _.ARGS.Val("|"));
-                _.CALL(this, pO, "Write", _.ARGS.Ref(intProductKey, v202 => { intProductKey = v202; }));
+                _.CALL(this, pO, "Write", _.ARGS.Ref(intProductKey, v190 => { intProductKey = v190; }));
                 _.CALL(this, pO, "Write", _.ARGS.Val("\""));
                 _.CALL(this, pO, "Write", _.ARGS.Val(">"));
                 _.CALL(this, pO, "Write", _.ARGS.Val("<img src=\""));
@@ -2536,7 +2536,7 @@ namespace TranslatedProgram
             // period has passed) then there's no point even rendering the button.
             if (_.IF(bHasBookableUnits))
             {
-                _.CALL(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v203 => { iStayNum = v203; }).Ref(pO, v204 => { pO = v204; }).Val(_.CALL(this, objAvailEntry, "IsExternal")));
+                _.CALL(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v191 => { iStayNum = v191; }).Ref(pO, v192 => { pO = v192; }).Val(_.CALL(this, objAvailEntry, "IsExternal")));
             }
 
             // if we have an invalid indicative unit or telephone unit then
@@ -2730,7 +2730,7 @@ namespace TranslatedProgram
             // If not exact match then render a warning as well as the date difference later
             if (_.IF(_.NOT(bExactMatch)))
             {
-                _.CALL(this, _outer, "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v205 => { pO = v205; }));
+                _.CALL(this, _outer, "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v193 => { pO = v193; }));
             }
 
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<div class=\"StayCandidateItem", sPostfix, "\">", VBScriptConstants.vbCrLf)));
@@ -2744,7 +2744,7 @@ namespace TranslatedProgram
                 _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("</div>", VBScriptConstants.vbCrLf)));
                 if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                 {
-                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v206 => { adtStartNight = v206; }).Val(_.CALL(this, objAvailEntry, "StartDate")).Ref(aiReqNights, v207 => { aiReqNights = v207; }).Val(_.CALL(this, objAvailEntry, "Nights")))));
+                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v194 => { adtStartNight = v194; }).Val(_.CALL(this, objAvailEntry, "StartDate")).Ref(aiReqNights, v195 => { aiReqNights = v195; }).Val(_.CALL(this, objAvailEntry, "Nights")))));
                 }
             }
             return BookingUI_RenderNewStay_retVal;
@@ -2760,11 +2760,11 @@ namespace TranslatedProgram
             object BookingUI_StayTtl_retVal = null;
             if (_.IF(_.EQ(_.NullableNUM(aiNights), (Int16)1)))
             {
-                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/nightstart").Val(" night, start ")), _.CALL(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v208 => { adtFirstNight = v208; })));
+                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/nightstart").Val(" night, start ")), _.CALL(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v196 => { adtFirstNight = v196; })));
                 return BookingUI_StayTtl_retVal;
             }
 
-            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/nightsfrom").Val(" nights, from ")), _.CALL(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v210 => { adtFirstNight = v210; })), _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/to").Val(" to ")), _.CALL(this, _outer.Page, "Functions", "Dates", "Shortdate", _.ARGS.Val(_.DATEADD("d", aiNights, adtFirstNight))));
+            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/nightsfrom").Val(" nights, from ")), _.CALL(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v198 => { adtFirstNight = v198; })), _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/to").Val(" to ")), _.CALL(this, _outer.Page, "Functions", "Dates", "Shortdate", _.ARGS.Val(_.DATEADD("d", aiNights, adtFirstNight))));
             return BookingUI_StayTtl_retVal;
         }
 
@@ -2781,7 +2781,7 @@ namespace TranslatedProgram
 
             iDateDiff = _.VAL(_.DATEDIFF("d", adtReqDate, adtThisDate));
             iDurDiff = _.SUBT(aiResultNights, aiReqNights);
-            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALL(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v212 => { iDateDiff = v212; }).Ref(iDurDiff, v213 => { iDurDiff = v213; }).Ref(aiReqNights, v214 => { aiReqNights = v214; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
+            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALL(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v200 => { iDateDiff = v200; }).Ref(iDurDiff, v201 => { iDurDiff = v201; }).Ref(aiReqNights, v202 => { aiReqNights = v202; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
             return BookingUI_StayDiff_retVal;
         }
 
@@ -2807,11 +2807,11 @@ namespace TranslatedProgram
             _.CALL(this, pO, "Write", _.ARGS.Val("<div class=\"pnStayReqmntTtl\">"));
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/room").Val("Room"))));
             _.CALL(this, pO, "Write", _.ARGS.Val(" "));
-            _.CALL(this, pO, "Write", _.ARGS.Ref(aiThisReqmnt, v218 => { aiThisReqmnt = v218; }));
+            _.CALL(this, pO, "Write", _.ARGS.Ref(aiThisReqmnt, v206 => { aiThisReqmnt = v206; }));
             _.CALL(this, pO, "Write", _.ARGS.Val(" - "));
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/for").Val("for"))));
             _.CALL(this, pO, "Write", _.ARGS.Val(" "));
-            _.CALL(this, pO, "Write", _.ARGS.Ref(iSz, v219 => { iSz = v219; }));
+            _.CALL(this, pO, "Write", _.ARGS.Ref(iSz, v207 => { iSz = v207; }));
             _.CALL(this, pO, "Write", _.ARGS.Val(" "));
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/guest(s)").Val("guest(s)"))));
 
@@ -2850,7 +2850,7 @@ namespace TranslatedProgram
                 {
                     for (iChildAgeIndex = loopStart27; _.StrictLTE(iChildAgeIndex, loopEnd27); iChildAgeIndex = _.ADD(iChildAgeIndex, (Int16)1))
                     {
-                        _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALL(this, aryChildAges, _.ARGS.Ref(iChildAgeIndex, v220 => { iChildAgeIndex = v220; })), "\" />")));
+                        _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALL(this, aryChildAges, _.ARGS.Ref(iChildAgeIndex, v208 => { iChildAgeIndex = v208; })), "\" />")));
                     }
                 }
 
@@ -2921,7 +2921,7 @@ namespace TranslatedProgram
             }
             _.CALL(this, pO, "Write", _.ARGS.Val("/>"));
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<label for=\"", strIptId, "\"> ")));
-            _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT(_.CALL(this, objUnit, "UnitName"), " - ", _.CALL(this, _outer, "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v222 => { mUnitStayTotal = v222; })), " ", asAvailClassName)));
+            _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT(_.CALL(this, objUnit, "UnitName"), " - ", _.CALL(this, _outer, "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v210 => { mUnitStayTotal = v210; })), " ", asAvailClassName)));
 
             //if we have child pricing discount applied show the icon
             if (_.IF(bDiscountApplied))
@@ -2965,7 +2965,7 @@ namespace TranslatedProgram
                     _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT(_.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/unitselection/minoccupancyof").Val("Min. occupancy of")), " ", _.CALL(this, objUnit, "MinOcc"), ". ")));
                 }
             }
-            _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<div class=\"pnLinkedUnit\">", _.CALL(this, _outer, "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v224 => { objUnit = v224; }).Ref(objAllUnits, v225 => { objAllUnits = v225; })), "</div>")));
+            _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<div class=\"pnLinkedUnit\">", _.CALL(this, _outer, "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v212 => { objUnit = v212; }).Ref(objAllUnits, v213 => { objAllUnits = v213; })), "</div>")));
 
             _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("</div>", VBScriptConstants.vbCrLf)));
 
@@ -3118,7 +3118,7 @@ namespace TranslatedProgram
             object byrefalias40 = amPrice;
             try
             {
-                strPrice = _.VAL(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(byrefalias40, v228 => { byrefalias40 = v228; })));
+                strPrice = _.VAL(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(byrefalias40, v216 => { byrefalias40 = v216; })));
             }
             finally { amPrice = byrefalias40; }
 
@@ -3134,7 +3134,7 @@ namespace TranslatedProgram
             }
 
             // Return string ready for display
-            BookingUI_NicePrice_retVal = _.VAL(_.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v229 => { strPrice = v229; })));
+            BookingUI_NicePrice_retVal = _.VAL(_.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v217 => { strPrice = v217; })));
             return BookingUI_NicePrice_retVal;
         }
 
@@ -3170,9 +3170,9 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart28; _.StrictLTE(intIndex, loopEnd28); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.EQ(_.CALL(this, _.CALL(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v230 => { intIndex = v230; })), "Key"), _.CALL(this, objUnit, "LinkUnitKey"))))
+                    if (_.IF(_.EQ(_.CALL(this, _.CALL(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v218 => { intIndex = v218; })), "Key"), _.CALL(this, objUnit, "LinkUnitKey"))))
                     {
-                        objParentUnit = _.OBJ(_.CALL(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v231 => { intIndex = v231; })));
+                        objParentUnit = _.OBJ(_.CALL(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v219 => { intIndex = v219; })));
                         break;
                     }
                 }
@@ -3220,7 +3220,7 @@ namespace TranslatedProgram
                 object byrefalias41 = adtStartNight;
                 try
                 {
-                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<th class=\"staydate\">", _.CALL(this, _outer.Page, "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(byrefalias41, v232 => { byrefalias41 = v232; }).Val(true).Val(true)), "</th>")));
+                    _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<th class=\"staydate\">", _.CALL(this, _outer.Page, "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(byrefalias41, v220 => { byrefalias41 = v220; }).Val(true).Val(true)), "</th>")));
                 }
                 finally { adtStartNight = byrefalias41; }
                 _.CALL(this, pO, "Write", _.ARGS.Val("<th class=\"total\"></th>"));
@@ -3235,7 +3235,7 @@ namespace TranslatedProgram
                 {
                     for (intIndexUnit = loopStart29; _.StrictLTE(intIndexUnit, loopEnd29); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                     {
-                        objUnit = _.OBJ(_.CALL(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v234 => { intIndexUnit = v234; })));
+                        objUnit = _.OBJ(_.CALL(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v222 => { intIndexUnit = v222; })));
 
                         iSelectedQty = _.CLNG(_.CALL(this, _outer.Request, "Form", _.ARGS.Val(_.CONCAT("unit_", _.CALL(this, objUnit, "UnitKey")))));
 
@@ -3250,7 +3250,7 @@ namespace TranslatedProgram
 
                         _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<tr id=\"row_", _.CALL(this, objUnit, "UnitKey"), "\">")));
                         _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td class=\"unit\">", _.CALL(this, objUnit, "UnitName"), "</td>")));
-                        _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td class=\"select\">", _.CALL(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALL(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALL(this, objUnit, "UnitCount")).Ref(iSelectedQty, v235 => { iSelectedQty = v235; })), "</td>")));
+                        _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td class=\"select\">", _.CALL(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALL(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALL(this, objUnit, "UnitCount")).Ref(iSelectedQty, v223 => { iSelectedQty = v223; })), "</td>")));
                         _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td class=\"price\">", _.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Val(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Val(_.CALL(this, objUnit, "StayTotalPayable"))))), "</td>")));
                         _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALL(this, objUnit, "UnitKey"), "\" id=\"data_", _.CALL(this, objUnit, "UnitKey"), "\" value=\"", _.CALL(this, objUnit, "UnitCount"), ",", _.CALL(this, objUnit, "MinOcc"), ",", _.CALL(this, objUnit, "UnitSize"), ",", strPriceBasis, ",", _.CALL(this, objUnit, "StayTotalPayable"), "\">", _.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Val(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Val(_.MULT(_.CALL(this, objUnit, "StayTotalPayable"), iSelectedQty))))), "</td>")));
                         _.CALL(this, pO, "Write", _.ARGS.Val("</tr>"));
@@ -3269,7 +3269,7 @@ namespace TranslatedProgram
                 _.CALL(this, pO, "Write", _.ARGS.Val("<noscript>"));
                 _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td><input type=\"image\" src=\"", _.CALL(this, _outer.Page, "ImageResource", _.ARGS.Val("bookonline/unitselection/recalculate").Val(_.CONCAT(_.CALL(this, _outer.Context, "ImageDir"), "booking/bookrecalculate.gif"))), "\" name=\"recalculate\" value=\"recalculate\" class=\"submit\"/></td>")));
                 _.CALL(this, pO, "Write", _.ARGS.Val("</noscript>"));
-                _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td id=\"AvCalTotal\">", _.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Val(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v237 => { iSubTotal = v237; })))), "</td>")));
+                _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<td id=\"AvCalTotal\">", _.CALL(this, _outer.Server, "HTMLEncode", _.ARGS.Val(_.CALL(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v225 => { iSubTotal = v225; })))), "</td>")));
                 _.CALL(this, pO, "Write", _.ARGS.Val("</tr>"));
                 _.CALL(this, pO, "Write", _.ARGS.Val("</table>"));
                 _.CALL(this, pO, "Write", _.ARGS.Val(_.CONCAT("<input type=\"image\" src=\"", _.CALL(this, _outer.Page, "ImageResource", _.ARGS.Val("bookonline/btn/bookticketing").Val(_.CONCAT(_.CALL(this, _outer.Context, "ImageDir"), "booking/bookticketing.gif"))), "\" name=\"bookit\" value=\"", _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/btn/book").Val("Book")), "\" alt=\"", _.CALL(this, _outer.Page, "Resource", _.ARGS.Val("bookonline/btn/book").Val("Book")), "\" class=\"submit\"/>")));
@@ -3300,11 +3300,11 @@ namespace TranslatedProgram
             {
                 for (i = loopStart30; _.StrictLTE(i, loopEnd30); i = _.ADD(i, (Int16)2))
                 {
-                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALL(this, aryExtBookEstate, _.ARGS.Ref(i, v239 => { i = v239; }))))), "DEFAULT")))
+                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALL(this, aryExtBookEstate, _.ARGS.Ref(i, v227 => { i = v227; }))))), "DEFAULT")))
                     {
                         strPostUrl_ExtDflt = _.VAL(_.CALL(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
                     }
-                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALL(this, aryExtBookEstate, _.ARGS.Ref(i, v240 => { i = v240; })))), _.UCASE(_.TRIM(asEstateID)))))
+                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALL(this, aryExtBookEstate, _.ARGS.Ref(i, v228 => { i = v228; })))), _.UCASE(_.TRIM(asEstateID)))))
                     {
                         strPostUrl_Ext = _.VAL(_.CALL(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
                         break;

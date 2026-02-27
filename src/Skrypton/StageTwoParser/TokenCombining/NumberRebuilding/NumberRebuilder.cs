@@ -39,7 +39,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
                 throw new ArgumentException("Null reference encountered in tokens set");
             for (var index = 0; index < tokenArray.Length; index++)
             {
-                var result = processor.Process(tokenArray.Skip(index), numberContent);
+                var result = processor.Process(tokenArray.Skip(index).ToArray(), numberContent);
                 if (result.ProcessedTokens.Any())
                     rebuiltTokens.AddRange(result.ProcessedTokens);
                 processor = result.NextProcessor;

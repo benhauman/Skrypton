@@ -11,7 +11,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
         public static NoNumberContentYet Instance { get { return new NoNumberContentYet(); } }
         private NoNumberContentYet() { }
 
-        public TokenProcessResult Process(IEnumerable<IToken> tokens, PartialNumberContent numberContent)
+        public TokenProcessResult Process(IReadOnlyCollection<IToken> tokens, PartialNumberContent numberContent)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -42,8 +42,8 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             // case and we need to switch to the GotSomeDecimalNumberContent state.
             if (token.Is<MemberAccessorOrDecimalPointToken>())
             {
-                var nextTokens = tokens.Skip(1);
-                if (nextTokens.Any())
+                var nextTokens = tokens.Skip(1).ToArray();
+                if (nextTokens.Length != 0)
                 {
                     var nextToken = nextTokens.First();
                     if (nextToken == null)

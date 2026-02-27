@@ -57,7 +57,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             // Return code block instance
-            return new WithBlock(new Expression(target.Tokens), blockContent);
+            return new WithBlock(new Expression(target.Tokens.ToArray()), blockContent);
         }
     }
 }

@@ -296,7 +296,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private TranslationResult OpenIfBlockDirectly(
             TranslationResult translationResult,
             int indentationDepth,
-            IEnumerable<TranslatedStatementContentDetails> conditionSegments,
+            IReadOnlyCollection<TranslatedStatementContentDetails> conditionSegments,
             bool openAsElseIf,
             CSharpName errorRegistrationTokenIfAny,
             int lineIndex)

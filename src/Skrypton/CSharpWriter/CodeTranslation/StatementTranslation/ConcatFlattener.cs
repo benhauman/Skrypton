@@ -24,7 +24,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private static IEnumerable<IExpressionSegment> Flatten(IEnumerable<IExpressionSegment> expressionSegments)
+        private static IReadOnlyCollection<IExpressionSegment> Flatten(IReadOnlyCollection<IExpressionSegment> expressionSegments)
         {
             if (expressionSegments == null)
                 throw new ArgumentNullException(nameof(expressionSegments));

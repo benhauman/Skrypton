@@ -235,7 +235,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             indentationDepth,
                             value.Name.LineIndex
                         )
-                    ),
+                    ).ToArray(),
                     0
                 ),
                 translationResult.ExplicitVariableDeclarations.AddRange(
@@ -244,6 +244,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         VariableDeclarationScopeOptions.Public, // There are no private CONST statements so this is public by default
                         constantDimensionsIfAny: null // This does not apply to CONST statements, they may never be arrays
                     ))
+                    .ToArray()
                 ),
                 translationResult.UndeclaredVariablesAccessed
             );

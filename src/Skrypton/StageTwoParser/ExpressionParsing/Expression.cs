@@ -7,13 +7,13 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
 {
     public class Expression
     {
-        public Expression(IEnumerable<IExpressionSegment> segments)
+        public Expression(IReadOnlyCollection<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
 
             Segments = segments.ToList().AsReadOnly();
-            if (!Segments.Any())
+            if (Segments.Count == 0)
                 throw new ArgumentException("The segments set may not be empty");
             if (Segments.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in segments set");
@@ -22,7 +22,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never be null, empty or contain any null references
         /// </summary>
-        public IEnumerable<IExpressionSegment> Segments { get; private set; }
+        public IReadOnlyCollection<IExpressionSegment> Segments { get; private set; }
 
         /// <summary>
         /// This will never be null, empty or contain any null references

@@ -349,7 +349,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                var targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count() - 1);
+                var targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count() - 1).ToArray();
                 var targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Count() > 1)
                     ? new IExpressionSegment[] { new CallSetExpressionSegment(targetAccessCallExpressionSegments) }
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };

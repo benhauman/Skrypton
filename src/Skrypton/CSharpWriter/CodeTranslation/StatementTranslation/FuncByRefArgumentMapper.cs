@@ -98,7 +98,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         private NonNullImmutableList<FuncByRefMapping> GetByRefArgumentsThatNeedRewriting(
-            IEnumerable<IExpressionSegment> expressionSegments,
+            IReadOnlyCollection<IExpressionSegment> expressionSegments,
             NonNullImmutableList<NameToken> byRefArguments,
             ScopeAccessInformation scopeAccessInformation,
             NonNullImmutableList<FuncByRefMapping> rewrittenReferences,
