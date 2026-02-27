@@ -9,8 +9,9 @@ namespace Skrypton.RuntimeSupport.Implementations
 {
     public static class IDispatchAccess
     {
-        [DllImport(@"oleaut32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        static extern Int32 VariantClear(IntPtr pvarg);
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        [DllImport("oleaut32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        private static extern Int32 VariantClear(IntPtr pvarg);
 
         private const int LOCALE_SYSTEM_DEFAULT = 2048;
         private const int DISPID_PROPERTYPUT = -3;
