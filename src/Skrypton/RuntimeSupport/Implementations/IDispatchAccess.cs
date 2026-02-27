@@ -233,6 +233,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         message += " [" + errorType.ToString() + "]";
                     if (args.Length > 0)
                     {
+#pragma warning disable CA1031 // Do not catch general exception types
                         try { Marshal.GetObjectsForNativeVariants(rgvarg, args.Length); }
                         catch (Exception exx)
                         {
@@ -243,6 +244,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                             // build option is most likely the cause.
                             message += $" - this may be due to the \"Prefer 32-bit\" option not being enabled. (Is64BitProcess:{Environment.Is64BitProcess})";// in Visual Studio";
                         }
+#pragma warning restore CA1031 // Do not catch general exception types
                     }
                     throw new IDispatchAccessException(message, source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);
                 }

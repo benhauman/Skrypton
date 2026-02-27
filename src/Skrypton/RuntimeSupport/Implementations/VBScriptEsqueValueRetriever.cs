@@ -149,6 +149,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if ((cacheKeyIfApplicable != null) && _absentDefaultMemberCache.TryGetValue(cacheKeyIfApplicable, out cachedValueForHasTargetTypeGotDefaultMember))
                 return cachedValueForHasTargetTypeGotDefaultMember ? DefaultMemberDetails.KnownToHaveDefault() : DefaultMemberDetails.KnownToNotHaveDefault();
 
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 // .. then try to retrieve the default value for the target - if this succeeds, then we know we have a default member (add that information to the cache and
@@ -196,6 +197,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     _absentDefaultMemberCache.TryAdd(cacheKeyIfApplicable, true);
                 return DefaultMemberDetails.ExceptionWhileEvaluatingDefault(e);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         private object GetDefaultValueFromObject(object o)

@@ -116,8 +116,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 foreach (var disposableResource in _disposableReferencesToClearAfterTheRequest)
                 {
+#pragma warning disable CA1031 // Do not catch general exception types
                     try { disposableResource.Dispose(); }
                     catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
                 }
             }
         }
@@ -1421,11 +1423,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return false;
                 return (value != null) && value.GetType().IsArray;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 SETERROR(e);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
         public bool ISDATE(object value)
         {
@@ -1447,12 +1451,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 DateParser.ForCulture(_culture).Parse(value.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
                 return true;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 if (!swallowAnyError)
                     SETERROR(e);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
         public bool ISEMPTY(object value)
         {
@@ -1466,6 +1472,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // If it IS a value type, or was manipulated into one, then check for null (aka VBScript's Empty)
                 return value == null;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 // If an exception was raised while evaluating a default member (meaning "value" was not a value but it had a default member that could
@@ -1474,6 +1481,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 SETERROR(e);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
         public bool ISNULL(object value)
         {
@@ -1485,11 +1493,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return false;
                 return value == DBNull.Value;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 SETERROR(e);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
         private static Regex SpaceFollowingMinusSignRemover = new Regex(@"-\s+", RegexOptions.Compiled);
         public bool ISNUMERIC(object value)
@@ -1507,11 +1517,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 double numericValue;
                 return double.TryParse(SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-"), out numericValue);
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 SETERROR(e);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
         public bool ISOBJECT(object value)
         {
