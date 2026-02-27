@@ -1,9 +1,6 @@
 ﻿using Helpline.Application.ScriptingModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.ScriptControlSupport;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Skrypton.Tests.Application
 {

@@ -92,7 +92,7 @@ namespace Skrypton.RuntimeSupport
                     {
                         text = text.Substring(num + 1);
                     }
-                IL_138:
+                    IL_138:
                     if (flag)
                     {
                         Array array = (Array)VarName;
@@ -571,7 +571,7 @@ namespace Skrypton.RuntimeSupport
             string text = "__ComObject";
             try
             {
-                /// new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
+                // new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
             }
             catch (StackOverflowException ex)
             {
@@ -604,7 +604,7 @@ namespace Skrypton.RuntimeSupport
                 typeInfo.GetDocumentation(-1, out strName, out strDocString, out dwHelpContext, out strHelpFile);
                 text = strName;
             }
-        IL_67:
+            IL_67:
             if (text[0] == '_')
             {
                 text = text.Substring(1);

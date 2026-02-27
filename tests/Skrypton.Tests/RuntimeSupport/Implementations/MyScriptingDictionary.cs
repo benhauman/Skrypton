@@ -92,7 +92,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [IsDefault] // needed for enumeration : dict[currentkey]
         public object Item(object key)
         {
-            string k = key.ToString();
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key)); ;
 
             if (!_dict.TryGetValue(k, out var value))
                 throw new KeyNotFoundException($"Key '{key}' not found");
@@ -103,7 +104,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [DispId(0)]
         public void Item(object key, object value)
         {
-            string k = key.ToString();
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key)); ;
             _dict[k] = value;
         }
 
