@@ -668,15 +668,15 @@ public sealed class KnownTextContent
         return string.Equals(theContentUpper, atomContent.UpperText, StringComparison.Ordinal);
     }
 
-    internal bool IsNullOrBlank()
-    {
-        /// if (!xIsNullOrBlank.HasValue)
-        /// {
-        /// xIsNullOrBlank = ((TheContent ?? "").Trim() == "");
-        /// }
-        /// return xIsNullOrBlank.Value;
-        return false;
-    }
+    //internal bool IsNullOrBlank()
+    //{
+    //    /// if (!xIsNullOrBlank.HasValue)
+    //    /// {
+    //    /// xIsNullOrBlank = ((TheContent ?? "").Trim() == "");
+    //    /// }
+    //    /// return xIsNullOrBlank.Value;
+    //    return false;
+    //}
 }
 
 [Serializable]

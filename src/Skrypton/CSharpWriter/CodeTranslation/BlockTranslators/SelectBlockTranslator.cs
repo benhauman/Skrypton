@@ -54,7 +54,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var translationResult = TranslationResult.Empty;
             foreach (var openingComment in selectBlock.OpeningComments)
-                translationResult = base.TryToTranslateComment(translationResult, openingComment, scopeAccessInformation, indentationDepth);
+                translationResult = TryToTranslateComment(translationResult, openingComment, scopeAccessInformation, indentationDepth);
 
             // Do all of the work to decide what needs doing with the target expression (if it's not a simple value then it will be evaluating - this is done once for the entire
             // block and the resulting value reused for each case-value comparison)
@@ -364,7 +364,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult;
         }
 
-        private TranslationResult SetCaseMatchResultValue(
+        private static TranslationResult SetCaseMatchResultValue(
             TranslationResult translationResult,
             int indentationDepth,
             IEnumerable<TranslatedStatementContentDetails> conditionSegments,
@@ -738,7 +738,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// <summary>
         /// VBScript does not consider -1 to be a numeric literal, it is a subtraction operation against the numeric literal 1 (so special rules around numeric literals do not apply to negative values)
         /// </summary>
-        private bool IsNumericLiteral(Expression expression)
+        private static bool IsNumericLiteral(Expression expression)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -749,7 +749,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// <summary>
         /// VBScript does not consider -1 to be a numeric literal, it is a subtraction operation against the numeric literal 1 (so special rules around numeric literals do not apply to negative values)
         /// </summary>
-        private bool IsNumericLiteral(NumericValueToken numericValueToken)
+        private static bool IsNumericLiteral(NumericValueToken numericValueToken)
         {
             if (numericValueToken == null)
                 throw new ArgumentNullException(nameof(numericValueToken));
@@ -757,7 +757,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return !numericValueToken.Content.StartsWith("-", StringComparison.Ordinal);
         }
 
-        private bool Is<TSingleTokenType>(Expression expression) where TSingleTokenType : IToken
+        private static bool Is<TSingleTokenType>(Expression expression) where TSingleTokenType : IToken
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));

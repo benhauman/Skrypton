@@ -197,7 +197,9 @@ namespace Skrypton.ScriptControlSupport
         //    return base.LoadUnmanagedDll(unmanagedDllName);
         //}
 
+#pragma warning disable CA1822 // Mark members as static
         internal void UnloadContextCollectAndWait()
+#pragma warning restore CA1822 // Mark members as static
         {
             //this.Unload();
             //GC.Collect();

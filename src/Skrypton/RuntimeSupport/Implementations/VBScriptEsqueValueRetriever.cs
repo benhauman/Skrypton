@@ -220,7 +220,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Determines whether the given CLR type is capable of holding only VBScript value type instances.
         /// </summary>
-        private bool IsCLRTypeVBScriptValueType(Type t)
+        private static bool IsCLRTypeVBScriptValueType(Type t)
         {
             if (t == null)
                 throw new ArgumentNullException(nameof(t));
@@ -232,7 +232,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// The comparison (o == VBScriptConstants.Nothing) will return false even if o is VBScriptConstants.Nothing due to the implementation details of
         /// DispatchWrapper. This method delivers a reliable way to test for it.
         /// </summary>
-        private bool IsVBScriptNothing(object o)
+        private static bool IsVBScriptNothing(object o)
         {
             return ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
         }
@@ -543,12 +543,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             return null;
         }
 
-        private double DateToDouble(DateTime value)
+        private static double DateToDouble(DateTime value)
         {
             return ((DateTime)value).Subtract(VBScriptConstants.ZeroDate).TotalDays;
         }
 
-        private DateTime DoubleToDate(double value)
+        private static DateTime DoubleToDate(double value)
         {
             return VBScriptConstants.ZeroDate.AddDays(value);
         }
@@ -586,7 +586,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return o.ToString();
         }
 
-        private string DateToString(DateTime value, CultureInfo culture)
+        private static string DateToString(DateTime value, CultureInfo culture)
         {
             var dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : DateParser.DateTimeToShortDateString(value, culture, false);
             var timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : DateParser.DateTimeToLongTimeString(value, culture);
@@ -1496,7 +1496,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// VBScript expects integer array index values but will accept fractional values or even strings representing integers or fractional values.
         /// Any fractional values are rounded to the closest even number (so 1.5 rounds to 2, 2.5 also rounds to 2, 3.5 rounds to 4, etc..)
         /// </summary>
-        private BlockExpression GetVBScriptStyleArrayIndexParsingExpression(Expression index)
+        private static BlockExpression GetVBScriptStyleArrayIndexParsingExpression(Expression index)
         {
             if (index == null)
                 throw new ArgumentNullException(nameof(index));
@@ -1556,7 +1556,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private NewExpression GetNewArgumentException(string message, ParameterExpression exceptionParameter)
+        private static NewExpression GetNewArgumentException(string message, ParameterExpression exceptionParameter)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Null/blank message specified");
@@ -1577,7 +1577,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private Type GetNonByRefType(Type byRefType)
+        private static Type GetNonByRefType(Type byRefType)
         {
             if (byRefType == null)
                 throw new ArgumentNullException(nameof(byRefType));
@@ -1592,10 +1592,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private int ApplyVBScriptIndexLogicToNonIntegerValue(double value)
-        {
-            return (int)Math.Round(value, MidpointRounding.ToEven); // This is what effectively what VBScript does
-        }
+        //private static int ApplyVBScriptIndexLogicToNonIntegerValue(double value)
+        //{
+        //    return (int)Math.Round(value, MidpointRounding.ToEven); // This is what effectively what VBScript does
+        //}
 
         private object WalkMemberAccessors(object target, IEnumerable<string> memberAccessors, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
@@ -1802,7 +1802,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return allOptions;
         }
 
-        private bool ParameterIsObjectParamsArray(ParameterInfo parameter)
+        private static bool ParameterIsObjectParamsArray(ParameterInfo parameter)
         {
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
@@ -1852,7 +1852,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .ToArray();
         }
 
-        private MethodInfo[] GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
+        private static MethodInfo[] GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1867,7 +1867,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return mis;
         }
 
-        private int GetMemberInheritanceDepth(MemberInfo memberInfo, Type type)
+        private static int GetMemberInheritanceDepth(MemberInfo memberInfo, Type type)
         {
             if (memberInfo == null)
                 throw new ArgumentNullException(nameof(memberInfo));
@@ -1913,7 +1913,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             UseNameRewriter
         }
 
-        private bool TypeIsTranslatedFromVBScript(Type type)
+        private static bool TypeIsTranslatedFromVBScript(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1921,7 +1921,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return type.GetCustomAttributes(typeof(SourceClassName), true).Length != 0;
         }
 
-        private bool TypeIsComVisible(Type type)
+        private static bool TypeIsComVisible(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1944,7 +1944,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return TypeIsComVisible(type.BaseType);
         }
 
-        private bool MemberHasDispIdZero(MemberInfo memberInfo)
+        private static bool MemberHasDispIdZero(MemberInfo memberInfo)
         {
             if (memberInfo == null)
                 throw new ArgumentNullException(nameof(memberInfo));
@@ -1954,7 +1954,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .Any(attribute => attribute.Value == 0);
         }
 
-        private bool IsDefaultMember(MemberInfo memberInfo)
+        private static bool IsDefaultMember(MemberInfo memberInfo)
         {
             if (memberInfo == null)
                 throw new ArgumentNullException(nameof(memberInfo));
@@ -1963,7 +1963,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return (defaultMemberAttributeForContainingType != null) && (defaultMemberAttributeForContainingType.MemberName == memberInfo.Name);
         }
 
-        private bool AnyDispIdZeroMemberExists(Type type)
+        private static bool AnyDispIdZeroMemberExists(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1971,7 +1971,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return type.GetMembers().Any(m => MemberHasDispIdZero(m));
         }
 
-        private bool DispIdZeroIsAmbiguous(Type type)
+        private static bool DispIdZeroIsAmbiguous(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));

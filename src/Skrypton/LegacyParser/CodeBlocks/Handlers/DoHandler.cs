@@ -19,13 +19,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "DO", "DO WHILE" or "DO UNTIL"
-            if (!base.checkAtomTokenPattern(tokens, "DO", false))
+            if (!checkAtomTokenPattern(tokens, "DO", false))
                 return null;
             if (tokens.Count < 3)
                 throw new ArgumentException("Insufficient tokens - invalid");
 
             var lineIndexOfStartOfConstruct = tokens[0].LineIndex;
-            var preConditionStartToken = base.getToken(tokens, 1, new List<Type> { typeof(AtomToken), typeof(AbstractEndOfStatementToken) });
+            var preConditionStartToken = getToken(tokens, 1, new List<Type> { typeof(AtomToken), typeof(AbstractEndOfStatementToken) });
             bool hasPreCondition, doUntil;
             if (preConditionStartToken is AtomToken)
             {
@@ -75,7 +75,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 // statement is encountered (in which case we will pass a null conditionStatement to the DoBlock). It's not valid for it
                 // to have both a pre- and post-condition, so if a pre-condition has already been extracted, don't try to extract a
                 // post-condition.
-                var postConditionStartToken = base.getToken(tokens, 0, new List<Type> { typeof(AtomToken), typeof(AbstractEndOfStatementToken) });
+                var postConditionStartToken = getToken(tokens, 0, new List<Type> { typeof(AtomToken), typeof(AbstractEndOfStatementToken) });
                 if (postConditionStartToken is AtomToken)
                 {
                     var doWhile = (postConditionStartToken.Content.Equals("WHILE", StringComparison.OrdinalIgnoreCase));
@@ -102,7 +102,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return new DoBlock(conditionStatement, hasPreCondition, doUntil, supportsExit, blockContent, lineIndexOfStartOfConstruct);
         }
 
-        private Expression ExtractConditionFromTokens(List<IToken> tokens)
+        private static Expression ExtractConditionFromTokens(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -114,9 +114,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             while (tokens.Count > 0)
             {
                 // Once the end-of-statement has been identified, don't try to remove it - leave that up to the caller
-                if (base.isEndOfStatement(tokens, 0))
+                if (isEndOfStatement(tokens, 0))
                     break;
-                var tokenCondition = base.getToken_AtomOrDateStringLiteralOnly(tokens, 0);
+                var tokenCondition = getToken_AtomOrDateStringLiteralOnly(tokens, 0);
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }

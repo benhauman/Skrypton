@@ -17,7 +17,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            if (!base.checkAtomTokenPattern(tokens, "CONST", false))
+            if (!checkAtomTokenPattern(tokens, "CONST", false))
                 return null;
 
             tokens.RemoveAt(0); // Trim out the keyword before trying to extract the values being set

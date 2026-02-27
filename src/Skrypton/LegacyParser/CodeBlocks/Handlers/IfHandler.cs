@@ -53,7 +53,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return ProcessSingleLine(tokens);
         }
 
-        private IfBlock ProcessMultiLine(List<IToken> tokens, int offsetToTHEN)
+        private static IfBlock ProcessMultiLine(List<IToken> tokens, int offsetToTHEN)
         {
             // ======================================================================
             // Notes on multi-line If's:
@@ -166,7 +166,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return new IfBlock(ifContent);
         }
 
-        private IfBlock ProcessSingleLine(List<IToken> tokens)
+        private static IfBlock ProcessSingleLine(List<IToken> tokens)
         {
             // ======================================================================
             // Notes on single-line If's:
@@ -247,13 +247,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             List<IToken> truthTokens, notTokens;
             if (offsetElse == -1)
             {
-                truthTokens = base.getTokenListSection(ifTokens, 0);
+                truthTokens = getTokenListSection(ifTokens, 0);
                 notTokens = null;
             }
             else
             {
-                truthTokens = base.getTokenListSection(ifTokens, 0, offsetElse);
-                notTokens = base.getTokenListSection(ifTokens, offsetElse + 1);
+                truthTokens = getTokenListSection(ifTokens, 0, offsetElse);
+                notTokens = getTokenListSection(ifTokens, offsetElse + 1);
             }
 
             // Note: It's not valid for Post-THEN content to be empty
@@ -293,7 +293,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// exception will be thrown for invalid content, but neither null nor an
         /// empty list will ever be returned.
         /// </summary>
-        private IToken[] getConditionContent(List<IToken> tokens)
+        private static IToken[] getConditionContent(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -315,7 +315,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new InvalidOperationException("Invalid content: no THEN token for IF / ELSEIF");
 
             // Grab condition content
-            var conditionTokens = base.getTokenListSection(tokens, 0, offsetThen);
+            var conditionTokens = getTokenListSection(tokens, 0, offsetThen);
 
             // Trim out the handled tokens and the "THEN"
             tokens.RemoveRange(0, conditionTokens.Count() + 1);

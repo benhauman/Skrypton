@@ -116,7 +116,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected TranslationResult TryToTranslateBlankLine(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected static TranslationResult TryToTranslateBlankLine(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             // We don't have any information about where blank lines comes from as the code blocks don't contain this information directly
             // and there are no tokens in the BlankLine class to infer the information from. So we'll have to leave it as zero (it is
@@ -151,7 +151,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected TranslationResult TryToTranslateComment(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected static TranslationResult TryToTranslateComment(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (translationResult == null) throw new ArgumentNullException(nameof(translationResult));
             var commentBlock = block as CommentStatement;
@@ -1271,24 +1271,24 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return new NonNullImmutableList<BlockTranslationAttempter>(
                 new BlockTranslationAttempter[]
                 {
-                    this.TryToTranslateBlankLine,
-                    this.TryToTranslateComment,
-                    this.TryToTranslateConst,
-                    this.TryToTranslateDim,
-                    this.TryToTranslateDo,
-                    this.TryToTranslateExit,
-                    this.TryToTranslateErase,
-                    this.TryToTranslateFor,
-                    this.TryToTranslateForEach,
-                    this.TryToTranslateIf,
-                    this.TryToTranslateOnErrorResumeNext,
-                    this.TryToTranslateOnErrorGotoZero,
-                    this.TryToTranslateReDim,
-                    this.TryToTranslateRandomize,
-                    this.TryToTranslateStatementOrExpression,
-                    this.TryToTranslateSelect,
-                    this.TryToTranslateValueSettingStatement,
-                    this.TryToTranslateWith
+                    TryToTranslateBlankLine,
+                    TryToTranslateComment,
+                    TryToTranslateConst,
+                    TryToTranslateDim,
+                    TryToTranslateDo,
+                    TryToTranslateExit,
+                    TryToTranslateErase,
+                    TryToTranslateFor,
+                    TryToTranslateForEach,
+                    TryToTranslateIf,
+                    TryToTranslateOnErrorResumeNext,
+                    TryToTranslateOnErrorGotoZero,
+                    TryToTranslateReDim,
+                    TryToTranslateRandomize,
+                    TryToTranslateStatementOrExpression,
+                    TryToTranslateSelect,
+                    TryToTranslateValueSettingStatement,
+                    TryToTranslateWith
                 }
             );
         }

@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got an "OPTION EXPLICIT" statement
-            if (!base.checkAtomTokenPattern(tokens, ["OPTION", "EXPLICIT"], false))
+            if (!checkAtomTokenPattern(tokens, ["OPTION", "EXPLICIT"], false))
                 return null;
 
             // Pull content from token stream
@@ -26,7 +26,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count > numberOfTokensToRemove)
             {
                 // Unless we've hit token stream end, next should be end-of-statement
-                if (!base.isEndOfStatement(tokens, numberOfTokensToRemove))
+                if (!isEndOfStatement(tokens, numberOfTokensToRemove))
                     throw new InvalidOperationException("No end-of-statement after \"OPTION EXPLICIT\" statement");
                 numberOfTokensToRemove++;
             }

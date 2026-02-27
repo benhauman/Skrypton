@@ -235,7 +235,7 @@ namespace Skrypton.CSharpWriter.Lists
             );
         }
 
-        private bool DoValuesMatch(T x, T y, IEqualityComparer<T> optionalComparer)
+        private static bool DoValuesMatch(T x, T y, IEqualityComparer<T> optionalComparer)
         {
             if (optionalComparer != null)
                 return optionalComparer.Equals(x, y);

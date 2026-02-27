@@ -19,12 +19,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             bool includesCallKeyword;
             int numberOfKeywordTokens;
-            if (base.checkAtomTokenPattern(tokens, ["CALL", "ERASE"], false))
+            if (checkAtomTokenPattern(tokens, ["CALL", "ERASE"], false))
             {
                 includesCallKeyword = true;
                 numberOfKeywordTokens = 2;
             }
-            else if (base.checkAtomTokenPattern(tokens, "ERASE", false))
+            else if (checkAtomTokenPattern(tokens, "ERASE", false))
             {
                 includesCallKeyword = false;
                 numberOfKeywordTokens = 1;
@@ -50,14 +50,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
             else
             {
-                var targetExpressionsTokenSets = base.getEntryList(tokens, offset: numberOfKeywordTokens, endMarker: new EndOfStatementNewLineToken(tokens.First().LineIndex));
+                var targetExpressionsTokenSets = getEntryList(tokens, offset: numberOfKeywordTokens, endMarker: new EndOfStatementNewLineToken(tokens.First().LineIndex));
                 if (includesCallKeyword)
                 {
                     if (targetExpressionsTokenSets.Count != 1)
                         throw new InvalidOperationException("Expected only a single argument token set to have been extracted when CALL is present, since brackets should have wrapped all argument(s) in valid VBScript");
                     var argumentTokens = targetExpressionsTokenSets[0];
                     var terminator = new EndOfStatementNewLineToken(argumentTokens.Last().LineIndex);
-                    targetExpressionsTokenSets = base.getEntryList(
+                    targetExpressionsTokenSets = getEntryList(
                         argumentTokens.Skip(1).Take(argumentTokens.Count - 2).Concat(new[] { terminator }).ToArray(),
                         0,
                         terminator
@@ -92,7 +92,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// ERASE a.Name) and non-array-index calls (eg. a(0) if a is not an array). These failure cases will bw checked for and expressed by the translation
         /// process, for now we just to represent what is present.
         /// </summary>
-        private Tuple<EraseStatement.TargetDetails, int> GetTargetExpressionDetailsWithNumberOfTokensConsumed(IReadOnlyCollection<IToken> tokens)
+        private static Tuple<EraseStatement.TargetDetails, int> GetTargetExpressionDetailsWithNumberOfTokensConsumed(IReadOnlyCollection<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -146,7 +146,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 if (closeBrace == null)
                     throw new InvalidOperationException("Invalid token sequence, mismatched brackets on line (" + (openBrace.LineIndex + 1) + ")");
 
-                targetArgumentsIfAny = base.getEntryList(tokensArray, 2, closeBrace)
+                targetArgumentsIfAny = getEntryList(tokensArray, 2, closeBrace)
                     .Select(argumentTokens => new Expression(argumentTokens))
                     .ToArray();
 

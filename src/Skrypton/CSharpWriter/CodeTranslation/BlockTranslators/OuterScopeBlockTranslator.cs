@@ -527,7 +527,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private static readonly TranslatedStatement EmptyLine = new TranslatedStatement("", 0, 0);
 
-        private NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
+        private static NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));
@@ -542,7 +542,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return result;
         }
 
-        private NonNullImmutableList<TranslatedStatement> RemoveRunsOfBlankLines(NonNullImmutableList<TranslatedStatement> translatedStatements)
+        private static NonNullImmutableList<TranslatedStatement> RemoveRunsOfBlankLines(NonNullImmutableList<TranslatedStatement> translatedStatements)
         {
             if (translatedStatements == null) throw new ArgumentNullException(nameof(translatedStatements));
 
@@ -613,7 +613,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// (that way, an error may be raised immediately if any of them are no longer valid - emulating the VBScript interpreter's stop-before-executing
         /// behaviour).
         /// </summary>
-        private IEnumerable<DateLiteralToken> EnumerateAllDateLiteralTokens(IEnumerable<ICodeBlock> blocks)
+        private static IEnumerable<DateLiteralToken> EnumerateAllDateLiteralTokens(IEnumerable<ICodeBlock> blocks)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));

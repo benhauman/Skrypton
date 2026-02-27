@@ -28,7 +28,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             ICodeBlock errorBlock = null;
             foreach (string[] matchPattern in matchPatterns.Keys)
             {
-                if (base.checkAtomTokenPattern(tokens, matchPattern, false))
+                if (checkAtomTokenPattern(tokens, matchPattern, false))
                 {
                     errorBlock = matchPatterns[matchPattern](tokens[0].LineIndex);
                     tokensToRemove = matchPattern.Length;
@@ -42,7 +42,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count > tokensToRemove)
             {
                 // Unless we've hit token stream end, next should be end-of-statement
-                if (!base.isEndOfStatement(tokens, tokensToRemove.Value))
+                if (!isEndOfStatement(tokens, tokensToRemove.Value))
                     throw new InvalidOperationException("No end-of-statement after \"ON ERROR..\" statement");
                 tokensToRemove++;
             }

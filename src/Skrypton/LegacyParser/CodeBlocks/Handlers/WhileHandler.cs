@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "WHILE" block
-            if (!base.checkAtomTokenPattern(tokens, "WHILE", false))
+            if (!checkAtomTokenPattern(tokens, "WHILE", false))
                 return null;
             if (tokens.Count < 3)
                 throw new ArgumentException("Insufficient tokens - invalid");
@@ -34,12 +34,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             while (true)
             {
                 // Add AtomTokens to list until find EndOfStatement
-                if (base.isEndOfStatement(tokens, 0))
+                if (isEndOfStatement(tokens, 0))
                 {
                     tokens.RemoveAt(0);
                     break;
                 }
-                IToken tokenCondition = base.getToken_AtomOrDateStringLiteralOnly(tokens, 0);
+                IToken tokenCondition = getToken_AtomOrDateStringLiteralOnly(tokens, 0);
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }

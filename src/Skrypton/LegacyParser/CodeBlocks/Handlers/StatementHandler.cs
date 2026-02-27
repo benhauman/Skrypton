@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return ReturnAppropriateStatement(tokensToExtract);
         }
 
-        private ICodeBlock ReturnAppropriateStatement(IEnumerable<IToken> tokens)
+        private static ICodeBlock ReturnAppropriateStatement(IEnumerable<IToken> tokens)
         {
             var hasCallPrefix = false;
             var isSetStatement = false;

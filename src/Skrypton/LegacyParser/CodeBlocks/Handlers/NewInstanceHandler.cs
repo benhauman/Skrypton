@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            if (!base.checkAtomTokenPattern(tokens, ["NEW"], false))
+            if (!checkAtomTokenPattern(tokens, ["NEW"], false))
                 return null;
             if (tokens.Count < 2)
                 throw new ArgumentException("Insufficient tokens - invalid");

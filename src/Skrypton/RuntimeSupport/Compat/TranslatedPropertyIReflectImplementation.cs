@@ -88,7 +88,7 @@ namespace Skrypton.RuntimeSupport.Compat
             return representedProperty;
         }
 
-        private bool IsBindingRequestFor(BindingFlags value, BindingFlags valueToSearchFor)
+        private static bool IsBindingRequestFor(BindingFlags value, BindingFlags valueToSearchFor)
         {
             return (value & valueToSearchFor) == valueToSearchFor;
         }

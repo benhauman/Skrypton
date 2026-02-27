@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// order to be valid. Will raise an exception if there are no more tokens available,
         /// or if a AtomToken was required but the next token was of a different type.
         /// </summary>
-        protected IToken getToken(IReadOnlyCollection<IToken> tokens, int offset, IReadOnlyCollection<Type> allowedTokenTypes)
+        protected static IToken getToken(IReadOnlyCollection<IToken> tokens, int offset, IReadOnlyCollection<Type> allowedTokenTypes)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -53,7 +53,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             return token;
         }
 
-        private bool isObjectOfTypeOrDerivedFrom(object obj, Type type)
+        private static bool isObjectOfTypeOrDerivedFrom(object obj, Type type)
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
@@ -70,7 +70,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
         }
 
-        protected IToken getToken_AtomOnly(IReadOnlyCollection<IToken> tokens, int offset)
+        protected static IToken getToken_AtomOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {
@@ -78,7 +78,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             });
         }
 
-        protected IToken getToken_AtomOrDateStringLiteralOnly(IReadOnlyCollection<IToken> tokens, int offset)
+        protected static IToken getToken_AtomOrDateStringLiteralOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {
@@ -88,7 +88,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             });
         }
 
-        protected bool isEndOfStatement(IReadOnlyCollection<IToken> tokens, int offset)
+        protected static bool isEndOfStatement(IReadOnlyCollection<IToken> tokens, int offset)
         {
             var token = getToken(tokens, offset, null);
             return (token is AbstractEndOfStatementToken);
@@ -101,7 +101,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// optional offset value is less than zero. (If the offset value is too far along for
         /// the content to be matched, false will be returned).
         /// </summary>
-        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string[] values, bool matchCase)
+        protected static bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string[] values, bool matchCase)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -135,12 +135,12 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
             return true;
         }
-        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string matchPattern, bool matchCase)
+        protected static bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, string matchPattern, bool matchCase)
         {
             return checkAtomTokenPattern(tokens, [matchPattern], matchCase);
         }
 
-        protected bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, int offset, string[] matchPatterns, bool matchCase)
+        protected static bool checkAtomTokenPattern(IReadOnlyCollection<IToken> tokens, int offset, string[] matchPatterns, bool matchCase)
         {
             // Validate input - throw exception if conditions not met
             if (tokens == null)
@@ -166,7 +166,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// in the token stream that are to be handled here, with the exception of the optional
         /// use of an EndOfStatementToken for the endMarker.
         /// </summary>
-        protected List<List<IToken>> getEntryList(IReadOnlyCollection<IToken> tokens, int offset, IToken endMarker)
+        protected static List<List<IToken>> getEntryList(IReadOnlyCollection<IToken> tokens, int offset, IToken endMarker)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -241,7 +241,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list
         /// </summary>
-        protected List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start, int count)
+        protected static List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start, int count)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -258,7 +258,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list - taken from the start position to the end of the token list
         /// </summary>
-        protected List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start)
+        protected static List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

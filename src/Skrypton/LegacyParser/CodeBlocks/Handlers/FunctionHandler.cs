@@ -74,7 +74,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             BlockType blockType = BlockType.Unknown;
             foreach (string[] matchPattern in matchPatterns.Keys)
             {
-                if (base.checkAtomTokenPattern(tokens, matchPattern, false))
+                if (checkAtomTokenPattern(tokens, matchPattern, false))
                 {
                     match = true;
                     matchPatternLength = matchPattern.Length;
@@ -176,7 +176,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new InvalidOperationException("Unrecognised BlockType [" + blockType.ToString() + "] - how did this happen??");
         }
 
-        private List<FunctionBlock.Parameter> getFuncParametersAndRemoveTokens(
+        private static List<FunctionBlock.Parameter> getFuncParametersAndRemoveTokens(
             List<IToken> tokens,
             int offset)
         {
@@ -192,9 +192,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Check whether we have parameters defined (the entire parameters section
             // if optional - including the brackets)
-            if (!base.isEndOfStatement(tokens, offset))
+            if (!isEndOfStatement(tokens, offset))
             {
-                token = base.getToken_AtomOnly(tokens, offset);
+                token = getToken_AtomOnly(tokens, offset);
                 if (token.Content == "(")
                 {
                     // Look for parameter content
@@ -202,7 +202,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     while (true)
                     {
                         // Have we reached the closing bracket?
-                        token = base.getToken_AtomOnly(tokens, offset);
+                        token = getToken_AtomOnly(tokens, offset);
                         if (token.Content == ")")
                         {
                             // Yes - exit loop
@@ -220,7 +220,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
                         // Next token should be close bracket (handled above) or
                         // parameter separator (check for now)
-                        token = base.getToken_AtomOnly(tokens, offset);
+                        token = getToken_AtomOnly(tokens, offset);
                         if (token.Content == ",")
                             offset++;
                     }
@@ -228,7 +228,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             // Ensure next token is EndOfStatement
-            if (!base.isEndOfStatement(tokens, offset))
+            if (!isEndOfStatement(tokens, offset))
                 throw new InvalidOperationException("Expected EndOfStatementToken after function declaration");
 
             // Trim off handled tokens and return parameter data
@@ -243,7 +243,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// be a parameter to grab data for. Raise an exception for invalid content. Return
         /// the tokens that are required to define the detected paramter.
         /// </summary>
-        private List<IToken> getParamTokens(List<IToken> tokens, int offset, out bool byRef, out string name, out bool isArray)
+        private static List<IToken> getParamTokens(List<IToken> tokens, int offset, out bool byRef, out string name, out bool isArray)
         {
             // We need to return the tokens related to the current parameter so that the
             // caller knows how many tokens that have been processed
@@ -251,7 +251,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             name = null;
 
             // Determine ByRef / ByVal (default to ByVal if not specified)
-            IToken token = base.getToken_AtomOnly(tokens, offset);
+            IToken token = getToken_AtomOnly(tokens, offset);
             if (token.Content.Equals("BYREF", StringComparison.OrdinalIgnoreCase))
             {
                 byRef = true;
@@ -268,18 +268,18 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 byRef = true; // VBScript defaults to ByRef behaviour
 
             // Grab parameter name
-            token = base.getToken_AtomOnly(tokens, offset);
+            token = getToken_AtomOnly(tokens, offset);
             name = token.Content;
             paramTokens.Add(token);
             offset++;
 
             // Check for open-close brackets (ie. whether parameter is array or not)
-            token = base.getToken_AtomOnly(tokens, offset);
+            token = getToken_AtomOnly(tokens, offset);
             if (token.Content == "(")
             {
                 paramTokens.Add(token);
                 offset++;
-                token = base.getToken_AtomOnly(tokens, offset);
+                token = getToken_AtomOnly(tokens, offset);
                 if (token.Content != ")")
                     throw new InvalidOperationException("Invalid content in function array parameter declaration");
                 paramTokens.Add(token);

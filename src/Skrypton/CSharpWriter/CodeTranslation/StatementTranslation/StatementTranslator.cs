@@ -830,7 +830,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// of these paramaters matches the specified desiredNumberOfArguments, then the return value will have a DesiredNumberOfArgumentsMatchedAgainst value
         /// that is consistent with desiredNumberOfArguments, otherwise it will be null. This information affects how the support function may be called.
         /// </summary>
-        private BuiltInFunctionDetails GetDetailsOfBuiltInFunction(IToken builtInFunctionToken, int desiredNumberOfArguments)
+        private static BuiltInFunctionDetails GetDetailsOfBuiltInFunction(IToken builtInFunctionToken, int desiredNumberOfArguments)
         {
             if (builtInFunctionToken == null)
             {
@@ -1264,7 +1264,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private NumericValueExpressionSegment TryToGetExpressionAsSingleNumericValueExpressionSegment(Expression expression)
+        private static NumericValueExpressionSegment TryToGetExpressionAsSingleNumericValueExpressionSegment(Expression expression)
         {
             if (expression == null)
             {
@@ -1688,7 +1688,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private string GetSupportFunctionName(OperatorToken operatorToken)
+        private static string GetSupportFunctionName(OperatorToken operatorToken)
         {
             if (operatorToken == null)
             {

@@ -167,9 +167,11 @@ namespace Skrypton.RuntimeSupport
         //}
 
         /// <summary>
-        /// Translate a numeric value into a date, following VBScript's logic. This will throw an OverflowException for a number outside of the acceptable range.
+        /// Translate a numeric value into a date, following VBScript's logic. This will throw an OverflowException for a number outside the acceptable range.
         /// </summary>
+#pragma warning disable CA1822 // Mark members as static
         public DateTime Parse(double value)
+#pragma warning restore CA1822 // Mark members as static
         {
             // VBScript has some absolutely bonkers logic for negative values here - eg. CDate(-400.2) = 1898-11-25 04:48:00 which is equal to
             // (CDate(-400) + CDate(0.2)) and NOT equal to (CDate(-400) + CDate(-0.2)). It appears that the negative sign is just removed from

@@ -19,7 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            if (!base.checkAtomTokenPattern(tokens, "WITH", matchCase: false))
+            if (!checkAtomTokenPattern(tokens, "WITH", matchCase: false))
                 return null;
             if (tokens.Count < 4)
                 throw new ArgumentException("Insufficient tokens - invalid");
@@ -28,7 +28,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // be another redirected reference (from an ancester WITH) - eg. "WITH .Item". We'll use the StatementHandler to determine what
             // content is part of the WITH target, but we don't directly require the returned Statement - we just needs its tokens (to
             // generate an Expression for the WithBlock).
-            var token = base.getToken(tokens, offset: 1, allowedTokenTypes: new Type[] { typeof(OpenBrace), typeof(MemberAccessorOrDecimalPointToken), typeof(NameToken) });
+            var token = getToken(tokens, offset: 1, allowedTokenTypes: new Type[] { typeof(OpenBrace), typeof(MemberAccessorOrDecimalPointToken), typeof(NameToken) });
             var targetTokensSource = tokens.Skip(1).ToList();
             var numberOfItemsInTargetTokensSource = targetTokensSource.Count;
             var target = new StatementHandler().Process(targetTokensSource) as Statement;

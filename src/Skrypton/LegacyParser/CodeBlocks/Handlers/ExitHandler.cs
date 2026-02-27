@@ -21,7 +21,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             foreach (ExitStatement.ExitableStatementType exitType in Enum.GetValues(typeof(ExitStatement.ExitableStatementType)))
             {
                 string[] matchPattern = new string[] { "EXIT", exitType.ToString() };
-                if (base.checkAtomTokenPattern(tokens, matchPattern, false))
+                if (checkAtomTokenPattern(tokens, matchPattern, false))
                 {
                     var lineIndexOfExit = tokens[0].LineIndex;
                     var requireAnEndOfStatementToken = (tokens.Count > matchPattern.Length);

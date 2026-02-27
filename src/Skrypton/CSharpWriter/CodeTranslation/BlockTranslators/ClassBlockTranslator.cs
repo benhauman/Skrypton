@@ -145,10 +145,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return base.TranslateCommon(
                 new BlockTranslationAttempter[]
                 {
-                    base.TryToTranslateBlankLine,
-                    base.TryToTranslateComment,
-                    base.TryToTranslateDim,
-                    base.TryToTranslateFunctionPropertyOrSub
+                    TryToTranslateBlankLine,
+                    TryToTranslateComment,
+                    TryToTranslateDim,
+                    TryToTranslateFunctionPropertyOrSub
                 }.ToNonNullImmutableList(),
                 blocks,
                 scopeAccessInformation,

@@ -838,7 +838,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return (builtInFunctionToken != null) && builtInFunctionToken.GuaranteedToReturnNumericContent();
         }
 
-        private NumericValueToken TryToGetExpressionAsNumericConstant(Expression expression)
+        private static NumericValueToken TryToGetExpressionAsNumericConstant(Expression expression)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));

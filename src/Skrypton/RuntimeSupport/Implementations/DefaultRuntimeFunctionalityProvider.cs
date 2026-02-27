@@ -2010,7 +2010,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
             return ToClosestSecond(CDATECore(value, "'Second'")).Second;
         }
-        private DateTime ToClosestSecond(DateTime value)
+        private static DateTime ToClosestSecond(DateTime value)
         {
             var approximateValue = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
             if (value.Millisecond >= 500) // TODO: Check whether this rounding is correct, should it be banker's rounding?
@@ -2518,7 +2518,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private bool IsDotNetNumericType(object l)
+        private static bool IsDotNetNumericType(object l)
         {
             if (l == null)
                 return false;
@@ -2527,7 +2527,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 (l is decimal) || (l is double) || (l is float);
         }
 
-        private bool IsDotNetIntegerType(object l)
+        private static bool IsDotNetIntegerType(object l)
         {
             if (l == null)
                 return false;
@@ -2540,12 +2540,12 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// The comparison (o == VBScriptConstants.Nothing) will return false even if o is VBScriptConstants.Nothing due to the implementation details of
         /// DispatchWrapper. This method delivers a reliable way to test for it.
         /// </summary>
-        private bool IsVBScriptNothing(object o)
+        private static bool IsVBScriptNothing(object o)
         {
             return ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
         }
 
-        private double DateToDouble(DateTime value)
+        private static double DateToDouble(DateTime value)
         {
             // When VBScript describes a date as a number, it applies somewhat counter-intuitive handling to the date component; 400.2 and -400.2 both
             // represent that same time (but on different days). Which means that -400.2 comes AFTER -400.0 chronologically, where as -400.2 comes

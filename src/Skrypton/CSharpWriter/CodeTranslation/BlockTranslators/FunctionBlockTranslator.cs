@@ -134,8 +134,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 blockTranslators = new NonNullImmutableList<BlockTranslationAttempter>()
                     .Add(TryToTranslateValueSettingStatementAsSimpleFunctionValueReturner)
-                    .Add(base.TryToTranslateBlankLine)
-                    .Add(base.TryToTranslateComment);
+                    .Add(TryToTranslateBlankLine)
+                    .Add(TryToTranslateComment);
             }
             else
                 blockTranslators = base.GetWithinFunctionBlockTranslators();

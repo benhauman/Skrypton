@@ -404,21 +404,20 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             return isMustHandleKeyWordUpper(ContentUpper);
         }
 
-        /// <summary>
-        /// Does this AtomContent describe a VBScript (eg. "ABS")?
-        /// </summary>
-        internal bool IsVBScriptFunctionUpper(StringUpper ContentUpper)
-        {
-            return isVBScriptFunctionUpper(ContentUpper);
-        }
-
-        /// <summary>
-        /// Does this AtomContent describe a VBScript value (eg. "NOTHING")?
-        /// </summary>
-        internal bool IsVBScriptValueUpper(StringUpper ContentUpper)
-        {
-            return KnownTextResolver.isVBScriptValueUpper(ContentUpper);
-        }
+        // <summary>
+        // Does this AtomContent describe a VBScript (eg. "ABS")?
+        // </summary>
+        //internal static bool IsVBScriptFunctionUpper(StringUpper ContentUpper)
+        //{
+        //    return isVBScriptFunctionUpper(ContentUpper);
+        //}
+        // <summary>
+        // Does this AtomContent describe a VBScript value (eg. "NOTHING")?
+        // </summary>
+        //internal bool IsVBScriptValueUpper(StringUpper ContentUpper)
+        //{
+        //    return KnownTextResolver.isVBScriptValueUpper(ContentUpper);
+        //}
 
         public override string ToString()
         {

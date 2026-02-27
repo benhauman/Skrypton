@@ -564,14 +564,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             return Convert.ToDouble(numericValue, CultureInfo.InvariantCulture);
         }
 
-        private T? TryToCoerceInto<T>(object value) where T : struct
+        private static T? TryToCoerceInto<T>(object value) where T : struct
         {
             if (value is T)
                 return (T)value;
             return (T?)null;
         }
 
-        private decimal? TryToCoerceIntoCurrency(object value)
+        private static decimal? TryToCoerceIntoCurrency(object value)
         {
             var currencyWrapper = value as CurrencyWrapper;
             if (currencyWrapper != null)

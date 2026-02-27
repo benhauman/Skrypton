@@ -37,7 +37,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Get raw variable content (one token if just variable, three tokens if array
             // without dimensions, four tokens if 1D array, etc..)
-            List<List<IToken>> variablesData = base.getEntryList(tokens, tokensConsumed, new EndOfStatementNewLineToken(tokens[tokensConsumed - 1].LineIndex));
+            List<List<IToken>> variablesData = getEntryList(tokens, tokensConsumed, new EndOfStatementNewLineToken(tokens[tokensConsumed - 1].LineIndex));
 
             // Trim out the opening keyword(s)
             tokens.RemoveRange(0, tokensConsumed);
@@ -76,17 +76,17 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// regarding what statement type it is, and how many tokens were required to
         /// define that type
         /// </summary>
-        private bool canBeHandled(List<IToken> tokens, out int tokensConsumed, out DimType dimType)
+        private static bool canBeHandled(List<IToken> tokens, out int tokensConsumed, out DimType dimType)
         {
-            if (base.checkAtomTokenPattern(tokens, "DIM", false))
+            if (checkAtomTokenPattern(tokens, "DIM", false))
             {
                 tokensConsumed = 1;
                 dimType = DimType.Dim;
                 return true;
             }
-            if (base.checkAtomTokenPattern(tokens, "REDIM", false))
+            if (checkAtomTokenPattern(tokens, "REDIM", false))
             {
-                if (base.checkAtomTokenPattern(tokens, ["REDIM", "PRESERVE"], false))
+                if (checkAtomTokenPattern(tokens, ["REDIM", "PRESERVE"], false))
                 {
                     tokensConsumed = 2;
                     dimType = DimType.ReDimPreserve;
@@ -98,23 +98,23 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
                 return true;
             }
-            if (base.checkAtomTokenPattern(tokens, ["PUBLIC"], false))
+            if (checkAtomTokenPattern(tokens, ["PUBLIC"], false))
             {
-                if (!base.checkAtomTokenPattern(tokens, ["PUBLIC", "FUNCTION"], false)
-                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "PROPERTY"], false)
-                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "DEFAULT", "PROPERTY"], false)
-                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "SUB"], false))
+                if (!checkAtomTokenPattern(tokens, ["PUBLIC", "FUNCTION"], false)
+                && !checkAtomTokenPattern(tokens, ["PUBLIC", "PROPERTY"], false)
+                && !checkAtomTokenPattern(tokens, ["PUBLIC", "DEFAULT", "PROPERTY"], false)
+                && !checkAtomTokenPattern(tokens, ["PUBLIC", "SUB"], false))
                 {
                     tokensConsumed = 1;
                     dimType = DimType.Public;
                     return true;
                 }
             }
-            if (base.checkAtomTokenPattern(tokens, "PRIVATE", false))
+            if (checkAtomTokenPattern(tokens, "PRIVATE", false))
             {
-                if (!base.checkAtomTokenPattern(tokens, ["PRIVATE", "FUNCTION"], false)
-                && !base.checkAtomTokenPattern(tokens, ["PRIVATE", "PROPERTY"], false)
-                && !base.checkAtomTokenPattern(tokens, ["PRIVATE", "SUB"], false))
+                if (!checkAtomTokenPattern(tokens, ["PRIVATE", "FUNCTION"], false)
+                && !checkAtomTokenPattern(tokens, ["PRIVATE", "PROPERTY"], false)
+                && !checkAtomTokenPattern(tokens, ["PRIVATE", "SUB"], false))
                 {
                     tokensConsumed = 1;
                     dimType = DimType.Private;
@@ -136,7 +136,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             Private
         }
 
-        private DimVariable translateRawVariableData(List<IToken> tokens)
+        private static DimVariable translateRawVariableData(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -168,7 +168,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Use base.getEntryList to be flexible and grab dimension declarations
             // as Statement instances
             List<Expression> dimensions = new List<Expression>();
-            List<List<IToken>> dimStatements = base.getEntryList(tokens, 2, AtomToken.GetNewToken(")".ToUpperX(), nameToken.LineIndex));
+            List<List<IToken>> dimStatements = getEntryList(tokens, 2, AtomToken.GetNewToken(")".ToUpperX(), nameToken.LineIndex));
             foreach (List<IToken> dimStatement in dimStatements)
                 dimensions.Add(new Expression(dimStatement));
 

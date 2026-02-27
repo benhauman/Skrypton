@@ -24,7 +24,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
             }
 
-            if (!base.checkAtomTokenPattern(tokens, ["SELECT", "CASE"], false))
+            if (!checkAtomTokenPattern(tokens, ["SELECT", "CASE"], false))
             {
                 return null;
             }
@@ -36,7 +36,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             List<IToken> expressionTokens = new List<IToken>();
             for (int index = 0; index < tokens.Count; index++)
             {
-                if (base.isEndOfStatement(tokens, index))
+                if (isEndOfStatement(tokens, index))
                 {
                     // Remove expression tokens (plus end-of-statement) from stream
                     tokens.RemoveRange(0, expressionTokens.Count + 1);
@@ -49,7 +49,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
 
                 // Add token to expression (must be Atom or String)
-                expressionTokens.Add(base.getToken_AtomOrDateStringLiteralOnly(tokens, index));
+                expressionTokens.Add(getToken_AtomOrDateStringLiteralOnly(tokens, index));
             }
 
             // Look for the first CASE entry (note: it's allowable for there to be no
@@ -114,7 +114,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 {
                     // Try to grab value(s) for CASE block
                     // - Get lists of tokens (may be multiple values, may be ELSE..)
-                    List<List<IToken>> exprValues = base.getEntryList(tokens, 1, new EndOfStatementNewLineToken(tokens[0].LineIndex));
+                    List<List<IToken>> exprValues = getEntryList(tokens, 1, new EndOfStatementNewLineToken(tokens[0].LineIndex));
 
                     // - Remove the CASE token
                     tokens.RemoveRange(0, 1);

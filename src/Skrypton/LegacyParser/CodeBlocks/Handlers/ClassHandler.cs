@@ -19,7 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Look for start of function declaration
-            if (!base.checkAtomTokenPattern(tokens, "CLASS", false))
+            if (!checkAtomTokenPattern(tokens, "CLASS", false))
                 return null;
             if (!(tokens[1] is AtomToken))
                 return null;

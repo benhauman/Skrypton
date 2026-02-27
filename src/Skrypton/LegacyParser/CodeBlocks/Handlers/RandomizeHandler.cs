@@ -19,7 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "RANDOMIZE" statement
-            if (!base.checkAtomTokenPattern(tokens, "RANDOMIZE", false))
+            if (!checkAtomTokenPattern(tokens, "RANDOMIZE", false))
                 return null;
 
             // Try to grab the tokens used to declare the seed (this is optional - if not specified, VBScript uses a time-based value). This
@@ -29,12 +29,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var seedTokens = new List<IToken>();
             for (int index = 1; index < tokens.Count; index++)
             {
-                if (base.isEndOfStatement(tokens, index))
+                if (isEndOfStatement(tokens, index))
                 {
                     tokensProcessed++;
                     break;
                 }
-                seedTokens.Add(base.getToken_AtomOrDateStringLiteralOnly(tokens, index));
+                seedTokens.Add(getToken_AtomOrDateStringLiteralOnly(tokens, index));
                 tokensProcessed++;
             }
             if ((seedTokens.Count == 2) && (seedTokens[0] is OpenBrace) && (seedTokens[1] is CloseBrace))
