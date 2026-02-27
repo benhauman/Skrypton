@@ -538,10 +538,10 @@ internal static class KnownTextResolver
     /// 	}
     /// 	return false;
     /// }
-    private static string WhiteSpaceChars = new string(
-        Enumerable.Range((int)char.MinValue, (int)char.MaxValue).Select(v => (char)v).Where(c => char.IsWhiteSpace(c)).ToArray()
-    );
-
+    //private static string WhiteSpaceChars = new string(
+    //    Enumerable.Range((int)char.MinValue, (int)char.MaxValue).Select(v => (char)v).Where(c => char.IsWhiteSpace(c)).ToArray()
+    //);
+    //
     internal static bool containsWhiteSpace(string content)
     {
         if (content == null)

@@ -624,11 +624,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 return x.Item2.CompareTo(y.Item2);
             }
 
-            private static IEnumerable<string> AllOperatorContentStrings =
-                AtomToken.ArithmeticAndStringOperatorTokenValues
-                .Concat(AtomToken.ComparisonTokenValues)
-                .Concat(AtomToken.LogicalOperatorTokenValues);
-
+            //private static IEnumerable<string> AllOperatorContentStrings =
+            //    AtomToken.ArithmeticAndStringOperatorTokenValues
+            //    .Concat(AtomToken.ComparisonTokenValues)
+            //    .Concat(AtomToken.LogicalOperatorTokenValues);
+            //
             private static int GetOperatorTypeValue(OperationExpressionSegment segment)
             {
                 if (segment == null)

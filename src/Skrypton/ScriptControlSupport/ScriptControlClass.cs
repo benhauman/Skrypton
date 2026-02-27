@@ -23,9 +23,9 @@ namespace Skrypton.ScriptControlSupport
         private int _sitehWnd = 0; // required (Must be a valid HWND (window handle)) if allowUI is true otherwise ignored. No host window is associated by default => 0
         private bool _useSafeSubset = true; // 'true': Script runs in safe modeUse safe subset of the scripting language (if supported). 'false': Use full language features. Safe subset is used by default. Potentially dangerous objects and operations are blocked
         private Error _error = null; // Default value: null (or Nothing in VBScript) — no error has occurred yet.
-#pragma warning disable CS0414 // The field is assigned but its value is never used
-        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
-#pragma warning restore CS0414 // The field is assigned but its value is never used
+//#pragma warning disable CS0414 // The field is assigned but its value is never used
+//        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
+//#pragma warning restore CS0414 // The field is assigned but its value is never used
 
         string IScriptControl.Language { get => _language; set => _language = value; }
         ScriptControlStates IScriptControl.State
