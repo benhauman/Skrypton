@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class WhileHandler : AbstractBlockHandler
+    internal sealed class WhileHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "WHILE" block
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "WHILE" }, false))
+            if (!base.checkAtomTokenPattern(tokens, "WHILE", false))
                 return null;
             if (tokens.Count < 3)
                 throw new ArgumentException("Insufficient tokens - invalid");
@@ -47,11 +47,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Get block content
             string[] endSequenceMet;
-            var endSequences = new List<string[]>()
-            {
-                new string[] { "WEND" }
-            };
-            var codeBlockHandler = new CodeBlockHandler(endSequences);
+            var codeBlockHandler = new CodeBlockHandler(["WEND"]);
             var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");

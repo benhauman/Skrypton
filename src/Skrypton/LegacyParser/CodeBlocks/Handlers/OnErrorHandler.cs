@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class OnErrorHandler : AbstractBlockHandler
+    internal sealed class OnErrorHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -21,14 +21,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Look for "ON ERROR.." form in tokens
             // - Define token matches with corresponding ICodeBlock type
             var matchPatterns = new Dictionary<string[], Func<int, ICodeBlock>>();
-            matchPatterns.Add(
-                new string[] { "ON", "ERROR", "RESUME", "NEXT" },
-                lineIndex => new OnErrorResumeNext(lineIndex)
-            );
-            matchPatterns.Add(
-                new string[] { "ON", "ERROR", "GOTO", "0" },
-                lineIndex => new OnErrorGoto0(lineIndex)
-            );
+            matchPatterns.Add(["ON", "ERROR", "RESUME", "NEXT"], lineIndex => new OnErrorResumeNext(lineIndex));
+            matchPatterns.Add(["ON", "ERROR", "GOTO", "0"], lineIndex => new OnErrorGoto0(lineIndex));
             // - Check for match
             int? tokensToRemove = null;
             ICodeBlock errorBlock = null;

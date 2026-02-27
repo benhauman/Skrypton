@@ -9,7 +9,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
     /// <summary>
     /// This handles both Dim and ReDim statements
     /// </summary>
-    public class DimHandler : AbstractBlockHandler
+    public sealed class DimHandler : AbstractBlockHandler // public due to tests
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -78,15 +78,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// </summary>
         private bool canBeHandled(List<IToken> tokens, out int tokensConsumed, out DimType dimType)
         {
-            if (base.checkAtomTokenPattern(tokens, new string[] { "DIM" }, false))
+            if (base.checkAtomTokenPattern(tokens, "DIM", false))
             {
                 tokensConsumed = 1;
                 dimType = DimType.Dim;
                 return true;
             }
-            if (base.checkAtomTokenPattern(tokens, new string[] { "REDIM" }, false))
+            if (base.checkAtomTokenPattern(tokens, "REDIM", false))
             {
-                if (base.checkAtomTokenPattern(tokens, new string[] { "REDIM", "PRESERVE" }, false))
+                if (base.checkAtomTokenPattern(tokens, ["REDIM", "PRESERVE"], false))
                 {
                     tokensConsumed = 2;
                     dimType = DimType.ReDimPreserve;
@@ -98,23 +98,23 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
                 return true;
             }
-            if (base.checkAtomTokenPattern(tokens, new string[] { "PUBLIC" }, false))
+            if (base.checkAtomTokenPattern(tokens, ["PUBLIC"], false))
             {
-                if (!base.checkAtomTokenPattern(tokens, new string[] { "PUBLIC", "FUNCTION" }, false)
-                && !base.checkAtomTokenPattern(tokens, new string[] { "PUBLIC", "PROPERTY" }, false)
-                && !base.checkAtomTokenPattern(tokens, new string[] { "PUBLIC", "DEFAULT", "PROPERTY" }, false)
-                && !base.checkAtomTokenPattern(tokens, new string[] { "PUBLIC", "SUB" }, false))
+                if (!base.checkAtomTokenPattern(tokens, ["PUBLIC", "FUNCTION"], false)
+                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "PROPERTY"], false)
+                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "DEFAULT", "PROPERTY"], false)
+                && !base.checkAtomTokenPattern(tokens, ["PUBLIC", "SUB"], false))
                 {
                     tokensConsumed = 1;
                     dimType = DimType.Public;
                     return true;
                 }
             }
-            if (base.checkAtomTokenPattern(tokens, new string[] { "PRIVATE" }, false))
+            if (base.checkAtomTokenPattern(tokens, "PRIVATE", false))
             {
-                if (!base.checkAtomTokenPattern(tokens, new string[] { "PRIVATE", "FUNCTION" }, false)
-                && !base.checkAtomTokenPattern(tokens, new string[] { "PRIVATE", "PROPERTY" }, false)
-                && !base.checkAtomTokenPattern(tokens, new string[] { "PRIVATE", "SUB" }, false))
+                if (!base.checkAtomTokenPattern(tokens, ["PRIVATE", "FUNCTION"], false)
+                && !base.checkAtomTokenPattern(tokens, ["PRIVATE", "PROPERTY"], false)
+                && !base.checkAtomTokenPattern(tokens, ["PRIVATE", "SUB"], false))
                 {
                     tokensConsumed = 1;
                     dimType = DimType.Private;

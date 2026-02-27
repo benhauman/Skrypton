@@ -136,8 +136,7 @@ namespace Skrypton.CSharpWriter
         {
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
             string[] endSequenceMet;
-            var handler = new CodeBlockHandler(null);
-            return handler.Process(
+            return CodeBlockHandler.RootBlock.Process(
                 GetTokens(culture, scriptContent).ToList(),
                 out endSequenceMet
             );

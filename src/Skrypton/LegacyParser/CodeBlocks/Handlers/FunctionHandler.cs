@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class FunctionHandler : AbstractBlockHandler
+    internal sealed class FunctionHandler : AbstractBlockHandler
     {
         private enum BlockType
         {
@@ -45,29 +45,29 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             Dictionary<string[], BlockType> matchPatterns = new Dictionary<string[], BlockType>();
 
             // - Sub
-            matchPatterns.Add(new string[] { "SUB" }, BlockType.PublicSub);
-            matchPatterns.Add(new string[] { "PUBLIC", "SUB" }, BlockType.PublicSub);
-            matchPatterns.Add(new string[] { "PRIVATE", "SUB" }, BlockType.PrivateSub);
+            matchPatterns.Add(["SUB"], BlockType.PublicSub);
+            matchPatterns.Add(["PUBLIC", "SUB"], BlockType.PublicSub);
+            matchPatterns.Add(["PRIVATE", "SUB"], BlockType.PrivateSub);
 
             // - Function
-            matchPatterns.Add(new string[] { "FUNCTION" }, BlockType.PublicFunction);
-            matchPatterns.Add(new string[] { "PUBLIC", "FUNCTION" }, BlockType.PublicFunction);
-            matchPatterns.Add(new string[] { "PUBLIC", "DEFAULT", "FUNCTION" }, BlockType.PublicDefaultFunction);
-            matchPatterns.Add(new string[] { "PRIVATE", "FUNCTION" }, BlockType.PrivateFunction);
+            matchPatterns.Add(["FUNCTION"], BlockType.PublicFunction);
+            matchPatterns.Add(["PUBLIC", "FUNCTION"], BlockType.PublicFunction);
+            matchPatterns.Add(["PUBLIC", "DEFAULT", "FUNCTION"], BlockType.PublicDefaultFunction);
+            matchPatterns.Add(["PRIVATE", "FUNCTION"], BlockType.PrivateFunction);
 
             // - Property Get
-            matchPatterns.Add(new string[] { "PROPERTY", "GET" }, BlockType.PublicPropertyGet);
-            matchPatterns.Add(new string[] { "PUBLIC", "PROPERTY", "GET" }, BlockType.PublicPropertyGet);
-            matchPatterns.Add(new string[] { "PUBLIC", "DEFAULT", "PROPERTY", "GET" }, BlockType.PublicDefaultPropertyGet);
-            matchPatterns.Add(new string[] { "PRIVATE", "PROPERTY", "GET" }, BlockType.PrivatePropertyGet);
+            matchPatterns.Add(["PROPERTY", "GET"], BlockType.PublicPropertyGet);
+            matchPatterns.Add(["PUBLIC", "PROPERTY", "GET"], BlockType.PublicPropertyGet);
+            matchPatterns.Add(["PUBLIC", "DEFAULT", "PROPERTY", "GET"], BlockType.PublicDefaultPropertyGet);
+            matchPatterns.Add(["PRIVATE", "PROPERTY", "GET"], BlockType.PrivatePropertyGet);
 
             // - Property Let / Set
-            matchPatterns.Add(new string[] { "PROPERTY", "LET" }, BlockType.PublicPropertyLet);
-            matchPatterns.Add(new string[] { "PROPERTY", "SET" }, BlockType.PublicPropertySet);
-            matchPatterns.Add(new string[] { "PUBLIC", "PROPERTY", "LET" }, BlockType.PublicPropertyLet);
-            matchPatterns.Add(new string[] { "PUBLIC", "PROPERTY", "SET" }, BlockType.PublicPropertySet);
-            matchPatterns.Add(new string[] { "PRIVATE", "PROPERTY", "LET" }, BlockType.PrivatePropertyLet);
-            matchPatterns.Add(new string[] { "PRIVATE", "PROPERTY", "SET" }, BlockType.PrivatePropertySet);
+            matchPatterns.Add(["PROPERTY", "LET"], BlockType.PublicPropertyLet);
+            matchPatterns.Add(["PROPERTY", "SET"], BlockType.PublicPropertySet);
+            matchPatterns.Add(["PUBLIC", "PROPERTY", "LET"], BlockType.PublicPropertyLet);
+            matchPatterns.Add(["PUBLIC", "PROPERTY", "SET"], BlockType.PublicPropertySet);
+            matchPatterns.Add(["PRIVATE", "PROPERTY", "LET"], BlockType.PrivatePropertyLet);
+            matchPatterns.Add(["PRIVATE", "PROPERTY", "SET"], BlockType.PrivatePropertySet);
 
             bool match = false;
             int matchPatternLength = 0;
@@ -108,12 +108,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 case BlockType.PublicSub:
                 case BlockType.PrivateSub:
-                    endSequences.Add(new string[] { "END", "SUB" });
+                    endSequences.Add(["END", "SUB"]);
                     break;
                 case BlockType.PublicFunction:
                 case BlockType.PublicDefaultFunction:
                 case BlockType.PrivateFunction:
-                    endSequences.Add(new string[] { "END", "FUNCTION" });
+                    endSequences.Add(["END", "FUNCTION"]);
                     break;
                 case BlockType.PublicPropertyGet:
                 case BlockType.PublicDefaultPropertyGet:
@@ -122,7 +122,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 case BlockType.PrivatePropertyLet:
                 case BlockType.PublicPropertySet:
                 case BlockType.PrivatePropertySet:
-                    endSequences.Add(new string[] { "END", "PROPERTY" });
+                    endSequences.Add(["END", "PROPERTY"]);
                     break;
                 default:
                     throw new InvalidOperationException("Ended up with invalid BlockType [" + blockType.ToString() + "] - how did this happen?? :S");

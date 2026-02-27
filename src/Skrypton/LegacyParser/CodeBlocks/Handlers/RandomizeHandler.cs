@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class RandomizeHandler : AbstractBlockHandler
+    internal sealed class RandomizeHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -19,7 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "RANDOMIZE" statement
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "RANDOMIZE" }, false))
+            if (!base.checkAtomTokenPattern(tokens, "RANDOMIZE", false))
                 return null;
 
             // Try to grab the tokens used to declare the seed (this is optional - if not specified, VBScript uses a time-based value). This

@@ -7,7 +7,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class EraseHandler : AbstractBlockHandler
+    internal sealed class EraseHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -19,12 +19,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             bool includesCallKeyword;
             int numberOfKeywordTokens;
-            if (base.checkAtomTokenPattern(tokens, new[] { "CALL", "ERASE" }, false))
+            if (base.checkAtomTokenPattern(tokens, ["CALL", "ERASE"], false))
             {
                 includesCallKeyword = true;
                 numberOfKeywordTokens = 2;
             }
-            else if (base.checkAtomTokenPattern(tokens, new[] { "ERASE" }, false))
+            else if (base.checkAtomTokenPattern(tokens, "ERASE", false))
             {
                 includesCallKeyword = false;
                 numberOfKeywordTokens = 1;

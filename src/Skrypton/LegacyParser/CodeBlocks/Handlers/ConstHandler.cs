@@ -7,7 +7,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class ConstHandler : AbstractBlockHandler
+    internal sealed class ConstHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -17,7 +17,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "CONST" }, false))
+            if (!base.checkAtomTokenPattern(tokens, "CONST", false))
                 return null;
 
             tokens.RemoveAt(0); // Trim out the keyword before trying to extract the values being set

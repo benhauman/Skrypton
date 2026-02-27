@@ -7,7 +7,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public sealed class SelectHandler : AbstractBlockHandler
+    internal sealed class SelectHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -24,7 +24,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
             }
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "SELECT", "CASE" }, false))
+            if (!base.checkAtomTokenPattern(tokens, ["SELECT", "CASE"], false))
             {
                 return null;
             }
@@ -109,12 +109,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens[0].Content.ToUpper() != "END")
             {
                 string[] endSequenceMet;
-                List<string[]> endSequences = new List<string[]>()
-                {
-                    new string[] { "CASE" },
-                    new string[] { "END", "SELECT" }
-                };
-                CodeBlockHandler codeBlockHandler = new CodeBlockHandler(endSequences);
+                CodeBlockHandler codeBlockHandler = new CodeBlockHandler([["CASE"], ["END", "SELECT"]]);
                 while (true)
                 {
                     // Try to grab value(s) for CASE block

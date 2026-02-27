@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class ForHandler : AbstractBlockHandler
+    internal sealed class ForHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -19,9 +19,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got a "FOR" or "FOR EACH" block
-            if (base.checkAtomTokenPattern(tokens, new string[] { "FOR", "EACH" }, false))
+            if (base.checkAtomTokenPattern(tokens, ["FOR", "EACH"], false))
                 return HandleForEach(tokens);
-            else if (base.checkAtomTokenPattern(tokens, new string[] { "FOR" }, false))
+            else if (base.checkAtomTokenPattern(tokens, ["FOR"], false))
                 return HandleForStandard(tokens);
             return null;
         }
@@ -31,9 +31,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "FOR", "EACH" }, false))
+            if (!base.checkAtomTokenPattern(tokens, ["FOR", "EACH"], false))
                 throw new ArgumentException("Invalid tokens - doesn't start FOR EACH");
-            if (!base.checkAtomTokenPattern(tokens, 3, new string[] { "IN" }, false))
+            if (!base.checkAtomTokenPattern(tokens, 3, ["IN"], false))
                 throw new ArgumentException("Invalid tokens - doesn't start have IN keyword");
             if (!(tokens[2] is AtomToken))
                 throw new ArgumentException("Invalid content - variable name is not AtomToken");
@@ -63,9 +63,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "FOR" }, false))
+            if (!base.checkAtomTokenPattern(tokens, ["FOR"], false))
                 throw new ArgumentException("Invalid tokens - doesn't start FOR EACH");
-            if (!base.checkAtomTokenPattern(tokens, 2, new string[] { "=" }, false))
+            if (!base.checkAtomTokenPattern(tokens, 2, ["="], false))
                 throw new ArgumentException("Invalid tokens - doesn't start have \"=\" comparison");
             if (!(tokens[2] is AtomToken))
                 throw new ArgumentException("Invalid content - variable name is not AtomToken");
@@ -142,7 +142,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return getExpressionContent(tokens, offset, null);
         }
 
-
         /// <summary>
         /// Note: The "FOR.." OR "FOR EACH".. content should have been removed from the
         /// token stream before calling this method
@@ -150,11 +149,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private List<ICodeBlock> getForBlockContent(List<IToken> tokens)
         {
             string[] endSequenceMet;
-            List<string[]> endSequences = new List<string[]>()
-            {
-                new string[] { "NEXT" }
-            };
-            CodeBlockHandler codeBlockHandler = new CodeBlockHandler(endSequences);
+            CodeBlockHandler codeBlockHandler = new CodeBlockHandler(["NEXT"]);
             List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");

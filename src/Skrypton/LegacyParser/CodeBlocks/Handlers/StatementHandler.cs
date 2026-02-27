@@ -12,7 +12,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
     /// these keywords are properties of an object, in which case it is valid - eg. Response.End is valid despite "End" being a VBScript keyword). For
     /// this reason, this should always be the last-resort handler.
     /// </summary>
-    public class StatementHandler : AbstractBlockHandler
+    public sealed class StatementHandler : AbstractBlockHandler // public due to tests
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated

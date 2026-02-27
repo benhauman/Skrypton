@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class OptionExplicitHandler : AbstractBlockHandler
+    internal sealed class OptionExplicitHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Determine whether we've got an "OPTION EXPLICIT" statement
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "OPTION", "EXPLICIT" }, false))
+            if (!base.checkAtomTokenPattern(tokens, ["OPTION", "EXPLICIT"], false))
                 return null;
 
             // Pull content from token stream

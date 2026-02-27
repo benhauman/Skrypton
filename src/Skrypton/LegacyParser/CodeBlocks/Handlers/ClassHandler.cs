@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class ClassHandler : AbstractBlockHandler
+    internal sealed class ClassHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -19,8 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Look for start of function declaration
-            string[] matchPattern = new string[] { "CLASS" };
-            if (!base.checkAtomTokenPattern(tokens, matchPattern, false))
+            if (!base.checkAtomTokenPattern(tokens, "CLASS", false))
                 return null;
             if (!(tokens[1] is AtomToken))
                 return null;
@@ -31,11 +30,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Get function content
             string[] endSequenceMet;
-            var endSequences = new List<string[]>()
-            {
-                new string[] { "END", "CLASS" }
-            };
-            var codeBlockHandler = new CodeBlockHandler(endSequences);
+            var codeBlockHandler = new CodeBlockHandler(["END", "CLASS"]);
             var functionContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find encounter end sequence!");

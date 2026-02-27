@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks
 {
-    public abstract class AbstractBlockHandler
+    public abstract class AbstractBlockHandler // public due to tests
     {
         // =======================================================================================
         // ABSTRACT METHODS
@@ -134,21 +134,25 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
             return true;
         }
+        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, string matchPattern, bool matchCase)
+        {
+            return checkAtomTokenPattern(tokens, [matchPattern], matchCase);
+        }
 
-        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, int offset, string[] values, bool matchCase)
+        protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, int offset, string[] matchPatterns, bool matchCase)
         {
             // Validate input - throw exception if conditions not met
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
-            if (values.Length == 0)
-                throw new ArgumentException("Zero values to match");
+            if (matchPatterns == null)
+                throw new ArgumentNullException(nameof(matchPatterns));
+            if (matchPatterns.Length == 0)
+                throw new ArgumentException("Zero matchPatterns to match", nameof(matchPatterns));
             if (offset < 0)
-                throw new ArgumentException("Invalid offset value < 0 [" + offset.ToString() + "]");
+                throw new ArgumentException("Invalid offset value < 0 [" + offset.ToString() + "]", nameof(offset));
 
             // If there are insufficient tokens, return false rather than throwing an exception (this method is supposed to be flexible)
-            return checkAtomTokenPattern(tokens.Skip(offset), values, matchCase);
+            return checkAtomTokenPattern(tokens.Skip(offset), matchPatterns, matchCase);
         }
 
         /// <summary>

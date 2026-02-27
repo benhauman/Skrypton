@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class NewInstanceHandler : AbstractBlockHandler
+    internal sealed class NewInstanceHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "NEW" }, false))
+            if (!base.checkAtomTokenPattern(tokens, ["NEW"], false))
                 return null;
             if (tokens.Count < 2)
                 throw new ArgumentException("Insufficient tokens - invalid");

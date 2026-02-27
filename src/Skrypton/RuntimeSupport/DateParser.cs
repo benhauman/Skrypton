@@ -265,14 +265,14 @@ namespace Skrypton.RuntimeSupport
         private static DateTime CDateNew(DateMonthNameTranslator monthNameTranslator, string input, int defaultYear, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(input))
-                throw new ArgumentException("Invalid input");
+                throw new ArgumentException("Invalid input", nameof(input));
 
             if (VbDateParser.TryParseVbDate(monthNameTranslator, culture, input, defaultYear, out var dtParts))
             {
                 return NewDateTime(input, dtParts.Year, dtParts.Month, dtParts.Day);
             }
             // Split by space or dash
-            var parts = input.Split(new[] { ' ', '-', '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = input.Split([' ', '-', '/'], StringSplitOptions.RemoveEmptyEntries);
 
             // Try direct parse first (handles ISO formats like 2009-7-6)
             if (DateTime.TryParse(input, culture, DateTimeStyles.None, out var dt))

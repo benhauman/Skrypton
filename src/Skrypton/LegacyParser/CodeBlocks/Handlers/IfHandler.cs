@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
     /// <summary>
     /// This was one of the most complicated block handlers to implement! It could probably be tidied up some, but would need careful attention (and unit tests)
     /// </summary>
-    public class IfHandler : AbstractBlockHandler
+    internal sealed class IfHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -97,13 +97,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             //       END IF
             // ======================================================================
             // Grab content inside IF blocks
-            List<string[]> endSequences = new List<string[]>()
-            {
-                new string[] { "END", "IF" },
-                new string[] { "ELSEIF" },
-                new string[] { "ELSE" }
-            };
-            string[] endSequenceMet = new string[] { "IF" };
+            string[][] endSequences = [["END", "IF"], ["ELSEIF"], ["ELSE"]];
+            string[] endSequenceMet = ["IF"];
             List<IfBlock.IfBlockSegment> ifContent = new List<IfBlock.IfBlockSegment>();
             List<IToken> conditionTokens = null;
             while (true)
@@ -274,7 +269,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Translate token sets into code blocks
             string[] endSequenceMet;
-            CodeBlockHandler codeBlockHandler = new CodeBlockHandler(null);
+            CodeBlockHandler codeBlockHandler = CodeBlockHandler.RootBlock;
             List<ICodeBlock> truthStatement = codeBlockHandler.Process(truthTokens, out endSequenceMet);
             List<ICodeBlock> notStatement;
             if (notTokens == null)

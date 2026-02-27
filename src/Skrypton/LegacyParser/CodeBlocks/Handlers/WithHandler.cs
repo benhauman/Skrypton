@@ -7,7 +7,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
-    public class WithHandler : AbstractBlockHandler
+    internal sealed class WithHandler : AbstractBlockHandler
     {
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
@@ -19,7 +19,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            if (!base.checkAtomTokenPattern(tokens, new string[] { "WITH" }, matchCase: false))
+            if (!base.checkAtomTokenPattern(tokens, "WITH", matchCase: false))
                 return null;
             if (tokens.Count < 4)
                 throw new ArgumentException("Insufficient tokens - invalid");
@@ -41,11 +41,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Get block content
             string[] endSequenceMet;
-            var endSequences = new List<string[]>
-            {
-                new string[] { "END", "WITH" }
-            };
-            var codeBlockHandler = new CodeBlockHandler(endSequences);
+            var codeBlockHandler = new CodeBlockHandler(["END", "WITH"]);
             var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");

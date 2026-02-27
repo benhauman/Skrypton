@@ -7,22 +7,28 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks
 {
-    public class CodeBlockHandler
+    internal sealed class CodeBlockHandler
     {
-        private IEnumerable<string[]> blockEnds;
-        public CodeBlockHandler(IEnumerable<string[]> optionalBlockEnds)
+        private readonly IReadOnlyCollection<string[]> blockEnds;
+        internal static readonly CodeBlockHandler RootBlock = new CodeBlockHandler(true, null);
+
+        public CodeBlockHandler(string[] optionalBlockEndsOrNull) : this(false, [optionalBlockEndsOrNull]) { }
+
+        public CodeBlockHandler(IEnumerable<string[]> optionalBlockEndsOrNull) : this(false, optionalBlockEndsOrNull) { }
+        private CodeBlockHandler(bool root, IEnumerable<string[]> optionalBlockEndsOrNull)
         {
             // Null blockEnds value is valid - for the root code block - but if a non-null
             // list IS specified then every sequence must be non-null, have at least one
             // element and each token in the end sequences must be non-null
-            if (optionalBlockEnds == null)
+            if (root && optionalBlockEndsOrNull == null)
             {
                 this.blockEnds = null;
                 return;
             }
+            if (optionalBlockEndsOrNull == null) throw new ArgumentNullException(nameof(optionalBlockEndsOrNull));
 
             var blockEnds = new List<string[]>();
-            foreach (var endSequence in optionalBlockEnds)
+            foreach (var endSequence in optionalBlockEndsOrNull)
             {
                 var endSequenceClone = (endSequence ?? new string[0]).ToArray();
                 if (endSequence.Length == 0)
