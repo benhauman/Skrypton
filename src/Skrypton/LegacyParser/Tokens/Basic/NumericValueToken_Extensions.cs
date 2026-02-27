@@ -20,12 +20,12 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // after it (eg. "1."). This is not valid in C# ("Identifier expected") so we have to slap a zero on the end (making it "1.0", which will be
             // defined as a double). Note that there is no such issue when leading with the decimal point (".1" is valid VBScript AND C# code).
             if (token.Content.Contains("."))
-                return token.Content + (token.Content.EndsWith(".") ? "0" : "");
+                return token.Content + (token.Content.EndsWith(".", StringComparison.Ordinal) ? "0" : "");
 
             // C# will default to int (Int32) for integers, we need to override this for smaller values
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
             {
-                if (token.Content.StartsWith("-"))
+                if (token.Content.StartsWith("-", StringComparison.Ordinal))
                     return "(Int16)(-" + token.Content.Substring(1) + ")";
                 return "(Int16)" + token.Content;
             }
@@ -105,7 +105,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            if (token.Content.StartsWith("-"))
+            if (token.Content.StartsWith("-", StringComparison.Ordinal))
                 return new NumericValueToken(token.Content.Substring(1).ToUpperX(), token.LineIndex);
             return new NumericValueToken(("-" + token.Content).ToUpperX(), token.LineIndex);
         }

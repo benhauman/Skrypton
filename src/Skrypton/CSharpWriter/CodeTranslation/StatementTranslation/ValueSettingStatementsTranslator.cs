@@ -174,7 +174,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     return new ValueSettingStatementAssigmentFormatDetails(
                         translatedExpression =>
                         {
-                            if (translatedExpression.StartsWith(wrapperFunction + "("))
+                            if (translatedExpression.StartsWith(wrapperFunction + "(", StringComparison.Ordinal))
                                 return translatedExpression;
                             return wrapperFunction + "(" + translatedExpression + ")";
                         },

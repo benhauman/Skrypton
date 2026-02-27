@@ -754,7 +754,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (numericValueToken == null)
                 throw new ArgumentNullException(nameof(numericValueToken));
 
-            return !numericValueToken.Content.StartsWith("-");
+            return !numericValueToken.Content.StartsWith("-", StringComparison.Ordinal);
         }
 
         private bool Is<TSingleTokenType>(Expression expression) where TSingleTokenType : IToken

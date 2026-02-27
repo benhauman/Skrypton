@@ -1696,7 +1696,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
 #pragma warning disable CA1304 // Specify CultureInfo
-            switch (operatorToken.Content.ToUpper())
+            switch (operatorToken.Content.ToUpper(CultureInfo.InvariantCulture))
             {
                 // Arithmetic operators
                 case "^": return "POW";

@@ -97,7 +97,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     //   was Unprocessed, we only need end-of-statement if the content didn't end with a line-return)
                     lineIndexForStartOfContent = lineIndex;
                     index++;
-                    int breakPoint = scriptContent.IndexOf("\n", index);
+                    int breakPoint = scriptContent.IndexOf("\n", index, StringComparison.Ordinal);
                     if (breakPoint == -1)
                         breakPoint = scriptContent.Length;
                     if (tokens.Count > 0)
@@ -106,7 +106,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         if (prevToken is UnprocessedContentToken)
                         {
                             // UnprocessedContentToken MAY conclude with end-of-statement content, we'll need to check
-                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith("\n"))
+                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith("\n", StringComparison.Ordinal))
                             {
                                 tokens.RemoveAt(tokens.Count - 1);
                                 var unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');

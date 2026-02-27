@@ -1311,9 +1311,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return "";
             else if (value == DBNull.Value)
                 return DBNull.Value;
-#pragma warning disable CA1304 // Specify CultureInfo
-            return _valueRetriever.STR(value).ToLower();
-#pragma warning restore CA1304 // Specify CultureInfo
+#pragma warning disable CA1308
+            return _valueRetriever.STR(value).ToLower(CultureInfo.InvariantCulture);
+#pragma warning restore CA1308
         }
         public object UCASE(object value)
         {
@@ -1323,7 +1323,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if (value == DBNull.Value)
                 return DBNull.Value;
 #pragma warning disable CA1304 // Specify CultureInfo
-            return _valueRetriever.STR(value).ToUpper();
+            return _valueRetriever.STR(value).ToUpper(CultureInfo.InvariantCulture);
 #pragma warning restore CA1304 // Specify CultureInfo
         }
         private const string NonEscapedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*_+-./";
@@ -1743,9 +1743,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (intervalString == null)
                 throw new InvalidProcedureCallOrArgumentException("'DateAdd'");
             Func<DateTime, int, DateTime> dateManipulator;
-#pragma warning disable CA1304 // Specify CultureInfo
-            switch (intervalString.ToLower()) // Interval matching is case-insensitive in VBScript (it won't allow leading or trailing whitespace, though)
-#pragma warning restore CA1304 // Specify CultureInfo
+#pragma warning disable CA1308
+            switch (intervalString.ToLower(CultureInfo.InvariantCulture)) // Interval matching is case-insensitive in VBScript (it won't allow leading or trailing whitespace, though)
+#pragma warning restore CA1308
             {
                 default:
                     throw new InvalidProcedureCallOrArgumentException("'DateAdd'");

@@ -249,9 +249,9 @@ namespace Skrypton.CSharpWriter
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-#pragma warning disable CA1304 // Specify CultureInfo
-            string key = value.ToLower();
-#pragma warning restore CA1304 // Specify CultureInfo
+#pragma warning disable CA1308 // Specify CultureInfo
+            string key = value.ToLower(CultureInfo.InvariantCulture);
+#pragma warning restore CA1308 // Specify CultureInfo
             if (_entries.TryGetValue(key, out RewriteEntry entry))
             {
                 // already registered.
