@@ -118,6 +118,7 @@ namespace Skrypton.RuntimeSupport
                 return Enumerable.Range(1, 12).SelectMany(i =>
                         {
                             var dt = new DateTime(2000, i, 1);
+#pragma warning disable CA1308 // Normalize strings to uppercase
                             return new[]
                             {
                             (dt.ToString("MMMM", culture), i),
@@ -127,6 +128,7 @@ namespace Skrypton.RuntimeSupport
                             (dt.ToString("MMMM", culture).ToUpperInvariant(), i),
                             (dt.ToString("MMM", culture).ToUpperInvariant(), i)
                             };
+#pragma warning restore CA1308 // Normalize strings to uppercase
                         })
                         .Distinct()
                         .ToDictionary(x => x.Item1, x => x.Item2);
