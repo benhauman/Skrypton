@@ -667,8 +667,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   Randomize 1.111111
             //   Randomize 1.1111111
             var valueFromSeed = CSNG(seed).GetHashCode();
-            var randomValueFromCurrentSeed = new Random(_randomSeed).NextDouble();
+            var randomValueFromCurrentSeed = GenerateRandomDouble();
             _randomSeed = (valueFromSeed * randomValueFromCurrentSeed).GetHashCode();
+        }
+        private double GenerateRandomDouble()
+        {
+#pragma warning disable CA5394 // Do not use insecure randomness
+            return new Random(_randomSeed).NextDouble();
+#pragma warning restore CA5394 // Do not use insecure randomness
         }
         // - Number functions
         public object ABS(object value)
@@ -717,20 +723,22 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (valueAsSingle == 0)
             {
                 // Return the most recently generated number (if called repeatedly, the same number should be returned - so no changes to the seed should be mde
-                return (float)(new Random(_randomSeed)).NextDouble();
+                return (float)GenerateRandomDouble();
             }
             else if (valueAsSingle < 0)
             {
                 // Use the provided value as the seed (always return the same number and change the sequence for any subsequent numbers - ie. don't just use the
                 // value as the seed here but update the global seed)
                 _randomSeed = valueAsSingle.GetHashCode();
-                return (float)(new Random(_randomSeed)).NextDouble();
+                return (float)GenerateRandomDouble();
             }
 
             // Greater than zero => next random number in the sequence (this should move the sequence along, so we need to change the global seed before getting
             // the next number - if RND(0) is called next then the same number will be returned, as required for compatibility)
+#pragma warning disable CA5394 // Do not use insecure randomness
             _randomSeed = new Random(_randomSeed).Next();
-            return (float)(new Random(_randomSeed)).NextDouble();
+#pragma warning restore CA5394 // Do not use insecure randomness
+            return (float)GenerateRandomDouble();
         }
         public object ROUND(object value) => ROUNDCore(value, 0);
         public object ROUND(object value, object decimals)
