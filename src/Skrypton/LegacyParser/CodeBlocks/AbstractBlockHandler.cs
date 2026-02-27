@@ -103,7 +103,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         protected bool checkAtomTokenPattern(IEnumerable<IToken> tokens, string[] values, bool matchCase)
         {
             if (tokens == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(tokens));
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
             if (values.Length == 0)
@@ -139,7 +139,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         {
             // Validate input - throw exception if conditions not met
             if (tokens == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(tokens));
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
             if (values.Length == 0)

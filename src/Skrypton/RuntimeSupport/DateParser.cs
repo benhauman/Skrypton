@@ -71,7 +71,7 @@ namespace Skrypton.RuntimeSupport
         internal DateParser(DateMonthNameTranslator monthNameTranslator, int defaultYearOverride) : this(monthNameTranslator, () => defaultYearOverride)
         {
             if ((defaultYearOverride < VBScriptConstants.EarliestPossibleDate.Year) || (defaultYearOverride > VBScriptConstants.LatestPossibleDate.Year))
-                throw new ArgumentOutOfRangeException("defaultYearOverride must be a value that VBScript can represent");
+                throw new ArgumentOutOfRangeException(nameof(defaultYearOverride), "defaultYearOverride must be a value that VBScript can represent");
         }
         private DateParser(DateMonthNameTranslator monthNameTranslator, Func<int> defaultYearRetriever)
         {

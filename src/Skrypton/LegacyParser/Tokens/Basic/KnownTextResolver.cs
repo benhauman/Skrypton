@@ -545,7 +545,7 @@ internal static class KnownTextResolver
     internal static bool containsWhiteSpace(string content)
     {
         if (content == null)
-            throw new ArgumentNullException("token");
+            throw new ArgumentNullException(nameof(content));
 
         for (int ix = 0; ix < content.Length; ix++)
         {
@@ -561,7 +561,7 @@ internal static class KnownTextResolver
     {
         if (atomContent == null)
         {
-            throw new ArgumentNullException("token");
+            throw new ArgumentNullException(nameof(atomContent));
         }
 
         if (atomContent.Length == 0)

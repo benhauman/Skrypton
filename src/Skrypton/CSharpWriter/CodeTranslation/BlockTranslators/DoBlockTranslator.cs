@@ -220,7 +220,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth)
         {
             if (blocks == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(blocks));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!supportsExit && (earlyExitNameIfAny != null))

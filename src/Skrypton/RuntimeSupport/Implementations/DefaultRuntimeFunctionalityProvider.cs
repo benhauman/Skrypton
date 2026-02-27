@@ -2408,7 +2408,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private T GetAsNumber<T>(object value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
         {
             if (converter == null)
-                throw new ArgumentNullException("nonSpecialCaseProcessor");
+                throw new ArgumentNullException(nameof(converter));
 
             value = _valueRetriever.VAL(value, optionalExceptionMessageForInvalidContent);
             value = _valueRetriever.NUM(value);

@@ -17,7 +17,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         {
             // Note that blank or whitespace-only are acceptable for this content so we can only check for null here
             if (contentUpper.Length == 0)
-                throw new ArgumentNullException("escapedContent");
+                throw new ArgumentException("cannot be empty", nameof(contentUpper));
             if (!contentUpper.Original.StartsWith("["))
                 throw new ArgumentException("The content for an EscapedNameToken must start with an opening square bracket");
             if (!contentUpper.Original.EndsWith("]"))

@@ -65,7 +65,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (translators == null)
                 throw new ArgumentNullException(nameof(translators));
             if (blocks == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(blocks));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)

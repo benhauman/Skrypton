@@ -126,7 +126,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private TranslationResult TranslateForClass(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (blocks == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(blocks));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
@@ -160,7 +160,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (explicitVariableDeclarationsFromWithinClass == null)
-                throw new ArgumentNullException("explicitVariableDeclarationsFromWithClass");
+                throw new ArgumentNullException(nameof(explicitVariableDeclarationsFromWithinClass));
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 

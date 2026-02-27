@@ -308,7 +308,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (conditionSegments == null)
                 throw new ArgumentNullException(nameof(conditionSegments));
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "Must be zero or greater");
 
             var conditionSegmentsArray = conditionSegments.ToArray();
             if (conditionSegmentsArray.Length == 0)
@@ -381,7 +381,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (isCaseMatchResultName == null)
                 throw new ArgumentNullException(nameof(isCaseMatchResultName));
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "Must be zero or greater");
 
             var conditionSegmentsArray = conditionSegments.ToArray();
             if (conditionSegmentsArray.Length == 0)
@@ -636,7 +636,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ScopeAccessInformation scopeAccessInformation)
         {
             if (evaluatedTarget == null)
-                throw new ArgumentNullException("evaluatedTargetName");
+                throw new ArgumentNullException(nameof(evaluatedTarget));
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
             if (scopeAccessInformation == null)
@@ -768,7 +768,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (blocks == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(blocks));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)

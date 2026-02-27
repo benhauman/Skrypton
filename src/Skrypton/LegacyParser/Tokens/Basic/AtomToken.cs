@@ -21,7 +21,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         {
             // Do all this validation AGAIN because we may re-use this from inheriting classes (eg. OperatorToken)
             if (contentUpper == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(contentUpper));
             if (!Enum.IsDefined(typeof(WhiteSpaceBehaviourOptions), whiteSpaceBehaviour))
                 throw new ArgumentOutOfRangeException(nameof(whiteSpaceBehaviour));
             if ((whiteSpaceBehaviour == WhiteSpaceBehaviourOptions.Disallow) && contentUpper.containsWhiteSpace())
@@ -175,7 +175,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         protected static bool containsWhiteSpace(string content)
         {
             if (content == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(content));
 
             /// return content.Any(c => WhiteSpaceChars.IndexOf(c) != -1);
             for (int ix = 0; ix < content.Length; ix++)

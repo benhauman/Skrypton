@@ -301,7 +301,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private IEnumerable<IToken> getConditionContent(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(tokens));
 
             // Look for "THEN" token - only acceptable tokens are Atom or literal (String or Date)
             int offsetThen = -1;

@@ -49,7 +49,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("Null/blank name specified");
+                throw new ArgumentNullException(nameof(name), "Null/blank name specified");
             if (args == null)
                 throw new ArgumentNullException(nameof(args));
 
@@ -61,7 +61,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("Null/blank name specified");
+                throw new ArgumentNullException(nameof(name), "Null/blank name specified");
             if (args == null)
                 throw new ArgumentNullException(nameof(args));
 
@@ -73,7 +73,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("Null/blank name specified");
+                throw new ArgumentNullException(nameof(name), "Null/blank name specified");
 
             return Invoke<T>(source, InvokeFlags.DISPATCH_PROPERTYGET, name, GetDispId(source, name));
         }
@@ -83,7 +83,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("Null/blank name specified");
+                throw new ArgumentNullException(nameof(name), "Null/blank name specified");
 
             return GetProperty<object>(source, name);
         }
@@ -96,7 +96,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("Null/blank name specified");
+                throw new ArgumentNullException(nameof(name), "Null/blank name specified");
 
             var IID_NULL = new Guid("00000000-0000-0000-0000-000000000000");
             var rgDispId = new int[1] { 0 }; // This will be populated with a the DispId of the named member (if available)

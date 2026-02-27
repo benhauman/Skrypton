@@ -22,7 +22,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (statements == null)
                 throw new ArgumentNullException(nameof(statements));
             if (lineIndexOfStartOfConstruct < 0)
-                throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndexOfStartOfConstruct");
+                throw new ArgumentOutOfRangeException(nameof(lineIndexOfStartOfConstruct), "Must be zero or greater");
 
             ConditionIfAny = conditionIfAny;
             IsPreCondition = isPreCondition;

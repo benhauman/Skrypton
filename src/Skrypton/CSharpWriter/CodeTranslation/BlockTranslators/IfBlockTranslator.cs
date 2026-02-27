@@ -237,7 +237,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (blocks == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(blocks));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)

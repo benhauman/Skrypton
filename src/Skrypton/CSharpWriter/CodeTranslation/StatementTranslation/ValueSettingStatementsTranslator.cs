@@ -469,7 +469,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             public ValueSettingStatementAssigmentFormatDetails(Func<string, string> assigmentFormat, NonNullImmutableList<NameToken> variablesAccessed)
             {
                 AssigmentFormat = assigmentFormat ?? throw new ArgumentNullException(nameof(assigmentFormat));
-                VariablesAccessed = variablesAccessed ?? throw new ArgumentNullException("memberCallVariablesAccessed");
+                VariablesAccessed = variablesAccessed ?? throw new ArgumentNullException(nameof(variablesAccessed));
             }
 
             /// <summary>

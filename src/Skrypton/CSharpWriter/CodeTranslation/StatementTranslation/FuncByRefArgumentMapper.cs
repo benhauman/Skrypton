@@ -211,7 +211,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (rewrittenReferences == null)
-                throw new ArgumentNullException("mutableRewrittenReferences");
+                throw new ArgumentNullException(nameof(rewrittenReferences));
             if (callSetItemIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(callSetItemIndex));
             if (callSetItemCount < 1)
