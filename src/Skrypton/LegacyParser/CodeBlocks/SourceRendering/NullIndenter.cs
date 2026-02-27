@@ -2,7 +2,7 @@
 {
     public class NullIndenter : ISourceIndentHandler
     {
-        public static NullIndenter _instance = new NullIndenter();
+        public static readonly NullIndenter _instance = new NullIndenter();
         public static NullIndenter Instance { get { return _instance; } }
         private NullIndenter() { }
 

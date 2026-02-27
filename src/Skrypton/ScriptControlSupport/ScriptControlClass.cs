@@ -130,7 +130,7 @@ namespace Skrypton.ScriptControlSupport
             try
             {
                 DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeLogger, EngineCulture);
-                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
+                using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
                 Type tRunner = asmctx.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 

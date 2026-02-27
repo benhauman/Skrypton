@@ -525,7 +525,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
         // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)
         // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
-        public static int MarshalSizeOf = 24; // Marshal.SizeOf<VARIANT>(); // 24 and not 16 because of the 8-byte alignment of the largest field (long/double) in the struct, which causes padding in the native layout.
+        public static readonly int MarshalSizeOf = 24; // Marshal.SizeOf<VARIANT>(); // 24 and not 16 because of the 8-byte alignment of the largest field (long/double) in the struct, which causes padding in the native layout.
 
         internal VarEnum VariantTypeEnum => (VarEnum)vt;
 

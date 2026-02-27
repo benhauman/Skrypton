@@ -6,7 +6,7 @@ namespace Skrypton.RuntimeSupport.Attributes
     /// In order to fully implement VBScript TypeName support, we will need the original names of classes before they were changed for C# generation (for cases
     /// where they WERE changed). Generated classes should be decorated with this attribute to expose that information.
     /// </summary>
-    public class SourceClassName : Attribute
+    public sealed class SourceClassName : Attribute
     {
         public SourceClassName(string name)
         {

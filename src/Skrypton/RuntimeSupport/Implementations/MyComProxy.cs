@@ -8,7 +8,7 @@ using static Skrypton.RuntimeSupport.UnsafeNativeMethods;
 namespace Skrypton.RuntimeSupport.Implementations
 {
     [DebuggerDisplay("{_progId}")]
-    internal sealed class MyComProxy : IDisposable, IReflect
+    internal sealed class MyComProxy : IReflect
     {
         private readonly string _progId;
         private readonly Type _comType;

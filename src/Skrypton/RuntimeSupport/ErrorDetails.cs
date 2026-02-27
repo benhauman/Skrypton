@@ -6,7 +6,7 @@ namespace Skrypton.RuntimeSupport
 {
     public sealed class ErrorDetails : IScriptError
     {
-        public static ErrorDetails NoError = new ErrorDetails(0, "", "", "", null);
+        public static readonly ErrorDetails NoError = new ErrorDetails(0, "", "", "", null);
 
         public ErrorDetails(int number, string source, string text, string description, Exception originalExceptionIfKnown)
         {
