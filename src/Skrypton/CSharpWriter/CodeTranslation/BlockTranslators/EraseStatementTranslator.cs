@@ -117,7 +117,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (eraseStatement.Targets.Count() != 1)
             {
                 exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
-                    "throw new Exception(\"Wrong number of arguments: 'Erase' (line {0})\");",
+                    "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line {0})\");",
                     eraseStatement.KeywordLineIndex + 1
                 );
             }

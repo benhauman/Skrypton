@@ -25,14 +25,14 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             // If we've already got tokens describing a decimal number and we encounter another decimal point then things are going badly
             // (this can't represent a valid number)
             if (token.Is<MemberAccessorOrDecimalPointToken>())
-                throw new Exception("Encountered a MemberAccessorOrDecimalPointToken while part way through processing a decimal value - invalid content");
+                throw new InvalidOperationException("Encountered a MemberAccessorOrDecimalPointToken while part way through processing a decimal value - invalid content");
 
             // If we hit a numeric token, though, then things ARE going well and we can conclude the number search and incorporate the current token
             if (token is NumericValueToken)
             {
                 var numbericValueToken = numberContent.AddToken(token).TryToExpressNumericValueTokenFromCurrentTokens();
                 if (numbericValueToken == null)
-                    throw new Exception("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
+                    throw new InvalidOperationException("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
                 return new TokenProcessResult(
                     new PartialNumberContent(),
                     new[] { numbericValueToken },
@@ -59,7 +59,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                         );
                     }
                     else
-                        throw new Exception("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
+                        throw new InvalidOperationException("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
                 }
                 return new TokenProcessResult(
                     new PartialNumberContent(),

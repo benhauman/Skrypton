@@ -49,7 +49,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 // Unless we've hit token stream end, next should be end-of-statement
                 if (!base.isEndOfStatement(tokens, tokensToRemove.Value))
-                    throw new Exception("No end-of-statement after \"ON ERROR..\" statement");
+                    throw new InvalidOperationException("No end-of-statement after \"ON ERROR..\" statement");
                 tokensToRemove++;
             }
             tokens.RemoveRange(0, tokensToRemove.Value);

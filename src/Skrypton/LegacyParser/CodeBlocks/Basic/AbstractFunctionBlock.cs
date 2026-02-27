@@ -126,7 +126,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             // Ensure derived class has behaved itself
             if ((this.keyWord ?? "").Trim() == "")
-                throw new Exception("Derived class has not defined non-blank/null keyWord");
+                throw new InvalidOperationException("Derived class has not defined non-blank/null keyWord");
 
             // Render opening declaration (scope, name, arguments)
             StringBuilder output = new StringBuilder();

@@ -68,7 +68,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             else if (dimType == DimType.Private)
                 return new PrivateVariableStatement(variables);
             else
-                throw new Exception("Ended up with unexpected DimType value!");
+                throw new InvalidOperationException("Ended up with unexpected DimType value!");
         }
 
         /// <summary>
@@ -145,9 +145,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             foreach (IToken token in tokens)
             {
                 if (token == null)
-                    throw new Exception("Invalid token - null");
+                    throw new InvalidOperationException("Invalid token - null");
                 if ((!(token is AtomToken)) && (!(token is DateLiteralToken)) && (!(token is StringToken)))
-                    throw new Exception("Invalid token - not AtomToken or StringToken");
+                    throw new InvalidOperationException("Invalid token - not AtomToken or StringToken");
             }
 
             // Get name (if no other content, we're all done!)
@@ -157,9 +157,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Ensure next token and last token are "(" and ")"
             if (tokens.Count == 2)
-                throw new Exception("Invalid token sequence");
+                throw new InvalidOperationException("Invalid token sequence");
             if ((tokens[1].Content != "(") || (tokens[tokens.Count - 1].Content != ")"))
-                throw new Exception("Invalid token sequence");
+                throw new InvalidOperationException("Invalid token sequence");
 
             // If there were only three tokens, we're all done!
             if (tokens.Count == 3)

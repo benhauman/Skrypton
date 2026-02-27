@@ -154,7 +154,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
-                            throw new Exception("Encountered line return in string content around line " + (lineIndexForStartOfContent + 1));
+                            throw new InvalidOperationException("Encountered line return in string content around line " + (lineIndexForStartOfContent + 1));
                         if (chr != "\"")
                             tokenContent += chr;
                         else
@@ -203,7 +203,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
-                            throw new Exception("Encountered line return in escaped-content variable name");
+                            throw new InvalidOperationException("Encountered line return in escaped-content variable name");
                         tokenContent += chr;
                         if (chr == "]")
                         {
@@ -247,7 +247,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
-                            throw new Exception("Encountered line return in date literal content");
+                            throw new InvalidOperationException("Encountered line return in date literal content");
                         if (chr == "#")
                         {
                             // We can only catch certain kinds of invalid date literal format here since some formats are culture-dependent (eg. "1 May 2010" is

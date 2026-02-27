@@ -85,7 +85,7 @@ namespace Skrypton.ScriptControlSupport
             if (_addedObjects.ContainsKey(objectName))
             {
                 // “An object with this name already exists in the script namespace.”
-                throw new COMException($"An object with this name already exists in the script namespace. '{objectName}'", unchecked((int)0x800A03EC)); // SCRIPT_E_DUPLICATEOBJECTNAME
+                throw new InvalidOperationException($"An object with this name already exists in the script namespace. '{objectName}' HR:0x800A03EC (SCRIPT_E_DUPLICATEOBJECTNAME)"); // SCRIPT_E_DUPLICATEOBJECTNAME
             }
             _addedObjects[objectName] = objectInstance ?? throw new ArgumentNullException(nameof(objectInstance));
 

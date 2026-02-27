@@ -54,7 +54,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 if (includesCallKeyword)
                 {
                     if (targetExpressionsTokenSets.Count != 1)
-                        throw new Exception("Expected only a single argument token set to have been extracted when CALL is present, since brackets should have wrapped all argument(s) in valid VBScript");
+                        throw new InvalidOperationException("Expected only a single argument token set to have been extracted when CALL is present, since brackets should have wrapped all argument(s) in valid VBScript");
                     var argumentTokens = targetExpressionsTokenSets[0];
                     var terminator = new EndOfStatementNewLineToken(argumentTokens.Last().LineIndex);
                     targetExpressionsTokenSets = base.getEntryList(
@@ -144,7 +144,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 var openBrace = (OpenBrace)targetArgumentTokens.First();
                 var closeBrace = targetArgumentTokens.Last() as CloseBrace;
                 if (closeBrace == null)
-                    throw new Exception("Invalid token sequence, mismatched brackets on line (" + (openBrace.LineIndex + 1) + ")");
+                    throw new InvalidOperationException("Invalid token sequence, mismatched brackets on line (" + (openBrace.LineIndex + 1) + ")");
 
                 targetArgumentsIfAny = base.getEntryList(tokensArray, 2, closeBrace)
                     .Select(argumentTokens => new Expression(argumentTokens))

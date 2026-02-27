@@ -43,11 +43,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     expression.Add(token);
             }
             if (indexThen == -1)
-                throw new Exception("IF statement not got matching THEN");
+                throw new InvalidOperationException("IF statement not got matching THEN");
 
             // Is next token an end-of-statement token or is it a one-line IF statement?
             if (indexThen == (tokens.Count - 1))
-                throw new Exception("IF statement's THEN keyword is final token - missing content");
+                throw new InvalidOperationException("IF statement's THEN keyword is final token - missing content");
             if (tokens[indexThen + 1] is AbstractEndOfStatementToken)
                 return processMultiLine(tokens, indexThen);
             return processSingleLine(tokens);
@@ -111,7 +111,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 // First loop, we'll match this as the initial "IF" statement so we can
                 // grab the content after it..
                 if (endSequenceMet == null)
-                    throw new Exception("Didn't find end sequence!");
+                    throw new InvalidOperationException("Didn't find end sequence!");
 
                 // Remove the last end sequence tokens (on the first loop, this will
                 // actually remove the initial "IF" token)
@@ -142,7 +142,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 var codeBlockHandler = new CodeBlockHandler(endSequences);
                 var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
                 if (endSequenceMet == null)
-                    throw new Exception("Didn't find end sequence!");
+                    throw new InvalidOperationException("Didn't find end sequence!");
 
                 // Record this content block
                 if (conditionTokens == null)
@@ -211,7 +211,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     && (!(token is StringToken))
                     && (!(token is InlineCommentToken))
                     && (!(token is EndOfStatementSameLineToken)))
-                        throw new Exception("IfHandler.processSingleLine: Encountered invalid Token - should all be AtomToken, DateLiteralToken, StringToken or EndOfStatementSameLineToken until new-line end of statement");
+                        throw new InvalidOperationException("IfHandler.processSingleLine: Encountered invalid Token - should all be AtomToken, DateLiteralToken, StringToken or EndOfStatementSameLineToken until new-line end of statement");
                     ifTokens.Add(token);
                 }
             }
@@ -242,7 +242,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         break;
                     }
                     else if (token.Content.ToUpper() == "ELSEIF")
-                        throw new Exception("Invalid content: ELSEIF found in single-line IF");
+                        throw new InvalidOperationException("Invalid content: ELSEIF found in single-line IF");
                 }
             }
 
@@ -263,7 +263,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Note: It's not valid for Post-THEN content to be empty
             if (truthTokens.Count == 0)
-                throw new Exception("Empty THEN content in IF");
+                throw new InvalidOperationException("Empty THEN content in IF");
 
             // If we've got this far, we can pull out the processed tokens from the input list
             // - If statement ended at new-line-end-of-statement (as opposed to end of
@@ -309,7 +309,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 var token = tokens[index];
                 if ((!(token is AtomToken)) && (!(token is DateLiteralToken)) && (!(token is StringToken)))
-                    throw new Exception("Encountered invalid token looking for THEN content");
+                    throw new InvalidOperationException("Encountered invalid token looking for THEN content");
                 if ((token is AtomToken) && (token.Content.ToUpper() == "THEN"))
                 {
                     offsetThen = index;
@@ -317,7 +317,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
             }
             if (offsetThen == -1)
-                throw new Exception("Invalid content: no THEN token for IF / ELSEIF");
+                throw new InvalidOperationException("Invalid content: no THEN token for IF / ELSEIF");
 
             // Grab condition content
             var conditionTokens = base.getTokenListSection(tokens, 0, offsetThen);

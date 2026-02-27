@@ -480,7 +480,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         if (argumentsAreBracketed)
                         {
                             // In VBScript, this is a compile time error (unlike the runtime errors from brackets following the token types above)
-                            throw new Exception("Invalid content - \"Expected end of statement\" (there may not be brackets following the class name when using \"new\")");
+                            throw new InvalidOperationException("Invalid content - \"Expected end of statement\" (there may not be brackets following the class name when using \"new\")");
                         }
                         return new NewInstanceExpressionSegment(newInstanceName);
                     }

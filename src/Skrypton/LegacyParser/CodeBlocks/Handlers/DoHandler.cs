@@ -69,7 +69,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var codeBlockHandler = new CodeBlockHandler(endSequences);
             var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
-                throw new Exception("Didn't find end sequence!");
+                throw new InvalidOperationException("Didn't find end sequence!");
             tokens.RemoveAt(0); // Remove "LOOP"
 
             // Remove post-condition content (if any)
@@ -99,7 +99,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 if (tokens[0] is AbstractEndOfStatementToken)
                     tokens.RemoveAt(0);
                 else
-                    throw new Exception("EndOfStatementToken missing after LOOP");
+                    throw new InvalidOperationException("EndOfStatementToken missing after LOOP");
             }
 
             var supportsExit = true; // DO..LOOP supports EXIT DO (while WHILE..WEND loops have no corresponding exit statement)

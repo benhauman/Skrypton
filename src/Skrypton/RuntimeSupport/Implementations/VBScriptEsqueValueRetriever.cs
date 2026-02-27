@@ -475,7 +475,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // need to inspect the type of the value here and we can't do that if we get null)
             value = VAL(value);
             if (value == null)
-                throw new Exception("Expected TryToGetNumberConsideringSpecialCases to deal with the case of a null value");
+                throw new InvalidOperationException("Expected TryToGetNumberConsideringSpecialCases to deal with the case of a null value");
 
             // If the value is a string then that will always become a Double (it doesn't matter if it's "1", which could easily be an "Integer", it will
             // always become a Double)
@@ -726,7 +726,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 var enumerator = getEnumerator(target);
                 if (enumerator == null)
-                    throw new Exception("GetEnumerator returned null");
+                    throw new InvalidOperationException("GetEnumerator returned null");
                 return new DuckTypingEnumeratorWrapper(enumerator, moveNext, getCurrent, reset);
             };
         }

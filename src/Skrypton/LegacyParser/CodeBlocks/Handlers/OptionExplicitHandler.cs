@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 // Unless we've hit token stream end, next should be end-of-statement
                 if (!base.isEndOfStatement(tokens, numberOfTokensToRemove))
-                    throw new Exception("No end-of-statement after \"OPTION EXPLICIT\" statement");
+                    throw new InvalidOperationException("No end-of-statement after \"OPTION EXPLICIT\" statement");
                 numberOfTokensToRemove++;
             }
             tokens.RemoveRange(0, numberOfTokensToRemove);

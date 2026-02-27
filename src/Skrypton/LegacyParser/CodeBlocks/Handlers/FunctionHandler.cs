@@ -125,7 +125,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     endSequences.Add(new string[] { "END", "PROPERTY" });
                     break;
                 default:
-                    throw new Exception("Ended up with invalid BlockType [" + blockType.ToString() + "] - how did this happen?? :S");
+                    throw new InvalidOperationException("Ended up with invalid BlockType [" + blockType.ToString() + "] - how did this happen?? :S");
             }
 
             // Get function content
@@ -133,14 +133,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             CodeBlockHandler codeBlockHandler = new CodeBlockHandler(endSequences);
             List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
-                throw new Exception("Didn't find end sequence!");
+                throw new InvalidOperationException("Didn't find end sequence!");
 
             // Remove end sequence tokens
             tokens.RemoveRange(0, endSequenceMet.Length);
             if (tokens.Count > 0)
             {
                 if (!(tokens[0] is AbstractEndOfStatementToken))
-                    throw new Exception("EndOfStatementToken missing after END SUB/FUNCTION");
+                    throw new InvalidOperationException("EndOfStatementToken missing after END SUB/FUNCTION");
                 else
                     tokens.RemoveAt(0);
             }
@@ -173,7 +173,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return new PropertyBlock(isPublic, isDefault, new NameToken(false, funcNameToken.ContentUpperX(), funcNameToken.LineIndex), PropertyBlock.PropertyType.Let, parameters, blockContent);
 
             else
-                throw new Exception("Unrecognised BlockType [" + blockType.ToString() + "] - how did this happen??");
+                throw new InvalidOperationException("Unrecognised BlockType [" + blockType.ToString() + "] - how did this happen??");
         }
 
         private List<FunctionBlock.Parameter> getFuncParametersAndRemoveTokens(
@@ -214,7 +214,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         // exception if the content is invalid)
                         List<IToken> paramTokens = getParamTokens(tokens, offset, out byRef, out name, out isArray);
                         if ((paramTokens == null) || (paramTokens.Count == 0))
-                            throw new Exception("Unexpected content from getParamsToken");
+                            throw new InvalidOperationException("Unexpected content from getParamsToken");
                         parameters.Add(new FunctionBlock.Parameter(byRef, new NameToken(false, name.ToUpperX(), paramTokens[0].LineIndex), isArray));
                         offset += paramTokens.Count;
 
@@ -229,7 +229,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Ensure next token is EndOfStatement
             if (!base.isEndOfStatement(tokens, offset))
-                throw new Exception("Expected EndOfStatementToken after function declaration");
+                throw new InvalidOperationException("Expected EndOfStatementToken after function declaration");
 
             // Trim off handled tokens and return parameter data
             offset++;
@@ -281,7 +281,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 offset++;
                 token = base.getToken_AtomOnly(tokens, offset);
                 if (token.Content != ")")
-                    throw new Exception("Invalid content in function array parameter declaration");
+                    throw new InvalidOperationException("Invalid content in function array parameter declaration");
                 paramTokens.Add(token);
                 offset++;
                 isArray = true;

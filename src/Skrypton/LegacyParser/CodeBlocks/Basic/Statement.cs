@@ -312,7 +312,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                         var lineIndexForInsertedOpenBrace = firstItemTokens.Last().LineIndex;
                         var lineIndexForInsertedCloseBrace = remainingTokens.Any() ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
                         if (bracketDepth != 0)
-                            throw new Exception("Invalid content - mismatched brackets ending on line " + (lineIndexForInsertedCloseBrace + 1));
+                            throw new InvalidOperationException("Invalid content - mismatched brackets ending on line " + (lineIndexForInsertedCloseBrace + 1));
                         var remainingTokensAfterBracketedContent = remainingTokens.Skip(bracketedContent.Count);
                         if (remainingTokensAfterBracketedContent.Any() && (remainingTokensAfterBracketedContent.First() is MemberAccessorOrDecimalPointToken))
                         {

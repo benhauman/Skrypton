@@ -157,7 +157,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             CodeBlockHandler codeBlockHandler = new CodeBlockHandler(endSequences);
             List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
-                throw new Exception("Didn't find end sequence!");
+                throw new InvalidOperationException("Didn't find end sequence!");
 
             // Remove end sequence tokens
             tokens.RemoveRange(0, endSequenceMet.Length);
@@ -166,7 +166,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 if (tokens[0] is AbstractEndOfStatementToken)
                     tokens.RemoveAt(0);
                 else
-                    throw new Exception("EndOfStatementToken missing after NEXT");
+                    throw new InvalidOperationException("EndOfStatementToken missing after NEXT");
             }
 
             // Return code block instance

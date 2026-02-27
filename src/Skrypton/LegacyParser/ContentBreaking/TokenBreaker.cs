@@ -97,10 +97,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 {
                     // Ensure followed by line return, then ignore both tokens
                     if (index == (tokens.Count - 1))
-                        throw new Exception("Encountered line-return cancellation that isn't followed by a line return - invalid");
+                        throw new InvalidOperationException("Encountered line-return cancellation that isn't followed by a line return - invalid");
                     var tokenNext = tokens[index + 1];
                     if (!(tokenNext is EndOfStatementNewLineToken))
-                        throw new Exception("Encountered line-return cancellation that isn't followed by a line return - invalid");
+                        throw new InvalidOperationException("Encountered line-return cancellation that isn't followed by a line return - invalid");
                     index++;
                 }
                 else

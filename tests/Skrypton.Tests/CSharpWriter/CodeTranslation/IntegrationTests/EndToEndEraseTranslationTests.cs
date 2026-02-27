@@ -20,8 +20,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             get
             {
-                yield return new object[] { "Empty ERASE is a runtime error", "ERASE", new[] { "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
-                yield return new object[] { "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
+                yield return new object[] { "Empty ERASE is a runtime error", "ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
+                yield return new object[] { "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
 
                 yield return new object[] { "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
                 yield return new object[] { "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
@@ -78,7 +78,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     new[] {
                         "var invalidEraseTarget = _env.a;",
                         "var invalidEraseTarget2 = _env.b;",
-                        "throw new Exception(\"Wrong number of arguments: 'Erase' (line 1)\");"
+                        "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");"
                     }
                 };
                 yield return new object[] {

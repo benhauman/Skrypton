@@ -28,7 +28,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     if (requireAnEndOfStatementToken)
                     {
                         if (!(tokens[matchPattern.Length] is AbstractEndOfStatementToken))
-                            throw new Exception("EXIT statement wasn't followed by end-of-statement token");
+                            throw new InvalidOperationException("EXIT statement wasn't followed by end-of-statement token");
                     }
                     tokens.RemoveRange(0, matchPattern.Length);
                     if (requireAnEndOfStatementToken)

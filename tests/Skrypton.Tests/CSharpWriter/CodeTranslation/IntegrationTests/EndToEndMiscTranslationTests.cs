@@ -172,7 +172,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void ClassNameFollowedByBracketsInNewStatementResultsInCompileTimeError()
         {
             var source = "c = new C1()";
-            myAssert.Throws<Exception>(() =>
+            myAssert.Throws<InvalidOperationException>(() =>
             {
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });

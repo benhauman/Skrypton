@@ -38,7 +38,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             //   that here since it's not valid for two number tokens to exist adjacently with nothing in between)
             var numbericValueToken = numberContent.TryToExpressNumericValueTokenFromCurrentTokens();
             if (numbericValueToken == null)
-                throw new Exception("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
+                throw new InvalidOperationException("numberContent should describe a number, null was returned from TryToExpressNumberFromTokens - invalid content");
             return new TokenProcessResult(
                 new PartialNumberContent(),
                 new[] { numbericValueToken, token },

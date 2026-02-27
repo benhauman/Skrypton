@@ -67,7 +67,7 @@ namespace Skrypton.ScriptControlSupport
         //public void AddObject(string name, object obj, bool addMembers = false)
         //{
         //    if (_hostObjects.ContainsKey(name))
-        //        throw new Exception($"An object with this name '{name}' already exists in the script namespace.");
+        //        throw new InvalidOperationException($"An object with this name '{name}' already exists in the script namespace.");
         //
         //    if (addMembers)
         //    {

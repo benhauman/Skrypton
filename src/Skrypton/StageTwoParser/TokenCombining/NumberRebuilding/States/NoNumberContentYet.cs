@@ -23,7 +23,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                 throw new ArgumentException("Null reference encountered in tokens set");
 
             if (numberContent.Tokens.Any())
-                throw new Exception("The numberContent reference should be empty when using the NoNumberContentYet processor");
+                throw new InvalidOperationException("The numberContent reference should be empty when using the NoNumberContentYet processor");
 
             // If this token is a NumericValueToken then this is the start of numeric content (since we don't currently have any number
             // content at all). At this point we only know that it's the start of an integer value, the GotSomeIntegerNumberContent

@@ -2089,7 +2089,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (!dimensionSizes.Any())
                 throw new ArgumentException("No dimensions specified for NEWARRAY");
             if (dimensionSizes.Any(d => d < 0))
-                throw new OutOfMemoryException("Invalid negative dimensions used for NEWARRAY call");
+                throw new InvalidOperationException("Invalid negative dimensions used for NEWARRAY call");
             return Array.CreateInstance(typeof(object), dimensionSizes);
         }
 
@@ -2115,7 +2115,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (dimensionSizes.Length != arrayTyped.Rank)
                 throw new SubscriptOutOfRangeException("Inconsistent number of dimensions specified for RESIZEARRAY");
             if (dimensionSizes.Any(d => d < 0))
-                throw new OutOfMemoryException("Invalid negative dimensions used for RESIZEARRAY call");
+                throw new InvalidOperationException("Invalid negative dimensions used for RESIZEARRAY call");
 
             for (var dimension = 0; dimension < arrayTyped.Rank - 1; dimension++)
             {
@@ -2320,7 +2320,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public void RELEASEERRORTRAPPINGTOKEN(int errorToken)
         {
             if (!_activeErrorTokens.ContainsKey(errorToken))
-                throw new Exception("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
             _activeErrorTokens.Remove(errorToken);
             _availableErrorTokens.Enqueue(errorToken);
         }
@@ -2335,7 +2335,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // raised) unless F2 or any code it calls contains On Error Resume Next or On Error Goto - if this is the case then the error from F1
             // is lost forever. This is why _trappedErrorIfAny is set to null here and in STOPERRORTRAPPINGANDCLEARANYERROR.
             if (!_activeErrorTokens.ContainsKey(errorToken))
-                throw new Exception("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
             _activeErrorTokens[errorToken] = ErrorTokenState.OnErrorResumeNext;
             _trappedErrorIfAny = null;
         }
@@ -2343,7 +2343,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public void STOPERRORTRAPPINGANDCLEARANYERROR(int errorToken)
         {
             if (!_activeErrorTokens.ContainsKey(errorToken))
-                throw new Exception("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
             _activeErrorTokens[errorToken] = ErrorTokenState.OnErrorGoto0;
             _trappedErrorIfAny = null;
         }
@@ -2352,7 +2352,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public void HANDLEERROR(int errorToken, Action action)
         {
             if (!_activeErrorTokens.ContainsKey(errorToken))
-                throw new Exception("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
 
             try
             {
@@ -2363,7 +2363,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Translated programs shouldn't provide any actions that register or unregister error tokens, but since we've just gone off and
                 // attempted to do some unknown work, it's best to check
                 if (!_activeErrorTokens.ContainsKey(errorToken))
-                    throw new Exception("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                    throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
 
                 if (_activeErrorTokens[errorToken] == ErrorTokenState.OnErrorResumeNext)
                     SETERROR(e);

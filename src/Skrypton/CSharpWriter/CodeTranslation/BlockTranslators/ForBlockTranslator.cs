@@ -331,7 +331,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     if (loopConstraintInitialiser is LoopStartConstraintInitialiser)
                     {
                         if (loopStartConstraintInitialiserIfAny != null)
-                            throw new Exception("The loopStartConstraintInitialisers set shouldn't have more than one LoopStartConstraintInitialiser!");
+                            throw new InvalidOperationException("The loopStartConstraintInitialisers set shouldn't have more than one LoopStartConstraintInitialiser!");
                         loopStartConstraintInitialiserIfAny = (LoopStartConstraintInitialiser)loopConstraintInitialiser;
                         initialisationContentToUse = loopStartConstraintInitialiserIfAny.InitialisationContentIgnoringTypesOfOtherConstraints;
                     }

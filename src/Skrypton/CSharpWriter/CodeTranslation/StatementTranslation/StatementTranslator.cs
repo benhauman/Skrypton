@@ -294,7 +294,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var resultLeft = TranslateNonOperatorSegment(segmentLeft, scopeAccessInformation);
             if (new[] { mustConvertLeftValueToNumber, mustConvertLeftValueToDate, mustConvertLeftValueToString }.Count(v => v) > 1)
             {
-                throw new Exception("Something went wrong in the processing, no more than one of mustConvertLeftValueToNumber, mustConvertLeftValueToDate and mustConvertLeftValueToString may be set for a comparison");
+                throw new InvalidOperationException("Something went wrong in the processing, no more than one of mustConvertLeftValueToNumber, mustConvertLeftValueToDate and mustConvertLeftValueToString may be set for a comparison");
             }
 
             if (mustConvertLeftValueToNumber)
@@ -313,7 +313,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var resultRight = TranslateNonOperatorSegment(segmentRight, scopeAccessInformation);
             if (new[] { mustConvertRightValueToNumber, mustConvertRightValueToDate, mustConvertRightValueToString }.Count(v => v) > 1)
             {
-                throw new Exception("Something went wrong in the processing, no more than one of mustConvertRightValueToNumber, mustConvertRightValueToDate and mustConvertRightValueToString may be set for a comparison");
+                throw new InvalidOperationException("Something went wrong in the processing, no more than one of mustConvertRightValueToNumber, mustConvertRightValueToDate and mustConvertRightValueToString may be set for a comparison");
             }
 
             if (mustConvertRightValueToNumber)

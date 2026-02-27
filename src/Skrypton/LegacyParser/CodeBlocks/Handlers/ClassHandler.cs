@@ -38,14 +38,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var codeBlockHandler = new CodeBlockHandler(endSequences);
             var functionContent = codeBlockHandler.Process(tokens, out endSequenceMet);
             if (endSequenceMet == null)
-                throw new Exception("Didn't find encounter end sequence!");
+                throw new InvalidOperationException("Didn't find encounter end sequence!");
 
             // Remove end sequence tokens
             tokens.RemoveRange(0, endSequenceMet.Length);
             if (tokens.Count > 0)
             {
                 if (!(tokens[0] is AbstractEndOfStatementToken))
-                    throw new Exception("EndOfStatementToken missing after END CLASS");
+                    throw new InvalidOperationException("EndOfStatementToken missing after END CLASS");
                 else
                     tokens.RemoveAt(0);
             }

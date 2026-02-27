@@ -97,7 +97,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     }
                 }
                 if (codeBlock == null)
-                    throw new Exception("No handler able to handle token stream at current position");
+                    throw new InvalidOperationException("No handler able to handle token stream at current position");
             }
             endSequenceMet = null;
             return codeBlocks;

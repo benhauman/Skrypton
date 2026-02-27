@@ -47,7 +47,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     }
                 }
                 if (!validTokenType)
-                    throw new Exception("Token is not of an allowed type [" + token.GetType().ToString() + " on line " + (token.LineIndex + 1) + "]");
+                    throw new InvalidOperationException("Token is not of an allowed type [" + token.GetType().ToString() + " on line " + (token.LineIndex + 1) + "]");
             }
             return token;
         }
@@ -166,9 +166,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
             if (offset < 0)
-                throw new Exception("Negative offset specified - invalid");
+                throw new InvalidOperationException("Negative offset specified - invalid");
             if (offset >= tokens.Count())
-                throw new Exception("Insufficient tokens - invalid");
+                throw new InvalidOperationException("Insufficient tokens - invalid");
             if (endMarker == null)
                 throw new ArgumentNullException(nameof(endMarker));
             if ((!(endMarker is AtomToken)) && (!(endMarker is AbstractEndOfStatementToken)))
