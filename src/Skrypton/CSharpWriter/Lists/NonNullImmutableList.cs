@@ -28,7 +28,7 @@ namespace Skrypton.CSharpWriter.Lists
             _optionalValueValidator = optionalValueValidator;
         }
 
-        private static IValueValidator<T> GetValidator(IValueValidator<T> optionalValueValidator)
+        private static Validator GetValidator(IValueValidator<T> optionalValueValidator)
         {
             if (optionalValueValidator == null)
                 return _defaultValidator;

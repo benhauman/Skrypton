@@ -163,7 +163,7 @@ namespace Skrypton.CSharpWriter
             }
         }
 
-        private static IEnumerable<IToken> GetTokens(CultureInfo culture, string scriptContent)
+        private static IToken[] GetTokens(CultureInfo culture, string scriptContent)
         {
             // Break down content into String, Comment and UnprocessedContent tokens
             var tokens = StringBreaker.SegmentString(culture, scriptContent);
@@ -178,7 +178,7 @@ namespace Skrypton.CSharpWriter
                     atomTokens.Add(token);
             }
 
-            return NumberRebuilder.Rebuild(OperatorCombiner.Combine(atomTokens)).ToList();
+            return NumberRebuilder.Rebuild(OperatorCombiner.Combine(atomTokens)).ToArray();
         }
 
         internal sealed class DelegateWrappingWarningLogger : ILogInformation

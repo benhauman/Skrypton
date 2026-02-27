@@ -746,7 +746,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             int nDecimals = GetAsNumber<int>(decimals, "'ROUND'", Convert.ToInt32);
             return ROUNDCore(value, nDecimals);
         }
-        private object ROUNDCore(object value, int nDecimals)
+        private decimal ROUNDCore(object value, int nDecimals)
         {
             decimal decimalValue = GetAsNumber<decimal>(value, "'ROUND'", Convert.ToDecimal);
             if (nDecimals < 0)

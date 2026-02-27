@@ -27,7 +27,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never return null nor a set containing any nulls
         /// </summary>
-        private static IEnumerable<Expression> Generate(TokenNavigator tokenNavigator, int depth, IToken directedWithReferenceIfAny, Action<string> warningLogger)
+        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, IToken directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokenNavigator == null)
                 throw new ArgumentNullException(nameof(tokenNavigator));
@@ -200,7 +200,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 expressions.Add(GetExpression(expressionSegments));
                 expressionSegments.Clear();
             }
-            return expressions;
+            return expressions.ToArray();
         }
 
         private static bool WillBeFirstSegmentInCallExpression(IEnumerable<IExpressionSegment> expressionSegmentBuffer)

@@ -1492,7 +1492,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// VBScript expects integer array index values but will accept fractional values or even strings representing integers or fractional values.
         /// Any fractional values are rounded to the closest even number (so 1.5 rounds to 2, 2.5 also rounds to 2, 3.5 rounds to 4, etc..)
         /// </summary>
-        private Expression GetVBScriptStyleArrayIndexParsingExpression(Expression index)
+        private BlockExpression GetVBScriptStyleArrayIndexParsingExpression(Expression index)
         {
             if (index == null)
                 throw new ArgumentNullException(nameof(index));
@@ -1552,7 +1552,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private Expression GetNewArgumentException(string message, ParameterExpression exceptionParameter)
+        private NewExpression GetNewArgumentException(string message, ParameterExpression exceptionParameter)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Null/blank message specified");
@@ -1614,7 +1614,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return target;
         }
 
-        private IEnumerable<MethodInfo> GetDefaultGetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
+        private MethodInfo[] GetDefaultGetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1848,7 +1848,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .ToArray();
         }
 
-        private IEnumerable<MethodInfo> GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
+        private MethodInfo[] GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));

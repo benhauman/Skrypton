@@ -159,7 +159,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
             return new OperatorToken((isNegative ? "-" : "+").ToUpperX(), tokens.First().LineIndex);
         }
 
-        private static bool IsTokenRedundant(IToken token, IToken previousTokenIfAny)
+        private static bool IsTokenRedundant(OperatorToken token, IToken previousTokenIfAny)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));

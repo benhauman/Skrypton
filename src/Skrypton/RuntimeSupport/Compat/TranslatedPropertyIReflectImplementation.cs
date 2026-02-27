@@ -93,7 +93,7 @@ namespace Skrypton.RuntimeSupport.Compat
             return (value & valueToSearchFor) == valueToSearchFor;
         }
 
-        private static IEnumerable<PropertyInfo> GetTranslatedPropertyRepresentations(Type type, Accessibility accessibility)
+        private static PropertyInfo[] GetTranslatedPropertyRepresentations(Type type, Accessibility accessibility)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -132,7 +132,7 @@ namespace Skrypton.RuntimeSupport.Compat
                     )
                 );
             }
-            return representedProperties;
+            return representedProperties.ToArray();
         }
 
         private enum Accessibility

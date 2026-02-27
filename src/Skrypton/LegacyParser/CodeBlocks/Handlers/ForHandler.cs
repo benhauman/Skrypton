@@ -20,13 +20,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Determine whether we've got a "FOR" or "FOR EACH" block
             if (base.checkAtomTokenPattern(tokens, new string[] { "FOR", "EACH" }, false))
-                return handleForEach(tokens);
+                return HandleForEach(tokens);
             else if (base.checkAtomTokenPattern(tokens, new string[] { "FOR" }, false))
-                return handleForStandard(tokens);
+                return HandleForStandard(tokens);
             return null;
         }
 
-        private ICodeBlock handleForEach(List<IToken> tokens)
+        private ForEachBlock HandleForEach(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -58,7 +58,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             );
         }
 
-        private ICodeBlock handleForStandard(List<IToken> tokens)
+        private ForBlock HandleForStandard(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

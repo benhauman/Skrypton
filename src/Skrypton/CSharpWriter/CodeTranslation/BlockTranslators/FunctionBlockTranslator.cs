@@ -189,7 +189,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .AddUndeclaredVariables(undeclaredVariables);
         }
 
-        private IEnumerable<TranslatedStatement> TranslateFunctionHeader(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, CSharpName returnValueNameIfAny, int indentationDepth)
+        private TranslatedStatement[] TranslateFunctionHeader(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, CSharpName returnValueNameIfAny, int indentationDepth)
         {
             if (functionBlock == null)
                 throw new ArgumentNullException(nameof(functionBlock));
@@ -265,7 +265,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     functionBlock.Name.LineIndex
                 ));
             }
-            return translatedStatements;
+            return translatedStatements.ToArray();
         }
 
         /// <summary>

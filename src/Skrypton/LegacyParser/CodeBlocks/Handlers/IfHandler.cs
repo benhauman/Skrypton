@@ -49,11 +49,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (indexThen == (tokens.Count - 1))
                 throw new InvalidOperationException("IF statement's THEN keyword is final token - missing content");
             if (tokens[indexThen + 1] is AbstractEndOfStatementToken)
-                return processMultiLine(tokens, indexThen);
-            return processSingleLine(tokens);
+                return ProcessMultiLine(tokens, indexThen);
+            return ProcessSingleLine(tokens);
         }
 
-        private ICodeBlock processMultiLine(List<IToken> tokens, int offsetToTHEN)
+        private IfBlock ProcessMultiLine(List<IToken> tokens, int offsetToTHEN)
         {
             // ======================================================================
             // Notes on multi-line If's:
@@ -171,7 +171,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return new IfBlock(ifContent);
         }
 
-        private ICodeBlock processSingleLine(List<IToken> tokens)
+        private IfBlock ProcessSingleLine(List<IToken> tokens)
         {
             // ======================================================================
             // Notes on single-line If's:
@@ -211,7 +211,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     && (!(token is StringToken))
                     && (!(token is InlineCommentToken))
                     && (!(token is EndOfStatementSameLineToken)))
-                        throw new InvalidOperationException("IfHandler.processSingleLine: Encountered invalid Token - should all be AtomToken, DateLiteralToken, StringToken or EndOfStatementSameLineToken until new-line end of statement");
+                        throw new InvalidOperationException("IfHandler.ProcessSingleLine: Encountered invalid Token - should all be AtomToken, DateLiteralToken, StringToken or EndOfStatementSameLineToken until new-line end of statement");
                     ifTokens.Add(token);
                 }
             }
@@ -298,7 +298,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// exception will be thrown for invalid content, but neither null nor an
         /// empty list will ever be returned.
         /// </summary>
-        private IEnumerable<IToken> getConditionContent(List<IToken> tokens)
+        private IToken[] getConditionContent(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -326,7 +326,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             tokens.RemoveRange(0, conditionTokens.Count() + 1);
 
             // Return the content
-            return conditionTokens;
+            return conditionTokens.ToArray();
         }
     }
 }

@@ -59,7 +59,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (classInitializeMethodIfAny != null)
             {
                 if (!(classInitializeMethodIfAny is SubBlock) || classInitializeMethodIfAny.Parameters.Any())
+                {
                     throw new ArgumentException("A class' Class_Initialize may only be a Sub (not a Function) with zero arguments - this is not the case in class " + classBlock.Name.Content);
+                }
+
                 if (!classInitializeMethodIfAny.Statements.Any(s => !(s is INonExecutableCodeBlock)))
                 {
                     // If Class_Initialize doesn't do anything then there's no point adding the complexity of calling it (same for Class_Terminate,
@@ -74,7 +77,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (classTerminateMethodIfAny != null)
             {
                 if (!(classTerminateMethodIfAny is SubBlock) || classTerminateMethodIfAny.Parameters.Any())
+                {
                     throw new ArgumentException("A class' Class_Terminate may only be a Sub (not a Function) with zero arguments - this is not the case in class " + classBlock.Name.Content);
+                }
+
                 if (!classTerminateMethodIfAny.Statements.Any(s => !(s is INonExecutableCodeBlock)))
                 {
                     // If Class_Terminate doesn't do anything then there's no point adding the complexity involved in supporting it
@@ -108,12 +114,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 classBlock,
                 scopeAccessInformation,
                 explicitVariableDeclarationsFromWithClass,
-                (classInitializeMethodIfAny == null) ? null : classInitializeMethodIfAny.Name,
-                (classTerminateMethodIfAny == null) ? null : classTerminateMethodIfAny.Name,
+                classInitializeMethodIfAny?.Name,
+                classTerminateMethodIfAny?.Name,
                 indentationDepth
             );
             if (classContentTranslationResult.TranslatedStatements.Any())
-                translatedClassHeaderContent = translatedClassHeaderContent.Concat(new[] { new TranslatedStatement("", 0, classBlock.Name.LineIndex) });
+            {
+                translatedClassHeaderContent = translatedClassHeaderContent.Concat(new[] { new TranslatedStatement("", 0, classBlock.Name.LineIndex) }).ToArray();
+            }
+
             var lineIndexOfLastStatement = classContentTranslationResult.TranslatedStatements.Any()
                 ? classContentTranslationResult.TranslatedStatements.Max(s => s.LineIndexOfStatementStartInSource)
                 : classBlock.Name.LineIndex;
@@ -147,7 +156,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private IEnumerable<TranslatedStatement> TranslateClassHeader(
+        private TranslatedStatement[] TranslateClassHeader(
             ClassBlock classBlock,
             ScopeAccessInformation scopeAccessInformation,
             NonNullImmutableList<VariableDeclaration> explicitVariableDeclarationsFromWithinClass,
@@ -169,9 +178,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // TranslatedPropertyIReflectImplementation class
             string inheritanceChainIfAny;
             if (classBlock.Statements.Where(s => s is PropertyBlock).Cast<PropertyBlock>().Any(p => p.IsPublic && p.IsIndexedProperty()))
+            {
                 inheritanceChainIfAny = " : " + typeof(TranslatedPropertyIReflectImplementation).Name; // Assume that the namespace is available for this attribute
+            }
             else
+            {
                 inheritanceChainIfAny = "";
+            }
 
             var className = _nameRewriter.GetMemberAccessTokenName(classBlock.Name);
             IEnumerable<TranslatedStatement> classInitializeCallStatements;
@@ -200,7 +213,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             CSharpName disposedFlagNameIfAny;
             if (classTerminateMethodNameIfAny == null)
             {
-                disposeImplementationStatements = new TranslatedStatement[0];
+                disposeImplementationStatements = [];
                 disposedFlagNameIfAny = null;
             }
             else
@@ -250,9 +263,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex)
                 };
                 if (inheritanceChainIfAny == "")
+                {
                     inheritanceChainIfAny = " : ";
+                }
                 else
+                {
                     inheritanceChainIfAny += ", ";
+                }
+
                 inheritanceChainIfAny += "IDisposable";
             }
 
@@ -344,7 +362,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     )
                 );
             }
-            return classHeaderStatements;
+            return classHeaderStatements.ToArray();
         }
     }
 }
