@@ -272,9 +272,9 @@ namespace Skrypton.RuntimeSupport
                         result = Strings.Mid(str, Start, str.Length);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 return result;
             }
@@ -330,9 +330,9 @@ namespace Skrypton.RuntimeSupport
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
                 return result;
             }
@@ -573,23 +573,23 @@ namespace Skrypton.RuntimeSupport
             {
                 // new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
             }
-            catch (StackOverflowException ex)
+            catch (StackOverflowException)
             {
-                throw ex;
+                throw;
             }
-            catch (OutOfMemoryException ex2)
+            catch (OutOfMemoryException)
             {
-                throw ex2;
+                throw;
             }
-            catch (System.Threading.ThreadAbortException ex3)
+            catch (System.Threading.ThreadAbortException)
             {
-                throw ex3;
+                throw;
             }
-            catch (Exception ex4)
+            catch (Exception)
             {
                 if (bThrowException)
                 {
-                    throw ex4;
+                    throw;
                 }
                 goto IL_67;
             }
