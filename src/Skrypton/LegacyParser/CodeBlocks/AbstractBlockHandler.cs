@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
@@ -149,7 +150,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (matchPatterns.Length == 0)
                 throw new ArgumentException("Zero matchPatterns to match", nameof(matchPatterns));
             if (offset < 0)
-                throw new ArgumentException("Invalid offset value < 0 [" + offset.ToString() + "]", nameof(offset));
+                throw new ArgumentException("Invalid offset value < 0 [" + offset.ToString(CultureInfo.InvariantCulture) + "]", nameof(offset));
 
             // If there are insufficient tokens, return false rather than throwing an exception (this method is supposed to be flexible)
             return checkAtomTokenPattern(tokens.Skip(offset).ToArray(), matchPatterns, matchCase);
@@ -247,9 +248,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
 
             var numberOfTokens = tokens.Count();
             if ((start < 0) || (start >= numberOfTokens))
-                throw new ArgumentException("Invalid start value [" + start.ToString() + "]");
+                throw new ArgumentException(FormattableString.Invariant($"Invalid start value [{start}]"));
             if ((count < 0) || (start + count > numberOfTokens))
-                throw new ArgumentException("Invalid count value [" + start.ToString() + ", " + count.ToString() + "]");
+                throw new ArgumentException(FormattableString.Invariant($"Invalid count value [{start},{count}]"));
 
             return tokens.Skip(start).Take(count).ToList();
         }

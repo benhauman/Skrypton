@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
@@ -119,7 +120,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
             if ((offset < 0) || (offset >= tokens.Count))
-                throw new ArgumentException("Invalid offset value [" + offset.ToString() + "]");
+                throw new ArgumentException("Invalid offset value [" + offset.ToString(CultureInfo.InvariantCulture) + "]");
             if ((endMarkerContent != null) && (endMarkerContent.Trim() == ""))
                 throw new ArgumentException("Blank endMarkerContent value - null is acceptable, blank is not");
             List<IToken> exprTokens = new List<IToken>();

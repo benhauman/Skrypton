@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Exceptions;
 
@@ -555,12 +556,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             // a value type (requiring a default parameterless member if not a value type, otherwise an exception will be raised) and then checking for the already-
             // numeric-esque types (Boolean, Integer, Date, etc..) and allowing some flexibility (strings are allowed if they are numeric, but not if they are string
             // representations of boolean or date values). Null is not acceptable but Empty is.
-            if (value is double)
-                return (double)value;
+            if (value is double vDouble)
+                return vDouble;
             var numericValue = _valueRetriever.NUM(value);
-            if (numericValue is double)
-                return (double)numericValue;
-            return Convert.ToDouble(numericValue);
+            if (numericValue is double valDouble)
+                return valDouble;
+            return Convert.ToDouble(numericValue, CultureInfo.InvariantCulture);
         }
 
         private T? TryToCoerceInto<T>(object value) where T : struct

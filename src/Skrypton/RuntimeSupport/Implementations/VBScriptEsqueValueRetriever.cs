@@ -343,7 +343,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 var relatedNonDateNumericValuesAsDouble = relatedNumericValues
                     .Where(v => !(v is DateTime)) // Ignore Dates since they obviously can't cause a Date overflow!
-                    .Select(v => Convert.ToDouble(v))
+                    .Select(v => Convert.ToDouble(v, _culture))
                     .ToArray();
                 if (relatedNonDateNumericValuesAsDouble.Length != 0)
                 {
@@ -352,7 +352,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     if (relatedNonDateNumericValuesAsDouble.Max() > DateToDouble(VBScriptConstants.LatestPossibleDate))
                         throw new VBScriptOverflowException(relatedNonDateNumericValuesAsDouble.Max());
                 }
-                return (valueToConvert is DateTime) ? valueToConvert : DoubleToDate(Convert.ToDouble(valueToConvert));
+                return (valueToConvert is DateTime) ? valueToConvert : DoubleToDate(Convert.ToDouble(valueToConvert, _culture));
             }
 
             // If turns out that Decimal is a special case as well.. even when there is a loop constraint that is sufficiently large that
@@ -361,9 +361,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             // of the values are dates then we will have exited above, so we don't have to worry about doing a TotalDays calculation
             // rather than calling Convert.ToDouble for everything).
             var relatedNumericValuesAsDouble = relatedNumericValues
-                .Select(v => Convert.ToDouble(v))
+                .Select(v => Convert.ToDouble(v, CultureInfo.InvariantCulture))
                 .ToArray();
-            if ((valueToConvert is Decimal) || relatedNumericValues.Any(v => v is Decimal))
+            if ((valueToConvert is decimal) || relatedNumericValues.Any(v => v is decimal))
             {
                 if (relatedNumericValues.Length != 0)
                 {
@@ -371,8 +371,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                         throw new VBScriptOverflowException(relatedNumericValuesAsDouble.Min());
                     if (relatedNumericValuesAsDouble.Max() > (double)VBScriptConstants.MaxCurrencyValue)
                         throw new VBScriptOverflowException(relatedNumericValuesAsDouble.Max());
+                    return (valueToConvert is decimal) ? valueToConvert : Convert.ToDecimal(valueToConvert, CultureInfo.InvariantCulture);
                 }
-                return (valueToConvert is Decimal) ? valueToConvert : Convert.ToDecimal(valueToConvert);
+                return (decimal)valueToConvert;
             }
 
             // So now we know that the valueToConvert and numericValuesTheTypeMustBeAbleToContain are not all of the same type and that
@@ -385,17 +386,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                     if (v == null)
                         throw new ArgumentNullException(nameof(v));
                     if (v is byte)
-                        return Tuple.Create<int, Func<object, object>>(1, value => Convert.ToByte(value));
+                        return Tuple.Create<int, Func<object, object>>(1, value => Convert.ToByte(value, CultureInfo.InvariantCulture));
                     if (v is short)
-                        return Tuple.Create<int, Func<object, object>>(2, value => Convert.ToInt16(value));
+                        return Tuple.Create<int, Func<object, object>>(2, value => Convert.ToInt16(value, CultureInfo.InvariantCulture));
                     if (v is int)
-                        return Tuple.Create<int, Func<object, object>>(3, value => Convert.ToInt32(value));
+                        return Tuple.Create<int, Func<object, object>>(3, value => Convert.ToInt32(value, CultureInfo.InvariantCulture));
                     if (v is float)
-                        return Tuple.Create<int, Func<object, object>>(4, value => Convert.ToSingle(value));
+                        return Tuple.Create<int, Func<object, object>>(4, value => Convert.ToSingle(value, CultureInfo.InvariantCulture));
                     if (v is double)
-                        return Tuple.Create<int, Func<object, object>>(5, value => Convert.ToDouble(value));
+                        return Tuple.Create<int, Func<object, object>>(5, value => Convert.ToDouble(value, CultureInfo.InvariantCulture));
                     if (v is decimal)
-                        return Tuple.Create<int, Func<object, object>>(6, value => Convert.ToDecimal(value));
+                        return Tuple.Create<int, Func<object, object>>(6, value => Convert.ToDecimal(value, CultureInfo.InvariantCulture));
                     throw new ArgumentException("Unsupported numeric type: " + v.GetType());
                 })
                 .OrderBy(v => v.Item1)
@@ -440,7 +441,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 else
                 {
                     //numericValue = null; // not a number, we'll try to parse as a date string below
-                    numericValue = Convert.ToDouble(o); //throws a FormatException => TryParse
+                    numericValue = Convert.ToDouble(o, _culture); //throws a FormatException => TryParse
                 }
             }
             catch (FormatException)
@@ -489,7 +490,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Convert.ToDouble seems to match VBScript's string-to-number behaviour pretty well (see the test cases for more details) with one exception;
                 // VBScript will tolerate whitespace between a negative sign and the start of the content, so we need to do consider replacements (any "-"
                 // followed by whitespace should become just "-")
-                return Convert.ToDouble(SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-"));
+                return Convert.ToDouble(SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-"), CultureInfo.InvariantCulture);
             }
 
             // These are the types that map directly onto VBScript types, we can return these unaltered
@@ -505,11 +506,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             // since that is the smallest number that can contain its range of -128 to 127). Note: VBScript has no "long" (Int64) integer type so that goes
             // up to a double. It also has no concept of unsigned types so they need to go into the next bracket.
             if ((value is sbyte) || (value is char))
-                return Convert.ToInt16(value);
+                return Convert.ToInt16(value, CultureInfo.InvariantCulture);
             else if (value is ushort)
-                return Convert.ToInt32(value);
+                return Convert.ToInt32(value, CultureInfo.InvariantCulture);
             else if ((value is long) || (value is uint) || (value is ulong))
-                return Convert.ToDouble(value);
+                return Convert.ToDouble(value, CultureInfo.InvariantCulture);
             else
                 throw new ArgumentException("Unsupported type, do not know how to fit it to a VBScript numeric type: " + value.GetType());
         }

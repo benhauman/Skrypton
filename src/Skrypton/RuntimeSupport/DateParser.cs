@@ -290,8 +290,8 @@ namespace Skrypton.RuntimeSupport
             }
 
             (int year, int month, int day) = ParseVbDate(input, defaultYear, parts.Length,
-                p1: int.Parse(parts[0]),
-                p2: parts.Length >= 2 ? int.Parse(parts[1]) : 0,
+                p1: int.Parse(parts[0], CultureInfo.InvariantCulture),
+                p2: parts.Length >= 2 ? int.Parse(parts[1], CultureInfo.InvariantCulture) : 0,
                 p3: parts.Length >= 3 ? int.Parse(parts[2], CultureInfo.InvariantCulture) : 0);
             return NewDateTime(input, year, month, day);
             /*
@@ -742,17 +742,17 @@ namespace Skrypton.RuntimeSupport
             if (threeSegmentDateComponentMatch.Success)
             {
                 return GetDate(
-                    int.Parse(threeSegmentDateComponentMatch.Groups[1].Value),
-                    int.Parse(threeSegmentDateComponentMatch.Groups[2].Value),
-                    int.Parse(threeSegmentDateComponentMatch.Groups[3].Value)
+                    int.Parse(threeSegmentDateComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture),
+                    int.Parse(threeSegmentDateComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture),
+                    int.Parse(threeSegmentDateComponentMatch.Groups[3].Value, CultureInfo.InvariantCulture)
                 );
             }
             var twoSegmentDateComponentMatch = _wholeStringTwoNumericSegmentDateComponent.Match(value);
             if (twoSegmentDateComponentMatch.Success)
             {
                 return GetDate(
-                    int.Parse(twoSegmentDateComponentMatch.Groups[1].Value),
-                    int.Parse(twoSegmentDateComponentMatch.Groups[2].Value)
+                    int.Parse(twoSegmentDateComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture),
+                    int.Parse(twoSegmentDateComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture)
                 );
             }
 
@@ -765,7 +765,7 @@ namespace Skrypton.RuntimeSupport
             if (monthNameThenNumberComponentMatch.Success)
             {
                 monthNameFromTwoSegmentFormat = monthNameThenNumberComponentMatch.Groups[1].Value;
-                numericValueFromTwoSegmentFormat = int.Parse(monthNameThenNumberComponentMatch.Groups[2].Value);
+                numericValueFromTwoSegmentFormat = int.Parse(monthNameThenNumberComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture);
             }
             else
             {
@@ -773,7 +773,7 @@ namespace Skrypton.RuntimeSupport
                 if (numberThenMonthNameComponentMatch.Success)
                 {
                     monthNameFromTwoSegmentFormat = numberThenMonthNameComponentMatch.Groups[2].Value;
-                    numericValueFromTwoSegmentFormat = int.Parse(numberThenMonthNameComponentMatch.Groups[1].Value);
+                    numericValueFromTwoSegmentFormat = int.Parse(numberThenMonthNameComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -798,8 +798,8 @@ namespace Skrypton.RuntimeSupport
             if (monthNameThenTwoNumbersComponentMatch.Success)
             {
                 monthNameFromThreeSegmentFormat = monthNameThenTwoNumbersComponentMatch.Groups[1].Value;
-                firstNumericValueFromThreeSegmentFormat = int.Parse(monthNameThenTwoNumbersComponentMatch.Groups[2].Value);
-                secondNumericValueFromThreeSegmentFormat = int.Parse(monthNameThenTwoNumbersComponentMatch.Groups[3].Value);
+                firstNumericValueFromThreeSegmentFormat = int.Parse(monthNameThenTwoNumbersComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture);
+                secondNumericValueFromThreeSegmentFormat = int.Parse(monthNameThenTwoNumbersComponentMatch.Groups[3].Value, CultureInfo.InvariantCulture);
             }
             else
             {
@@ -807,8 +807,8 @@ namespace Skrypton.RuntimeSupport
                 if (numberThenMonthNameThenNumberComponentMatch.Success)
                 {
                     monthNameFromThreeSegmentFormat = numberThenMonthNameThenNumberComponentMatch.Groups[2].Value;
-                    firstNumericValueFromThreeSegmentFormat = int.Parse(numberThenMonthNameThenNumberComponentMatch.Groups[1].Value);
-                    secondNumericValueFromThreeSegmentFormat = int.Parse(numberThenMonthNameThenNumberComponentMatch.Groups[3].Value);
+                    firstNumericValueFromThreeSegmentFormat = int.Parse(numberThenMonthNameThenNumberComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
+                    secondNumericValueFromThreeSegmentFormat = int.Parse(numberThenMonthNameThenNumberComponentMatch.Groups[3].Value, CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -816,8 +816,8 @@ namespace Skrypton.RuntimeSupport
                     if (twoNumbersThenMonthNameComponentMatch.Success)
                     {
                         monthNameFromThreeSegmentFormat = twoNumbersThenMonthNameComponentMatch.Groups[3].Value;
-                        firstNumericValueFromThreeSegmentFormat = int.Parse(twoNumbersThenMonthNameComponentMatch.Groups[1].Value);
-                        secondNumericValueFromThreeSegmentFormat = int.Parse(twoNumbersThenMonthNameComponentMatch.Groups[2].Value);
+                        firstNumericValueFromThreeSegmentFormat = int.Parse(twoNumbersThenMonthNameComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
+                        secondNumericValueFromThreeSegmentFormat = int.Parse(twoNumbersThenMonthNameComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -871,9 +871,9 @@ namespace Skrypton.RuntimeSupport
             var threeSegmentTimeComponentMatch = _endOfStringThreeSegmentTimeComponent.Match(value);
             if (threeSegmentTimeComponentMatch.Success)
             {
-                hour = int.Parse(threeSegmentTimeComponentMatch.Groups[1].Value);
-                minute = int.Parse(threeSegmentTimeComponentMatch.Groups[2].Value);
-                second = int.Parse(threeSegmentTimeComponentMatch.Groups[3].Value);
+                hour = int.Parse(threeSegmentTimeComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
+                minute = int.Parse(threeSegmentTimeComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture);
+                second = int.Parse(threeSegmentTimeComponentMatch.Groups[3].Value, CultureInfo.InvariantCulture);
                 value = value.Substring(0, value.Length - threeSegmentTimeComponentMatch.Groups[0].Value.Length).Trim();
             }
             else
@@ -881,8 +881,8 @@ namespace Skrypton.RuntimeSupport
                 var twoSegmentTimeComponentMatch = _endOfStringTwoSegmentTimeComponent.Match(value);
                 if (twoSegmentTimeComponentMatch.Success)
                 {
-                    hour = int.Parse(twoSegmentTimeComponentMatch.Groups[1].Value);
-                    minute = int.Parse(twoSegmentTimeComponentMatch.Groups[2].Value);
+                    hour = int.Parse(twoSegmentTimeComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
+                    minute = int.Parse(twoSegmentTimeComponentMatch.Groups[2].Value, CultureInfo.InvariantCulture);
                     value = value.Substring(0, value.Length - twoSegmentTimeComponentMatch.Groups[0].Value.Length).Trim();
                 }
                 else
@@ -892,12 +892,12 @@ namespace Skrypton.RuntimeSupport
                         var singleSegmentTimeComponentMatch = _endOfStringSingleSegmentTimeComponent.Match(value);
                         if (!singleSegmentTimeComponentMatch.Success)
                         {
-                            throw new ArgumentException(string.Format(
+                            throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
                                 "Invalid date format, no time component could be extracted despite the presence of the {0} suffix",
                                 specifiesAM ? "AM" : "PM"
                             ));
                         }
-                        hour = int.Parse(singleSegmentTimeComponentMatch.Groups[1].Value);
+                        hour = int.Parse(singleSegmentTimeComponentMatch.Groups[1].Value, CultureInfo.InvariantCulture);
                         value = value.Substring(0, value.Length - singleSegmentTimeComponentMatch.Groups[0].Value.Length).Trim();
                     }
                     else
@@ -910,7 +910,7 @@ namespace Skrypton.RuntimeSupport
             }
             if ((hour < 0) || (hour > 23) || (minute < 0) || (minute > 59) || (second < 0) || (second > 59))
             {
-                throw new ArgumentException(string.Format(
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
                     "Invalid date format, time component out of range - indicates {0:00}:{1:00}:{2:00}",
                     hour,
                     minute,
@@ -1078,7 +1078,7 @@ namespace Skrypton.RuntimeSupport
             // that the bases are covered for the vast majority of use cases.. for mine at least! :)
             var sampleDate = new DateTime(2015, 5, 1); // The month and day values must be different in this sample date, obviously!
             var dateValuesMatchResult = _simpleThreeSegmentNumberExtractor.Match(sampleDate.ToShortDateString()); // see 'DateTimeToShortDateString'
-            return dateValuesMatchResult.Success && (int.Parse(dateValuesMatchResult.Groups[1].Value) == sampleDate.Month);
+            return dateValuesMatchResult.Success && (int.Parse(dateValuesMatchResult.Groups[1].Value, CultureInfo.InvariantCulture) == sampleDate.Month);
         }
 
         internal static string DateTimeToShortDateString(DateTime dt, CultureInfo culture, bool includeTime)

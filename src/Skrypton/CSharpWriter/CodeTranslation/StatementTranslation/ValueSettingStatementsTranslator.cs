@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.Lists;
@@ -130,7 +131,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         if (targetContainerIfRequired != null)
                             rewrittenFirstMemberAccessor = targetContainerIfRequired.Name + "." + rewrittenFirstMemberAccessor;
                         return new ValueSettingStatementAssigmentFormatDetails(
-                            translatedExpression => string.Format(
+                            translatedExpression => string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1}",
                                 isSingleTokenSettingParentScopeReturnValue
                                     ? scopeAccessInformation.ParentReturnValueNameIfAny.Name
@@ -425,7 +426,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // should only be the case where the assignment is invalid and a runtime exception is going to be raised, otherwise this
                 // could have been a simple assignment that didn't even need a SET call)
                 return new ValueSettingStatementAssigmentFormatDetails(
-                    translatedExpression => string.Format(
+                    translatedExpression => string.Format(CultureInfo.InvariantCulture,
                         "{0}.SET({1}, this, {2})", // Pass "this" as the "context" argument
                         _supportRefName.Name,
                         translatedExpression,
@@ -435,7 +436,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
             return new ValueSettingStatementAssigmentFormatDetails(
-                translatedExpression => string.Format(
+                translatedExpression => string.Format(CultureInfo.InvariantCulture,
                     "{0}.SET({1}, this, {2}, {3}{4})", // Pass "this" as the "context" argument
                     _supportRefName.Name,
                     translatedExpression,
@@ -456,7 +457,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (target.Content == null)
                 throw new ArgumentException("Null target.Content value");
 
-            return string.Format(
+            return string.Format(CultureInfo.InvariantCulture,
                 "{0}.RAISEERROR(new {1}({2}))",
                 _supportRefName.Name,
                 exceptionClassName,

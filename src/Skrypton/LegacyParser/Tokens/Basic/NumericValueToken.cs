@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
@@ -49,7 +50,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             {
                 if (!numericValue.HasValue)
                 {
-                    numericValue = double.Parse(this.Content);
+                    numericValue = double.Parse(this.Content, CultureInfo.InvariantCulture);
                 }
                 return numericValue.Value;
             }

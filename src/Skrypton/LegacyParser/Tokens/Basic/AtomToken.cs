@@ -167,7 +167,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             {
                 int numericHexValue;
                 if (int.TryParse(contentUpper.Original.Substring(2), NumberStyles.HexNumber, null, out numericHexValue))
-                    return new NumericValueToken(numericHexValue.ToString().ToUpperX(), lineIndex);
+                    return new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
             }
 
             return null;

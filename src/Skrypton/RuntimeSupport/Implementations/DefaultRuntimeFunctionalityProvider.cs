@@ -273,7 +273,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // The default values of VBScript primitives (number, strings and booleans) are considered to match Empty
                 var nonNullValue = l ?? r;
-                if ((IsDotNetNumericType(nonNullValue) && (Convert.ToDouble(nonNullValue)) == 0)
+                if ((IsDotNetNumericType(nonNullValue) && (Convert.ToDouble(nonNullValue, CultureInfo.InvariantCulture)) == 0)
                 || ((nonNullValue as string) == "")
                 || ((nonNullValue is bool) && !(bool)nonNullValue))
                     return true;
@@ -291,13 +291,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 var nonBoolValue = (l is bool) ? r : l;
                 if (!IsDotNetNumericType(nonBoolValue))
                     return false;
-                return (boolValue && (Convert.ToDouble(nonBoolValue) == -1)) || (!boolValue && (Convert.ToDouble(nonBoolValue) == 0));
+                return (boolValue && (Convert.ToDouble(nonBoolValue, CultureInfo.InvariantCulture) == -1)) || (!boolValue && (Convert.ToDouble(nonBoolValue, CultureInfo.InvariantCulture) == 0));
             }
 
             // Now consider numbers on one or both sides - all special cases are out of the way now so they're either equal or they're not (both
             // sides must be numbers, otherwise it's a non-match)
             if (IsDotNetNumericType(l) && IsDotNetNumericType(r))
-                return Convert.ToDouble(l) == Convert.ToDouble(r);
+                return Convert.ToDouble(l, CultureInfo.InvariantCulture) == Convert.ToDouble(r, CultureInfo.InvariantCulture);
             else if (IsDotNetNumericType(l) || IsDotNetNumericType(r))
             {
                 // lubo:
@@ -309,7 +309,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         double numR;
                         if (Double.TryParse((string)r, out numR))
                         {
-                            if (Convert.ToDouble(l) == numR)
+                            if (Convert.ToDouble(l, CultureInfo.InvariantCulture) == numR)
                                 return true;
                             return false;
                         }
@@ -323,7 +323,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         double numL;
                         if (Double.TryParse((string)l, out numL))
                         {
-                            if (numL == Convert.ToDouble(r))
+                            if (numL == Convert.ToDouble(r, CultureInfo.InvariantCulture))
                                 return true;
                             return false;
                         }
@@ -522,7 +522,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 try
                 {
-                    b = Convert.ToByte(value); // double, null, empty
+                    b = Convert.ToByte(value, CultureInfo.InvariantCulture); // double, null, empty
                     return b;
                 }
                 catch (System.OverflowException e) // for -0.6
@@ -538,7 +538,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             var currencyValue = GetAsNumber<decimal>(value, exceptionMessageForInvalidContent, Convert.ToDecimal);
             if ((currencyValue < VBScriptConstants.MinCurrencyValue) || (currencyValue > VBScriptConstants.MaxCurrencyValue))
-                throw new VBScriptOverflowException("'CCur' (" + currencyValue.ToString() + ")");
+                throw new VBScriptOverflowException("'CCur' (" + currencyValue.ToString(CultureInfo.InvariantCulture) + ")");
             return currencyValue;
         }
         public double CDBL(object value)
@@ -984,11 +984,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             var useShortFormatForNegativeValues = (value is bool) || (value is short);
             var numericValue = CLNG(value, "'Hex'");
             if (numericValue >= 0)
-                return numericValue.ToString("X");
+                return numericValue.ToString("X", CultureInfo.InvariantCulture);
 
             // For "short" values (ie. VBScript Ints and Booleans), -1 should be returned as FFFF -2 as as FFFE while for other values (Single, Long, Double, etc..)
             // -1 should be returned as FFFFFFFF and -2 as FFFFFFFE
-            return ((useShortFormatForNegativeValues ? 0x10000 : 0x100000000) + numericValue).ToString("X");
+            return ((useShortFormatForNegativeValues ? 0x10000 : 0x100000000) + numericValue).ToString("X", CultureInfo.InvariantCulture);
         }
 
         public object INSTR(object valueToSearch, object valueToSearchFor) { return INSTR(1, valueToSearch, valueToSearchFor); }
@@ -1349,12 +1349,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 else if (c <= 0xFF)
                 {
                     sb.Append("%");
-                    sb.Append(((int)c).ToString("X2"));
+                    sb.Append(((int)c).ToString("X2", CultureInfo.InvariantCulture));
                 }
                 else
                 {
                     sb.Append("%u");
-                    sb.Append(((int)c).ToString("X4"));
+                    sb.Append(((int)c).ToString("X4", CultureInfo.InvariantCulture));
                 }
             }
 
@@ -1987,7 +1987,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // The first day in January 2017 is Sunday and VBScript treats day 1 as Sunday, so we can just take our 1-7 range and use that as the day number in Jan 2017
             // (then we take the name of the day for the generated date and we're all done)
-            return new DateTime(2017, 1, numericValue).ToString(booleanAbbreviate ? "ddd" : "dddd");
+            return new DateTime(2017, 1, numericValue).ToString(booleanAbbreviate ? "ddd" : "dddd", CultureInfo.InvariantCulture);
         }
         public object HOUR(object value)
         {
@@ -2452,7 +2452,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             catch (OverflowException e)
             {
-                throw new VBScriptOverflowException(Convert.ToDouble(value), e);
+                throw new VBScriptOverflowException(Convert.ToDouble(value, CultureInfo.InvariantCulture), e);
             }
             catch (Exception e)
             {

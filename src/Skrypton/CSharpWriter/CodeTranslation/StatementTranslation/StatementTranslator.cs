@@ -1675,7 +1675,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // commonly expected here. If the required exception is within the same namespace as SpecificVBScriptException then it need only be specified
             // by name, otherwise its "FullName" will be required (which includes its namespace).
             return new TranslatedStatementContentDetailsWithContentType(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.RAISEERROR(new {1}({2}))",
                     _supportRefName.Name,
                     (runtimeErrorExpressionSegment.ExceptionType.Namespace == typeof(SpecificVBScriptException).Namespace)
@@ -1749,7 +1749,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             switch (requiredReturnType)
             {
                 case ExpressionReturnTypeOptions.Boolean:
-                    return string.Format(
+                    return string.Format(CultureInfo.InvariantCulture,
                         "{0}.IF({1})",
                         _supportRefName.Name,
                         translatedContent
@@ -1779,7 +1779,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         _logger.Warning("Request for an object reference at line " + (lineIndex + 1) + " but data type is " + contentType);
                     }
 
-                    return string.Format(
+                    return string.Format(CultureInfo.InvariantCulture,
                         "{0}.OBJ({1})",
                         _supportRefName.Name,
                         translatedContent
@@ -1791,7 +1791,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         return translatedContent;
                     }
 
-                    return string.Format(
+                    return string.Format(CultureInfo.InvariantCulture,
                         "{0}.VAL({1})",
                         _supportRefName.Name,
                         translatedContent
@@ -1895,7 +1895,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // of a class (but if it's wrapped in a call to OBJ or VAL then it's ok). This logic can only be applied to non-value-returning Statements,
             // Expressions that return values could exist as just "o" since that WOULD be valid C#.
             return new TranslatedStatementContentDetails(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.VAL({1})",
                     _supportRefName.Name,
                     rewrittenName
@@ -1954,7 +1954,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation));
             return new TranslatedStatementContentDetails(
                 ApplyReturnTypeGuarantee(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.{1}({2})",
                         _supportRefName.Name,
                         GetSupportFunctionName(((OperationExpressionSegment)oddSegments.First()).Token),
