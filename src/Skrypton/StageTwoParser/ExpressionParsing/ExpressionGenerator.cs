@@ -287,7 +287,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 // with the value. If the first NOT was grouped with the subsequent terms then "NOT NOT a" would become "(NOT NOT) a" instead of
                 // "NOT(NOT(a))".
                 var lastLogicalInversion = operatorSegments.LastOrDefault(s =>
-                    s.Item1.Token.Content.Equals("NOT", StringComparison.InvariantCultureIgnoreCase)
+                    s.Item1.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase)
                 );
                 if (lastLogicalInversion != null)
                 {
@@ -473,7 +473,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 }
                 else if ((tokensList.Count == 2)
                 && (tokensList[0] is KeyWordToken)
-                && tokensList[0].Content.Equals("new", StringComparison.InvariantCultureIgnoreCase))
+                && tokensList[0].Content.Equals("new", StringComparison.OrdinalIgnoreCase))
                 {
                     var newInstanceName = tokensList[1] as NameToken;
                     if (newInstanceName != null)
@@ -652,9 +652,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     .Concat(AtomToken.ComparisonTokenValues)
                     .Concat(AtomToken.LogicalOperatorTokenValues)
                     .Select((value, index) => new { Value = value, Index = index })
-                    .FirstOrDefault(c => c.Value.Equals(segment.Token.Content, StringComparison.InvariantCultureIgnoreCase));
+                    .FirstOrDefault(c => c.Value.Equals(segment.Token.Content, StringComparison.OrdinalIgnoreCase));
                 if (operatorContentOptions == null)
-                    throw new NotSupportedException("Unrecognised operator token value");
+                    throw new NotSupportedException("Unrecognized operator token value");
                 return operatorContentOptions.Index;
             }
         }

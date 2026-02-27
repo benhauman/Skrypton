@@ -119,7 +119,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
 
                     if ((operatorSegmentWithIndex.Segment.Token.Content != "-")
-                        && !operatorSegmentWithIndex.Segment.Token.Content.Equals("NOT", StringComparison.InvariantCultureIgnoreCase))
+                        && !operatorSegmentWithIndex.Segment.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new ArgumentException("If there are any only two segments then the first must be a negation operator (here it has the token content \"" + operatorSegmentWithIndex.Segment.Token.Content + "\")");
                     }
@@ -535,7 +535,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // Handle non-constants special cases
-            if (builtInValueExpressionSegment.Token.Content.Equals("err", StringComparison.InvariantCultureIgnoreCase))
+            if (builtInValueExpressionSegment.Token.Content.Equals("err", StringComparison.OrdinalIgnoreCase))
             {
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,

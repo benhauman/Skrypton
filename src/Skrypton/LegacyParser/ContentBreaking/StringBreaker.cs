@@ -65,7 +65,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 {
                     var threeChars = scriptContent.Substring(index, 3);
                     var fourthChar = (index == scriptContent.Length - 3) ? (char?)null : scriptContent[index + 3];
-                    if (threeChars.Equals("REM", StringComparison.InvariantCultureIgnoreCase)
+                    if (threeChars.Equals("REM", StringComparison.OrdinalIgnoreCase)
                     && ((fourthChar == null) || _whiteSpaceCharsExceptLineReturn.Contains(fourthChar.Value)))
                     {
                         isComment = true;

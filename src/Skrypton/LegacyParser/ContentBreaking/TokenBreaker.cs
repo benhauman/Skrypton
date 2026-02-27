@@ -55,7 +55,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         {
                             var chrNext = content.Substring(index + 1, 1);
                             var chrNextNext = content.Substring(index + 2, 1);
-                            if (chrNext.Equals("H", StringComparison.InvariantCultureIgnoreCase) && ("0123456789".IndexOf(chrNextNext) != -1))
+                            if (chrNext.Equals("H", StringComparison.OrdinalIgnoreCase) && ("0123456789".IndexOf(chrNextNext) != -1))
                             {
                                 buffer += chr;
                                 continue;

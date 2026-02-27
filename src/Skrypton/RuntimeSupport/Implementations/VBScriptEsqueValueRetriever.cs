@@ -1889,9 +1889,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
 
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.CaseInsensitive)
-                return n => n.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+                return n => n.Equals(name, StringComparison.OrdinalIgnoreCase);
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.Precise)
-                return n => n.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+                return n => n.Equals(name, StringComparison.OrdinalIgnoreCase);
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.UseNameRewriter)
             {
                 var rewritterName = _nameRewriter(name, 0);

@@ -70,14 +70,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (firstTokenAsKeyword != null)
             {
                 bool cullFirstToken;
-                if (firstTokenAsKeyword.Content.Equals("CALL", StringComparison.InvariantCultureIgnoreCase))
+                if (firstTokenAsKeyword.Content.Equals("CALL", StringComparison.OrdinalIgnoreCase))
                 {
                     cullFirstToken = true;
                     hasCallPrefix = true;
                 }
-                else if (firstTokenAsKeyword.Content.Equals("LET", StringComparison.InvariantCultureIgnoreCase))
+                else if (firstTokenAsKeyword.Content.Equals("LET", StringComparison.OrdinalIgnoreCase))
                     cullFirstToken = true;
-                else if (firstTokenAsKeyword.Content.Equals("SET", StringComparison.InvariantCultureIgnoreCase))
+                else if (firstTokenAsKeyword.Content.Equals("SET", StringComparison.OrdinalIgnoreCase))
                 {
                     cullFirstToken = true;
                     isSetStatement = true;

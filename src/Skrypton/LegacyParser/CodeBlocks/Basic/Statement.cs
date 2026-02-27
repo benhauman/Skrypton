@@ -36,7 +36,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (Tokens.Any(t => t == null))
                 throw new ArgumentException("Null token passed into Statement constructor");
             var firstTokenAsAtom = tokens.First() as AtomToken;
-            if ((firstTokenAsAtom != null) && firstTokenAsAtom.Content.Equals("Call", StringComparison.InvariantCultureIgnoreCase))
+            if ((firstTokenAsAtom != null) && firstTokenAsAtom.Content.Equals("Call", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("The first token may not be the Call keyword, that must be specified through the CallPrefixOption value where present");
 
             CallPrefix = callPrefix;
@@ -181,7 +181,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             // be returned from a method GetBracketStandardisedTokensIfContentValid?)
 
             // No need to try to re-arrange things if this is a new-instance expression, no brackets are required
-            if ((tokenArray[0] is KeyWordToken) && tokenArray[0].Content.Equals("new", StringComparison.InvariantCultureIgnoreCase))
+            if ((tokenArray[0] is KeyWordToken) && tokenArray[0].Content.Equals("new", StringComparison.OrdinalIgnoreCase))
                 return tokenArray;
 
             // If the first token is a member access and we're inside a with block then insert the with block's target reference token into the start
