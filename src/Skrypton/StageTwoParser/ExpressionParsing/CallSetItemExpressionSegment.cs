@@ -104,7 +104,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 if (Arguments.Any())
                 {
                     int lineIndex;
-                    if (combinedTokens.Any())
+                    if (combinedTokens.Count != 0)
                         lineIndex = combinedTokens.Last().LineIndex;
                     else
                         lineIndex = Arguments.First().AllTokens.First().LineIndex;

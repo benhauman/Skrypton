@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             foreach (var endSequence in optionalBlockEnds)
             {
                 var endSequenceClone = (endSequence ?? new string[0]).ToArray();
-                if (!endSequence.Any())
+                if (endSequence.Length == 0)
                     throw new ArgumentException("Invalid BlockEnd sequence specified: null or blank");
                 if (endSequenceClone.Any(s => s == null))
                     throw new ArgumentException("Invalid BlockEnd sequence specified: null value within sequence");

@@ -79,7 +79,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     if (depth == 0)
                         throw new ArgumentException("Encountered ArgumentSeparatorToken in top-level content - invalid");
 
-                    if (accessorBuffer.Any())
+                    if (accessorBuffer.Count != 0)
                     {
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
@@ -93,7 +93,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         );
                         accessorBuffer.Clear();
                     }
-                    if (!expressionSegments.Any())
+                    if (expressionSegments.Count == 0)
                         throw new ArgumentException("Unexpected ArgumentSeparatorToken - invalid content");
 
                     expressions.Add(GetExpression(expressionSegments));
@@ -112,7 +112,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     var bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
 
                     // If the accessorBuffer isn't empty then the bracketed content should be arguments, if not then it's just a bracketed expression
-                    if (accessorBuffer.Any())
+                    if (accessorBuffer.Count != 0)
                     {
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
@@ -126,9 +126,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         );
                         accessorBuffer.Clear();
                     }
-                    else if (bracketedExpressions.Any())
+                    else if (bracketedExpressions.Length != 0)
                     {
-                        if (expressionSegments.Any() && (expressionSegments.Last() is CallSetItemExpressionSegment))
+                        if (expressionSegments.Count != 0 && (expressionSegments.Last() is CallSetItemExpressionSegment))
                         {
                             // If the previous expression segment was a CallExpressionSegment or CallSetItemExpressionSegment (the first
                             // is derived from the second so only a single type check is required) then this bracketed content should
@@ -157,7 +157,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 var operatorToken = token as OperatorToken;
                 if (operatorToken != null)
                 {
-                    if (accessorBuffer.Any())
+                    if (accessorBuffer.Count != 0)
                     {
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
@@ -181,7 +181,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 accessorBuffer.Add(token);
                 tokenNavigator.MoveNext();
             }
-            if (accessorBuffer.Any())
+            if (accessorBuffer.Count != 0)
             {
                 expressionSegments.Add(
                     GetCallOrNewOrValueExpressionSegment(
@@ -195,7 +195,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 );
                 accessorBuffer.Clear();
             }
-            if (expressionSegments.Any())
+            if (expressionSegments.Count != 0)
             {
                 expressions.Add(GetExpression(expressionSegments));
                 expressionSegments.Clear();
@@ -225,7 +225,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 throw new ArgumentNullException(nameof(segments));
 
             var segmentsArray = segments.ToArray();
-            if (!segmentsArray.Any())
+            if (segmentsArray.Length == 0)
                 throw new ArgumentException("Empty segments set specified - invalid");
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
@@ -369,7 +369,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 throw new ArgumentNullException(nameof(warningLogger));
 
             var tokensList = tokens.ToList();
-            if (!tokensList.Any())
+            if (tokensList.Count == 0)
                 throw new ArgumentException("Empty tokens set specified, invalid");
             if (tokensList.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in tokens set");

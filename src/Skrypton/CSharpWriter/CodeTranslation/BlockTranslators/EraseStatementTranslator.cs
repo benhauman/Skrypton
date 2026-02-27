@@ -257,7 +257,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             "{0}.ERASE({1}{2}{3});",
                             _supportRefName.Name,
                             translatedSingleEraseTarget.TranslatedContent,
-                            translatedArguments.Any() ? ", " : "",
+                            translatedArguments.Length != 0 ? ", " : "",
                             string.Join(", ", translatedArguments.Select(a => a.TranslatedContent))
                         ),
                         indentationDepth,

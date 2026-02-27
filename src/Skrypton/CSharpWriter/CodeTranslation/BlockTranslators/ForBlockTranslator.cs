@@ -229,7 +229,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         "{0}.NUM({1}{2}{3})", // This is the initialisation content where other types will be taken into account, where relevant
                         _supportRefName.Name,
                         loopStartExpressionContent.TranslatedContent,
-                        numericValuesTheTypeMustBeAbleToContain.Any() ? ", " : "",
+                        numericValuesTheTypeMustBeAbleToContain.Count != 0 ? ", " : "",
                         string.Join(", ", numericValuesTheTypeMustBeAbleToContain)
                     ),
                     forBlock.LoopFrom.Tokens.First().LineIndex
@@ -252,7 +252,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // to deal with here (this will have been determined in the work above).
             var translationResult = TranslationResult.Empty;
             CSharpName constraintsInitialisedFlagNameIfAny;
-            if (!loopConstraintInitialisersWhereRequired.Any())
+            if (loopConstraintInitialisersWhereRequired.Count == 0)
                 constraintsInitialisedFlagNameIfAny = null;
             else if ((scopeAccessInformation.ErrorRegistrationTokenIfAny == null) && !byRefArgumentsToRewrite.Any())
             {
@@ -273,7 +273,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             else
             {
-                if (loopConstraintInitialisersWhereRequired.Any())
+                if (loopConstraintInitialisersWhereRequired.Count != 0)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
                         "object " + string.Join(", ", loopConstraintInitialisersWhereRequired.Select(l => l.VariableName.Name + " = 0")) + ";",

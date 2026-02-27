@@ -1254,7 +1254,7 @@ namespace Skrypton.Tests.StageTwoParser
 		/// </summary>
 		private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens, params IEnumerable<IToken>[] arguments)
 		{
-			if ((memberAccessTokens.Count() == 1) && !arguments.Any())
+			if ((memberAccessTokens.Count() == 1) && arguments.Length == 0)
 			{
 				if (memberAccessTokens.Single() is NumericValueToken)
 					return new NumericValueExpressionSegment(memberAccessTokens.Single() as NumericValueToken);

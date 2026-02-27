@@ -273,7 +273,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                             }
                         }
                         var lineIndexForInsertedOpenBrace = firstItemTokens.Last().LineIndex;
-                        var lineIndexForInsertedCloseBrace = remainingTokens.Any() ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
+                        var lineIndexForInsertedCloseBrace = remainingTokens.Length != 0 ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
                         tokenArray = firstItemTokens
                             .Concat(new[] { new OpenBrace(lineIndexForInsertedOpenBrace) })
                             .Concat(remainingTokens)
@@ -311,7 +311,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                                 bracketDepth++;
                         }
                         var lineIndexForInsertedOpenBrace = firstItemTokens.Last().LineIndex;
-                        var lineIndexForInsertedCloseBrace = remainingTokens.Any() ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
+                        var lineIndexForInsertedCloseBrace = remainingTokens.Length != 0 ? remainingTokens.Last().LineIndex : lineIndexForInsertedOpenBrace;
                         if (bracketDepth != 0)
                             throw new InvalidOperationException("Invalid content - mismatched brackets ending on line " + (lineIndexForInsertedCloseBrace + 1));
                         var remainingTokensAfterBracketedContent = remainingTokens.Skip(bracketedContent.Count);

@@ -378,7 +378,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // - TODO: If manipulated segments to include function return value, it shouldn't affect the variablesAccessed retrieval but
             //   need to make a note explaining how/why
             IEnumerable<NameToken> variablesAccessed;
-            if (!callExpressionSegments.Any())
+            if (callExpressionSegments.Count == 0)
                 variablesAccessed = new NameToken[0];
             else
             {

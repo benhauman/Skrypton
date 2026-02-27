@@ -37,7 +37,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 // Remove the tokens we've consumed and any comma separators between values - exit if there is no separator indicating that
                 // another value follows
                 tokens.RemoveRange(0, 3);
-                if (!tokens.Any() || !(tokens[0] is ArgumentSeparatorToken))
+                if (tokens.Count == 0 || !(tokens[0] is ArgumentSeparatorToken))
                     break;
                 tokens.RemoveAt(0); // Remove the separator and try to process the next value
             }

@@ -197,7 +197,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement("using System;", 0, 0),
                     new TranslatedStatement("using System.Collections;", 0, 0)
                 });
-                if (dateLiteralsToValidateAtRuntime.Any())
+                if (dateLiteralsToValidateAtRuntime.Length != 0)
                 {
                     // System.Collections.ObjectModel is only required for the ReadOnlyCollection, which is only used when there are date literals that need validating at runtime
                     translatedStatements = translatedStatements.Add(new TranslatedStatement("using System.Collections.ObjectModel;", 0, 0));
@@ -259,7 +259,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         0
                     )
                 });
-                if (dateLiteralsToValidateAtRuntime.Any())
+                if (dateLiteralsToValidateAtRuntime.Length != 0)
                 {
                     // When rendering in full Executable format (not just in WithoutScaffolding), if there were any date literals in the source content that could not
                     // be confirmed as valid at translation time (meaning they include a month name, which will vary in validity depending upon the culture of the
@@ -309,7 +309,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     //?!?EmptyLine
                 });
 
-                if (dateLiteralsToValidateAtRuntime.Any())
+                if (dateLiteralsToValidateAtRuntime.Length != 0)
                 {
                     // Declare a static readonly immutable set of date literals that need validating against the current culture before any request can do any actual work
                     translatedStatements = translatedStatements.AddRange(new[]

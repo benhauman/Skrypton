@@ -65,7 +65,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // If evaluation of the target expression fails at runtime then no comparisons work is required - note that this check is not required if there are zero comparisons
             // to deal with. In this case, VBScript would still evaluate the target even though there's nothing to compare it to (and we remain consistent with that; the target
             // evaluation occurs above but we do nothing more if there are no comparison values).
-            if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Any())
+            if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Length != 0)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture, "if ({0})", targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired.Name),
@@ -284,7 +284,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // If error-trapping may be active at runtime then the meat of translated content will have been wrapped in an "if", based upon whether the select target was successfully evaluated (in which case
             // we'll need to close that content here). Note that this will not have been the case if there were no expression to compare the target to (VBScript allows this - it evaluates the target expression
             // but then does nothing more).
-            if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Any())
+            if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Length != 0)
             {
                 indentationDepth--;
                 translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));

@@ -44,11 +44,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
-            var isSingleReturnValueStatementFunction = IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation);
-            var returnValueName = functionBlock.HasReturnValue
+            bool isSingleReturnValueStatementFunction = IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation);
+            CSharpName returnValueName = functionBlock.HasReturnValue
                 ? _tempNameGenerator(new CSharpName($"{functionBlock.Name.Content}_retVal"), scopeAccessInformation.Extend(functionBlock, functionBlock.Statements.ToNonNullImmutableList())) // Ensure call Extend so that ScopeDefiningParent is the current function
                 : null;
-            var translationResult = TranslationResult.Empty.Add(
+            TranslationResult translationResult = TranslationResult.Empty.Add(
                 TranslateFunctionHeader(
                     functionBlock,
                     scopeAccessInformation,
@@ -85,7 +85,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     indentationDepth + 1
                 )
             );
-            var lineIndexForClosingScaffolding = translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource;
+            int lineIndexForClosingScaffolding = translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource;
             if (errorRegistrationTokenIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
@@ -163,11 +163,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
-            var valueSettingStatement = block as ValueSettingStatement;
+            ValueSettingStatement valueSettingStatement = block as ValueSettingStatement;
             if (valueSettingStatement == null)
                 return null;
 
-            var translatedStatementContentDetails = _statementTranslator.Translate(
+            TranslatedStatementContentDetails translatedStatementContentDetails = _statementTranslator.Translate(
                 valueSettingStatement.Expression,
                 scopeAccessInformation,
                 (valueSettingStatement.ValueSetType == ValueSetTypeOptions.Set)
@@ -175,10 +175,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     : ExpressionReturnTypeOptions.Value,
                 _logger.Warning
             );
-            var undeclaredVariables = translatedStatementContentDetails.VariablesAccessed
-                .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter));
-            foreach (var undeclaredVariable in undeclaredVariables)
+            NameToken[] undeclaredVariables = translatedStatementContentDetails.VariablesAccessed.Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
+            foreach (NameToken undeclaredVariable in undeclaredVariables)
+            {
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            }
 
             return translationResult
                 .Add(new TranslatedStatement(
@@ -200,17 +201,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
-            var content = new StringBuilder();
+            StringBuilder content = new StringBuilder();
             content.Append(functionBlock.IsPublic ? "public" : "private");
             content.Append(" ");
             content.Append(functionBlock.HasReturnValue ? "object" : "void");  // #pragma warning disable CS0219
             content.Append(" ");
             content.Append(_nameRewriter.GetMemberAccessTokenName(functionBlock.Name));
             content.Append("(");
-            var numberOfParameters = functionBlock.Parameters.Count();
-            for (var index = 0; index < numberOfParameters; index++)
+            int numberOfParameters = functionBlock.Parameters.Count();
+            for (int index = 0; index < numberOfParameters; index++)
             {
-                var parameter = functionBlock.Parameters.ElementAt(index);
+                AbstractFunctionBlock.Parameter parameter = functionBlock.Parameters.ElementAt(index);
                 if (parameter.ByRef)
                     content.Append("ref ");
                 content.Append("object ");
@@ -220,10 +221,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             content.Append(")");
 
-            var translatedStatements = new List<TranslatedStatement>();
+            List<TranslatedStatement> translatedStatements = new List<TranslatedStatement>();
             if (functionBlock.IsDefault)
                 translatedStatements.Add(new TranslatedStatement("[" + typeof(IsDefault).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
-            var property = functionBlock as PropertyBlock;
+            PropertyBlock property = functionBlock as PropertyBlock;
             if (property != null)
             {
                 // All property blocks that are translated into C# methods needs to be decorated with the [TranslatedProperty] attribute. The [TranslatedProperty] attribute
@@ -280,18 +281,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
-            var executableStatements = functionBlock.Statements.Where(s => !(s is INonExecutableCodeBlock));
-            if (executableStatements.Count() != 1)
+            ICodeBlock[] executableStatements = functionBlock.Statements.Where(s => !(s is INonExecutableCodeBlock)).ToArray();
+            if (executableStatements.Length != 1)
                 return false;
 
-            var valueSettingStatement = executableStatements.Single() as ValueSettingStatement;
+            ValueSettingStatement valueSettingStatement = executableStatements.Single() as ValueSettingStatement;
             if (valueSettingStatement == null)
                 return false;
 
             if (valueSettingStatement.ValueToSet.Tokens.Count() != 1)
                 return false;
 
-            var valueToSetTokenAsNameToken = valueSettingStatement.ValueToSet.Tokens.Single() as NameToken;
+            NameToken valueToSetTokenAsNameToken = valueSettingStatement.ValueToSet.Tokens.Single() as NameToken;
             if (valueToSetTokenAsNameToken == null)
                 return false;
 
@@ -306,8 +307,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // If any values need aliasing in order to perform this "one liner" then it won't be possible to represent it a simple one-line return, it will
             // need a try..finally setting up to create the alias(es), use where required and then map the values back over the original(s).
             scopeAccessInformation = scopeAccessInformation.Extend(functionBlock, functionBlock.Statements.ToNonNullImmutableList());
-            var byRefArgumentMapper = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
-            var byRefArgumentsToMap = byRefArgumentMapper.GetByRefArgumentsThatNeedRewriting(
+            FuncByRefArgumentMapper byRefArgumentMapper = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
+            NonNullImmutableList<FuncByRefMapping> byRefArgumentsToMap = byRefArgumentMapper.GetByRefArgumentsThatNeedRewriting(
                 valueSettingStatement.Expression.ToStageTwoParserExpression(scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning),
                 scopeAccessInformation,
                 new NonNullImmutableList<FuncByRefMapping>()

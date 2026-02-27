@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 throw new ArgumentNullException(nameof(clauses));
 
             var clausesArray = clauses.ToArray();
-            if (!clausesArray.Any())
+            if (clausesArray.Length == 0)
                 throw new ArgumentException("Empty clauses set specified - invalid");
             if (clausesArray.Any(c => c == null))
                 throw new ArgumentException("Null reference encountered in clauses set");

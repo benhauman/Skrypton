@@ -35,7 +35,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                 if (combinableOperator == null)
                 {
                     var bufferHadContentThatWasReducedToNothing = false;
-                    if (buffer.Any())
+                    if (buffer.Count != 0)
                     {
                         var condensedToken = CondenseNegations(buffer);
                         if (IsTokenRedundant(condensedToken, previousTokenIfAny))
@@ -78,7 +78,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                 else
                     buffer.Add(combinableOperator);
             }
-            if (buffer.Any())
+            if (buffer.Count != 0)
             {
                 // Note: We don't need to copy all of the logic from above - in fact we can't, since we don't have a current token reference
                 var condensedToken = CondenseNegations(buffer);

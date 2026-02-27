@@ -586,7 +586,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 builtInValueExpressionSegment.Token.Content,
                 BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Static
             );
-            if ((constantProperty == null) || !constantProperty.CanRead || constantProperty.GetIndexParameters().Any())
+            if ((constantProperty == null) || !constantProperty.CanRead || constantProperty.GetIndexParameters().Length != 0)
             {
                 throw new NotSupportedException("Unsupported BuiltInValueToken content: " + builtInValueExpressionSegment.Token.Content);
             }
@@ -981,7 +981,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             (nameOfTargetContainerIfRequired == null) ? "this" : nameOfTargetContainerIfRequired.Name,
                             targetName
                         );
-                        if (argumentsArray.Any())
+                        if (argumentsArray.Length != 0)
                         {
                             memberCallContent.Append(", ");
                             memberCallContent.Append(_supportRefName.Name);
@@ -1048,7 +1048,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // property called "Name" but it may not consider that applicable for a request for "a.Name()" because the brackets signify a
             // method, rather than property. So, if there are brackets then the CALL method must be used so that this logic can be
             // applied - only if there are no arguments and no brackets may the value be returned unwrapped.
-            if (!targetMemberAccessTokensArray.Any() && !argumentsArray.Any() && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+            if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
             {
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,

@@ -72,7 +72,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
             var keywordLineIndex = tokens[0].LineIndex;
             tokens.RemoveRange(0, numberOfTokensConsumedInStatement);
-            if (tokens.Any())
+            if (tokens.Count != 0)
             {
                 // When getEntryList was first called, it may have returned content when it hit an end-of-statement or when there were no more tokens to consume
                 // (so long as the tokens it DID consume were valid and no brackets were mismatched - otherwise it would have thrown an exception). If it was the
@@ -98,7 +98,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new ArgumentNullException(nameof(tokens));
 
             var tokensArray = tokens.ToArray();
-            if (!tokensArray.Any())
+            if (tokensArray.Length == 0)
                 throw new ArgumentException("zero tokens - invalid");
             if (tokensArray.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in tokens set");
@@ -120,10 +120,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 bracesRemoved.Add(tokens.First());
                 bracesRemoved.Add(tokens.Last());
                 tokensArray = tokensArray.Skip(1).Take(tokensArray.Length - 2).ToArray();
-                if (!tokensArray.Any())
+                if (tokensArray.Length == 0)
                     break;
             }
-            if (bracesRemoved.Any() && !tokensArray.Any())
+            if (bracesRemoved.Count != 0 && tokensArray.Length == 0)
             {
                 return Tuple.Create(
                     new EraseStatement.TargetDetails(
@@ -166,7 +166,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 new EraseStatement.TargetDetails(
                     new Expression(targetTokens),
                     targetArgumentsIfAny,
-                    wrappedInBraces: bracesRemoved.Any()
+                    wrappedInBraces: bracesRemoved.Count != 0
                 ),
                 targetTokens.Length + numberOfTokensInArguments + bracesRemoved.Count // This is the numberOfTokensConsumed
             );

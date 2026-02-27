@@ -107,7 +107,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 Values = values.ToArray();
                 if (Values.Any(v => v == null))
                     throw new ArgumentException("Null reference encountered in openingComments set");
-                if (!Values.Any())
+                if (Values.Length == 0)
                     throw new ArgumentException("values is an empty set  - invalid");
             }
 

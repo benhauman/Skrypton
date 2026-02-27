@@ -2107,7 +2107,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // be possible for this to be called without any dimensions from translated code since that would be a syntax error (and so may
             // be an ArgumentException rather than a specialise VBScript exception).
             var dimensionSizes = dimensions.Select(d => CLNG(d, "'NewArray'") + 1).ToArray();
-            if (!dimensionSizes.Any())
+            if (dimensionSizes.Length == 0)
                 throw new ArgumentException("No dimensions specified for NEWARRAY");
             if (dimensionSizes.Any(d => d < 0))
                 throw new InvalidOperationException("Invalid negative dimensions used for NEWARRAY call");
@@ -2128,7 +2128,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - The dimensions are evaulated before the target array is validated (before it is even checked for null, even) in order to
             //   be consistent with VBScript's runtime behaviour
             var dimensionSizes = dimensions.Select(d => CLNG(d, "'ResizeArray'") + 1).ToArray();
-            if (!dimensionSizes.Any())
+            if (dimensionSizes.Length == 0)
                 throw new ArgumentException("No dimensions specified for RESIZEARRAY");
             var arrayTyped = array as Array;
             if (arrayTyped == null)
@@ -2330,7 +2330,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Note: When tokens are first requested, they default to the "OnErrorGoto0" state - meaning that error-trapping is not enabled currently
             // for that token. Error-trapping is enabled through a subsequent call to STARTERRORTRAPPINGANDCLEARANYERROR.
             int token;
-            if (_availableErrorTokens.Any())
+            if (_availableErrorTokens.Count != 0)
                 token = _availableErrorTokens.Dequeue();
             else
                 token = _availableErrorTokens.Count + _activeErrorTokens.Count + 1;

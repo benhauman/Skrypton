@@ -118,7 +118,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             }
                         }
                     }
-                    if (tokens.Any() && ((tokens.Last() is DateLiteralToken) || (tokens.Last() is StringToken)))
+                    if (tokens.Count != 0 && ((tokens.Last() is DateLiteralToken) || (tokens.Last() is StringToken)))
                     {
                         // Quoted literals (ie. string or date) CAN'T contain end-of-statement content so we'll definitely need an EndOfStatementNewLineToken
                         // Note: This has to be done after the above work in case there was a literal token then some whitespace (which is removed above)

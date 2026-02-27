@@ -169,7 +169,7 @@ namespace Skrypton.RuntimeSupport.Compat
                 else
                 {
                     setterParameters = setter.GetParameters();
-                    if (!setterParameters.Any())
+                    if (setterParameters.Length == 0)
                         throw new ArgumentException("The setter (if non-null) must have at least one parameter)");
                 }
                 if ((getter != null) && (getter.ReturnType == typeof(void)))

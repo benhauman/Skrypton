@@ -30,9 +30,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 .Where(c =>
                 {
                     var constructorParameters = c.GetParameters();
-                    if (!constructorParameters.Any() || (constructorParameters.First().ParameterType != typeof(string)))
+                    if (constructorParameters.Length == 0 || (constructorParameters.First().ParameterType != typeof(string)))
                         return false;
-                    return (constructorParameters.Count() == 1) || constructorParameters.Skip(1).All(p => p.IsOptional);
+                    return (constructorParameters.Length == 1) || constructorParameters.Skip(1).All(p => p.IsOptional);
                 });
             if (!acceptableConstructors.Any())
                 if (exceptionType.GetConstructor(new[] { typeof(string) }) == null)

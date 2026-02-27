@@ -680,7 +680,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
             var currentGetterMethod = implementedTypes
                 .Select(t => t.GetProperty("Current", Type.EmptyTypes))
-                .Select(p => ((p == null) || !p.CanRead || (p.GetIndexParameters() ?? new ParameterInfo[0]).Any()) ? null : p.GetGetMethod())
+                .Select(p => ((p == null) || !p.CanRead || (p.GetIndexParameters() ?? new ParameterInfo[0]).Length != 0) ? null : p.GetGetMethod())
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
             if ((moveNextMethod == null) || (resetMethod == null) || (currentGetterMethod == null))
                 return null;
@@ -833,9 +833,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                     targetDescription = "Null";
                 else
                     targetDescription = STR(target);
-                if (memberAccessorsArray.Any())
+                if (memberAccessorsArray.Length != 0)
                     throw new ObjectRequiredException($"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
-                if (arguments.Any() || useBracketsWhereZeroArguments)
+                if (arguments.Length != 0 || useBracketsWhereZeroArguments)
                     throw new TypeMismatchException($"'{targetDescription}'. Procedure or object not registered? CallerLineNo:{callerLineNum}");
             }
 
@@ -847,9 +847,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             var delegateTarget = target as Delegate;
             if (delegateTarget != null)
             {
-                if (memberAccessorsArray.Any())
+                if (memberAccessorsArray.Length != 0)
                     throw new ArgumentException("May not specify any member accessors when target is a delegate");
-                if (arguments.Any() || useBracketsWhereZeroArguments)
+                if (arguments.Length != 0 || useBracketsWhereZeroArguments)
                     return delegateTarget.DynamicInvoke(arguments);
                 return delegateTarget;
             }
@@ -860,7 +860,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Frankly, I'm not sure why target can EVER be null, even if there ARE no member accessor or aguments... unfortunately, there
             //   are currently no tests illustrating why at this time and the code here explicitly allows for a null target (in this case),
             //   so I'm going to leave this be for now (May 2015).
-            var noMemberAccessorsOrArguments = !memberAccessorsArray.Any() && !arguments.Any();
+            var noMemberAccessorsOrArguments = memberAccessorsArray.Length == 0 && arguments.Length == 0;
             if (noMemberAccessorsOrArguments && !useBracketsWhereZeroArguments)
                 return target;
             else if (noMemberAccessorsOrArguments && useBracketsWhereZeroArguments && (target != null))
@@ -880,7 +880,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // 3. If it's not an IDispatch reference, then the arguments will be passed to a method or indexed property that will accept them,
             //    taking into account the IsDefault attribute
             var allowPrivateAccess = AllowPrivateMemberAccess(context, target);
-            if (!memberAccessorsArray.Any() && arguments.Any())
+            if (memberAccessorsArray.Length == 0 && arguments.Length != 0)
                 return InvokeGetter(target, null, arguments, allowPrivateAccess, onlyConsiderMethods: false);
 
             // If there are member accessors but no arguments then we walk down each member accessor, no defaults are considered
@@ -890,7 +890,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   IDispatch reference, then only IDispatch methods will be acceptable for use). This is the only time where we need to enforce the
             //   "onlyConsiderMethods" option since it is only when there are zero arguments and the absence or presence of brackets that different
             //   logic is required (so other calls to WalkMemberAccessors / InvokeGetter leave that option as false).
-            if (!arguments.Any())
+            if (arguments.Length == 0)
                 return WalkMemberAccessors(target, memberAccessorsArray, allowPrivateAccess, onlyConsiderMethods: useBracketsWhereZeroArguments);
 
             // If there member accessors AND arguments then all-but-the-last member accessors should be walked through as argument-less lookups
@@ -917,7 +917,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
 
             var arguments = argumentProvider.GetInitialValues().ToArray();
-            if ((optionalMemberAccessor == null) && !arguments.Any())
+            if ((optionalMemberAccessor == null) && arguments.Length == 0)
                 throw new ArgumentException("This must be called with a non-null optionalMemberAccessor and/or one or more arguments, null optionalMemberAccessor and zero arguments is not supported");
 
             var allowPrivateAccess = AllowPrivateMemberAccess(context, target);
@@ -1762,7 +1762,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     .Where(m => nameMatcher(m.Name))
                     .Where(m =>
                         (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
-                        (m.GetCustomAttributes(typeof(IsDefault), true).Any()) ||
+                        (m.GetCustomAttributes(typeof(IsDefault), true).Length != 0) ||
                         (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(m) || IsDefaultMember(m)))
                     )
                     .Where(m => matchesArgumentCount(m))
@@ -1772,7 +1772,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .Where(p => nameMatcher(p.Name))
                 .Where(p =>
                     (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
-                    (p.GetCustomAttributes(typeof(IsDefault), true).Any()) ||
+                    (p.GetCustomAttributes(typeof(IsDefault), true).Length != 0) ||
                     (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(p) || IsDefaultMember(p)))
                 )
                 .Select(p => p.GetGetMethod())
@@ -1782,12 +1782,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             // If no matches were found and we're looking for a parameter-less default member access and the target type was not translated from VBScript
             // source, then apply the other fallbacks that the C# compiler would have added to the IDispatch interface
             MethodInfo[] allOptions = applicableMethods.Concat(applicableProperties).ToArray();
-            if (!allOptions.Any() && (defaultMemberBehaviour == DefaultMemberBehaviourOptions.MustBeDefault) && (numberOfArguments == 0) && !typeWasTranslatedFromVBScript && typeIsComVisible)
+            if (allOptions.Length == 0 && (defaultMemberBehaviour == DefaultMemberBehaviourOptions.MustBeDefault) && (numberOfArguments == 0) && !typeWasTranslatedFromVBScript && typeIsComVisible)
             {
-                allOptions = allMethods.Where(m => !m.GetParameters().Any() && m.Name.Equals("Value", StringComparison.OrdinalIgnoreCase))
-                    .Concat(readableProperties.Where(p => !p.GetIndexParameters().Any() && p.Name.Equals("Value", StringComparison.OrdinalIgnoreCase)).Select(p => p.GetGetMethod()))
+                allOptions = allMethods.Where(m => m.GetParameters().Length == 0 && m.Name.Equals("Value", StringComparison.OrdinalIgnoreCase))
+                    .Concat(readableProperties.Where(p => p.GetIndexParameters().Length == 0 && p.Name.Equals("Value", StringComparison.OrdinalIgnoreCase)).Select(p => p.GetGetMethod()))
                     .ToArray();
-                if (!allOptions.Any())
+                if (allOptions.Length == 0)
                     allOptions = new[] { type.GetMethod("ToString", Type.EmptyTypes) };
             }
 
@@ -1914,7 +1914,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            return type.GetCustomAttributes(typeof(SourceClassName), true).Any();
+            return type.GetCustomAttributes(typeof(SourceClassName), true).Length != 0;
         }
 
         private bool TypeIsComVisible(Type type)

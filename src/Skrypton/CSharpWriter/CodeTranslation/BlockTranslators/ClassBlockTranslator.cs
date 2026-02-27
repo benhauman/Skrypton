@@ -340,7 +340,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             classHeaderStatements.Add(
                 new TranslatedStatement("}", indentationDepth + 1, classBlock.Name.LineIndex)
             );
-            if (disposeImplementationStatements.Any())
+            if (disposeImplementationStatements.Length != 0)
             {
                 classHeaderStatements.Add(new TranslatedStatement("", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex));
                 classHeaderStatements.AddRange(disposeImplementationStatements);
