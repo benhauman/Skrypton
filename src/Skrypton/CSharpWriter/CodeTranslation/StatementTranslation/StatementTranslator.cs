@@ -1695,6 +1695,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(operatorToken));
             }
 
+#pragma warning disable CA1304 // Specify CultureInfo
             switch (operatorToken.Content.ToUpper())
             {
                 // Arithmetic operators
@@ -1730,6 +1731,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 default:
                     throw new NotSupportedException("Unsupported OperatorToken content: " + operatorToken.Content);
             }
+#pragma warning restore CA1304 // Specify CultureInfo
         }
 
         private string ApplyReturnTypeGuarantee(string translatedContent, ExpressionReturnTypeOptions contentType, ExpressionReturnTypeOptions requiredReturnType, int lineIndex)

@@ -78,7 +78,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 //domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
 
                 // Late‑bind using reflection
+#pragma warning disable CA1304 // Specify CultureInfo
                 object elem = objectInstance.GetType().InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, objectInstance, new object[] { false });
+#pragma warning restore CA1304 // Specify CultureInfo
             }
             //IntPtr pDispatch = Marshal.GetIDispatchForObject(objectInstance);
             //var disp = Marshal.GetComInterfaceForObject<IDispatchAccess.IDispatch>();
@@ -1309,7 +1311,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return "";
             else if (value == DBNull.Value)
                 return DBNull.Value;
+#pragma warning disable CA1304 // Specify CultureInfo
             return _valueRetriever.STR(value).ToLower();
+#pragma warning restore CA1304 // Specify CultureInfo
         }
         public object UCASE(object value)
         {
@@ -1318,7 +1322,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return "";
             else if (value == DBNull.Value)
                 return DBNull.Value;
+#pragma warning disable CA1304 // Specify CultureInfo
             return _valueRetriever.STR(value).ToUpper();
+#pragma warning restore CA1304 // Specify CultureInfo
         }
         private const string NonEscapedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*_+-./";
         public object ESCAPE(object value)
@@ -1737,7 +1743,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (intervalString == null)
                 throw new InvalidProcedureCallOrArgumentException("'DateAdd'");
             Func<DateTime, int, DateTime> dateManipulator;
+#pragma warning disable CA1304 // Specify CultureInfo
             switch (intervalString.ToLower()) // Interval matching is case-insensitive in VBScript (it won't allow leading or trailing whitespace, though)
+#pragma warning restore CA1304 // Specify CultureInfo
             {
                 default:
                     throw new InvalidProcedureCallOrArgumentException("'DateAdd'");

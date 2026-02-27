@@ -25,7 +25,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (!AtomToken.isVBScriptValueUpper(contentUpper))
                 throw new ArgumentException("Invalid content specified - not a VBScript value");
 
+#pragma warning disable CA1304 // Specify CultureInfo
             IsAcceptableAsConstValue = _lowerCasedAcceptableBuiltinValues.Contains(Content.ToLower());
+#pragma warning restore CA1304 // Specify CultureInfo
         }
 
         private readonly ReadOnlyCollection<string> _lowerCasedAcceptableBuiltinValues = new List<string> { "true", "false", "empty", "null", "nothing" }.AsReadOnly();

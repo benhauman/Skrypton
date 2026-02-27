@@ -70,7 +70,7 @@ namespace Skrypton.RuntimeSupport
 
             if (string.Equals(value, "Params", StringComparison.OrdinalIgnoreCase))
             {
-                value = value.ToLower();
+                value = "params";
             }
 
             // If the value is a valid C# name then do nothing
