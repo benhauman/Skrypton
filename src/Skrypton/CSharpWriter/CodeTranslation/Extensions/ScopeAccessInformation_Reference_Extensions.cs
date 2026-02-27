@@ -37,15 +37,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             VBScriptNameRewriter nameRewriter)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (envRefName == null)
-                throw new ArgumentNullException("envRefName");
+                throw new ArgumentNullException(nameof(envRefName));
             if (outerRefName == null)
-                throw new ArgumentNullException("outerRefName");
+                throw new ArgumentNullException(nameof(outerRefName));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // TargetCurrentClassToken indicates a "Me" reference, which never requires a target container - it is always valid where it is (even in the
             // outermost scope, VBScript doesn't require that "Me" be used only within a VBScript class)
@@ -92,11 +92,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             VBScriptNameRewriter nameRewriter)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // If the target corresponds to the containing "WITH" reference (if any) then use that ("WITH a: .Go: END WITH" is translated
             // approximately into "var w123 = a; w123.Go();" where the "w123" is the DirectedWithReferenceIfAny and so we don't need to

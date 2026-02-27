@@ -13,12 +13,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     {
         public WithBlock(Expression target, IEnumerable<ICodeBlock> content)
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
             if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
 
-            Target = target;
+            Target = target ?? throw new ArgumentNullException(nameof(target));
             Content = content.ToArray();
             if (Content.Any(c => c == null))
                 throw new ArgumentException("Null reference encountered in content set");

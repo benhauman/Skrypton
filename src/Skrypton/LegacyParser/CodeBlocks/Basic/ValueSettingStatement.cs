@@ -26,15 +26,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public ValueSettingStatement(Expression valueToSet, Expression expression, ValueSetTypeOptions valueSetType)
         {
-            if (valueToSet == null)
-                throw new ArgumentNullException("valueToSet");
-            if (expression == null)
-                throw new ArgumentNullException("expression");
             if (!Enum.IsDefined(typeof(ValueSetTypeOptions), valueSetType))
-                throw new ArgumentOutOfRangeException("valueSetType");
+                throw new ArgumentOutOfRangeException(nameof(valueSetType));
 
-            ValueToSet = valueToSet;
-            Expression = expression;
+            ValueToSet = valueToSet ?? throw new ArgumentNullException(nameof(valueToSet));
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             ValueSetType = valueSetType;
         }
 

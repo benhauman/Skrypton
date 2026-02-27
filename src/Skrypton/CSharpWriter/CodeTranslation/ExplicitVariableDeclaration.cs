@@ -9,12 +9,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     {
         public VariableDeclaration(NameToken name, VariableDeclarationScopeOptions scope, IEnumerable<uint> constantDimensionsIfAny)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
             if (!Enum.IsDefined(typeof(VariableDeclarationScopeOptions), scope))
-                throw new ArgumentOutOfRangeException("scope");
+                throw new ArgumentOutOfRangeException(nameof(scope));
 
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Scope = scope;
             ConstantDimensionsIfAny = (constantDimensionsIfAny == null) ? null : constantDimensionsIfAny.ToList().AsReadOnly();
         }

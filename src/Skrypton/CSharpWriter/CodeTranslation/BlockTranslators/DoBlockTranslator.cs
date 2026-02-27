@@ -26,23 +26,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(DoBlock doBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (doBlock == null)
-                throw new ArgumentNullException("doBlock");
+                throw new ArgumentNullException(nameof(doBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             if ((doBlock.ConditionIfAny == null) && !doBlock.Statements.Any())
             {
@@ -206,9 +201,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private CSharpName GetEarlyExitNameIfRequired(DoBlock doBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (doBlock == null)
-                throw new ArgumentNullException("doBlock");
+                throw new ArgumentNullException(nameof(doBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             if (!doBlock.SupportsExit || !doBlock.ContainsLoopThatContainsMismatchedExitThatMustBeHandledAtThisLevel())
                 return null;
@@ -226,11 +221,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!supportsExit && (earlyExitNameIfAny != null))
                 throw new ArgumentException("earlyExitNameIfAny should always be null if supportsExit is false");
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Add a StructureExitPoint entry for the current loop so that the "early-exit" logic described in the Translate method above is possible
             if (supportsExit)

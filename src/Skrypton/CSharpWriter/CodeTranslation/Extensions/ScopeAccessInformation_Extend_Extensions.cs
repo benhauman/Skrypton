@@ -19,13 +19,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             NonNullImmutableList<ICodeBlock> blocks)
         {
             if (parent == null)
-                throw new ArgumentNullException("parent");
+                throw new ArgumentNullException(nameof(parent));
             if (scopeDefiningParent == null)
-                throw new ArgumentNullException("scopeDefiningParent");
+                throw new ArgumentNullException(nameof(scopeDefiningParent));
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             var blocksScopeLocation = scopeDefiningParent.Scope;
             blocks = FlattenAllAccessibleBlockLevelCodeBlocks(blocks);
@@ -94,7 +94,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         private static NonNullImmutableList<ICodeBlock> FlattenAllAccessibleBlockLevelCodeBlocks(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             var flattenedBlocks = new NonNullImmutableList<ICodeBlock>();
             foreach (var block in blocks)
@@ -134,11 +134,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             NonNullImmutableList<ICodeBlock> blocks)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (parent == null)
-                throw new ArgumentNullException("parent");
+                throw new ArgumentNullException(nameof(parent));
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             return Extend(scopeInformation, parent, parent, parentReturnValueNameIfAny, errorRegistrationTokenIfAny, blocks);
         }
@@ -146,9 +146,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static ScopeAccessInformation ExtendExternalDependencies(this ScopeAccessInformation scopeInformation, NonNullImmutableList<NameToken> externalDependencies)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
+                throw new ArgumentNullException(nameof(externalDependencies));
 
             return new ScopeAccessInformation(
                 scopeInformation.Parent,
@@ -169,9 +169,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static ScopeAccessInformation ExtendVariables(this ScopeAccessInformation scopeInformation, NonNullImmutableList<ScopedNameToken> variables)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (variables == null)
-                throw new ArgumentNullException("variables");
+                throw new ArgumentNullException(nameof(variables));
 
             return new ScopeAccessInformation(
                 scopeInformation.Parent,
@@ -199,11 +199,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             NonNullImmutableList<ICodeBlock> blocks)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (parent == null)
-                throw new ArgumentNullException("parent");
+                throw new ArgumentNullException(nameof(parent));
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             return Extend(scopeInformation, parent, null, null, blocks);
         }
@@ -214,9 +214,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions structureExitType)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (!Enum.IsDefined(typeof(ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions), structureExitType))
-                throw new ArgumentOutOfRangeException("structureExitType");
+                throw new ArgumentOutOfRangeException(nameof(structureExitType));
 
             return new ScopeAccessInformation(
                 scopeInformation.Parent,
@@ -241,9 +241,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static ScopeAccessInformation SetParent(this ScopeAccessInformation scopeInformation, IHaveNestedContent parent)
         {
             if (scopeInformation == null)
-                throw new ArgumentNullException("scopeInformation");
+                throw new ArgumentNullException(nameof(scopeInformation));
             if (parent == null)
-                throw new ArgumentNullException("parent");
+                throw new ArgumentNullException(nameof(parent));
 
             if ((parent != scopeInformation.ScopeDefiningParent) && !scopeInformation.ScopeDefiningParent.GetAllNestedBlocks().Contains(parent))
             {

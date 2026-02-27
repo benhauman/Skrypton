@@ -31,9 +31,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         public CallSetItemExpressionSegment(IEnumerable<IToken> memberAccessTokens, IEnumerable<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
         {
             if (memberAccessTokens == null)
-                throw new ArgumentNullException("memberAccessTokens");
+                throw new ArgumentNullException(nameof(memberAccessTokens));
             if (arguments == null)
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
 
             MemberAccessTokens = memberAccessTokens.ToList().AsReadOnly();
             if (MemberAccessTokens.Any(t => t == null))
@@ -56,7 +56,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             else if (zeroArgumentBracketsPresence == null)
                 throw new ArgumentException("ZeroArgumentBracketsPresence must not be null if there are zero arguments for this CallExpressionSegment");
             else if (!Enum.IsDefined(typeof(ArgumentBracketPresenceOptions), zeroArgumentBracketsPresence.Value))
-                throw new ArgumentOutOfRangeException("zeroArgumentBracketsPresence");
+                throw new ArgumentOutOfRangeException(nameof(zeroArgumentBracketsPresence));
 
             ZeroArgumentBracketsPresence = zeroArgumentBracketsPresence;
         }

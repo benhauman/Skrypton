@@ -96,7 +96,7 @@ namespace Skrypton.RuntimeSupport.Compat
         private static IEnumerable<PropertyInfo> GetTranslatedPropertyRepresentations(Type type, Accessibility accessibility)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             var bindingFlags = BindingFlags.InvokeMethod | BindingFlags.Instance;
             if (accessibility == Accessibility.Public)
@@ -144,7 +144,7 @@ namespace Skrypton.RuntimeSupport.Compat
         private static TranslatedProperty GetTranslatedPropertyAttributeIfAny(MethodInfo method)
         {
             if (method == null)
-                throw new ArgumentNullException("method");
+                throw new ArgumentNullException(nameof(method));
 
             var translatedPropertyAttributes = method.GetCustomAttributes(typeof(TranslatedProperty), true).Cast<TranslatedProperty>();
             if (translatedPropertyAttributes.Count() > 1)
@@ -160,10 +160,6 @@ namespace Skrypton.RuntimeSupport.Compat
             private readonly MethodInfo _getter, _setter;
             public TranslatedPropertyInfo(string name, Type owningType, MethodInfo getter, MethodInfo setter)
             {
-                if (name == null)
-                    throw new ArgumentNullException("name");
-                if (owningType == null)
-                    throw new ArgumentNullException("owningType");
                 if ((getter == null) && (setter == null))
                     throw new ArgumentException("At least one of getter and setter must be non-null");
 
@@ -198,8 +194,8 @@ namespace Skrypton.RuntimeSupport.Compat
                     }
                 }
 
-                _name = name;
-                _owningType = owningType;
+                _name = name ?? throw new ArgumentNullException(nameof(name));
+                _owningType = owningType ?? throw new ArgumentNullException(nameof(owningType));
                 _getter = getter;
                 _setter = setter;
             }

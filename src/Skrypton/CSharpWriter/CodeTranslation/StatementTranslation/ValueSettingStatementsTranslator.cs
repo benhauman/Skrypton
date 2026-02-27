@@ -26,25 +26,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             ITranslateIndividualStatements statementTranslator,
             ILogInformation logger)
         {
-            if (supportRefName == null)
-                throw new ArgumentNullException("supportRefName");
-            if (envRefName == null)
-                throw new ArgumentNullException("envRefName");
-            if (outerRefName == null)
-                throw new ArgumentNullException("outerRefName");
-            if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _supportRefName = supportRefName;
-            _envRefName = envRefName;
-            _outerRefName = outerRefName;
-            _nameRewriter = nameRewriter;
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _supportRefName = supportRefName ?? throw new ArgumentNullException(nameof(supportRefName));
+            _envRefName = envRefName ?? throw new ArgumentNullException(nameof(envRefName));
+            _outerRefName = outerRefName ?? throw new ArgumentNullException(nameof(outerRefName));
+            _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -53,9 +40,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         public TranslatedStatementContentDetails Translate(ValueSettingStatement valueSettingStatement, ScopeAccessInformation scopeAccessInformation)
         {
             if (valueSettingStatement == null)
-                throw new ArgumentNullException("valueSettingStatement");
+                throw new ArgumentNullException(nameof(valueSettingStatement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var assignmentFormatDetails = GetAssignmentFormatDetails(valueSettingStatement, scopeAccessInformation);
 
@@ -77,9 +64,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private ValueSettingStatementAssigmentFormatDetails GetAssignmentFormatDetails(ValueSettingStatement valueSettingStatement, ScopeAccessInformation scopeAccessInformation)
         {
             if (valueSettingStatement == null)
-                throw new ArgumentNullException("valueSettingStatement");
+                throw new ArgumentNullException(nameof(valueSettingStatement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             // The ValueToSet content should be reducable to a single expression segment; a CallExpression or a CallSetExpression
             // 2014-04-03 DWR: Used to pass valueSettingStatement.ValueToSet.BracketStandardisedTokens here but there is no opportunity for "optional"
@@ -465,7 +452,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (string.IsNullOrWhiteSpace(exceptionClassName))
                 throw new ArgumentException("Null/blank exceptionClassName specified");
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (target.Content == null)
                 throw new ArgumentException("Null target.Content value");
 
@@ -481,13 +468,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         {
             public ValueSettingStatementAssigmentFormatDetails(Func<string, string> assigmentFormat, NonNullImmutableList<NameToken> variablesAccessed)
             {
-                if (assigmentFormat == null)
-                    throw new ArgumentNullException("assigmentFormat");
-                if (variablesAccessed == null)
-                    throw new ArgumentNullException("memberCallVariablesAccessed");
-
-                AssigmentFormat = assigmentFormat;
-                VariablesAccessed = variablesAccessed;
+                AssigmentFormat = assigmentFormat ?? throw new ArgumentNullException(nameof(assigmentFormat));
+                VariablesAccessed = variablesAccessed ?? throw new ArgumentNullException("memberCallVariablesAccessed");
             }
 
             /// <summary>

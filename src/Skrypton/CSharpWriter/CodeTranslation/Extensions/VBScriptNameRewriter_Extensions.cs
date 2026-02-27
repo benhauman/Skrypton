@@ -17,9 +17,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static string GetMemberAccessTokenName(this VBScriptNameRewriter nameRewriter, IToken token)
         {
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             // A TargetCurrentClassToken indicates a "Me" (eg. "Me.Name") which can always be translated directly into "this". In VBScript,
             // "Me" is valid even when not explicitly within a VBScript class (it refers to the outermost scope, so "Me.F1()" will try to
@@ -70,11 +70,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static bool AreNamesEquivalent(this VBScriptNameRewriter nameRewriter, NameToken x, NameToken y)
         {
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             return nameRewriter.GetMemberAccessTokenName(x) == nameRewriter.GetMemberAccessTokenName(y);
         }

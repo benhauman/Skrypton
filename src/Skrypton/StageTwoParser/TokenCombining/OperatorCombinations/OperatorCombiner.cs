@@ -20,7 +20,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         public static IEnumerable<IToken> Combine(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             // Handle +/- sign combinations
             var additionSubtractionRewrittenTokens = new List<IToken>();
@@ -126,7 +126,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         private static OperatorToken TryToGetAsAdditionOrSubtractionToken(IToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             var operatorToken = token as OperatorToken;
             if (operatorToken == null)
@@ -141,7 +141,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         private static OperatorToken CondenseNegations(IEnumerable<OperatorToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (!tokens.Any())
                 throw new ArgumentException("Empty tokens set specified - invalid");
 
@@ -162,7 +162,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         private static bool IsTokenRedundant(IToken token, IToken previousTokenIfAny)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             return (
                 (token is OperatorToken) &&

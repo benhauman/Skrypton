@@ -16,9 +16,9 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
         public static TokenProcessResult Reset(IEnumerable<IToken> tokens, PartialNumberContent numberContent)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (numberContent == null)
-                throw new ArgumentNullException("numberContent");
+                throw new ArgumentNullException(nameof(numberContent));
 
             var token = tokens.First();
             if (token == null)
@@ -34,7 +34,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
         public static IAmLookingForNumberContent GetDefaultProcessor(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             var token = tokens.First();
             if (token == null)
@@ -48,7 +48,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
         private static bool CouldPrecedeDecimalPointOrNegativeSign(IToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             // Note: The "Is" method requires a precise match, which is why Is<ComparisonOperatorToken> is required as well as Is<OperatorToken>
             return (token.Is<OpenBrace>() || token.Is<OperatorToken>() || token.Is<ComparisonOperatorToken>() || token.Is<KeyWordToken>());

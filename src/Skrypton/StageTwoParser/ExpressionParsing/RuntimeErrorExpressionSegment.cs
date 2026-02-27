@@ -12,9 +12,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (string.IsNullOrWhiteSpace(originalContent))
                 throw new ArgumentException("Null/blank originalContent specified");
             if (originalTokens == null)
-                throw new ArgumentNullException("originalTokens");
+                throw new ArgumentNullException(nameof(originalTokens));
             if (exceptionType == null)
-                throw new ArgumentNullException("exceptionType");
+                throw new ArgumentNullException(nameof(exceptionType));
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Null/blank message specified");
 

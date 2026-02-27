@@ -22,13 +22,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             VBScriptNameRewriter nameRewriter)
         {
             if (byRefArgumentsToRewrite == null)
-                throw new ArgumentNullException("byRefArgumentsToRewrite");
+                throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // Originally, this would throw an exception if there were no by-ref arguments (why bother calling this if there are no by-ref arguments to deal with; does this indicate an error in the calling
             // code?) but in some cases it's easier to be able to call it without having check whether there were any value that need rewriting and the cases where being so strict may catch unintentional
@@ -61,11 +61,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         public static Statement RewriteStatementUsingByRefArgumentMappings(this NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite, Statement statementBlock, VBScriptNameRewriter nameRewriter)
         {
             if (byRefArgumentsToRewrite == null)
-                throw new ArgumentNullException("byRefArgumentsToRewrite");
+                throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
             if (statementBlock == null)
-                throw new ArgumentNullException("statementBlock");
+                throw new ArgumentNullException(nameof(statementBlock));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // Originally, this would throw an exception if there were no by-ref arguments (why bother calling this if there are no by-ref arguments to deal with; does this indicate an error in the calling
             // code?) but in some cases it's easier to be able to call it without having check whether there were any value that need rewriting and the cases where being so strict may catch unintentional
@@ -91,11 +91,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         public static Expression RewriteExpressionUsingByRefArgumentMappings(this NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite, Expression expression, VBScriptNameRewriter nameRewriter)
         {
             if (byRefArgumentsToRewrite == null)
-                throw new ArgumentNullException("byRefArgumentsToRewrite");
+                throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // Originally, this would throw an exception if there were no by-ref arguments (why bother calling this if there are no by-ref arguments to deal with; does this indicate an error in the calling
             // code?) but in some cases it's easier to be able to call it without having check whether there were any value that need rewriting and the cases where being so strict may catch unintentional
@@ -124,13 +124,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             VBScriptNameRewriter nameRewriter)
         {
             if (byRefArgumentsToRewrite == null)
-                throw new ArgumentNullException("byRefArgumentsToRewrite");
+                throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             // Originally, this would throw an exception if there were no by-ref arguments (why bother calling this if there are no by-ref arguments to deal with; does this indicate an error in the calling
             // code?) but in some cases it's easier to be able to call it without having check whether there were any value that need rewriting and the cases where being so strict may catch unintentional
@@ -159,12 +159,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         {
             public ByRefReplacementTranslationResultDetails(TranslationResult translationResult, int distanceToIndentCodeWithMappedValues)
             {
-                if (translationResult == null)
-                    throw new ArgumentNullException("translationResult");
                 if (distanceToIndentCodeWithMappedValues < 0)
-                    throw new ArgumentOutOfRangeException("distanceToIndentCodeWithMappedValues", "must be zero or greater");
+                    throw new ArgumentOutOfRangeException(nameof(distanceToIndentCodeWithMappedValues), "must be zero or greater");
 
-                TranslationResult = translationResult;
+                TranslationResult = translationResult ?? throw new ArgumentNullException(nameof(translationResult));
                 DistanceToIndentCodeWithMappedValues = distanceToIndentCodeWithMappedValues;
             }
 

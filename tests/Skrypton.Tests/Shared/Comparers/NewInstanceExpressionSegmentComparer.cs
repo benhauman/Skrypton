@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(NewInstanceExpressionSegment x, NewInstanceExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             return x.ClassName.Content.Equals(y.ClassName.Content, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -19,7 +19,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(NewInstanceExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

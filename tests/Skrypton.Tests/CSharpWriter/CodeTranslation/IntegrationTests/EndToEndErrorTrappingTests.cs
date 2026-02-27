@@ -399,7 +399,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         private static IEnumerable<string> SplitOnNewLinesSkipFirstLineAndTrimAll(string value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             return value.NormalizeLineEndings().SplitLines().Skip(1).Select(v => v.Trim());
         }

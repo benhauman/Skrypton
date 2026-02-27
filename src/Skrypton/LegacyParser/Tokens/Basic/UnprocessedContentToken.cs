@@ -14,7 +14,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (string.IsNullOrEmpty(content))
                 throw new ArgumentException("Null/blank content specified");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
             LineIndex = lineIndex;
             Content = content;

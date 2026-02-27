@@ -928,7 +928,7 @@ namespace Skrypton.RuntimeSupport
         private static int GetNumberOfDaysInMonth(int month, int year)
         {
             if ((month < 1) || (month > 12))
-                throw new ArgumentOutOfRangeException("month");
+                throw new ArgumentOutOfRangeException(nameof(month));
 
             return new DateTime(year, month, 1).AddMonths(1).AddDays(-1).Day;
         }
@@ -939,11 +939,11 @@ namespace Skrypton.RuntimeSupport
         private static DateTime GetDate(int dateSegment1, int dateSegment2, int dateSegment3)
         {
             if (dateSegment1 < 0)
-                throw new ArgumentOutOfRangeException("dateSegment1");
+                throw new ArgumentOutOfRangeException(nameof(dateSegment1));
             if (dateSegment2 < 0)
-                throw new ArgumentOutOfRangeException("dateSegment2");
+                throw new ArgumentOutOfRangeException(nameof(dateSegment2));
             if (dateSegment3 < 0)
-                throw new ArgumentOutOfRangeException("dateSegment3");
+                throw new ArgumentOutOfRangeException(nameof(dateSegment3));
 
             // If the first two values could be days or months, then it's either d/m/y or m/d/y, depending upon current culture
             if ((dateSegment1 >= 1) && (dateSegment1 <= 12) && (dateSegment2 >= 1) && (dateSegment2 <= 12))
@@ -1004,9 +1004,9 @@ namespace Skrypton.RuntimeSupport
         private DateTime GetDate(int dateSegment1, int dateSegment2)
         {
             if (dateSegment1 < 0)
-                throw new ArgumentOutOfRangeException("dateSegment1");
+                throw new ArgumentOutOfRangeException(nameof(dateSegment1));
             if (dateSegment2 < 0)
-                throw new ArgumentOutOfRangeException("dateSegment2");
+                throw new ArgumentOutOfRangeException(nameof(dateSegment2));
 
             // If there are only two segments then one must be the month and so at least one of the values must be less than 12 (the other segment may represent the year or
             // the day, it depends on what the two values are)
@@ -1058,7 +1058,7 @@ namespace Skrypton.RuntimeSupport
         private static int EnsureIsFourDigitYear(int year)
         {
             if (year < 0)
-                throw new ArgumentOutOfRangeException("year", "must be a positive value");
+                throw new ArgumentOutOfRangeException(nameof(year), "must be a positive value");
 
             if (year >= 100)
                 return year;

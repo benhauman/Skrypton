@@ -11,16 +11,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             NonNullImmutableList<VariableDeclaration> explicitVariableDeclarations,
             NonNullImmutableList<NameToken> undeclaredVariablesAccessed)
         {
-            if (translatedStatements == null)
-                throw new ArgumentNullException("translatedStatements");
-            if (explicitVariableDeclarations == null)
-                throw new ArgumentNullException("explicitVariableDeclarations");
-            if (undeclaredVariablesAccessed == null)
-                throw new ArgumentNullException("undeclaredVariablesAccessed");
-
-            TranslatedStatements = translatedStatements;
-            ExplicitVariableDeclarations = explicitVariableDeclarations;
-            UndeclaredVariablesAccessed = undeclaredVariablesAccessed;
+            TranslatedStatements = translatedStatements ?? throw new ArgumentNullException(nameof(translatedStatements));
+            ExplicitVariableDeclarations = explicitVariableDeclarations ?? throw new ArgumentNullException(nameof(explicitVariableDeclarations));
+            UndeclaredVariablesAccessed = undeclaredVariablesAccessed ?? throw new ArgumentNullException(nameof(undeclaredVariablesAccessed));
         }
 
         public static TranslationResult Empty

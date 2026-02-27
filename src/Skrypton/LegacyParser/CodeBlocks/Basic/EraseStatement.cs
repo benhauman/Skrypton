@@ -17,9 +17,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public EraseStatement(IEnumerable<TargetDetails> targets, int keywordLineIndex)
         {
             if (targets == null)
-                throw new ArgumentNullException("targets");
+                throw new ArgumentNullException(nameof(targets));
             if (keywordLineIndex < 0)
-                throw new ArgumentOutOfRangeException("keywordLineIndex");
+                throw new ArgumentOutOfRangeException(nameof(keywordLineIndex));
 
             Targets = targets.ToList().AsReadOnly();
             if (Targets.Any(t => t == null))
@@ -100,10 +100,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             public TargetDetails(Expression target, IEnumerable<Expression> argumentsIfAny, bool wrappedInBraces)
             {
-                if (target == null)
-                    throw new ArgumentNullException("target");
-
-                Target = target;
+                Target = target ?? throw new ArgumentNullException(nameof(target));
                 ArgumentsIfAny = (argumentsIfAny == null) ? null : argumentsIfAny.ToList().AsReadOnly();
                 if ((ArgumentsIfAny != null) && ArgumentsIfAny.Any(a => a == null))
                     throw new ArgumentException("Null reference encountered in targetArgumentsIfAny set");

@@ -23,7 +23,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // allowed here. Similarly, constant statements are accetable (eg. 1+1), but
             // we're not going to allow them either.
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 return null;
 
@@ -139,7 +139,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private DimVariable translateRawVariableData(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 throw new ArgumentException("zero tokens - invalid");
             foreach (IToken token in tokens)

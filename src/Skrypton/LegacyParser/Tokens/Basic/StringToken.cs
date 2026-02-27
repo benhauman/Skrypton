@@ -14,12 +14,10 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     {
         public StringToken(string content, int lineIndex)
         {
-            if (content == null)
-                throw new ArgumentNullException("content");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
-            Content = content;
+            Content = content ?? throw new ArgumentNullException(nameof(content));
             LineIndex = lineIndex;
         }
 

@@ -9,7 +9,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public ScopedNameToken(StringUpper contentUpper, int lineIndex, ScopeLocationOptions scopeLocation) : base(contentUpper, lineIndex)
         {
             if (!Enum.IsDefined(typeof(ScopeLocationOptions), scopeLocation))
-                throw new ArgumentOutOfRangeException("scopeLocation");
+                throw new ArgumentOutOfRangeException(nameof(scopeLocation));
 
             ScopeLocation = scopeLocation;
         }

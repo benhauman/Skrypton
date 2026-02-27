@@ -21,7 +21,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         {
             // Input validation
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 return null;
 

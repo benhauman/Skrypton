@@ -10,9 +10,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static TranslationResult Add(this TranslationResult source, TranslatedStatement toAdd)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (toAdd == null)
-                throw new ArgumentNullException("toAdd");
+                throw new ArgumentNullException(nameof(toAdd));
 
             return new TranslationResult(
                 source.TranslatedStatements.Add(toAdd),
@@ -24,9 +24,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static TranslationResult Add(this TranslationResult source, IEnumerable<TranslatedStatement> toAdd)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (toAdd == null)
-                throw new ArgumentNullException("toAdd");
+                throw new ArgumentNullException(nameof(toAdd));
 
             return new TranslationResult(
                 source.TranslatedStatements.AddRange(toAdd),
@@ -38,9 +38,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static TranslationResult Add(this TranslationResult source, TranslationResult toAdd)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (toAdd == null)
-                throw new ArgumentNullException("toAdd");
+                throw new ArgumentNullException(nameof(toAdd));
 
             return new TranslationResult(
                 source.TranslatedStatements.AddRange(toAdd.TranslatedStatements),
@@ -52,9 +52,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static TranslationResult AddExplicitVariableDeclarations(this TranslationResult source, IEnumerable<VariableDeclaration> toAdd)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (toAdd == null)
-                throw new ArgumentNullException("toAdd");
+                throw new ArgumentNullException(nameof(toAdd));
 
             return new TranslationResult(
                 source.TranslatedStatements,
@@ -66,9 +66,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static TranslationResult AddUndeclaredVariables(this TranslationResult source, IEnumerable<NameToken> toAdd)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (toAdd == null)
-                throw new ArgumentNullException("toAdd");
+                throw new ArgumentNullException(nameof(toAdd));
 
             return new TranslationResult(
                 source.TranslatedStatements,

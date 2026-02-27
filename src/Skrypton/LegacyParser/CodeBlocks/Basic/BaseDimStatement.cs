@@ -18,7 +18,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         protected BaseDimStatement(IEnumerable<DimVariable> variables)
         {
             if (variables == null)
-                throw new ArgumentNullException("variables");
+                throw new ArgumentNullException(nameof(variables));
 
             Variables = variables.ToList().AsReadOnly();
             if (Variables.Any(v => v == null))
@@ -86,10 +86,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     {
         public DimVariable(NameToken name, IEnumerable<Expression> dimensions)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             if (dimensions == null)
             {
                 Dimensions = null;

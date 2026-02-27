@@ -8,10 +8,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     {
         public NameRedefinedException(NameToken name) : base(GetMessage(name))
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         protected NameRedefinedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -24,7 +21,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         private static string GetMessage(NameToken name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             return string.Format(
                 "Name redefined at line {0}: \"{1}\"",

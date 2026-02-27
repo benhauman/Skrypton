@@ -16,7 +16,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         private static string GetMessage(string basicErrorDescription, string additionalInformationIfAny)
         {
             if (basicErrorDescription == null)
-                throw new ArgumentNullException("basicErrorDescription");
+                throw new ArgumentNullException(nameof(basicErrorDescription));
 
             var message = basicErrorDescription;
             if (!string.IsNullOrWhiteSpace(additionalInformationIfAny))

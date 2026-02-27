@@ -12,10 +12,7 @@ namespace Skrypton.RuntimeSupport.Attributes
     {
         public TranslatedProperty(string name)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         /// <summary>

@@ -26,23 +26,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(EraseStatement eraseStatement, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (eraseStatement == null)
-                throw new ArgumentNullException("eraseStatement");
+                throw new ArgumentNullException(nameof(eraseStatement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // We need to work out what tokens in the target(s) or their argument(s) reference any by-ref arguments in the containing function (where applicable). For the case
             // where there is a single target which is itself a single NameToken, if this is a by-ref argument of the containing function then this will definitely need rewriting.

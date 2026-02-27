@@ -23,13 +23,13 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (contentUpper == null)
                 throw new ArgumentNullException("content");
             if (!Enum.IsDefined(typeof(WhiteSpaceBehaviourOptions), whiteSpaceBehaviour))
-                throw new ArgumentOutOfRangeException("whiteSpaceBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(whiteSpaceBehaviour));
             if ((whiteSpaceBehaviour == WhiteSpaceBehaviourOptions.Disallow) && contentUpper.containsWhiteSpace())
                 throw new ArgumentException($"Whitespace encountered in AtomToken - invalid. Line:{lineIndex}");
             if (contentUpper.Length == 0)
                 throw new ArgumentException($"Blank content specified for AtomToken - invalid. Line:{lineIndex}");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
             Content = contentUpper.Original;
             LineIndex = lineIndex;
@@ -91,7 +91,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         private static IToken GetNewTokenCore(StringUpper contentUpper, int lineIndex)
         {
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
             var recognisedType = TryToGetAsRecognisedType(contentUpper, lineIndex);
             if (recognisedType != null)
@@ -118,7 +118,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         protected static IToken TryToGetAsRecognisedType(StringUpper contentUpper, int lineIndex)
         {
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
 
             if (contentUpper.Length == 1)

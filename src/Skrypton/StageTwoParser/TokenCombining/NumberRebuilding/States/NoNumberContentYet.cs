@@ -14,9 +14,9 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
         public TokenProcessResult Process(IEnumerable<IToken> tokens, PartialNumberContent numberContent)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (numberContent == null)
-                throw new ArgumentNullException("numberContent");
+                throw new ArgumentNullException(nameof(numberContent));
 
             var token = tokens.First();
             if (token == null)

@@ -84,13 +84,13 @@ namespace Skrypton.CSharpWriter
             )
         {
             if (scriptContent == null)
-                throw new ArgumentNullException("scriptContent");
+                throw new ArgumentNullException(nameof(scriptContent));
             if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
+                throw new ArgumentNullException(nameof(externalDependencies));
             if ((outputType != OuterScopeBlockTranslator.OutputTypeOptions.Executable) && (outputType != OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding))
-                throw new ArgumentOutOfRangeException("outputType");
+                throw new ArgumentOutOfRangeException(nameof(outputType));
             if (logger == null)
-                throw new ArgumentNullException("logger");
+                throw new ArgumentNullException(nameof(logger));
 
             var startNamespace = new CSharpName("TranslatedProgram");
             var startClassName = new CSharpName("Runner");
@@ -153,9 +153,7 @@ namespace Skrypton.CSharpWriter
             private readonly ILogInformation _logger;
             public CSharpCommentMakingLogger(ILogInformation logger)
             {
-                if (logger == null)
-                    throw new ArgumentNullException("logger");
-                _logger = logger;
+                _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             }
             public void Warning(string content)
             {
@@ -188,10 +186,7 @@ namespace Skrypton.CSharpWriter
             private readonly Action<string> _warningLogger;
             public DelegateWrappingWarningLogger(Action<string> warningLogger)
             {
-                if (warningLogger == null)
-                    throw new ArgumentNullException("warningLogger");
-
-                _warningLogger = warningLogger;
+                _warningLogger = warningLogger ?? throw new ArgumentNullException(nameof(warningLogger));
             }
 
             public void Warning(string content)

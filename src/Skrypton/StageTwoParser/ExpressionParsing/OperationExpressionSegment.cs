@@ -9,10 +9,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     {
         public OperationExpressionSegment(OperatorToken token)
         {
-            if (token == null)
-                throw new ArgumentNullException("token");
-
-            Token = token;
+            Token = token ?? throw new ArgumentNullException(nameof(token));
         }
 
         /// <summary>

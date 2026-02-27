@@ -31,19 +31,20 @@ namespace Skrypton.RuntimeSupport.Implementations
             DISPATCH_PROPERTYPUTREF = 8
         }
 
-        public static bool ImplementsIDispatch(object source)
+        public static bool ImplementsIDispatch(object source, out IDispatch dispatch)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source is IDispatch;
+            dispatch = source as IDispatch;
+            return dispatch != null;
         }
 
-        internal static void CallPropertySet(object source, string name, params object[] args)
-        {
-            _ = Invoke<object>(source, InvokeFlags.DISPATCH_PROPERTYPUT, name, GetDispId(source, name), args);
-        }
-        public static T CallMethod<T>(object source, string name, params object[] args)
+        //internal static void CallPropertySet(object source, string name, params object[] args)
+        //{
+        //    _ = Invoke<object>(source, InvokeFlags.DISPATCH_PROPERTYPUT, name, GetDispId(source, name), args);
+        //}
+        public static T CallMethodT<T>(IDispatch source, string name, params object[] args)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -55,7 +56,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return Invoke<T>(source, InvokeFlags.DISPATCH_METHOD, name, GetDispId(source, name), args);
         }
 
-        public static object CallMethod(object source, string name, params object[] args)
+        public static object CallMethodU(IDispatch source, string name, params object[] args)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -64,10 +65,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (args == null)
                 throw new ArgumentNullException(nameof(args));
 
-            return CallMethod<object>(source, name, args);
+            return CallMethodT<object>(source, name, args);
         }
 
-        public static T GetProperty<T>(object source, string name)
+        public static T GetProperty<T>(IDispatch source, string name)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -77,7 +78,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return Invoke<T>(source, InvokeFlags.DISPATCH_PROPERTYGET, name, GetDispId(source, name));
         }
 
-        public static object GetProperty(object source, string name)
+        public static object GetProperty(IDispatch source, string name)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -90,7 +91,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// This will raise an exception for a null source, null or blank name or if the name could not be matched to a DispId
         /// </summary>
-        public static int GetDispId(object source, string name)
+        public static int GetDispId(IDispatch source, string name)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -388,14 +389,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         public interface IDispatch
         {
+            [Obsolete("Bad signature. Fix and verify signature before use.", true)]//[System.Security.SecurityCritical]
             [PreserveSig]
             int GetTypeInfoCount(out int Count);
 
             [PreserveSig]
             int GetTypeInfo
             (
-                [MarshalAs(UnmanagedType.U4)] int iTInfo,
-                [MarshalAs(UnmanagedType.U4)] int lcid,
+                [In, MarshalAs(UnmanagedType.U4)] int iTInfo,
+                [In, MarshalAs(UnmanagedType.U4)] int lcid,
                 out ComTypes.ITypeInfo typeInfo
             );
 
@@ -429,14 +431,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             public IDispatchAccessException(string message, object target, string memberNameIfSpecified, int? dispIdIfKnown, CommonErrors errorType, Exception innerException = null)
                 : base(message, innerException)
             {
-                if (target == null)
-                    throw new ArgumentNullException(nameof(target));
                 if (string.IsNullOrWhiteSpace(memberNameIfSpecified) && (dispIdIfKnown == null))
                     throw new ArgumentException("At least one of memberNameIfSpecified and dispIdIfKnown must be specified");
                 if (!Enum.IsDefined(typeof(CommonErrors), errorType))
                     ErrorType = errorType;
 
-                Target = target;
+                Target = target ?? throw new ArgumentNullException(nameof(target));
                 MemberNameIfSpecified = memberNameIfSpecified;
                 DispIdIfKnown = dispIdIfKnown;
                 ErrorType = errorType;

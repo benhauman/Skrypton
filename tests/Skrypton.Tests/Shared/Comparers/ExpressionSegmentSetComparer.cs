@@ -10,9 +10,9 @@ namespace Skrypton.Tests.Shared.Comparers
 		public bool Equals(IEnumerable<IExpressionSegment> x, IEnumerable<IExpressionSegment> y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             var segmentsX = x.ToArray();
             var segmentsY = y.ToArray();
@@ -31,7 +31,7 @@ namespace Skrypton.Tests.Shared.Comparers
 		public int GetHashCode(IEnumerable<IExpressionSegment> obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

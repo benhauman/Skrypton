@@ -8,9 +8,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         public static bool RelatesTo(this MissingMemberException source, Type type, string memberNameIfAny)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // If a default member is requested, then a number of things may happen. If the request comes from VBScript then it will likely be requested as "[DISPID=0]",
             // in which case that string will appear in the exception message. If a request is made through an IReflect.InvokeMember call then the member may appear blank.

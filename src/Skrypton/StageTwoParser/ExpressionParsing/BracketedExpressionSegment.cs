@@ -13,7 +13,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         public BracketedExpressionSegment(IEnumerable<IExpressionSegment> segments)
         {
             if (segments == null)
-                throw new ArgumentNullException("segments");
+                throw new ArgumentNullException(nameof(segments));
 
             Segments = segments.ToList().AsReadOnly();
             if (Segments.Any(e => e == null))

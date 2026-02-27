@@ -16,12 +16,10 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     {
         public DateLiteralToken(string content, int lineIndex, CultureInfo culture)
         {
-            if (content == null)
-                throw new ArgumentNullException("content");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
-            Content = content;
+            Content = content ?? throw new ArgumentNullException(nameof(content));
             LineIndex = lineIndex;
             RequiresRuntimeValidation = false;
 
@@ -45,7 +43,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Invalid date format", "content", e);
+                throw new ArgumentException("Invalid date format", nameof(content), e);
             }
         }
 

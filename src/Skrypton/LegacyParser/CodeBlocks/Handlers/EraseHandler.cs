@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         public override ICodeBlock Process(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             bool includesCallKeyword;
             int numberOfKeywordTokens;
@@ -95,7 +95,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private Tuple<EraseStatement.TargetDetails, int> GetTargetExpressionDetailsWithNumberOfTokensConsumed(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             var tokensArray = tokens.ToArray();
             if (!tokensArray.Any())

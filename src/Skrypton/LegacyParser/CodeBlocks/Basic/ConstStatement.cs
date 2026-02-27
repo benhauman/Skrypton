@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public ConstStatement(IEnumerable<ConstValueInitialisation> values)
         {
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
 
             Values = values.ToList().AsReadOnly();
             if (!Values.Any())
@@ -35,10 +35,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             public ConstValueInitialisation(NameToken name, IToken value)
             {
-                if (name == null)
-                    throw new ArgumentNullException("name");
                 if (value == null)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
 
                 if (!(value is DateLiteralToken) && !(value is NumericValueToken) && !(value is StringToken))
                 {
@@ -47,7 +45,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                         throw new ArgumentException("Invalid CONST value - must be a literal or supported builtin value");
                 }
 
-                Name = name;
+                Name = name ?? throw new ArgumentNullException(nameof(name));
                 Value = value;
             }
 

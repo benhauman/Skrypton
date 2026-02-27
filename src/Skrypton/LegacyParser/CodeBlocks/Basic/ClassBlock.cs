@@ -15,10 +15,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         private List<ICodeBlock> statements;
         public ClassBlock(NameToken className, List<ICodeBlock> statements)
         {
-            if (className == null)
-                throw new ArgumentNullException("className");
             if (statements == null)
-                throw new ArgumentNullException("statements");
+                throw new ArgumentNullException(nameof(statements));
 
             foreach (ICodeBlock block in statements)
             {
@@ -26,7 +24,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     throw new ArgumentException("Null block in statements");
             }
 
-            this.className = className;
+            this.className = className ?? throw new ArgumentNullException(nameof(className));
             this.statements = statements;
         }
 

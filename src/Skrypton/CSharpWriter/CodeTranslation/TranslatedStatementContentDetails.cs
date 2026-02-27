@@ -12,11 +12,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         {
             if (string.IsNullOrWhiteSpace(translatedContent))
                 throw new ArgumentException("Null/blank translatedContent specified");
-            if (variablesAccessed == null)
-                throw new ArgumentNullException("variablesAccessed");
-
             TranslatedContent = translatedContent;
-            VariablesAccessed = variablesAccessed;
+            VariablesAccessed = variablesAccessed ?? throw new ArgumentNullException(nameof(variablesAccessed));
         }
 
         /// <summary>

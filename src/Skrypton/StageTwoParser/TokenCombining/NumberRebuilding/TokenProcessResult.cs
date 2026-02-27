@@ -10,18 +10,13 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
     {
         public TokenProcessResult(PartialNumberContent numberContent, IEnumerable<IToken> processedTokens, IAmLookingForNumberContent nextProcessor)
         {
-            if (numberContent == null)
-                throw new ArgumentNullException("numberContent");
             if (processedTokens == null)
-                throw new ArgumentNullException("processedTokens");
-            if (nextProcessor == null)
-                throw new ArgumentNullException("nextProcessor");
-
-            NumberContent = numberContent;
+                throw new ArgumentNullException(nameof(processedTokens));
+            NumberContent = numberContent ?? throw new ArgumentNullException(nameof(numberContent));
             ProcessedTokens = processedTokens.ToList().AsReadOnly();
             if (ProcessedTokens.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in processedTokens set");
-            NextProcessor = nextProcessor;
+            NextProcessor = nextProcessor ?? throw new ArgumentNullException(nameof(nextProcessor));
         }
 
         /// <summary>

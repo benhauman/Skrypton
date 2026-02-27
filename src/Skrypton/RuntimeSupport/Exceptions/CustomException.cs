@@ -17,7 +17,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         public CustomException(int number, string source, string description) : base(GetMessage(source, description), additionalInformationIfAny: null)
         {
             if (number == 0)
-                throw new ArgumentOutOfRangeException("number");
+                throw new ArgumentOutOfRangeException(nameof(number));
 
             _errorNumber = number;
         }

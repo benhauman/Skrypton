@@ -18,13 +18,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             Action<string> warningLogger)
         {
             if (statement == null)
-                throw new ArgumentNullException("statement");
+                throw new ArgumentNullException(nameof(statement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), returnRequirements))
-                throw new ArgumentOutOfRangeException("returnRequirements");
+                throw new ArgumentOutOfRangeException(nameof(returnRequirements));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             // The BracketStandardisedTokens property should only be used if this is a non-value-returning statement (eg. "Test" or "Test 1"
             // or "Test(a)", which would be translated into "Test()", "Test(1)" or "Test((a))", respectively) since that is the only time

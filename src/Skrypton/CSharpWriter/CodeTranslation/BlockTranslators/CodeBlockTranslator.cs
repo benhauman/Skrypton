@@ -62,13 +62,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth)
         {
             if (translators == null)
-                throw new ArgumentNullException("translators");
+                throw new ArgumentNullException(nameof(translators));
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             var translationResult = TranslationResult.Empty;
             foreach (var block in blocks)
@@ -1150,9 +1150,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             // TODO: Consider trying to insert the content after any comments or blank lines?
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepthForExplicitVariableDeclarations < 0)
-                throw new ArgumentOutOfRangeException("indentationDepthForExplicitVariableDeclarations", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepthForExplicitVariableDeclarations), "must be zero or greater");
 
             // Note: Any repeated variable declarations are ignored - this makes the ReDim translation process easier (where ReDim statements may target
             // already-declared variables or they may be considered to implicitly declare them) but it means that the Dim translation has to do some extra
@@ -1198,11 +1198,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             // TODO: Consider trying to insert the content after any comments or blank lines?
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (!Enum.IsDefined(typeof(ScopeLocationOptions), scopeLocation))
-                throw new ArgumentOutOfRangeException("scopeLocation");
+                throw new ArgumentOutOfRangeException(nameof(scopeLocation));
             if (indentationDepthForExplicitVariableDeclarations < 0)
-                throw new ArgumentOutOfRangeException("indentationDepthForExplicitVariableDeclarations", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepthForExplicitVariableDeclarations), "must be zero or greater");
 
             // There could be multiple references to the same undeclared variable within any given scope and so there may be duplicate
             // entries in the UndeclaredVariablesAccessed set. Any duplicates are ignored (while the order, ignoring subsequent duplicate
@@ -1246,7 +1246,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private string GetHandleErrorContent(CSharpName errorRegistrationToken)
         {
             if (errorRegistrationToken == null)
-                throw new ArgumentNullException("errorRegistrationToken");
+                throw new ArgumentNullException(nameof(errorRegistrationToken));
 
             return string.Format(
                 "{0}.HANDLEERROR({1}, () => {{",

@@ -300,11 +300,11 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 */
 
-        internal sealed class IDispatchOnReflect : IReflect
+        internal class IDispatchOnReflect : IReflect
         {
             private readonly Type _type;
 
-            private IDispatchOnReflect(Type type)
+            public IDispatchOnReflect(Type type)
             {
                 _type = type;
             }

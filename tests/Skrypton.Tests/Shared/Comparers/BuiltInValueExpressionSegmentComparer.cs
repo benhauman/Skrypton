@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(BuiltInValueExpressionSegment x, BuiltInValueExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             var tokenComparer = new TokenComparer();
             return tokenComparer.Equals(x.Token, y.Token);
@@ -20,7 +20,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(BuiltInValueExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

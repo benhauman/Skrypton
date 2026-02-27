@@ -21,12 +21,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public OutermostScope(CSharpName wrapperName, NonNullImmutableList<ICodeBlock> codeBlocks)
         {
             if (wrapperName == null)
-                throw new ArgumentNullException("wrapperName");
-            if (codeBlocks == null)
-                throw new ArgumentNullException("codeBlocks");
-
+                throw new ArgumentNullException(nameof(wrapperName));
             Name = new DoNotRenameNameToken(wrapperName.Name.ToUpperX(), 0);
-            AllExecutableBlocks = codeBlocks;
+            AllExecutableBlocks = codeBlocks ?? throw new ArgumentNullException(nameof(codeBlocks));
         }
 
         /// <summary>
@@ -57,7 +54,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public string GenerateBaseSource(ISourceIndentHandler indenter)
         {
             if (indenter == null)
-                throw new ArgumentNullException("indenter");
+                throw new ArgumentNullException(nameof(indenter));
 
             var writer = new StringBuilder();
             foreach (var block in AllExecutableBlocks)

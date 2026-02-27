@@ -9,7 +9,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static bool IsIndexedProperty(this PropertyBlock source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             if ((source.PropType == PropertyBlock.PropertyType.Get) && source.Parameters.Any())
                 return true;

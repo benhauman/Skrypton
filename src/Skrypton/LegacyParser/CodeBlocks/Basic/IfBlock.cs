@@ -17,7 +17,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public IfBlock(IEnumerable<IfBlockSegment> clauses)
         {
             if (clauses == null)
-                throw new ArgumentNullException("clauses");
+                throw new ArgumentNullException(nameof(clauses));
 
             var clausesArray = clauses.ToArray();
             if (!clausesArray.Any())
@@ -91,15 +91,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             public IfBlockConditionSegment(Expression conditionStatement, IEnumerable<ICodeBlock> statements)
             {
-                if (conditionStatement == null)
-                    throw new ArgumentNullException("conditionStatement");
                 if (statements == null)
-                    throw new ArgumentNullException("statements");
+                    throw new ArgumentNullException(nameof(statements));
 
                 Statements = statements.ToList().AsReadOnly();
                 if (Statements.Any(s => s == null))
                     throw new ArgumentException("Null reference encountered in statements set");
-                Condition = conditionStatement;
+                Condition = conditionStatement ?? throw new ArgumentNullException(nameof(conditionStatement));
             }
 
             /// <summary>
@@ -119,7 +117,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             public IfBlockElseSegment(IEnumerable<ICodeBlock> statements)
             {
                 if (statements == null)
-                    throw new ArgumentNullException("statements");
+                    throw new ArgumentNullException(nameof(statements));
                 Statements = statements.ToList().AsReadOnly();
                 if (Statements.Any(s => s == null))
                     throw new ArgumentException("Null reference encountered in statements set");

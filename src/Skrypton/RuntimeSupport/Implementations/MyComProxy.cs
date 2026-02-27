@@ -25,14 +25,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         internal static MyComProxy CreateComProxy(string progId, Type comType)
         {
             object comInstance = Activator.CreateInstance(comType);
-            if (IDispatchAccess.ImplementsIDispatch(comInstance))
+            if (IDispatchAccess.ImplementsIDispatch(comInstance, out IDispatchAccess.IDispatch dispatch))
             {
                 // ok! => can be used 'IDispatchAccess'
             }
             else
             {
                 // If a COM object does not implement IDispatch, it cannot be used from VBScript.
-                throw new InvalidOperationException($"Class '{progId}' does not implement IDispatch.");
+                if (comInstance is IReflect rfl)
+                {
+                    //return rfl;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Class '{progId}' does not implement IDispatch.");
+                }
             }
 
             return new MyComProxy(progId, comType, comInstance);
@@ -63,7 +70,7 @@ Returns the remaining ref count
             }
         }
         #region Explicit IReflect Implementation
-        private UnsafeNativeMethods.IDispatch _dispatch => (UnsafeNativeMethods.IDispatch)_comInstance;
+        private IDispatchAccess.IDispatch _dispatch => (IDispatchAccess.IDispatch)_comInstance;
         FieldInfo IReflect.GetField(string name, BindingFlags bindingAttr) => null;
         FieldInfo[] IReflect.GetFields(BindingFlags bindingAttr) => Array.Empty<FieldInfo>();
 
@@ -94,7 +101,7 @@ Returns the remaining ref count
             if (target != this)
                 throw new TargetException("Target object is not the wrapped IDispatch.");
 
-            int dispid = GetDispId(name);
+            int dispid = IDispatchAccess.GetDispId(_dispatch, name);
             if (dispid == -1)
                 throw new MissingMethodException($"Member '{name}' not found on IDispatch object.");
 
@@ -103,7 +110,7 @@ Returns the remaining ref count
                 //IDispatchAccess.prop
             }
 
-            return IDispatchAccess.CallMethod(_dispatch, name, args);
+            return IDispatchAccess.CallMethodU(_dispatch, name, args);
 
             //int dispid = GetDispId(name);
             //if (dispid == -1)
@@ -147,25 +154,16 @@ Returns the remaining ref count
             //}
         }
 
-        Type IReflect.UnderlyingSystemType => typeof(IDispatch);
+        Type IReflect.UnderlyingSystemType => typeof(IDispatchAccess.IDispatch);
 
         #endregion
-
-        private int GetDispId(string name)
-        {
-            Guid GuidEmpty = Guid.Empty;
-            int dispid;
-            int hr = _dispatch.GetIDsOfNames(ref GuidEmpty, new string[] { name }, 1, 0, out dispid);
-            return hr == 0 ? dispid : -1;
-        }
-
     }
     internal class DispatchMethodInfo : MethodInfo
     {
-        private readonly IDispatch _dispatch;
+        private readonly IDispatchAccess.IDispatch _dispatch;
         private readonly string _name;
 
-        public DispatchMethodInfo(IDispatch dispatch, string name)
+        public DispatchMethodInfo(IDispatchAccess.IDispatch dispatch, string name)
         {
             _dispatch = dispatch;
             _name = name;
@@ -179,8 +177,8 @@ Returns the remaining ref count
         }
 
         public override string Name => _name;
-        public override Type DeclaringType => typeof(IDispatch);
-        public override Type ReflectedType => typeof(IDispatch);
+        public override Type DeclaringType => typeof(IDispatchAccess.IDispatch);
+        public override Type ReflectedType => typeof(IDispatchAccess.IDispatch);
         public override MethodAttributes Attributes => MethodAttributes.Public;
         public override RuntimeMethodHandle MethodHandle { get; }
         public override ParameterInfo[] GetParameters() => Array.Empty<ParameterInfo>();
@@ -198,10 +196,10 @@ Returns the remaining ref count
     }
     internal class DispatchPropertyInfo : PropertyInfo
     {
-        private readonly IDispatch _dispatch;
+        private readonly IDispatchAccess.IDispatch _dispatch;
         private readonly string _name;
 
-        public DispatchPropertyInfo(IDispatch dispatch, string name)
+        public DispatchPropertyInfo(IDispatchAccess.IDispatch dispatch, string name)
         {
             _dispatch = dispatch;
             _name = name;
@@ -222,8 +220,8 @@ Returns the remaining ref count
         }
 
         public override string Name => _name;
-        public override Type DeclaringType => typeof(IDispatch);
-        public override Type ReflectedType => typeof(IDispatch);
+        public override Type DeclaringType => typeof(IDispatchAccess.IDispatch);
+        public override Type ReflectedType => typeof(IDispatchAccess.IDispatch);
         public override PropertyAttributes Attributes => PropertyAttributes.None;
         public override bool CanRead => true;
         public override bool CanWrite => true;

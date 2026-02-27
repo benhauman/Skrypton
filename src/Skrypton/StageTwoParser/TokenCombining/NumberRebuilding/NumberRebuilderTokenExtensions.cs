@@ -9,7 +9,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         public static bool Is<T>(this IToken token) where T : IToken
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             return (token.GetType() == typeof(T));
         }
@@ -17,7 +17,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         public static bool IsMinusSignOperator(this IToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             return token.Is<OperatorToken>() && (token.Content == "-");
         }

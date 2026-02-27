@@ -7,13 +7,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
     {
         public FuncByRefMapping(NameToken from, CSharpName to, bool mappedValueIsReadOnly)
         {
-            if (from == null)
-                throw new ArgumentNullException("from");
-            if (to == null)
-                throw new ArgumentNullException("to");
-
-            From = from;
-            To = to;
+            From = from ?? throw new ArgumentNullException(nameof(from));
+            To = to ?? throw new ArgumentNullException(nameof(to));
             MappedValueIsReadOnly = mappedValueIsReadOnly;
         }
 

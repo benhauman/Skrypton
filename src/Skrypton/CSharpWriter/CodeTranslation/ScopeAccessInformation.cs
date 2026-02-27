@@ -23,37 +23,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             NonNullImmutableList<ScopedNameToken> variables,
             NonNullImmutableList<ExitableNonScopeDefiningConstructDetails> structureExitPoints)
         {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
-            if (scopeDefiningParent == null)
-                throw new ArgumentNullException("scopeDefiningParent");
-            if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
-            if (classes == null)
-                throw new ArgumentNullException("classes");
-            if (functions == null)
-                throw new ArgumentNullException("functions");
-            if (properties == null)
-                throw new ArgumentNullException("properties");
-            if (constants == null)
-                throw new ArgumentNullException("constants");
-            if (variables == null)
-                throw new ArgumentNullException("variables");
-            if (structureExitPoints == null)
-                throw new ArgumentNullException("structureExitPoints");
-
-            Parent = parent;
-            ScopeDefiningParent = scopeDefiningParent;
+            Parent = parent ?? throw new ArgumentNullException(nameof(parent));
+            ScopeDefiningParent = scopeDefiningParent ?? throw new ArgumentNullException(nameof(scopeDefiningParent));
             ParentReturnValueNameIfAny = parentReturnValueNameIfAny;
             ErrorRegistrationTokenIfAny = errorRegistrationTokenIfAny;
             DirectedWithReferenceIfAny = directedWithReferenceIfAny;
-            ExternalDependencies = externalDependencies;
-            Classes = classes;
-            Functions = functions;
-            Properties = properties;
-            Constants = constants;
-            Variables = variables;
-            StructureExitPoints = structureExitPoints;
+            ExternalDependencies = externalDependencies ?? throw new ArgumentNullException(nameof(externalDependencies));
+            Classes = classes ?? throw new ArgumentNullException(nameof(classes));
+            Functions = functions ?? throw new ArgumentNullException(nameof(functions));
+            Properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            Constants = constants ?? throw new ArgumentNullException(nameof(constants));
+            Variables = variables ?? throw new ArgumentNullException(nameof(variables));
+            StructureExitPoints = structureExitPoints ?? throw new ArgumentNullException(nameof(structureExitPoints));
         }
 
         public static ScopeAccessInformation FromOutermostScope(
@@ -62,11 +43,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             NonNullImmutableList<NameToken> externalDependencies)
         {
             if (outermostScopeWrapperName == null)
-                throw new ArgumentNullException("outermostScopeWrapperName");
+                throw new ArgumentNullException(nameof(outermostScopeWrapperName));
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
             if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
+                throw new ArgumentNullException(nameof(externalDependencies));
 
             // This prepares the empty template for the primary instance..
             var outermostScope = new OutermostScope(outermostScopeWrapperName, blocks);
@@ -173,12 +154,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             private readonly int _lineIndexOfWithStatement;
             public DirectedWithReferenceDetails(CSharpName referenceName, int lineIndexOfWithStatement)
             {
-                if (referenceName == null)
-                    throw new ArgumentNullException("referenceName");
                 if (lineIndexOfWithStatement < 0)
-                    throw new ArgumentOutOfRangeException("lineIndexOfWithStatement");
+                    throw new ArgumentOutOfRangeException(nameof(lineIndexOfWithStatement));
 
-                ReferenceName = referenceName;
+                ReferenceName = referenceName ?? throw new ArgumentNullException(nameof(referenceName));
                 _lineIndexOfWithStatement = lineIndexOfWithStatement;
             }
 
@@ -201,7 +180,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             public ExitableNonScopeDefiningConstructDetails(CSharpName exitEarlyBooleanNameIfAny, ExitableNonScopeDefiningConstructOptions structureType)
             {
                 if (!Enum.IsDefined(typeof(ExitableNonScopeDefiningConstructOptions), structureType))
-                    throw new ArgumentOutOfRangeException("structureType");
+                    throw new ArgumentOutOfRangeException(nameof(structureType));
 
                 ExitEarlyBooleanNameIfAny = exitEarlyBooleanNameIfAny;
                 StructureType = structureType;

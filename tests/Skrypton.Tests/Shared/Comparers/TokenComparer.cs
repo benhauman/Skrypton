@@ -12,9 +12,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(IToken x, IToken y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             if (x.GetType() == typeof(Skrypton.LegacyParser.Tokens.Basic.NumericValueToken))
             {
@@ -156,7 +156,7 @@ namespace Skrypton.Tests.Shared.Comparers
         private static byte[] ReadBytesFromStream(Stream stream)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             var buffer = new byte[4096];
             var read = 0;
@@ -184,7 +184,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(IToken obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -170,7 +171,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object CONCAT(params object[] values)
         {
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
 
             if (values.Length < 2)
                 throw new ArgumentException("There must be at least two values specified for the CONCAT operation");
@@ -1575,7 +1576,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object ARRAY(params object[] values)
         {
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             return values;
         }
         public void ERASE(object target, Action<object> targetSetter)
@@ -2018,11 +2019,18 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidOperationException($"Failed to create com object for '{classProgId}'", ex);
             }
         }
+        public static IReflect TestCreateComObjectTest(string classProgId, Type comType)
+        {
+            var prx = MyComProxy.CreateComProxy(classProgId, comType);
+            return prx._comInstance is IReflect rfl ? rfl : prx;
+        }
+
+        //"Scripting.Dictionary"
+        //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
         private static object CreateComObject(string classProgId, Type comType)
         {
-            MyComProxy proxy = MyComProxy.CreateComProxy(classProgId, comType);//"Scripting.Dictionary"
-            return proxy._comInstance;
-            //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
+            var prx = MyComProxy.CreateComProxy(classProgId, comType);
+            return prx._comInstance;
         }
         public object GETOBJECT(object value)
         {
@@ -2058,7 +2066,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object NEW(object value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             var disposableResource = value as IDisposable;
             if (disposableResource != null)
@@ -2070,7 +2078,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object NEWARRAY(IEnumerable<object> dimensions)
         {
             if (dimensions == null)
-                throw new ArgumentNullException("dimensions");
+                throw new ArgumentNullException(nameof(dimensions));
 
             // Note that VBScript specifies upper bounds for arrays, rather than the size - so ReDim a(2) means that the array "a" needs three
             // elements (0, 1 and 2) and so must be declared in C# as object[3]. In VBScript, if negative ranges are specified below -1 (since
@@ -2089,7 +2097,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // Note: Don't even check "array" for null until the dimensions have been evaluated
             if (dimensions == null)
-                throw new ArgumentNullException("dimensions");
+                throw new ArgumentNullException(nameof(dimensions));
 
             // Note that VBScript specifies upper bounds for arrays, rather than the size - so ReDim a(2) means that the array "a" needs three
             // elements (0, 1 and 2) and so must be declared in C# as object[3]. In VBScript, if negative ranges are specified below -1 (since
@@ -2221,7 +2229,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object RAISEERROR(Exception e)
         {
             if (e == null)
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException(nameof(e));
 
             throw e;
         }
@@ -2375,7 +2383,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public bool IF(Func<object> valueEvaluator, int errorToken)
         {
             if (valueEvaluator == null)
-                throw new ArgumentNullException("valueEvaluator");
+                throw new ArgumentNullException(nameof(valueEvaluator));
 
             // VBScript's behaviour is quite mad here; if error-trapping is enabled when an IF condition must be evaluated, and if that evaluation results in
             // and error being raised, then act as if the condition was met. So we default to true and then try to perform the evalaluation with HANDLEERROR.
@@ -2439,7 +2447,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private Tuple<IEnumerable<int?>, Func<int, object>> GetForBitwiseOperations(string exceptionMessageForInvalidContent, params object[] values)
         {
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             if (values.Length == 0)
                 throw new ArgumentException("At least one value must be specified");
             if (string.IsNullOrWhiteSpace(exceptionMessageForInvalidContent))

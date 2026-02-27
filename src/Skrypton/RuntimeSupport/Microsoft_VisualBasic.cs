@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Skrypton.RuntimeSupport.Implementations;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -521,7 +522,7 @@ namespace Skrypton.RuntimeSupport
             //string text3 = null;
             //string text4 = null;
             //int num;
-            if (source is UnsafeNativeMethods.IDispatch dispatch && dispatch.GetTypeInfo(0, 1033, out UnsafeNativeMethods.ITypeInfo typeInfo) >= 0)
+            if (source is IDispatchAccess.IDispatch dispatch && dispatch.GetTypeInfo(0, 1033, out ITypeInfo typeInfo) >= 0)
             {
                 //typeInfo.GetTypeAttr(out IntPtr pTypeAttr);
 
@@ -592,15 +593,16 @@ namespace Skrypton.RuntimeSupport
                 }
                 goto IL_67;
             }
-            UnsafeNativeMethods.ITypeInfo typeInfo = null;
-            string text2 = null;
-            string text3 = null;
-            string text4 = null;
-            UnsafeNativeMethods.IDispatch dispatch = VarName as UnsafeNativeMethods.IDispatch;
-            int num;
-            if (dispatch != null && dispatch.GetTypeInfo(0, 1033, out typeInfo) >= 0 && typeInfo.GetDocumentation(-1, out text2, out text3, out num, out text4) >= 0)
+            ITypeInfo typeInfo = null;
+            string strName = null;
+            string strDocString;
+            string strHelpFile;
+            IDispatchAccess.IDispatch dispatch = VarName as IDispatchAccess.IDispatch;
+            int dwHelpContext;
+            if (dispatch != null && dispatch.GetTypeInfo(0, 1033, out typeInfo) >= 0)
             {
-                text = text2;
+                typeInfo.GetDocumentation(-1, out strName, out strDocString, out dwHelpContext, out strHelpFile);
+                text = strName;
             }
         IL_67:
             if (text[0] == '_')
@@ -709,7 +711,7 @@ namespace Skrypton.RuntimeSupport
             void ReleaseVarDesc(IntPtr varDesc);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never), Guid("00020400-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        /* see IDispatchAccess.IDispatch [EditorBrowsable(EditorBrowsableState.Never), Guid("00020400-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         [ComImport]
         public interface IDispatch
         {
@@ -719,7 +721,7 @@ namespace Skrypton.RuntimeSupport
 
             //[System.Security.SecurityCritical]
             [PreserveSig]
-            int GetTypeInfo([In] int index, [In] int lcid, [MarshalAs(UnmanagedType.Interface)] out UnsafeNativeMethods.ITypeInfo pTypeInfo);
+            int GetTypeInfo([In, MarshalAs(UnmanagedType.U4)] int index, [In, MarshalAs(UnmanagedType.U4)] int lcid, [MarshalAs(UnmanagedType.Interface)] out UnsafeNativeMethods.ITypeInfo pTypeInfo);
 
             /// [System.Security.SecurityCritical]
             [PreserveSig]
@@ -729,7 +731,7 @@ namespace Skrypton.RuntimeSupport
             /// [System.Security.SecurityCritical]
             [PreserveSig]
             int Invoke();
-        }
+        }*/
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public enum tagSYSKIND

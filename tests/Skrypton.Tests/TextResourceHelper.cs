@@ -33,9 +33,9 @@
         public static Stream GetResourceStream(Type typeResourceAssembly, string resourceName)
         {
             if (typeResourceAssembly == null)
-                throw new ArgumentNullException("typeResourceAssembly");
+                throw new ArgumentNullException(nameof(typeResourceAssembly));
             if (string.IsNullOrEmpty(resourceName))
-                throw new ArgumentNullException("resourceName");
+                throw new ArgumentNullException(nameof(resourceName));
 
             Assembly resourceAssembly = typeResourceAssembly.Assembly;
             Stream resourceStream = resourceAssembly.GetManifestResourceStream(resourceName);

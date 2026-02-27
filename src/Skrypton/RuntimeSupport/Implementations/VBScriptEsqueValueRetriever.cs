@@ -37,7 +37,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             if ((absentDefaultMemberOnComObjectCacheOptions != AbsentDefaultMemberOnComObjectCacheOptions.CacheByTypeDescriptorClassName)
             && (absentDefaultMemberOnComObjectCacheOptions != AbsentDefaultMemberOnComObjectCacheOptions.DoNotCache))
-                throw new ArgumentOutOfRangeException("absentDefaultMemberOnComObjectCacheOptions");
+                throw new ArgumentOutOfRangeException(nameof(absentDefaultMemberOnComObjectCacheOptions));
 
             _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
             _absentDefaultMemberOnComObjectCacheOptions = absentDefaultMemberOnComObjectCacheOptions;
@@ -127,7 +127,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private DefaultMemberDetails GetDefaultMemberPresenceSummary(object o)
         {
             if (o == null)
-                throw new ArgumentNullException("o");
+                throw new ArgumentNullException(nameof(o));
 
             string cacheKeyIfApplicable;
             var oType = o.GetType();
@@ -201,7 +201,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private object GetDefaultValueFromObject(object o)
         {
             if (o == null)
-                throw new ArgumentNullException("o");
+                throw new ArgumentNullException(nameof(o));
 
             return InvokeGetter(o, null, new object[0], allowPrivateAccess: false, onlyConsiderMethods: false);
         }
@@ -221,7 +221,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool IsCLRTypeVBScriptValueType(Type t)
         {
             if (t == null)
-                throw new ArgumentNullException("t");
+                throw new ArgumentNullException(nameof(t));
 
             return t.IsValueType || typeof(DBNull).IsAssignableFrom(t) || typeof(string).IsAssignableFrom(t) || t.IsArray;
         }
@@ -378,7 +378,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     // Note: Even though double can hold larger numbers then decimal, VBScript prefers decimal - eg. in the loop
                     // "For i = CDbl(0) To CDbl(1) Step CCur(0.2)" the loop variable will be a decimal
                     if (v == null)
-                        throw new ArgumentNullException("v");
+                        throw new ArgumentNullException(nameof(v));
                     if (v is byte)
                         return Tuple.Create<int, Func<object, object>>(1, value => Convert.ToByte(value));
                     if (v is short)
@@ -608,7 +608,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // some weird cases (eg. http://stackoverflow.com/questions/42626484/msxmll-6-0-xmldomnodelist-fails-when-is-invoked-getenumerator,
             // where the DOM Node List from MSXML 6.0 implements IEnumerable but throws "The object's type must not be a Windows Runtime type"
             // if you try to actually call GetEnumerator.
-            if (IDispatchAccess.ImplementsIDispatch(o))
+            if (IDispatchAccess.ImplementsIDispatch(o, out IDispatchAccess.IDispatch oDispatch))
             {
                 object enumerator;
                 try
@@ -783,9 +783,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int callerLineNum = 0)
         {
             if (members == null)
-                throw new ArgumentNullException("members");
+                throw new ArgumentNullException(nameof(members));
             if (argumentProvider == null)
-                throw new ArgumentNullException("argumentProvider");
+                throw new ArgumentNullException(nameof(argumentProvider));
 
             // Note: The arguments are evaluated here before the CALL is attempted - so if the target or members are invalid then this is only
             // determined AFTER processing the arguments. This is correct behaviour (consistent with VBScript).
@@ -808,9 +808,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private object CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
         {
             if (members == null)
-                throw new ArgumentNullException("members");
+                throw new ArgumentNullException(nameof(members));
             if (arguments == null)
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
 
             var memberAccessorsArray = members.ToArray();
             if (memberAccessorsArray.Any(m => string.IsNullOrWhiteSpace(m)))
@@ -949,9 +949,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private object InvokeGetter(object target, string optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (arguments == null)
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
 
             var cacheKey = new InvokerCacheKey(target.GetType(), optionalName, arguments.Length, allowPrivateAccess, onlyConsiderMethods);
             GetInvoker invoker;
@@ -967,9 +967,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private GetInvoker GenerateGetInvoker(object target, string optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (arguments == null)
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
 
             var argumentsArray = arguments.ToArray();
             var targetType = target.GetType();
@@ -1013,7 +1013,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ).Compile();
             }
 
-            if (IDispatchAccess.ImplementsIDispatch(target))
+            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch targetDispatch))
             {
                 return (invokeTarget, invokeArguments) =>
                 {
@@ -1026,7 +1026,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten (don't try to catch exceptions here - it may be important to the caller
                         // if there was an IDispatchAccessException with particular values)
-                        dispId = IDispatchAccess.GetDispId(invokeTarget, optionalName);
+                        dispId = IDispatchAccess.GetDispId(targetDispatch, optionalName);
                     }
                     return IDispatchAccess.Invoke<object>(
                         invokeTarget,
@@ -1348,9 +1348,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private SetInvoker GenerateSetInvoker(object target, string optionalMemberAccessor, IEnumerable<object> arguments, bool allowPrivateAccess)
         {
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (arguments == null)
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
 
             // If there are no member accessors but there are arguments then firstly attempt array access, this is the only time that array access is acceptable
             // (o.Names(0) is not allowed by VBScript if the "Names" property is an array, it will only work if Names is a Function or indexed Property and since
@@ -1404,7 +1404,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ).Compile();
             }
 
-            if (IDispatchAccess.ImplementsIDispatch(target))
+            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch targetDispatch))
             {
                 return (invokeTarget, invokeArguments, value) =>
                 {
@@ -1415,7 +1415,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     {
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten
-                        dispId = IDispatchAccess.GetDispId(invokeTarget, optionalMemberAccessor);
+                        dispId = IDispatchAccess.GetDispId(targetDispatch, optionalMemberAccessor);
                     }
                     IDispatchAccess.Invoke<object>(
                         invokeTarget,
@@ -1493,7 +1493,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private Expression GetVBScriptStyleArrayIndexParsingExpression(Expression index)
         {
             if (index == null)
-                throw new ArgumentNullException("index");
+                throw new ArgumentNullException(nameof(index));
 
             var returnValueParameter = Expression.Parameter(typeof(int), "retVal");
             return Expression.Block(
@@ -1555,7 +1555,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Null/blank message specified");
             if (exceptionParameter == null)
-                throw new ArgumentNullException("exceptionParameter");
+                throw new ArgumentNullException(nameof(exceptionParameter));
 
             return Expression.New(
                 typeof(ArgumentException).GetConstructor(new[] { typeof(string), typeof(Exception) }),
@@ -1574,7 +1574,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private Type GetNonByRefType(Type byRefType)
         {
             if (byRefType == null)
-                throw new ArgumentNullException("byRefType");
+                throw new ArgumentNullException(nameof(byRefType));
             if (!byRefType.IsByRef)
                 throw new ArgumentException("Must be a type which reports IsByRef true");
 
@@ -1594,9 +1594,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private object WalkMemberAccessors(object target, IEnumerable<string> memberAccessors, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (memberAccessors == null)
-                throw new ArgumentNullException("memberAccessors");
+                throw new ArgumentNullException(nameof(memberAccessors));
 
             foreach (var memberAccessor in memberAccessors)
             {
@@ -1615,9 +1615,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private IEnumerable<MethodInfo> GetDefaultGetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             return GetGetMethods(type, null, DefaultMemberBehaviourOptions.MustBeDefault, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess);
         }
@@ -1625,9 +1625,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private MethodInfo[] GetDefaultSetMethods(Type type, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             return GetSetMethods(type, null, DefaultMemberBehaviourOptions.MustBeDefault, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess);
         }
@@ -1635,11 +1635,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         private IEnumerable<MethodInfo> GetNamedGetMethods(Type type, string name, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Null/blank name specified");
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             // There the nameRewriter WILL be considered in case it's trying to access classes we've translated. However, there's also a chance that
             // we could be accessing a non-IDispatch CLR type from somewhere, so GetNamedGetMethods will try to match using the nameRewriter first and
@@ -1657,11 +1657,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         private IEnumerable<MethodInfo> GetNamedSetMethods(Type type, string name, int numberOfArguments, bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Null/blank name specified");
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             // There the nameRewriter WILL be considered in case it's trying to access classes we've translated. However, there's also a chance that
             // we could be accessing a non-IDispatch CLR type from somewhere, so GetNamedGetMethods will try to match using the nameRewriter first and
@@ -1684,13 +1684,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (!Enum.IsDefined(typeof(DefaultMemberBehaviourOptions), defaultMemberBehaviour))
-                throw new ArgumentOutOfRangeException("defaultMemberBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(defaultMemberBehaviour));
             if (!Enum.IsDefined(typeof(MemberNameMatchBehaviourOptions), memberNameMatchBehaviour))
-                throw new ArgumentOutOfRangeException("memberNameMatchBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             // There is some crazy behaviour around default member accesses when VBScript and COM are combined, which need to be reflected here. For
             // example, if C# class is wrapped up as a COM object and consumed by VBScript and that class is decorated with ComVisible(true) and an
@@ -1799,7 +1799,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool ParameterIsObjectParamsArray(ParameterInfo parameter)
         {
             if (parameter == null)
-                throw new ArgumentNullException("parameter");
+                throw new ArgumentNullException(nameof(parameter));
 
             return (parameter.ParameterType == typeof(object[])) && (parameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0);
         }
@@ -1813,13 +1813,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (!Enum.IsDefined(typeof(DefaultMemberBehaviourOptions), defaultMemberBehaviour))
-                throw new ArgumentOutOfRangeException("defaultMemberBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(defaultMemberBehaviour));
             if (!Enum.IsDefined(typeof(MemberNameMatchBehaviourOptions), memberNameMatchBehaviour))
-                throw new ArgumentOutOfRangeException("memberNameMatchBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
             if (numberOfArguments < 0)
-                throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
             var nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
             return
@@ -1849,7 +1849,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private IEnumerable<MethodInfo> GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             var bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static; // This gets all public methods, whether they're declared in the specified type or anywhere in its inheritance tree
             if (allowPrivateAccess)
@@ -1864,9 +1864,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private int GetMemberInheritanceDepth(MemberInfo memberInfo, Type type)
         {
             if (memberInfo == null)
-                throw new ArgumentNullException("memberInfo");
+                throw new ArgumentNullException(nameof(memberInfo));
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             if (memberInfo.DeclaringType == type)
                 return 0;
@@ -1878,9 +1878,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private Predicate<string> GetNameMatcher(string name, MemberNameMatchBehaviourOptions memberNameMatchBehaviour)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             if (!Enum.IsDefined(typeof(MemberNameMatchBehaviourOptions), memberNameMatchBehaviour))
-                throw new ArgumentOutOfRangeException("memberNameMatchBehaviour");
+                throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
 
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.CaseInsensitive)
                 return n => n.Equals(name, StringComparison.InvariantCultureIgnoreCase);
@@ -1891,7 +1891,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 var rewritterName = _nameRewriter(name, 0);
                 return n => n == rewritterName;
             }
-            throw new ArgumentOutOfRangeException("memberNameMatchBehaviour");
+            throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
         }
 
         private enum DefaultMemberBehaviourOptions
@@ -1910,7 +1910,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool TypeIsTranslatedFromVBScript(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             return type.GetCustomAttributes(typeof(SourceClassName), true).Any();
         }
@@ -1918,7 +1918,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool TypeIsComVisible(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // For a type to be considered ComVisible, there must be a ComVisible(true) attribute on it or one of its explicitly derived types, having it
             // only on object (which everything implicitly derives from) is not sufficient since then everything would be ComVisible (since object has
@@ -1941,7 +1941,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool MemberHasDispIdZero(MemberInfo memberInfo)
         {
             if (memberInfo == null)
-                throw new ArgumentNullException("memberInfo");
+                throw new ArgumentNullException(nameof(memberInfo));
 
             return memberInfo.GetCustomAttributes(typeof(DispIdAttribute), inherit: true)
                 .Cast<DispIdAttribute>()
@@ -1951,7 +1951,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool IsDefaultMember(MemberInfo memberInfo)
         {
             if (memberInfo == null)
-                throw new ArgumentNullException("memberInfo");
+                throw new ArgumentNullException(nameof(memberInfo));
 
             var defaultMemberAttributeForContainingType = memberInfo.DeclaringType.GetCustomAttribute<DefaultMemberAttribute>(inherit: true);
             return (defaultMemberAttributeForContainingType != null) && (defaultMemberAttributeForContainingType.MemberName == memberInfo.Name);
@@ -1960,7 +1960,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool AnyDispIdZeroMemberExists(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             return type.GetMembers().Any(m => MemberHasDispIdZero(m));
         }
@@ -1968,7 +1968,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool DispIdZeroIsAmbiguous(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // 2016-03-03 DWR: Used to just check whether there were multiple members with DispId zero, however this would result in a false positive for a property such as:
             //
@@ -2021,12 +2021,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             private readonly int _hashCode;
             public InvokerCacheKey(object targetType, string optionalName, int numberOfArguments, bool allowPrivateAccess, bool onlyConsiderMethods)
             {
-                if (targetType == null)
-                    throw new ArgumentNullException("targetType");
                 if (numberOfArguments < 0)
-                    throw new ArgumentOutOfRangeException("numberOfArguments", "must be zero or greater");
+                    throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
-                TargetType = targetType;
+                TargetType = targetType ?? throw new ArgumentNullException(nameof(targetType));
                 OptionalName = optionalName;
                 NumberOfArguments = numberOfArguments;
                 AllowPrivateAccess = allowPrivateAccess;
@@ -2094,10 +2092,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             private readonly IEnumerator _enumerator;
             public ManagedEnumeratorWrapper(IEnumerator enumerator)
             {
-                if (enumerator == null)
-                    throw new ArgumentNullException("enumerator");
-
-                _enumerator = enumerator;
+                _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
             }
 
             public IEnumerator GetEnumerator()
@@ -2112,10 +2107,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             private object _current;
             public IDispatchEnumeratorWrapper(IEnumVariant enumerator)
             {
-                if (enumerator == null)
-                    throw new ArgumentNullException("enumerator");
-
-                _enumerator = enumerator;
+                _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
                 _current = null;
             }
 
@@ -2142,18 +2134,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             private readonly Action<object> _reset;
             public DuckTypingEnumeratorWrapper(object enumerator, Func<object, bool> moveNext, Func<object, object> getCurrent, Action<object> reset)
             {
-                if (enumerator == null)
-                    throw new ArgumentNullException(nameof(enumerator));
-                if (moveNext == null)
-                    throw new ArgumentNullException(nameof(moveNext));
-                if (getCurrent == null)
-                    throw new ArgumentNullException(nameof(getCurrent));
-                if (reset == null)
-                    throw new ArgumentNullException(nameof(reset));
-                _enumerator = enumerator;
-                _moveNext = moveNext;
-                _getCurrent = getCurrent;
-                _reset = reset;
+                _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
+                _moveNext = moveNext ?? throw new ArgumentNullException(nameof(moveNext));
+                _getCurrent = getCurrent ?? throw new ArgumentNullException(nameof(getCurrent));
+                _reset = reset ?? throw new ArgumentNullException(nameof(reset));
             }
             public object Current { get { return _getCurrent(_enumerator); } }
             public bool MoveNext() { return _moveNext(_enumerator); }

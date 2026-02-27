@@ -12,7 +12,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static string ToLiteral(this string input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             var literal = new StringBuilder(input.Length + 2);
             literal.Append("\"");

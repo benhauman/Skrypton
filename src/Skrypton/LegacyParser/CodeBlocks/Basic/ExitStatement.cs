@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (!Enum.IsDefined(typeof(ExitableStatementType), statementType))
                 throw new ArgumentException("Invalid statementType value specified [" + statementType.ToString() + "]");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             StatementType = statementType;
             LineIndex = lineIndex;

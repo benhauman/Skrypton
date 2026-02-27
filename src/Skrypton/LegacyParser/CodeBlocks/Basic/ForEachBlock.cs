@@ -18,15 +18,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public ForEachBlock(NameToken loopVar, Expression loopSrc, List<ICodeBlock> statements)
         {
-            if (loopVar == null)
-                throw new ArgumentNullException("loopVar");
-            if (loopSrc == null)
-                throw new ArgumentNullException("loopSrc");
-            if (statements == null)
-                throw new ArgumentNullException("statements");
-            this.LoopVar = loopVar;
-            this.LoopSrc = loopSrc;
-            this.Statements = statements;
+            this.LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
+            this.LoopSrc = loopSrc ?? throw new ArgumentNullException(nameof(loopSrc));
+            this.Statements = statements ?? throw new ArgumentNullException(nameof(statements));
         }
 
         // =======================================================================================

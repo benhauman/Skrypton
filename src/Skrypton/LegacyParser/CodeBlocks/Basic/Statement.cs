@@ -24,9 +24,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public Statement(IEnumerable<IToken> tokens, CallPrefixOptions callPrefix)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (!Enum.IsDefined(typeof(CallPrefixOptions), callPrefix))
-                throw new ArgumentOutOfRangeException("callPrefix");
+                throw new ArgumentOutOfRangeException(nameof(callPrefix));
 
             Tokens = tokens.ToList().AsReadOnly();
             if (!Tokens.Any())
@@ -166,9 +166,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         private static IEnumerable<IToken> GetBracketStandardisedTokens(IEnumerable<IToken> tokens, CallPrefixOptions callPrefix, NameToken withReferenceIfAny)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (!Enum.IsDefined(typeof(CallPrefixOptions), callPrefix))
-                throw new ArgumentOutOfRangeException("callPrefix");
+                throw new ArgumentOutOfRangeException(nameof(callPrefix));
 
             var tokenArray = tokens.ToArray();
             if (tokenArray.Length == 0)
@@ -412,7 +412,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         private static bool IsTokenAcceptableToCommenceCallExecution(IToken token, IToken nextTokenIfAny)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             // If the current token is a MemberAccessorOrDecimalPointToken and the next token is a NameToken then this must be a statement that
             // accesses a method or property within a "WITH" construct (in which case, the method or property accesses will need to be resolved

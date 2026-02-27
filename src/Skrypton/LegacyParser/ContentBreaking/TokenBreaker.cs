@@ -16,7 +16,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         public static IEnumerable<IToken> BreakUnprocessedToken(UnprocessedContentToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             var lineIndex = token.LineIndex;
             var buffer = "";

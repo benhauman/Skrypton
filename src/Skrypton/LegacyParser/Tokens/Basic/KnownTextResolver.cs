@@ -713,7 +713,7 @@ static class StringExtensionUpper
     internal static StringUpper ToUpperX(this string content)
     {
         if (content == null)
-            throw new ArgumentNullException("content");
+            throw new ArgumentNullException(nameof(content));
 
         return new StringUpper(content);
     }

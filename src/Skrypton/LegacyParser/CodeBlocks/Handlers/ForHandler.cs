@@ -14,7 +14,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         public override ICodeBlock Process(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 return null;
 
@@ -29,7 +29,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private ICodeBlock handleForEach(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             if (!base.checkAtomTokenPattern(tokens, new string[] { "FOR", "EACH" }, false))
                 throw new ArgumentException("Invalid tokens - doesn't start FOR EACH");
@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private ICodeBlock handleForStandard(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             if (!base.checkAtomTokenPattern(tokens, new string[] { "FOR" }, false))
                 throw new ArgumentException("Invalid tokens - doesn't start FOR EACH");
@@ -117,7 +117,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private List<IToken> getExpressionContent(List<IToken> tokens, int offset, string endMarkerContent)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if ((offset < 0) || (offset >= tokens.Count))
                 throw new ArgumentException("Invalid offset value [" + offset.ToString() + "]");
             if ((endMarkerContent != null) && (endMarkerContent.Trim() == ""))

@@ -19,9 +19,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public static string[] GetTranslatedStatements(CultureInfo culture, string content, NonNullImmutableList<string> externalDependencies)
         {
             if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
+                throw new ArgumentNullException(nameof(externalDependencies));
 
             return DefaultTranslator.TranslateWithoutScaffolding(culture, content, externalDependencies) // Executable:159 tests
                 .Select(s => s.Content)

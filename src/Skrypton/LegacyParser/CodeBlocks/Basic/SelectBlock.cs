@@ -16,12 +16,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             IEnumerable<CommentStatement> openingComments,
             IEnumerable<CaseBlockSegment> content)
         {
-            if (expression == null)
-                throw new ArgumentNullException("expression");
             if (openingComments == null)
-                throw new ArgumentNullException("openingComments");
+                throw new ArgumentNullException(nameof(openingComments));
             if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
 
             OpeningComments = openingComments.ToArray();
             if (OpeningComments.Any(c => c == null))
@@ -36,7 +34,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (((IEnumerable<CaseBlockSegment>)Content).Reverse().Skip(1).Any(c => c is CaseBlockElseSegment))
                 throw new ArgumentException("Only the last content segment may be a CaseBlockElseSegment");
 
-            Expression = expression;
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
         // =======================================================================================
@@ -85,7 +83,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             protected CaseBlockSegment(IEnumerable<ICodeBlock> statements)
             {
                 if (statements == null)
-                    throw new ArgumentNullException("statements");
+                    throw new ArgumentNullException(nameof(statements));
 
                 Statements = statements.ToArray();
                 if (Statements.Any(v => v == null))
@@ -104,7 +102,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             public CaseBlockExpressionSegment(IEnumerable<Expression> values, IEnumerable<ICodeBlock> statements) : base(statements)
             {
                 if (values == null)
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
 
                 Values = values.ToArray();
                 if (Values.Any(v => v == null))

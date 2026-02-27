@@ -8,7 +8,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public AbstractEndOfStatementToken(int lineIndex)
         {
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
             LineIndex = lineIndex;
         }

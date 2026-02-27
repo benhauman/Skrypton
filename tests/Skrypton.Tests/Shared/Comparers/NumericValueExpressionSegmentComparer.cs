@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(NumericValueExpressionSegment x, NumericValueExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             return x.Token.Content.Equals(y.Token.Content, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -19,7 +19,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(NumericValueExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

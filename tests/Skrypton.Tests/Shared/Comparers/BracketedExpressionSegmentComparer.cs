@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(BracketedExpressionSegment x, BracketedExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             var expressionSegmentSetComparer = new ExpressionSegmentSetComparer();
 			return expressionSegmentSetComparer.Equals(x.Segments, y.Segments);
@@ -20,7 +20,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(BracketedExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

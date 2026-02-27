@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(CallSetItemExpressionSegment x, CallSetItemExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             var tokenSetComparer = new TokenSetComparer();
             if (!tokenSetComparer.Equals(x.MemberAccessTokens, y.MemberAccessTokens))
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(CallSetItemExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

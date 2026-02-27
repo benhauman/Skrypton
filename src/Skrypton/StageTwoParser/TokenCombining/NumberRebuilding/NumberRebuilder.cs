@@ -19,7 +19,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         public static IEnumerable<IToken> Rebuild(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             // Note: There are some limitations to what can be done here - for example "Test -1" can not be have the "-" and "1" recombined since,
             // at this point, we don't know if "Test" is a value that 1 should be subtracted from or whether it's a function that is being

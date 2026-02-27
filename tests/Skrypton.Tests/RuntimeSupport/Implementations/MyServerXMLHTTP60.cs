@@ -12,7 +12,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     //[Guid("F5078F35-C551-11D3-89B9-0000F81FE221")]   // CLSID_ServerXMLHTTP60
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal sealed class MyServerXMLHTTP60 : IDispatchBase // : IServerXMLHTTP60
+    internal sealed class MyServerXMLHTTP60 : IDispatchBase.IDispatchOnReflect//IDispatchBase // : IServerXMLHTTP60
     {
         /*
             Summary Table
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
               - Show how to enumerate all MSXML COM classes programmatically
         */
 
-        public MyServerXMLHTTP60()
+        public MyServerXMLHTTP60() : base(typeof(MyServerXMLHTTP60))
         {
         }
 

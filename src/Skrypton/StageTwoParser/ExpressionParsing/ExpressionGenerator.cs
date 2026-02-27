@@ -17,9 +17,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, IToken directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             return Generate(new TokenNavigator(tokens), 0, directedWithReferenceIfAny, warningLogger);
         }
@@ -30,11 +30,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static IEnumerable<Expression> Generate(TokenNavigator tokenNavigator, int depth, IToken directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokenNavigator == null)
-                throw new ArgumentNullException("tokenNavigator");
+                throw new ArgumentNullException(nameof(tokenNavigator));
             if (depth < 0)
-                throw new ArgumentOutOfRangeException("depth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(depth), "must be zero or greater");
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             var expressions = new List<Expression>();
             var expressionSegments = new List<IExpressionSegment>();
@@ -206,7 +206,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static bool WillBeFirstSegmentInCallExpression(IEnumerable<IExpressionSegment> expressionSegmentBuffer)
         {
             if (expressionSegmentBuffer == null)
-                throw new ArgumentNullException("expressionSegmentBuffer");
+                throw new ArgumentNullException(nameof(expressionSegmentBuffer));
 
             // If the expressionSegmentBuffer is empty and the next segment to be to processed is a part of a call expression then it will definitely be the
             // first of its segments. Same logic applies if the previous expression segment was an operator since this will be the first part of an expression
@@ -222,7 +222,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static Expression GetExpression(IEnumerable<IExpressionSegment> segments)
         {
             if (segments == null)
-                throw new ArgumentNullException("segments");
+                throw new ArgumentNullException(nameof(segments));
 
             var segmentsArray = segments.ToArray();
             if (!segmentsArray.Any())
@@ -326,19 +326,19 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static IEnumerable<IExpressionSegment> BracketOffTerms(IEnumerable<IExpressionSegment> segments, int index, int count)
         {
             if (segments == null)
-                throw new ArgumentNullException("segments");
+                throw new ArgumentNullException(nameof(segments));
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(index), "must be zero or greater");
             if (count < 2)
-                throw new ArgumentOutOfRangeException("count", "must be at least two"); // Otherwise there's no point bracketing off the segments!
+                throw new ArgumentOutOfRangeException(nameof(count), "must be at least two"); // Otherwise there's no point bracketing off the segments!
 
             var segmentsArray = segments.ToArray();
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
             if (index > (segmentsArray.Length - 1))
-                throw new ArgumentOutOfRangeException("index", "must refer to a location in the segments set");
+                throw new ArgumentOutOfRangeException(nameof(index), "must refer to a location in the segments set");
             if ((index + count) > segmentsArray.Length)
-                throw new ArgumentOutOfRangeException("count", "index + count must not go beyond the end of the segments set");
+                throw new ArgumentOutOfRangeException(nameof(count), "index + count must not go beyond the end of the segments set");
 
             return segmentsArray.Take(index)
                 .Concat(new[] {
@@ -364,9 +364,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             Action<string> warningLogger)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             var tokensList = tokens.ToList();
             if (!tokensList.Any())
@@ -509,7 +509,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static IExpressionSegment WrapExpressionSegments(IEnumerable<IExpressionSegment> segments, bool unwrapSingleBracketedTerm)
         {
             if (segments == null)
-                throw new ArgumentNullException("segments");
+                throw new ArgumentNullException(nameof(segments));
 
             var segmentsArray = segments.ToArray();
             if (segmentsArray.Any(s => s == null))
@@ -549,7 +549,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static Expression GetCallExpressionSegmentGroupedExpression(IEnumerable<IExpressionSegment> segments)
         {
             if (segments == null)
-                throw new ArgumentNullException("segments");
+                throw new ArgumentNullException(nameof(segments));
 
             var callSetItemExpressionSegmentBuffer = new List<CallSetItemExpressionSegment>();
             var expressionSegments = new List<IExpressionSegment>();
@@ -606,9 +606,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             public int Compare(Tuple<OperationExpressionSegment, int> x, Tuple<OperationExpressionSegment, int> y)
             {
                 if (x == null)
-                    throw new ArgumentNullException("x");
+                    throw new ArgumentNullException(nameof(x));
                 if (y == null)
-                    throw new ArgumentNullException("y");
+                    throw new ArgumentNullException(nameof(y));
 
                 var operatorTypeValueX = GetOperatorTypeValue(x.Item1);
                 var operatorTypeValueY = GetOperatorTypeValue(y.Item1);
@@ -631,7 +631,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             private static int GetOperatorTypeValue(OperationExpressionSegment segment)
             {
                 if (segment == null)
-                    throw new ArgumentNullException("segment");
+                    throw new ArgumentNullException(nameof(segment));
 
                 if (segment.Token is LogicalOperatorToken)
                     return 3;
@@ -644,7 +644,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             private static int GetContentValue(OperationExpressionSegment segment)
             {
                 if (segment == null)
-                    throw new ArgumentNullException("segment");
+                    throw new ArgumentNullException(nameof(segment));
 
                 var operatorContentOptions =
                     AtomToken.ArithmeticAndStringOperatorTokenValues
@@ -665,7 +665,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             public TokenNavigator(IEnumerable<IToken> tokens)
             {
                 if (tokens == null)
-                    throw new ArgumentNullException("tokens");
+                    throw new ArgumentNullException(nameof(tokens));
 
                 _tokens = tokens.ToArray();
                 if (_tokens.Any(t => t == null))

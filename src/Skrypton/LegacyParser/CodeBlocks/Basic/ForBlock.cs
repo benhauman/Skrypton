@@ -14,19 +14,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     {
         public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression loopStep, List<ICodeBlock> statements)
         {
-            if (loopVar == null)
-                throw new ArgumentNullException("loopVar");
-            if (loopFrom == null)
-                throw new ArgumentNullException("loopFrom");
-            if (loopTo == null)
-                throw new ArgumentNullException("loopTo");
-            if (statements == null)
-                throw new ArgumentNullException("statements");
-            LoopVar = loopVar;
-            LoopFrom = loopFrom;
-            LoopTo = loopTo;
+            LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
+            LoopFrom = loopFrom ?? throw new ArgumentNullException(nameof(loopFrom));
+            LoopTo = loopTo ?? throw new ArgumentNullException(nameof(loopTo));
             LoopStep = loopStep;
-            Statements = statements;
+            Statements = statements ?? throw new ArgumentNullException(nameof(statements));
         }
 
         // =======================================================================================

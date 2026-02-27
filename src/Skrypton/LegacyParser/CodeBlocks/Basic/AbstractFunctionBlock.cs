@@ -22,14 +22,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             IEnumerable<Parameter> parameters,
             IEnumerable<ICodeBlock> statements)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
             if (!isPublic && isDefault)
                 throw new ArgumentException("Can not be default AND private");
             if (parameters == null)
-                throw new ArgumentNullException("parameters");
+                throw new ArgumentNullException(nameof(parameters));
             if (statements == null)
-                throw new ArgumentNullException("statements");
+                throw new ArgumentNullException(nameof(statements));
 
             Parameters = parameters.ToList().AsReadOnly();
             if (Parameters.Any(p => p == null))
@@ -41,7 +39,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             IsPublic = isPublic;
             IsDefault = isDefault;
             HasReturnValue = hasReturnValue;
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         protected abstract string keyWord { get; }
@@ -102,11 +100,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             public Parameter(bool byRef, NameToken name, bool isArray)
             {
-                if (name == null)
-                    throw new ArgumentNullException("name");
-
                 this.ByRef = byRef;
-                this.Name = name;
+                this.Name = name ?? throw new ArgumentNullException(nameof(name));
                 this.IsArray = isArray;
             }
 

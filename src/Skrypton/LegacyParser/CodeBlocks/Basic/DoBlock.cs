@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public DoBlock(Expression conditionIfAny, bool isPreCondition, bool doUntil, bool supportsExit, IEnumerable<ICodeBlock> statements, int lineIndexOfStartOfConstruct)
         {
             if (statements == null)
-                throw new ArgumentNullException("statements");
+                throw new ArgumentNullException(nameof(statements));
             if (lineIndexOfStartOfConstruct < 0)
                 throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndexOfStartOfConstruct");
 

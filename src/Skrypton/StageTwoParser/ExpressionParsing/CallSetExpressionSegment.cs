@@ -17,7 +17,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         public CallSetExpressionSegment(IEnumerable<CallSetItemExpressionSegment> callExpressionSegments)
         {
             if (callExpressionSegments == null)
-                throw new ArgumentNullException("callExpressionSegments");
+                throw new ArgumentNullException(nameof(callExpressionSegments));
 
             CallExpressionSegments = callExpressionSegments.ToList().AsReadOnly();
             if (CallExpressionSegments.Count() < 2)

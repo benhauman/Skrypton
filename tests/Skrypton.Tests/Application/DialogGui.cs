@@ -140,15 +140,18 @@ WScript.Echo xmlhttp.responseText
         }
         static void Test_IDispatch_Invoke()
         {
+            //works only on windows
+            //if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+            object comObj = DefaultRuntimeFunctionalityProvider.TestCreateComObjectTest("Msxml2.ServerXMLHTTP.6.0", typeof(MyServerXMLHTTP60));
             // Create COM object
-//#pragma warning disable CA1416 // Validate platform compatibility
-            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
-//#pragma warning restore CA1416 // Validate platform compatibility
-            object comObj = Activator.CreateInstance(t);
+            //#pragma warning disable CA1416 // Validate platform compatibility
+            //Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
+            //#pragma warning restore CA1416 // Validate platform compatibility
+            //object comObj = Activator.CreateInstance(t);
 
             // Cast to IDispatch
-            //var disp = (IDispatch)comObj;
-            var disp = comObj;
+            //var disp = (IDispatchAccess.IDispatch)comObj;
+            var disp = (IReflect)comObj;
 
             // --- setOption(2, 13056) ---
             InvokeMethod(disp, "setOption", 2, 13056);
@@ -157,19 +160,20 @@ WScript.Echo xmlhttp.responseText
             string url = "https://httpbin.org/get";
 
             // --- open("GET", url, false, "myusr2", "mypwd2") ---
-            //InvokeMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
-            IDispatchAccess.CallMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
+            InvokeMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
+            //IDispatchAccess.CallMethodU(disp, "open", "GET", url, false, "myusr2", "mypwd2");
 
             // --- send() ---
-            //InvokeMethod(disp, "send");
-            IDispatchAccess.CallMethod(disp, "send");
+            InvokeMethod(disp, "send");
+            //IDispatchAccess.CallMethodU(disp, "send");
 
             // --- status property ---
-            //object status = GetProperty(disp, "status");
-            object status = IDispatchAccess.GetProperty(disp, "status");
+            object status = InvokePropertyGet(disp, "status");
+            //object status = IDispatchAccess.GetProperty(disp, "status");
 
             // --- responseText property ---
-            object responseText = IDispatchAccess.GetProperty(disp, "responseText");
+            object responseText = InvokePropertyGet(disp, "responseText");
+            //object responseText = IDispatchAccess.GetProperty(disp, "responseText");
 
             Console.WriteLine("Status: " + status);
             Console.WriteLine("Response:");
@@ -271,7 +275,7 @@ WScript.Echo xmlhttp.responseText
             Test_Xml();
             TestCS();
             TestCS_IDispatch();
-            Test_IDispatch_Invoke();
+            Test_IDispatch_Invoke(); //works only on windows
             var dialog = new DialogBuilder()
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
@@ -523,10 +527,26 @@ WScript.Echo xmlhttp.responseText
             CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences);
         }
 
-        // Resolve DISPID and call a method
-
-        static object InvokeMethod(object disp, string name, params object[] args)
+        static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
         {
+            return IDispatchAccess.GetProperty(disp, name);
+        }
+
+        internal const BindingFlags BindingFlagsVBScript = BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase;
+        static object InvokePropertyGet(IReflect disp, string name)
+        {
+            return disp.GetProperty(name, BindingFlagsVBScript);
+        }
+        static object InvokeMethod(IReflect disp, string name, params object[] args)
+        {
+            var method = disp.GetMethod(name, BindingFlagsVBScript);
+            return method.Invoke(disp, args);
+        }
+
+        // Resolve DISPID and call a method
+        static object InvokeMethod(IDispatchAccess.IDispatch disp, string name, params object[] args)
+        {
+            //IReflect reflect =
             int dispid = IDispatchAccess.GetDispId(disp, name);
 
             // COM expects arguments in reverse order

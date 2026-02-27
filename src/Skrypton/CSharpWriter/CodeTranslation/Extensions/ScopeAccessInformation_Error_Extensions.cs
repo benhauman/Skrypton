@@ -10,7 +10,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static ScopeAccessInformation SetErrorRegistrationToken(this ScopeAccessInformation scopeAccessInformation, CSharpName errorRegistrationTokenIfAny)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             return new ScopeAccessInformation(
                 scopeAccessInformation.Parent,
@@ -37,9 +37,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static bool MayRequireErrorWrapping(this ScopeAccessInformation scopeAccessInformation, ICodeBlock codeBlock)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (codeBlock == null)
-                throw new ArgumentNullException("codeBlock");
+                throw new ArgumentNullException(nameof(codeBlock));
 
             // If the scopeAccessInformation is not configured to allow error-trapping then always return false
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
@@ -126,11 +126,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             NonNullImmutableList<IHaveNestedContent> parentCodeBlocksAroundPotentialAncestors)
         {
             if (codeBlock == null)
-                throw new ArgumentNullException("codeBlock");
+                throw new ArgumentNullException(nameof(codeBlock));
             if (potentialAncesterCodeBlocks == null)
-                throw new ArgumentNullException("potentialAncesterCodeBlocks");
+                throw new ArgumentNullException(nameof(potentialAncesterCodeBlocks));
             if (parentCodeBlocksAroundPotentialAncestors == null)
-                throw new ArgumentNullException("parentCodeBlocksAroundPotentialAncestors");
+                throw new ArgumentNullException(nameof(parentCodeBlocksAroundPotentialAncestors));
 
             foreach (var potentialAncesterCodeBlock in potentialAncesterCodeBlocks)
             {
@@ -156,13 +156,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         {
             public CodeBlockWithinScopeDefiningParent(ICodeBlock codeBlock, NonNullImmutableList<IHaveNestedContent> parentsWithinScope)
             {
-                if (codeBlock == null)
-                    throw new ArgumentNullException("codeBlock");
-                if (parentsWithinScope == null)
-                    throw new ArgumentNullException("parentsWithinScope");
-
-                CodeBlock = codeBlock;
-                ParentsWithinScope = parentsWithinScope;
+                CodeBlock = codeBlock ?? throw new ArgumentNullException(nameof(codeBlock));
+                ParentsWithinScope = parentsWithinScope ?? throw new ArgumentNullException(nameof(parentsWithinScope));
             }
 
             /// <summary>

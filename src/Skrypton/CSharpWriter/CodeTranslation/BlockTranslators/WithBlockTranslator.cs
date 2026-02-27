@@ -26,23 +26,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(WithBlock withBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (withBlock == null)
-                throw new ArgumentNullException("withBlock");
+                throw new ArgumentNullException(nameof(withBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             var translatedTargetReference = _statementTranslator.Translate(withBlock.Target, scopeAccessInformation, ExpressionReturnTypeOptions.Reference, _logger.Warning);
             var undeclaredVariables = translatedTargetReference.VariablesAccessed
@@ -96,9 +91,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             return base.TranslateCommon(
                 base.GetWithinFunctionBlockTranslators(),

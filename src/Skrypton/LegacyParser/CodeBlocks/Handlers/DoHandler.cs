@@ -14,7 +14,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         public override ICodeBlock Process(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 return null;
 
@@ -109,7 +109,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         private Expression ExtractConditionFromTokens(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (tokens.Count == 0)
                 throw new ArgumentException("No tokens to extract content from");
 

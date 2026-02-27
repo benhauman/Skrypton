@@ -15,7 +15,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         public static IEnumerable<ICodeBlock> GetAllNestedBlocks(this IHaveNestedContent nestedContentBlock)
         {
             if (nestedContentBlock == null)
-                throw new ArgumentNullException("nestedContentBlock");
+                throw new ArgumentNullException(nameof(nestedContentBlock));
 
             foreach (var codeBlock in nestedContentBlock.AllExecutableBlocks)
             {
@@ -38,7 +38,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         public static bool ContainsLoopThatContainsMismatchedExitThatMustBeHandledAtThisLevel(this IHaveNestedContent nestedContentBlock)
         {
             if (nestedContentBlock == null)
-                throw new ArgumentNullException("nestedContentBlock");
+                throw new ArgumentNullException(nameof(nestedContentBlock));
 
             foreach (var codeBlock in nestedContentBlock.AllExecutableBlocks)
             {
@@ -84,9 +84,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private static bool ContainsMismatchedExitThatMustBeHandledAtThisLevel(IHaveNestedContent nestedContentBlock, ExitStatement.ExitableStatementType expectedExitType)
         {
             if (nestedContentBlock == null)
-                throw new ArgumentNullException("nestedContentBlock");
+                throw new ArgumentNullException(nameof(nestedContentBlock));
             if (!Enum.IsDefined(typeof(ExitStatement.ExitableStatementType), expectedExitType))
-                throw new ArgumentOutOfRangeException("expectedExitType");
+                throw new ArgumentOutOfRangeException(nameof(expectedExitType));
 
             foreach (var codeBlock in nestedContentBlock.AllExecutableBlocks)
             {

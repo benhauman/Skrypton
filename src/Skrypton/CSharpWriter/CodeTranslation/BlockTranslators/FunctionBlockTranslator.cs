@@ -30,23 +30,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (functionBlock == null)
-                throw new ArgumentNullException("functionBlock");
+                throw new ArgumentNullException(nameof(functionBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             var isSingleReturnValueStatementFunction = IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation);
             var returnValueName = functionBlock.HasReturnValue
@@ -129,9 +124,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             NonNullImmutableList<BlockTranslationAttempter> blockTranslators;
             if (isSingleReturnValueStatementFunction)
@@ -159,13 +154,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth)
         {
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (block == null)
-                throw new ArgumentNullException("block");
+                throw new ArgumentNullException(nameof(block));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             var valueSettingStatement = block as ValueSettingStatement;
             if (valueSettingStatement == null)
@@ -196,13 +191,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private IEnumerable<TranslatedStatement> TranslateFunctionHeader(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, CSharpName returnValueNameIfAny, int indentationDepth)
         {
             if (functionBlock == null)
-                throw new ArgumentNullException("functionBlock");
+                throw new ArgumentNullException(nameof(functionBlock));
             if (functionBlock.HasReturnValue && (returnValueNameIfAny == null))
                 throw new ArgumentException("returnValueNameIfAny must not be null if functionBlock.HasReturnValue is true");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             var content = new StringBuilder();
             content.Append(functionBlock.IsPublic ? "public" : "private");
@@ -280,9 +275,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private bool IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (functionBlock == null)
-                throw new ArgumentNullException("functionBlock");
+                throw new ArgumentNullException(nameof(functionBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var executableStatements = functionBlock.Statements.Where(s => !(s is INonExecutableCodeBlock));
             if (executableStatements.Count() != 1)

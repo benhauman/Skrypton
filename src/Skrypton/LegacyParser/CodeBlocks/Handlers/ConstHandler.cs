@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         public override ICodeBlock Process(List<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             if (!base.checkAtomTokenPattern(tokens, new string[] { "CONST" }, false))
                 return null;

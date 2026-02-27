@@ -13,11 +13,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public CommentStatement(string content, int lineIndex)
         {
             if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             if (content.Contains("\n"))
                 throw new ArgumentException("The content may not include any line returns");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             Content = content.TrimEnd();
             LineIndex = lineIndex;

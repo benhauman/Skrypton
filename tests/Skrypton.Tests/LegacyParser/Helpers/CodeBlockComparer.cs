@@ -11,9 +11,9 @@ namespace Skrypton.Tests.LegacyParser.Helpers
         public bool Equals(ICodeBlock x, ICodeBlock y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             if (x.GetType() != y.GetType())
                 return false;
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.LegacyParser.Helpers
         public int GetHashCode(ICodeBlock obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

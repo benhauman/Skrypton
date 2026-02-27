@@ -56,28 +56,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (startNamespace == null)
-                throw new ArgumentNullException("startNamespace");
-            if (startClassName == null)
-                throw new ArgumentNullException("startClassName");
-            if (startMethodName == null)
-                throw new ArgumentNullException("startMethodName");
-            if (runtimeDateLiteralValidatorClassName == null)
-                throw new ArgumentNullException("runtimeDateLiteralValidatorClassName");
-            if (externalDependencies == null)
-                throw new ArgumentNullException("externalDependencies");
             if (!Enum.IsDefined(typeof(OutputTypeOptions), outputType))
-                throw new ArgumentOutOfRangeException("outputType");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _startNamespace = startNamespace;
-            _startClassName = startClassName;
-            _startMethodName = startMethodName;
-            _runtimeDateLiteralValidatorClassName = runtimeDateLiteralValidatorClassName;
-            _externalDependencies = externalDependencies;
+                throw new ArgumentOutOfRangeException(nameof(outputType));
+            _startNamespace = startNamespace ?? throw new ArgumentNullException(nameof(startNamespace));
+            _startClassName = startClassName ?? throw new ArgumentNullException(nameof(startClassName));
+            _startMethodName = startMethodName ?? throw new ArgumentNullException(nameof(startMethodName));
+            _runtimeDateLiteralValidatorClassName = runtimeDateLiteralValidatorClassName ?? throw new ArgumentNullException(nameof(runtimeDateLiteralValidatorClassName));
+            _externalDependencies = externalDependencies ?? throw new ArgumentNullException(nameof(externalDependencies));
             _outputType = outputType;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         internal enum OutputTypeOptions
@@ -96,7 +83,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         public NonNullImmutableList<TranslatedStatement> Translate(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             // There are some date literal values that need to be validated at runtime (they may vary by culture - if they include a month name, basically, which will
             // depend upon the current language). If any of these literals are invalid for the runtime culture then no further processing may take place (this is the
@@ -542,7 +529,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             NonNullImmutableList<ICodeBlock> result = new NonNullImmutableList<ICodeBlock>();
             foreach (ICodeBlock block in blocks.Reverse())
@@ -569,9 +556,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             return base.TranslateCommon(
                 base.GetWithinFunctionBlockTranslators()
@@ -592,7 +579,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private NonNullImmutableList<ICodeBlock> RemoveDuplicateFunctions(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             List<int> removeAtLocations = new List<int>();
             foreach (ICodeBlock block in blocks)
@@ -628,7 +615,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private IEnumerable<DateLiteralToken> EnumerateAllDateLiteralTokens(IEnumerable<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             IToken[] allBlocks = blocks.EnumerateAllTokens().ToArray();
             return blocks.EnumerateAllTokens().OfType<DateLiteralToken>();
@@ -640,12 +627,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             public Annotated(NonNullImmutableList<CommentStatement> leadingComments, T codeBlock)
             {
-                if (leadingComments == null)
-                    throw new ArgumentNullException("leadingComments");
                 if (codeBlock == null)
-                    throw new ArgumentNullException("codeBlock");
+                    throw new ArgumentNullException(nameof(codeBlock));
 
-                LeadingComments = leadingComments;
+                LeadingComments = leadingComments ?? throw new ArgumentNullException(nameof(leadingComments));
                 CodeBlock = codeBlock;
             }
 

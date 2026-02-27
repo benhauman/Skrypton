@@ -11,10 +11,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private bool _useBracketsWhereZeroArguments;
         public DefaultCallArgumentProvider(IAccessValuesUsingVBScriptRules vbscriptValueAccessor)
         {
-            if (vbscriptValueAccessor == null)
-                throw new ArgumentNullException("vbscriptValueAccessor");
-
-            _vbscriptValueAccessor = vbscriptValueAccessor;
+            _vbscriptValueAccessor = vbscriptValueAccessor ?? throw new ArgumentNullException(nameof(vbscriptValueAccessor));
             _valuesWithUpdatesWhereRequired = new List<Tuple<object, Action<object>>>();
             _useBracketsWhereZeroArguments = false;
         }
@@ -36,7 +33,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public IBuildCallArgumentProviders Ref(object value, Action<object> valueUpdater)
         {
             if (valueUpdater == null)
-                throw new ArgumentNullException("valueUpdater");
+                throw new ArgumentNullException(nameof(valueUpdater));
 
             _valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, valueUpdater));
             return this;
@@ -49,9 +46,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         public IBuildCallArgumentProviders RefIfArray(object target, IEnumerable<IProvideCallArguments> argumentProviders)
         {
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             if (argumentProviders == null)
-                throw new ArgumentNullException("argumentProviders");
+                throw new ArgumentNullException(nameof(argumentProviders));
 
             var argumentProvidersArray = argumentProviders.ToArray();
             if (argumentProvidersArray.Length == 0)
@@ -121,10 +118,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             private readonly List<Tuple<object, Action<object>>> _valuesWithUpdatesWhereRequired;
             public ArgumentProvider(List<Tuple<object, Action<object>>> valuesWithUpdatesWhereRequired, bool useBracketsWhereZeroArguments)
             {
-                if (valuesWithUpdatesWhereRequired == null)
-                    throw new ArgumentNullException("valuesWithUpdatesWhereRequired");
-
-                _valuesWithUpdatesWhereRequired = valuesWithUpdatesWhereRequired;
+                _valuesWithUpdatesWhereRequired = valuesWithUpdatesWhereRequired ?? throw new ArgumentNullException(nameof(valuesWithUpdatesWhereRequired));
                 UseBracketsWhereZeroArguments = useBracketsWhereZeroArguments;
             }
 
@@ -154,7 +148,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             public void OverwriteValueIfByRef(int index, object value)
             {
                 if ((index < 0) || (index >= _valuesWithUpdatesWhereRequired.Count))
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
                 var valueUpdater = _valuesWithUpdatesWhereRequired[index].Item2;
                 if (valueUpdater != null)

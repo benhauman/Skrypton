@@ -16,13 +16,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             Action<string> warningLogger)
         {
             if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
+                throw new ArgumentNullException(nameof(statementTranslator));
             if (statement == null)
-                throw new ArgumentNullException("statement");
+                throw new ArgumentNullException(nameof(statement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             return Translate(statementTranslator, statement, scopeAccessInformation, ExpressionReturnTypeOptions.None, warningLogger);
         }
@@ -38,15 +38,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             Action<string> warningLogger)
         {
             if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
+                throw new ArgumentNullException(nameof(statementTranslator));
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), returnRequirements))
-                throw new ArgumentOutOfRangeException("returnRequirements");
+                throw new ArgumentOutOfRangeException(nameof(returnRequirements));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             return Translate(statementTranslator, (Statement)expression, scopeAccessInformation, returnRequirements, warningLogger);
         }
@@ -59,15 +59,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             Action<string> warningLogger)
         {
             if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
+                throw new ArgumentNullException(nameof(statementTranslator));
             if (statement == null)
-                throw new ArgumentNullException("statement");
+                throw new ArgumentNullException(nameof(statement));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), returnRequirements))
-                throw new ArgumentOutOfRangeException("returnRequirements");
+                throw new ArgumentOutOfRangeException(nameof(returnRequirements));
             if (warningLogger == null)
-                throw new ArgumentNullException("warningLogger");
+                throw new ArgumentNullException(nameof(warningLogger));
 
             return statementTranslator.Translate(
                 statement.ToStageTwoParserExpression(scopeAccessInformation, returnRequirements, warningLogger),

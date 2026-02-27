@@ -31,23 +31,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(ForBlock forBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (forBlock == null)
-                throw new ArgumentNullException("forBlock");
+                throw new ArgumentNullException(nameof(forBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // A note about ON ERROR RESUME NEXT and the intriguing behaviour it can introduce. The following will display "We're in the loop! i is Empty" -
             //
@@ -766,9 +761,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private FuncByRefMapping GetByRefAliasIfRequired(NameToken loopVar, ScopeAccessInformation scopeAccessInformation)
         {
             if (loopVar == null)
-                throw new ArgumentNullException("loopVar");
+                throw new ArgumentNullException(nameof(loopVar));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var byRefArgumentMapper = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
             var mappings = byRefArgumentMapper.GetByRefArgumentsThatNeedRewriting(
@@ -795,9 +790,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private TranslatedStatementContentDetails WrapInNUMCallIfRequired(Expression expression, ScopeAccessInformation scopeAccessInformation)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var translatedExpressionContent = _statementTranslator.Translate(
                 expression,
@@ -820,9 +815,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private bool IsCallingBuiltInNumberReturningFunction(Expression expression, ScopeAccessInformation scopeAccessInformation)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var expressions =
                   ExpressionGenerator.Generate(
@@ -845,7 +840,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private NumericValueToken TryToGetExpressionAsNumericConstant(Expression expression)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             var tokens = expression.Tokens.ToArray();
             if (tokens.Length != 1)
@@ -856,9 +851,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private CSharpName GetEarlyExitNameIfRequired(ForBlock forBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (forBlock == null)
-                throw new ArgumentNullException("forBlock");
+                throw new ArgumentNullException(nameof(forBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             if (!forBlock.ContainsLoopThatContainsMismatchedExitThatMustBeHandledAtThisLevel())
                 return null;
@@ -871,9 +866,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Add a StructureExitPoint entry for the current loop so that the "early-exit" logic described in the Translate method above is possible
             return base.TranslateCommon(
@@ -891,14 +886,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             public LoopConstraintInitialiser(CSharpName variableName, string initialisationContent, int lineIndexForSourceConstraint)
             {
-                if (variableName == null)
-                    throw new ArgumentNullException("variableName");
                 if (string.IsNullOrWhiteSpace(initialisationContent))
                     throw new ArgumentException("Null/blank initialisationContent specified");
                 if (lineIndexForSourceConstraint < 0)
-                    throw new ArgumentException("Must be zero or greater", "lineIndexForSourceConstraint");
+                    throw new ArgumentException("Must be zero or greater", nameof(lineIndexForSourceConstraint));
 
-                VariableName = variableName;
+                VariableName = variableName ?? throw new ArgumentNullException(nameof(variableName));
                 InitialisationContent = initialisationContent;
                 LineIndexForSourceConstraint = lineIndexForSourceConstraint;
 

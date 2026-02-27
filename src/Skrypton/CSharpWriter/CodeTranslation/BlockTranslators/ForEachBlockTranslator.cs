@@ -26,23 +26,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(ForEachBlock forEachBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (forEachBlock == null)
-                throw new ArgumentNullException("forEachBlock");
+                throw new ArgumentNullException(nameof(forEachBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // The approach here is to get an IEnumerator reference and then loop over it in a "while (true)" loop, exiting when there are no more items. It would
             // feel more natural to use a C# foreach loop but the loop variable may not be restricted in scope to the loop (in fact, in VBScript this is very unlikely)
@@ -234,9 +229,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private CSharpName GetEarlyExitNameIfRequired(ForEachBlock forEachBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (forEachBlock == null)
-                throw new ArgumentNullException("forEachBlock");
+                throw new ArgumentNullException(nameof(forEachBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             if (!forEachBlock.ContainsLoopThatContainsMismatchedExitThatMustBeHandledAtThisLevel())
                 return null;
@@ -249,9 +244,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Add a StructureExitPoint entry for the current loop so that the "early-exit" logic described in the Translate method above is possible
             return base.TranslateCommon(

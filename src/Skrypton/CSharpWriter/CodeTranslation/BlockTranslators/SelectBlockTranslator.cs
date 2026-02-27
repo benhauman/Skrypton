@@ -34,23 +34,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ILogInformation logger)
             : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
         {
-            if (statementTranslator == null)
-                throw new ArgumentNullException("statementTranslator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
-            _statementTranslator = statementTranslator;
-            _logger = logger;
+            _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public TranslationResult Translate(SelectBlock selectBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (selectBlock == null)
-                throw new ArgumentNullException("selectBlock");
+                throw new ArgumentNullException(nameof(selectBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Notes:
             // 1. Case values are lazily evaluated; as soon as one is matched, no more are considered.
@@ -306,11 +301,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int lineIndex)
         {
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth));
             if (conditionSegments == null)
-                throw new ArgumentNullException("conditionSegments");
+                throw new ArgumentNullException(nameof(conditionSegments));
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndex");
 
@@ -377,13 +372,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int lineIndex)
         {
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth));
             if (conditionSegments == null)
-                throw new ArgumentNullException("conditionSegments");
+                throw new ArgumentNullException(nameof(conditionSegments));
             if (isCaseMatchResultName == null)
-                throw new ArgumentNullException("isCaseMatchResultName");
+                throw new ArgumentNullException(nameof(isCaseMatchResultName));
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException("Must be zero or greater", "lineIndex");
 
@@ -415,13 +410,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private SelectTargetExpressionTranslationData TranslateTargetExpression(Expression targetExpression, TranslationResult translationResult, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (targetExpression == null)
-                throw new ArgumentNullException("targetExpression");
+                throw new ArgumentNullException(nameof(targetExpression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (translationResult == null)
-                throw new ArgumentNullException("translationResult");
+                throw new ArgumentNullException(nameof(translationResult));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth));
 
             // If the target expression is a simple constant then we can skip any work required in evaluating its value
             if (Is<NumericValueToken>(targetExpression) || Is<DateLiteralToken>(targetExpression) || Is<StringToken>(targetExpression) || Is<BuiltInValueToken>(targetExpression))
@@ -642,9 +637,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (evaluatedTarget == null)
                 throw new ArgumentNullException("evaluatedTargetName");
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var translatedTargetToCompareTo = _statementTranslator.Translate(
                 new Expression(new[] { evaluatedTarget }),
@@ -745,7 +740,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private bool IsNumericLiteral(Expression expression)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             return Is<NumericValueToken>(expression) && IsNumericLiteral((NumericValueToken)expression.Tokens.Single());
         }
@@ -756,7 +751,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private bool IsNumericLiteral(NumericValueToken numericValueToken)
         {
             if (numericValueToken == null)
-                throw new ArgumentNullException("numericValueToken");
+                throw new ArgumentNullException(nameof(numericValueToken));
 
             return !numericValueToken.Content.StartsWith("-");
         }
@@ -764,7 +759,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private bool Is<TSingleTokenType>(Expression expression) where TSingleTokenType : IToken
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             return (expression.Tokens.Count() == 1) && (expression.Tokens.Single() is TSingleTokenType);
         }
@@ -774,9 +769,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             return base.TranslateCommon(
                 base.GetWithinFunctionBlockTranslators(),
@@ -790,17 +785,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             public SelectTargetExpressionTranslationData(IToken evaluatedTarget, CSharpName successfullyEvaluatedTargetNameIfRequired, TranslationResult extendedTranslationResult, ScopeAccessInformation extendedScopeAccessInformation)
             {
-                if (evaluatedTarget == null)
-                    throw new ArgumentNullException("evaluatedTarget");
-                if (extendedTranslationResult == null)
-                    throw new ArgumentNullException("extendedTranslationResult");
-                if (extendedScopeAccessInformation == null)
-                    throw new ArgumentNullException("extendedScopeAccessInformation");
-
-                EvaluatedTarget = evaluatedTarget;
+                EvaluatedTarget = evaluatedTarget ?? throw new ArgumentNullException(nameof(evaluatedTarget));
                 SuccessfullyEvaluatedTargetNameIfRequired = successfullyEvaluatedTargetNameIfRequired;
-                ExtendedTranslationResult = extendedTranslationResult;
-                ExtendedScopeAccessInformation = extendedScopeAccessInformation;
+                ExtendedTranslationResult = extendedTranslationResult ?? throw new ArgumentNullException(nameof(extendedTranslationResult));
+                ExtendedScopeAccessInformation = extendedScopeAccessInformation ?? throw new ArgumentNullException(nameof(extendedScopeAccessInformation));
             }
 
             /// <summary>
@@ -834,17 +822,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 CSharpName caseValueMatchResultName)
             {
                 if (byRefArgumentsToRewrite == null)
-                    throw new ArgumentNullException("byRefArgumentsToRewrite");
+                    throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
                 if (!byRefArgumentsToRewrite.Any())
                     throw new ArgumentException("byRefArgumentsToRewrite may not be an empty set, otherwise there's no point to creating this instance");
-                if (byRefAliasWrappingDetails == null)
-                    throw new ArgumentNullException("byRefAliasWrappingDetails");
-                if (caseValueMatchResultName == null)
-                    throw new ArgumentNullException("caseValueMatchResultName");
-
                 ByRefArgumentsToRewrite = byRefArgumentsToRewrite;
-                ByRefAliasWrappingDetails = byRefAliasWrappingDetails;
-                CaseValueMatchResultName = caseValueMatchResultName;
+                ByRefAliasWrappingDetails = byRefAliasWrappingDetails ?? throw new ArgumentNullException(nameof(byRefAliasWrappingDetails));
+                CaseValueMatchResultName = caseValueMatchResultName ?? throw new ArgumentNullException(nameof(caseValueMatchResultName));
             }
 
             /// <summary>

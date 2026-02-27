@@ -17,10 +17,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
         public DefaultArithmeticFunctionalityProvider(IAccessValuesUsingVBScriptRules valueRetriever)
         {
-            if (valueRetriever == null)
-                throw new ArgumentNullException("valueRetriever");
-
-            _valueRetriever = valueRetriever;
+            _valueRetriever = valueRetriever ?? throw new ArgumentNullException(nameof(valueRetriever));
         }
 
         public object ADD(object a, object b)

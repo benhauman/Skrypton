@@ -41,7 +41,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         internal static IEnumerable<IToken> SegmentString(CultureInfo culture, string scriptContent)
         {
             if (scriptContent == null)
-                throw new ArgumentNullException("scriptContent");
+                throw new ArgumentNullException(nameof(scriptContent));
 
             DateParser limitedDateParser = CreateLimitedDateParser(culture);
 

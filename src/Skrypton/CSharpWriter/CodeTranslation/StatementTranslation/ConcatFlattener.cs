@@ -17,7 +17,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         public static Expression Flatten(Expression expression)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             return new Expression(
                 Flatten(expression.Segments)
@@ -27,7 +27,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private static IEnumerable<IExpressionSegment> Flatten(IEnumerable<IExpressionSegment> expressionSegments)
         {
             if (expressionSegments == null)
-                throw new ArgumentNullException("expressionSegments");
+                throw new ArgumentNullException(nameof(expressionSegments));
 
             if (!IsTwoValueConcat(expressionSegments))
                 return expressionSegments;
@@ -54,7 +54,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private static bool IsTwoValueConcat(IEnumerable<IExpressionSegment> expressionSegments)
         {
             if (expressionSegments == null)
-                throw new ArgumentNullException("expressionSegments");
+                throw new ArgumentNullException(nameof(expressionSegments));
 
             var expressionSegmentsArray = expressionSegments.ToArray();
             if (expressionSegmentsArray.Any(s => s == null))

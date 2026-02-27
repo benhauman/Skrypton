@@ -8,9 +8,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public DeclaredReferenceDetails(ReferenceTypeOptions referenceType, ScopeLocationOptions scopeLocation)
         {
             if (!Enum.IsDefined(typeof(ReferenceTypeOptions), referenceType))
-                throw new ArgumentOutOfRangeException("referenceType");
+                throw new ArgumentOutOfRangeException(nameof(referenceType));
             if (!Enum.IsDefined(typeof(ScopeLocationOptions), scopeLocation))
-                throw new ArgumentOutOfRangeException("scopeLocation");
+                throw new ArgumentOutOfRangeException(nameof(scopeLocation));
 
             ReferenceType = referenceType;
             ScopeLocation = scopeLocation;

@@ -13,7 +13,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public static string AsCSharpValue(this NumericValueToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             // C# already uses Double with decimal numbers, so we don't need any special case if the number is expressed as a decimal with numbers both before
             // and after the decimal point (eg. "1.2"). However, VBScript throws another curve ball and supports numbers with a decimal point with no digits
@@ -46,7 +46,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public static bool IsVBScriptInteger(this NumericValueToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             return !token.Content.Contains(".") && (token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue);
         }
@@ -60,9 +60,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public static bool IsSafeToUnwrapFrom(this NumericValueToken token, BuiltInFunctionToken function)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
             if (function == null)
-                throw new ArgumentNullException("function");
+                throw new ArgumentNullException(nameof(function));
 
             // This basically takes the rules from AsCSharpValue() and inverts them
             if (token.Content.Contains(".") && function.Content.Equals("CDbl", StringComparison.OrdinalIgnoreCase))
@@ -88,7 +88,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public static string GetSafeWrapperFunctionName(this NumericValueToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             // If it's a decimal then we need to use CDbl
             if (token.Content.Contains("."))
@@ -103,7 +103,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         public static NumericValueToken GetNegative(this NumericValueToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             if (token.Content.StartsWith("-"))
                 return new NumericValueToken(token.Content.Substring(1).ToUpperX(), token.LineIndex);

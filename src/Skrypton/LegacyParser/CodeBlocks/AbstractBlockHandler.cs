@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         protected IToken getToken(IEnumerable<IToken> tokens, int offset, IEnumerable<Type> allowedTokenTypes)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (offset < 0)
                 throw new ArgumentException("Negative offset specified - invalid");
             if (offset >= tokens.Count())
@@ -55,9 +55,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
         private bool isObjectOfTypeOrDerivedFrom(object obj, Type type)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             var objType = obj.GetType();
             while (true)
             {
@@ -105,7 +105,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (tokens == null)
                 throw new ArgumentNullException("token");
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             if (values.Length == 0)
                 throw new ArgumentException("Zero values to match");
 
@@ -141,7 +141,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (tokens == null)
                 throw new ArgumentNullException("token");
             if (values == null)
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             if (values.Length == 0)
                 throw new ArgumentException("Zero values to match");
             if (offset < 0)
@@ -164,13 +164,13 @@ namespace Skrypton.LegacyParser.CodeBlocks
         protected List<List<IToken>> getEntryList(IEnumerable<IToken> tokens, int offset, IToken endMarker)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             if (offset < 0)
                 throw new Exception("Negative offset specified - invalid");
             if (offset >= tokens.Count())
                 throw new Exception("Insufficient tokens - invalid");
             if (endMarker == null)
-                throw new ArgumentNullException("endMarker");
+                throw new ArgumentNullException(nameof(endMarker));
             if ((!(endMarker is AtomToken)) && (!(endMarker is AbstractEndOfStatementToken)))
                 throw new ArgumentException("Invalid endMarker - must be Atom or EndOfStatement Token");
 
@@ -239,7 +239,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         protected List<IToken> getTokenListSection(IEnumerable<IToken> tokens, int start, int count)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             var numberOfTokens = tokens.Count();
             if ((start < 0) || (start >= numberOfTokens))
@@ -256,7 +256,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         protected List<IToken> getTokenListSection(IEnumerable<IToken> tokens, int start)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             return getTokenListSection(tokens, start, tokens.Count() - start);
         }

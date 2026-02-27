@@ -13,18 +13,18 @@ namespace Skrypton.RuntimeSupport
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IEnumerable<string> members, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, members, argumentProviderBuilder.GetArgs(), line:0);
         }
         public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             source.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProviderBuilder.GetArgs());
         }
@@ -35,7 +35,7 @@ namespace Skrypton.RuntimeSupport
         public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             source.SET(valueToSetTo, context, target, optionalMemberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets);
         }
@@ -46,7 +46,7 @@ namespace Skrypton.RuntimeSupport
         public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             source.SET(valueToSetTo, context, target, null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets);
         }
@@ -56,42 +56,42 @@ namespace Skrypton.RuntimeSupport
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new string[0], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
@@ -104,54 +104,54 @@ namespace Skrypton.RuntimeSupport
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new string[0], argumentProviderBuilder.GetArgs(), line);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new[] { member1 }, argumentProviderBuilder.GetArgs(), line);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new[] { member1, member2 }, argumentProviderBuilder.GetArgs(), line);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
-                throw new ArgumentNullException("argumentProviderBuilder");
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, argumentProviderBuilder.GetArgs(), line: 0);
         }

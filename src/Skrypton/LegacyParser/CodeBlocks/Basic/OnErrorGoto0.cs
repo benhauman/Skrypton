@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public OnErrorGoto0(int lineIndex)
         {
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             LineIndex = lineIndex;
         }

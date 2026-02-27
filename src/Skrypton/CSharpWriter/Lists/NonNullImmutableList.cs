@@ -90,7 +90,7 @@ namespace Skrypton.CSharpWriter.Lists
         private NonNullImmutableList<T> ToNonNullImmutableList(ImmutableList<T> list)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
+                throw new ArgumentNullException(nameof(list));
 
             return To<NonNullImmutableList<T>>(
                 list,
@@ -112,7 +112,7 @@ namespace Skrypton.CSharpWriter.Lists
             public void EnsureValid(T value)
             {
                 if (value == null)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 if (_optionalInnerValidator != null)
                     _optionalInnerValidator.EnsureValid(value);
             }

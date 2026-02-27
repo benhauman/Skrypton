@@ -10,9 +10,9 @@ namespace Skrypton.Tests.LegacyParser.Helpers
         public bool Equals(IEnumerable<ICodeBlock> x, IEnumerable<ICodeBlock> y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             var arrayX = x.ToArray();
             var arrayY = y.ToArray();
@@ -31,7 +31,7 @@ namespace Skrypton.Tests.LegacyParser.Helpers
         public int GetHashCode(IEnumerable<ICodeBlock> obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

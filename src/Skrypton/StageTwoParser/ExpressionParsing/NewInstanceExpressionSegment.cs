@@ -9,10 +9,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     {
         public NewInstanceExpressionSegment(NameToken className)
         {
-            if (className == null)
-                throw new ArgumentNullException("className");
-
-            ClassName = className;
+            ClassName = className ?? throw new ArgumentNullException(nameof(className));
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static bool DoesScopeContainOnErrorResumeNext(this IEnumerable<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             foreach (var block in blocks)
             {
@@ -40,7 +40,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static IEnumerable<IToken> EnumerateAllTokens(this IEnumerable<ICodeBlock> blocks)
         {
             if (blocks == null)
-                throw new ArgumentNullException("blocks");
+                throw new ArgumentNullException(nameof(blocks));
 
             foreach (var block in blocks)
             {

@@ -9,9 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
         public bool Equals(RuntimeErrorExpressionSegment x, RuntimeErrorExpressionSegment y)
         {
             if (x == null)
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             if (y == null)
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
 
             return
                 (x.RenderedContent == y.RenderedContent) &&
@@ -23,7 +23,7 @@ namespace Skrypton.Tests.Shared.Comparers
         public int GetHashCode(RuntimeErrorExpressionSegment obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             return 0;
         }

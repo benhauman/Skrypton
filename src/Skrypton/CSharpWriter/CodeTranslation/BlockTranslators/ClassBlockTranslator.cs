@@ -31,11 +31,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         public TranslationResult Translate(ClassBlock classBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (classBlock == null)
-                throw new ArgumentNullException("classBlock");
+                throw new ArgumentNullException(nameof(classBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Outside of classes, functions may be declared multiple times - in which case the last one will take precedence and it will be as if the
             // others never existed. Within classes, however, duplicated names are not allowed and would result in a "Name redefined" compile-time error.
@@ -127,9 +127,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (blocks == null)
                 throw new ArgumentNullException("block");
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // Note: DIM statements are allowed between in the space inside a CLASS but outside of any FUNCTION or PROPERTY within that CLASS, but CONST is not
             return base.TranslateCommon(
@@ -155,13 +155,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth)
         {
             if (classBlock == null)
-                throw new ArgumentNullException("classBlock");
+                throw new ArgumentNullException(nameof(classBlock));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (explicitVariableDeclarationsFromWithinClass == null)
                 throw new ArgumentNullException("explicitVariableDeclarationsFromWithClass");
             if (indentationDepth < 0)
-                throw new ArgumentOutOfRangeException("indentationDepth", "must be zero or greater");
+                throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             // C# doesn't support nameed indexed properties, so if there are any Get properties with a parameter or any Let/Set properties
             // with multiple parameters (they need at least; the value to set) then we'll have to get creative - see notes in the

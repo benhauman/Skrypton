@@ -17,11 +17,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             VBScriptNameRewriter nameRewriter)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (nameRewriter == null)
-                throw new ArgumentNullException("nameRewriter");
+                throw new ArgumentNullException(nameof(nameRewriter));
 
             return source.VariablesAccessed
                 .Where(v => !scopeAccessInformation.IsDeclaredReference(v, nameRewriter))

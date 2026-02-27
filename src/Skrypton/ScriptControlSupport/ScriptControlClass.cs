@@ -80,7 +80,6 @@ namespace Skrypton.ScriptControlSupport
         void IScriptControl.AddObject(string objectName, object objectInstance, bool addMembers)
         {
             if (objectName == null) throw new ArgumentNullException(nameof(objectName));
-            if (objectInstance == null) throw new ArgumentNullException(nameof(objectInstance));
             if (string.IsNullOrEmpty(objectName)) throw new ArgumentException("Value cannot be null or empty.", nameof(objectName));
 
             if (_addedObjects.ContainsKey(objectName))
@@ -88,7 +87,7 @@ namespace Skrypton.ScriptControlSupport
                 // “An object with this name already exists in the script namespace.”
                 throw new COMException($"An object with this name already exists in the script namespace. '{objectName}'", unchecked((int)0x800A03EC)); // SCRIPT_E_DUPLICATEOBJECTNAME
             }
-            _addedObjects[objectName] = objectInstance;
+            _addedObjects[objectName] = objectInstance ?? throw new ArgumentNullException(nameof(objectInstance));
 
             if (addMembers)
             {

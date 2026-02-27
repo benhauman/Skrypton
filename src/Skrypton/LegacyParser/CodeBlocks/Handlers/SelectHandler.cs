@@ -16,7 +16,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         {
             if (tokens == null)
             {
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
             }
 
             if (tokens.Count == 0)

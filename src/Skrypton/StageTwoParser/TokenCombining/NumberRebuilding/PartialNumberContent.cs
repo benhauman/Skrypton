@@ -11,7 +11,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         public PartialNumberContent(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
-                throw new ArgumentNullException("tokens");
+                throw new ArgumentNullException(nameof(tokens));
 
             Tokens = tokens.ToList().AsReadOnly();
             if (Tokens.Any(t => t == null))
@@ -47,7 +47,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         public PartialNumberContent AddToken(IToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
             if (!IsValidToken(token))
                 throw new ArgumentException("The only allowable tokens are minus sign OperatorTokens, numeric AtomTokens and MemberAccessorOrDecimalPointTokens");
 
@@ -57,7 +57,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         private static bool IsValidToken(IToken token)
         {
             if (token == null)
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
 
             return token.IsMinusSignOperator() || (token is NumericValueToken) || token.Is<MemberAccessorOrDecimalPointToken>();
         }

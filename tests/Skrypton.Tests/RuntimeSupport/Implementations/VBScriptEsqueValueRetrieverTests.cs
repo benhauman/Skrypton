@@ -987,9 +987,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public new bool Equals(object x, object y)
             {
                 if (x == null)
-                    throw new ArgumentNullException("x");
+                    throw new ArgumentNullException(nameof(x));
                 if (y == null)
-                    throw new ArgumentNullException("y");
+                    throw new ArgumentNullException(nameof(y));
                 //var fieldX = x as ADODB.Field;
                 //if (fieldX == null)
                 //	throw new ArgumentException("x is not an ADODB.Field");
@@ -1011,9 +1011,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public new bool Equals(object x, object y)
             {
                 if (x == null)
-                    throw new ArgumentNullException("x");
+                    throw new ArgumentNullException(nameof(x));
                 if (y == null)
-                    throw new ArgumentNullException("y");
+                    throw new ArgumentNullException(nameof(y));
                 var fieldX = x as PseudoField;
                 if (fieldX == null)
                     throw new ArgumentException("x is not a PseudoField");
@@ -1049,9 +1049,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             private readonly IEnumerable<T> _values;
             public CustomEnumerable(IEnumerable<T> values)
             {
-                if (values == null)
-                    throw new ArgumentNullException(nameof(values));
-                _values = values;
+                _values = values ?? throw new ArgumentNullException(nameof(values));
             }
             public MyEnumerator<T> GetEnumerator() { return new MyEnumerator<T>(_values); }
         }
@@ -1061,9 +1059,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             private readonly IEnumerable<T> _values;
             public CustomEnumerableWithStructEnumerator(IEnumerable<T> values)
             {
-                if (values == null)
-                    throw new ArgumentNullException(nameof(values));
-                _values = values;
+                _values = values ?? throw new ArgumentNullException(nameof(values));
             }
             public MyStructEnumerator<T> GetEnumerator() { return new MyStructEnumerator<T>(new MyEnumerator<T>(_values)); }
         }

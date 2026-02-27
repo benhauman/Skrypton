@@ -25,14 +25,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private readonly ILogInformation _logger;
         public FuncByRefArgumentMapper(VBScriptNameRewriter nameRewriter, TempValueNameGenerator tempNameGenerator, ILogInformation logger)
         {
-            if (tempNameGenerator == null)
-                throw new ArgumentNullException("tempNameGenerator");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
-
             _nameRewriter = nameRewriter;
-            _tempNameGenerator = tempNameGenerator;
-            _logger = logger;
+            _tempNameGenerator = tempNameGenerator ?? throw new ArgumentNullException(nameof(tempNameGenerator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -50,11 +45,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             NonNullImmutableList<FuncByRefMapping> rewrittenReferences)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (rewrittenReferences == null)
-                throw new ArgumentNullException("rewrittenReferences");
+                throw new ArgumentNullException(nameof(rewrittenReferences));
 
             return GetByRefArgumentsThatNeedRewriting(expression, scopeAccessInformation, rewrittenReferences, expressionIsDirectArgumentValue: false);
         }
@@ -66,11 +61,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             bool expressionIsDirectArgumentValue)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (rewrittenReferences == null)
-                throw new ArgumentNullException("rewrittenReferences");
+                throw new ArgumentNullException(nameof(rewrittenReferences));
 
             // If we're not within a function or property then there's no work to do since there can be no ByRef arguments in the parent construct to worry about
             var containingFunctionOrProperty = scopeAccessInformation.ScopeDefiningParent as AbstractFunctionBlock;
@@ -110,13 +105,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             bool expressionIsDirectArgumentValue)
         {
             if (expressionSegments == null)
-                throw new ArgumentNullException("expressionSegments");
+                throw new ArgumentNullException(nameof(expressionSegments));
             if (byRefArguments == null)
-                throw new ArgumentNullException("byRefArguments");
+                throw new ArgumentNullException(nameof(byRefArguments));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (rewrittenReferences == null)
-                throw new ArgumentNullException("rewrittenReferences");
+                throw new ArgumentNullException(nameof(rewrittenReferences));
 
             if (expressionIsDirectArgumentValue && (expressionSegments.Count() > 1))
             {
@@ -210,19 +205,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             int callSetItemCount)
         {
             if (callSetItemExpressionSegment == null)
-                throw new ArgumentNullException("callSetItemExpressionSegment");
+                throw new ArgumentNullException(nameof(callSetItemExpressionSegment));
             if (byRefArguments == null)
-                throw new ArgumentNullException("byRefArguments");
+                throw new ArgumentNullException(nameof(byRefArguments));
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (rewrittenReferences == null)
                 throw new ArgumentNullException("mutableRewrittenReferences");
             if (callSetItemIndex < 0)
-                throw new ArgumentOutOfRangeException("callSetItemIndex");
+                throw new ArgumentOutOfRangeException(nameof(callSetItemIndex));
             if (callSetItemCount < 1)
-                throw new ArgumentOutOfRangeException("callSetItemCount");
+                throw new ArgumentOutOfRangeException(nameof(callSetItemCount));
             if (callSetItemIndex > (callSetItemCount - 1))
-                throw new ArgumentOutOfRangeException("callSetItemIndex", "outside of the callSetItemCount bounds");
+                throw new ArgumentOutOfRangeException(nameof(callSetItemIndex), "outside of the callSetItemCount bounds");
 
             // Check for cases where a ByRef argument of the containing function/property is being passed ByRef into another function/property (in this case a mapping will need to be
             // recorded that is not a read-only mapping; after the call expression is evaluated, any changes to the alias reference must be mapped back onto the source function argument)
@@ -307,9 +302,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private bool IsInByRefArgumentSet(NonNullImmutableList<NameToken> byRefArguments, NameToken reference)
         {
             if (byRefArguments == null)
-                throw new ArgumentNullException("byRefArguments");
+                throw new ArgumentNullException(nameof(byRefArguments));
             if (reference == null)
-                throw new ArgumentNullException("reference");
+                throw new ArgumentNullException(nameof(reference));
 
             return byRefArguments.Any(
                 byRefArgument => _nameRewriter.GetMemberAccessTokenName(byRefArgument) == _nameRewriter.GetMemberAccessTokenName(reference)
@@ -323,9 +318,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private bool IsAlreadyAccountedFor(NonNullImmutableList<FuncByRefMapping> mappings, NameToken reference, bool onlyConsiderNonReadOnlyMappings)
         {
             if (mappings == null)
-                throw new ArgumentNullException("mappings");
+                throw new ArgumentNullException(nameof(mappings));
             if (reference == null)
-                throw new ArgumentNullException("reference");
+                throw new ArgumentNullException(nameof(reference));
 
             return mappings.Any(mapping =>
                 (_nameRewriter.GetMemberAccessTokenName(reference) == _nameRewriter.GetMemberAccessTokenName(mapping.From)) &&
@@ -336,9 +331,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private NonNullImmutableList<FuncByRefMapping> RemoveMappingForNameToken(NonNullImmutableList<FuncByRefMapping> mappings, NameToken reference)
         {
             if (mappings == null)
-                throw new ArgumentNullException("mappings");
+                throw new ArgumentNullException(nameof(mappings));
             if (reference == null)
-                throw new ArgumentNullException("reference");
+                throw new ArgumentNullException(nameof(reference));
 
             return mappings
                 .Where(mapping => _nameRewriter.GetMemberAccessTokenName(reference) == _nameRewriter.GetMemberAccessTokenName(mapping.From))
@@ -348,7 +343,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private static NameToken TryToGetExpressionAsSingleNameToken(Expression expression)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             if (expression.Segments.Count() != 1)
                 return null;

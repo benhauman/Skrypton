@@ -501,11 +501,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         private static ScopeAccessInformation AddOutermostScopeFunction(ScopeAccessInformation scopeAccessInformation, string name, int lineIndex)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Null/blank name specified");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             return new ScopeAccessInformation(
                 scopeAccessInformation.Parent,
@@ -530,11 +530,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         private static ScopeAccessInformation AddPropertyToScope(ScopeAccessInformation scopeAccessInformation, string name, int lineIndex)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Null/blank name specified");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             return new ScopeAccessInformation(
                 scopeAccessInformation.Parent,
@@ -559,11 +559,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         private static ScopeAccessInformation AddOutermostScopeVariable(ScopeAccessInformation scopeAccessInformation, string name, int lineIndex)
         {
             if (scopeAccessInformation == null)
-                throw new ArgumentNullException("scopeAccessInformation");
+                throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Null/blank name specified");
             if (lineIndex < 0)
-                throw new ArgumentOutOfRangeException("lineIndex");
+                throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
             return new ScopeAccessInformation(
                 scopeAccessInformation.Parent,
