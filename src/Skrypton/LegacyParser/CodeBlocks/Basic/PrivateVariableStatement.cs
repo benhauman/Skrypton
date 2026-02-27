@@ -22,6 +22,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public override string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             // Grab content from DimStatement..
             string baseContent = base.GenerateBaseSource(NullIndenter.Instance);
             if ((baseContent == null)

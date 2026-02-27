@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
@@ -71,7 +72,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public virtual string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
-            return string.Format(
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            return string.Format(CultureInfo.InvariantCulture,
                 "{0}Const {1}",
                 indenter.Indent,
                 string.Join(", ", Values.Select(v => v.Name.Content + " = " + TokenValueAsVbsCode(v.Value)))

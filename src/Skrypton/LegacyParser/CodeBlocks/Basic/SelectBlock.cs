@@ -132,6 +132,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             var output = new StringBuilder();
 
             output.Append(indenter.Indent + "SELECT CASE ");

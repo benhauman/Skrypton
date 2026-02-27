@@ -90,6 +90,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             var tokensList = Tokens.ToList();
             if (CallPrefix == CallPrefixOptions.Present)
                 tokensList.Insert(0, AtomToken.GetNewToken("Call".ToUpperX(), tokensList[0].LineIndex));

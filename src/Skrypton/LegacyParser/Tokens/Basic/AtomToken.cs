@@ -42,7 +42,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         }
         public static int CompareAtomTokens(AtomToken x, AtomToken y)
         {
-            if (x.LineIndex != x.LineIndex)
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
+            if (x.LineIndex != y.LineIndex)
                 return 1;
 
             StringUpper x_Content_Upper = x.ContentUpperX();
@@ -79,6 +81,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// </summary>
         public static IToken GetNewToken(StringUpper contentUpper, int lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Blank content specified for AtomToken - invalid");
 
@@ -86,6 +89,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         }
         public static IToken GetNewToken(KnownTextContent content, int lineIndex)
         {
+            if (content == null) throw new ArgumentNullException(nameof(content));
             return GetNewTokenCore(content.TheContentUpper, lineIndex);
         }
         private static IToken GetNewTokenCore(StringUpper contentUpper, int lineIndex)
@@ -117,6 +121,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// </summary>
         protected static IToken TryToGetAsRecognisedType(StringUpper contentUpper, int lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 

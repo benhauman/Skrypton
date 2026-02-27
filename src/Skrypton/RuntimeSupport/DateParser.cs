@@ -60,6 +60,7 @@ namespace Skrypton.RuntimeSupport
 
         public static DateParser TestCreateDateParserTest(CultureInfo culture, int? defaultYearOverride)
         {
+            if (culture == null) throw new ArgumentNullException(nameof(culture));
             return defaultYearOverride != null ? new DateParser(new DateMonthNameTranslatorDefault(culture), defaultYearOverride.Value) : ForCulture(culture);
         }
 

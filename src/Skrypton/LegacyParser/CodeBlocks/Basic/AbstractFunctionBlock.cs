@@ -124,6 +124,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             // Ensure derived class has behaved itself
             if ((this.keyWord ?? "").Trim() == "")
                 throw new InvalidOperationException("Derived class has not defined non-blank/null keyWord");

@@ -12,8 +12,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// (where the first is declared as an "Integer" in VBScript and the latter as a "Double")
         /// </summary>
         public NumericValueToken(string content, int lineIndex) : this(content.ToUpperX(), lineIndex) { } // test
-        public NumericValueToken(StringUpper contentUpper, int lineIndex) : base(contentUpper.Original.Trim().ToUpperX(), WhiteSpaceBehaviourOptions.Disallow, lineIndex)
+        public NumericValueToken(StringUpper contentUpper, int lineIndex) : base(contentUpper?.Original.Trim().ToUpperX(), WhiteSpaceBehaviourOptions.Disallow, lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Null/blank content specified");
 

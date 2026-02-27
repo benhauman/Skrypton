@@ -16,6 +16,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         }
         public ComparisonOperatorToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             // Do all this validation (again) here in case this constructor wasn't called
             // by the AtomToken.GetNewToken method
             if (contentUpper.Length == 0)

@@ -73,6 +73,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             StringBuilder output = new StringBuilder();
             output.AppendLine(indenter.Indent + "Class " + this.className.Content);
             foreach (ICodeBlock block in this.statements)

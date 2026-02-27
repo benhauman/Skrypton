@@ -47,6 +47,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
+            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             return indenter.Indent + "Exit " + StatementType.ToString();
         }
     }

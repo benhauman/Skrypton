@@ -153,6 +153,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         protected TranslationResult TryToTranslateComment(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
+            if (translationResult == null) throw new ArgumentNullException(nameof(translationResult));
             var commentBlock = block as CommentStatement;
             if (commentBlock == null)
                 return null;
@@ -250,6 +251,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         protected TranslationResult TryToTranslateDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
+            if (scopeAccessInformation == null) throw new ArgumentNullException(nameof(scopeAccessInformation));
             // This covers the DimStatement, PrivateVariableStatement and PublicVariableStatement (but not the ReDimStatement, which counts
             // as operating against an undeclared variable unless there is a corresponding Dim / Private / Public declaration)
             var explicitVariableDeclarationBlock = block as DimStatement;

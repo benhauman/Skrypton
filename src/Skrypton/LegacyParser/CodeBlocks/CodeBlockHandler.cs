@@ -42,6 +42,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// </summary>
         public List<ICodeBlock> Process(List<IToken> tokens, out string[] endSequenceMet)
         {
+            if (tokens == null) throw new ArgumentNullException(nameof(tokens));
             var handlers = new AbstractBlockHandler[]
             {
                 new OptionExplicitHandler(),

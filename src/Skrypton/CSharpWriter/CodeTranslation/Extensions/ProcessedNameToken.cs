@@ -12,6 +12,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
     {
         public ProcessedNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Null/blank content specified");
         }

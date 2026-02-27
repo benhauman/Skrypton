@@ -15,6 +15,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
     {
         public DoNotRenameNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Allow, lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Null/blank content specified");
         }

@@ -15,6 +15,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     {
         public EscapedNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Allow, lineIndex)
         {
+            if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             // Note that blank or whitespace-only are acceptable for this content so we can only check for null here
             if (contentUpper.Length == 0)
                 throw new ArgumentException("cannot be empty", nameof(contentUpper));

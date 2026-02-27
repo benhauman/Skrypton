@@ -1593,6 +1593,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public void ERASE(object target, Action<object> targetSetter)
         {
+            if (targetSetter == null) throw new ArgumentNullException(nameof(targetSetter));
             // ERASE is more like a keyword in VBScript than a function - none of the builtin VBScript functions take arguments by-ref and nearly all of them apply a lot of
             // similar handling to inputs such as raising invalid-use-of-null errors where VBScript Null is not expected and considering parameter-less default properties
             // and function when expected a value type and receiving an object reference. ERASE does not do that; if the target is not an array then it's a type mismatch,
@@ -2363,6 +2364,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         // TODO: Disable debugger attribute? Does it help??
         public void HANDLEERROR(int errorToken, Action action)
         {
+            if (action == null) throw new ArgumentNullException(nameof(action));
             if (!_activeErrorTokens.ContainsKey(errorToken))
                 throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
 

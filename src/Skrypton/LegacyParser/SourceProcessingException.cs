@@ -21,8 +21,9 @@ namespace Skrypton.LegacyParser
     {
         public int LineNumber { get; private set; }
         public SourceProcessingException(SourceProcessingError error)
-            : base(error.Message)
+            : base(error?.Message)
         {
+            if (error == null) throw new ArgumentNullException(nameof(error));
             this.LineNumber = error.LineNumber;
         }
 

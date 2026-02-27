@@ -688,7 +688,7 @@ public sealed class StringUpper
     internal bool? hasWhiteSpace;
     public StringUpper(string original)
     {
-        this.Original = original;
+        this.Original = original ?? throw new ArgumentNullException(nameof(original));
         this.UpperText = Original.ToUpperInvariant();
         this.Length = original.Length;
     }
