@@ -291,7 +291,7 @@ namespace Skrypton.RuntimeSupport
             (int year, int month, int day) = ParseVbDate(input, defaultYear, parts.Length,
                 p1: int.Parse(parts[0]),
                 p2: parts.Length >= 2 ? int.Parse(parts[1]) : 0,
-                p3: parts.Length >= 3 ? int.Parse(parts[2]) : 0);
+                p3: parts.Length >= 3 ? int.Parse(parts[2], CultureInfo.InvariantCulture) : 0);
             return NewDateTime(input, year, month, day);
             /*
             if (parts.Length == 2)

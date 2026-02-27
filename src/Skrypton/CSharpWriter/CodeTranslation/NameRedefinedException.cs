@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 using Skrypton.LegacyParser.Tokens.Basic;
 
@@ -23,7 +24,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            return string.Format(
+            return string.Format(CultureInfo.InvariantCulture,
                 "Name redefined at line {0}: \"{1}\"",
                 name.LineIndex + 1,
                 name.Content

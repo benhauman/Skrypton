@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -287,7 +288,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             classHeaderStatements.AddRange(new[] {
                 new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "public {0}({1} compatLayer, {2} env, {3} outer)",
                         className,
                         typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name,
@@ -332,7 +333,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 classHeaderStatements.AddRange(
                     explicitVariableDeclarationsFromWithinClass.Select(declaredVariableToInitialise =>
                         new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "{0} object {1} {{ get; set; }}",
                                 (declaredVariableToInitialise.Scope == VariableDeclarationScopeOptions.Private) ? "private" : "public",
                                 _nameRewriter.GetMemberAccessTokenName(declaredVariableToInitialise.Name)

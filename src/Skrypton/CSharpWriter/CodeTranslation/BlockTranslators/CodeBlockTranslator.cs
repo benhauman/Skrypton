@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
@@ -224,7 +225,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translationResult.TranslatedStatements.Insert(
                     constStatement.Values.Select(value =>
                         new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "{0}{1} = {2};",
                                 (scopeAccessInformation.ScopeDefiningParent.Scope == ScopeLocationOptions.OutermostScope) ? (_outerRefName.Name + ".") : "",
                                 _nameRewriter.GetMemberAccessTokenName(value.Name),
@@ -400,7 +401,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.RELEASEERRORTRAPPINGTOKEN({1});",
                             _supportRefName.Name,
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -411,7 +412,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 return translationResult.Add(
                     new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "return{0};",
                             (scopeAccessInformation.ParentReturnValueNameIfAny == null) ? "" : (" " + scopeAccessInformation.ParentReturnValueNameIfAny.Name)
                         ),
@@ -580,7 +581,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             // Note: Any time an "On Error Resume Next" statement is encountered, any current error information is cleared
             return translationResult.Add(new TranslatedStatement(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.STARTERRORTRAPPINGANDCLEARANYERROR({1});",
                     _supportRefName.Name,
                     scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -609,7 +610,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             return translationResult.Add(new TranslatedStatement(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.STOPERRORTRAPPINGANDCLEARANYERROR({1});",
                     _supportRefName.Name,
                     scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -680,7 +681,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             translatedRandomizeStatements = translatedRandomizeStatements.Add(new TranslatedStatement(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.RANDOMIZE({1});",
                     _supportRefName.Name,
                     translatedSeedIfAny
@@ -839,7 +840,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 translatedReDimStatements = translatedReDimStatements.Add(
                     new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             translatedContentFormat,
                             targetReference,
                             _supportRefName.Name,
@@ -864,7 +865,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     translatedReDimStatements = translatedReDimStatements.Add(
                         new TranslatedStatement(
-                            string.Format("_.RAISEERROR(new IllegalAssignmentException({0}));", ("'" + variable.Name.Content + "'").ToLiteral()),
+                            string.Format(CultureInfo.InvariantCulture, "_.RAISEERROR(new IllegalAssignmentException({0}));", ("'" + variable.Name.Content + "'").ToLiteral()),
                             indentationDepth,
                             variable.Name.LineIndex
                         )
@@ -1093,7 +1094,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (variableDeclaration.ConstantDimensionsIfAny == null)
             {
                 return RenderBlockCS0219(variableDeclaration, scopeLocation, asUnreferencedVar, indentationDepth, () => {
-                    return string.Format(
+                    return string.Format(CultureInfo.InvariantCulture,
                         "{0}{1} = null;",
                         (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
                         rewrittenName
@@ -1102,13 +1103,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             else if (!variableDeclaration.ConstantDimensionsIfAny.Any())
             {
-                return string.Format(
+                return string.Format(CultureInfo.InvariantCulture,
                     "{0}{1} = (object[])null;",
                     (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
                     rewrittenName
                 );
             }
-            return string.Format(
+            return string.Format(CultureInfo.InvariantCulture,
                 "{0}{1} = new object[{2}];",
                 (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
                 rewrittenName,
@@ -1248,7 +1249,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (errorRegistrationToken == null)
                 throw new ArgumentNullException(nameof(errorRegistrationToken));
 
-            return string.Format(
+            return string.Format(CultureInfo.InvariantCulture,
                 "{0}.HANDLEERROR({1}, () => {{",
                 _supportRefName.Name,
                 errorRegistrationToken.Name
@@ -1260,7 +1261,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// TryToTranslateClass and TryToTranslateFunction). These won't apply to all scopes - for example, the ClassBlockTranslator can't accept statements
         /// that should appear within functions - such as IF blocks.
         /// </summary>
+#pragma warning disable CA1024 // Use properties where appropriate
         protected NonNullImmutableList<BlockTranslationAttempter> GetWithinFunctionBlockTranslators()
+#pragma warning restore CA1024 // Use properties where appropriate
         {
             return new NonNullImmutableList<BlockTranslationAttempter>(
                 new BlockTranslationAttempter[]

@@ -16,7 +16,7 @@ using Microsoft.CodeAnalysis.Emit;
 namespace Skrypton.ScriptControlSupport
 {
 
-    internal sealed class RoslynScriptControl
+    internal static class RoslynScriptControl
     {
         //private ScriptState<object> _state;
         //private ScriptOptions _options;
@@ -149,7 +149,7 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(errorsBuffer.ToString());
 
                 // In unit tests, you can fail like this:
-                throw new Exception("Compilation failed.");
+                throw new InvalidOperationException("Compilation failed.");
                 // Or if using NUnit/xUnit:
                 // Assert.Fail("Compilation failed.");
             }

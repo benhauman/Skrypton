@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -71,7 +72,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 withBlockContentTranslationResult.TranslatedStatements
                     .Insert(
                         new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "var {0} = {1};",
                                 targetName.Name,
                                 translatedTargetReference.TranslatedContent

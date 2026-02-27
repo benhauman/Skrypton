@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
@@ -34,7 +35,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                         if (char.IsControl(c))
                         {
                             literal.Append(@"\u");
-                            literal.Append(((int)c).ToString("x4"));
+                            literal.Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
                         }
                         else
                             literal.Append(c);

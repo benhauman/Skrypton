@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -67,7 +68,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Any())
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("if ({0})", targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired.Name),
+                    string.Format(CultureInfo.InvariantCulture, "if ({0})", targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired.Name),
                     indentationDepth,
                     selectBlock.Expression.Tokens.First().LineIndex
                 ));
@@ -224,7 +225,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth -= byRefArgAliasMappingDetailsIfRequired.ByRefAliasWrappingDetails.DistanceToIndentCodeWithMappedValues;
                         translationResult = byRefArgumentsToRewrite.CloseByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
                         translationResult = translationResult.Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "if ({0})",
                                 byRefArgAliasMappingDetailsIfRequired.CaseValueMatchResultName.Name
                             ),
@@ -316,7 +317,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentException("Null reference encountered in conditionSegments set");
 
             var wrappedConditionSegments = conditionSegments
-                .Select(segment => string.Format(
+                .Select(segment => string.Format(CultureInfo.InvariantCulture,
                     (errorRegistrationTokenIfAny == null) ? "{0}.IF({1})" : "{0}.IF(() => {1}, {2})",
                     _supportRefName.Name,
                     segment.TranslatedContent,
@@ -329,7 +330,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (wrappedConditionSegments.Sum(segment => segment.Length) < 80)
             {
                 return translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}if ({1})",
                         openAsElseIf ? "else " : "",
                         string.Join(" || ", wrappedConditionSegments.Select(segment => segment))
@@ -355,7 +356,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     format += ")";
 
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(format, wrappedConditionSegments[i]),
+                    string.Format(CultureInfo.InvariantCulture, format, wrappedConditionSegments[i]),
                     indentationDepth,
                     lineIndex
                 ));
@@ -399,7 +400,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     format += ");";
 
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(format, isCaseMatchResultName.Name, conditionSegmentsArray[i].TranslatedContent),
+                    string.Format(CultureInfo.InvariantCulture, format, isCaseMatchResultName.Name, conditionSegmentsArray[i].TranslatedContent),
                     (i == 0) ? indentationDepth : indentationDepth + 1,
                     lineIndex
                 ));
@@ -488,7 +489,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         .ToNonNullImmutableList()
                 );
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "object {0} = null;",
                         evaluatedTargetName.Name
                     ),
@@ -512,7 +513,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -529,7 +530,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     _logger.Warning
                 );
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1};",
                         evaluatedTargetName.Name,
                         rewrittenConditionalContent.TranslatedContent
@@ -557,7 +558,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             else if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "object {0} = null;",
                         evaluatedTargetName.Name
                     ),
@@ -566,12 +567,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 ));
                 successfullyEvaluatedTargetNameIfRequired = _tempNameGenerator(new CSharpName("targetWasEvaluated"), scopeAccessInformation);
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("var {0} = false;", successfullyEvaluatedTargetNameIfRequired.Name),
+                    string.Format(CultureInfo.InvariantCulture, "var {0} = false;", successfullyEvaluatedTargetNameIfRequired.Name),
                     indentationDepth,
                     targetExpression.Tokens.First().LineIndex
                 ));
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.HANDLEERROR({1}, () => {{",
                         _supportRefName.Name,
                         scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -581,7 +582,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 ));
                 evaluatedTargetContent = _statementTranslator.Translate(targetExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1};",
                         evaluatedTargetName.Name,
                         evaluatedTargetContent.TranslatedContent
@@ -590,7 +591,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     targetExpression.Tokens.First().LineIndex
                 ));
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("{0} = true;", successfullyEvaluatedTargetNameIfRequired.Name),
+                    string.Format(CultureInfo.InvariantCulture, "{0} = true;", successfullyEvaluatedTargetNameIfRequired.Name),
                     indentationDepth + 1,
                     targetExpression.Tokens.First().LineIndex
                 ));
@@ -600,7 +601,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 evaluatedTargetContent = _statementTranslator.Translate(targetExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "object {0} = {1};", // Best to declare "object" type rather than "var" in case the SELECT CASE target is Empty (ie. null)
                         evaluatedTargetName.Name,
                         evaluatedTargetContent.TranslatedContent
@@ -660,7 +661,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (Is<NumericValueToken>(value))
                 {
                     return new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {2})",
                             _supportRefName.Name,
                             translatedTargetToCompareTo.TranslatedContent,
@@ -673,7 +674,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (isFirstValueInCaseSet)
                 {
                     return new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {0}.NUM({2}))",
                             _supportRefName.Name,
                             translatedTargetToCompareTo.TranslatedContent,
@@ -684,7 +685,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
 
                 return new TranslatedStatementContentDetails(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.EQish({1}, {2})",
                         _supportRefName.Name,
                         translatedTargetToCompareTo.TranslatedContent,
@@ -700,7 +701,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (evaluatedTarget is NumericValueToken)
                 {
                     return new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {2})",
                             _supportRefName.Name,
                             translatedTargetToCompareTo.TranslatedContent,
@@ -711,7 +712,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
 
                 return new TranslatedStatementContentDetails(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.EQ({0}.NUM({1}), {2})",
                         _supportRefName.Name,
                         translatedTargetToCompareTo.TranslatedContent,
@@ -724,7 +725,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // If neither value (target nor case option) are numeric literals, then no flexible matching is applied (there is apparently no special behaviour applied to string literals in either the target
             // expression nor any value within a case set)
             return new TranslatedStatementContentDetails(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.EQ({1}, {2})",
                     _supportRefName.Name,
                     translatedTargetToCompareTo.TranslatedContent,

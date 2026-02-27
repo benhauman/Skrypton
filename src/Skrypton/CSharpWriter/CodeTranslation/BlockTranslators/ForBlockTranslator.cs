@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -219,12 +220,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 var loopStartName = _tempNameGenerator(new CSharpName("loopStart"), scopeAccessInformation);
                 loopConstraintInitialisersWhereRequired.Add(new LoopStartConstraintInitialiser(
                     loopStartName,
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.NUM({1})", // This is the format of the content where other types are never taken into account
                         _supportRefName.Name,
                         loopStartExpressionContent.TranslatedContent
                     ),
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.NUM({1}{2}{3})", // This is the initialisation content where other types will be taken into account, where relevant
                         _supportRefName.Name,
                         loopStartExpressionContent.TranslatedContent,
@@ -260,7 +261,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     translationResult = translationResult
                         .Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "var {0} = {1};",
                                 loopConstraintInitialiser.VariableName.Name,
                                 loopConstraintInitialiser.InitialisationContent
@@ -283,7 +284,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 constraintsInitialisedFlagNameIfAny = _tempNameGenerator(new CSharpName("loopConstraintsInitialized"), scopeAccessInformation);
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "var {0} = false;",
                             constraintsInitialisedFlagNameIfAny.Name
                         ),
@@ -299,7 +300,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     translationResult = translationResult
                         .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -338,7 +339,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         initialisationContentToUse = loopConstraintInitialiser.InitialisationContent;
                     translationResult = translationResult
                         .Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 loopConstraintInitialiser.VariableName.Name,
                                 initialisationContentToUse
@@ -366,7 +367,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         //   FOR i = CCur(922337203685475) TO CCur(922337203685476) STEP CDBL("9223372036854760") ' Loop is entered once, "i" is set to a Currency value
                         //   FOR i = CDbl("9223372036854760") TO CCur(922337203685475) STEP -1 ' Loop is entered once but "i" will not be set
                         translationResult = translationResult.Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "if (({0} is DateTime) || ({0} is Decimal))",
                                 loopStart
                             ),
@@ -374,7 +375,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             loopStartConstraintInitialiserIfAny.LineIndexForSourceConstraint
                         ));
                         translationResult = translationResult.Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 rewrittenLoopVariableName,
                                 loopStart
@@ -383,7 +384,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             loopStartConstraintInitialiserIfAny.LineIndexForSourceConstraint
                         ));
                         translationResult = translationResult.Add(new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 loopStart,
                                 loopStartConstraintInitialiserIfAny.InitialisationContent
@@ -431,12 +432,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (numericLoopStepValueIfAny.Value >= 0)
                 {
                     // Ascending loop or infinite loop (step zero, which is supported in VBScript), start must not be greater than end
-                    guardClauseLines = guardClauseLines.Add(string.Format("({0}.StrictLTE({1}, {2}))", _supportRefName.Name, loopStart, loopEnd));
+                    guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture, "({0}.StrictLTE({1}, {2}))", _supportRefName.Name, loopStart, loopEnd));
                 }
                 else
                 {
                     // Descending loop, start must be greater than end
-                    guardClauseLines = guardClauseLines.Add(string.Format("({0}.StrictGT({1}, {2}))", _supportRefName.Name, loopStart, loopEnd));
+                    guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture, "({0}.StrictGT({1}, {2}))", _supportRefName.Name, loopStart, loopEnd));
                 }
             }
             else if ((numericLoopStartValueIfAny != null) && (numericLoopEndValueIfAny != null))
@@ -445,22 +446,22 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // direction of from and to at runtime. Note: A step of zero will cause an infinite loop, but only if from <= to (the loop will
                 // not be executed if it is descending and has a step of zero)
                 if (numericLoopStartValueIfAny.Value <= numericLoopEndValueIfAny.Value)
-                    guardClauseLines = guardClauseLines.Add(string.Format("{0}.StrictGTE({1}, 0)", _supportRefName.Name, loopStep));
+                    guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture, "{0}.StrictGTE({1}, 0)", _supportRefName.Name, loopStep));
                 else
-                    guardClauseLines = guardClauseLines.Add(string.Format("{0}.StrictLT({1}, 0)", _supportRefName.Name, loopStep));
+                    guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture, "{0}.StrictLT({1}, 0)", _supportRefName.Name, loopStep));
             }
             else
             {
                 // There are no more shortcuts now, we need to check at runtime that loopStep is negative for a descending loop and non-negative
                 // for a non-descending loop
-                guardClauseLines = guardClauseLines.Add(string.Format(
+                guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture,
                     "(({0}.StrictLTE({1}, {2}) && {0}.StrictGTE({3}, 0))",
                     _supportRefName.Name,
                     loopStart,
                     loopEnd,
                     loopStep
                 ));
-                guardClauseLines = guardClauseLines.Add(string.Format(
+                guardClauseLines = guardClauseLines.Add(string.Format(CultureInfo.InvariantCulture,
                     "|| ({0}.StrictGT({1}, {2}) && {0}.StrictLT({3}, 0)))",
                     _supportRefName.Name,
                     loopStart,
@@ -492,32 +493,32 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // that we're skipping will have no effect on the StrictLTE call). This is most obvious for really simple loops but it doesn't hurt to
                     // try to make the more complicated ones shorter (since they get increasingly complicated and verbose as dynamic loop constraints and
                     // potential error-trapping are added!).
-                    continuationCondition = string.Format(
+                    continuationCondition = string.Format(CultureInfo.InvariantCulture,
                         "{0}.StrictLTE({1}, {2})",
                         _supportRefName.Name,
                         (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
-                        (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString()
+                        (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString(CultureInfo.InvariantCulture)
                     );
                 }
                 else
                 {
                     // Note: If loopEnd is a known numeric constant then we can render just its value instead of its translated content - see note above
-                    continuationCondition = string.Format(
+                    continuationCondition = string.Format(CultureInfo.InvariantCulture,
                         "{0}.StrictGTE({1}, {2})",
                         _supportRefName.Name,
                         (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
-                        (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString()
+                        (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString(CultureInfo.InvariantCulture)
                     );
                 }
             }
             else
             {
                 // Note: If loopEnd is a known numeric constant then we can render just its value instead of its translated content - see note above
-                continuationCondition = string.Format(
+                continuationCondition = string.Format(CultureInfo.InvariantCulture,
                     "({0}.StrictGTE({3}, 0) && {0}.StrictLTE({1}, {2})) || ({0}.StrictLT({3}, 0) && {0}.StrictGTE({1}, {2}))",
                     _supportRefName.Name,
                     (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
-                    (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString(),
+                    (numericLoopEndValueIfAny == null) ? loopEnd : numericLoopEndValueIfAny.Value.ToString(CultureInfo.InvariantCulture),
                     loopStep
                 );
             }
@@ -532,7 +533,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // will cast to an Int16, so using SUBT instead of ADD allows the following (slight) improvement to readability:
                     //   _env.i = _.ADD(_env.i, (Int16)(-1))
                     //   _env.i = _.SUBT(_env.i, (Int16)1)
-                    loopIncrementWithLeadingSpaceIfNonBlank = string.Format(
+                    loopIncrementWithLeadingSpaceIfNonBlank = string.Format(CultureInfo.InvariantCulture,
                         " {0} = {2}.SUBT({0}, {1})",
                         (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
                         numericLoopStepValueIfAny.GetNegative().AsCSharpValue(),
@@ -547,7 +548,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // will return a value of type "Long" (whereas "CInt(1) + CInt(1)" will return a value of type "Integer") - so this type
                     // information IS important. I'm leaving this entire comment (the wrong assumption and the correction) so that there's
                     // no chance of me coming back in the future and thinking I can change it back again!
-                    loopIncrementWithLeadingSpaceIfNonBlank = string.Format(
+                    loopIncrementWithLeadingSpaceIfNonBlank = string.Format(CultureInfo.InvariantCulture,
                         " {0} = {2}.ADD({0}, {1})",
                         (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
                         loopStep,
@@ -555,7 +556,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                 }
             }
-            var loopVarInitialiser = string.Format(
+            var loopVarInitialiser = string.Format(CultureInfo.InvariantCulture,
                 "{0} = {1}",
                 rewrittenLoopVariableName,
                 loopStart
@@ -570,7 +571,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // Note: There is no space before {2} so that if there is no loop increment required then the output doesn't look like it's missing
                     // something (this may be the case if the loop step is zero)
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "for ({0}; {1};{2})",
                             loopVarInitialiser,
                             continuationCondition,
@@ -583,7 +584,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 else
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "for ({0};",
                             loopVarInitialiser
                         ),
@@ -635,7 +636,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (earlyExitNameIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("var {0} = false;", earlyExitNameIfAny.Name),
+                    string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     forBlock.LoopVar.LineIndex
                 ));
@@ -688,7 +689,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     distanceToIndentEvaluationCodeDueToByRefMappings = 0;
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -803,7 +804,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (IsCallingBuiltInNumberReturningFunction(expression, scopeAccessInformation))
                 return translatedExpressionContent;
             return new TranslatedStatementContentDetails(
-                string.Format(
+                string.Format(CultureInfo.InvariantCulture,
                     "{0}.NUM({1})",
                     _supportRefName.Name,
                     translatedExpressionContent.TranslatedContent

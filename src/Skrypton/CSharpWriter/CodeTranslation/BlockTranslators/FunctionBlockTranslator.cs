@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
@@ -60,7 +61,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 errorRegistrationTokenIfAny = _tempNameGenerator(new CSharpName("errOn"), scopeAccessInformation);
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "var {0} = {1}.GETERRORTRAPPINGTOKEN();",
                         errorRegistrationTokenIfAny.Name,
                         _supportRefName.Name
@@ -88,7 +89,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (errorRegistrationTokenIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0}.RELEASEERRORTRAPPINGTOKEN({1});",
                         _supportRefName.Name,
                         errorRegistrationTokenIfAny.Name
@@ -102,7 +103,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // If this is an empty function then just render "return null" (TranslateFunctionHeader won't declare the return value reference)
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "return {0};",
                             functionBlock.Statements.Any() ? returnValueName.Name : "null"
                         ),
@@ -233,7 +234,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // indexed property but that feels like complications for little benefit so I think it's easier to just put it on ALL from-property methods.
                 translatedStatements.Add(
                     new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "[TranslatedProperty({0})]", // Note: Safe to assume that using statements are present for the namespace that contains TranslatedProperty
                             property.Name.Content.ToLiteral()
                         ),

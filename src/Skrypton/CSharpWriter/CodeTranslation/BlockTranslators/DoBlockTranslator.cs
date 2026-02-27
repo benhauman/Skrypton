@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -105,7 +106,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // result in a "Division by zero" error if ON ERROR RESUME NEXT is not present, but which will result in both of the above loops being
                     // entered if it IS present).
                     whileConditionExpressionContentIfAny = new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF(() => {1}, {2})",
                             _supportRefName.Name,
                             whileConditionExpressionContentIfAny.TranslatedContent,
@@ -152,7 +153,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (earlyExitNameIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("var {0} = false;", earlyExitNameIfAny.Name),
+                    string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     doBlock.LineIndexOfStartOfConstruct
                 ));

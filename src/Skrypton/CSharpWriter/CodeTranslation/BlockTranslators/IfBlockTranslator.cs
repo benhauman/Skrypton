@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -131,7 +132,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         ? "{0} = {1}.IF({2});"
                         : "{0} = {1}.IF(() => {2}, {3});";
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             ifStatementFormat,
                             evaluatedResultName.Name,
                             _supportRefName.Name,
@@ -154,7 +155,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // to further functions or properties, then we're in the less complicate error-trapping scenario; we only have to use the IF extension method that deals
                     // with error-trapping.
                     conditionalContent = new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF(() => {1}, {2})",
                             _supportRefName.Name,
                             conditionalContent.TranslatedContent,
@@ -166,7 +167,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 else
                 {
                     conditionalContent = new TranslatedStatementContentDetails(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF({1})",
                             _supportRefName.Name,
                             conditionalContent.TranslatedContent
@@ -185,7 +186,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     innerStatements = innerStatements.RemoveAt(0);
                 translationResult = translationResult.Add(
                     new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0} ({1}){2}",
                             (previousConditionalEntry == null) || requiresNewScopeWithinElseBlock ? "if" : "else if",
                             conditionalContent.TranslatedContent,

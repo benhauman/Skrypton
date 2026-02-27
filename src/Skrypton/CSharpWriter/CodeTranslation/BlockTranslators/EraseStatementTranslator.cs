@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -115,7 +116,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             string exceptionStatementIfTargetConfigurationIsInvalid;
             if (eraseStatement.Targets.Count() != 1)
             {
-                exceptionStatementIfTargetConfigurationIsInvalid = string.Format(
+                exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                     "throw new Exception(\"Wrong number of arguments: 'Erase' (line {0})\");",
                     eraseStatement.KeywordLineIndex + 1
                 );
@@ -127,7 +128,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     // "Erase (a)" is invalid, it would result in "a" being passed by-val, which would be senseless when trying to erase a dynamic array
                     // "Erase a.Roles" is invalid, the target must be a direct reference (again, since an indirect reference like this would not be passed by-ref)
-                    exceptionStatementIfTargetConfigurationIsInvalid = string.Format(
+                    exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                         "throw new TypeMismatchException(\"'Erase' (line {0})\");",
                         eraseStatement.KeywordLineIndex + 1
                     );
@@ -141,7 +142,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     {
                         // Note: If the variable has not been declared then targetReferenceDetails will be null, but that means that it will become an undeclared variable later on,
                         // it means that it's definitely not a function
-                        exceptionStatementIfTargetConfigurationIsInvalid = string.Format(
+                        exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                             "throw new TypeMismatchException(\"'Erase' (line {0})\");",
                             eraseStatement.KeywordLineIndex + 1
                         );
@@ -193,7 +194,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     foreach (var undeclaredVariable in undeclaredVariablesReferencedByTarget)
                         _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "var {0} = {1};",
                             _tempNameGenerator(new CSharpName("invalidEraseTarget"), scopeAccessInformation).Name,
                             translatedTarget.TranslatedContent
@@ -228,7 +229,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (singleEraseTarget.ArgumentsIfAny == null)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.ERASE({1}, {2} => {{ {1} = {2}; }});",
                             _supportRefName.Name,
                             translatedSingleEraseTarget.TranslatedContent,
@@ -252,7 +253,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         ))
                         .ToArray(); // Going to evaluate everything twice, might as well ToArray it
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.ERASE({1}{2}{3});",
                             _supportRefName.Name,
                             translatedSingleEraseTarget.TranslatedContent,

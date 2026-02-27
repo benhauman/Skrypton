@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -56,7 +57,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
             var translationResult = TranslationResult.Empty.AddUndeclaredVariables(undeclaredVariablesInLoopSourceContent);
             var enumerationContentVariableName = _tempNameGenerator(new CSharpName("enumerationContent"), scopeAccessInformation);
-            var enumeratorInitialisationContent = string.Format(
+            var enumeratorInitialisationContent = string.Format(CultureInfo.InvariantCulture,
                 "{0} = {1}.ENUMERABLE({2}).GetEnumerator();",
                 enumerationContentVariableName.Name,
                 _supportRefName.Name,
@@ -99,7 +100,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 //   is consistent with VBScript)
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "IEnumerator {0} = null;",
                             enumerationContentVariableName.Name
                         ),
@@ -107,7 +108,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forEachBlock.LoopVar.LineIndex
                     ))
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
@@ -134,7 +135,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // avoided.
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "if ({0} != null)",
                             enumerationContentVariableName.Name
                         ),
@@ -145,7 +146,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 indentationDepth++;
             }
             translationResult = translationResult
-                .Add(new TranslatedStatement(string.Format(
+                .Add(new TranslatedStatement(string.Format(CultureInfo.InvariantCulture,
                         "if (!{0}.MoveNext())",
                         enumerationContentVariableName.Name
                     ),
@@ -154,7 +155,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 ))
                 .Add(new TranslatedStatement("break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex))
                 .Add(new TranslatedStatement(
-                    string.Format(
+                    string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1}.Current;",
                         rewrittenLoopVarName,
                         enumerationContentVariableName.Name
@@ -172,7 +173,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (earlyExitNameIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
-                    string.Format("var {0} = false;", earlyExitNameIfAny.Name),
+                    string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     forEachBlock.LoopVar.LineIndex
                 ));
@@ -192,7 +193,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // required and there is no point emitting it.
                 translationResult = translationResult
                     .Add(new TranslatedStatement(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "if ({0} == null)",
                             enumerationContentVariableName.Name
                         ),

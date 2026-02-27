@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
@@ -247,7 +248,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ),
                     new TranslatedStatement("{", 2, 0),
                     new TranslatedStatement(
-                        string.Format("var {0} = env ?? throw new ArgumentNullException(nameof(env));", _envRefName.Name),
+                        string.Format(CultureInfo.InvariantCulture, "var {0} = env ?? throw new ArgumentNullException(nameof(env));", _envRefName.Name),
                         3,
                         0
                     ),
@@ -314,7 +315,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     translatedStatements = translatedStatements.AddRange(new[]
                     {
                         new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "private static class {0}",
                                 _runtimeDateLiteralValidatorClassName.Name
                             ),
@@ -346,7 +347,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         new TranslatedStatement("foreach (var dateLiteralValueAndLineNumbers in _literalsToValidate)", 4, 0),
                         new TranslatedStatement("{", 4, 0),
                         new TranslatedStatement(
-                            string.Format(
+                            string.Format(CultureInfo.InvariantCulture,
                                 "try {{ compatLayer.DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1); }}",
                                 _runtimeDateLiteralValidatorClassName.Name
                             ),
