@@ -130,7 +130,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 IToken token = base.getToken_AtomOrDateStringLiteralOnly(tokens, index);
                 if ((token is AtomToken) && (endMarkerContent != null))
                 {
-                    if (((AtomToken)token).Content.ToUpper() == endMarkerContent.ToUpper())
+                    if (((AtomToken)token).Content.Equals(endMarkerContent, StringComparison.InvariantCultureIgnoreCase))
                         break;
                 }
                 exprTokens.Add(token);

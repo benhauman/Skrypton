@@ -29,8 +29,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             bool hasPreCondition, doUntil;
             if (preConditionStartToken is AtomToken)
             {
-                var doWhile = (preConditionStartToken.Content.ToUpper() == "WHILE");
-                doUntil = (preConditionStartToken.Content.ToUpper() == "UNTIL");
+                var doWhile = (preConditionStartToken.Content.Equals("WHILE", StringComparison.InvariantCultureIgnoreCase));
+                doUntil = (preConditionStartToken.Content.Equals("UNTIL", StringComparison.InvariantCultureIgnoreCase));
                 hasPreCondition = doWhile || doUntil;
             }
             else
@@ -78,8 +78,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 var postConditionStartToken = base.getToken(tokens, 0, new List<Type> { typeof(AtomToken), typeof(AbstractEndOfStatementToken) });
                 if (postConditionStartToken is AtomToken)
                 {
-                    var doWhile = (postConditionStartToken.Content.ToUpper() == "WHILE");
-                    doUntil = (postConditionStartToken.Content.ToUpper() == "UNTIL");
+                    var doWhile = (postConditionStartToken.Content.Equals("WHILE", StringComparison.InvariantCultureIgnoreCase));
+                    doUntil = (postConditionStartToken.Content.Equals("UNTIL", StringComparison.InvariantCultureIgnoreCase));
                     if (doWhile || doUntil)
                     {
                         tokens.RemoveAt(0); // Remove WHILE / UNTIL

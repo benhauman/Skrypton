@@ -72,11 +72,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
                 else if (token is AtomToken)
                 {
-                    if (token.Content.ToUpper() == "CASE")
+                    if (token.Content.Equals("CASE", StringComparison.InvariantCultureIgnoreCase))
                     {
                         break;
                     }
-                    else if (token.Content.ToUpper() == "END")
+                    else if (token.Content.Equals("END", StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (index == (tokens.Count - 1))
                         {
@@ -89,7 +89,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                             throw new InvalidOperationException("Error processing SELECT CASE block - reached END followed invalid token [" + tokenNext.GetType().ToString() + "]");
                         }
 
-                        if (tokenNext.Content.ToUpper() != "SELECT")
+                        if (!tokenNext.Content.Equals("SELECT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             throw new InvalidOperationException("Error processing SELECT CASE block - reached non-SELECT END tokens");
                         }
@@ -106,7 +106,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Unless we hit "END SELECT" straight away, process CASE blocks
             List<SelectBlock.CaseBlockSegment> content = new List<SelectBlock.CaseBlockSegment>();
-            if (tokens[0].Content.ToUpper() != "END")
+            if (!tokens[0].Content.Equals("END", StringComparison.InvariantCultureIgnoreCase))
             {
                 string[] endSequenceMet;
                 CodeBlockHandler codeBlockHandler = new CodeBlockHandler([["CASE"], ["END", "SELECT"]]);
@@ -178,7 +178,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     else
                     {
                         IToken firstExprToken = exprValues[0][0];
-                        if ((firstExprToken is AtomToken) && (firstExprToken.Content.ToUpper() == "ELSE"))
+                        if ((firstExprToken is AtomToken) && (firstExprToken.Content.Equals("ELSE", StringComparison.InvariantCultureIgnoreCase)))
                         {
                             if ((exprValues.Count > 1) || (exprValues[0].Count != 1))
                             {

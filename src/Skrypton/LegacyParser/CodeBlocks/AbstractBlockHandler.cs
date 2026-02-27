@@ -196,7 +196,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                         var possibleEndMarker = getToken(tokens, offset, allowedTokenTypes);
                         reachedEndMarker =
                             ((possibleEndMarker is AtomToken)
-                            && (possibleEndMarker.Content.ToUpper() == endMarker.Content.ToUpper()));
+                            && (possibleEndMarker.Content.Equals(endMarker.Content, StringComparison.InvariantCultureIgnoreCase)));
                     }
                     if (reachedEndMarker)
                         break;

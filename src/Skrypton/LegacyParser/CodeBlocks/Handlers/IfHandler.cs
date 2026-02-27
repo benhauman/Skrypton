@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Can we handle this point in the token stream?
             IToken firstToken = tokens[0];
-            if ((!(firstToken is AtomToken)) || (firstToken.Content.ToUpper() != "IF"))
+            if ((!(firstToken is AtomToken)) || (!firstToken.Content.Equals("IF", StringComparison.InvariantCultureIgnoreCase)))
                 return null;
 
             // Find the matching "THEN" for the "IF"
@@ -34,7 +34,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             for (int index = 0; index < tokens.Count; index++)
             {
                 IToken token = tokens[index];
-                if ((token is AtomToken) && (token.Content.ToUpper() == "THEN"))
+                if ((token is AtomToken) && (token.Content.Equals("THEN", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     indexThen = index;
                     break;
@@ -117,7 +117,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 if (endSequenceMet.Length == 1)
                 {
                     // An "ELSE" token won't have any condition content
-                    if (endSequenceMet[0].ToUpper() == "ELSE")
+                    if (endSequenceMet[0].Equals("ELSE", StringComparison.InvariantCultureIgnoreCase))
                         conditionTokens = null;
                     else
                     {
@@ -149,7 +149,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
 
                 // If we hit, "END IF" then we're all done
-                if ((endSequenceMet.Length == 2) && (endSequenceMet[0].ToUpper() == "END"))
+                if ((endSequenceMet.Length == 2) && (endSequenceMet[0].Equals("END", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     // Need to remove the final tokens - if we don't break out of the loop
                     // here, then end sequence tokens are removed up at the top
@@ -231,12 +231,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 IToken token = ifTokens[index];
                 if (token is AtomToken)
                 {
-                    if (token.Content.ToUpper() == "ELSE")
+                    if (token.Content.Equals("ELSE", StringComparison.InvariantCultureIgnoreCase))
                     {
                         offsetElse = index;
                         break;
                     }
-                    else if (token.Content.ToUpper() == "ELSEIF")
+                    else if (token.Content.Equals("ELSEIF", StringComparison.InvariantCultureIgnoreCase))
                         throw new InvalidOperationException("Invalid content: ELSEIF found in single-line IF");
                 }
             }
@@ -305,7 +305,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 var token = tokens[index];
                 if ((!(token is AtomToken)) && (!(token is DateLiteralToken)) && (!(token is StringToken)))
                     throw new InvalidOperationException("Encountered invalid token looking for THEN content");
-                if ((token is AtomToken) && (token.Content.ToUpper() == "THEN"))
+                if ((token is AtomToken) && (token.Content.Equals("THEN", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     offsetThen = index;
                     break;

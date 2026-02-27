@@ -92,7 +92,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // - Get IsPublic and funcName (ensure funcName token is AtomToken)
-            bool isPublic = (tokens[0].Content.ToUpper() != "PRIVATE");
+            bool isPublic = (!tokens[0].Content.Equals("PRIVATE", StringComparison.InvariantCultureIgnoreCase));
             if (!(tokens[matchPatternLength] is AtomToken))
                 return null;
             var funcNameToken = tokens[matchPatternLength];
@@ -252,13 +252,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Determine ByRef / ByVal (default to ByVal if not specified)
             IToken token = base.getToken_AtomOnly(tokens, offset);
-            if (token.Content.ToUpper() == "BYREF")
+            if (token.Content.Equals("BYREF", StringComparison.InvariantCultureIgnoreCase))
             {
                 byRef = true;
                 paramTokens.Add(token);
                 offset++;
             }
-            else if (token.Content.ToUpper() == "BYVAL")
+            else if (token.Content.Equals("BYVAL", StringComparison.InvariantCultureIgnoreCase))
             {
                 byRef = false;
                 paramTokens.Add(token);

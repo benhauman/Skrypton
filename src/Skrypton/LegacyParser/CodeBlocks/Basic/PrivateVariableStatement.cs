@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             string baseContent = base.GenerateBaseSource(NullIndenter.Instance);
             if ((baseContent == null)
             || (baseContent.Length < 4)
-            || (baseContent.Substring(0, 4).ToUpper() != "DIM "))
+            || (!baseContent.Substring(0, 4).Equals("DIM ", StringComparison.InvariantCultureIgnoreCase)))
                 throw new InvalidOperationException("Unexpected content from base class");
 
             // .. and change to be ReDim (add in Preserve keyword, if required)
