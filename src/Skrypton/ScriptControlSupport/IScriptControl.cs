@@ -442,7 +442,12 @@ namespace Skrypton.ScriptControlSupport
     [System.AttributeUsage(System.AttributeTargets.Method)]
     internal sealed class TypeLibFuncAttribute : System.Attribute
     {
-        public TypeLibFuncAttribute(int flags) { }
+        public TypeLibFuncAttribute(int flags)
+        {
+            Flags = flags;
+        }
+
+        public int Flags { get; }
     }
     //internal sealed class TypeLibTypeAttribute : System.Attribute
     //{

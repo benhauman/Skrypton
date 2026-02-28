@@ -15,6 +15,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private const int LOCALE_SYSTEM_DEFAULT = 2048;
         private const int DISPID_PROPERTYPUT = -3;
+
         //private const int SizeOfNativeVariant = 16;
         //private static readonly ComTypes.DISPPARAMS EmptyDISPPARAMS = new ComTypes.DISPPARAMS()
         //{
@@ -24,9 +25,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         //    rgvarg = IntPtr.Zero
         //};
 
+        [Flags]
         public enum InvokeFlags : ushort
         {
-            Unknown = 0,
+            None = 0,
             DISPATCH_METHOD = 1,
             DISPATCH_PROPERTYGET = 2,
             DISPATCH_PROPERTYPUT = 4,
