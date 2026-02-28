@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -309,7 +310,7 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[TypeLibType(4304)]
     //[Guid("70841C71-067D-11D0-95D8-00A02463AB28")]
-    public interface IScriptProcedureCollection : System.Collections.IEnumerable
+    public interface IScriptProcedureCollection : System.Collections.IEnumerable, IEnumerable<Procedure>
     {
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [TypeLibFunc(64)]
@@ -401,7 +402,7 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[TypeLibType(4304)]
     //[Guid("70841C6F-067D-11D0-95D8-00A02463AB28")]
-    public interface IScriptModuleCollection : System.Collections.IEnumerable
+    public interface IScriptModuleCollection : System.Collections.IEnumerable, IEnumerable<Module>
     {
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(-4)]

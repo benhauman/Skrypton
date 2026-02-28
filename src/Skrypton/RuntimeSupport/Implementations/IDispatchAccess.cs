@@ -26,6 +26,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public enum InvokeFlags : ushort
         {
+            Unknown = 0,
             DISPATCH_METHOD = 1,
             DISPATCH_PROPERTYGET = 2,
             DISPATCH_PROPERTYPUT = 4,
