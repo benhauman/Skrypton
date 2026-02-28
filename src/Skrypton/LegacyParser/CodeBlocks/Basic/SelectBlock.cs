@@ -48,7 +48,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null nor contain any null references, but it may be an empty set
         /// </summary>
+#pragma warning disable CA1819 // Properties should not return arrays
         [DataMember] public CommentStatement[] OpeningComments { get; private set; }
+#pragma warning restore CA1819 // Properties should not return arrays
 
         /// <summary>
         /// This will never be null nor contain any null references, but it may be an empty set. All items will be CaseBlockExpressionSegment or
@@ -56,7 +58,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// ONLY segment to be a CaseBlockElseSegment - in which case the select "Expression" will still be evaluated but the "Case Else"
         /// will always be entered)
         /// </summary>
+#pragma warning disable CA1819 // Properties should not return arrays
         [DataMember] public CaseBlockSegment[] Content { get; private set; }
+#pragma warning restore CA1819 // Properties should not return arrays
 
         /// <summary>
         /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it
@@ -93,7 +97,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// <summary>
             /// This will never be null nor contain any null references, but it may be an empty set
             /// </summary>
+#pragma warning disable CA1819 // Properties should not return arrays
             [DataMember] public ICodeBlock[] Statements { get; private set; }
+#pragma warning restore CA1819 // Properties should not return arrays
         }
 
         [DataContract(Namespace = "http://vbs")]
@@ -114,7 +120,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// <summary>
             /// This will never be null, empty nor contain any null references
             /// </summary>
+#pragma warning disable CA1819 // Properties should not return arrays
             [DataMember] public Expression[] Values { get; private set; }
+#pragma warning restore CA1819 // Properties should not return arrays
         }
 
         [DataContract(Namespace = "http://vbs")]

@@ -262,6 +262,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement(disposedFlagNameIfAny.Name + " = true;", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex)
                 };
+#pragma warning disable CA1820 // Test for empty strings using string length
                 if (inheritanceChainIfAny == "")
                 {
                     inheritanceChainIfAny = " : ";
@@ -270,7 +271,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     inheritanceChainIfAny += ", ";
                 }
-
+#pragma warning restore CA1820 // Test for empty strings using string length
                 inheritanceChainIfAny += "IDisposable";
             }
 

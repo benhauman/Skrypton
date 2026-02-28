@@ -420,7 +420,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
                 argumentsInitialisation = "";
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((argumentsInitialisation == "") && (optionalMemberAccessor == null))
+#pragma warning restore CA1820 // Test for empty strings using string length
             {
                 // If there are are no member accessors and no arguments on the target then use the abbreviated SET method signature (this
                 // should only be the case where the assignment is invalid and a runtime exception is going to be raised, otherwise this
@@ -442,7 +444,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     translatedExpression,
                     targetAccessorName,
                     (optionalMemberAccessor == null) ? "null" : optionalMemberAccessor.ToLiteral(),
+#pragma warning disable CA1820 // Test for empty strings using string length
                     (argumentsInitialisation == "") ? "" : (", " + argumentsInitialisation)
+#pragma warning restore CA1820 // Test for empty strings using string length
                 ),
                 variablesAccessed.ToNonNullImmutableList()
             );

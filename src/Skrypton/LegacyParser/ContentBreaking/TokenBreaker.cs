@@ -15,6 +15,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// </summary>
         public static IEnumerable<IToken> BreakUnprocessedToken(UnprocessedContentToken token)
         {
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
@@ -77,6 +78,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
             }
             if (buffer != "")
                 tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             // Handle ignore-line-return / end-of-statement combinations
             tokens = handleLineReturnCancels(tokens);

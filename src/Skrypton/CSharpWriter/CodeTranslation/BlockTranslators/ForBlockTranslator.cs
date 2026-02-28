@@ -591,6 +591,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth,
                         forBlock.LoopVar.LineIndex
                     ));
+#pragma warning disable CA1820 // Test for empty strings using string length
                     translationResult = translationResult.Add(new TranslatedStatement(
                         continuationCondition + ";" + ((loopIncrementWithLeadingSpaceIfNonBlank == "") ? ")" : ""),
                         indentationDepth + 1,
@@ -604,6 +605,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             forBlock.LoopVar.LineIndex
                         ));
                     }
+#pragma warning restore CA1820 // Test for empty strings using string length
                 }
             }
             else
@@ -698,6 +700,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forBlock.LoopVar.LineIndex
                     ));
 
+#pragma warning disable CA1820 // Test for empty strings using string length
                 if (loopIncrementWithLeadingSpaceIfNonBlank != "")
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
@@ -706,7 +709,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forBlock.LoopVar.LineIndex
                     ));
                 }
-
+#pragma warning restore CA1820 // Test for empty strings using string length
                 translationResult = translationResult.Add(new TranslatedStatement(
                     continueLoopName.Name + " = " + continuationCondition + ";",
                     indentationDepth + 2,

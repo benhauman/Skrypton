@@ -47,8 +47,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
             if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (Content.Trim() == "")
                 return "";
+#pragma warning restore CA1820 // Test for empty strings using string length
             return indenter.Indent + "'" + Content;
         }
     }

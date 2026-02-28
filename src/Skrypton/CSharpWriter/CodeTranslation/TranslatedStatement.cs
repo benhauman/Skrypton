@@ -27,7 +27,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// This will never be null, though it may be blank if it represents a blank line. It will never have any leading or trailing whitespace.
         /// </summary>
         public string Content { get; private set; }
-        public bool HasContent => Content != "";
+        public bool HasContent => !string.IsNullOrEmpty(Content);
 
         /// <summary>
         /// This will always be zero or greater
@@ -44,10 +44,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
         internal void AppendInlineComment(string translatedCommentContent)
         {
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (Content != "")
             {
                 Content += " ";
             }
+#pragma warning restore CA1820 // Test for empty strings using string length
             Content += translatedCommentContent;
         }
     }

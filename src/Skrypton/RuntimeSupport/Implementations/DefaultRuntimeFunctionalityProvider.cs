@@ -273,10 +273,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // The default values of VBScript primitives (number, strings and booleans) are considered to match Empty
                 var nonNullValue = l ?? r;
+#pragma warning disable CA1820 // Test for empty strings using string length
                 if ((IsDotNetNumericType(nonNullValue) && (Convert.ToDouble(nonNullValue, CultureInfo.InvariantCulture)) == 0)
                 || ((nonNullValue as string) == "")
                 || ((nonNullValue is bool) && !(bool)nonNullValue))
                     return true;
+#pragma warning restore CA1820 // Test for empty strings using string length
                 return false;
             }
 
@@ -411,6 +413,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
                 return stringComparisonResult.Value < 0;
             }
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((lString != null) && (lString != ""))
                 return false;
             if ((rString != null) && (rString != ""))
@@ -423,6 +426,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Blank strings (which can not be passed through CDBL without causing an error, but which we can treat as zero)
             var lNumeric = (lString == "") ? 0 : CDBL_Precise(l);
             var rNumeric = (rString == "") ? 0 : CDBL_Precise(r);
+#pragma warning restore CA1820 // Test for empty strings using string length
             return lNumeric < rNumeric;
         }
 
@@ -612,6 +616,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public string STRING(object numberOfTimesToRepeat, object character)
         {
+#pragma warning disable CA1820 // Test for empty strings using string length
+
             character = _valueRetriever.VAL(character, "'String'");
             numberOfTimesToRepeat = _valueRetriever.VAL(numberOfTimesToRepeat, "'String'");
             if ((numberOfTimesToRepeat == DBNull.Value) || (character == DBNull.Value))
@@ -650,6 +656,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                     characterChar = (char)characterCode;
                 }
             }
+#pragma warning restore CA1820 // Test for empty strings using string length
+
             if (numberOfTimesToRepeatNumber > MAX_VBSCRIPT_STRING_LENGTH)
                 throw new OutOfStringSpaceException("'String'");
             if (numberOfTimesToRepeatNumber == 0)
@@ -793,8 +801,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException();
 
             var s = CSTR(value);
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
                 throw new InvalidProcedureCallOrArgumentException();
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             var characterValue = s[0];
             return (short)Encoding.Default.GetBytes(new[] { characterValue })[0];
@@ -809,8 +819,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException();
 
             var s = CSTR(value);
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
                 throw new InvalidProcedureCallOrArgumentException();
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             return (short)s[0];
         }
@@ -1207,8 +1219,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             var toReplaceWithString = _valueRetriever.STR(toReplaceWith, "'Replace'");
             var toSearchForString = _valueRetriever.STR(toSearchFor, "'Replace'");
             var valueString = _valueRetriever.STR(value, "'Replace'");
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((maxNumberOfReplacementsNumber == 0) || (valueString == "") || (toSearchForString == "") || (startIndexNumber > valueString.Length)) // Note: VBScript's startIndex is one-based while C#'s is zero-based
                 return valueString;
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             // Real work (2017-08-10 DWR: This loops has been rewritten to use a string builder to try to reduce the string allocations - inspired by https://stackoverflow.com/a/244933/3813189)
             var sb = new StringBuilder();
@@ -1336,8 +1350,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
 
             var valueString = _valueRetriever.STR(value);
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (valueString == "")
                 return "";
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             var sb = new StringBuilder();
             foreach (var c in valueString)
@@ -1380,8 +1396,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
 
             var valueString = _valueRetriever.STR(value);
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (valueString == "")
                 return "";
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             int length = valueString.Length;
             var sb = new StringBuilder();

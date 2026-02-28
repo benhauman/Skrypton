@@ -226,8 +226,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                     string memberNameX = memberName ?? Skrypton.RuntimeSupport.Information.TryGetIDispatchMemberName(source, dispId);
 
                     var message = $"Failing attempting to invoke member '{memberNameX}' with DispId '" + dispId + "': ";
+#pragma warning disable CA1820 // Test for empty strings using string length
                     if ((excepInfo.bstrDescription ?? "").Trim() == "")
+#pragma warning restore CA1820 // Test for empty strings using string length
+
+                    {
                         message += "Unspecified error";
+                    }
                     else
                         message += excepInfo.bstrDescription;
                     if (errorType != CommonErrors.Unknown)

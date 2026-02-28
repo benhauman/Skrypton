@@ -80,6 +80,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 {
                     // Store any previous token content
                     bool isInlineComment;
+#pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
                     {
                         // If there has been any one the same line as this comment, then this is an inline comment
@@ -89,7 +90,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         tokenContent = "";
                     }
                     else
+                    {
                         isInlineComment = false;
+                    }
+#pragma warning restore CA1820 // Test for empty strings using string length
 
                     // Move past comment marker and look for end of comment (end of the line) then store in a CommentToken instance
                     // - Note: Always want an EndOfStatementNewLineToken to appear before comments, so ensure this is the case (if the previous token was
@@ -110,11 +114,13 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             {
                                 tokens.RemoveAt(tokens.Count - 1);
                                 var unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');
+#pragma warning disable CA1820 // Test for empty strings using string length
                                 if (unprocessedContentToRecord != "")
                                 {
                                     tokens.Add(new UnprocessedContentToken(unprocessedContentToRecord, prevToken.LineIndex));
                                     tokens.Add(new EndOfStatementSameLineToken(prevToken.LineIndex));
                                 }
+#pragma warning restore CA1820 // Test for empty strings using string length
                             }
                         }
                     }
@@ -141,11 +147,13 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 else if (chr == "\"")
                 {
                     // Store any previous token content
+#pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
                     {
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
                         tokenContent = "";
                     }
+#pragma warning restore CA1820 // Test for empty strings using string length
 
                     // Try to grab string content
                     lineIndexForStartOfContent = lineIndex;
@@ -193,8 +201,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 else if (chr == "[")
                 {
                     // Store any previous token content
+#pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+#pragma warning restore CA1820 // Test for empty strings using string length
 
                     lineIndexForStartOfContent = lineIndex;
                     tokenContent = "[";
@@ -237,8 +247,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 else if (chr == "#")
                 {
                     // Store any previous token content
+#pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+#pragma warning restore CA1820 // Test for empty strings using string length
 
                     lineIndexForStartOfContent = lineIndex;
                     tokenContent = "";
@@ -285,8 +297,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
             }
 
             // Don't let any unhandled content get away!
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (tokenContent != "")
                 tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             return tokens;
         }

@@ -121,8 +121,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new ArgumentNullException(nameof(tokens));
             if ((offset < 0) || (offset >= tokens.Count))
                 throw new ArgumentException("Invalid offset value [" + offset.ToString(CultureInfo.InvariantCulture) + "]");
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((endMarkerContent != null) && (endMarkerContent.Trim() == ""))
                 throw new ArgumentException("Blank endMarkerContent value - null is acceptable, blank is not");
+#pragma warning restore CA1820 // Test for empty strings using string length
             List<IToken> exprTokens = new List<IToken>();
             for (int index = offset; index < tokens.Count; index++)
             {

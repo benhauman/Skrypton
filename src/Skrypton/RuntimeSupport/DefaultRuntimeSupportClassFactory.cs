@@ -105,12 +105,14 @@ namespace Skrypton.RuntimeSupport
             // the mappings to be exported and incorporated into a name rewriter for use when the translate code is executed - this, though, would
             // be complicated since there would probably need to be additional data about the context where the name translation takes places as
             // well as the actual source name; this is why I'm happy to stick with this simpler approach for now).
+#pragma warning disable CA1820 // Test for empty strings using string length
             if (value == "")
             {
                 // Special case for blank string since GetHash returns zero - I'll make up a psuedo-random name that hopefully won't clash with
                 // anything else (not very scientific, I know!) http://xkcd.com/221/
                 return "unnamedVariable027396729921";
             }
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             var rewrittenValue = new string(
                 value.Select(c => char.IsLetterOrDigit(c) ? c : '_')

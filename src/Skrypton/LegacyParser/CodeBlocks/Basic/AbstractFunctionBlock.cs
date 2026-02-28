@@ -126,8 +126,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             // Ensure derived class has behaved itself
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((this.keyWord ?? "").Trim() == "")
                 throw new InvalidOperationException("Derived class has not defined non-blank/null keyWord");
+#pragma warning restore CA1820 // Test for empty strings using string length
 
             // Render opening declaration (scope, name, arguments)
             StringBuilder output = new StringBuilder();

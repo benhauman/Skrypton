@@ -532,8 +532,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException();
             if (IsVBScriptNothing(value))
                 throw new ObjectVariableNotSetException();
+            if ((value is string valueString) && string.IsNullOrEmpty(valueString))
+                throw new TypeMismatchException();
+
+#pragma warning disable CA1820 // Test for empty strings using string length
             if ((value as string) == "")
                 throw new TypeMismatchException();
+#pragma warning restore CA1820 // Test for empty strings using string length
             if (value is bool)
                 return (bool)value ? (Int16)(-1) : (Int16)0; // Return an "Integer" for True / False
             if (value is DateTime)
@@ -589,9 +594,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         private static string DateToString(DateTime value, CultureInfo culture)
         {
             var dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : DateParser.DateTimeToShortDateString(value, culture, false);
+#pragma warning disable CA1820 // Test for empty strings using string length
             var timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : DateParser.DateTimeToLongTimeString(value, culture);
             if ((dateComponent != "") && (timeComponent != ""))
                 return dateComponent + " " + timeComponent;
+#pragma warning restore CA1820 // Test for empty strings using string length
             return dateComponent + timeComponent;
         }
 
