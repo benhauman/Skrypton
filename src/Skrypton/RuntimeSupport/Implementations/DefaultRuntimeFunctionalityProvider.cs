@@ -29,7 +29,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// array of data must be an signed int, since it is capped at half of int.MaxValue.. minus one. I'm not sure if the minus one is to do with
         /// a requirement for there to be a null terminator at the end or some VBScript one-based-index weirdness.. or something else.
         /// </summary>
-        private static readonly int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
+        private const int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
 
         private readonly IRuntimeLogger _runtimeLogger;
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
@@ -2162,7 +2162,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if (dimensionSizes.Length == 2)
             {
                 // Copying a 2D array can be done column-by-column, so there's only one loop and an Array.Copy per iteration..
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
                 var newArray = new object[dimensionSizes[0], dimensionSizes[1]];
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
                 var numberOfElementsToCopyEachTime = Math.Min(arrayTyped.GetLength(1), dimensionSizes[1]);
                 if (numberOfElementsToCopyEachTime > 0)
                 {

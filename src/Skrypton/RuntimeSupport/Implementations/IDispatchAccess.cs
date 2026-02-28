@@ -257,7 +257,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Ubuntu: [DllNotFoundException] Unable to load shared library 'OleAuth32.dll' or one of its dependencies.
                     {
-                        VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
+                        _ = VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
                     }
                     Marshal.FreeHGlobal(variantToClear); // Free the memory block
                 }
@@ -280,7 +280,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 IntPtr variantToClear = IntPtr.Add(ptr, i * SizeOfNativeVariant);
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Ubuntu: [DllNotFoundException] Unable to load shared library 'OleAuth32.dll' or one of its dependencies.
                 {
-                    VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
+                    _ = VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
                 }
                 Marshal.FreeHGlobal(variantToClear); // Free the memory block
             }
@@ -523,7 +523,9 @@ namespace Skrypton.RuntimeSupport.Implementations
     */
     [StructLayout(LayoutKind.Explicit)]
     [DebuggerDisplay("{VariantTypeEnum}:")]
+#pragma warning disable CA1815 // Override equals and operator equals on value types
     public struct VARIANT
+#pragma warning restore CA1815 // Override equals and operator equals on value types
     {
         // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
         // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)

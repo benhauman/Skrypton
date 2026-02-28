@@ -17,12 +17,12 @@ namespace Skrypton.ScriptControlSupport
     public sealed class ScriptControlClass : IScriptControl
     {
         private int _timeout = -1; // -1 means no timeout (infinite execution time)
-        private bool _allowUI = false;// Disable UI by default for security reasons (MessageBox, InputBox, etc.)
+        private bool _allowUI;// Disable UI by default for security reasons (MessageBox, InputBox, etc.)
         private string _language = "";// ('VBScript') No scripting language is selected by default. It must be set explicitly, otherwise script execution will fail
         private ScriptControlStates _state = ScriptControlStates.Initialized;
-        private int _sitehWnd = 0; // required (Must be a valid HWND (window handle)) if allowUI is true otherwise ignored. No host window is associated by default => 0
+        private int _sitehWnd; // required (Must be a valid HWND (window handle)) if allowUI is true otherwise ignored. No host window is associated by default => 0
         private bool _useSafeSubset = true; // 'true': Script runs in safe modeUse safe subset of the scripting language (if supported). 'false': Use full language features. Safe subset is used by default. Potentially dangerous objects and operations are blocked
-        private Error _error = null; // Default value: null (or Nothing in VBScript) — no error has occurred yet.
+        //private Error _error; // Default value: null (or Nothing in VBScript) — no error has occurred yet.
 //#pragma warning disable CS0414 // The field is assigned but its value is never used
 //        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
 //#pragma warning restore CS0414 // The field is assigned but its value is never used
@@ -65,7 +65,7 @@ namespace Skrypton.ScriptControlSupport
         //
         Modules IScriptControl.Modules => throw new NotImplementedException();
 
-        Error IScriptControl.Error => _error;
+        Error IScriptControl.Error => null; // later
 
         object IScriptControl.CodeObject => throw new NotImplementedException();
 
