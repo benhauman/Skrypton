@@ -25,7 +25,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                 throw new ArgumentException("Null reference encountered in tokens set");
 
             return new TokenProcessResult(
-                new PartialNumberContent(new IToken[0]),
+                new PartialNumberContent([]),
                 numberContent.Tokens.Concat(new[] { token }),
                 GetDefaultProcessor(tokens)
             );

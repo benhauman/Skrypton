@@ -190,7 +190,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             IEnumerable<TranslatedStatement> classInitializeCallStatements;
             if (classInitializeMethodNameIfAny == null)
             {
-                classInitializeCallStatements = new TranslatedStatement[0];
+                classInitializeCallStatements = [];
             }
             else
             {

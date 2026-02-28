@@ -647,7 +647,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
                     callExpressionSegment = new CallExpressionSegment(
                         new[] { parentReturnValueNameToken }.Concat(callExpressionSegment.MemberAccessTokens.Skip(1)),
-                        new Expression[0],
+                        [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
                     );
                     firstMemberAccessToken = parentReturnValueNameToken;
@@ -1368,7 +1368,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 possibleByRefTarget = Translate(
                     new CallExpressionSegment(
                         possibleByRefCallExpressionSegment.MemberAccessTokens,
-                        new Expression[0],
+                        [],
                         CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
                     ),
                     scopeAccessInformation
@@ -1394,7 +1394,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     possibleByRefTarget = Translate(
                         new CallExpressionSegment(
                             possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens,
-                            new Expression[0],
+                            [],
                             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
                         ),
                         scopeAccessInformation

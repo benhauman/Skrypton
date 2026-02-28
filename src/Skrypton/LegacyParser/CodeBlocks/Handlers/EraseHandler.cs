@@ -40,13 +40,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             //   relies upon the source code not having any VBScript compile errors (in some places it tries to be helpful with explaining where there would be
             //   compile failures in the VBScript interpreter and in other places - like here - it pretty much just assume valid content.
             int numberOfTokensConsumedInStatement;
-            IEnumerable<Tuple<EraseStatement.TargetDetails, int>> targetDetails;
+            Tuple<EraseStatement.TargetDetails, int>[] targetDetails;
             if (tokens.Count == numberOfKeywordTokens)
             {
                 // It's a runtime error if there is an ERASE statement with no targets. But if it's the last statement then there may not be any more tokens to
                 // consume - if so, don't try to look ahead!
                 numberOfTokensConsumedInStatement = numberOfKeywordTokens;
-                targetDetails = new Tuple<EraseStatement.TargetDetails, int>[0];
+                targetDetails = [];
             }
             else
             {
@@ -63,7 +63,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         terminator
                     );
                 }
-                targetDetails = targetExpressionsTokenSets.Select(targetTokens => GetTargetExpressionDetailsWithNumberOfTokensConsumed(targetTokens));
+                targetDetails = targetExpressionsTokenSets.Select(targetTokens => GetTargetExpressionDetailsWithNumberOfTokensConsumed(targetTokens)).ToArray();
                 numberOfTokensConsumedInStatement =
                     /* The keyword token(s) */ numberOfKeywordTokens +
                     /* The individual target expressions tokens */ targetDetails.Sum(tokenSet => tokenSet.Item2) +

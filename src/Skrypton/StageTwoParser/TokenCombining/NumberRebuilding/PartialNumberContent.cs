@@ -19,7 +19,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
             if (Tokens.Any(t => !IsValidToken(t)))
                 throw new ArgumentException("The only allowable tokens are minus sign OperatorTokens, numeric AtomTokens and MemberAccessorOrDecimalPointTokens");
         }
-        public PartialNumberContent() : this(new IToken[0]) { }
+        public PartialNumberContent() : this([]) { }
 
         /// <summary>
         /// This will never be null nor contain any null references. All tokens will be a MemberAccessorOrDecimalPointTokens, of a minus sign OperatorToken or

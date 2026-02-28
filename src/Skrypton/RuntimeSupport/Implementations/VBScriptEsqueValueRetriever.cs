@@ -205,7 +205,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (o == null)
                 throw new ArgumentNullException(nameof(o));
 
-            return InvokeGetter(o, null, new object[0], allowPrivateAccess: false, onlyConsiderMethods: false);
+            return InvokeGetter(o, null, [], allowPrivateAccess: false, onlyConsiderMethods: false);
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Now we have a numeric value, we need to check numericValuesTheTypeMustBeAbleToContain. They all must be parseable as numbers.
             // If there are no related values or if all of the related value have the same type as the primary value then nothing has to
             // change. Otherwise we need to ensure that the type we return can contain them all..
-            var relatedNumericValues = (numericValuesTheTypeMustBeAbleToContain ?? new object[0])
+            var relatedNumericValues = (numericValuesTheTypeMustBeAbleToContain ?? [])
                 .Select(v => NUM(v))
                 .ToArray();
             if (relatedNumericValues.Length == 0 || relatedNumericValues.All(v => v.GetType() == valueToConvert.GetType()))
@@ -684,7 +684,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
             var currentGetterMethod = implementedTypes
                 .Select(t => t.GetProperty("Current", Type.EmptyTypes))
-                .Select(p => ((p == null) || !p.CanRead || (p.GetIndexParameters() ?? new ParameterInfo[0]).Length != 0) ? null : p.GetGetMethod())
+                .Select(p => ((p == null) || !p.CanRead || (p.GetIndexParameters() ?? []).Length != 0) ? null : p.GetGetMethod())
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
             if ((moveNextMethod == null) || (resetMethod == null) || (currentGetterMethod == null))
                 return null;
@@ -1155,7 +1155,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             var methodParameters = method.GetParameters();
             Expression[] argExpressions;
             IEnumerable<Expression> byRefArgAssignmentsForMethodCall, byRefArgAssignmentsForReturn;
-            IEnumerable<ParameterExpression> variablesToDeclareForHandlingOfArguments;
+            ParameterExpression[] variablesToDeclareForHandlingOfArguments;
             if ((numberOfArguments == 0) && methodParameters.All(p => p.CustomAttributes.Any(attribute => attribute.AttributeType == typeof(OptionalAttribute))))
             {
                 // This is related to the "even-cruder support for [Optional] parameters" referenced in GetGetMethods - if an argument-less member
@@ -1164,9 +1164,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // because it doesn't deal with the case of providing SOME arguments and then leaving some of the [Optional] parameters without
                 // values - this would be much more complex and I don't currently require it anywhere.
                 argExpressions = Enumerable.Range(0, methodParameters.Length).Select(i => Expression.Constant(Missing.Value, typeof(object))).ToArray();
-                byRefArgAssignmentsForMethodCall = new Expression[0];
-                byRefArgAssignmentsForReturn = new Expression[0];
-                variablesToDeclareForHandlingOfArguments = new ParameterExpression[0];
+                byRefArgAssignmentsForMethodCall = [];
+                byRefArgAssignmentsForReturn = [];
+                variablesToDeclareForHandlingOfArguments = [];
             }
             else if ((methodParameters.Length == 1) && ParameterIsObjectParamsArray(methodParameters[0]))
             {
@@ -1175,9 +1175,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // into individual entries for multiple arguments, since there is only a single argument!). C# does not support "ref params" and
                 // so we won't worry about passing "by ref" here.
                 argExpressions = new[] { argumentsParameter };
-                byRefArgAssignmentsForMethodCall = new Expression[0];
-                byRefArgAssignmentsForReturn = new Expression[0];
-                variablesToDeclareForHandlingOfArguments = new ParameterExpression[0];
+                byRefArgAssignmentsForMethodCall = [];
+                byRefArgAssignmentsForReturn = [];
+                variablesToDeclareForHandlingOfArguments = [];
             }
             else
             {
@@ -1263,7 +1263,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                             a.Parameter.Type.IsValueType ? Expression.Convert(a.Parameter, typeof(object)) : a.Parameter // Value types need to be boxed when pushed back into the arguments array
                         )
                     );
-                variablesToDeclareForHandlingOfArguments = argExpressions.OfType<ParameterExpression>();
+                variablesToDeclareForHandlingOfArguments = argExpressions.OfType<ParameterExpression>().ToArray();
             }
 
             var methodCall = Expression.Call(
@@ -1613,7 +1613,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (target == null)
                     throw new ArgumentException("Unable to access member \"" + memberAccessor + "\" on null reference");
 
-                target = InvokeGetter(target, memberAccessor, new object[0], allowPrivateAccess, onlyConsiderMethods);
+                target = InvokeGetter(target, memberAccessor, [], allowPrivateAccess, onlyConsiderMethods);
             }
             return target;
         }

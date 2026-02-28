@@ -26,7 +26,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             {
                 return new TokenProcessResult(
                     numberContent.AddToken(token),
-                    new IToken[0],
+                    [],
                     GotSomeDecimalNumberContent.Instance
                 );
             }
@@ -34,7 +34,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             {
                 return new TokenProcessResult(
                     numberContent.AddToken(token),
-                    new IToken[0],
+                    [],
                     GotMinusSignOfNumber.Instance
                 );
             }
@@ -42,7 +42,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             {
                 return new TokenProcessResult(
                     numberContent.AddToken(token),
-                    new IToken[0],
+                    [],
                     GotSomeIntegerNumberContent.Instance
                 );
             }

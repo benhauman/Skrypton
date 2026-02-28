@@ -58,7 +58,7 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new string[0], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
+            return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1)
         {
@@ -108,7 +108,7 @@ namespace Skrypton.RuntimeSupport
             if (argumentProviderBuilder == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
-            return source.CALL(context, target, new string[0], argumentProviderBuilder.GetArgs(), line);
+            return source.CALL(context, target, [], argumentProviderBuilder.GetArgs(), line);
         }
         public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
@@ -171,7 +171,7 @@ namespace Skrypton.RuntimeSupport
 
             public IEnumerable<object> GetInitialValues()
             {
-                return new object[0];
+                return [];
             }
 
             public void OverwriteValueIfByRef(int index, object value)

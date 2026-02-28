@@ -227,7 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callExpressionSegments.Add(
                     new CallExpressionSegment(
                         lastCallExpressionSegments.MemberAccessTokens.Take(numberOfMemberAccessTokensInLastCallExpressionSegment - 1),
-                        new Expression[0],
+                        [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent // Can't be any brackets as we're splitting a CallExpressionSegment in two
                     )
                 );
@@ -324,7 +324,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             {
                                 new CallExpressionSegment(
                                     callExpressionSegments.Single().MemberAccessTokens.Take(1),
-                                    new Expression[0],
+                                    [],
                                     CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
                                 )
                             };
@@ -380,7 +380,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             //   need to make a note explaining how/why
             IEnumerable<NameToken> variablesAccessed;
             if (callExpressionSegments.Count == 0)
-                variablesAccessed = new NameToken[0];
+                variablesAccessed = [];
             else
             {
                 // We will have one or more CallSetItemExpressionSegment instances, the first of which will always have at least one

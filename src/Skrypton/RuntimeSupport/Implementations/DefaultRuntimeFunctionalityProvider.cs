@@ -1267,7 +1267,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             var valueString = _valueRetriever.STR(value, "'Split'");
             var delimiterString = _valueRetriever.STR(delimiter, "'Split'");
             if (string.IsNullOrEmpty(valueString))
-                return new object[0];
+                return [];
             return valueString.Split(new[] { delimiterString }, StringSplitOptions.None).Cast<object>().ToArray();
         }
         public object STRCOMP(object string1, object string2) { return STRCOMP(string1, string2, 0); }
@@ -1616,7 +1616,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   code to call "_.ERASE(ref outer.names)", which would be invalid C# code since "ref" cannot be used with property accessors
             if ((target == null) || !target.GetType().IsArray)
                 throw new TypeMismatchException("'Erase'");
-            targetSetter(new object[0]);
+            targetSetter(Array.Empty<object>());
         }
         public void ERASE(object target, params object[] arguments)
         {
@@ -1647,7 +1647,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // The element in the target array must also so be an array since that is what's effectively getting erased
                 throw new TypeMismatchException("'Erase'");
             }
-            targetArray.SetValue(new object[0], numericArguments);
+            targetArray.SetValue(Array.Empty<object>(), numericArguments);
         }
         public string JOIN(object value) { return JOIN(value, " "); }
         public string JOIN(object value, object delimiter)

@@ -47,17 +47,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 if (block == null)
                     throw new ArgumentException("Null reference encountered in blocks set");
 
-                IEnumerable<Statement> expressionsToInterrogate;
+                Statement[] expressionsToInterrogate;
                 var nonNestedExpressionContainingBlock = block as IHaveNonNestedExpressions;
                 if (nonNestedExpressionContainingBlock != null)
-                    expressionsToInterrogate = nonNestedExpressionContainingBlock.NonNestedExpressions;
+                    expressionsToInterrogate = nonNestedExpressionContainingBlock.NonNestedExpressions?.ToArray();
                 else
                 {
                     var statement = block as Statement;
                     if (statement != null)
                         expressionsToInterrogate = new[] { statement };
                     else
-                        expressionsToInterrogate = new Statement[0];
+                        expressionsToInterrogate = [];
                 }
                 foreach (var token in expressionsToInterrogate.SelectMany(e => e.Tokens))
                     yield return token;

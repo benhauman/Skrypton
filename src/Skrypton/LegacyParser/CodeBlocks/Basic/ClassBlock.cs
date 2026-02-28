@@ -49,7 +49,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
         /// </summary>
-        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions { get { return new NameToken[0]; } }
+        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions { get { return []; } }
 
         /// <summary>
         /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it

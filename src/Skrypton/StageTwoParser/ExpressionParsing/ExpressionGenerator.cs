@@ -84,7 +84,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
                                 accessorBuffer,
-                                new Expression[0],
+                                [],
                                 directedWithReferenceIfAny,
                                 argumentsAreBracketed: false,
                                 willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
@@ -136,7 +136,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                             // CallSetExpression)
                             expressionSegments.Add(
                                 new CallSetItemExpressionSegment(
-                                    new IToken[0],
+                                    [],
                                     bracketedExpressions,
                                     null // ArgumentBracketPresenceOptions
                                 )
@@ -162,7 +162,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
                                 accessorBuffer,
-                                new Expression[0],
+                                [],
                                 directedWithReferenceIfAny,
                                 argumentsAreBracketed: false, // zero-argument content not bracketed
                                 willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
@@ -186,7 +186,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 expressionSegments.Add(
                     GetCallOrNewOrValueExpressionSegment(
                         accessorBuffer,
-                        new Expression[0],
+                        [],
                         directedWithReferenceIfAny,
                         argumentsAreBracketed: false, // zero-argument content not bracketed
                         willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
