@@ -2412,11 +2412,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // Translated programs shouldn't provide any actions that register or unregister error tokens, but since we've just gone off and
                 // attempted to do some unknown work, it's best to check
-                if (!_activeErrorTokens.ContainsKey(errorToken))
-                    throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code");
+                if (!_activeErrorTokens.TryGetValue(errorToken, out ErrorTokenState errorState))
+                    throw new InvalidOperationException("This error token is not active - this indicates mismatched error token (de)registrations in the translated code", e);
 
-                if (_activeErrorTokens[errorToken] == ErrorTokenState.OnErrorResumeNext)
+                if (errorState == ErrorTokenState.OnErrorResumeNext)
+                {
                     SETERROR(e);
+                }
                 else
                 {
                     RELEASEERRORTRAPPINGTOKEN(errorToken);
