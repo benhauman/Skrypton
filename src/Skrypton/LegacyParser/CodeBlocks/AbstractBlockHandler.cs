@@ -15,7 +15,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// </summary>
+#pragma warning disable CA1002 // Do not expose generic lists
         public abstract ICodeBlock Process(List<IToken> tokens);
+#pragma warning restore CA1002 // Do not expose generic lists
 
         // =======================================================================================
         // HELPER METHODS FOR DERIVED CLASSES
@@ -166,7 +168,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// in the token stream that are to be handled here, with the exception of the optional
         /// use of an EndOfStatementToken for the endMarker.
         /// </summary>
+#pragma warning disable CA1002 // Do not expose generic lists
         protected static List<List<IToken>> getEntryList(IReadOnlyCollection<IToken> tokens, int offset, IToken endMarker)
+#pragma warning restore CA1002 // Do not expose generic lists
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -241,7 +245,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list
         /// </summary>
+#pragma warning disable CA1002 // Do not expose generic lists
         protected static List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start, int count)
+#pragma warning restore CA1002 // Do not expose generic lists
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -258,7 +264,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// <summary>
         /// Return a new list that is a subset of the input token list - taken from the start position to the end of the token list
         /// </summary>
+#pragma warning disable CA1002 // Do not expose generic lists
         protected static List<IToken> getTokenListSection(IReadOnlyCollection<IToken> tokens, int start)
+#pragma warning restore CA1002 // Do not expose generic lists
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

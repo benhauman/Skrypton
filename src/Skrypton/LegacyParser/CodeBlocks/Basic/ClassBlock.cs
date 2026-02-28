@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Skrypton.LegacyParser.Tokens.Basic;
 
@@ -13,7 +14,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         private NameToken className;
         private List<ICodeBlock> statements;
+#pragma warning disable CA1002 // Do not expose generic lists
         public ClassBlock(NameToken className, List<ICodeBlock> statements)
+#pragma warning restore CA1002 // Do not expose generic lists
         {
             if (statements == null)
                 throw new ArgumentNullException(nameof(statements));
@@ -41,7 +44,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             get { return this.className; }
         }
 
-        public List<ICodeBlock> Statements
+        public IList<ICodeBlock> Statements
         {
             get { return this.statements; }
         }

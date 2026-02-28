@@ -12,7 +12,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class ForBlock : ILoopOverNestedContent, ICodeBlock
     {
-        public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression loopStep, List<ICodeBlock> statements)
+        public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression loopStep, IList<ICodeBlock> statements)
         {
             LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
             LoopFrom = loopFrom ?? throw new ArgumentNullException(nameof(loopFrom));

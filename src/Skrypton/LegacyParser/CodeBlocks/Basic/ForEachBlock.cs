@@ -10,13 +10,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class ForEachBlock : ILoopOverNestedContent, ICodeBlock
+    public sealed class ForEachBlock : ILoopOverNestedContent, ICodeBlock
     {
         /// <summary>
         /// It is valid to have a null conditionStatement in VBScript - in case the
         /// doUntil value is not of any consequence
         /// </summary>
-        public ForEachBlock(NameToken loopVar, Expression loopSrc, List<ICodeBlock> statements)
+        public ForEachBlock(NameToken loopVar, Expression loopSrc, IList<ICodeBlock> statements)
         {
             this.LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
             this.LoopSrc = loopSrc ?? throw new ArgumentNullException(nameof(loopSrc));
@@ -30,7 +30,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
         [DataMember] public Expression LoopSrc { get; private set; }
 
-        [DataMember] public List<ICodeBlock> Statements { get; private set; }
+        [DataMember] public IList<ICodeBlock> Statements { get; private set; }
 
         /// <summary>
         /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it

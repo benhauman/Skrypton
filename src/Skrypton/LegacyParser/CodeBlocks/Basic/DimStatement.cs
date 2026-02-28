@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class DimStatement : BaseDimStatement
     {
-        public DimStatement(IEnumerable<DimVariable> variables) : base(variables)
+        public DimStatement(IReadOnlyCollection<DimVariable> variables) : base(variables)
         {
             // Dim statements (like Private and Public class member declarations and unlike ReDim statements) may only have integer constant array
             // dimensions specified, otherwise a compile error will be raised (on that On Error Resume Next can not bury). The integer constant

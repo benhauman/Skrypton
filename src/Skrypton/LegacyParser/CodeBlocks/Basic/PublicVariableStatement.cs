@@ -11,7 +11,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
+#pragma warning disable CA1002 // Do not expose generic lists
         public PublicVariableStatement(List<DimVariable> variables) : base(variables) { }
+#pragma warning restore CA1002 // Do not expose generic lists
 
         // =======================================================================================
         // VBScript BASE SOURCE RE-GENERATION
