@@ -94,7 +94,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             }
             else
             {
-                Dimensions = dimensions.ToList().AsReadOnly();
+                Dimensions = dimensions.ToArray();
                 if (Dimensions.Any(d => d == null))
                     throw new ArgumentException("Null reference encountered in dimensions set");
             }
@@ -109,7 +109,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Variables list may be null (not explicitly defined as an array), have zero elements (an uninitialised array) or multiple dimensions (but
         /// if the list is non-null and non-empty, it will never contain any null references)
         /// </summary>
-        [DataMember] public IEnumerable<Expression> Dimensions { get; private set; }
+        [DataMember] public Expression[] Dimensions { get; private set; }
 
         public override string ToString()
         {

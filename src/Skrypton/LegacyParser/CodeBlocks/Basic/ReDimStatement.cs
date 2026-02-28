@@ -13,20 +13,20 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     /// </summary>
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class ReDimStatement : BaseDimStatement
+    public sealed class ReDimStatement : BaseDimStatement
     {
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        public ReDimStatement(bool preseve, IEnumerable<DimVariable> variables) : base(variables)
+        public ReDimStatement(bool preserve, IEnumerable<DimVariable> variables) : base(variables)
         {
             // Ensure that all variables have at least one dimension (VBScript code will not compile if this is not the case and the assumption
             // is that we're dealing with valid code - it would be a compile time error, not a runtime error that could be masked with On Error
             // Resume Next)
-            if (Variables.Any(v => (v == null) || !v.Dimensions.Any()))
+            if (Variables.Any(v => (v == null) || v.Dimensions.Length == 0))
                 throw new ArgumentException("There must be at least one argument for all variables specified in a ReDim statement");
 
-            Preserve = preseve;
+            Preserve = preserve;
         }
 
         // =======================================================================================
