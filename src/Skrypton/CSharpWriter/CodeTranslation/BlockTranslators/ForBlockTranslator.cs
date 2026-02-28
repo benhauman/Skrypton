@@ -917,7 +917,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             public int LineIndexForSourceConstraint { get; private set; }
         }
 
-        private class LoopStartConstraintInitialiser : LoopConstraintInitialiser
+        private sealed class LoopStartConstraintInitialiser : LoopConstraintInitialiser
         {
             public LoopStartConstraintInitialiser(CSharpName variableName, string initialisationContentIgnoringTypesOfOtherConstraints, string initialisationContent, int lineIndexForSourceConstraint)
                 : base(variableName, initialisationContent, lineIndexForSourceConstraint)

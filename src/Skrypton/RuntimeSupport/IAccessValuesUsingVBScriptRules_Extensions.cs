@@ -156,7 +156,7 @@ namespace Skrypton.RuntimeSupport
             return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
 
-        private class ZeroArgumentArgumentProvider : IProvideCallArguments
+        private sealed class ZeroArgumentArgumentProvider : IProvideCallArguments
         {
             public static IProvideCallArguments WithEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(true);
             public static IProvideCallArguments WithoutEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(false);

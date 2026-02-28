@@ -153,7 +153,7 @@ namespace Skrypton.RuntimeSupport.Compat
         }
 
         [ComVisible(true)]
-        private class TranslatedPropertyInfo : PropertyInfo
+        private sealed class TranslatedPropertyInfo : PropertyInfo
         {
             private readonly string _name;
             private readonly Type _owningType;

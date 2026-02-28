@@ -357,7 +357,7 @@ namespace Skrypton.CSharpWriter.Lists
         /// <summary>
         /// This is used by the Sort method if a Comparison T is specified
         /// </summary>
-        private class SortComparisonWrapper : IComparer<T>
+        private sealed class SortComparisonWrapper : IComparer<T>
         {
             private Comparison<T> _comparison;
             public SortComparisonWrapper(Comparison<T> comparison)

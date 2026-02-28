@@ -83,7 +83,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// This is used by the GetMemberAccessTokenName for tokens that are not already NameToken instances. This derived type is used
         /// since it will bypass some of the the validation in the NameToken base constructor.
         /// </summary>
-        private class ForRenamingNameToken : NameToken
+        private sealed class ForRenamingNameToken : NameToken
         {
             public ForRenamingNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Disallow, lineIndex) { }
         }

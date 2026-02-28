@@ -147,7 +147,7 @@ namespace Skrypton.CSharpWriter
         /// output as a comment). If a ConsoleLogger is used and the translated program content is sent to the console then this allows all of the
         /// output to be copy-pasted into a C# file for testing. Pretty rough and ready but can make things a little easier!
         /// </summary>
-        private class CSharpCommentMakingLogger : ILogInformation
+        private sealed class CSharpCommentMakingLogger : ILogInformation
         {
             private readonly ILogInformation _logger;
             public CSharpCommentMakingLogger(ILogInformation logger)

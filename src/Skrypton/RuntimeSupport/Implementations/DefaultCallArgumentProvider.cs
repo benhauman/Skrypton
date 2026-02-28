@@ -113,7 +113,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return new ArgumentProvider(_valuesWithUpdatesWhereRequired, _useBracketsWhereZeroArguments);
         }
 
-        private class ArgumentProvider : IProvideCallArguments
+        private sealed class ArgumentProvider : IProvideCallArguments
         {
             private readonly List<Tuple<object, Action<object>>> _valuesWithUpdatesWhereRequired;
             public ArgumentProvider(List<Tuple<object, Action<object>>> valuesWithUpdatesWhereRequired, bool useBracketsWhereZeroArguments)

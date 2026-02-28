@@ -158,7 +158,7 @@ Returns the remaining ref count
 
         #endregion
     }
-    internal class DispatchMethodInfo : MethodInfo
+    internal sealed class DispatchMethodInfo : MethodInfo
     {
         private readonly IDispatchAccess.IDispatch _dispatch;
         private readonly string _name;
@@ -194,7 +194,7 @@ Returns the remaining ref count
         public override Type ReturnType => typeof(object);
         public override ICustomAttributeProvider ReturnTypeCustomAttributes { get; }
     }
-    internal class DispatchPropertyInfo : PropertyInfo
+    internal sealed class DispatchPropertyInfo : PropertyInfo
     {
         private readonly IDispatchAccess.IDispatch _dispatch;
         private readonly string _name;

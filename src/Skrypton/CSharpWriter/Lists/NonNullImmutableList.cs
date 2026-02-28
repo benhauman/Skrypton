@@ -98,7 +98,7 @@ namespace Skrypton.CSharpWriter.Lists
             );
         }
 
-        private class Validator : IValueValidator<T>
+        private sealed class Validator : IValueValidator<T>
         {
             private IValueValidator<T> _optionalInnerValidator;
             public Validator(IValueValidator<T> optionalInnerValidator)

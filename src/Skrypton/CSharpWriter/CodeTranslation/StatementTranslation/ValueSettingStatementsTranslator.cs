@@ -469,7 +469,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private class ValueSettingStatementAssigmentFormatDetails
+        private sealed class ValueSettingStatementAssigmentFormatDetails
         {
             public ValueSettingStatementAssigmentFormatDetails(Func<string, string> assigmentFormat, NonNullImmutableList<NameToken> variablesAccessed)
             {

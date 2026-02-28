@@ -150,7 +150,7 @@ namespace Skrypton.RuntimeSupport
             }
         }
 
-        class Utils
+        static class Utils
         {
             internal static char[] m_achIntlSpace = new char[]
             {
@@ -198,7 +198,7 @@ namespace Skrypton.RuntimeSupport
 
         }
 
-        class Conversions
+        static class Conversions
         {
             public static string ToString(char Value)
             {
@@ -220,7 +220,7 @@ namespace Skrypton.RuntimeSupport
             return num;
         }
 
-        class Strings
+        static class Strings
         {
             public static string Mid(string str, int Start, int Length)
             {
@@ -338,7 +338,7 @@ namespace Skrypton.RuntimeSupport
             }
         }
 
-        class Operators
+        static class Operators
         {
             public static int CompareString(string Left, string Right, bool TextCompare, CultureInfo culture) // System.Threading.Thread.CurrentThread.CurrentCulture
             {

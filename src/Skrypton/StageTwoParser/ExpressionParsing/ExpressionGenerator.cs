@@ -602,7 +602,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This is used to enforce VBScript's rules of precedence for operators (so that "a + b * c" can be represented as "a + (b * c)"
         /// </summary>
-        private class IndexerOperationExpressionSegmentSorter : IComparer<Tuple<OperationExpressionSegment, int>>
+        private sealed class IndexerOperationExpressionSegmentSorter : IComparer<Tuple<OperationExpressionSegment, int>>
         {
             public int Compare(Tuple<OperationExpressionSegment, int> x, Tuple<OperationExpressionSegment, int> y)
             {
@@ -659,7 +659,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             }
         }
 
-        private class TokenNavigator
+        private sealed class TokenNavigator
         {
             private readonly IToken[] _tokens;
             private int _index;

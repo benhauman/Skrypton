@@ -152,7 +152,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             return null;
         }
 
-        private class CodeBlockWithinScopeDefiningParent
+        private sealed class CodeBlockWithinScopeDefiningParent
         {
             public CodeBlockWithinScopeDefiningParent(ICodeBlock codeBlock, NonNullImmutableList<IHaveNestedContent> parentsWithinScope)
             {

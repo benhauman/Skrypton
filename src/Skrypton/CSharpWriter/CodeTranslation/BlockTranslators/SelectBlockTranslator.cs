@@ -782,7 +782,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private class SelectTargetExpressionTranslationData
+        private sealed class SelectTargetExpressionTranslationData
         {
             public SelectTargetExpressionTranslationData(IToken evaluatedTarget, CSharpName successfullyEvaluatedTargetNameIfRequired, TranslationResult extendedTranslationResult, ScopeAccessInformation extendedScopeAccessInformation)
             {
@@ -815,7 +815,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             public ScopeAccessInformation ExtendedScopeAccessInformation { get; private set; }
         }
 
-        private class ConditionMatchingByRefArgAliasingDetails
+        private sealed class ConditionMatchingByRefArgAliasingDetails
         {
             public ConditionMatchingByRefArgAliasingDetails(
                 NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite,

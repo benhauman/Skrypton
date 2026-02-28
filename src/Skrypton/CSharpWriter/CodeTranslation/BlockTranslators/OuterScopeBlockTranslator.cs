@@ -624,7 +624,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         }
 
-        private class Annotated<T> where T : ICodeBlock
+        private sealed class Annotated<T> where T : ICodeBlock
         {
             public Annotated(NonNullImmutableList<CommentStatement> leadingComments, T codeBlock)
             {

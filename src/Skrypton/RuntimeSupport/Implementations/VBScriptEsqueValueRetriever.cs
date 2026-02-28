@@ -2100,7 +2100,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
         }
 
-        private class ManagedEnumeratorWrapper : IEnumerable
+        private sealed class ManagedEnumeratorWrapper : IEnumerable
         {
             private readonly IEnumerator _enumerator;
             public ManagedEnumeratorWrapper(IEnumerator enumerator)
@@ -2114,7 +2114,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
         }
 
-        private class IDispatchEnumeratorWrapper : IEnumerator
+        private sealed class IDispatchEnumeratorWrapper : IEnumerator
         {
             private readonly IEnumVariant _enumerator;
             private object _current;
