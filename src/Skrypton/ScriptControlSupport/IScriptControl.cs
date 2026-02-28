@@ -438,6 +438,8 @@ namespace Skrypton.ScriptControlSupport
     public interface Modules : IScriptModuleCollection
     {
     }
+
+    [System.AttributeUsage(System.AttributeTargets.Method)]
     internal sealed class TypeLibFuncAttribute : System.Attribute
     {
         public TypeLibFuncAttribute(int flags) { }

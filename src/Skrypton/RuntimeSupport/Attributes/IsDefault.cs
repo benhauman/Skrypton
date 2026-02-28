@@ -5,5 +5,6 @@ namespace Skrypton.RuntimeSupport.Attributes
     /// <summary>
     /// This indicates that a function or property was indicated as default in the source VBScript code
     /// </summary>
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public sealed class IsDefault : Attribute { }
 }
