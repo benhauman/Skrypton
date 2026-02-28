@@ -5,7 +5,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     [Serializable]
     public abstract class AbstractEndOfStatementToken : IToken
     {
-        public AbstractEndOfStatementToken(int lineIndex)
+        protected AbstractEndOfStatementToken(int lineIndex)
         {
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");

@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport
     public abstract class RunnerBase
     {
         internal IProvideVBScriptCompatFunctionalityToIndividualRequests CompatLayer { get; } // rename it to '_'
-        public RunnerBase(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
+        protected RunnerBase(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
         {
             CompatLayer = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
         }
@@ -27,7 +27,7 @@ namespace Skrypton.RuntimeSupport
         where TEnvironmentReferences : EnvironmentReferencesBase, new()
         where TGlobalReferences : GlobalReferencesBase
     {
-        public RunnerBaseT(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
+        protected RunnerBaseT(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer) : base(compatLayer)
         {
         }
         public override EnvironmentReferencesBase CreateEnvironmentReferencesInstance()

@@ -14,7 +14,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        public AbstractFunctionBlock(
+        protected AbstractFunctionBlock(
             bool isPublic,
             bool isDefault,
             bool hasReturnValue,
