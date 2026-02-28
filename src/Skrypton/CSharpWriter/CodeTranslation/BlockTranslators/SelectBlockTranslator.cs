@@ -88,7 +88,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var annotatedCaseBlocks = selectBlock.Content.Select((c, i) =>
             {
-                var lastIndex = selectBlock.Content.Count() - 1;
+                var lastIndex = selectBlock.Content.Length - 1;
                 return new
                 {
                     IsFirstBlock = (i == 0),
@@ -250,7 +250,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 else
                 {
-                    var defaultCaseIsTheOnlyCase = (selectBlock.Content.Count() == 1);
+                    var defaultCaseIsTheOnlyCase = (selectBlock.Content.Length == 1);
                     if (!defaultCaseIsTheOnlyCase)
                     {
                         // We need to record line index values for the "scaffolding" C# code that will be emitted here - when dealing with a case that matches value(s) then we use the line

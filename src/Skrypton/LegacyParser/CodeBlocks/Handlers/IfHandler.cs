@@ -318,7 +318,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var conditionTokens = getTokenListSection(tokens, 0, offsetThen);
 
             // Trim out the handled tokens and the "THEN"
-            tokens.RemoveRange(0, conditionTokens.Count() + 1);
+            tokens.RemoveRange(0, conditionTokens.Count + 1);
 
             // Return the content
             return conditionTokens.ToArray();

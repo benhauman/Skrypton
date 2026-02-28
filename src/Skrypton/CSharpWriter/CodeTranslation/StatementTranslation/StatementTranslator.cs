@@ -91,9 +91,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 .Select((segment, index) => new { Segment = segment as OperationExpressionSegment, Index = index })
                 .Where(s => s.Segment != null)
                 .ToArray();
-            if (operatorSegmentsWithIndexes.Count() > 1)
+            if (operatorSegmentsWithIndexes.Length > 1)
             {
-                throw new ArgumentException("Expressions with more than one operators are invalid (they must be broken down further), this one has " + operatorSegmentsWithIndexes.Count());
+                throw new ArgumentException("Expressions with more than one operators are invalid (they must be broken down further), this one has " + operatorSegmentsWithIndexes.Length);
             }
 
             // Assert expectations about combinations of segments and operators (if any)
@@ -668,7 +668,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // call (whichever is appropriate) - this code allows us to remove those injected functions right at the very last minute without changing the
                 // meaning of the translate code. (Note: It is elsewhere in this class where it is important whether tokens should be given "special treatment"
                 // as number literals in comparisons or not).
-                if ((callExpressionSegment.Arguments.Count() == 1) && (callExpressionSegment.Arguments.Single().Segments.Count() == 1))
+                if ((callExpressionSegment.Arguments.Count() == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
                 {
                     var singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
                     var singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
@@ -718,7 +718,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (targetIsErrReference)
             {
                 string specialErrorHandlingFunctionNameIfApplicable;
-                if ((memberAccessors.Count() == 1) && (memberAccessors.Single() is NameToken))
+                if ((memberAccessors.Length == 1) && (memberAccessors.Single() is NameToken))
                 {
                     if (memberAccessors.Single().Content.Equals("RAISE", StringComparison.OrdinalIgnoreCase))
                     {
@@ -1271,7 +1271,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (expression.Segments.Count() != 1)
+            if (expression.Segments.Count != 1)
             {
                 return null;
             }
@@ -1452,7 +1452,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            if (argumentValue.Segments.Count() > 1)
+            if (argumentValue.Segments.Count > 1)
             {
                 // If there are multiple segments here then it must be ByVal (it's fairly difficult to actually not be ByVal - it basically boils
                 // down to being a simple variable reference - eg. "a" - or one or more array accesses - eg. "a(0)" or "a(0, 1)" or "a(0)(1)"
@@ -1481,7 +1481,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // for that purpose only then they needn't be included in the final output, so if there is a single term that has been wrapped
                 // in brackets then unwrap the term (overwrite the argumentValue reference so that this change is reflected in the rendering
                 // call further down).
-                while ((singleSegment is BracketedExpressionSegment) && (((BracketedExpressionSegment)singleSegment).Segments.Count() == 1))
+                while ((singleSegment is BracketedExpressionSegment) && (((BracketedExpressionSegment)singleSegment).Segments.Count == 1))
                     singleSegment = ((BracketedExpressionSegment)singleSegment).Segments.First();
                 argumentValue = new Expression(new[] { singleSegment });
                 return true;

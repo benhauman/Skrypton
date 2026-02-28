@@ -62,7 +62,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 if (indexedVariable.Variable.Dimensions != null)
                 {
                     output.Append("(");
-                    var numberOfDimensions = indexedVariable.Variable.Dimensions.Count();
+                    var numberOfDimensions = indexedVariable.Variable.Dimensions.Length;
                     foreach (var indexedDimension in indexedVariable.Variable.Dimensions.Select((d, i) => new { Dimension = d, Index = i }))
                     {
                         output.Append(indexedDimension.Dimension.GenerateBaseSource(NullIndenter.Instance));

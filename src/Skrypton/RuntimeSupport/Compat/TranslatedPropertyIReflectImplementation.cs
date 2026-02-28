@@ -116,10 +116,10 @@ namespace Skrypton.RuntimeSupport.Compat
                 if (methodGroup.Count() > 2)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ")");
                 var getters = methodGroup.Where(m => m.Method.ReturnType != typeof(void)).ToArray();
-                if (getters.Count() > 1)
+                if (getters.Length > 1)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ") that have a non-void return type (the getters)");
                 var setters = methodGroup.Where(m => m.Method.ReturnType == typeof(void)).ToArray();
-                if (setters.Count() > 1)
+                if (setters.Length > 1)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ") that have a void return type (the setters)");
                 MethodInfo getterMethod = (getters.Length != 0 ? getters.Single().Method : null);
                 MethodInfo setterMethod = (setters.Length != 0 ? setters.Single().Method : null);

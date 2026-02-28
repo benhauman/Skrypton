@@ -113,7 +113,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (rewrittenReferences == null)
                 throw new ArgumentNullException(nameof(rewrittenReferences));
 
-            if (expressionIsDirectArgumentValue && (expressionSegments.Count() > 1))
+            if (expressionIsDirectArgumentValue && (expressionSegments.Count > 1))
             {
                 // If an expression has multiple segments then no one part of it is elligible to be passed ByRef as a function argument - eg. "a + b" will not be
                 // passed ByRef since that expression "a + b" can not be altered by the receiving function even if the argument IS marked as ByRef.
@@ -345,7 +345,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (expression.Segments.Count() != 1)
+            if (expression.Segments.Count != 1)
                 return null;
 
             var callExpressionSegment = expression.Segments.Single() as CallExpressionSegment;

@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             {
                 if (variable.Dimensions == null)
                     constantDimensionArrayVariables.Add(new ConstantNonNegativeArrayDimensionDimVariable(variable.Name, null));
-                else if (variable.Dimensions.Count() == 0)
+                else if (variable.Dimensions.Length == 0)
                     constantDimensionArrayVariables.Add(new ConstantNonNegativeArrayDimensionDimVariable(variable.Name, []));
                 else
                 {

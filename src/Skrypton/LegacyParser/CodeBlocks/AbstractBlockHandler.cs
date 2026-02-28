@@ -31,7 +31,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 throw new ArgumentNullException(nameof(tokens));
             if (offset < 0)
                 throw new ArgumentException("Negative offset specified - invalid");
-            if (offset >= tokens.Count())
+            if (offset >= tokens.Count)
                 throw new ArgumentException("Insufficient tokens - invalid");
             if ((allowedTokenTypes != null) && allowedTokenTypes.Count == 0)
                 throw new ArgumentException("No allowed tokens types (pass as null to set no restriction");
@@ -111,7 +111,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 throw new ArgumentException("Zero values to match");
 
             var tokensToConsider = tokens.Take(values.Length).ToArray();
-            if (tokensToConsider.Count() < values.Length)
+            if (tokensToConsider.Length < values.Length)
                 return false;
 
             var index = 0;
@@ -172,7 +172,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 throw new ArgumentNullException(nameof(tokens));
             if (offset < 0)
                 throw new InvalidOperationException("Negative offset specified - invalid");
-            if (offset >= tokens.Count())
+            if (offset >= tokens.Count)
                 throw new InvalidOperationException("Insufficient tokens - invalid");
             if (endMarker == null)
                 throw new ArgumentNullException(nameof(endMarker));
@@ -190,7 +190,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                 {
                     // Check for endMarker
                     bool reachedEndMarker = false;
-                    if ((offset >= tokens.Count()) || (endMarker is AbstractEndOfStatementToken) && isEndOfStatement(tokens, offset))
+                    if ((offset >= tokens.Count) || (endMarker is AbstractEndOfStatementToken) && isEndOfStatement(tokens, offset))
                         reachedEndMarker = true;
                     else
                     {
@@ -246,7 +246,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            var numberOfTokens = tokens.Count();
+            var numberOfTokens = tokens.Count;
             if ((start < 0) || (start >= numberOfTokens))
                 throw new ArgumentException(FormattableString.Invariant($"Invalid start value [{start}]"));
             if ((count < 0) || (start + count > numberOfTokens))
@@ -263,7 +263,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
 
-            return getTokenListSection(tokens, start, tokens.Count() - start);
+            return getTokenListSection(tokens, start, tokens.Count - start);
         }
     }
 }

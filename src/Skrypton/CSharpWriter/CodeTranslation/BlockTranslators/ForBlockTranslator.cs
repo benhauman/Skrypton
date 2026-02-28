@@ -827,7 +827,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                       _logger.Warning
                   )
                   .ToArray();
-            if ((expressions.Length != 1) || (expressions[0].Segments.Count() != 1))
+            if ((expressions.Length != 1) || (expressions[0].Segments.Count != 1))
                 return false;
             var callExpression = expressions[0].Segments.Single() as CallExpressionSegment;
             if (callExpression == null)

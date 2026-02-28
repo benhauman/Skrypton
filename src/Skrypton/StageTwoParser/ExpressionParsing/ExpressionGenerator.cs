@@ -144,7 +144,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         }
                         else
                         {
-                            if (bracketedExpressions.Count() > 1)
+                            if (bracketedExpressions.Length > 1)
                                 throw new ArgumentException("If bracketed content is not for an argument list then it's invalid for there to be multiple expressions within it");
                             expressionSegments.Add(
                                 WrapExpressionSegments(bracketedExpressions.Single().Segments, unwrapSingleBracketedTerm: false)
@@ -235,7 +235,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 .Select((s, index) => Tuple.Create(s as OperationExpressionSegment, index))
                 .Where(s => s.Item1 != null)
                 .ToArray();
-            if (operatorSegments.Count() < 2)
+            if (operatorSegments.Length < 2)
             {
                 if (operatorSegments.Length != 0)
                 {
@@ -394,7 +394,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //   WScript.Echo a.1
             //   WScript.Echo a.1()
             //   WScript.Echo 1.a
-            if ((tokensList.Count() > 1) && tokensList.Any(t => t is NumericValueToken))
+            if ((tokensList.Count > 1) && tokensList.Any(t => t is NumericValueToken))
             {
                 var tokenF = tokensList.First();
                 throw new ArgumentException($"Invalid member access - involving numeric literal (this is VBScript compile time error \"Expected end of statement\"). LineIndex:{tokenF.LineIndex}: {tokenF.Content}");

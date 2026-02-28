@@ -350,8 +350,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                var targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count() - 1).ToArray();
-                var targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Count() > 1)
+                var targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count - 1).ToArray();
+                var targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Length > 1)
                     ? new IExpressionSegment[] { new CallSetExpressionSegment(targetAccessCallExpressionSegments) }
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };
                 targetAccessorName =
@@ -389,7 +389,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // can always reform the segment(s) back into either CallExpressionSegment or CallSetExpressionSegment, which
                 // can then be passed to the statementTranslator to analyse for accessed variables.
                 IExpressionSegment expressionToAnalyseForVariablesAccessed;
-                if (callExpressionSegments.Count() == 1)
+                if (callExpressionSegments.Count == 1)
                 {
                     expressionToAnalyseForVariablesAccessed = new CallExpressionSegment(
                         callExpressionSegments.First().MemberAccessTokens,
