@@ -140,7 +140,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 output.Append("Default ");
             output.Append(this.keyWord + " ");
             output.Append(Name.Content);
-            output.Append("(");
+            output.Append('(');
             var numberOfParameters = Parameters.Count();
             for (int index = 0; index < numberOfParameters; index++)
             {

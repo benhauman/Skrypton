@@ -203,11 +203,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             StringBuilder content = new StringBuilder();
             content.Append(functionBlock.IsPublic ? "public" : "private");
-            content.Append(" ");
+            content.Append(' ');
             content.Append(functionBlock.HasReturnValue ? "object" : "void");  // #pragma warning disable CS0219
-            content.Append(" ");
+            content.Append(' ');
             content.Append(_nameRewriter.GetMemberAccessTokenName(functionBlock.Name));
-            content.Append("(");
+            content.Append('(');
             int numberOfParameters = functionBlock.Parameters.Count();
             for (int index = 0; index < numberOfParameters; index++)
             {
@@ -219,7 +219,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (index < (numberOfParameters - 1))
                     content.Append(", ");
             }
-            content.Append(")");
+            content.Append(')');
 
             List<TranslatedStatement> translatedStatements = new List<TranslatedStatement>();
             if (functionBlock.IsDefault)

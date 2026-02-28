@@ -1348,7 +1348,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 else if (c <= 0xFF)
                 {
-                    sb.Append("%");
+                    sb.Append('%');
                     sb.Append(((int)c).ToString("X2", CultureInfo.InvariantCulture));
                 }
                 else

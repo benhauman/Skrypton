@@ -16,7 +16,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 throw new ArgumentNullException(nameof(input));
 
             var literal = new StringBuilder(input.Length + 2);
-            literal.Append("\"");
+            literal.Append('"');
             foreach (var c in input)
             {
                 switch (c)
@@ -42,7 +42,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                         break;
                 }
             }
-            literal.Append("\"");
+            literal.Append('"');
             return literal.ToString();
         }
     }

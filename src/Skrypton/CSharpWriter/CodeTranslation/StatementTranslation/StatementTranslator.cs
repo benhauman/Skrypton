@@ -1001,7 +1001,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                                 );
                             }
                         }
-                        memberCallContent.Append(")");
+                        memberCallContent.Append(')');
                         return new TranslatedStatementContentDetailsWithContentType(
                             memberCallContent.ToString(),
                             ExpressionReturnTypeOptions.NotSpecified,
@@ -1114,7 +1114,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            callExpressionContent.Append(")");
+            callExpressionContent.Append(')');
             return new TranslatedStatementContentDetailsWithContentType(
                 callExpressionContent.ToString(),
                 ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type
@@ -1194,9 +1194,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var variablesAccessed = new NonNullImmutableList<NameToken>();
             var supportFunctionCallContent = new StringBuilder();
             supportFunctionCallContent.Append(_supportRefName.Name);
-            supportFunctionCallContent.Append(".");
+            supportFunctionCallContent.Append('.');
             supportFunctionCallContent.Append(function.SupportFunctionName);
-            supportFunctionCallContent.Append("(");
+            supportFunctionCallContent.Append('(');
             foreach (var indexedArgumentValue in argumentValues.Select((arg, index) => new { Argument = arg, Index = index }))
             {
                 var argumentValue = indexedArgumentValue.Argument;
@@ -1231,7 +1231,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     argumentContent.VariablesAccessed
                 );
             }
-            supportFunctionCallContent.Append(")");
+            supportFunctionCallContent.Append(')');
             ExpressionReturnTypeOptions supportFunctionReturnType;
             if (function.ReturnTypeIfKnown == null)
             {

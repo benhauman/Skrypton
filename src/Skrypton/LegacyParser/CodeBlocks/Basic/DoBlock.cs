@@ -102,7 +102,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             output.Append(indenter.Indent + "Do");
             if (IsPreCondition && (ConditionIfAny != null))
             {
-                output.Append(" ");
+                output.Append(' ');
                 if (IsDoWhileCondition)
                     output.Append("While ");
                 else
@@ -120,7 +120,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             output.Append(indenter.Indent + "Loop");
             if (!IsPreCondition && (ConditionIfAny != null))
             {
-                output.Append(" ");
+                output.Append(' ');
                 if (IsDoWhileCondition)
                     output.Append("While ");
                 else

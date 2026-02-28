@@ -125,7 +125,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     continue;
                 }
 
-                output.Append(" ");
+                output.Append(' ');
             }
             return output.ToString().TrimEnd();
         }

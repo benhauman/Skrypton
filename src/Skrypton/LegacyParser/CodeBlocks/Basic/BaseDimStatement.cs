@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 output.Append(indexedVariable.Variable.Name.Content);
                 if (indexedVariable.Variable.Dimensions != null)
                 {
-                    output.Append("(");
+                    output.Append('(');
                     var numberOfDimensions = indexedVariable.Variable.Dimensions.Length;
                     foreach (var indexedDimension in indexedVariable.Variable.Dimensions.Select((d, i) => new { Dimension = d, Index = i }))
                     {
@@ -69,7 +69,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                         if (indexedDimension.Index < (numberOfDimensions - 1))
                             output.Append(", ");
                     }
-                    output.Append(")");
+                    output.Append(')');
                 }
                 if (indexedVariable.Index < (numberOfVariables - 1))
                     output.Append(", ");

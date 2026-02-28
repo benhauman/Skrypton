@@ -74,23 +74,23 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     output.Append(", ");
 
                 if (indexedTarget.Value.WrappedInBraces)
-                    output.Append("(");
+                    output.Append('(');
 
                 output.Append(indexedTarget.Value.Target.GenerateBaseSource(NullIndenter.Instance));
                 if (indexedTarget.Value.ArgumentsIfAny != null)
                 {
-                    output.Append("(");
+                    output.Append('(');
                     foreach (var indexedArgument in indexedTarget.Value.ArgumentsIfAny.Select((a, i) => new { Index = i, Value = a }))
                     {
                         if (indexedArgument.Index > 0)
                             output.Append(", ");
                         output.Append(indexedArgument.Value.GenerateBaseSource(NullIndenter.Instance));
                     }
-                    output.Append(")");
+                    output.Append(')');
                 }
 
                 if (indexedTarget.Value.WrappedInBraces)
-                    output.Append(")");
+                    output.Append(')');
             }
             return output.ToString();
         }

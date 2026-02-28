@@ -58,7 +58,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             output.Append("Randomize");
             if (SeedIfAny != null)
             {
-                output.Append(" ");
+                output.Append(' ');
                 output.Append(SeedIfAny.GenerateBaseSource(NullIndenter.Instance));
             }
             return output.ToString();
