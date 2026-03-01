@@ -7,7 +7,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This occurs when a value-setting statement has an invalid target - a constant, for example
     /// </summary>
     [Serializable]
-    public class IllegalAssignmentException : SpecificVBScriptException
+    public sealed class IllegalAssignmentException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Illegal assignment";
 
@@ -17,6 +17,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 501; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected IllegalAssignmentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private IllegalAssignmentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

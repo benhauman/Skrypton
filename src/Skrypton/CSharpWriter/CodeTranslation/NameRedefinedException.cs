@@ -5,14 +5,14 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class NameRedefinedException : Exception
+    public sealed class NameRedefinedException : Exception
     {
         public NameRedefinedException(NameToken name) : base(GetMessage(name))
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
-        protected NameRedefinedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private NameRedefinedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         /// <summary>
         /// This will never be null

@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// function or property that can be retrieved without any arguments
     /// </summary>
     [Serializable]
-    public class ObjectDoesNotSupportPropertyOrMemberException : SpecificVBScriptException
+    public sealed class ObjectDoesNotSupportPropertyOrMemberException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Object doesn't support this property or method";
 
@@ -18,6 +18,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 438; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected ObjectDoesNotSupportPropertyOrMemberException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private ObjectDoesNotSupportPropertyOrMemberException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

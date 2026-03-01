@@ -7,7 +7,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This occurs when an invalid array index is requested (eg. if UBOUND(a, 2) is called with a is a one-dimensional array)
     /// </summary>
     [Serializable]
-    public class SubscriptOutOfRangeException : SpecificVBScriptException
+    public sealed class SubscriptOutOfRangeException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Subscript out of range";
 
@@ -17,6 +17,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 9; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected SubscriptOutOfRangeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private SubscriptOutOfRangeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

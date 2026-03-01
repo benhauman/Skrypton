@@ -441,7 +441,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        public class IDispatchAccessException : Exception
+        public sealed class IDispatchAccessException : Exception
         {
             public IDispatchAccessException(string message, object target, string memberNameIfSpecified, int? dispIdIfKnown, CommonErrors errorType, Exception innerException = null)
                 : base(message, innerException)
@@ -457,7 +457,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ErrorType = errorType;
             }
 
-            protected IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+            private IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
             /// <summary>
             /// This will never be null

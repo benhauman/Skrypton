@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// if that functionality is added - where we ensure that any meta data about VBScript exceptions is consistent with the interpreter, such as Err.Number)
     /// </summary>
     [Serializable]
-    public class VBScriptOverflowException : SpecificVBScriptException
+    public sealed class VBScriptOverflowException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Overflow";
 
@@ -23,6 +23,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 6; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected VBScriptOverflowException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private VBScriptOverflowException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

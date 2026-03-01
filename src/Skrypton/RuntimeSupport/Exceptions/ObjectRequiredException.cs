@@ -7,7 +7,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This occurs when a non-Object reference is provided where an Object reference is required (eg. with the "IS" comparison)
     /// </summary>
     [Serializable]
-    public class ObjectRequiredException : SpecificVBScriptException
+    public sealed class ObjectRequiredException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Object required";
 
@@ -17,6 +17,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 424; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected ObjectRequiredException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private ObjectRequiredException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

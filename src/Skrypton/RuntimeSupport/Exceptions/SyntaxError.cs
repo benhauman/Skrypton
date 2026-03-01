@@ -14,7 +14,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// refuse to execute it if any of the literals are invalid for the current environment).
     /// </summary>
     [Serializable]
-    public class SyntaxError : SpecificVBScriptException
+    public sealed class SyntaxError : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Syntax error";
 
@@ -24,6 +24,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 1002; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected SyntaxError(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private SyntaxError(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

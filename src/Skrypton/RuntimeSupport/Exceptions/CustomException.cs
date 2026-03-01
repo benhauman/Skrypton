@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This is used when the source code included Err.Raise - those errors are translated into exceptions of this type
     /// </summary>
     [Serializable]
-    public class CustomException : SpecificVBScriptException
+    public sealed class CustomException : SpecificVBScriptException
     {
         private const string DEFAULT_SOURCE = "(null)";
         private const string DEFAULT_DESCRIPTION = "Unknown runtime error";
@@ -27,7 +27,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         /// </summary>
         public override int ErrorNumber { get { return _errorNumber; } }
 
-        protected CustomException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private CustomException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private static string GetMessage(string source, string description)
         {

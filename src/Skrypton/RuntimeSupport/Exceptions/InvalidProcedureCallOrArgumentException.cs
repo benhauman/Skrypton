@@ -7,7 +7,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This is used when an invalid type of parameter is specified (such as a non-positive startIndex for the INSTR function)
     /// </summary>
     [Serializable]
-    public class InvalidProcedureCallOrArgumentException : SpecificVBScriptException
+    public sealed class InvalidProcedureCallOrArgumentException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Invalid procedure call or argument";
 
@@ -17,6 +17,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 5; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected InvalidProcedureCallOrArgumentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private InvalidProcedureCallOrArgumentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

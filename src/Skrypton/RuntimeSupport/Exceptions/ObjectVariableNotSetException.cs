@@ -7,7 +7,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     /// This occurs when Nothing is passed in where a VBScript-value-type reference is expected
     /// </summary>
     [Serializable]
-    public class ObjectVariableNotSetException : SpecificVBScriptException
+    public sealed class ObjectVariableNotSetException : SpecificVBScriptException
     {
         private const string BASIC_ERROR_DESCRIPTION = "Object variable not set";
 
@@ -17,6 +17,6 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         public override int ErrorNumber { get { return 91; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 
-        protected ObjectVariableNotSetException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        private ObjectVariableNotSetException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
