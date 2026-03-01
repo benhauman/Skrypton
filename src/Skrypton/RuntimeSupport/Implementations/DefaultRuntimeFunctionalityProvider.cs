@@ -2606,9 +2606,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }
-        public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider)
+        public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
-            _valueRetriever.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProvider);
+            _valueRetriever.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProvider, line);
         }
         public bool IsVBScriptValueType(object o)
         {

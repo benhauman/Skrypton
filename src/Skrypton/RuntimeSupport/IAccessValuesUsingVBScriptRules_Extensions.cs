@@ -4,20 +4,20 @@ using System.Runtime.CompilerServices;
 
 namespace Skrypton.RuntimeSupport
 {
-    public static class IAccessValuesUsingVBScriptRules_Extensions
+    public static class IAccessValuesUsingVBScriptRulesExtensions
     {
-        public const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
+        internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
         // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
         // translated code)
-        public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IEnumerable<string> members, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static object CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IEnumerable<string> members, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
-            return source.CALL(context, target, members, argumentProviderBuilder.GetArgs(), line:0);
+            return source.CALL(context, target, members, argumentProviderBuilder.GetArgs(), line: line);
         }
         public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
@@ -43,7 +43,7 @@ namespace Skrypton.RuntimeSupport
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
         // constant, the translated output would be call to this function where the target to would actually be a call to RAISEERROR so that the valueToSet
         // may be evaluated and then a can-not-set-this error raised (consistent with how VBScript would handle it).
-        public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target)
+        internal static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -158,8 +158,8 @@ namespace Skrypton.RuntimeSupport
 
         private sealed class ZeroArgumentArgumentProvider : IProvideCallArguments
         {
-            public static IProvideCallArguments WithEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(true);
-            public static IProvideCallArguments WithoutEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(false);
+            internal static IProvideCallArguments WithEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(true);
+            internal static IProvideCallArguments WithoutEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(false);
             private ZeroArgumentArgumentProvider(bool useBracketsWhereZeroArguments)
             {
                 UseBracketsWhereZeroArguments = useBracketsWhereZeroArguments;

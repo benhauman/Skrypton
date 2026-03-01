@@ -28,7 +28,7 @@ namespace Skrypton.RuntimeSupport
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider);
+        void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 
         /// <summary>
         /// This will never throw an exception, a value is either considered by VBScript to be a value type (including values such as Empty,

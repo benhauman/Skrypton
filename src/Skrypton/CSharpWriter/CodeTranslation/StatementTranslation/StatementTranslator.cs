@@ -1071,7 +1071,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 targetName
             );
 
-            var ableToUseShorthandCallSignature = (targetMemberAccessTokensArray.Length <= IAccessValuesUsingVBScriptRules_Extensions.MaxNumberOfMemberAccessorBeforeArraysRequired);
+            var ableToUseShorthandCallSignature = (targetMemberAccessTokensArray.Length <= IAccessValuesUsingVBScriptRulesExtensions.MaxNumberOfMemberAccessorBeforeArraysRequired);
             if (targetMemberAccessTokensArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
