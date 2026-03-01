@@ -552,8 +552,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
-                        "VBScriptConstants.Nothing",
-                        _supportRefName.Name
+                        "VBScriptConstants.Nothing"
+                        //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Reference,
                     new NonNullImmutableList<NameToken>()
@@ -563,8 +563,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
-                        "true",
-                        _supportRefName.Name
+                        "true"
+                        //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Boolean,
                     new NonNullImmutableList<NameToken>()
@@ -574,8 +574,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
-                        "false",
-                        _supportRefName.Name
+                        "false"
+                        //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Boolean,
                     new NonNullImmutableList<NameToken>()

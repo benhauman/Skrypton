@@ -348,8 +348,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         new TranslatedStatement("{", 4, 0),
                         new TranslatedStatement(
                             string.Format(CultureInfo.InvariantCulture,
-                                "try {{ compatLayer.DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1); }}",
-                                _runtimeDateLiteralValidatorClassName.Name
+                                "try {{ compatLayer.DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1); }}"
+                                //_runtimeDateLiteralValidatorClassName.Name
                             ),
                             5,
                             0
