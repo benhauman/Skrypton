@@ -7,9 +7,8 @@ using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class IfBlock : IHaveNestedContent
+    public sealed class IfBlock : IHaveNestedContent
     {
         // =======================================================================================
         // CLASS INITIALISATION
