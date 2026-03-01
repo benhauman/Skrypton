@@ -82,7 +82,7 @@ namespace Skrypton.RuntimeSupport
                                 goto IL_138;
                         }
                         text = type.Name;
-                        if (type.IsCOMObject && string.CompareOrdinal(text, "__ComObject") == 0)
+                        if (type.IsCOMObject && string.Equals(text, "__ComObject", StringComparison.Ordinal))
                         {
                             text = Information.LegacyTypeNameOfCOMObject(VarName, true);
                         }

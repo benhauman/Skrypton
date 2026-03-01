@@ -1876,7 +1876,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 rewrittenName = _envRefName.Name + "." + rewrittenName;
             }
-            else if (targetReferenceDetailsIfAvailable != null)
+            else// if (targetReferenceDetailsIfAvailable != null)
             {
                 if ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function)
                 || (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property))

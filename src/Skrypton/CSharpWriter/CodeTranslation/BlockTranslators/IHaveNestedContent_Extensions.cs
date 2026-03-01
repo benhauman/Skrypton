@@ -40,42 +40,46 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (nestedContentBlock == null)
                 throw new ArgumentNullException(nameof(nestedContentBlock));
 
-            foreach (var codeBlock in nestedContentBlock.AllExecutableBlocks)
+            foreach (ICodeBlock codeBlock in nestedContentBlock.AllExecutableBlocks)
             {
                 // If a ForBlock or DoBlock is reached then pass off handling to ContainsMismatchedExitThatMustBeHandledAtThisLevel, specifying an expected
                 // exit type consistent with the loop
-                var forBlock = codeBlock as ForBlock;
-                if (forBlock != null)
+                if (codeBlock is ForBlock forBlock)
                 {
                     if (ContainsMismatchedExitThatMustBeHandledAtThisLevel(forBlock, expectedExitType: ExitStatement.ExitableStatementType.For))
+                    {
                         return true;
-                    continue;
+                    }
                 }
-                var forEachBlock = codeBlock as ForEachBlock;
-                if (forEachBlock != null)
+                else if (codeBlock is ForEachBlock forEachBlock)
                 {
                     if (ContainsMismatchedExitThatMustBeHandledAtThisLevel(forEachBlock, expectedExitType: ExitStatement.ExitableStatementType.For))
+                    {
                         return true;
-                    continue;
+                    }
                 }
-                var doBlock = codeBlock as DoBlock;
-                if (doBlock != null)
+                else if (codeBlock is DoBlock doBlock)
                 {
                     if (ContainsMismatchedExitThatMustBeHandledAtThisLevel(doBlock, expectedExitType: ExitStatement.ExitableStatementType.Do))
+                    {
                         return true;
-                    continue;
+                    }
                 }
-                if ((codeBlock is ILoopOverNestedContent) && (forBlock == null) && (forEachBlock == null) && (doBlock == null))
+                else if (codeBlock is ILoopOverNestedContent)
                 {
                     // Sanity checking - if there's another looping construct then this method won't be dealing with it properly!
                     throw new ArgumentException("Unexpected ILoopOverNestedContent type: " + codeBlock.GetType());
                 }
-
-                var doubleNestedContentBlock = codeBlock as IHaveNestedContent;
-                if (doubleNestedContentBlock != null)
+                else if (codeBlock is IHaveNestedContent doubleNestedContentBlock)
                 {
                     if (ContainsLoopThatContainsMismatchedExitThatMustBeHandledAtThisLevel(doubleNestedContentBlock))
+                    {
                         return true;
+                    }
+                }
+                else
+                {
+                    // try next one
                 }
             }
             return false;
