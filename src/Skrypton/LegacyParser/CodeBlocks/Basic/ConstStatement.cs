@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class ConstStatement : ICodeBlock
+    internal sealed class ConstStatement : ICodeBlock
     {
         public ConstStatement(IEnumerable<ConstValueInitialisation> values)
         {
@@ -28,11 +28,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null, empty nor contain any nulls
         /// </summary>
-        [DataMember] public IEnumerable<ConstValueInitialisation> Values { get; private set; }
+        [DataMember] internal IEnumerable<ConstValueInitialisation> Values { get; private set; }
 
         [Serializable]
         [DataContract(Namespace = "http://vbs")]
-        public class ConstValueInitialisation
+        internal sealed class ConstValueInitialisation
         {
             public ConstValueInitialisation(NameToken name, IToken value)
             {
@@ -70,7 +70,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Re-generate equivalent VBScript source code for this block - there should not be a line return at the end of the content
         /// </summary>
-        public virtual string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
         {
             if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             return string.Format(CultureInfo.InvariantCulture,

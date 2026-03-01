@@ -76,7 +76,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
         /// </summary>
+#pragma warning disable CA1033 // Interface methods should be callable by child types
         IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions { get { return Parameters.Select(p => p.Name); } }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
         /// <summary>
         /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it
@@ -86,17 +88,23 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get { return Statements; }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
         }
 
+#pragma warning disable CA1033 // Interface methods should be callable by child types
         ScopeLocationOptions IDefineScope.Scope { get { return ScopeLocationOptions.WithinFunctionOrPropertyOrWith; } }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
         // =======================================================================================
         // DESCRIPTION CLASSES
         // =======================================================================================
 
         [DataContract(Namespace = "http://vbs")]
-        public class Parameter
+#pragma warning disable CA1034 // Nested types should not be visible
+        public sealed class Parameter
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public Parameter(bool byRef, NameToken name, bool isArray)
             {

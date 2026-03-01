@@ -41,7 +41,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never be null, empty or contain any null references
         /// </summary>
+#pragma warning disable CA1033 // Interface methods should be callable by child types
         IEnumerable<IToken> IExpressionSegment.AllTokens { get { return _allTokens; } }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
         public string RenderedContent
         {

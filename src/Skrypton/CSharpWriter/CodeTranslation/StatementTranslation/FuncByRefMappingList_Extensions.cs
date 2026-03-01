@@ -156,7 +156,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 ));
         }
 
-        public class ByRefReplacementTranslationResultDetails
+        public sealed class ByRefReplacementTranslationResultDetails
         {
             public ByRefReplacementTranslationResultDetails(TranslationResult translationResult, int distanceToIndentCodeWithMappedValues)
             {

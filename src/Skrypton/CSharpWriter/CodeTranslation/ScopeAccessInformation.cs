@@ -149,7 +149,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// If the current code is running within a WITH construct then there may be partial references which need to know what to target to complete
         /// the reference.
         /// </summary>
-        public class DirectedWithReferenceDetails
+#pragma warning disable CA1034 // Nested types should not be visible
+        public sealed class DirectedWithReferenceDetails
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             private readonly int _lineIndexOfWithStatement;
             public DirectedWithReferenceDetails(CSharpName referenceName, int lineIndexOfWithStatement)
@@ -175,7 +177,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             }
         }
 
-        public class ExitableNonScopeDefiningConstructDetails
+        public sealed class ExitableNonScopeDefiningConstructDetails
         {
             public ExitableNonScopeDefiningConstructDetails(CSharpName exitEarlyBooleanNameIfAny, ExitableNonScopeDefiningConstructOptions structureType)
             {
@@ -192,9 +194,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             /// then this will be null (though the entry must exist in the StructureExitPoints chain to correctly describe the code arrangement and allow
             /// validation of the source code).
             /// </summary>
-            public CSharpName ExitEarlyBooleanNameIfAny { get; private set; }
+            public CSharpName ExitEarlyBooleanNameIfAny { get; }
 
-            public ExitableNonScopeDefiningConstructOptions StructureType { get; private set; }
+            public ExitableNonScopeDefiningConstructOptions StructureType { get; }
         }
 
         public enum ExitableNonScopeDefiningConstructOptions

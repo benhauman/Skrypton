@@ -49,7 +49,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 return new ICodeBlock[] { new Expression(new[] { LoopVar }), LoopFrom, LoopTo, LoopStep }
                     .Where(b => b != null) // Ignore a null LoopStep (this is a valid configuration but we can't have nulls in the data returned here)

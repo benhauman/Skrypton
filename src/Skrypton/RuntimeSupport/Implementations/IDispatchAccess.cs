@@ -26,7 +26,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         //};
 
         [Flags]
+#pragma warning disable CA1028 // Enum Storage should be Int32
         public enum InvokeFlags : ushort
+#pragma warning restore CA1028 // Enum Storage should be Int32
         {
             None = 0,
             DISPATCH_METHOD = 1,
@@ -398,7 +400,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         [ComImport()]
         [Guid("00020400-0000-0000-C000-000000000046")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+#pragma warning disable CA1034 // Nested types should not be visible
         public interface IDispatch
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             [Obsolete("Bad signature. Fix and verify signature before use.", true)]//[System.Security.SecurityCritical]
             [PreserveSig]

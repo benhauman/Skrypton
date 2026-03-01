@@ -36,7 +36,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<Statement> IHaveNonNestedExpressions.NonNestedExpressions
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 if (SeedIfAny != null)
                     yield return SeedIfAny;

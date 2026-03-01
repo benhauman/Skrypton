@@ -70,7 +70,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 return new ICodeBlock[] { Expression }
                     .Concat(Content.Select(c => c as CaseBlockExpressionSegment).Where(c => c != null).SelectMany(c => c.Values))
@@ -82,7 +84,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // DESCRIPTION CLASSES
         // =======================================================================================
         [DataContract(Namespace = "http://vbs")]
+#pragma warning disable CA1034 // Nested types should not be visible
         public abstract class CaseBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             protected CaseBlockSegment(IEnumerable<ICodeBlock> statements)
             {
@@ -103,7 +107,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         }
 
         [DataContract(Namespace = "http://vbs")]
-        public class CaseBlockExpressionSegment : CaseBlockSegment
+        public sealed class CaseBlockExpressionSegment : CaseBlockSegment
         {
             public CaseBlockExpressionSegment(IEnumerable<Expression> values, IEnumerable<ICodeBlock> statements) : base(statements)
             {
@@ -126,7 +130,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         }
 
         [DataContract(Namespace = "http://vbs")]
-        public class CaseBlockElseSegment : CaseBlockSegment
+        public sealed class CaseBlockElseSegment : CaseBlockSegment
         {
             public CaseBlockElseSegment(IEnumerable<ICodeBlock> statements) : base(statements) { }
         }

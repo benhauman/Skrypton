@@ -39,7 +39,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// </summary>
         IEnumerable<IToken> IExpressionSegment.AllTokens
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 var tokens = new List<IToken>();
                 var numberOfExpressions = CallExpressionSegments.Count();

@@ -63,7 +63,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 foreach (var conditionalClause in ConditionalClauses)
                 {
@@ -81,13 +83,17 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // DESCRIPTION CLASSES
         // =======================================================================================
+#pragma warning disable CA1034 // Nested types should not be visible
         public interface IfBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             IEnumerable<ICodeBlock> Statements { get; }
         }
 
         [DataContract(Namespace = "http://vbs")]
-        public class IfBlockConditionSegment : IfBlockSegment
+#pragma warning disable CA1034 // Nested types should not be visible
+        public sealed class IfBlockConditionSegment : IfBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public IfBlockConditionSegment(Expression conditionStatement, IEnumerable<ICodeBlock> statements)
             {
@@ -112,7 +118,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         }
 
         [DataContract(Namespace = "http://vbs")]
-        public class IfBlockElseSegment : IfBlockSegment
+#pragma warning disable CA1034 // Nested types should not be visible
+        public sealed class IfBlockElseSegment : IfBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public IfBlockElseSegment(IEnumerable<ICodeBlock> statements)
             {

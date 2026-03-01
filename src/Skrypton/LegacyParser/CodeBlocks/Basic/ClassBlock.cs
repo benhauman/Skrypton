@@ -52,7 +52,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
         /// </summary>
-        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions { get { return []; } }
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions => [];
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
         /// <summary>
         /// This is a flattened list of executable statements - for a function this will be the statements it contains but for an if block it
@@ -60,12 +62,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Note that this does not recursively drill down through nested code blocks so there will be cases where there are more executable
         /// blocks within child code blocks.
         /// </summary>
-        IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
-        {
-            get { return this.statements.AsReadOnly(); }
-        }
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+        IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks => this.statements.AsReadOnly();
 
         ScopeLocationOptions IDefineScope.Scope { get { return ScopeLocationOptions.WithinClass; } }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
         // =======================================================================================
         // VBScript BASE SOURCE RE-GENERATION

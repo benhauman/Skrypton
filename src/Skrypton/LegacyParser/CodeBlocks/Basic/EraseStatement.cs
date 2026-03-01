@@ -45,7 +45,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<Statement> IHaveNonNestedExpressions.NonNestedExpressions
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get
+#pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 foreach (var target in Targets)
                 {
@@ -97,7 +99,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
         [Serializable]
         [DataContract(Namespace = "http://vbs")]
-        public class TargetDetails
+#pragma warning disable CA1034 // Nested types should not be visible
+        public sealed class TargetDetails
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public TargetDetails(Expression target, IEnumerable<Expression> argumentsIfAny, bool wrappedInBraces)
             {

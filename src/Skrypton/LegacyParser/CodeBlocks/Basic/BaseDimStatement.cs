@@ -39,7 +39,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<Statement> IHaveNonNestedExpressions.NonNestedExpressions
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get { return Variables.Where(v => v.Dimensions != null).SelectMany(v => v.Dimensions); }
+#pragma warning restore CA1033 // Interface methods should be callable by child types
         }
 
         // =======================================================================================
