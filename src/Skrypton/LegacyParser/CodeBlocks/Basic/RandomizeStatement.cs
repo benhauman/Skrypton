@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     [Serializable]
-    public class RandomizeStatement : IHaveNonNestedExpressions
+    internal sealed class RandomizeStatement : IHaveNonNestedExpressions
     {
         // =======================================================================================
         // CLASS INITIALISATION
@@ -16,7 +16,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
-            LineIndex = LineIndex;
+            LineIndex = lineIndex;
             SeedIfAny = seedIfAny;
         }
 
