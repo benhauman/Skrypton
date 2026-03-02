@@ -27,7 +27,9 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         [Flags]
 #pragma warning disable CA1028 // Enum Storage should be Int32
+#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
         public enum InvokeFlags : ushort
+#pragma warning restore CA1711 // Identifiers should not have incorrect suffix
 #pragma warning restore CA1028 // Enum Storage should be Int32
         {
             None = 0,
