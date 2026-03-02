@@ -13,11 +13,11 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public abstract class CodeBlockTranslator
+    internal abstract class CodeBlockTranslator
     {
-        protected readonly CSharpName _supportRefName, _envClassName, _envRefName, _outerClassName, _outerRefName;
-        protected readonly VBScriptNameRewriter _nameRewriter;
-        protected readonly TempValueNameGenerator _tempNameGenerator;
+        internal readonly CSharpName _supportRefName, _envClassName, _envRefName, _outerClassName, _outerRefName;
+        internal readonly VBScriptNameRewriter _nameRewriter;
+        internal readonly TempValueNameGenerator _tempNameGenerator;
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ITranslateValueSettingsStatements _valueSettingStatementTranslator;
         private readonly ILogInformation _logger;

@@ -14,7 +14,7 @@ using Skrypton.RuntimeSupport.Attributes;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public class FunctionBlockTranslator : CodeBlockTranslator
+    internal sealed class FunctionBlockTranslator : CodeBlockTranslator
     {
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ILogInformation _logger;

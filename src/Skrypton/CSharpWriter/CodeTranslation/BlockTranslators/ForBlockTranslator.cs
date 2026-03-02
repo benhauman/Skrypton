@@ -15,7 +15,7 @@ using Expression = Skrypton.LegacyParser.CodeBlocks.Basic.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public class ForBlockTranslator : CodeBlockTranslator
+    internal sealed class ForBlockTranslator : CodeBlockTranslator
     {
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ILogInformation _logger;

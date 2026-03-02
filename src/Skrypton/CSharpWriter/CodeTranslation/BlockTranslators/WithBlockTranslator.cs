@@ -10,7 +10,7 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public class WithBlockTranslator : CodeBlockTranslator
+    internal sealed class WithBlockTranslator : CodeBlockTranslator
     {
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ILogInformation _logger;

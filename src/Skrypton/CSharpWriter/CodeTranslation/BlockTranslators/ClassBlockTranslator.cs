@@ -14,7 +14,7 @@ using Skrypton.RuntimeSupport.Compat;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public class ClassBlockTranslator : CodeBlockTranslator
+    internal sealed class ClassBlockTranslator : CodeBlockTranslator
     {
         public ClassBlockTranslator(
             CSharpName supportRefName,

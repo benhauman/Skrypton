@@ -32,7 +32,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
     /// any translated classes. The final Translated Program class will require an IProvideVBScriptCompatFunctionality reference which it will also pass to any
     /// instantiated translated child classes (along with the Outer and Environment references).
     /// </summary>
-    public class OuterScopeBlockTranslator : CodeBlockTranslator
+    internal sealed class OuterScopeBlockTranslator : CodeBlockTranslator
     {
         private readonly CSharpName _startNamespace, _startClassName, _startMethodName, _runtimeDateLiteralValidatorClassName;
         private readonly NonNullImmutableList<NameToken> _externalDependencies;
