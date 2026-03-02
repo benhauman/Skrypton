@@ -59,9 +59,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 indentationDepth + 1
             );
 
-            TranslatedStatementContentDetails whileConditionExpressionContentIfAny;
+            TranslatedStatementContentDetails? whileConditionExpressionContentIfAny;
             if (doBlock.ConditionIfAny == null)
+            {
                 whileConditionExpressionContentIfAny = null;
+            }
             else
             {
                 whileConditionExpressionContentIfAny = _statementTranslator.Translate(

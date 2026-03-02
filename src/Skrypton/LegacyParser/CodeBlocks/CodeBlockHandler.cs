@@ -93,7 +93,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     return codeBlocks;
 
                 // If not sequence-end, try to process content
-                ICodeBlock codeBlock = null;
+                ICodeBlock? codeBlock = null;
                 foreach (var handler in handlers)
                 {
                     codeBlock = handler.Process(tokens);

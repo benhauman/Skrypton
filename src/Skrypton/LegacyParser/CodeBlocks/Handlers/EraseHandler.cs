@@ -137,7 +137,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             var targetTokens = tokensArray.TakeWhile(token => !(token is OpenBrace)).ToArray();
             var targetArgumentTokens = tokensArray.Skip(targetTokens.Length).ToArray();
-            IEnumerable<Expression> targetArgumentsIfAny;
+            IEnumerable<Expression>? targetArgumentsIfAny;
             int numberOfTokensInArguments;
             if (targetArgumentTokens.Length != 0)
             {

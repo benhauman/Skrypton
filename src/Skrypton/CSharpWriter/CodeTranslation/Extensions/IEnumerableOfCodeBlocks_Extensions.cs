@@ -45,28 +45,39 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             foreach (var block in blocks)
             {
                 if (block == null)
+                {
                     throw new ArgumentException("Null reference encountered in blocks set");
+                }
 
                 Statement[] expressionsToInterrogate;
                 var nonNestedExpressionContainingBlock = block as IHaveNonNestedExpressions;
                 if (nonNestedExpressionContainingBlock != null)
-                    expressionsToInterrogate = nonNestedExpressionContainingBlock.NonNestedExpressions?.ToArray();
+                {
+                    expressionsToInterrogate = nonNestedExpressionContainingBlock.NonNestedExpressions?.ToArray() ?? [];
+                }
                 else
                 {
-                    var statement = block as Statement;
-                    if (statement != null)
+                    if (block is Statement statement)
+                    {
                         expressionsToInterrogate = new[] { statement };
+                    }
                     else
+                    {
                         expressionsToInterrogate = [];
+                    }
                 }
                 foreach (var token in expressionsToInterrogate.SelectMany(e => e.Tokens))
+                {
                     yield return token;
+                }
 
                 var nestedContentBlock = block as IHaveNestedContent;
                 if (nestedContentBlock != null)
                 {
                     foreach (var nestedToken in EnumerateAllTokens(nestedContentBlock.AllExecutableBlocks))
+                    {
                         yield return nestedToken;
+                    }
                 }
             }
         }

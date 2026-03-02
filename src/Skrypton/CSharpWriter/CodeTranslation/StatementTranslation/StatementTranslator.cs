@@ -712,12 +712,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // If the target reference IS "Err", then there is a special case of "Err.Raise" to consider. If Err.Raise is called with the correct number of arguments
             // then it may be mapped directly onto the support function (either 1, 2 or 3 arguments must be present). If a different number of arguments are present
             // then the target still needs rewriting from "Err.Raise" to "_.RAISEERROR", but it will have to go through the CALL function. Same goes for "Err.Clear".
-            TranslatedStatementContentDetailsWithContentType specialErrorHandlingFunctionStatementIfApplicable;
+            TranslatedStatementContentDetailsWithContentType? specialErrorHandlingFunctionStatementIfApplicable;
             NameToken target;
             var memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1).ToArray();
             if (targetIsErrReference)
             {
-                string specialErrorHandlingFunctionNameIfApplicable;
+                string? specialErrorHandlingFunctionNameIfApplicable;
                 if ((memberAccessors.Length == 1) && (memberAccessors.Single() is NameToken))
                 {
                     if (memberAccessors.Single().Content.Equals("RAISE", StringComparison.OrdinalIgnoreCase))
@@ -936,8 +936,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // undeclared variables referenced in the arguments but that is all handled later on). The same applies if the target is known to be
             // a built-in function (such as CDate).
             var targetName = _nameRewriter.GetMemberAccessTokenName(target);
-            DeclaredReferenceDetails targetReferenceDetailsIfAvailable;
-            CSharpName nameOfTargetContainerIfRequired;
+            DeclaredReferenceDetails? targetReferenceDetailsIfAvailable;
+            CSharpName? nameOfTargetContainerIfRequired;
             if (targetIsKnownToBeBuiltInFunction || (indexInCallSet > 0))
             {
                 targetReferenceDetailsIfAvailable = null;
@@ -1485,7 +1485,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // it should definitely be passed ByVal. If there are any nested member accessors (eg. "a.Name" or "a(0).Name") then pass ByVal. If
             // the first call segment is to a built-in function then pass ByVal
             bool isConfirmedToBeByVal;
-            CallSetItemExpressionSegment initialCallSetItemExpressionSegmentToCheckIfAny;
+            CallSetItemExpressionSegment? initialCallSetItemExpressionSegmentToCheckIfAny;
             var callExpressionSegment = singleSegment as CallExpressionSegment;
             if (callExpressionSegment != null)
             {

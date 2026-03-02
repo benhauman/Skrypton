@@ -670,9 +670,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 );
             }
 
-            string translatedSeedIfAny;
+            string? translatedSeedIfAny;
             if (randomizeStatement.SeedIfAny == null)
+            {
                 translatedSeedIfAny = null;
+            }
             else
             {
                 var translatedSeedExpression = _statementTranslator.Translate(randomizeStatement.SeedIfAny, scopeAccessInformation, ExpressionReturnTypeOptions.Value, _logger.Warning);

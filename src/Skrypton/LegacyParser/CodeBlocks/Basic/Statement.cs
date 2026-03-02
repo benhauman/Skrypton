@@ -339,7 +339,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             }
 
             var bracketCount = 0;
-            IToken lastUnbracketedToken = null;
+            IToken? lastUnbracketedToken = null;
             for (var tokenIndex = 0; tokenIndex < tokenArray.Length; tokenIndex++)
             {
                 var nextTokenIfAny = (tokenArray.Length > 1) ? tokenArray[1] : null;

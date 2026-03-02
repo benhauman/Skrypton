@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Skrypton.RuntimeSupport.Implementations
 {
-    public class DefaultCallArgumentProvider : IBuildCallArgumentProviders
+    public sealed class DefaultCallArgumentProvider : IBuildCallArgumentProviders
     {
-        private readonly List<Tuple<object, Action<object>>> _valuesWithUpdatesWhereRequired;
+        private readonly List<Tuple<object, Action<object>?>> _valuesWithUpdatesWhereRequired;
         private readonly IAccessValuesUsingVBScriptRules _vbscriptValueAccessor;
         private bool _useBracketsWhereZeroArguments;
         public DefaultCallArgumentProvider(IAccessValuesUsingVBScriptRules vbscriptValueAccessor)
@@ -22,7 +22,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public IBuildCallArgumentProviders Val(object value)
         {
-            _valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, (Action<object>)null));
+            _valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, (Action<object>?)null));
             return this;
         }
 
@@ -60,7 +60,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // case of an array indexer, which is public) so we can set context as null since we don't need to set it to anything more interesting
             // (we don't need to have a reference to the caller in case any private members may be accessed because we're not going to access any
             // private members)
-            object context = null;
+            object? context = null;
 
             // Process all but the last set of argument providers, updating target with each call. If at any point target is not an array
             // then the final value will be passed ByVal (since there must be a function or property access involved, the result of which

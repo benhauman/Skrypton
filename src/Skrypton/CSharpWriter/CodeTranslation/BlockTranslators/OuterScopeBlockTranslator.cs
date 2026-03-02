@@ -108,31 +108,33 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             NonNullImmutableList<ICodeBlock> otherBlocks = new NonNullImmutableList<ICodeBlock>();
             foreach (ICodeBlock block in blocks)
             {
-                CommentStatement comment = block as CommentStatement;
-                if (comment != null)
+                if (block is CommentStatement comment)
                 {
                     commentBuffer = commentBuffer.Add(comment);
-                    continue;
+                    //continue;
                 }
-                AbstractFunctionBlock functionBlock = block as AbstractFunctionBlock;
-                if (functionBlock != null)
+                else if (block is AbstractFunctionBlock functionBlock)
                 {
                     annotatedFunctions = annotatedFunctions.Add(new Annotated<AbstractFunctionBlock>(commentBuffer, functionBlock));
                     commentBuffer = new NonNullImmutableList<CommentStatement>();
-                    continue;
+                    //continue;
                 }
-                ClassBlock classBlock = block as ClassBlock;
-                if (classBlock != null)
+                else if (block is ClassBlock classBlock)
                 {
                     annotatedClasses = annotatedClasses.Add(new Annotated<ClassBlock>(commentBuffer, classBlock));
                     commentBuffer = new NonNullImmutableList<CommentStatement>();
-                    continue;
+                    //continue;
                 }
-                otherBlocks = otherBlocks.AddRange(commentBuffer).Add(block);
-                commentBuffer = new NonNullImmutableList<CommentStatement>();
+                else
+                {
+                    otherBlocks = otherBlocks.AddRange(commentBuffer).Add(block);
+                    commentBuffer = new NonNullImmutableList<CommentStatement>();
+                }
             }
             if (commentBuffer.Any())
+            {
                 otherBlocks = otherBlocks.AddRange(commentBuffer);
+            }
 
             // Ensure that functions are in valid configurations - properties are not valid outside of classes and any non-public functions will
             // be translated INTO public functions (since this there are no private external functions in VBScript)
@@ -585,7 +587,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             List<int> removeAtLocations = new List<int>();
             foreach (ICodeBlock block in blocks)
             {
-                AbstractFunctionBlock functionBlock = block as AbstractFunctionBlock;
+                AbstractFunctionBlock? functionBlock = block as AbstractFunctionBlock;
                 if (functionBlock == null)
                     continue;
 

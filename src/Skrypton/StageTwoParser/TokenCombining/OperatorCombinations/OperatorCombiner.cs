@@ -23,21 +23,21 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                 throw new ArgumentNullException(nameof(tokens));
 
             // Handle +/- sign combinations
-            var additionSubtractionRewrittenTokens = new List<IToken>();
-            var buffer = new List<OperatorToken>();
-            var previousTokenIfAny = (IToken)null;
-            foreach (var token in tokens)
+            List<IToken> additionSubtractionRewrittenTokens = new List<IToken>();
+            List<OperatorToken> buffer = new List<OperatorToken>();
+            IToken? previousTokenIfAny = (IToken?)null;
+            foreach (IToken? token in tokens)
             {
                 if (token == null)
                     throw new ArgumentException("Null reference encountered in tokens set");
 
-                var combinableOperator = TryToGetAsAdditionOrSubtractionToken(token);
+                OperatorToken? combinableOperator = TryToGetAsAdditionOrSubtractionToken(token);
                 if (combinableOperator == null)
                 {
-                    var bufferHadContentThatWasReducedToNothing = false;
+                    bool bufferHadContentThatWasReducedToNothing = false;
                     if (buffer.Count != 0)
                     {
-                        var condensedToken = CondenseNegations(buffer);
+                        OperatorToken condensedToken = CondenseNegations(buffer);
                         if (IsTokenRedundant(condensedToken, previousTokenIfAny))
                         {
                             // If this is a "+" and the last token was an OperatorToken, then this one is redundant (eg. "1 * +1")
@@ -63,8 +63,8 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                     // the NumberRebuilder must have done its work before we get here, since ++1.2 must be recognised as "+", "+", "1.2" so that it can
                     // be translated into "CDbl(1.2)", rather than still being "+", "+", "1", ".", "2", which would translated into "CDbl(1).2", which
                     // would be invalid.
-                    var numericValueToken = token as NumericValueToken;
-                    var wrapTokenInNumberFunctionCall = bufferHadContentThatWasReducedToNothing && (numericValueToken != null);
+                    NumericValueToken? numericValueToken = token as NumericValueToken;
+                    bool wrapTokenInNumberFunctionCall = bufferHadContentThatWasReducedToNothing && (numericValueToken != null);
                     if (wrapTokenInNumberFunctionCall)
                     {
                         additionSubtractionRewrittenTokens.Add(new BuiltInFunctionToken(numericValueToken.GetSafeWrapperFunctionName().ToUpperX(), token.LineIndex));
@@ -81,30 +81,30 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
             if (buffer.Count != 0)
             {
                 // Note: We don't need to copy all of the logic from above - in fact we can't, since we don't have a current token reference
-                var condensedToken = CondenseNegations(buffer);
+                OperatorToken condensedToken = CondenseNegations(buffer);
                 if (!IsTokenRedundant(condensedToken, previousTokenIfAny))
                     additionSubtractionRewrittenTokens.Add(condensedToken);
             }
 
             // Handle comparison token combinations (eg. ">", "=" to ">=")
-            var combinations = new[]
+            Tuple<Tuple<string, string>, string>[] combinations = new[]
             {
                 Tuple.Create(Tuple.Create("<", ">"), "<>"),
                 Tuple.Create(Tuple.Create("<", "="), "<="),
                 Tuple.Create(Tuple.Create(">", "="), ">=")
             };
-            var comparisonRewrittenTokens = new List<IToken>();
-            for (var index = 0; index < additionSubtractionRewrittenTokens.Count; index++)
+            List<IToken> comparisonRewrittenTokens = new List<IToken>();
+            for (int index = 0; index < additionSubtractionRewrittenTokens.Count; index++)
             {
-                var token = additionSubtractionRewrittenTokens[index];
+                IToken? token = additionSubtractionRewrittenTokens[index];
                 if (index == (additionSubtractionRewrittenTokens.Count - 1))
                 {
                     comparisonRewrittenTokens.Add(token);
                     continue;
                 }
 
-                var nextToken = additionSubtractionRewrittenTokens[index + 1];
-                var combineTokens = (
+                IToken? nextToken = additionSubtractionRewrittenTokens[index + 1];
+                bool combineTokens = (
                     ((token.Content == "<") && (nextToken.Content == ">")) ||
                     ((token.Content == ">") && (nextToken.Content == "=")) ||
                     ((token.Content == "<") && (nextToken.Content == "="))
@@ -128,7 +128,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            var operatorToken = token as OperatorToken;
+            OperatorToken? operatorToken = token as OperatorToken;
             if (operatorToken == null)
                 return null;
 
@@ -145,8 +145,8 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
             if (tokens.Count == 0)
                 throw new ArgumentException("Empty tokens set specified - invalid");
 
-            var isNegative = false;
-            foreach (var token in tokens)
+            bool isNegative = false;
+            foreach (OperatorToken? token in tokens)
             {
                 if (token == null)
                     throw new ArgumentException("Null reference encountered in tokens set");

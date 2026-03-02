@@ -115,7 +115,7 @@ namespace Skrypton.RuntimeSupport
         // Microsoft.VisualBasic.Information
         internal static string OldVBFriendlyNameOfTypeName(string typename, CultureInfo culture)
         {
-            string text = null;
+            string? text = null;
             checked
             {
                 int num = typename.Length - 1;
@@ -132,7 +132,7 @@ namespace Skrypton.RuntimeSupport
                     }
                     typename = typename.Substring(0, num2);
                 }
-                string text2 = Information.OldVbTypeName(typename, culture);
+                string? text2 = Information.OldVbTypeName(typename, culture);
                 if (text2 == null)
                 {
                     text2 = typename;
@@ -161,7 +161,7 @@ namespace Skrypton.RuntimeSupport
             // Microsoft.VisualBasic.CompilerServices.Utils
             internal static string AdjustArraySuffix(string sRank)
             {
-                string text = null;
+                string? text = null;
                 int i = sRank.Length;
                 checked
                 {
@@ -222,7 +222,7 @@ namespace Skrypton.RuntimeSupport
 
         static class Strings
         {
-            public static string Mid(string str, int Start, int Length)
+            public static string Mid(string? str, int Start, int Length)
             {
                 if (Start <= 0)
                 {
@@ -258,9 +258,9 @@ namespace Skrypton.RuntimeSupport
                     return result;
                 }
             }
-            public static string Mid(string str, int Start)
+            public static string? Mid(string? str, int Start)
             {
-                string result;
+                string? result;
                 try
                 {
                     if (str == null)
@@ -279,7 +279,7 @@ namespace Skrypton.RuntimeSupport
                 return result;
             }
 
-            public static string Left(string str, int Length)
+            public static string Left(string? str, int Length)
             {
                 if (Length < 0)
                 {
@@ -397,16 +397,16 @@ namespace Skrypton.RuntimeSupport
                 return result;
             }
         }
-        internal static string OldVbTypeName(string UrtName, CultureInfo culture)
+        internal static string? OldVbTypeName(string urtName, CultureInfo culture)
         {
-            UrtName = Strings.Trim(UrtName).ToUpperInvariant();
-            if (Operators.CompareString(Strings.Left(UrtName, 7), "SYSTEM.", false, culture) == 0)
+            string? urtNameLocal = Strings.Trim(urtName).ToUpperInvariant();
+            if (Operators.CompareString(Strings.Left(urtNameLocal, 7), "SYSTEM.", false, culture) == 0)
             {
-                UrtName = Strings.Mid(UrtName, 8);
+                urtNameLocal = Strings.Mid(urtNameLocal, 8);
             }
-            string text = UrtName;
+            string? text = urtNameLocal;
             uint num = ComputeStringHash(text);
-            string result;
+            string? result;
             if (num <= 1219467820u)
             {
                 if (num <= 268302705u)
@@ -566,7 +566,7 @@ namespace Skrypton.RuntimeSupport
 
         // Microsoft.VisualBasic.Information
         //[SecuritySafeCritical]
-        internal static string LegacyTypeNameOfCOMObject(object VarName, bool bThrowException)
+        internal static string LegacyTypeNameOfCOMObject(object? VarName, bool bThrowException)
         {
             string text = "__ComObject";
             try
@@ -593,15 +593,13 @@ namespace Skrypton.RuntimeSupport
                 }
                 goto IL_67;
             }
-            ITypeInfo typeInfo = null;
-            string strName = null;
+            ITypeInfo? typeInfo = null;
+            string? strName = null;
             string strDocString;
             string strHelpFile;
-            IDispatchAccess.IDispatch dispatch = VarName as IDispatchAccess.IDispatch;
-            int dwHelpContext;
-            if (dispatch != null && dispatch.GetTypeInfo(0, 1033, out typeInfo) >= 0)
+            if (VarName != null && VarName is IDispatchAccess.IDispatch dispatch && dispatch.GetTypeInfo(0, 1033, out typeInfo) >= 0)
             {
-                typeInfo.GetDocumentation(-1, out strName, out strDocString, out dwHelpContext, out strHelpFile);
+                typeInfo.GetDocumentation(-1, out strName, out strDocString, out int dwHelpContext, out strHelpFile);
                 text = strName;
             }
             IL_67:

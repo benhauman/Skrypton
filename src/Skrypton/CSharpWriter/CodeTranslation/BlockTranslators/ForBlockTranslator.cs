@@ -251,9 +251,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // declared and initialised. There may be a mix of dynamic and constant constraints so there may be zero, one, two or three variables
             // to deal with here (this will have been determined in the work above).
             var translationResult = TranslationResult.Empty;
-            CSharpName constraintsInitialisedFlagNameIfAny;
+            CSharpName? constraintsInitialisedFlagNameIfAny;
             if (loopConstraintInitialisersWhereRequired.Count == 0)
+            {
                 constraintsInitialisedFlagNameIfAny = null;
+            }
             else if ((scopeAccessInformation.ErrorRegistrationTokenIfAny == null) && !byRefArgumentsToRewrite.Any())
             {
                 constraintsInitialisedFlagNameIfAny = null;
@@ -309,7 +311,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forBlock.LoopVar.LineIndex // This statement doesn't directly exist in the source, so we'll have to approximate here
                     ));
                 }
-                LoopStartConstraintInitialiser loopStartConstraintInitialiserIfAny = null;
+                LoopStartConstraintInitialiser? loopStartConstraintInitialiserIfAny = null;
                 foreach (var loopConstraintInitialiser in loopConstraintInitialisersWhereRequired)
                 {
                     // Error-trapping may be enabled when this emitted code is being executed, so we need to consider the special case with Date loop variables

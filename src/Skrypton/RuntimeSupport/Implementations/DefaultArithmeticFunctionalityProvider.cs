@@ -56,8 +56,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Address simplest cases first - ensure both values are non-object references (or may be coerced into value types), then check for double-Empty (Integer zero),
             // one-or-both-Null (Null), both-strings (concatenate) or one-string-with-Empty (return string). Note that single-Empty is not a simple case - for most values
             // it is (CInt(1) + Empty = CInt(1), for example) but when Empty is added to a Boolean then the type changes to an Integer.
-            object l = _valueRetriever.VAL(a);
-            object r = _valueRetriever.VAL(b);
+            object? l = _valueRetriever.VAL(a);
+            object? r = _valueRetriever.VAL(b);
             if ((l == DBNull.Value) || (r == DBNull.Value))
             {
                 return DBNull.Value;
@@ -68,8 +68,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (Int16)0;
             }
 
-            string lString = l as string;
-            string rString = r as string;
+            string? lString = l as string;
+            string? rString = r as string;
             if ((lString != null) && (rString != null))
             {
                 return lString + rString;
@@ -307,7 +307,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return ADD(l, SUBT(r));
         }
 
-        public object MULT(object l, object r)
+        public object MULT(object? l, object? r)
         {
             // Address simplest cases first - ensure both values are non-object references (or may be coerced into value types), then check for double-Empty (Integer zero),
             // one-or-both-Null (Null), both-strings (concatenate) or one-string-with-Empty (return string). Note that single-Empty is not a simple case - for most values
@@ -385,20 +385,29 @@ namespace Skrypton.RuntimeSupport.Implementations
             var rCurrency = TryToCoerceInto<Decimal>(r);
             if ((lCurrency != null) || (rCurrency != null))
             {
-                Tuple<Decimal, Decimal> currencyValuesToMultiplyIfAvailable;
+                Tuple<Decimal, Decimal>? currencyValuesToMultiplyIfAvailable;
                 if ((lCurrency != null) && (rCurrency != null))
+                {
                     currencyValuesToMultiplyIfAvailable = Tuple.Create(lCurrency.Value, rCurrency.Value);
+                }
                 else if ((lCurrency != null) && (rLong != null))
+                {
                     currencyValuesToMultiplyIfAvailable = Tuple.Create(lCurrency.Value, (Decimal)rLong.Value);
+                }
                 else if ((rCurrency != null) && (lLong != null))
+                {
                     currencyValuesToMultiplyIfAvailable = Tuple.Create(rCurrency.Value, (Decimal)lLong.Value);
+                }
                 else if ((l == null) || (r == null))
                 {
                     // We know that one of the value is a Currency so if either of the values is null then we're combining a Currency with null (Empty in VBScript)
                     return 0m;
                 }
                 else
+                {
                     currencyValuesToMultiplyIfAvailable = null;
+                }
+
                 if (currencyValuesToMultiplyIfAvailable != null)
                 {
                     Decimal result;
@@ -411,7 +420,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                         throw new VBScriptOverflowException($"l:{l}, r:{r}", e);
                     }
                     if ((result < VBScriptConstants.MinCurrencyValue) || (result > VBScriptConstants.MaxCurrencyValue))
+                    {
                         throw new VBScriptOverflowException($"l:{l}, r:{r}");
+                    }
+
                     return result;
                 }
             }
@@ -425,7 +437,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return lDouble * rDouble;
         }
 
-        public object DIV(object l, object r)
+        public object DIV(object? l, object? r)
         {
             // Note: Null values trump division-by zero (so check them first) but overflow trumps division-by-zero, so we can't throw as soon as we find that "r" is zero,
             // we need to continue until we confirm that "l" does not overflow. Unlike MOD and INTDIV, Empty/Empty or 0/0 results in an Overflow, not a Division-by-zero.
@@ -481,7 +493,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             throw new NotImplementedException(); // TODO
         }
 
-        public object MOD(object l, object r)
+        public object MOD(object? l, object? r)
         {
             // Note: Null values trump division-by zero (so check them first) but overflow trumps division-by-zero, so we can't throw as soon as we find that "r" is zero,
             // we need to continue until we confirm that "l" does not overflow. With the exception of double-Empty; there's no chance of an overflow then, it's definitely

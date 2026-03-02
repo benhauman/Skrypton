@@ -121,8 +121,8 @@ namespace Skrypton.RuntimeSupport.Compat
                 var setters = methodGroup.Where(m => m.Method.ReturnType == typeof(void)).ToArray();
                 if (setters.Length > 1)
                     throw new ArgumentException("There may not be more than two methods with the same name specified by a TranslatedProperty attribute (" + methodGroup.First().TranslatedPropertyAttribute.Name + ") that have a void return type (the setters)");
-                MethodInfo getterMethod = (getters.Length != 0 ? getters.Single().Method : null);
-                MethodInfo setterMethod = (setters.Length != 0 ? setters.Single().Method : null);
+                MethodInfo? getterMethod = (getters.Length != 0 ? getters.Single().Method : null);
+                MethodInfo? setterMethod = (setters.Length != 0 ? setters.Single().Method : null);
                 representedProperties.Add(
                     new TranslatedPropertyInfo(
                         methodGroup.Key,
@@ -159,12 +159,12 @@ namespace Skrypton.RuntimeSupport.Compat
             private readonly Type _owningType;
             private readonly MethodInfo? _getter;
             private readonly MethodInfo? _setter;
-            public TranslatedPropertyInfo(string name, Type owningType, MethodInfo getter, MethodInfo setter)
+            public TranslatedPropertyInfo(string name, Type owningType, MethodInfo? getter, MethodInfo? setter)
             {
                 if ((getter == null) && (setter == null))
                     throw new ArgumentException("At least one of getter and setter must be non-null");
 
-                ParameterInfo[] setterParameters;
+                ParameterInfo[]? setterParameters;
                 if (setter == null)
                 {
                     setterParameters = null;

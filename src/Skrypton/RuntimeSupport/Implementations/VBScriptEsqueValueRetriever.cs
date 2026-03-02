@@ -129,12 +129,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (o == null)
                 throw new ArgumentNullException(nameof(o));
 
-            string cacheKeyIfApplicable;
+            string? cacheKeyIfApplicable;
             var oType = o.GetType();
             if (oType.IsCOMObject)
             {
                 if (_absentDefaultMemberOnComObjectCacheOptions == AbsentDefaultMemberOnComObjectCacheOptions.DoNotCache)
+                {
                     cacheKeyIfApplicable = null;
+                }
                 else
                 {
                     cacheKeyIfApplicable = TypeDescriptor.GetClassName(o);
@@ -142,7 +144,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
             }
             else
+            {
                 cacheKeyIfApplicable = o.GetType().FullName;
+            }
 
             // Check the cache first..
             bool cachedValueForHasTargetTypeGotDefaultMember;

@@ -113,7 +113,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             // If the ERASE call is invalid (eg. zero targets "ERASE" or multiple "ERASE a, b" or not a possible by-ref target "ERASE (a)" or "ERASE a.Name" or an invalid array /
             // reference / method call "ERASE a()") then evaluate the targets (to be consistent with VBScript's behaviour) but then raise an error.
-            string exceptionStatementIfTargetConfigurationIsInvalid;
+            string? exceptionStatementIfTargetConfigurationIsInvalid;
             if (eraseStatement.Targets.Count() != 1)
             {
                 exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
@@ -148,7 +148,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         );
                     }
                     else
+                    {
                         exceptionStatementIfTargetConfigurationIsInvalid = null;
+                    }
                 }
             }
 

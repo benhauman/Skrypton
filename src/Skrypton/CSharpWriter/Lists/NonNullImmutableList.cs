@@ -10,10 +10,10 @@ namespace Skrypton.CSharpWriter.Lists
         private readonly static Validator _defaultValidator = new Validator(null);
         private readonly IValueValidator<T> _optionalValueValidator;
 
-        public NonNullImmutableList() : this((IValueValidator<T>)null) { }
+        public NonNullImmutableList() : this((IValueValidator<T>?)null) { }
         public NonNullImmutableList(IEnumerable<T> values) : this(values, null) { }
-        public NonNullImmutableList(IValueValidator<T> optionalValueValidator)
-            : base((Node)null, GetValidator(optionalValueValidator))
+        private NonNullImmutableList(IValueValidator<T>? optionalValueValidator)
+            : base((Node?)null, GetValidator(optionalValueValidator))
         {
             _optionalValueValidator = optionalValueValidator;
         }

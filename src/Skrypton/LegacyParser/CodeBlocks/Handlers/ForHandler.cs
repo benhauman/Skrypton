@@ -84,11 +84,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count < 4 + loopFrom.Count + loopTo.Count)
                 throw new ArgumentException("Insufficient token content");
             IToken tokenNext = tokens[4 + loopFrom.Count + loopTo.Count];
-            List<IToken> stepExpr;
+            List<IToken>? stepExpr;
             if (tokenNext is AbstractEndOfStatementToken)
+            {
                 stepExpr = null;
+            }
             else
+            {
                 stepExpr = getExpressionContent(tokens, 5 + loopFrom.Count + loopTo.Count);
+            }
 
             // Remove processed tokens then get block content
             tokens.RemoveRange(0, 1); // "FOR"

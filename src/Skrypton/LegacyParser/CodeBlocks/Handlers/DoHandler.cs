@@ -41,7 +41,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Remove DO keyword and grab pre-condition content (if any)
             tokens.RemoveAt(0);
-            Expression conditionStatement;
+            Expression? conditionStatement;
             if (!hasPreCondition)
                 conditionStatement = null;
             else

@@ -763,7 +763,7 @@ namespace Skrypton.RuntimeSupport
             // Now we have to check for the with-month-name date formats
             // - If there is a month name and a single numeric value, then prefer the value to be a date (using the default year), VBScript does not take the order of the
             //   values to be of any significance. If the value does not fall within the acceptable range then assume it's a year (and default to the 1st of the month).
-            string monthNameFromTwoSegmentFormat;
+            string? monthNameFromTwoSegmentFormat;
             int numericValueFromTwoSegmentFormat;
             var monthNameThenNumberComponentMatch = _wholeStringMonthNameThenNumberDateComponent.Match(value);
             if (monthNameThenNumberComponentMatch.Success)
@@ -796,7 +796,7 @@ namespace Skrypton.RuntimeSupport
             // - If there is a month name and two numeric values and there is would be an ambiguity in what the numbers represent (the ordering of the segments is given
             //   no significance by VBScript) then it is assumed that the first value is the date and the second the year. If this combination is not valid then the
             //   first is the year and the second the date (if THIS is not valid then the date literal is invalid).
-            string monthNameFromThreeSegmentFormat;
+            string? monthNameFromThreeSegmentFormat;
             int firstNumericValueFromThreeSegmentFormat, secondNumericValueFromThreeSegmentFormat;
             var monthNameThenTwoNumbersComponentMatch = _wholeStringMonthNameThenTwoNumbersDateComponent.Match(value);
             if (monthNameThenTwoNumbersComponentMatch.Success)

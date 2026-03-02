@@ -45,7 +45,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
             bool isSingleReturnValueStatementFunction = IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation);
-            CSharpName returnValueName = functionBlock.HasReturnValue
+            CSharpName? returnValueName = functionBlock.HasReturnValue
                 ? _tempNameGenerator(new CSharpName($"{functionBlock.Name.Content}_retVal"), scopeAccessInformation.Extend(functionBlock, functionBlock.Statements.ToNonNullImmutableList())) // Ensure call Extend so that ScopeDefiningParent is the current function
                 : null;
             TranslationResult translationResult = TranslationResult.Empty.Add(
@@ -56,7 +56,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     indentationDepth
                 )
             );
-            CSharpName errorRegistrationTokenIfAny;
+            CSharpName? errorRegistrationTokenIfAny;
             if (functionBlock.Statements.ToNonNullImmutableList().DoesScopeContainOnErrorResumeNext())
             {
                 errorRegistrationTokenIfAny = _tempNameGenerator(new CSharpName("errOn"), scopeAccessInformation);
@@ -71,7 +71,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 ));
             }
             else
+            {
                 errorRegistrationTokenIfAny = null;
+            }
+
             translationResult = translationResult.Add(
                 Translate(
                     functionBlock.Statements.ToNonNullImmutableList(),
@@ -163,7 +166,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
 
-            ValueSettingStatement valueSettingStatement = block as ValueSettingStatement;
+            ValueSettingStatement? valueSettingStatement = block as ValueSettingStatement;
             if (valueSettingStatement == null)
                 return null;
 
@@ -224,7 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             List<TranslatedStatement> translatedStatements = new List<TranslatedStatement>();
             if (functionBlock.IsDefault)
                 translatedStatements.Add(new TranslatedStatement("[" + typeof(IsDefaultAttribute).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
-            PropertyBlock property = functionBlock as PropertyBlock;
+            PropertyBlock? property = functionBlock as PropertyBlock;
             if (property != null)
             {
                 // All property blocks that are translated into C# methods needs to be decorated with the [TranslatedProperty] attribute. The [TranslatedProperty] attribute
@@ -285,14 +288,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (executableStatements.Length != 1)
                 return false;
 
-            ValueSettingStatement valueSettingStatement = executableStatements.Single() as ValueSettingStatement;
+            ValueSettingStatement? valueSettingStatement = executableStatements.Single() as ValueSettingStatement;
             if (valueSettingStatement == null)
                 return false;
 
             if (valueSettingStatement.ValueToSet.Tokens.Count() != 1)
                 return false;
 
-            NameToken valueToSetTokenAsNameToken = valueSettingStatement.ValueToSet.Tokens.Single() as NameToken;
+            NameToken? valueToSetTokenAsNameToken = valueSettingStatement.ValueToSet.Tokens.Single() as NameToken;
             if (valueToSetTokenAsNameToken == null)
                 return false;
 

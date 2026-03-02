@@ -244,7 +244,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // target and optional member accessor) or we have multiple segments where all but the last one define the target and the last entry
             // has the optional member accessor and any arguments.
             string targetAccessorName;
-            string optionalMemberAccessor;
+            string? optionalMemberAccessor;
             IEnumerable<Expression> arguments;
             if (callExpressionSegments.Count == 1)
             {
@@ -252,9 +252,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 var targetAccessor = callExpressionSegments[0].MemberAccessTokens.First();
                 targetAccessorName = _nameRewriter.GetMemberAccessTokenName(targetAccessor);
                 if (callExpressionSegments[0].MemberAccessTokens.Count() == 1)
+                {
                     optionalMemberAccessor = null;
+                }
                 else
+                {
                     optionalMemberAccessor = callExpressionSegments[0].MemberAccessTokens.Skip(1).Single().Content;
+                }
+
                 arguments = callExpressionSegments[0].Arguments;
 
                 var targetAccessorNameToken = targetAccessor as NameToken;

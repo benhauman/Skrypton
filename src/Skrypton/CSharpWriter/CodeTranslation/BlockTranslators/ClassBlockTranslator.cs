@@ -210,7 +210,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 };
             }
             TranslatedStatement[] disposeImplementationStatements;
-            CSharpName disposedFlagNameIfAny;
+            CSharpName? disposedFlagNameIfAny;
             if (classTerminateMethodNameIfAny == null)
             {
                 disposeImplementationStatements = [];

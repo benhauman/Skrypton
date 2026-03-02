@@ -257,7 +257,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// this will return DBNull.Value if either value is DBNull.Value and a boolean otherwise.
         /// </summary>
         public object EQ(object l, object r) { return ToVBScriptNullable(EQ_Internal(l, r)); }
-        private bool? EQ_Internal(object l, object r)
+        private bool? EQ_Internal(object? l, object? r)
         {
             // Both sides of the comparison must be simple VBScript values (ie. not object references) - pushing both values through VAL will handle
             // that (an exception will be raised if this operation fails and the value will not be affect if it was already an acceptable type)
@@ -272,7 +272,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if ((l == null) || (r == null))
             {
                 // The default values of VBScript primitives (number, strings and booleans) are considered to match Empty
-                object nonNullValue = l ?? r;
+                object nonNullValue = l ?? r!;
 #pragma warning disable CA1820 // Test for empty strings using string length
                 if ((IsDotNetNumericType(nonNullValue) && (Convert.ToDouble(nonNullValue, CultureInfo.InvariantCulture)) == 0)
                 || ((nonNullValue as string) == "")
@@ -381,7 +381,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException("result is null");
             return result.Value;
         }
-        private bool? LT_Internal(object l, object r, bool allowEquals)
+        private bool? LT_Internal(object? l, object? r, bool allowEquals)
         {
             // Both sides of the comparison must be simple VBScript values (ie. not object references) - pushing both values through VAL will handle
             // that (an exception will be raised if this operation fails and the value will not be affect if it was already an acceptable type)
@@ -404,8 +404,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Deal with string special cases next - if both are strings then perform a string comparison. If only one is a string, and it is not blank,
             // then that value is bigger (so if it's on the left then return false and if it's on the right then return true). Blank strings get special
             // handling and are effectively treated as zero (see further down).
-            string lString = l as string;
-            string rString = r as string;
+            string? lString = l as string;
+            string? rString = r as string;
             if ((lString != null) && (rString != null))
             {
                 int? stringComparisonResult = STRCOMP_Internal(lString, rString, 0);
@@ -491,7 +491,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return windows1252;
         }
 
-        private byte CBYTECore(object value, string exceptionMessageForInvalidContent)
+        private byte CBYTECore(object? value, string exceptionMessageForInvalidContent)
         {
             if (value == null)
             {
@@ -506,7 +506,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return 0;
             }
 
-            object valueX = _valueRetriever.VAL(value, exceptionMessageForInvalidContent);
+            object? valueX = _valueRetriever.VAL(value, exceptionMessageForInvalidContent);
             //return GetAsNumber<byte>(valueX, exceptionMessageForInvalidContent, Convert.ToByte);
             return GetAsNumber<byte>(valueX, exceptionMessageForInvalidContent, ConvertToByte, true);
         }
@@ -586,7 +586,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return _valueRetriever.STR(value, exceptionMessageForInvalidContent);
         }
 #pragma warning disable CA1720 // Identifier contains type name
-        public object INT(object value)
+        public object INT(object? value)
 #pragma warning restore CA1720 // Identifier contains type name
         {
             value = _valueRetriever.VAL(value);
@@ -617,7 +617,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return valueDouble;
         }
 #pragma warning disable CA1720 // Identifier contains type name
-        public string STRING(object numberOfTimesToRepeat, object character)
+        public string STRING(object? numberOfTimesToRepeat, object? character)
 #pragma warning restore CA1720 // Identifier contains type name
         {
 #pragma warning disable CA1820 // Test for empty strings using string length
@@ -640,7 +640,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 characterChar = '\0';
             else
             {
-                string characterString = character as string;
+                string? characterString = character as string;
                 if (characterString != null)
                 {
                     if (characterString == "")
@@ -691,7 +691,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA5394 // Do not use insecure randomness
         }
         // - Number functions
-        public object ABS(object value)
+        public object ABS(object? value)
         {
             value = _valueRetriever.VAL(value, "'Abs'");
             if (value is bool)
@@ -726,7 +726,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return RND(1); // Any value greater than zero passed to RND will just get the next random number, so calling RND(1) should be the same as VBScript calling just "RND()"
         }
-        public float RND(object value)
+        public float RND(object? value)
         {
             value = _valueRetriever.VAL(value, "'Rnd'");
             if (value == DBNull.Value)
@@ -991,7 +991,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object FORMATNUMBER(object value) { throw new NotImplementedException(); }
         public object FORMATPERCENT(object value) { throw new NotImplementedException(); }
-        public object HEX(object value)
+        public object HEX(object? value)
         {
             value = _valueRetriever.VAL(value, "'Hex'");
             if (value == DBNull.Value)
@@ -1009,7 +1009,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public object INSTR(object valueToSearch, object valueToSearchFor) { return INSTR(1, valueToSearch, valueToSearchFor); }
         public object INSTR(object startIndex, object valueToSearch, object valueToSearchFor) { return INSTR(startIndex, valueToSearch, valueToSearchFor, 0); }
-        public object INSTR(object startIndex, object valueToSearch, object valueToSearchFor, object compareMode)
+        public object INSTR(object? startIndex, object? valueToSearch, object? valueToSearchFor, object? compareMode)
         {
             // Validate input
             startIndex = _valueRetriever.VAL(startIndex, "'InStr'");
@@ -1051,7 +1051,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return zeroBasedMatchIndex + 1;
         }
 
-        public object INSTRREV(object valueToSearch, object valueToSearchFor)
+        public object INSTRREV(object? valueToSearch, object valueToSearchFor)
         {
             // Unlike INSTR, we have to do some work if no startIndex is specified since the default value should be indicate the last character in
             // valueToSearch, if that can be transformed into a non-blank string (if it can not be transformed into a non-object reference at all then
@@ -1065,8 +1065,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 startIndex = Math.Max(1, _valueRetriever.STR(valueToSearch).Length);
             return INSTRREV(valueToSearch, valueToSearchFor, startIndex);
         }
-        public object INSTRREV(object valueToSearch, object valueToSearchFor, object startIndex) { return INSTRREV(valueToSearch, valueToSearchFor, startIndex, 0); }
-        public object INSTRREV(object valueToSearch, object valueToSearchFor, object startIndex, object compareMode)
+        public object INSTRREV(object? valueToSearch, object? valueToSearchFor, object? startIndex) { return INSTRREV(valueToSearch, valueToSearchFor, startIndex, 0); }
+        public object INSTRREV(object? valueToSearch, object? valueToSearchFor, object? startIndex, object? compareMode)
         {
             // Validate input
             startIndex = _valueRetriever.VAL(startIndex, "'InStrRev'");
@@ -1128,7 +1128,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return "";
             return valueString.Substring(startIndex, Math.Min(lengthAsNumber, valueString.Length - startIndex));
         }
-        public object LEN(object value)
+        public object LEN(object? value)
         {
             value = _valueRetriever.VAL(value, "'Len'");
             if (value == null)
@@ -1137,7 +1137,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
             return _valueRetriever.STR(value).Length;
         }
-        public object LENB(object value)
+        public object LENB(object? value)
         {
             // For almost all cases, returning twice the string length should work here. VBScript uses UTF-16 but I think that it's possible to construct strings that are an odd number
             // of bytes long if you try hard. As such, this shouldn't be considered a particularly robust implementation but (hopefully) it will be good enough. The places that I have
@@ -1199,7 +1199,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public string REPLACE(object value, object toSearchFor, object toReplaceWith) { return REPLACE(value, toSearchFor, toReplaceWith, 1); }
         public string REPLACE(object value, object toSearchFor, object toReplaceWith, object startIndex) { return REPLACE(value, toSearchFor, toReplaceWith, startIndex, -1); }
         public string REPLACE(object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements) { return REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, 0); }
-        public string REPLACE(object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
+        public string REPLACE(object value, object toSearchFor, object toReplaceWith, object? startIndex, object? maxNumberOfReplacements, object? compareMode)
         {
             // Input validation / type-enforcing
             compareMode = _valueRetriever.VAL(compareMode, "'Replace'");
@@ -1253,7 +1253,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object SPACE(object value)
         {
-            object numberOfSpaces = _valueRetriever.VAL(value, "'Space'");
+            object? numberOfSpaces = _valueRetriever.VAL(value, "'Space'");
             if (numberOfSpaces == DBNull.Value)
                 throw new InvalidUseOfNullException("'Space'");
             int numberOfSpacesNumber;
@@ -1269,7 +1269,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return new string(' ', numberOfSpacesNumber);
         }
         public object[] SPLIT(object value) { return SPLIT(value, " "); }
-        public object[] SPLIT(object value, object delimiter)
+        public object[] SPLIT(object? value, object? delimiter)
         {
             // Basic input validation
             delimiter = _valueRetriever.VAL(delimiter, "'Split'");
@@ -1295,7 +1295,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             throw new NotImplementedException();
         }
         public object STRREVERSE(object value) { throw new NotImplementedException(); }
-        public object TRIM(object value)
+        public object TRIM(object? value)
         {
             value = _valueRetriever.VAL(value, "'Trim'");
             if (value == null)
@@ -1304,7 +1304,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
             return _valueRetriever.STR(value).Trim(' ');
         }
-        public object LTRIM(object value)
+        public object LTRIM(object? value)
         {
             value = _valueRetriever.VAL(value, "'LTrim'");
             if (value == null)
@@ -1313,7 +1313,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
             return _valueRetriever.STR(value).TrimStart(' ');
         }
-        public object RTRIM(object value)
+        public object RTRIM(object? value)
         {
             value = _valueRetriever.VAL(value, "'RTrim'");
             if (value == null)
@@ -1322,7 +1322,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
             return _valueRetriever.STR(value).TrimEnd(' ');
         }
-        public object LCASE(object value)
+        public object LCASE(object? value)
         {
             value = _valueRetriever.VAL(value, "'LCase'");
             if (value == null)
@@ -1333,7 +1333,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return _valueRetriever.STR(value).ToLower(CultureInfo.InvariantCulture);
 #pragma warning restore CA1308
         }
-        public object UCASE(object value)
+        public object UCASE(object? value)
         {
             value = _valueRetriever.VAL(value, "'UCase'");
             if (value == null)
@@ -1345,7 +1345,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA1304 // Specify CultureInfo
         }
         private const string NonEscapedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*_+-./";
-        public object ESCAPE(object value)
+        public object ESCAPE(object? value)
         {
             value = _valueRetriever.VAL(value, "'ESCAPE'");
             if (value == null)
@@ -1391,7 +1391,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return null;
         }
-        public object UNESCAPE(object value)
+        public object UNESCAPE(object? value)
         {
             value = _valueRetriever.VAL(value, "'UNESCAPE'");
             if (value == null)
@@ -1602,7 +1602,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (!string.IsNullOrWhiteSpace(typeDescriptorClassName))
                     return typeDescriptorClassName;
             }
-            SourceClassNameAttribute sourceClassName = type.GetCustomAttributes(typeof(SourceClassNameAttribute), inherit: true).FirstOrDefault() as SourceClassNameAttribute;
+            SourceClassNameAttribute? sourceClassName = type.GetCustomAttributes(typeof(SourceClassNameAttribute), inherit: true).FirstOrDefault() as SourceClassNameAttribute;
             if (sourceClassName != null)
                 return sourceClassName.Name;
 
@@ -1647,7 +1647,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // is also an array, that is what will get erased. If the argument count does not match the array rank then it's a subscript-out-of-range failure (this
             // includes the case of zero arguments, which is what "ERASE a()" is translated into - it needs to get to this point at runtime so that the type of
             // "a" can be checked, which determines whether the failure is a type-mismatch or subscript-out-of-range).
-            Array targetArray = target as Array;
+            Array? targetArray = target as Array;
             if (targetArray == null)
                 throw new TypeMismatchException("'Erase'");
             if ((arguments == null) || (arguments.Length == 0))
@@ -1672,7 +1672,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             targetArray.SetValue(Array.Empty<object>(), numericArguments);
         }
         public string JOIN(object value) { return JOIN(value, " "); }
-        public string JOIN(object value, object delimiter)
+        public string JOIN(object? value, object? delimiter)
         {
             delimiter = _valueRetriever.VAL(delimiter, "'Join'");
             if (value == DBNull.Value)
@@ -1698,19 +1698,19 @@ namespace Skrypton.RuntimeSupport.Implementations
                     .Cast<object>()
                     .Select(element =>
                     {
-                        element = _valueRetriever.VAL(element, "'Join'");
-                        if (element == DBNull.Value)
+                        var elementVal = _valueRetriever.VAL(element, "'Join'");
+                        if (elementVal == DBNull.Value)
                             throw new TypeMismatchException("'Join'");
-                        return (element == null) ? "" : _valueRetriever.STR(element);
+                        return (elementVal == null) ? "" : _valueRetriever.STR(elementVal);
                     })
             );
         }
         public int LBOUND(object value) { return LBOUND(value, 1); }
-        public int LBOUND(object value, object dimension)
+        public int LBOUND(object? value, object dimension)
         {
             // If both the value and dimension are invalid values, the dimension errors should be raised first (so try to process that value first)
             int dimensionInt = CLNG(dimension, "'LBound'");
-            Array array = _valueRetriever.VAL(value, "'LBound'") as Array;
+            Array? array = _valueRetriever.VAL(value, "'LBound'") as Array;
             if (array == null)
                 throw new TypeMismatchException("'LBound'");
             if ((dimensionInt < 1) || (dimensionInt > array.Rank))
@@ -1722,7 +1722,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // If both the value and dimension are invalid values, the dimension errors should be raised first (so try to process that value first)
             int dimensionInt = CLNG(dimension, "'UBound'");
-            Array array = _valueRetriever.VAL(value, "'UBound'") as Array;
+            Array? array = _valueRetriever.VAL(value, "'UBound'") as Array;
             if (array == null)
                 throw new TypeMismatchException("'UBound'");
             if ((dimensionInt < 1) || (dimensionInt > array.Rank))
@@ -1733,7 +1733,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public DateTime NOW() { return DateTime.Now; }
         public DateTime DATE() { return DateTime.Now.Date; }
         public DateTime TIME() { return new DateTime(DateTime.Now.TimeOfDay.Ticks); }
-        public object DATEADD(object interval, object number, object value)
+        public object DATEADD(object? interval, object? number, object? value)
         {
             // DateAdd seems to be an usual functions - it ignores fractions in "number" rather than rounding them (so adding 101, 101.5 or 101.9 is the same as adding 101).
             // It's also unusual in that it won't overflow for enormous numeric values, it always falls back to an invalid-procedure-call-or-argument error (if the number
@@ -1761,7 +1761,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             interval = _valueRetriever.VAL(interval, "'DateAdd'");
             if (interval == DBNull.Value)
                 throw new InvalidUseOfNullException("'DateAdd'");
-            string intervalString = interval as string;
+            string? intervalString = interval as string;
             if (intervalString == null)
                 throw new InvalidProcedureCallOrArgumentException("'DateAdd'");
             Func<DateTime, int, DateTime> dateManipulator;
@@ -1862,7 +1862,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return new DateTime(numericYear, numericMonth, numericDate);
         }
-        public DateTime DATEVALUE(object value)
+        public DateTime DATEVALUE(object? value)
         {
             // In summary, this will do a subset of the processing of CDATE (it will accept a DateTime or a parse-able string, but not a numeric value such as 123.45) and return only the date:
             //   "The reasons for using DateValue and TimeValue to convert a string instead of CDate may not be immediately obvious. Consider the example above. CDate is creating a Date value for the entire supplied
@@ -1923,7 +1923,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = (short)(value - (valueOfNextUnit * numberInNextUnit));
             return valueOfNextUnit;
         }
-        public DateTime TIMEVALUE(object value)
+        public DateTime TIMEVALUE(object? value)
         {
             // In summary, this will do a subset of the processing of CDATE (it will accept a DateTime or a parse-able string, but not a numeric value such as 123.45) and return only the time component:
             //   "The reasons for using DateValue and TimeValue to convert a string instead of CDate may not be immediately obvious. Consider the example above. CDate is creating a Date value for the entire supplied
@@ -1951,14 +1951,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             // VBScript represents times by taking its "zero date" and adding hours / minutes / seconds to it
             return VBScriptConstants.ZeroDate.Add(dateValue.TimeOfDay);
         }
-        public object DAY(object value)
+        public object DAY(object? value)
         {
             value = _valueRetriever.VAL(value, "'Day'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
             return ToClosestSecond(CDATECore(value, "'Day'")).Day;
         }
-        public object MONTH(object value)
+        public object MONTH(object? value)
         {
             value = _valueRetriever.VAL(value, "'Month'");
             if (value == DBNull.Value)
@@ -1966,7 +1966,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return ToClosestSecond(CDATECore(value, "'Month'")).Month;
         }
         public object MONTHNAME(object value) { throw new NotImplementedException(); }
-        public object YEAR(object value)
+        public object YEAR(object? value)
         {
             value = _valueRetriever.VAL(value, "'Year'");
             if (value == DBNull.Value)
@@ -1977,7 +1977,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return WEEKDAY(value, VBScriptConstants.vbSunday);
         }
-        public object WEEKDAY(object value, object firstDayOfWeek)
+        public object WEEKDAY(object? value, object firstDayOfWeek)
         {
             value = _valueRetriever.VAL(value, "'Weekday'");
             if (value == DBNull.Value)
@@ -2011,21 +2011,21 @@ namespace Skrypton.RuntimeSupport.Implementations
             // (then we take the name of the day for the generated date and we're all done)
             return new DateTime(2017, 1, numericValue).ToString(booleanAbbreviate ? "ddd" : "dddd", CultureInfo.InvariantCulture);
         }
-        public object HOUR(object value)
+        public object HOUR(object? value)
         {
             value = _valueRetriever.VAL(value, "'Hour'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
             return ToClosestSecond(CDATECore(value, "'Hour'")).Hour;
         }
-        public object MINUTE(object value)
+        public object MINUTE(object? value)
         {
             value = _valueRetriever.VAL(value, "'Minute'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
             return ToClosestSecond(CDATECore(value, "'Minute'")).Minute;
         }
-        public object SECOND(object value)
+        public object SECOND(object? value)
         {
             value = _valueRetriever.VAL(value, "'Second'");
             if (value == DBNull.Value)
@@ -2119,7 +2119,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            IDisposable disposableResource = value as IDisposable;
+            IDisposable? disposableResource = value as IDisposable;
             if (disposableResource != null)
                 _disposableReferencesToClearAfterTheRequest.Add(disposableResource);
             return value;
@@ -2160,7 +2160,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             int[] dimensionSizes = dimensions.Select(d => CLNG(d, "'ResizeArray'") + 1).ToArray();
             if (dimensionSizes.Length == 0)
                 throw new ArgumentException("No dimensions specified for RESIZEARRAY");
-            Array arrayTyped = array as Array;
+            Array? arrayTyped = array as Array;
             if (arrayTyped == null)
                 throw new TypeMismatchException("'ResizeArray' target not an array");
             if (dimensionSizes.Length != arrayTyped.Rank)
@@ -2257,10 +2257,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get
             {
-                Exception currentError = _trappedErrorIfAny;
+                Exception? currentError = _trappedErrorIfAny;
                 if (currentError == null)
                     return ErrorDetails.NoError;
-                SpecificVBScriptException currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
+                SpecificVBScriptException? currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
                 return new ErrorDetails(
                     number: (currentErrorAsVBScriptSpecificError != null) ? currentErrorAsVBScriptSpecificError.ErrorNumber : currentError.HResult, // TODO: Is HResult appropriate?
                     source: currentError.Source,
@@ -2461,7 +2461,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// translated into the desired type. If there are no applicable special cases then the value will be passed through the VAL function and then through
         /// the processor (if this fails then a TypeMismatchException will be raised).
         /// </summary>
-        private T GetAsNumber<T>(object value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
+        private T GetAsNumber<T>(object? value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
         {
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));

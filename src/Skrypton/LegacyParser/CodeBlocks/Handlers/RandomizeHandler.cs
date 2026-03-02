@@ -46,7 +46,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Pull processed tokens from stream and return statement
             tokens.RemoveRange(0, tokensProcessed);
-            Expression seedIfAny = (seedTokens.Count == 0 ? null : new Expression(seedTokens));
+            Expression? seedIfAny = (seedTokens.Count == 0 ? null : new Expression(seedTokens));
             return new RandomizeStatement(lineIndex, seedIfAny: seedIfAny);
         }
     }

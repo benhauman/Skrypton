@@ -168,7 +168,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         else
                         {
                             // Quote character - is it doubled (ie. escaped quote)?
-                            string chrNext;
+                            string? chrNext;
                             if (indexString < (scriptContent.Length - 1))
                                 chrNext = scriptContent.Substring(indexString + 1, 1);
                             else

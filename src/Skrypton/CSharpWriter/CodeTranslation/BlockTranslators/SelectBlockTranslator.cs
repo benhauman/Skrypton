@@ -141,7 +141,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             byRefArgumentsToRewrite
                         );
                     }
-                    ConditionMatchingByRefArgAliasingDetails byRefArgAliasMappingDetailsIfRequired;
+                    ConditionMatchingByRefArgAliasingDetails? byRefArgAliasMappingDetailsIfRequired;
                     if (byRefArgumentsToRewrite.Any())
                     {
                         // If this is not the first CASE block then we need to move in a level of indentation to limit the scope of the temporary boolean value but also to ensure
@@ -475,7 +475,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation,
                 new NonNullImmutableList<FuncByRefMapping>()
             );
-            CSharpName successfullyEvaluatedTargetNameIfRequired;
+            CSharpName? successfullyEvaluatedTargetNameIfRequired;
             if (byRefArgumentsToRewrite.Any())
             {
                 // If we're in a function or property and that function / property has by-ref arguments that we then need to pass into further function / property calls
@@ -497,7 +497,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     targetExpression.Tokens.First().LineIndex
                 ));
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
+                {
                     successfullyEvaluatedTargetNameIfRequired = null;
+                }
                 else
                 {
                     successfullyEvaluatedTargetNameIfRequired = _tempNameGenerator(new CSharpName("targetWasEvaluated"), scopeAccessInformation);

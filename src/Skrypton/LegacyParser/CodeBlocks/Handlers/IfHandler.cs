@@ -100,7 +100,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             string[][] endSequences = [["END", "IF"], ["ELSEIF"], ["ELSE"]];
             string[] endSequenceMet = ["IF"];
             List<IfBlock.IfBlockSegment> ifContent = new List<IfBlock.IfBlockSegment>();
-            List<IToken> conditionTokens = null;
+            List<IToken>? conditionTokens = null;
             while (true)
             {
                 // First loop, we'll match this as the initial "IF" statement so we can
@@ -244,7 +244,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // We have the condition statement, now get the Post-THEN content and
             // Post-ELSE content (may be null) - ie. the condition's "met" and
             // "not met" code blocks
-            List<IToken> truthTokens, notTokens;
+            List<IToken> truthTokens;
+            List<IToken>? notTokens;
             if (offsetElse == -1)
             {
                 truthTokens = getTokenListSection(ifTokens, 0);
@@ -271,11 +272,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             string[] endSequenceMet;
             CodeBlockHandler codeBlockHandler = CodeBlockHandler.RootBlock;
             List<ICodeBlock> truthStatement = codeBlockHandler.Process(truthTokens, out endSequenceMet);
-            List<ICodeBlock> notStatement;
+            List<ICodeBlock>? notStatement;
             if (notTokens == null)
+            {
                 notStatement = null;
+            }
             else
+            {
                 notStatement = codeBlockHandler.Process(notTokens, out endSequenceMet);
+            }
+
             Expression conditionStatement = new Expression(conditionTokens);
 
             // Generate IfBlock

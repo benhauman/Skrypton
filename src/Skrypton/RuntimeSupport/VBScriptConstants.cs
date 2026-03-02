@@ -73,7 +73,7 @@ namespace Skrypton.RuntimeSupport
         public static char vbLf { get { return '\n'; } }
         public static string vbNewLine { get { return Environment.NewLine; } }
         public static char vbNullChar { get { return '\0'; } }
-        public static string vbNullString { get { return (string)null; } }
+        public static string? vbNullString { get { return (string?)null; } }
         public static char vbTab { get { return '\t'; } }
         public static char vbVerticalTab { get { return (char)11; } }
 

@@ -34,7 +34,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     throw new ArgumentException("Encountered null token in stream");
                 if (token is AtomToken)
                 {
-                    IToken prevToken = (index == 0 ? null : tokens[index - 1]);
+                    IToken? prevToken = (index == 0 ? null : tokens[index - 1]);
                     if ((prevToken == null) || (!(prevToken is AtomToken)) || (prevToken.Content != "."))
                     {
                         // This is an AtomToken that does not appear to be a property of an object, so we need to ensure it's not a keyword that

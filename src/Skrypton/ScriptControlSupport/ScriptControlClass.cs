@@ -132,7 +132,7 @@ namespace Skrypton.ScriptControlSupport
             string csCode = GenerateCSharpCode(statement);
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
-            UnloadableAssemblyLoadContextContext asmctx = RoslynScriptControl.CompileCSharpProgram(csCode);
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(csCode);
             try
             {
                 DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeLogger, EngineCulture);

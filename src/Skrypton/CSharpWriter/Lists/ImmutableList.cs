@@ -15,15 +15,15 @@ namespace Skrypton.CSharpWriter.Lists
         private readonly IValueValidator<T>? _optionalValueValidator; // optional;can be null
         private T[]? _allValues; // lazy populated in 'EnsureAllValuesDataIsPopulated'
 
-        public ImmutableList() : this((Node)null, (IValueValidator<T>)null) { }
+        //public ImmutableList() : this((Node?)null, (IValueValidator<T>?)null) { }
         public ImmutableList(IEnumerable<T> values) : this(values, null) { }
-        public ImmutableList(IValueValidator<T> optionalValueValidator) : this((Node)null, optionalValueValidator) { }
+        //public ImmutableList(IValueValidator<T> optionalValueValidator) : this((Node?)null, optionalValueValidator) { }
         public ImmutableList(IEnumerable<T> values, IValueValidator<T> optionalValueValidator)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
 
-            Node node = null;
+            Node? node = null;
             foreach (var value in values)
             {
                 if (optionalValueValidator != null)
@@ -37,7 +37,7 @@ namespace Skrypton.CSharpWriter.Lists
             _optionalValueValidator = optionalValueValidator;
             _allValues = null;
         }
-        protected ImmutableList(Node tail, IValueValidator<T> optionalValueValidator)
+        protected ImmutableList(Node? tail, IValueValidator<T> optionalValueValidator)
         {
             _tail = tail;
             _optionalValueValidator = optionalValueValidator;
@@ -193,7 +193,7 @@ namespace Skrypton.CSharpWriter.Lists
             // Try to find the last node that matches the value when walking backwards from the tail; this will be the first in the list
             // when considered from start to end
             var node = _tail;
-            Node lastNodeThatMatched = null;
+            Node? lastNodeThatMatched = null;
             int? lastNodeIndexThatMatched = null;
             var valuesBeforeRemoval = new T[Count];
             for (var index = 0; index < Count; index++)
@@ -218,17 +218,17 @@ namespace Skrypton.CSharpWriter.Lists
 
         public ImmutableList<T> Sort()
         {
-            return Sort((IComparer<T>)null);
+            return Sort((IComparer<T>?)null);
         }
 
-        public ImmutableList<T> Sort(Comparison<T> optionalComparison)
+        public ImmutableList<T> Sort(Comparison<T>? optionalComparison)
         {
             if (optionalComparison == null)
-                return Sort((IComparer<T>)null);
+                return Sort((IComparer<T>?)null);
             return Sort(new SortComparisonWrapper(optionalComparison));
         }
 
-        public ImmutableList<T> Sort(IComparer<T> optionalComparer)
+        public ImmutableList<T> Sort(IComparer<T>? optionalComparer)
         {
             EnsureAllValuesDataIsPopulated();
             return new ImmutableList<T>(
@@ -306,7 +306,7 @@ namespace Skrypton.CSharpWriter.Lists
             // As documented at http://msdn.microsoft.com/en-us/library/system.array.aspx, from .Net 2.0 onward, the Array class implements
             // IEnumerable<T> but this is only provided at runtime so we have to explicitly cast access its generic GetEnumerator method
             EnsureAllValuesDataIsPopulated();
-            return ((IEnumerable<T>)_allValues).GetEnumerator();
+            return ((IEnumerable<T>)_allValues!).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

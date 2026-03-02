@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             matchPatterns.Add(["ON", "ERROR", "GOTO", "0"], lineIndex => new OnErrorGoto0(lineIndex));
             // - Check for match
             int? tokensToRemove = null;
-            ICodeBlock errorBlock = null;
+            ICodeBlock? errorBlock = null;
             foreach (string[] matchPattern in matchPatterns.Keys)
             {
                 if (checkAtomTokenPattern(tokens, matchPattern, false))
