@@ -13,7 +13,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         [EnumMember] Set
     }
 
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public sealed class ValueSettingStatement : IHaveNonNestedExpressions
     {

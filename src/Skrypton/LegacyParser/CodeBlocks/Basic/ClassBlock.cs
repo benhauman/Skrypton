@@ -6,8 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
-    public class ClassBlock : ICodeBlock, IDefineScope
+    public sealed class ClassBlock : ICodeBlock, IDefineScope
     {
         // =======================================================================================
         // CLASS INITIALISATION

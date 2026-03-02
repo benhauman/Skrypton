@@ -8,9 +8,8 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class ForBlock : ILoopOverNestedContent, ICodeBlock
+    public sealed class ForBlock : ILoopOverNestedContent, ICodeBlock
     {
         public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression loopStep, IList<ICodeBlock> statements)
         {

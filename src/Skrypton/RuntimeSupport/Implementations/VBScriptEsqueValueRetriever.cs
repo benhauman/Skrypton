@@ -105,15 +105,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// Reduce a reference down to a value type, applying VBScript defaults logic - thrown an exception if this is not possible (null is
         /// acceptable as an input and corresponding return value)
         /// </summary>
-        public object VAL(object o, string optionalExceptionMessageForInvalidContent = null)
+        public object VAL(object o, string exceptionMessageForInvalidContent = null)
         {
             bool parameterLessDefaultMemberWasAvailable;
             if (TryVAL(o, out parameterLessDefaultMemberWasAvailable, out o))
                 return o;
 
             if (IsVBScriptNothing(o))
-                throw new ObjectVariableNotSetException(optionalExceptionMessageForInvalidContent);
-            throw new ObjectDoesNotSupportPropertyOrMemberException(optionalExceptionMessageForInvalidContent);
+                throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent);
+            throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent);
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int callerLineNum = 0)
+        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -805,7 +805,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             var arguments = argumentProvider.GetInitialValues().ToArray();
             try
             {
-                return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, callerLineNum);
+                return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
             }
             finally
             {

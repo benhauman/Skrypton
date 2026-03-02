@@ -7,9 +7,8 @@ using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class SelectBlock : IHaveNestedContent, ICodeBlock
+    public sealed class SelectBlock : IHaveNestedContent, ICodeBlock
     {
         public SelectBlock(
             Expression expression,

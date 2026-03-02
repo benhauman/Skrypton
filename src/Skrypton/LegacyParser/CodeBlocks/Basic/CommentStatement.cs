@@ -3,9 +3,8 @@ using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class CommentStatement : INonExecutableCodeBlock
+    public class CommentStatement : INonExecutableCodeBlock // cannot be sealed due to 'InlineCommentStatement'
     {
         // =======================================================================================
         // CLASS INITIALISATION

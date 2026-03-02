@@ -3,9 +3,8 @@ using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class ExitStatement : ICodeBlock
+    public sealed class ExitStatement : ICodeBlock
     {
         // =======================================================================================
         // CLASS INITIALISATION

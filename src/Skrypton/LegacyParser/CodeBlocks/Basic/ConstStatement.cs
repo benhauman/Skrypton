@@ -9,7 +9,6 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     internal sealed class ConstStatement : ICodeBlock
     {
@@ -30,7 +29,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         [DataMember] internal IEnumerable<ConstValueInitialisation> Values { get; private set; }
 
-        [Serializable]
         [DataContract(Namespace = "http://vbs")]
         internal sealed class ConstValueInitialisation
         {

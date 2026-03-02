@@ -10,9 +10,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     /// <summary>
     /// TODO: Explain..
     /// </summary>
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class EraseStatement : IHaveNonNestedExpressions
+    public sealed class EraseStatement : IHaveNonNestedExpressions
     {
         public EraseStatement(IEnumerable<TargetDetails> targets, int keywordLineIndex)
         {
@@ -97,7 +96,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             return output.ToString();
         }
 
-        [Serializable]
         [DataContract(Namespace = "http://vbs")]
 #pragma warning disable CA1034 // Nested types should not be visible
         public sealed class TargetDetails

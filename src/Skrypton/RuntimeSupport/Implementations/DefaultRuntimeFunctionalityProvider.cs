@@ -1247,9 +1247,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             sb.Append(valueString.Substring(indexToStartAt));
             return sb.ToString();
         }
-        public object SPACE(object numberOfSpaces)
+        public object SPACE(object value)
         {
-            numberOfSpaces = _valueRetriever.VAL(numberOfSpaces, "'Space'");
+            object numberOfSpaces = _valueRetriever.VAL(value, "'Space'");
             if (numberOfSpaces == DBNull.Value)
                 throw new InvalidUseOfNullException("'Space'");
             int numberOfSpacesNumber;
@@ -1617,11 +1617,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
 
         // - Array functions
-        public object ARRAY(params object[] values)
+        public object ARRAY(params object[] value)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
-            return values;
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            return value;
         }
         public void ERASE(object target, Action<object> targetSetter)
         {
@@ -2618,9 +2618,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.TryVAL(o, out parameterLessDefaultMemberWasAvailable, out asValueType);
         }
-        public object VAL(object o, string optionalExceptionMessageForInvalidContent = null)
+        public object VAL(object o, string exceptionMessageForInvalidContent = null)
         {
-            return _valueRetriever.VAL(o, optionalExceptionMessageForInvalidContent);
+            return _valueRetriever.VAL(o, exceptionMessageForInvalidContent);
         }
         public object OBJ(object o, string optionalExceptionMessageForInvalidContent = null)
         {

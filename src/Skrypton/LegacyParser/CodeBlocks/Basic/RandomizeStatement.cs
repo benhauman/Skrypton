@@ -5,7 +5,6 @@ using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     internal sealed class RandomizeStatement : IHaveNonNestedExpressions
     {
         // =======================================================================================

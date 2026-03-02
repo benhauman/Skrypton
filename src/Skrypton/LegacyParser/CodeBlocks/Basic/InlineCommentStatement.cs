@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public sealed class InlineCommentStatement : CommentStatement
     {

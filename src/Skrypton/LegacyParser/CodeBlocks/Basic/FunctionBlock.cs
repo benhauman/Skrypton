@@ -5,9 +5,8 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class FunctionBlock : AbstractFunctionBlock
+    public sealed class FunctionBlock : AbstractFunctionBlock
     {
         public FunctionBlock(
             bool isPublic,

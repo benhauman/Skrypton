@@ -6,9 +6,8 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class DimStatement : BaseDimStatement
+    public class DimStatement : BaseDimStatement // cannot be sealed due to 'PrivateVariableStatement'
     {
         public DimStatement(IReadOnlyCollection<DimVariable> variables) : base(variables)
         {
@@ -62,7 +61,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     // =======================================================================================
     // DESCRIPTION CLASSES
     // =======================================================================================
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public sealed class ConstantNonNegativeArrayDimensionDimVariable : DimVariable
     {

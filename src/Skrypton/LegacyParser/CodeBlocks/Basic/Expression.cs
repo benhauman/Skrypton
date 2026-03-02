@@ -5,7 +5,6 @@ using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public sealed class Expression : Statement
     {

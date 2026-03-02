@@ -9,7 +9,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
     /// (this may be useful when content is being injected into expressions to ensure that name rewriting isn't double-applied - it is used in the StatementTranslator,
     /// for example)
     /// </summary>
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public class DoNotRenameNameToken : NameToken
     {

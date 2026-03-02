@@ -181,7 +181,7 @@ namespace Skrypton.RuntimeSupport
         void ERASE(object target, Action<object> targetSetter);
         void ERASE(object target, params object[] arguments);
         string JOIN(object value);
-        string JOIN(object value, object delimeter);
+        string JOIN(object value, object delimiter);
         int LBOUND(object value, object dimension);
         int LBOUND(object value);
         int UBOUND(object value);
@@ -263,15 +263,15 @@ namespace Skrypton.RuntimeSupport
         void SETERROR(Exception e);
 
         int GETERRORTRAPPINGTOKEN();
-        void RELEASEERRORTRAPPINGTOKEN(int token);
+        void RELEASEERRORTRAPPINGTOKEN(int errorToken);
 
-        void STARTERRORTRAPPINGANDCLEARANYERROR(int token);
-        void STOPERRORTRAPPINGANDCLEARANYERROR(int token);
+        void STARTERRORTRAPPINGANDCLEARANYERROR(int errorToken);
+        void STOPERRORTRAPPINGANDCLEARANYERROR(int errorToken);
 
         // If this allows an error to be raised (ie. the error token does not have error-trapping currently enabled) then the token is then implicitly
         // released (so RELEASEERRORTRAPPINGTOKEN must be called at scope termination points if no errors occur or if they are all trapped, but if
         // there is an early exit due to an error not being caught, then the token will still be released)
-        void HANDLEERROR(int token, Action action);
+        void HANDLEERROR(int errorToken, Action action);
 
         // The error-handling IF behaviour described below sounds unbelievable, but it's true as demonstrated by the script -
         //

@@ -38,19 +38,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null statement reference)
         /// </summary>
-        public TranslatedStatementContentDetails Translate(ValueSettingStatement valueSettingStatement, ScopeAccessInformation scopeAccessInformation)
+        public TranslatedStatementContentDetails Translate(ValueSettingStatement statement, ScopeAccessInformation scopeAccessInformation)
         {
-            if (valueSettingStatement == null)
-                throw new ArgumentNullException(nameof(valueSettingStatement));
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
-            var assignmentFormatDetails = GetAssignmentFormatDetails(valueSettingStatement, scopeAccessInformation);
+            var assignmentFormatDetails = GetAssignmentFormatDetails(statement, scopeAccessInformation);
 
             var translatedExpressionContentDetails = _statementTranslator.Translate(
-                valueSettingStatement.Expression,
+                statement.Expression,
                 scopeAccessInformation,
-                (valueSettingStatement.ValueSetType == ValueSetTypeOptions.Set)
+                (statement.ValueSetType == ValueSetTypeOptions.Set)
                     ? ExpressionReturnTypeOptions.Reference
                     : ExpressionReturnTypeOptions.Value,
                 _logger.Warning

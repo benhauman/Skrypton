@@ -8,7 +8,6 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public abstract class BaseDimStatement : IHaveNonNestedExpressions
     {
@@ -83,7 +82,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     // =======================================================================================
     // DESCRIPTION CLASSES
     // =======================================================================================
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
     public class DimVariable // cannot be abstract due to 'translateRawVariableData'
     {
