@@ -113,7 +113,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             if (IsVBScriptNothing(o))
                 throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent);
-            throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent);
+            throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent ?? "Invalid argument.");
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private static bool IsVBScriptNothing(object o)
         {
-            return ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
+            return o is DispatchWrapper dw && dw.WrappedObject == null;
         }
 
         /// <summary>
@@ -306,7 +306,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             // to be a numeric type.
             object valueToConvert;
             if (o is DateTime)
+            {
                 valueToConvert = o;
+            }
             else
             {
                 // Next, try to force it into one of the VBScript-acceptable number types - if it fails then it's a type mismatch
@@ -320,7 +322,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 catch (Exception e)
                 {
-                    throw new TypeMismatchException(e);
+                    throw new TypeMismatchException($"o:{o}", e);
                 }
             }
 
@@ -331,7 +333,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .Select(v => NUM(v))
                 .ToArray();
             if (relatedNumericValues.Length == 0 || relatedNumericValues.All(v => v.GetType() == valueToConvert.GetType()))
+            {
                 return valueToConvert;
+            }
 
             // DateTime is a special case here - if any of the values (whether the target "o" or any of the related values) is a DateTime
             // then the returned value must be a DateTime. If any of the other values exceed VBScript's expressible date range then an
@@ -529,15 +533,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == null)
                 return (Int16)0; // Return an "Integer" for VBScript Empty
             if (value == DBNull.Value)
-                throw new InvalidUseOfNullException();
+                throw new InvalidUseOfNullException("value is null.");
             if (IsVBScriptNothing(value))
-                throw new ObjectVariableNotSetException();
+                throw new ObjectVariableNotSetException("value is nothing");
             if ((value is string valueString) && string.IsNullOrEmpty(valueString))
-                throw new TypeMismatchException();
+                throw new TypeMismatchException($"null/empty string");
 
 #pragma warning disable CA1820 // Test for empty strings using string length
             if ((value as string) == "")
-                throw new TypeMismatchException();
+                throw new TypeMismatchException($"null/empty string");
 #pragma warning restore CA1820 // Test for empty strings using string length
             if (value is bool)
                 return (bool)value ? (Int16)(-1) : (Int16)0; // Return an "Integer" for True / False
@@ -873,13 +877,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   so I'm going to leave this be for now (May 2015).
             var noMemberAccessorsOrArguments = memberAccessorsArray.Length == 0 && arguments.Length == 0;
             if (noMemberAccessorsOrArguments && !useBracketsWhereZeroArguments)
+            {
                 return target;
+            }
             else if (noMemberAccessorsOrArguments && useBracketsWhereZeroArguments && (target != null))
             {
                 // If "a" is an array then "a()" will always throw a "Subscript out of range" exception
                 if (isArray)
-                    throw new SubscriptOutOfRangeException();
-                throw new TypeMismatchException(); // It's not an array and it's not a function, must be a type mismatch
+                    throw new SubscriptOutOfRangeException("isArray");
+                throw new TypeMismatchException("not an array and not a function."); // It's not an array and it's not a function, must be a type mismatch
             }
             else if (target == null)
                 throw new TypeMismatchException("The target reference may only be null if there are no member accessors or arguments specified (and no brackets in the zero-argument case)");

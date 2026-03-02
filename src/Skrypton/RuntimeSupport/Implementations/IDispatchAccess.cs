@@ -451,6 +451,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         public sealed class IDispatchAccessException : Exception
 #pragma warning restore CA1034 // Nested types should not be visible
         {
+            [Obsolete("do not use it")] private IDispatchAccessException() : this(null, innerException: null) { }
+            [Obsolete("do not use it")] private IDispatchAccessException(string message) : this(message, innerException: null) { }
+            [Obsolete("do not use it")] private IDispatchAccessException(string message, Exception innerException) : this(message, null, null, null, CommonErrors.Unknown, innerException: null) { }
+
             public IDispatchAccessException(string message, object target, string memberNameIfSpecified, int? dispIdIfKnown, CommonErrors errorType, Exception innerException = null)
                 : base(message, innerException)
             {

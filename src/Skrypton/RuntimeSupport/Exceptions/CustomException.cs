@@ -14,6 +14,10 @@ namespace Skrypton.RuntimeSupport.Exceptions
         private const string DEFAULT_DESCRIPTION = "Unknown runtime error";
 
         private readonly int _errorNumber;
+
+        [Obsolete("do not use it")] private CustomException() { }
+        [Obsolete("do not use it")] private CustomException(string message) : base(message) { }
+        [Obsolete("do not use it")] private CustomException(string message, Exception innerException) : base(message, innerException) { }
         public CustomException(int number, string source, string description) : base(GetMessage(source, description), additionalInformationIfAny: null)
         {
             if (number == 0)

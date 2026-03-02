@@ -11,8 +11,9 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Illegal assignment";
 
-        public IllegalAssignmentException(Exception innerException = null) : this(null, innerException) { }
-        public IllegalAssignmentException(string additionalInformationIfAny, Exception innerException = null)
+        [Obsolete("do not use it")] public IllegalAssignmentException() { }
+        [Obsolete("do not use it")] private IllegalAssignmentException(string message) : base(message) { }
+        public IllegalAssignmentException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 501; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

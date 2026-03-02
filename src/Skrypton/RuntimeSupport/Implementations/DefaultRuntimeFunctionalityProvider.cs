@@ -147,17 +147,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (!TryVAL(l, out parameterLessDefaultMemberWasAvailable, out l))
             {
                 if (parameterLessDefaultMemberWasAvailable)
-                    throw new TypeMismatchException();
+                    throw new TypeMismatchException("left parameterLessDefaultMemberWasAvailable");
                 if (IsVBScriptNothing(l))
-                    throw new ObjectVariableNotSetException();
+                    throw new ObjectVariableNotSetException("left is nothing");
                 throw new ObjectDoesNotSupportPropertyOrMemberException();
             }
             if (!TryVAL(r, out parameterLessDefaultMemberWasAvailable, out r))
             {
                 if (parameterLessDefaultMemberWasAvailable)
-                    throw new TypeMismatchException();
+                    throw new TypeMismatchException("right parameterLessDefaultMemberWasAvailable");
                 if (IsVBScriptNothing(r))
-                    throw new ObjectVariableNotSetException();
+                    throw new ObjectVariableNotSetException("right is nothing");
                 throw new ObjectDoesNotSupportPropertyOrMemberException();
             }
             if ((l == DBNull.Value) && (r == DBNull.Value))
@@ -165,7 +165,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             string lString = (l == DBNull.Value) ? "" : _valueRetriever.STR(l);
             string rString = (r == DBNull.Value) ? "" : _valueRetriever.STR(r);
             if ((lString.Length + rString.Length) > MAX_VBSCRIPT_STRING_LENGTH)
-                throw new OutOfStringSpaceException();
+                throw new OutOfStringSpaceException($"l:{lString.Length}, r:{rString.Length}");
             return lString + rString;
         }
 
@@ -367,7 +367,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             bool? result = LT_Internal(l, r, allowEquals: false);
             if (result == null)
-                throw new InvalidUseOfNullException();
+                throw new InvalidUseOfNullException("result ");
             return result.Value;
         }
         /// <summary>
@@ -378,7 +378,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             bool? result = LT_Internal(l, r, allowEquals: true);
             if (result == null)
-                throw new InvalidUseOfNullException();
+                throw new InvalidUseOfNullException("result is null");
             return result.Value;
         }
         private bool? LT_Internal(object l, object r, bool allowEquals)
@@ -440,7 +440,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             bool? result = GT_Internal(l, r, allowEquals: false);
             if (result == null)
-                throw new InvalidUseOfNullException();
+                throw new InvalidUseOfNullException("result is null");
             return result.Value;
         }
         /// <summary>
@@ -451,7 +451,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             bool? result = GT_Internal(l, r, allowEquals: true);
             if (result == null)
-                throw new InvalidUseOfNullException();
+                throw new InvalidUseOfNullException("result is null");
             return result.Value;
         }
         private bool? GT_Internal(object l, object r, bool allowEquals)
@@ -783,7 +783,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Negative values => InvalidProcedureCallOrArgumentException (though zero is, of course, an acceptable input)
             double numericValue = CDBL_Precise(value, "'Sqr'");
             if (numericValue < 0)
-                throw new InvalidProcedureCallOrArgumentException();
+                throw new InvalidProcedureCallOrArgumentException($"numericValue must be positive. value:{value}");
             return Math.Sqrt(numericValue);
         }
         public object TAN(object value) { throw new NotImplementedException(); }
@@ -798,16 +798,16 @@ namespace Skrypton.RuntimeSupport.Implementations
         // - String functions
         public short ASC(object value)
         {
-            value = VAL(value);
-            if (value == null)
-                throw new InvalidProcedureCallOrArgumentException();
-            if (value == DBNull.Value)
-                throw new InvalidUseOfNullException();
+            var valueSafe = VAL(value);
+            if (valueSafe == null)
+                throw new InvalidProcedureCallOrArgumentException($"value is null. value:{value}");
+            if (valueSafe == DBNull.Value)
+                throw new InvalidUseOfNullException($"result is null. value:{valueSafe}");
 
-            string s = CSTR(value);
+            string s = CSTR(valueSafe);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
-                throw new InvalidProcedureCallOrArgumentException();
+                throw new InvalidProcedureCallOrArgumentException($"empty text is not supported. s:{s}");
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             char characterValue = s[0];
@@ -816,16 +816,16 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object ASCB(object value) { throw new NotImplementedException(); }
         public short ASCW(object value)
         {
-            value = VAL(value);
-            if (value == null)
-                throw new InvalidProcedureCallOrArgumentException();
-            if (value == DBNull.Value)
-                throw new InvalidUseOfNullException();
+            var valueSafe = VAL(value);
+            if (valueSafe == null)
+                throw new InvalidProcedureCallOrArgumentException($"value is null. value:{value}");
+            if (valueSafe == DBNull.Value)
+                throw new InvalidUseOfNullException($"valueSafe is null");
 
-            string s = CSTR(value);
+            string s = CSTR(valueSafe);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
-                throw new InvalidProcedureCallOrArgumentException();
+                throw new InvalidProcedureCallOrArgumentException($"empty text is not supported. s:{s}");
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             return (short)s[0];
@@ -1154,21 +1154,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object LEFT(object value, object maxLength)
         {
             // Validate inputs first
-            value = _valueRetriever.VAL(value, "'Left'");
-            maxLength = _valueRetriever.VAL(maxLength, "'Left'");
-            if (maxLength == DBNull.Value)
-                throw new InvalidUseOfNullException();
-            int maxLengthInt = CLNG(maxLength, "'Left'");
+            var valueSafe = _valueRetriever.VAL(value, "'Left'");
+            var maxLengthSafe = _valueRetriever.VAL(maxLength, "'Left'");
+            if (maxLengthSafe == DBNull.Value)
+                throw new InvalidUseOfNullException($"maxvalue is null. value:{value}, maxvalue:{maxLength}");
+            int maxLengthInt = CLNG(maxLengthSafe, "'Left'");
             if (maxLengthInt < 0)
                 throw new InvalidProcedureCallOrArgumentException("'LEFT' (maxLength may not be a negative value)");
 
             // Deal with special cases
-            if (value == null)
+            if (valueSafe == null)
                 return "";
-            if (value == DBNull.Value)
+            if (valueSafe == DBNull.Value)
                 return DBNull.Value;
 
-            string valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(valueSafe);
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(0, maxLengthInt);
         }
@@ -1177,21 +1177,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object RIGHT(object value, object maxLength)
         {
             // Validate inputs first
-            value = _valueRetriever.VAL(value, "'Right'");
-            maxLength = _valueRetriever.VAL(maxLength, "'Right'");
-            if (maxLength == DBNull.Value)
-                throw new InvalidUseOfNullException();
-            int maxLengthInt = CLNG(maxLength, "'Right'");
+            var valueSafe = _valueRetriever.VAL(value, "'Right'");
+            var maxLengthSafe = _valueRetriever.VAL(maxLength, "'Right'");
+            if (maxLengthSafe == DBNull.Value)
+                throw new InvalidUseOfNullException($"maxvalue is null. value:{value}, maxvalue:{maxLength}");
+            int maxLengthInt = CLNG(maxLengthSafe, "'Right'");
             if (maxLengthInt < 0)
                 throw new InvalidProcedureCallOrArgumentException("'LEFT' (maxLength may not be a negative value)");
 
             // Deal with special cases
-            if (value == null)
+            if (valueSafe == null)
                 return "";
-            if (value == DBNull.Value)
+            if (valueSafe == DBNull.Value)
                 return DBNull.Value;
 
-            string valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(valueSafe);
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(valueString.Length - maxLengthInt);
         }
@@ -1999,7 +1999,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             int numericValue = CLNG(value, "'WeekdayName'");
             if ((numericValue < 1) || (numericValue > 7))
-                throw new InvalidProcedureCallOrArgumentException();
+                throw new InvalidProcedureCallOrArgumentException($"numericValue not in supported range. numericValue:{numericValue}");
 
             bool booleanAbbreviate = CBOOL(abbreviate, "'WeekdayName'"); // TODO: Ensure that this behaviour is correct (including errors) and ensure evaluate arguments in correct order
 

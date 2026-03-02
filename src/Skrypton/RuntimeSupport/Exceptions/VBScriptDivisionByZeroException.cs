@@ -8,8 +8,9 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Object variable not set";
 
-        public VBScriptDivisionByZeroException(Exception innerException = null) : this(null, innerException) { }
-        public VBScriptDivisionByZeroException(string additionalInformationIfAny, Exception innerException = null)
+        [Obsolete("do not use it")] private VBScriptDivisionByZeroException() : this(null, innerException: null) { }
+        public VBScriptDivisionByZeroException(string message) : this(message, innerException: null) { }
+        public VBScriptDivisionByZeroException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 11; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

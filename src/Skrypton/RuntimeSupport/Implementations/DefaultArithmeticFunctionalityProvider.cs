@@ -59,15 +59,25 @@ namespace Skrypton.RuntimeSupport.Implementations
             object l = _valueRetriever.VAL(a);
             object r = _valueRetriever.VAL(b);
             if ((l == DBNull.Value) || (r == DBNull.Value))
+            {
                 return DBNull.Value;
+            }
+
             if ((l == null) && (r == null))
+            {
                 return (Int16)0;
+            }
+
             string lString = l as string;
             string rString = r as string;
             if ((lString != null) && (rString != null))
+            {
                 return lString + rString;
+            }
             else if (((lString != null) && (r == null)) || ((rString != null) && (l == null)))
+            {
                 return lString ?? rString;
+            }
 
             // The most unusual case is worth addressing next - Currency almost never changes its type, it will overflow if the result of the operation is outside of the
             // range that Currency can describe (whereas other types will move up to the next biggest type - Currency COULD do this with Double, but doesn't). The notable
@@ -83,7 +93,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 DateTime dateValue = lDate ?? rDate.Value;
                 double result = (double)currencyValue + dateValue.Subtract(VBScriptConstants.ZeroDate).TotalDays;
                 if ((result >= MIN_DATE_VALUE_AS_DOUBLE) && (result <= MAX_DATE_VALUE_AS_DOUBLE))
+                {
                     return VBScriptConstants.ZeroDate.AddDays(result);
+                }
+
                 return result;
             }
             if ((lCurrency != null) || (rCurrency != null))
@@ -106,20 +119,23 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                     catch (Exception e)
                     {
-                        throw new VBScriptOverflowException(e);
+                        throw new VBScriptOverflowException($"a:{a}, b:{b}", e);
                     }
                 }
-                Decimal result;
+                decimal result;
                 try
                 {
                     result = firstCurrencyValue + secondCurrencyValue;
                 }
                 catch (OverflowException e)
                 {
-                    throw new VBScriptOverflowException(e);
+                    throw new VBScriptOverflowException($"a:{a}, b:{b}", e);
                 }
                 if ((result < VBScriptConstants.MinCurrencyValue) || (result > VBScriptConstants.MaxCurrencyValue))
-                    throw new VBScriptOverflowException();
+                {
+                    throw new VBScriptOverflowException($"a:{a}, b:{b}");
+                }
+
                 return result;
             }
 
@@ -225,22 +241,22 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public object SUBT(object value)
         {
-            value = _valueRetriever.VAL(value);
-            if (value == null)
+            var valueSafe = _valueRetriever.VAL(value);
+            if (valueSafe == null)
                 return (Int16)0;
-            else if (value == DBNull.Value)
+            else if (valueSafe == DBNull.Value)
                 return DBNull.Value;
 
             // Booleans are not supported here ("-true" results in a "Type mismatch" error in VBScript)
-            if (value is bool)
-                throw new TypeMismatchException();
+            if (valueSafe is bool)
+                throw new TypeMismatchException($"value:{value}");
 
             // Force the value into a number (this will ensure that strings are parsed if they are numeric, but not if they're string representations of booleans
             // or dates, which aren't valid for this operation)
-            value = _valueRetriever.NUM(value);
+            valueSafe = _valueRetriever.NUM(valueSafe);
 
             // Bytes are easy - they're either zero, which is a no-op, or they need negating and returning as an Integer (Int16)
-            var valueByte = TryToCoerceInto<byte>(value);
+            var valueByte = TryToCoerceInto<byte>(valueSafe);
             if (valueByte != null)
             {
                 if (valueByte.Value == 0)
@@ -250,7 +266,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // VBScript Integers (ie. Int16) are fairly simple - they are negated unless they are the one value that would overflow (-32768), in which case it will
             // become a Long (Int32)
-            var valueInteger = TryToCoerceInto<Int16>(value);
+            var valueInteger = TryToCoerceInto<Int16>(valueSafe);
             if (valueInteger != null)
             {
                 if (valueInteger == Int16.MinValue)
@@ -259,7 +275,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
 
             // VBScript Longs (Int32) are basically the same as Integers
-            var valueLong = TryToCoerceInto<Int32>(value);
+            var valueLong = TryToCoerceInto<Int32>(valueSafe);
             if (valueLong != null)
             {
                 if (valueLong == Int32.MinValue)
@@ -268,7 +284,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
 
             // Same sort of deal applies to Dates..
-            var valueDate = TryToCoerceInto<DateTime>(value);
+            var valueDate = TryToCoerceInto<DateTime>(valueSafe);
             if (valueDate != null)
             {
                 var valueAsDouble = -valueDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays;
@@ -278,12 +294,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
 
             // Currency has no edge cases issues since the min Currency value = -(max Currency value)
-            var valueCurrency = TryToCoerceInto<Decimal>(value);
+            var valueCurrency = TryToCoerceInto<Decimal>(valueSafe);
             if (valueCurrency != null)
                 return -valueCurrency.Value;
 
             // Fall back to a Double if all else fails
-            return -AsDouble(value);
+            return -AsDouble(valueSafe);
         }
 
         public object SUBT(object l, object r)
@@ -392,10 +408,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                     catch (OverflowException e)
                     {
-                        throw new VBScriptOverflowException(e);
+                        throw new VBScriptOverflowException($"l:{l}, r:{r}", e);
                     }
                     if ((result < VBScriptConstants.MinCurrencyValue) || (result > VBScriptConstants.MaxCurrencyValue))
-                        throw new VBScriptOverflowException();
+                        throw new VBScriptOverflowException($"l:{l}, r:{r}");
                     return result;
                 }
             }
@@ -430,16 +446,16 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (rDouble == 0)
             {
                 if (lDouble == 0)
-                    throw new VBScriptOverflowException();
+                    throw new VBScriptOverflowException($"l:{l}, r:{r}");
                 else
-                    throw new VBScriptDivisionByZeroException();
+                    throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
             }
 
             var dblResult = lDouble / rDouble;
 
             // If the calculation goes outside the representable bounds of a double-precision number (e.g. CDbl(1.7976931348623157e+308) / CDbl(0.1)), throw an Overflow error.
             if (double.IsInfinity(dblResult))
-                throw new VBScriptOverflowException();
+                throw new VBScriptOverflowException($"l:{l}, r:{r}");
 
             // There are specific cases where the return type will be Single instead of Double, but I *think* those are the only possible return types apart from Null, covered above.
             // If one side of the expression is a Single and the other side of the expression is Bool, Byte, Integer or Single - the result will be a Single, as long as the result
@@ -475,7 +491,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if ((l == DBNull.Value) || (r == DBNull.Value))
                 return DBNull.Value;
             if ((l == null) && (r == null))
-                throw new VBScriptDivisionByZeroException();
+                throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
 
             var rByte = TryToCoerceInto<byte>(r);
             if ((l == null) && (rByte != null))
@@ -484,7 +500,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if ((lByte != null) && (rByte != null))
             {
                 if (rByte == 0)
-                    throw new VBScriptDivisionByZeroException();
+                    throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
                 return (byte)(lByte % rByte);
             }
 
@@ -507,7 +523,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if ((lInteger != null) && (rInteger != null))
             {
                 if (rInteger == 0)
-                    throw new VBScriptDivisionByZeroException();
+                    throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
                 return (Int16)(lInteger.Value % rInteger.Value);
             }
 
@@ -524,7 +540,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 catch (OverflowException e)
                 {
-                    throw new VBScriptOverflowException(e);
+                    throw new VBScriptOverflowException($"l:{l}, r:{r}", e);
                 }
             }
             if ((l == null) && (rLong != null))
@@ -542,11 +558,11 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 catch (OverflowException e)
                 {
-                    throw new VBScriptOverflowException(e);
+                    throw new VBScriptOverflowException($"l:{l}, r:{r}", e);
                 }
             }
             if ((r == null) || (rLong == 0))
-                throw new VBScriptDivisionByZeroException();
+                throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
             return lLong % rLong;
         }
 

@@ -6,6 +6,10 @@ namespace Skrypton.RuntimeSupport.Exceptions
     [Serializable]
     public abstract class SpecificVBScriptException : Exception
     {
+        protected SpecificVBScriptException() { }
+        protected SpecificVBScriptException(string message) : base(message) { }
+        protected SpecificVBScriptException(string message, Exception innerException) : base(message, innerException) { }
+
         protected SpecificVBScriptException(string basicErrorDescription, string additionalInformationIfAny, Exception innerException = null)
             : base(GetMessage(basicErrorDescription, additionalInformationIfAny), innerException) { }
 

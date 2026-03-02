@@ -12,8 +12,9 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Object doesn't support this property or method";
 
-        public ObjectDoesNotSupportPropertyOrMemberException(Exception innerException = null) : this(null, innerException) { }
-        public ObjectDoesNotSupportPropertyOrMemberException(string additionalInformationIfAny, Exception innerException = null)
+        public ObjectDoesNotSupportPropertyOrMemberException() : this(null, innerException: null) { }
+        public ObjectDoesNotSupportPropertyOrMemberException(string message) : this(message, innerException: null) { }
+        public ObjectDoesNotSupportPropertyOrMemberException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 438; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

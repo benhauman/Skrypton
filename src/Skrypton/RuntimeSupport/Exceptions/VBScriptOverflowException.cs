@@ -12,8 +12,9 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Overflow";
 
-        public VBScriptOverflowException(Exception innerException = null) : this(null, innerException) { }
-        public VBScriptOverflowException(string additionalInformationIfAny, Exception innerException = null)
+        [Obsolete("do not use it")] private VBScriptOverflowException() : this(null, innerException: null) { }
+        internal VBScriptOverflowException(string message) : this(message, innerException: null) { }
+        internal VBScriptOverflowException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public VBScriptOverflowException(double value, Exception innerException = null) : this((object)value, innerException) { }

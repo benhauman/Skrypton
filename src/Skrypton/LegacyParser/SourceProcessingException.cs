@@ -20,6 +20,8 @@ namespace Skrypton.LegacyParser
     public sealed class SourceProcessingException : Exception // see SyntaxError
     {
         public int LineNumber { get; private set; }
+        [Obsolete("do not use it")] public SourceProcessingException() { }
+
         public SourceProcessingException(SourceProcessingError error)
             : base(error?.Message)
         {

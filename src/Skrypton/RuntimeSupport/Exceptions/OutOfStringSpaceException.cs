@@ -11,8 +11,9 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Out of string space";
 
-        public OutOfStringSpaceException(Exception innerException = null) : this(null, innerException) { }
-        public OutOfStringSpaceException(string additionalInformationIfAny, Exception innerException = null)
+        [Obsolete("do not use it")] private OutOfStringSpaceException() : this(null, innerException: null) { }
+        public OutOfStringSpaceException(string message) : this(message, innerException: null) { }
+        public OutOfStringSpaceException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 14; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
