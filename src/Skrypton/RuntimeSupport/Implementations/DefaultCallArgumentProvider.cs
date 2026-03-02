@@ -69,18 +69,25 @@ namespace Skrypton.RuntimeSupport.Implementations
             for (int index = 0; index < argumentProvidersArray.Length - 1; index++)
             {
                 if (!target.GetType().IsArray)
+                {
                     passByVal = true;
+                }
+
                 target = _vbscriptValueAccessor.CALL(context, target, [], argumentProvidersArray[index], line: 0)!;
             }
             if (!target.GetType().IsArray)
+            {
                 passByVal = true;
+            }
 
             // Process the final arguments to get the value that should actually be passed as the argument. If we've determined that this
             // value should be passed ByVal then hand straight off to the Val method.
             IProvideCallArguments lastArgumentProvider = argumentProvidersArray.Last();
             object? valueForArgument = _vbscriptValueAccessor.CALL(context, target, [], lastArgumentProvider, line: 0);
             if (passByVal)
-                return Val(valueForArgument);
+            {
+                return Val(valueForArgument!);
+            }
 
             // If the value must be passed ByRef then we pass in the same valueForArgument as above but in the valueUpdater callback we
             // have to call SET on the target (which is the array that valueForArgument was taken from) to push the ByRef value back
@@ -88,7 +95,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // not required - but that is the responsibility of the CALL implementation to write the values back, the job of this
             // interface is to allow that to occur where necessary).
             return Ref(
-                valueForArgument,
+                valueForArgument!,
                 v => _vbscriptValueAccessor.SET(v, context, target, null, lastArgumentProvider)
             );
         }

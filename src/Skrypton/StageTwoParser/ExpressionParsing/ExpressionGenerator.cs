@@ -27,7 +27,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never return null nor a set containing any nulls
         /// </summary>
-        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, IToken directedWithReferenceIfAny, Action<string> warningLogger)
+        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, IToken? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokenNavigator == null)
                 throw new ArgumentNullException(nameof(tokenNavigator));
@@ -315,7 +315,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 expressionSegmentsToGroup.Add(WrapExpressionSegments(GetExpression(left).Segments, unwrapSingleBracketedTerm: true));
             else if (!operatorSegmentToBreakOn.Item1.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("The content to the left of an operator may only be empty if it is a \"NOT\" logical operator");
-            expressionSegmentsToGroup.Add(operatorSegmentToBreakOn.Item1);
+            expressionSegmentsToGroup.Add(operatorSegmentToBreakOn.Item1!);
             if (!right.Any())
                 throw new ArgumentException("The content to the right of an operator may not be empty");
             expressionSegmentsToGroup.Add(WrapExpressionSegments(GetExpression(right).Segments, unwrapSingleBracketedTerm: true));
@@ -359,7 +359,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static IExpressionSegment GetCallOrNewOrValueExpressionSegment(
             IReadOnlyCollection<IToken> tokens,
             Expression[] arguments,
-            IToken directedWithReferenceIfAny,
+            IToken? directedWithReferenceIfAny,
             bool argumentsAreBracketed,
             bool willBeFirstSegmentInCallExpression,
             Action<string> warningLogger)

@@ -8,7 +8,7 @@ namespace Skrypton.CSharpWriter.Lists
     public sealed class NonNullImmutableList<T> : ImmutableList<T> where T : class
     {
         private readonly static Validator _defaultValidator = new Validator(null);
-        private readonly IValueValidator<T> _optionalValueValidator;
+        private readonly IValueValidator<T>? _optionalValueValidator;
 
         public NonNullImmutableList() : this((IValueValidator<T>?)null) { }
         public NonNullImmutableList(IEnumerable<T> values) : this(values, null) { }
@@ -22,13 +22,13 @@ namespace Skrypton.CSharpWriter.Lists
         {
             _optionalValueValidator = optionalValueValidator;
         }
-        private NonNullImmutableList(Node tail, IValueValidator<T> optionalValueValidator)
+        private NonNullImmutableList(Node tail, IValueValidator<T>? optionalValueValidator)
             : base(tail, GetValidator(optionalValueValidator))
         {
             _optionalValueValidator = optionalValueValidator;
         }
 
-        private static Validator GetValidator(IValueValidator<T> optionalValueValidator)
+        private static Validator GetValidator(IValueValidator<T>? optionalValueValidator)
         {
             if (optionalValueValidator == null)
                 return _defaultValidator;

@@ -11,7 +11,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     {
         public ScopeAccessInformation(
             IHaveNestedContent parent,
-            IDefineScope scopeDefiningParent,
+            IDefineScope? scopeDefiningParent,
             CSharpName? parentReturnValueNameIfAny,
             CSharpName? errorRegistrationTokenIfAny,
             DirectedWithReferenceDetails? directedWithReferenceIfAny,
@@ -181,7 +181,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public sealed class ExitableNonScopeDefiningConstructDetails
 #pragma warning restore CA1034 // Nested types should not be visible
         {
-            public ExitableNonScopeDefiningConstructDetails(CSharpName exitEarlyBooleanNameIfAny, ExitableNonScopeDefiningConstructOptions structureType)
+            public ExitableNonScopeDefiningConstructDetails(CSharpName? exitEarlyBooleanNameIfAny, ExitableNonScopeDefiningConstructOptions structureType)
             {
                 if (!Enum.IsDefined(typeof(ExitableNonScopeDefiningConstructOptions), structureType))
                     throw new ArgumentOutOfRangeException(nameof(structureType));
@@ -196,7 +196,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             /// then this will be null (though the entry must exist in the StructureExitPoints chain to correctly describe the code arrangement and allow
             /// validation of the source code).
             /// </summary>
-            public CSharpName ExitEarlyBooleanNameIfAny { get; }
+            public CSharpName? ExitEarlyBooleanNameIfAny { get; }
 
             public ExitableNonScopeDefiningConstructOptions StructureType { get; }
         }

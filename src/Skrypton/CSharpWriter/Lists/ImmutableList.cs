@@ -18,7 +18,16 @@ namespace Skrypton.CSharpWriter.Lists
         //public ImmutableList() : this((Node?)null, (IValueValidator<T>?)null) { }
         public ImmutableList(IEnumerable<T> values) : this(values, null) { }
         //public ImmutableList(IValueValidator<T> optionalValueValidator) : this((Node?)null, optionalValueValidator) { }
-        public ImmutableList(IEnumerable<T> values, IValueValidator<T>? optionalValueValidator)
+        protected ImmutableList(Node? tail, IValueValidator<T>? optionalValueValidator)
+        {
+            _tail = tail;
+            _optionalValueValidator = optionalValueValidator;
+            _allValues = null;
+        }
+        public ImmutableList(IEnumerable<T> values, IValueValidator<T>? optionalValueValidator) : this(NodeFromValues(values, optionalValueValidator), optionalValueValidator)
+        {
+        }
+        private static Node? NodeFromValues(IEnumerable<T> values, IValueValidator<T>? optionalValueValidator)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -27,21 +36,20 @@ namespace Skrypton.CSharpWriter.Lists
             foreach (var value in values)
             {
                 if (optionalValueValidator != null)
+                {
                     optionalValueValidator.EnsureValid(value);
+                }
+
                 if (node == null)
-                    node = new Node(value, null);
+                {
+                    node = new Node(value, null); // root
+                }
                 else
+                {
                     node = new Node(value, node);
+                }
             }
-            _tail = node;
-            _optionalValueValidator = optionalValueValidator;
-            _allValues = null;
-        }
-        protected ImmutableList(Node? tail, IValueValidator<T> optionalValueValidator)
-        {
-            _tail = tail;
-            _optionalValueValidator = optionalValueValidator;
-            _allValues = null;
+            return node;
         }
 
         public T this[int index]
@@ -126,7 +134,7 @@ namespace Skrypton.CSharpWriter.Lists
             return Insert(null, value, insertAtIndex);
         }
 
-        private ImmutableList<T> Insert(IReadOnlyCollection<T>? multipleValuesToAdd, T singleValueToAdd, int insertAtIndex)
+        private ImmutableList<T> Insert(IReadOnlyCollection<T>? multipleValuesToAdd, T? singleValueToAdd, int insertAtIndex)
         {
             if ((insertAtIndex < 0) || (insertAtIndex > Count))
                 throw new ArgumentOutOfRangeException(nameof(insertAtIndex));
@@ -137,7 +145,7 @@ namespace Skrypton.CSharpWriter.Lists
             if (insertAtIndex == Count)
             {
                 if (multipleValuesToAdd == null)
-                    return Add(singleValueToAdd);
+                    return Add(singleValueToAdd!);
                 return AddRange(multipleValuesToAdd);
             }
 
@@ -154,8 +162,8 @@ namespace Skrypton.CSharpWriter.Lists
             if (multipleValuesToAdd == null)
             {
                 if (_optionalValueValidator != null)
-                    _optionalValueValidator.EnsureValid(singleValueToAdd);
-                node = new Node(singleValueToAdd, node);
+                    _optionalValueValidator.EnsureValid(singleValueToAdd!);
+                node = new Node(singleValueToAdd!, node);
             }
             else
             {
@@ -333,7 +341,7 @@ namespace Skrypton.CSharpWriter.Lists
             if (generator == null)
                 throw new ArgumentNullException(nameof(generator));
 
-            return generator(list._tail);
+            return generator(list._tail!);
         }
 
         /// <summary>

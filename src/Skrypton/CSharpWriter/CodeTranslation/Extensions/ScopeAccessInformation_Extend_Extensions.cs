@@ -14,8 +14,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             this ScopeAccessInformation scopeInformation,
             IHaveNestedContent parent,
             IDefineScope scopeDefiningParent,
-            CSharpName parentReturnValueNameIfAny,
-            CSharpName errorRegistrationTokenIfAny,
+            CSharpName? parentReturnValueNameIfAny,
+            CSharpName? errorRegistrationTokenIfAny,
             NonNullImmutableList<ICodeBlock> blocks)
         {
             if (parent == null)
@@ -215,7 +215,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 
         public static ScopeAccessInformation AddStructureExitPoints(
             this ScopeAccessInformation scopeInformation,
-            CSharpName structureExitFlagNameIfAny,
+            CSharpName? structureExitFlagNameIfAny,
             ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions structureExitType)
         {
             if (scopeInformation == null)

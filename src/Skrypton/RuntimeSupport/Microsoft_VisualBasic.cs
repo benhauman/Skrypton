@@ -206,7 +206,7 @@ namespace Skrypton.RuntimeSupport
             }
         }
 
-        internal static uint ComputeStringHash(string text)
+        internal static uint ComputeStringHash(string? text)
         {
             uint num = 0u;
             if (text != null)
@@ -340,7 +340,7 @@ namespace Skrypton.RuntimeSupport
 
         static class Operators
         {
-            public static int CompareString(string Left, string Right, bool TextCompare, CultureInfo culture) // System.Threading.Thread.CurrentThread.CurrentCulture
+            public static int CompareString(string? Left, string? Right, bool TextCompare, CultureInfo culture) // System.Threading.Thread.CurrentThread.CurrentCulture
             {
                 int result;
                 if (Left == Right)

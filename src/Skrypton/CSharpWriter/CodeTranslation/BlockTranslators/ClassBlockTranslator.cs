@@ -52,7 +52,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 			 */
 
             // Apply Class_Initialize / Class_Terminate validation - if they appear then they must be SUBs (not FUNCTIONs) and they may not have arguments
-            var classInitializeMethodIfAny = classBlock.Statements
+            AbstractFunctionBlock? classInitializeMethodIfAny = classBlock.Statements
                 .Where(statement => statement is AbstractFunctionBlock)
                 .Cast<AbstractFunctionBlock>()
                 .FirstOrDefault(function => function.Name.Content.Equals("Class_Initialize", StringComparison.OrdinalIgnoreCase));
@@ -160,8 +160,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ClassBlock classBlock,
             ScopeAccessInformation scopeAccessInformation,
             NonNullImmutableList<VariableDeclaration> explicitVariableDeclarationsFromWithinClass,
-            NameToken classInitializeMethodNameIfAny,
-            NameToken classTerminateMethodNameIfAny,
+            NameToken? classInitializeMethodNameIfAny,
+            NameToken? classTerminateMethodNameIfAny,
             int indentationDepth)
         {
             if (classBlock == null)

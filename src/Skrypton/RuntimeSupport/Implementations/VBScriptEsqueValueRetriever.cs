@@ -62,18 +62,18 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// this reference was not a value type. If false is returned and the target reference did not have a parameterless default member,
         /// then the out asValueType argument will be a reference to the target (set to the same reference that the "o" argument has).
         /// </summary>
-        public bool TryVAL(object o, out bool parameterLessDefaultMemberWasAvailable, out object asValueType)
+        public bool TryVAL(object? o, out bool parameterLessDefaultMemberWasAvailable, out object? asValueType)
         {
             if (IsVBScriptValueType(o))
             {
-                asValueType = o;
+                asValueType = o!;
                 parameterLessDefaultMemberWasAvailable = false;
                 return true;
             }
 
             if (IsVBScriptNothing(o))
             {
-                asValueType = o;
+                asValueType = o!;
                 parameterLessDefaultMemberWasAvailable = false;
                 return false;
             }
@@ -90,7 +90,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Note: We don't recursively try defaults, so if this default is still not a value type then we're out of luck
                 object? defaultValueFromObject = defaultMemberPresenceSummary.WasDefaultMemberRetrieved
                     ? defaultMemberPresenceSummary.DefaultMemberValueIfRetrieved!
-                    : GetDefaultValueFromObject(o);
+                    : GetDefaultValueFromObject(o!);
                 asValueType = defaultValueFromObject;
                 parameterLessDefaultMemberWasAvailable = true;
                 return IsVBScriptValueType(defaultValueFromObject);
@@ -105,14 +105,14 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// Reduce a reference down to a value type, applying VBScript defaults logic - thrown an exception if this is not possible (null is
         /// acceptable as an input and corresponding return value)
         /// </summary>
-        public object VAL(object o, string? exceptionMessageForInvalidContent = null)
+        public object VAL(object? o, string? exceptionMessageForInvalidContent = null)
         {
             bool parameterLessDefaultMemberWasAvailable;
             if (TryVAL(o, out parameterLessDefaultMemberWasAvailable, out o))
-                return o;
+                return o!;
 
             if (IsVBScriptNothing(o))
-                throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent);
+                throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent ?? "");
             throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent ?? "Invalid argument.");
         }
 
@@ -124,7 +124,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// with the target type - for types where it was necessary to try to call the default member, this will prevent subsequent queries from
         /// having to do so, which can make them much quicker (particularly if the access throws an exception).
         /// </summary>
-        private DefaultMemberDetails GetDefaultMemberPresenceSummary(object o)
+        private DefaultMemberDetails GetDefaultMemberPresenceSummary(object? o)
         {
             if (o == null)
                 throw new ArgumentNullException(nameof(o));
@@ -216,7 +216,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// This will never throw an exception, a value is either considered by VBScript to be a value type (including values such as Empty,
         /// Null, numbers, dates, strings, arrays) or not
         /// </summary>
-        public bool IsVBScriptValueType(object o)
+        public bool IsVBScriptValueType(object? o)
         {
             return ((o == null) || (o == DBNull.Value) || (o is ValueType) || (o is CurrencyWrapper) || (o is string) || (o.GetType().IsArray));
         }
@@ -236,9 +236,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// The comparison (o == VBScriptConstants.Nothing) will return false even if o is VBScriptConstants.Nothing due to the implementation details of
         /// DispatchWrapper. This method delivers a reliable way to test for it.
         /// </summary>
-        private static bool IsVBScriptNothing(object o)
+        private static bool IsVBScriptNothing(object? o)
         {
-            return o is DispatchWrapper dw && dw.WrappedObject == null;
+            return o != null && o is DispatchWrapper dw && dw.WrappedObject == null;
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object OBJ(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             if ((o == null) || IsVBScriptValueType(o))
-                throw new ObjectRequiredException(optionalExceptionMessageForInvalidContent);
+                throw new ObjectRequiredException(optionalExceptionMessageForInvalidContent ?? "");
 
             return o;
         }
@@ -262,7 +262,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (o == null)
                 return false;
             if (o == DBNull.Value)
-                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent);
+                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent ?? "");
             if (o is bool)
                 return (bool)o;
             if (o is DateTime)
@@ -274,7 +274,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return false;
             double valueNumber;
             if (!double.TryParse(valueString, out valueNumber))
-                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent);
+                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent ?? "");
             return valueNumber != 0;
         }
 
@@ -301,7 +301,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// exception - if, for example, o is a date and it is asked to contain a numeric value that is would result in a date outside of
         /// the VBScript supported range then an overflow exception would be raised).
         /// </summary>
-        public object NUM(object o, params object[] numericValuesTheTypeMustBeAbleToContain)
+        public object NUM(object? o, params object[] numericValuesTheTypeMustBeAbleToContain)
         {
             // Before we try anything, we need to call VAL to ensure we don't have something VBScript wouldn't consider a "value type"
             o = VAL(o);
@@ -434,7 +434,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (o == null)
                 return VBScriptConstants.ZeroDate;
             if (o == DBNull.Value)
-                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent);
+                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent ?? "");
             if (o is DateTime valDateTime)
                 return valDateTime;
 
@@ -588,9 +588,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (o == null)
                 return "";
             if (o == DBNull.Value)
-                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent);
+                throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent ?? "");
             if (o.GetType().IsArray)
-                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent);
+                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent ?? "");
 
             // Dates should be the only data type we have to special-case - booleans, for example, are fine (the casing is consistent between C# and
             // VBScript)
@@ -801,7 +801,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        public object? CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -826,7 +826,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object? CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
+        private object? CALL(object? context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -932,7 +932,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        public void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public void SET(object valueToSetTo, object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
@@ -954,7 +954,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 argumentProvider.OverwriteValueIfByRef(index, arguments[index]);
         }
 
-        private static bool AllowPrivateMemberAccess(object contextIfAny, object target)
+        private static bool AllowPrivateMemberAccess(object? contextIfAny, object target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1049,7 +1049,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten (don't try to catch exceptions here - it may be important to the caller
                         // if there was an IDispatchAccessException with particular values)
-                        dispId = IDispatchAccess.GetDispId(targetDispatch, optionalName);
+                        dispId = IDispatchAccess.GetDispId(targetDispatch!, optionalName);
                     }
                     return IDispatchAccess.Invoke<object>(
                         invokeTarget,
@@ -1368,7 +1368,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
 
         private delegate void SetInvoker(object target, object[] arguments, object value);
-        private SetInvoker GenerateSetInvoker(object target, string optionalMemberAccessor, IEnumerable<object> arguments, bool allowPrivateAccess)
+        private SetInvoker GenerateSetInvoker(object target, string? optionalMemberAccessor, IEnumerable<object> arguments, bool allowPrivateAccess)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1438,7 +1438,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     {
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten
-                        dispId = IDispatchAccess.GetDispId(targetDispatch, optionalMemberAccessor);
+                        dispId = IDispatchAccess.GetDispId(targetDispatch!, optionalMemberAccessor);
                     }
                     IDispatchAccess.Invoke<object>(
                         invokeTarget,
@@ -2042,7 +2042,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private sealed class InvokerCacheKey
         {
             private readonly int _hashCode;
-            public InvokerCacheKey(object targetType, string optionalName, int numberOfArguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+            public InvokerCacheKey(object targetType, string? optionalName, int numberOfArguments, bool allowPrivateAccess, bool onlyConsiderMethods)
             {
                 if (numberOfArguments < 0)
                     throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");

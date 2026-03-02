@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public sealed class ForBlock : ILoopOverNestedContent, ICodeBlock
     {
-        public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression loopStep, IList<ICodeBlock> statements)
+        public ForBlock(NameToken loopVar, Expression loopFrom, Expression loopTo, Expression? loopStep, IList<ICodeBlock> statements)
         {
             LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
             LoopFrom = loopFrom ?? throw new ArgumentNullException(nameof(loopFrom));
@@ -36,7 +36,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Note: This may be null
         /// </summary>
-        [DataMember] public Expression LoopStep { get; private set; }
+        [DataMember] public Expression? LoopStep { get; private set; }
 
         [DataMember] public IEnumerable<ICodeBlock> Statements { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             get
 #pragma warning restore CA1033 // Interface methods should be callable by child types
             {
-                return new ICodeBlock[] { new Expression(new[] { LoopVar }), LoopFrom, LoopTo, LoopStep }
+                return new ICodeBlock[] { new Expression(new[] { LoopVar }), LoopFrom, LoopTo, LoopStep! }
                     .Where(b => b != null) // Ignore a null LoopStep (this is a valid configuration but we can't have nulls in the data returned here)
                     .Concat(Statements);
             }

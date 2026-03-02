@@ -14,7 +14,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         [Obsolete("do not use it")] public InvalidUseOfNullException() : this(null, innerException: null) { }
         [Obsolete("do not use it")] public InvalidUseOfNullException(Exception innerException) : this(null, innerException) { }
 
-        public InvalidUseOfNullException(string additionalInformationIfAny) : this(additionalInformationIfAny, innerException: null) { }
+        public InvalidUseOfNullException(string? additionalInformationIfAny) : this(additionalInformationIfAny, innerException: null) { }
         public InvalidUseOfNullException(string? additionalInformationIfAny, Exception? innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 

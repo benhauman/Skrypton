@@ -193,7 +193,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .AddUndeclaredVariables(undeclaredVariables);
         }
 
-        private TranslatedStatement[] TranslateFunctionHeader(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, CSharpName returnValueNameIfAny, int indentationDepth)
+        private TranslatedStatement[] TranslateFunctionHeader(AbstractFunctionBlock functionBlock, ScopeAccessInformation scopeAccessInformation, CSharpName? returnValueNameIfAny, int indentationDepth)
         {
             if (functionBlock == null)
                 throw new ArgumentNullException(nameof(functionBlock));

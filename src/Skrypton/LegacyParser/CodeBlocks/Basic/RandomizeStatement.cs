@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        public RandomizeStatement(int lineIndex, Expression seedIfAny)
+        public RandomizeStatement(int lineIndex, Expression? seedIfAny)
         {
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));
@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Note: This may be null
         /// </summary>
-		public Expression SeedIfAny { get; }
+		public Expression? SeedIfAny { get; }
 
         /// <summary>
         /// This must never return null nor a set containing any nulls, it represents all executable statements within this structure that wraps statement(s)

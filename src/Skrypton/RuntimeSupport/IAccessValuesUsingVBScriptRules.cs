@@ -19,7 +19,7 @@ namespace Skrypton.RuntimeSupport
         /// argument which was the result of the first call.
         /// </summary>
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        object? CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
+        object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 
         /// <summary>
         /// This will throw an exception for null target or arguments references or if the setting fails (eg. invalid number of arguments,
@@ -29,7 +29,7 @@ namespace Skrypton.RuntimeSupport
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
+        void SET(object valueToSetTo, object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
@@ -46,13 +46,13 @@ namespace Skrypton.RuntimeSupport
         /// this reference was not a value type. If false is returned and the target reference did not have a parameterless default member,
         /// then the out asValueType argument will be a reference to the target (set to the same reference that the "o" argument has).
         /// </summary>
-        bool TryVAL(object o, out bool parameterLessDefaultMemberWasAvailable, out object asValueType);
+        bool TryVAL(object? o, out bool parameterLessDefaultMemberWasAvailable, out object? asValueType);
 
         /// <summary>
         /// Reduce a reference down to a value type, applying VBScript defaults logic - thrown an exception if this is not possible (null is
         /// acceptable as an input and corresponding return value)
         /// </summary>
-        object? VAL(object o, string? exceptionMessageForInvalidContent = null);
+        object? VAL(object? o, string? exceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// This will only return a non-VBScript-value-type, if unable to then an exception will be raised (this is used to wrap the right-hand
@@ -78,7 +78,7 @@ namespace Skrypton.RuntimeSupport
         /// exception - if, for example, o is a date and it is asked to contain a numeric value that is would result in a date outside of
         /// the VBScript supported range then an overflow exception would be raised).
         /// </summary>
-        object NUM(object o, params object[] numericValuesTheTypeMustBeAbleToContain);
+        object NUM(object? o, params object[] numericValuesTheTypeMustBeAbleToContain);
 
         /// <summary>
         /// This wraps a call to NUM and allows an exception to be made for DBNull.Value (VBScript Null) in that the same value will be returned
@@ -99,7 +99,7 @@ namespace Skrypton.RuntimeSupport
         /// returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being raised.
         /// </summary>
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        DateTime DATE(object o, string? optionalExceptionMessageForInvalidContent = null);
+        DateTime DATE(object? o, string? optionalExceptionMessageForInvalidContent = null);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Skrypton.RuntimeSupport
         /// and will return in a blank string being returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being
         /// raised.
         /// </summary>
-        string STR(object o, string? optionalExceptionMessageForInvalidContent = null);
+        string STR(object? o, string? optionalExceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// Reduce a reference down to a boolean, throwing an exception if this is not possible. This will apply the same logic as VAL but then

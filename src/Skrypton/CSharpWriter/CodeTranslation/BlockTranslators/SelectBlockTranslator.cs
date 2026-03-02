@@ -54,11 +54,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var translationResult = TranslationResult.Empty;
             foreach (var openingComment in selectBlock.OpeningComments)
-                translationResult = TryToTranslateComment(translationResult, openingComment, scopeAccessInformation, indentationDepth);
+            {
+                translationResult = TryToTranslateComment(translationResult!, openingComment, scopeAccessInformation, indentationDepth);
+            }
 
             // Do all of the work to decide what needs doing with the target expression (if it's not a simple value then it will be evaluating - this is done once for the entire
             // block and the resulting value reused for each case-value comparison)
-            var targetExpressionTranslationDetails = TranslateTargetExpression(selectBlock.Expression, translationResult, scopeAccessInformation, indentationDepth);
+            var targetExpressionTranslationDetails = TranslateTargetExpression(selectBlock.Expression, translationResult!, scopeAccessInformation, indentationDepth);
             translationResult = targetExpressionTranslationDetails.ExtendedTranslationResult;
             scopeAccessInformation = targetExpressionTranslationDetails.ExtendedScopeAccessInformation;
 
@@ -298,7 +300,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth,
             IReadOnlyCollection<TranslatedStatementContentDetails> conditionSegments,
             bool openAsElseIf,
-            CSharpName errorRegistrationTokenIfAny,
+            CSharpName? errorRegistrationTokenIfAny,
             int lineIndex)
         {
             if (translationResult == null)
@@ -369,7 +371,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int indentationDepth,
             IEnumerable<TranslatedStatementContentDetails> conditionSegments,
             CSharpName isCaseMatchResultName,
-            CSharpName errorRegistrationTokenIfAny,
+            CSharpName? errorRegistrationTokenIfAny,
             int lineIndex)
         {
             if (translationResult == null)

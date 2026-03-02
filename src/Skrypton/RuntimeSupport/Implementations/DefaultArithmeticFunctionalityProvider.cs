@@ -582,7 +582,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return lLong! % rLong!;
         }
 
-        private double AsDouble(object value)
+        private double AsDouble(object? value)
         {
             // The rules that the NUM function must abide by are the same as the ones we want applied here - try to interpret a value as a string by ensuring it is
             // a value type (requiring a default parameterless member if not a value type, otherwise an exception will be raised) and then checking for the already-
@@ -596,17 +596,16 @@ namespace Skrypton.RuntimeSupport.Implementations
             return Convert.ToDouble(numericValue, CultureInfo.InvariantCulture);
         }
 
-        private static T? TryToCoerceInto<T>(object value) where T : struct
+        private static T? TryToCoerceInto<T>(object? value) where T : struct
         {
             if (value is T)
                 return (T)value;
             return (T?)null;
         }
 
-        private static decimal? TryToCoerceIntoCurrency(object value)
+        private static decimal? TryToCoerceIntoCurrency(object? value)
         {
-            var currencyWrapper = value as CurrencyWrapper;
-            if (currencyWrapper != null)
+            if (value != null && value is CurrencyWrapper currencyWrapper)
                 return currencyWrapper.WrappedObject;
             return TryToCoerceInto<decimal>(value);
         }

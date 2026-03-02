@@ -98,7 +98,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             var supportsExit = true; // DO..LOOP supports EXIT DO (while WHILE..WEND loops have no corresponding exit statement)
-            return new DoBlock(conditionStatement, hasPreCondition, doUntil, supportsExit, blockContent, lineIndexOfStartOfConstruct);
+            return new DoBlock(conditionStatement!, hasPreCondition, doUntil, supportsExit, blockContent, lineIndexOfStartOfConstruct);
         }
 
         private static Expression ExtractConditionFromTokens(List<IToken> tokens)

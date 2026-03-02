@@ -67,7 +67,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                     bool wrapTokenInNumberFunctionCall = bufferHadContentThatWasReducedToNothing && (numericValueToken != null);
                     if (wrapTokenInNumberFunctionCall)
                     {
-                        additionSubtractionRewrittenTokens.Add(new BuiltInFunctionToken(numericValueToken.GetSafeWrapperFunctionName().ToUpperX(), token.LineIndex));
+                        additionSubtractionRewrittenTokens.Add(new BuiltInFunctionToken(numericValueToken!.GetSafeWrapperFunctionName().ToUpperX(), token.LineIndex));
                         additionSubtractionRewrittenTokens.Add(new OpenBrace(token.LineIndex));
                     }
                     additionSubtractionRewrittenTokens.Add(token);
@@ -159,7 +159,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
             return new OperatorToken((isNegative ? "-" : "+").ToUpperX(), tokens.First().LineIndex);
         }
 
-        private static bool IsTokenRedundant(OperatorToken token, IToken previousTokenIfAny)
+        private static bool IsTokenRedundant(OperatorToken token, IToken? previousTokenIfAny)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));

@@ -429,7 +429,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // DO loop and an EXIT DO is encountered then we need to break out of the FOR loop and then break out of the DO loop as well. The scope
             // information's StructureExitPoints allows us to do that, we can set the appropriate "exit-early" flag and then break out (the FOR
             // and DO translation implementations are responsible for checking the exit-early flags).
-            CSharpName exitEarlyFlagForValidatedLoopTypeExitIfAny;
+            CSharpName? exitEarlyFlagForValidatedLoopTypeExitIfAny;
             if (exitStatement.StatementType == ExitStatement.ExitableStatementType.Do)
             {
                 var correspondingExitableStructureDetails = scopeAccessInformation.StructureExitPoints.LastOrDefault(
@@ -663,7 +663,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 translatedRandomizeStatements = translatedRandomizeStatements.Add(
                     new TranslatedStatement(
-                        GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny),
+                        GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!),
                         indentationDepth,
                         randomizeStatement.SeedIfAny.Tokens.First().LineIndex
                     )
@@ -808,7 +808,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     translatedReDimStatements = translatedReDimStatements.Add(
                         new TranslatedStatement(
-                            GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny),
+                            GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!),
                             indentationDepth,
                             variable.Name.LineIndex
                         )
@@ -953,7 +953,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 var lineIndexForClosingErrorWrappingContent = statementBlock.Tokens.Last().LineIndex;
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny), indentationDepth, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
                     .Add(new TranslatedStatement(coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
                     .Add(new TranslatedStatement("});", indentationDepth, lineIndexForClosingErrorWrappingContent));
             }
@@ -1022,7 +1022,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 var lineIndexForClosingErrorWrappingContent = valueSettingStatement.Expression.Tokens.Last().LineIndex;
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny), indentationDepth, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
                     .Add(new TranslatedStatement(coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
                     .Add(new TranslatedStatement("});", indentationDepth, lineIndexForClosingErrorWrappingContent));
             }

@@ -137,7 +137,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object MOD(object l, object r) { return _arithmeticHandler.MOD(l, r); }
 
         // String concatenation
-        public object CONCAT(object l, object r)
+        public object CONCAT(object? l, object? r)
         {
             // Try to get both values as value types - if either is Nothing or an object without a default parameterless member, then it's an ObjectVariableNotSetException
             // or ObjectDoesNotSupportPropertyOrMemberException, resp. If one is an object WITH a default parameterless member, but the value of that member is not a value
@@ -556,13 +556,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             // as possible (which unfortunately means that there's a discrepancy between the internal and public CDBL implementations here).
             return (double)((decimal)CDBL_Precise(value, "'CDbl'"));
         }
-        private double CDBL_Precise(object value) { return CDBL_Precise(value, null); }
-        private double CDBL_Precise(object value, string? optionalExceptionMessageForInvalidContent)
+        private double CDBL_Precise(object? value) { return CDBL_Precise(value, null); }
+        private double CDBL_Precise(object? value, string? optionalExceptionMessageForInvalidContent)
         {
             return GetAsNumber<double>(value, optionalExceptionMessageForInvalidContent, Convert.ToDouble);
         }
         public DateTime CDATE(object value) { return CDATECore(value, "'CDate'"); }
-        private DateTime CDATECore(object value, string exceptionMessageForInvalidContent)
+        private DateTime CDATECore(object? value, string exceptionMessageForInvalidContent)
         {
             if (string.IsNullOrWhiteSpace(exceptionMessageForInvalidContent))
                 throw new ArgumentException("Null/blank exceptionMessageForInvalidContent specified");
@@ -572,10 +572,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public Int16 CINT(object value) { return CINT(value, "'CInt'"); }
         private Int16 CINT(object value, string exceptionMessageForInvalidContent) { return GetAsNumber<Int16>(value, exceptionMessageForInvalidContent, Convert.ToInt16); }
-        public int CLNG(object value) { return CLNG(value, "'CLng'"); }
-        public int CLNG(object value, string exceptionMessageForInvalidContent) { return GetAsNumber<int>(value, exceptionMessageForInvalidContent, Convert.ToInt32); }
-        public float CSNG(object value) { return CSNG(value, "'CSng'"); }
-        private float CSNG(object value, string exceptionMessageForInvalidContent) { return GetAsNumber<float>(value, exceptionMessageForInvalidContent, Convert.ToSingle); }
+        public int CLNG(object? value) { return CLNG(value, "'CLng'"); }
+        public int CLNG(object? value, string exceptionMessageForInvalidContent) { return GetAsNumber<int>(value, exceptionMessageForInvalidContent, Convert.ToInt32); }
+        public float CSNG(object? value) { return CSNG(value, "'CSng'"); }
+        private float CSNG(object? value, string exceptionMessageForInvalidContent) { return GetAsNumber<float>(value, exceptionMessageForInvalidContent, Convert.ToSingle); }
         public string CSTR(object value) { return CSTR(value, "'CStr'"); }
         private string CSTR(object value, string exceptionMessageForInvalidContent)
         {
@@ -1449,15 +1449,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             return sb.ToString();
         }
         // - Type comparisons
-        public bool ISARRAY(object value)
+        public bool ISARRAY(object? value)
         {
             // Use the same approach as for ISEMPTY..
             try
             {
                 bool parameterLessDefaultMemberWasAvailable;
-                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out value))
+                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                     return false;
-                return (value != null) && value.GetType().IsArray;
+                return (valueVal != null) && valueVal.GetType().IsArray;
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
@@ -1474,17 +1474,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             try
             {
                 bool parameterLessDefaultMemberWasAvailable;
-                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out value))
+                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                     return false;
 
                 // Any error encountered in evaluating the default member (if required to coerce value into a value type) should be recorded with
                 // SETERROR, but if the value is not a valid date and an exception is thrown by the DateParser, then that should NOT be recorded
                 swallowAnyError = true;
-                if (value == null)
+                if (valueVal == null)
                     return false;
-                if (value is DateTime)
+                if (valueVal is DateTime)
                     return true;
-                DateParser.ForCulture(_culture).Parse(value.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
+                DateParser.ForCulture(_culture).Parse(valueVal.ToString(), _culture); // If this doesn't throw an exception then it must be a valid-for-VBScript date string
                 return true;
             }
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -1502,11 +1502,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // If this can not be coerced into a value type then it can't be Empty, so return false
                 bool parameterLessDefaultMemberWasAvailable;
-                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out value))
+                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                     return false;
 
                 // If it IS a value type, or was manipulated into one, then check for null (aka VBScript's Empty)
-                return value == null;
+                return valueVal == null;
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
@@ -1525,9 +1525,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             try
             {
                 bool parameterLessDefaultMemberWasAvailable;
-                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out value))
+                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                     return false;
-                return value == DBNull.Value;
+                return valueVal == DBNull.Value;
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
@@ -1544,14 +1544,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             try
             {
                 bool parameterLessDefaultMemberWasAvailable;
-                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out value))
+                if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                     return false;
-                if (value == null)
+                if (valueVal == null)
                     return true; // Empty is identified as numeric in VBScript
                                  // double.TryParse seems to match VBScript's pretty well (see the test cases for more details) with one exception; VBScript will tolerate whitespace between
                                  // a negative sign and the start of the content, so we need to do consider replacements (any "-" followed by whitespace should become just "-")
                 double numericValue;
-                return double.TryParse(SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-"), out numericValue);
+                return double.TryParse(SpaceFollowingMinusSignRemover.Replace(valueVal.ToString(), "-"), out numericValue);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
@@ -1565,7 +1565,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return !_valueRetriever.IsVBScriptValueType(value);
         }
-        public string TYPENAME(object value)
+        public string TYPENAME(object? value)
         {
             if (value == null)
                 return "Empty";
@@ -2500,7 +2500,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// booleans were operated on then a boolean will be returned, if an "Integer" (Int16) or a "Long" (Int32) were operated on then an Int32 will be returned
         /// (this is what the lambda is for).
         /// </summary>
-        private Tuple<IEnumerable<int?>, Func<int, object>> GetForBitwiseOperations(string exceptionMessageForInvalidContent, params object[] values)
+        private Tuple<IEnumerable<int?>, Func<int, object>> GetForBitwiseOperations(string exceptionMessageForInvalidContent, params object?[] values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -2544,7 +2544,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             );
         }
 
-        private static bool IsDotNetNumericType(object l)
+        private static bool IsDotNetNumericType(object? l)
         {
             if (l == null)
                 return false;
@@ -2553,7 +2553,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 (l is decimal) || (l is double) || (l is float);
         }
 
-        private static bool IsDotNetIntegerType(object l)
+        private static bool IsDotNetIntegerType(object? l)
         {
             if (l == null)
                 return false;
@@ -2566,9 +2566,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// The comparison (o == VBScriptConstants.Nothing) will return false even if o is VBScriptConstants.Nothing due to the implementation details of
         /// DispatchWrapper. This method delivers a reliable way to test for it.
         /// </summary>
-        private static bool IsVBScriptNothing(object o)
+        private static bool IsVBScriptNothing(object? o)
         {
-            return ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
+            return o != null && ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
         }
 
         private static double DateToDouble(DateTime value)
@@ -2606,11 +2606,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get { return _valueRetriever.ARGS; }
         }
-        public object? CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }
-        public void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public void SET(object valueToSetTo, object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             _valueRetriever.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProvider, line);
         }
@@ -2618,7 +2618,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.IsVBScriptValueType(o);
         }
-        public bool TryVAL(object o, out bool parameterLessDefaultMemberWasAvailable, out object asValueType)
+        public bool TryVAL(object? o, out bool parameterLessDefaultMemberWasAvailable, out object? asValueType)
         {
             return _valueRetriever.TryVAL(o, out parameterLessDefaultMemberWasAvailable, out asValueType);
         }
@@ -2634,7 +2634,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.BOOL(o, optionalExceptionMessageForInvalidContent);
         }
-        public object NUM(object o, params object[] numericValuesTheTypeMustBeAbleToContain)
+        public object NUM(object? o, params object[] numericValuesTheTypeMustBeAbleToContain)
         {
             return _valueRetriever.NUM(o, numericValuesTheTypeMustBeAbleToContain);
         }
@@ -2646,7 +2646,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.NullableDATE(o);
         }
-        public DateTime DATE(object o, string? optionalExceptionMessageForInvalidContent = null)
+        public DateTime DATE(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.DATE(o);
         }
@@ -2654,7 +2654,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.NullableSTR(o);
         }
-        public string STR(object o, string? optionalExceptionMessageForInvalidContent = null)
+        public string STR(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.STR(o);
         }

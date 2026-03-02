@@ -240,7 +240,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return _tempNameGenerator(new CSharpName("exitFor"), scopeAccessInformation);
         }
 
-        private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, CSharpName earlyExitNameIfAny, int indentationDepth)
+        private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, CSharpName? earlyExitNameIfAny, int indentationDepth)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));

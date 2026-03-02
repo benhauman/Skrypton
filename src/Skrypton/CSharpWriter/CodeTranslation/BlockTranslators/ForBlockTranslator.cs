@@ -135,7 +135,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             else
             {
                 byRefArgumentsToRewrite = byRefMapper.GetByRefArgumentsThatNeedRewriting(
-                    forBlock.LoopStep.ToStageTwoParserExpression(scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning),
+                    forBlock.LoopStep!.ToStageTwoParserExpression(scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning),
                     scopeAccessInformation,
                     byRefArgumentsToRewrite
                 );
@@ -145,7 +145,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         .ToNonNullImmutableList()
                 );
                 var numericLoopStepContent = WrapInNUMCallIfRequired(
-                    byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(forBlock.LoopStep, _nameRewriter),
+                    byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(forBlock.LoopStep!, _nameRewriter),
                     scopeAccessInformation
                 );
                 var loopStepName = _tempNameGenerator(new CSharpName("loopStep"), scopeAccessInformation);
@@ -867,7 +867,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return _tempNameGenerator(new CSharpName("exitFor"), scopeAccessInformation);
         }
 
-        private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, CSharpName earlyExitNameIfAny, int indentationDepth)
+        private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, CSharpName? earlyExitNameIfAny, int indentationDepth)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));

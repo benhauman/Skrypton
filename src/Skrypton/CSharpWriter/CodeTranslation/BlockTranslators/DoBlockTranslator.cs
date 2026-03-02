@@ -218,7 +218,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             NonNullImmutableList<ICodeBlock> blocks,
             ScopeAccessInformation scopeAccessInformation,
             bool supportsExit,
-            CSharpName earlyExitNameIfAny,
+            CSharpName? earlyExitNameIfAny,
             int indentationDepth)
         {
             if (blocks == null)

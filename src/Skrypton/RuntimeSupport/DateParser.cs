@@ -250,7 +250,7 @@ namespace Skrypton.RuntimeSupport
         /// then a date calculated by taking the number of days from VBScript's "zero date". If a date outside of VBScript's expressible range is described then an
         /// OverflowException will be thrown. This will never return null.
         /// </summary>
-        public DateTime Parse(string value, CultureInfo culture)
+        public DateTime Parse(string? value, CultureInfo culture)
         {
             if (value != null)
                 return CDateNew(_monthNameTranslator, value, _defaultYearRetriever(), culture);
@@ -258,7 +258,7 @@ namespace Skrypton.RuntimeSupport
                 throw new ArgumentException("Null/blank value specified");
 
             TimeSpan time;
-            value = ExtractAnyTimeComponent(value, out time).Trim();
+            value = ExtractAnyTimeComponent(value!, out time).Trim();
 
             var date = ParseDateOnly(value, culture);
             if ((date < VBScriptConstants.EarliestPossibleDate.Date) || (date > VBScriptConstants.LatestPossibleDate.Date))

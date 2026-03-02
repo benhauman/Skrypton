@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// This method will return a token stream based on the current Statement's code, but with the optional brackets inserted where
         /// absent.
         /// </summary>
-        public IEnumerable<IToken> GetBracketStandardisedTokens(NameToken withReferenceIfAny)
+        public IEnumerable<IToken> GetBracketStandardisedTokens(NameToken? withReferenceIfAny)
         {
             // The "bracket-standardised" content is only required when there is no return type for a statement - in which case it must
             // be possible to apply this logic. However, there are some times where a statement is valid but where this processing will
@@ -164,7 +164,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // but the examples are included to illustrate variations on the cases that must be
         // dealt with),
         // =======================================================================================
-        private static IEnumerable<IToken> GetBracketStandardisedTokens(IEnumerable<IToken> tokens, CallPrefixOptions callPrefix, NameToken withReferenceIfAny)
+        private static IEnumerable<IToken> GetBracketStandardisedTokens(IEnumerable<IToken> tokens, CallPrefixOptions callPrefix, NameToken? withReferenceIfAny)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -410,7 +410,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// a function call (eg.  BuiltInFunctionToken or NameToken, in some cases). Tokens that would not be acceptable would be open braces
         /// (since bracketed expressions should be handled separately above) or ArgumentSeparatorToken, amongst others.
         /// </summary>
-        private static bool IsTokenAcceptableToCommenceCallExecution(IToken token, IToken nextTokenIfAny)
+        private static bool IsTokenAcceptableToCommenceCallExecution(IToken token, IToken? nextTokenIfAny)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
