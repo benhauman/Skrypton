@@ -120,7 +120,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             return false;
         }
 
-        private static CodeBlockWithinScopeDefiningParent TryToLocateCodeBlock(
+        private static CodeBlockWithinScopeDefiningParent? TryToLocateCodeBlock(
             ICodeBlock codeBlock,
             NonNullImmutableList<ICodeBlock> potentialAncesterCodeBlocks,
             NonNullImmutableList<IHaveNestedContent> parentCodeBlocksAroundPotentialAncestors)

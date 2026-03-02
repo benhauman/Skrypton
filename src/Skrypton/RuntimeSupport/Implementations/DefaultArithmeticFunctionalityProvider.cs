@@ -76,7 +76,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             else if (((lString != null) && (r == null)) || ((rString != null) && (l == null)))
             {
-                return lString ?? rString;
+                return lString ?? rString!;
+            }
+            else if (((lString != null) && (r == null)) || ((rString != null) && (l == null)))
+            {
+                return lString ?? rString!;
             }
 
             // The most unusual case is worth addressing next - Currency almost never changes its type, it will overflow if the result of the operation is outside of the
@@ -575,7 +579,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             if ((r == null) || (rLong == 0))
                 throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
-            return lLong % rLong;
+            return lLong! % rLong!;
         }
 
         private double AsDouble(object value)

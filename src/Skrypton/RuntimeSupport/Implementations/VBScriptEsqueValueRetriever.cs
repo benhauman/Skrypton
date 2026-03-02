@@ -531,7 +531,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// push the value through the VAL method, so if value is not a value-type reference then it must be reducable to one (otherwise an exception
         /// will be thrown).
         /// </summary>
-        private object TryToGetNumberConsideringSpecialCases(object value)
+        private object? TryToGetNumberConsideringSpecialCases(object? value)
         {
             value = VAL(value);
             if (value == null)
@@ -664,7 +664,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // VBScript seems to also support accessing GetEnumerator on .NET types that do not implement IDispatch or IEnumerable. I presume that
             // it does something similar to .NET's duck typed support for enumerable collections (look for a "GetEnumerator" method that returns a
             // type that has appropriate "Current", "MoveNext" and "Reset" members - so try to do the same sort of thing here.
-            Func<object, IEnumerator> duckTypedEnumeratorBuilder;
+            Func<object, IEnumerator>? duckTypedEnumeratorBuilder;
             if (!_duckTypeEnumeratorBuilderCache.TryGetValue(type, out duckTypedEnumeratorBuilder))
             {
                 duckTypedEnumeratorBuilder = TryToGetEnumeratorBuilder(type);
@@ -678,7 +678,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             throw new ObjectNotCollectionException($"Object not a collection. Type:{o.GetType().FullName}");
         }
 
-        private static Func<object, IEnumerator> TryToGetEnumeratorBuilder(Type type)
+        private static Func<object, IEnumerator>? TryToGetEnumeratorBuilder(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -801,7 +801,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -826,7 +826,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
+        private object? CALL(object context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -2134,7 +2134,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 _current = null;
             }
 
-            public object Current { get { return _current; } }
+            public object? Current { get { return _current; } }
 
             public bool MoveNext()
             {

@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// Note: VBScript only supports "ON ERROR RESUME NEXT" and "ON ERROR GOTO 0" - it does not support specifying a label for the GOTO form
         /// </summary>
-        public override ICodeBlock Process(List<IToken> tokens)
+        public override ICodeBlock? Process(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

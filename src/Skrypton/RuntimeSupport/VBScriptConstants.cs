@@ -5,7 +5,7 @@ namespace Skrypton.RuntimeSupport
 {
     public static class VBScriptConstants
     {
-        public static object Empty { get { return null; } }
+        public static object? Empty { get { return null; } }
 
         /// <summary>
         /// This is what VBScript considers null to be (as opposed to actual null, which is what it consider Empty to be)

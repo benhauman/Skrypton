@@ -674,7 +674,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 _index = 0;
             }
 
-            public IToken Value
+            public IToken? Value
             {
                 get { return PastEndOfContent ? null : _tokens[_index]; }
             }

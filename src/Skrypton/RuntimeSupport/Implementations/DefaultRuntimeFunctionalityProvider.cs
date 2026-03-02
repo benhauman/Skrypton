@@ -216,7 +216,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             return bitwiseOperationValues.Item2(left.Value & right.Value);
         }
-        public object OR(object l, object r)
+        public object OR(object? l, object? r)
         {
             Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Or'", l, r);
             int? left = bitwiseOperationValues.Item1.First();
@@ -228,9 +228,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value;
             }
             else if (left == null)
-                return right;
+                return right!;
             else if (right == null)
-                return left;
+                return left!;
             return bitwiseOperationValues.Item2(left.Value | right.Value);
         }
         public object XOR(object l, object r)
@@ -347,7 +347,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
         }
 
-        public object NOTEQ(object l, object r)
+        public object? NOTEQ(object l, object r)
         {
             // We can just reverse EQ_Internal's result here, unless it returns null - if it returns null then it means that comparison was not
             // meaningful (one or both sides were DBNull.Value) and so DBNull.Value should be returned.
@@ -2606,7 +2606,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get { return _valueRetriever.ARGS; }
         }
-        public object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }
@@ -2622,7 +2622,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.TryVAL(o, out parameterLessDefaultMemberWasAvailable, out asValueType);
         }
-        public object VAL(object o, string? exceptionMessageForInvalidContent = null)
+        public object? VAL(object? o, string? exceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.VAL(o, exceptionMessageForInvalidContent);
         }

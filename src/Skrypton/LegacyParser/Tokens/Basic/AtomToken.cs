@@ -119,7 +119,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// separator or numeric value. If unable to match its type then it will return null - this should indicate the name of a function, property,
         /// variable, etc.. defined in the source code being processed.
         /// </summary>
-        protected static IToken TryToGetAsRecognisedType(StringUpper contentUpper, int lineIndex)
+        protected static IToken? TryToGetAsRecognisedType(StringUpper contentUpper, int lineIndex)
         {
             if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (lineIndex < 0)

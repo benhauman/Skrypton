@@ -71,7 +71,7 @@ namespace Skrypton.ScriptControlSupport
         //
         Modules IScriptControl.Modules => throw new NotImplementedException();
 
-        Error IScriptControl.Error => null; // later
+        Error? IScriptControl.Error => null; // later
 
         object IScriptControl.CodeObject => throw new NotImplementedException();
 

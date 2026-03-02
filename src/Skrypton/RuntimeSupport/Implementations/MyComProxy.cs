@@ -71,7 +71,7 @@ Returns the remaining ref count
         }
         #region Explicit IReflect Implementation
         private IDispatchAccess.IDispatch _dispatch => (IDispatchAccess.IDispatch)_comInstance;
-        FieldInfo IReflect.GetField(string name, BindingFlags bindingAttr) => null;
+        FieldInfo? IReflect.GetField(string name, BindingFlags bindingAttr) => null;
         FieldInfo[] IReflect.GetFields(BindingFlags bindingAttr) => Array.Empty<FieldInfo>();
 
         MethodInfo IReflect.GetMethod(string name, BindingFlags bindingAttr) => new DispatchMethodInfo(_dispatch, name);

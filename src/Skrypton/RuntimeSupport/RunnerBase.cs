@@ -61,7 +61,7 @@ namespace Skrypton.RuntimeSupport
             _externalReferences[referenceName] = reference ?? throw new ArgumentNullException(nameof(reference)); // Use DBValue.Null for nulls.
         }
 
-        protected object GetExternalReferenceAsObject([CallerMemberName] string referenceName = "")
+        protected object? GetExternalReferenceAsObject([CallerMemberName] string referenceName = "")
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
             if (_externalReferences.TryGetValue(referenceName, out object reference))
@@ -71,7 +71,7 @@ namespace Skrypton.RuntimeSupport
         protected void RestoreExternalReferenceAsObject(object newInstance, [CallerMemberName] string referenceName = "")
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
-            object current = GetExternalReferenceAsObject(referenceName);
+            object? current = GetExternalReferenceAsObject(referenceName);
             if (current != null && newInstance != null && current != newInstance)
             {
                 throw new InvalidOperationException("not same");

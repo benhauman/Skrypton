@@ -32,7 +32,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // great design decision).
             /// if (this.GetType() == typeof(NameToken))
             {
-                IToken recognisedType = TryToGetAsRecognisedType(contentUpper, lineIndex);
+                IToken? recognisedType = TryToGetAsRecognisedType(contentUpper, lineIndex);
                 if ((recognisedType != null) && !(recognisedType is NameToken))
                     throw new ArgumentException("Invalid content for a NameToken");
             }

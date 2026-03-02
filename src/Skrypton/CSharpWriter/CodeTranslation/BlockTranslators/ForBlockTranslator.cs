@@ -764,7 +764,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult.AddUndeclaredVariables(undeclaredVariableReferencesAccessedByLoopConstraints);
         }
 
-        private FuncByRefMapping GetByRefAliasIfRequired(NameToken loopVar, ScopeAccessInformation scopeAccessInformation)
+        private FuncByRefMapping? GetByRefAliasIfRequired(NameToken loopVar, ScopeAccessInformation scopeAccessInformation)
         {
             if (loopVar == null)
                 throw new ArgumentNullException(nameof(loopVar));
@@ -843,7 +843,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return (builtInFunctionToken != null) && builtInFunctionToken.GuaranteedToReturnNumericContent();
         }
 
-        private static NumericValueToken TryToGetExpressionAsNumericConstant(Expression expression)
+        private static NumericValueToken? TryToGetExpressionAsNumericConstant(Expression expression)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -854,7 +854,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return tokens[0] as NumericValueToken;
         }
 
-        private CSharpName GetEarlyExitNameIfRequired(ForBlock forBlock, ScopeAccessInformation scopeAccessInformation)
+        private CSharpName? GetEarlyExitNameIfRequired(ForBlock forBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (forBlock == null)
                 throw new ArgumentNullException(nameof(forBlock));

@@ -49,7 +49,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// This should return null if it is unable to process the specified block. It should raise an exception for any null arguments. The returned value
         /// (where non-null) should overwrite the input translationResult in the caller's scope (it should not be added to it).
         /// </summary>
-        protected delegate TranslationResult BlockTranslationAttempter(
+        protected delegate TranslationResult? BlockTranslationAttempter(
             TranslationResult translationResult,
             ICodeBlock block,
             ScopeAccessInformation scopeAccessInformation,
@@ -116,7 +116,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected static TranslationResult TryToTranslateBlankLine(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected static TranslationResult? TryToTranslateBlankLine(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             // We don't have any information about where blank lines comes from as the code blocks don't contain this information directly
             // and there are no tokens in the BlankLine class to infer the information from. So we'll have to leave it as zero (it is
@@ -124,7 +124,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return (block is BlankLine) ? translationResult.Add(new TranslatedStatement("", indentationDepth, lineIndexOfStatementStartInSource: 0)) : null;
         }
 
-        protected TranslationResult TryToTranslateClass(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected TranslationResult? TryToTranslateClass(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var classBlock = block as ClassBlock;
             if (classBlock == null)
@@ -151,7 +151,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected static TranslationResult TryToTranslateComment(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected static TranslationResult? TryToTranslateComment(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (translationResult == null) throw new ArgumentNullException(nameof(translationResult));
             var commentBlock = block as CommentStatement;
@@ -175,7 +175,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateConst(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateConst(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var constStatement = block as ConstStatement;
             if (constStatement == null)
@@ -250,7 +250,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected TranslationResult TryToTranslateDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected TranslationResult? TryToTranslateDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (scopeAccessInformation == null) throw new ArgumentNullException(nameof(scopeAccessInformation));
             // This covers the DimStatement, PrivateVariableStatement and PublicVariableStatement (but not the ReDimStatement, which counts
@@ -312,12 +312,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// if the list is non-null and non-empty, it will never contain any null references nor any values that indicate negative or non-integer
         /// values)
         /// </summary>
-        private static IEnumerable<NumericValueToken> CollectDimensionsAsNumericValueToken(ConstantNonNegativeArrayDimensionDimVariable constdimvar)
+        private static IEnumerable<NumericValueToken>? CollectDimensionsAsNumericValueToken(ConstantNonNegativeArrayDimensionDimVariable constdimvar)
         {
             return (constdimvar.Dimensions == null) ? null : constdimvar.Dimensions.Select(d => (NumericValueToken)d.Tokens.Single());
         }
 
-        private TranslationResult TryToTranslateDo(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateDo(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var doBlock = block as DoBlock;
             if (doBlock == null)
@@ -344,7 +344,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateErase(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateErase(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var eraseStatement = block as EraseStatement;
             if (eraseStatement == null)
@@ -367,7 +367,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateExit(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateExit(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var exitStatement = block as ExitStatement;
             if (exitStatement == null)
@@ -465,7 +465,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ));
         }
 
-        private TranslationResult TryToTranslateFor(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateFor(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var forBlock = block as ForBlock;
             if (forBlock == null)
@@ -492,7 +492,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateForEach(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateForEach(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var forEachBlock = block as ForEachBlock;
             if (forEachBlock == null)
@@ -519,7 +519,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        protected TranslationResult TryToTranslateFunctionPropertyOrSub(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected TranslationResult? TryToTranslateFunctionPropertyOrSub(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var functionBlock = block as AbstractFunctionBlock;
             if (functionBlock == null)
@@ -546,7 +546,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateIf(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateIf(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var ifBlock = block as IfBlock;
             if (ifBlock == null)
@@ -573,7 +573,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateOnErrorResumeNext(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateOnErrorResumeNext(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var onErrorResumeNextBlock = block as OnErrorResumeNext;
             if (onErrorResumeNextBlock == null)
@@ -594,7 +594,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ));
         }
 
-        private TranslationResult TryToTranslateOnErrorGotoZero(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateOnErrorGotoZero(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var onErrorGotoZeroBlock = block as OnErrorGoto0;
             if (onErrorGotoZeroBlock == null)
@@ -623,7 +623,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ));
         }
 
-        protected TranslationResult TryToTranslateOptionExplicit(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected TranslationResult? TryToTranslateOptionExplicit(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             if (!(block is OptionExplicit))
                 return null;
@@ -650,7 +650,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return TranslationResult.Empty;
         }
 
-        private TranslationResult TryToTranslateRandomize(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateRandomize(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var randomizeStatement = block as RandomizeStatement;
             if (randomizeStatement == null)
@@ -709,7 +709,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult.Add(translatedRandomizeStatements);
         }
 
-        private TranslationResult TryToTranslateReDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateReDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var reDimStatement = block as ReDimStatement;
             if (reDimStatement == null)
@@ -883,7 +883,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .Add(translatedReDimStatements);
         }
 
-        private TranslationResult TryToTranslateSelect(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateSelect(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var selectBlock = block as SelectBlock;
             if (selectBlock == null)
@@ -910,7 +910,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateStatementOrExpression(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateStatementOrExpression(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             // This covers Statement and Expression instances as Expression inherits from Statement
             var statementBlock = block as Statement;
@@ -967,7 +967,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult.AddUndeclaredVariables(undeclaredVariables);
         }
 
-        protected TranslationResult TryToTranslateValueSettingStatement(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        protected TranslationResult? TryToTranslateValueSettingStatement(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var valueSettingStatement = block as ValueSettingStatement;
             if (valueSettingStatement == null)
@@ -1036,7 +1036,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult.AddUndeclaredVariables(undeclaredVariables);
         }
 
-        private TranslationResult TryToTranslateWith(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private TranslationResult? TryToTranslateWith(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
             var withBlock = block as WithBlock;
             if (withBlock == null)

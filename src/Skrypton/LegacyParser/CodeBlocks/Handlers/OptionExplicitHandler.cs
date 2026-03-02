@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// </summary>
-        public override ICodeBlock Process(List<IToken> tokens)
+        public override ICodeBlock? Process(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

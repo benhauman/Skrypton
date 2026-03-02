@@ -12,7 +12,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// Note: This will return a DoBlock if it can process content, as the While structure is effecively just a restricted Do
         /// </summary>
-        public override ICodeBlock Process(List<IToken> tokens)
+        public override ICodeBlock? Process(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

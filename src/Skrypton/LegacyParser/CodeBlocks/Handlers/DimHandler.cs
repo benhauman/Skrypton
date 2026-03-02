@@ -14,7 +14,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// </summary>
-        public override ICodeBlock Process(List<IToken> tokens)
+        public override ICodeBlock? Process(List<IToken> tokens)
         {
             // Note: Dim statement in VBScript can only have constant dimensions specified,
             // variables can not be used (only in ReDim statements). Strings are technically

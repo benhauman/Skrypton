@@ -159,7 +159,7 @@ namespace Skrypton.RuntimeSupport
             };
 
             // Microsoft.VisualBasic.CompilerServices.Utils
-            internal static string AdjustArraySuffix(string sRank)
+            internal static string? AdjustArraySuffix(string sRank)
             {
                 string? text = null;
                 int i = sRank.Length;
@@ -516,7 +516,7 @@ namespace Skrypton.RuntimeSupport
             return result;
         }
 
-        internal static string TryGetIDispatchMemberName(object source, int dispid)
+        internal static string? TryGetIDispatchMemberName(object source, int dispid)
         {
             //string text2 = null;
             //string text3 = null;

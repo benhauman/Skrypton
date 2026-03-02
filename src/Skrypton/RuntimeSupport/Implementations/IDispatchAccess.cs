@@ -232,7 +232,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     if (errorType == CommonErrors.DISP_E_MEMBERNOTFOUND)
                         throw new IDispatchAccessException("Member not found", source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);
 
-                    string memberNameX = memberName ?? Skrypton.RuntimeSupport.Information.TryGetIDispatchMemberName(source, dispId);
+                    string? memberNameX = memberName ?? Skrypton.RuntimeSupport.Information.TryGetIDispatchMemberName(source, dispId);
 
                     var message = $"Failing attempting to invoke member '{memberNameX}' with DispId '" + dispId + "': ";
 #pragma warning disable CA1820 // Test for empty strings using string length

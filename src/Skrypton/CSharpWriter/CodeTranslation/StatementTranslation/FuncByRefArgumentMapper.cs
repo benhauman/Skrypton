@@ -340,7 +340,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 .ToNonNullImmutableList();
         }
 
-        private static NameToken TryToGetExpressionAsSingleNameToken(Expression expression)
+        private static NameToken? TryToGetExpressionAsSingleNameToken(Expression expression)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));

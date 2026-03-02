@@ -123,7 +123,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
         /// <summary>
         /// This will return null for any token that is not an addition or subtraction OperatorToken (a null token will result in an exception being raised)
         /// </summary>
-        private static OperatorToken TryToGetAsAdditionOrSubtractionToken(IToken token)
+        private static OperatorToken? TryToGetAsAdditionOrSubtractionToken(IToken token)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));

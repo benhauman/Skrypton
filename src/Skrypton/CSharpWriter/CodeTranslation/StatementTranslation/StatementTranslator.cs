@@ -1264,7 +1264,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private static NumericValueExpressionSegment TryToGetExpressionAsSingleNumericValueExpressionSegment(Expression expression)
+        private static NumericValueExpressionSegment? TryToGetExpressionAsSingleNumericValueExpressionSegment(Expression expression)
         {
             if (expression == null)
             {
@@ -1796,7 +1796,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
         }
 
-        private TranslatedStatementContentDetails TryToGetShortCutStatementResponse(
+        private TranslatedStatementContentDetails? TryToGetShortCutStatementResponse(
             Expression expression,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements)
@@ -1904,7 +1904,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// may also take more than two arguments if it would make no difference to the enforcing of operator precedence. This methods tries to identify cases where
         /// that might be applicable and performs a "special mode translation".
         /// </summary>
-        private TranslatedStatementContentDetails TryToGetConcatFlattenedSpecialCaseResponse(
+        private TranslatedStatementContentDetails? TryToGetConcatFlattenedSpecialCaseResponse(
             Expression expression,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements)

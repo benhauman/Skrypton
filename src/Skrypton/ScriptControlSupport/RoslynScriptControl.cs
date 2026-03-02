@@ -97,7 +97,7 @@ namespace Skrypton.ScriptControlSupport
         //}
         //
 
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
             PortableExecutableReference[] references = new[]

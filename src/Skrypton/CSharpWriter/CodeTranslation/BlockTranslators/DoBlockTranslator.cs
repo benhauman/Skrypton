@@ -201,7 +201,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult;
         }
 
-        private CSharpName GetEarlyExitNameIfRequired(DoBlock doBlock, ScopeAccessInformation scopeAccessInformation)
+        private CSharpName? GetEarlyExitNameIfRequired(DoBlock doBlock, ScopeAccessInformation scopeAccessInformation)
         {
             if (doBlock == null)
                 throw new ArgumentNullException(nameof(doBlock));

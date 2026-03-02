@@ -29,7 +29,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// but undeclared variables within functions or properties are implicitly declared within that function or property, and so need no target container to be
         /// specified. This will return null if no container is required to locate the specified target.
         /// </summary>
-        public static CSharpName GetNameOfTargetContainerIfAnyRequired(
+        public static CSharpName? GetNameOfTargetContainerIfAnyRequired(
             this ScopeAccessInformation scopeAccessInformation,
             NameToken target,
             CSharpName envRefName,
@@ -86,7 +86,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// <summary>
         /// Try to retrieve information about a name token. If there is nothing matching it in the current scope then null will be returned.
         /// </summary>
-        public static DeclaredReferenceDetails TryToGetDeclaredReferenceDetails(
+        public static DeclaredReferenceDetails? TryToGetDeclaredReferenceDetails(
             this ScopeAccessInformation scopeInformation,
             NameToken target,
             VBScriptNameRewriter nameRewriter)

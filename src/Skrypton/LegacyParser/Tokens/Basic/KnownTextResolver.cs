@@ -79,7 +79,7 @@ internal static class KnownTextResolver
         //        .Concat(k_LogicalOperatorTokenValues)
         //        .Concat(k_ComparisonTokenValues).ToArray();
         //}
-        KnownTextContent ktc = isTypeUpper(atomContent, k_OperatorNames);
+        KnownTextContent? ktc = isTypeUpper(atomContent, k_OperatorNames);
         return ktc == null ? default(OperatorKind?) : (OperatorKind)ktc.ThePayload;
     }
 
@@ -96,7 +96,7 @@ internal static class KnownTextResolver
     /// }
     internal static OperatorKind? isLogicalOperatorUpper(StringUpper atomContent)
     {
-        KnownTextContent ktc = isTypeUpper(atomContent, k_LogicalOperatorTokenValues);
+        KnownTextContent? ktc = isTypeUpper(atomContent, k_LogicalOperatorTokenValues);
         return ktc == null ? default(OperatorKind?) : (OperatorKind)ktc.ThePayload;
     }
 
@@ -149,7 +149,7 @@ internal static class KnownTextResolver
     /// }
     internal static OperatorKind? isComparisonUpper(StringUpper atomContent)
     {
-        KnownTextContent ktc = isTypeUpper(atomContent, k_ComparisonTokenValues);
+        KnownTextContent? ktc = isTypeUpper(atomContent, k_ComparisonTokenValues);
         return ktc == null ? default(OperatorKind?) : (OperatorKind)ktc.ThePayload;
     }
 
@@ -559,7 +559,7 @@ internal static class KnownTextResolver
         //return content.Any(c => WhiteSpaceChars.IndexOf(c) != -1);
     }
 
-    private static KnownTextContent isTypeUpper(StringUpper atomContent, KnownTextContent[] keyWords)
+    private static KnownTextContent? isTypeUpper(StringUpper atomContent, KnownTextContent[] keyWords)
     {
         if (atomContent == null)
         {

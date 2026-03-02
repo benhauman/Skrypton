@@ -151,7 +151,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private TranslationResult TryToTranslateValueSettingStatementAsSimpleFunctionValueReturner(
+        private TranslationResult? TryToTranslateValueSettingStatementAsSimpleFunctionValueReturner(
             TranslationResult translationResult,
             ICodeBlock block,
             ScopeAccessInformation scopeAccessInformation,

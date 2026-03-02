@@ -125,7 +125,7 @@ namespace Skrypton.ScriptControlSupport
 
         [DispId(1507)]
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        Error Error
+        Error? Error
 #pragma warning restore CA1716 // Identifiers should not match keywords
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -48,7 +48,7 @@ namespace Skrypton.RuntimeSupport
         /// issues in preparing both comparison values, this will return DBNull.Value if either value is DBNull.Value and a boolean otherwise.
         /// </summary>
         object EQ(object l, object r);
-        object NOTEQ(object l, object r);
+        object? NOTEQ(object l, object r);
         object LT(object l, object r);
         object GT(object l, object r);
         object LTE(object l, object r);

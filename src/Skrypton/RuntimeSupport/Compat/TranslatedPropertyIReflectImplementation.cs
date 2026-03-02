@@ -51,7 +51,7 @@ namespace Skrypton.RuntimeSupport.Compat
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
         {
             // See notes in GetProperty method above whose signature includes binder, args, modifiers, etc. as to why we are ignoring them here
-            PropertyInfo representedProperty = TryToGetRepresentedProperty(name, invokeAttr);
+            PropertyInfo? representedProperty = TryToGetRepresentedProperty(name, invokeAttr);
             if (representedProperty != null)
             {
                 MethodInfo method;
@@ -64,7 +64,7 @@ namespace Skrypton.RuntimeSupport.Compat
             return base.InvokeMember(name, invokeAttr, binder, target, args, modifiers, culture, namedParameters);
         }
 
-        private PropertyInfo TryToGetRepresentedProperty(string name, BindingFlags bindingAttr)
+        private PropertyInfo? TryToGetRepresentedProperty(string name, BindingFlags bindingAttr)
         {
             StringComparison stringComparison = IsBindingRequestFor(bindingAttr, BindingFlags.IgnoreCase)
                 ? StringComparison.OrdinalIgnoreCase
@@ -220,7 +220,7 @@ namespace Skrypton.RuntimeSupport.Compat
                 return new[] { _getter, _setter }.Where(m => m != null).ToArray();
             }
 
-            public override MethodInfo GetGetMethod(bool nonPublic)
+            public override MethodInfo? GetGetMethod(bool nonPublic)
             {
                 return _getter;
             }
@@ -230,7 +230,7 @@ namespace Skrypton.RuntimeSupport.Compat
                 return _getter.GetParameters();
             }
 
-            public override MethodInfo GetSetMethod(bool nonPublic)
+            public override MethodInfo? GetSetMethod(bool nonPublic)
             {
                 return _setter;
             }
