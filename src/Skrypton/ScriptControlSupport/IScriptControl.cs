@@ -158,7 +158,7 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2500)]
-        void AddObject([In][MarshalAs(UnmanagedType.BStr)] string Name, [In][MarshalAs(UnmanagedType.IDispatch)] object Object, [In] bool AddMembers = false);
+        void AddObject([In][MarshalAs(UnmanagedType.BStr)] string Name, [In][MarshalAs(UnmanagedType.IDispatch)] object objectInstance, [In] bool AddMembers = false);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2501)]
@@ -430,7 +430,7 @@ namespace Skrypton.ScriptControlSupport
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        Module Add([In][MarshalAs(UnmanagedType.BStr)] string Name, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object Object);
+        Module Add([In][MarshalAs(UnmanagedType.BStr)] string Name, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object objectInstance);
     }
     //[ComImport(t)]
     //[Guid("70841C6F-067D-11D0-95D8-00A02463AB28")]

@@ -581,7 +581,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         [FieldOffset(8)]
         public short boolVal;              // VARIANT_BOOL (-1=true, 0=false)
 
+#pragma warning disable CA1720 // Identifier contains type name
         [FieldOffset(8)]
         public IntPtr ptr;                 // BSTR, IDispatch*, IUnknown*, arrays, etc.
+#pragma warning restore CA1720 // Identifier contains type name
     }
 }

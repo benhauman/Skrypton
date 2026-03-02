@@ -116,7 +116,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             if (disposing)
             {
-                foreach (var disposableResource in _disposableReferencesToClearAfterTheRequest)
+                foreach (IDisposable disposableResource in _disposableReferencesToClearAfterTheRequest)
                 {
 #pragma warning disable CA1031 // Do not catch general exception types
                     try { disposableResource.Dispose(); }
@@ -162,8 +162,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             if ((l == DBNull.Value) && (r == DBNull.Value))
                 return DBNull.Value;
-            var lString = (l == DBNull.Value) ? "" : _valueRetriever.STR(l);
-            var rString = (r == DBNull.Value) ? "" : _valueRetriever.STR(r);
+            string lString = (l == DBNull.Value) ? "" : _valueRetriever.STR(l);
+            string rString = (r == DBNull.Value) ? "" : _valueRetriever.STR(r);
             if ((lString.Length + rString.Length) > MAX_VBSCRIPT_STRING_LENGTH)
                 throw new OutOfStringSpaceException();
             return lString + rString;
@@ -183,8 +183,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Concatenate the first two values (using the standard two-value version of the method) and then concatenate each further values on to
             // this accumulator. This could very likely be done in a more efficient manner by recursively splitting the array of values but this will
             // do for now.
-            var combinedValue = CONCAT(values[0], values[1]);
-            foreach (var additionalValue in values.Skip(2))
+            object combinedValue = CONCAT(values[0], values[1]);
+            foreach (object additionalValue in values.Skip(2))
                 combinedValue = CONCAT(combinedValue, additionalValue);
             return combinedValue;
         }
@@ -193,8 +193,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         // - Read http://blogs.msdn.com/b/ericlippert/archive/2004/07/15/184431.aspx
         public object NOT(object o)
         {
-            var bitwiseOperationValues = GetForBitwiseOperations("'Not'", o);
-            var valueToNot = bitwiseOperationValues.Item1.Single();
+            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Not'", o);
+            int? valueToNot = bitwiseOperationValues.Item1.Single();
             if (valueToNot == null)
             {
                 // GetForBitwiseOperations returns nullable int values - since VBScript's Empty (ie. C#'s null) will be interpreted as zero then any
@@ -205,9 +205,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object AND(object l, object r)
         {
-            var bitwiseOperationValues = GetForBitwiseOperations("'And'", l, r);
-            var left = bitwiseOperationValues.Item1.First();
-            var right = bitwiseOperationValues.Item1.Skip(1).Single();
+            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'And'", l, r);
+            int? left = bitwiseOperationValues.Item1.First();
+            int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) || (right == null))
             {
                 // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
@@ -218,9 +218,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object OR(object l, object r)
         {
-            var bitwiseOperationValues = GetForBitwiseOperations("'Or'", l, r);
-            var left = bitwiseOperationValues.Item1.First();
-            var right = bitwiseOperationValues.Item1.Skip(1).Single();
+            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Or'", l, r);
+            int? left = bitwiseOperationValues.Item1.First();
+            int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) && (right == null))
             {
                 // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When OR'ing, if one value is Null
@@ -235,9 +235,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object XOR(object l, object r)
         {
-            var bitwiseOperationValues = GetForBitwiseOperations("'Xor'", l, r);
-            var left = bitwiseOperationValues.Item1.First();
-            var right = bitwiseOperationValues.Item1.Skip(1).Single();
+            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Xor'", l, r);
+            int? left = bitwiseOperationValues.Item1.First();
+            int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) || (right == null))
             {
                 // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When XOR'ing, if either (or both)
@@ -272,7 +272,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if ((l == null) || (r == null))
             {
                 // The default values of VBScript primitives (number, strings and booleans) are considered to match Empty
-                var nonNullValue = l ?? r;
+                object nonNullValue = l ?? r;
 #pragma warning disable CA1820 // Test for empty strings using string length
                 if ((IsDotNetNumericType(nonNullValue) && (Convert.ToDouble(nonNullValue, CultureInfo.InvariantCulture)) == 0)
                 || ((nonNullValue as string) == "")
@@ -289,8 +289,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (bool)l == (bool)r;
             else if ((l is bool) || (r is bool))
             {
-                var boolValue = (bool)((l is bool) ? l : r);
-                var nonBoolValue = (l is bool) ? r : l;
+                bool boolValue = (bool)((l is bool) ? l : r);
+                object nonBoolValue = (l is bool) ? r : l;
                 if (!IsDotNetNumericType(nonBoolValue))
                     return false;
                 return (boolValue && (Convert.ToDouble(nonBoolValue, CultureInfo.InvariantCulture) == -1)) || (!boolValue && (Convert.ToDouble(nonBoolValue, CultureInfo.InvariantCulture) == 0));
@@ -351,7 +351,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // We can just reverse EQ_Internal's result here, unless it returns null - if it returns null then it means that comparison was not
             // meaningful (one or both sides were DBNull.Value) and so DBNull.Value should be returned.
-            var opposingEqualityResult = EQ_Internal(l, r);
+            bool? opposingEqualityResult = EQ_Internal(l, r);
             if (opposingEqualityResult == null)
                 return null;
             return !opposingEqualityResult.Value;
@@ -365,7 +365,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool StrictLT(object l, object r)
         {
-            var result = LT_Internal(l, r, allowEquals: false);
+            bool? result = LT_Internal(l, r, allowEquals: false);
             if (result == null)
                 throw new InvalidUseOfNullException();
             return result.Value;
@@ -376,7 +376,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool StrictLTE(object l, object r)
         {
-            var result = LT_Internal(l, r, allowEquals: true);
+            bool? result = LT_Internal(l, r, allowEquals: true);
             if (result == null)
                 throw new InvalidUseOfNullException();
             return result.Value;
@@ -395,7 +395,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Check the equality case first, since there may be an early exit we can make (this should return a true or false since the "Null" cases
             // have been handled) - if the values ARE equal then either return true (if allowEquals is true) or false (if allowEquals is false). If
             // not then we'll have to do more work.
-            var eq = EQ_Internal(l, r);
+            bool? eq = EQ_Internal(l, r);
             if (eq == null)
                 throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
             if (eq.Value)
@@ -404,11 +404,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Deal with string special cases next - if both are strings then perform a string comparison. If only one is a string, and it is not blank,
             // then that value is bigger (so if it's on the left then return false and if it's on the right then return true). Blank strings get special
             // handling and are effectively treated as zero (see further down).
-            var lString = l as string;
-            var rString = r as string;
+            string lString = l as string;
+            string rString = r as string;
             if ((lString != null) && (rString != null))
             {
-                var stringComparisonResult = STRCOMP_Internal(lString, rString, 0);
+                int? stringComparisonResult = STRCOMP_Internal(lString, rString, 0);
                 if ((stringComparisonResult == null) || (stringComparisonResult.Value == 0))
                     throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
                 return stringComparisonResult.Value < 0;
@@ -424,8 +424,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Booleans (which return zero or minus one when passed through CDBL)
             // - Null aka VBScript Empty (which returns zero when passed through CDBL)
             // - Blank strings (which can not be passed through CDBL without causing an error, but which we can treat as zero)
-            var lNumeric = (lString == "") ? 0 : CDBL_Precise(l);
-            var rNumeric = (rString == "") ? 0 : CDBL_Precise(r);
+            double lNumeric = (lString == "") ? 0 : CDBL_Precise(l);
+            double rNumeric = (rString == "") ? 0 : CDBL_Precise(r);
 #pragma warning restore CA1820 // Test for empty strings using string length
             return lNumeric < rNumeric;
         }
@@ -438,7 +438,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool StrictGT(object l, object r)
         {
-            var result = GT_Internal(l, r, allowEquals: false);
+            bool? result = GT_Internal(l, r, allowEquals: false);
             if (result == null)
                 throw new InvalidUseOfNullException();
             return result.Value;
@@ -449,7 +449,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool StrictGTE(object l, object r)
         {
-            var result = GT_Internal(l, r, allowEquals: true);
+            bool? result = GT_Internal(l, r, allowEquals: true);
             if (result == null)
                 throw new InvalidUseOfNullException();
             return result.Value;
@@ -462,7 +462,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // return true for equal l and r values and we would want to invert that result). If LT_Internal returns null, then it means that the
             // comparison is not meaningful (in other words, DBNull.Value was on one or both sides and so DBNull.Value should be returned for
             // any comparison - whether EQ, NOTEQ, LT, GT, etc..)
-            var opposingLessThanResult = LT_Internal(l, r, !allowEquals);
+            bool? opposingLessThanResult = LT_Internal(l, r, !allowEquals);
             if (opposingLessThanResult == null)
                 return null;
             return !opposingLessThanResult.Value;
@@ -540,7 +540,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public decimal CCUR(object value) { return CCUR(value, "'CCur'"); }
         private decimal CCUR(object value, string exceptionMessageForInvalidContent)
         {
-            var currencyValue = GetAsNumber<decimal>(value, exceptionMessageForInvalidContent, Convert.ToDecimal);
+            decimal currencyValue = GetAsNumber<decimal>(value, exceptionMessageForInvalidContent, Convert.ToDecimal);
             if ((currencyValue < VBScriptConstants.MinCurrencyValue) || (currencyValue > VBScriptConstants.MaxCurrencyValue))
                 throw new VBScriptOverflowException("'CCur' (" + currencyValue.ToString(CultureInfo.InvariantCulture) + ")");
             return currencyValue;
@@ -585,7 +585,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Hand off all parsing here to the base valueRetriever.STR to avoid code duplication
             return _valueRetriever.STR(value, exceptionMessageForInvalidContent);
         }
+#pragma warning disable CA1720 // Identifier contains type name
         public object INT(object value)
+#pragma warning restore CA1720 // Identifier contains type name
         {
             value = _valueRetriever.VAL(value);
 
@@ -604,9 +606,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (Int16)((bool)value ? -1 : 0);
             if (value is DateTime)
                 return ((DateTime)value).Date;
-            var valueWasSingle = value is Single;
-            var valueWasDecimal = value is Decimal;
-            var valueDouble = GetAsNumber<double>(value, "'Int' (" + value.ToString() + ")", Convert.ToDouble);
+            bool valueWasSingle = value is Single;
+            bool valueWasDecimal = value is Decimal;
+            double valueDouble = GetAsNumber<double>(value, "'Int' (" + value.ToString() + ")", Convert.ToDouble);
             valueDouble = Math.Floor(valueDouble);
             if (valueWasSingle)
                 return (Single)valueDouble;
@@ -614,7 +616,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (Decimal)valueDouble;
             return valueDouble;
         }
+#pragma warning disable CA1720 // Identifier contains type name
         public string STRING(object numberOfTimesToRepeat, object character)
+#pragma warning restore CA1720 // Identifier contains type name
         {
 #pragma warning disable CA1820 // Test for empty strings using string length
 
@@ -636,7 +640,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 characterChar = '\0';
             else
             {
-                var characterString = character as string;
+                string characterString = character as string;
                 if (characterString != null)
                 {
                     if (characterString == "")
@@ -645,12 +649,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 else
                 {
-                    var characterCode = CINT(character, "'String'");
+                    short characterCode = CINT(character, "'String'");
                     if (characterCode > 256)
                         characterCode = (short)(characterCode % 256);
                     else if (characterCode < 0)
                     {
-                        var numberOf256sToAdd = Math.Ceiling(Math.Abs((double)characterCode / 256));
+                        double numberOf256sToAdd = Math.Ceiling(Math.Abs((double)characterCode / 256));
                         characterCode += (short)(numberOf256sToAdd * 256);
                     }
                     characterChar = (char)characterCode;
@@ -676,8 +680,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // effect. For example, the following two seeds will result in the same sequence being generated:
             //   Randomize 1.111111
             //   Randomize 1.1111111
-            var valueFromSeed = CSNG(seed).GetHashCode();
-            var randomValueFromCurrentSeed = GenerateRandomDouble();
+            int valueFromSeed = CSNG(seed).GetHashCode();
+            double randomValueFromCurrentSeed = GenerateRandomDouble();
             _randomSeed = (valueFromSeed * randomValueFromCurrentSeed).GetHashCode();
         }
         private double GenerateRandomDouble()
@@ -705,13 +709,13 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object ATN(object value)
         {
             // TODO: Tests need to confirm that double precision is used (eg. COS returns different values for 1.111111 and 1.1111111)
-            var radians = CDBL_Precise(value, "'Atn'");
+            double radians = CDBL_Precise(value, "'Atn'");
             return Math.Atan(radians);
         }
         public object COS(object value)
         {
             // TODO: Tests need to confirm that double precision is used (eg. COS returns different values for 1.111111 and 1.1111111)
-            var radians = CDBL_Precise(value, "'Cos'");
+            double radians = CDBL_Precise(value, "'Cos'");
             return Math.Cos(radians);
         }
         public object EXP(object value) { throw new NotImplementedException(); }
@@ -729,7 +733,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException("RND argument may not be null");
 
             // See https://msdn.microsoft.com/en-us/library/e566zd96(v=vs.84).aspx
-            var valueAsSingle = CSNG(value);
+            float valueAsSingle = CSNG(value);
             if (valueAsSingle == 0)
             {
                 // Return the most recently generated number (if called repeatedly, the same number should be returned - so no changes to the seed should be mde
@@ -768,7 +772,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object SIN(object value)
         {
             // TODO: Tests need to confirm that double precision is used (eg. COS returns different values for 1.111111 and 1.1111111)
-            var radians = CDBL_Precise(value, "'Sin'");
+            double radians = CDBL_Precise(value, "'Sin'");
             return Math.Sin(radians);
         }
         public object SQR(object value)
@@ -777,7 +781,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Always returns double
             // - Accepts double precision input (eg. 1.111111 vs 1.1111111)
             // - Negative values => InvalidProcedureCallOrArgumentException (though zero is, of course, an acceptable input)
-            var numericValue = CDBL_Precise(value, "'Sqr'");
+            double numericValue = CDBL_Precise(value, "'Sqr'");
             if (numericValue < 0)
                 throw new InvalidProcedureCallOrArgumentException();
             return Math.Sqrt(numericValue);
@@ -800,13 +804,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == DBNull.Value)
                 throw new InvalidUseOfNullException();
 
-            var s = CSTR(value);
+            string s = CSTR(value);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
                 throw new InvalidProcedureCallOrArgumentException();
 #pragma warning restore CA1820 // Test for empty strings using string length
 
-            var characterValue = s[0];
+            char characterValue = s[0];
             return (short)Encoding.Default.GetBytes(new[] { characterValue })[0];
         }
         public object ASCB(object value) { throw new NotImplementedException(); }
@@ -818,7 +822,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == DBNull.Value)
                 throw new InvalidUseOfNullException();
 
-            var s = CSTR(value);
+            string s = CSTR(value);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (s == "")
                 throw new InvalidProcedureCallOrArgumentException();
@@ -993,8 +997,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == DBNull.Value)
                 return DBNull.Value;
 
-            var useShortFormatForNegativeValues = (value is bool) || (value is short);
-            var numericValue = CLNG(value, "'Hex'");
+            bool useShortFormatForNegativeValues = (value is bool) || (value is short);
+            int numericValue = CLNG(value, "'Hex'");
             if (numericValue >= 0)
                 return numericValue.ToString("X", CultureInfo.InvariantCulture);
 
@@ -1014,12 +1018,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             compareMode = _valueRetriever.VAL(compareMode, "'InStr'");
             if (startIndex == DBNull.Value)
                 throw new InvalidUseOfNullException("startIndex may not be null");
-            var startIndexInt = CLNG(startIndex, "'InStr'");
+            int startIndexInt = CLNG(startIndex, "'InStr'");
             if (startIndexInt <= 0)
                 throw new InvalidProcedureCallOrArgumentException("'INSTR' (startIndex must be a positive integer)");
             if (compareMode == DBNull.Value)
                 throw new InvalidUseOfNullException("compareMode may not be null");
-            var compareModeInt = CLNG(compareMode, "'InStr'");
+            int compareModeInt = CLNG(compareMode, "'InStr'");
             if ((compareModeInt != 0) && (compareModeInt != 1))
                 throw new InvalidProcedureCallOrArgumentException("'INSTR' (compareMode may only be 0 or 1)");
 
@@ -1033,13 +1037,13 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // If the startIndex would go past the end of valueToSearch then return zero
             // - Since startIndex is one-based, we need to subtract one from it to perform this test
-            var valueToSearchString = _valueRetriever.STR(valueToSearch);
-            var valueToSearchForString = _valueRetriever.STR(valueToSearchFor);
+            string valueToSearchString = _valueRetriever.STR(valueToSearch);
+            string valueToSearchForString = _valueRetriever.STR(valueToSearchFor);
             if (valueToSearchForString.Length + (startIndexInt - 1) > valueToSearchString.Length)
                 return 0;
 
-            var useCaseInsensitiveTextComparisonMode = (compareModeInt == 1);
-            var zeroBasedMatchIndex = valueToSearchString.IndexOf(
+            bool useCaseInsensitiveTextComparisonMode = (compareModeInt == 1);
+            int zeroBasedMatchIndex = valueToSearchString.IndexOf(
                 valueToSearchForString,
                 startIndexInt - 1, // This is one-based in VBScript but zero-based in C# (hence the minus one)
                 useCaseInsensitiveTextComparisonMode ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal
@@ -1071,12 +1075,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             compareMode = _valueRetriever.VAL(compareMode, "'InStrRev'");
             if (startIndex == DBNull.Value)
                 throw new InvalidUseOfNullException("startIndex may not be null");
-            var startIndexInt = CLNG(startIndex, "'InStrRev'");
+            int startIndexInt = CLNG(startIndex, "'InStrRev'");
             if (startIndexInt <= 0)
                 throw new InvalidProcedureCallOrArgumentException("'INSTRREV' (startIndex must be a positive integer)");
             if (compareMode == DBNull.Value)
                 throw new InvalidUseOfNullException("compareMode may not be null");
-            var compareModeInt = CLNG(compareMode, "'InStrRev'");
+            int compareModeInt = CLNG(compareMode, "'InStrRev'");
             if ((compareModeInt != 0) && (compareModeInt != 1))
                 throw new InvalidProcedureCallOrArgumentException("'INSTRREV' (compareMode may only be 0 or 1)");
 
@@ -1093,14 +1097,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             // different substring matching logic to apply.
             // - If the startIndex goes beyond the end of the valueToSearch then no match is allowed, similarly if the startIndex indicates a point in
             //   the valueToSearch where there is insufficient content to match valueToSearchFor
-            var valueToSearchString = _valueRetriever.STR(valueToSearch);
-            var valueToSearchForString = _valueRetriever.STR(valueToSearchFor);
+            string valueToSearchString = _valueRetriever.STR(valueToSearch);
+            string valueToSearchForString = _valueRetriever.STR(valueToSearchFor);
             if ((startIndexInt > valueToSearchString.Length) || (valueToSearchForString.Length > startIndexInt))
                 return 0;
 
             // When searching for a match, only consider the allowed substring of valueToSearch
-            var useCaseInsensitiveTextComparisonMode = (compareModeInt == 1);
-            var zeroBasedMatchIndex = valueToSearchString.Substring(0, startIndexInt).LastIndexOf(
+            bool useCaseInsensitiveTextComparisonMode = (compareModeInt == 1);
+            int zeroBasedMatchIndex = valueToSearchString.Substring(0, startIndexInt).LastIndexOf(
                 valueToSearchForString,
                 useCaseInsensitiveTextComparisonMode ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal
             );
@@ -1109,17 +1113,17 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public object MID(object value, object start)
         {
-            var valueString = CSTR(value, "'Mid'");
+            string valueString = CSTR(value, "'Mid'");
             return MID(value, start, valueString.Length);
         }
         public object MID(object value, object start, object length)
         {
             // TODO: This is just a thrown-together implementation, it needs proper testing relating to the order in which arguments should be evaluated, what argument values are and
             // aren't valid (is length -1 valid??) but it's just enough to make it work for my particular case that I have right at hand now.
-            var lengthAsNumber = CLNG(length, "'Mid'");
-            var startAsNumber = CLNG(start, "'Mid'");
-            var valueString = CSTR(value, "'Mid'");
-            var startIndex = startAsNumber - 1;
+            int lengthAsNumber = CLNG(length, "'Mid'");
+            int startAsNumber = CLNG(start, "'Mid'");
+            string valueString = CSTR(value, "'Mid'");
+            int startIndex = startAsNumber - 1;
             if (startIndex >= valueString.Length)
                 return "";
             return valueString.Substring(startIndex, Math.Min(lengthAsNumber, valueString.Length - startIndex));
@@ -1154,7 +1158,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             maxLength = _valueRetriever.VAL(maxLength, "'Left'");
             if (maxLength == DBNull.Value)
                 throw new InvalidUseOfNullException();
-            var maxLengthInt = CLNG(maxLength, "'Left'");
+            int maxLengthInt = CLNG(maxLength, "'Left'");
             if (maxLengthInt < 0)
                 throw new InvalidProcedureCallOrArgumentException("'LEFT' (maxLength may not be a negative value)");
 
@@ -1164,7 +1168,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == DBNull.Value)
                 return DBNull.Value;
 
-            var valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(value);
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(0, maxLengthInt);
         }
@@ -1177,7 +1181,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             maxLength = _valueRetriever.VAL(maxLength, "'Right'");
             if (maxLength == DBNull.Value)
                 throw new InvalidUseOfNullException();
-            var maxLengthInt = CLNG(maxLength, "'Right'");
+            int maxLengthInt = CLNG(maxLength, "'Right'");
             if (maxLengthInt < 0)
                 throw new InvalidProcedureCallOrArgumentException("'LEFT' (maxLength may not be a negative value)");
 
@@ -1187,7 +1191,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == DBNull.Value)
                 return DBNull.Value;
 
-            var valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(value);
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(valueString.Length - maxLengthInt);
         }
@@ -1201,38 +1205,38 @@ namespace Skrypton.RuntimeSupport.Implementations
             compareMode = _valueRetriever.VAL(compareMode, "'Replace'");
             if (compareMode == DBNull.Value)
                 throw new InvalidUseOfNullException("'Replace'");
-            var compareModeNumber = CLNG(compareMode, "'Replace'");
+            int compareModeNumber = CLNG(compareMode, "'Replace'");
             if ((compareModeNumber != 0) && (compareModeNumber != 1))
                 throw new InvalidProcedureCallOrArgumentException("'Replace'");
             maxNumberOfReplacements = _valueRetriever.VAL(maxNumberOfReplacements, "'Replace'");
             if (maxNumberOfReplacements == DBNull.Value)
                 throw new InvalidUseOfNullException("'Replace'");
-            var maxNumberOfReplacementsNumber = CLNG(maxNumberOfReplacements);
+            int maxNumberOfReplacementsNumber = CLNG(maxNumberOfReplacements);
             if (maxNumberOfReplacementsNumber < -1)
                 throw new InvalidProcedureCallOrArgumentException("'Replace'");
             startIndex = _valueRetriever.VAL(startIndex, "'Replace'");
             if (startIndex == DBNull.Value)
                 throw new InvalidUseOfNullException("'Replace'");
-            var startIndexNumber = CLNG(startIndex);
+            int startIndexNumber = CLNG(startIndex);
             if ((startIndexNumber < 1) || (startIndexNumber > MAX_VBSCRIPT_STRING_LENGTH))
                 throw new InvalidProcedureCallOrArgumentException("'Replace'");
-            var toReplaceWithString = _valueRetriever.STR(toReplaceWith, "'Replace'");
-            var toSearchForString = _valueRetriever.STR(toSearchFor, "'Replace'");
-            var valueString = _valueRetriever.STR(value, "'Replace'");
+            string toReplaceWithString = _valueRetriever.STR(toReplaceWith, "'Replace'");
+            string toSearchForString = _valueRetriever.STR(toSearchFor, "'Replace'");
+            string valueString = _valueRetriever.STR(value, "'Replace'");
 #pragma warning disable CA1820 // Test for empty strings using string length
             if ((maxNumberOfReplacementsNumber == 0) || (valueString == "") || (toSearchForString == "") || (startIndexNumber > valueString.Length)) // Note: VBScript's startIndex is one-based while C#'s is zero-based
                 return valueString;
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             // Real work (2017-08-10 DWR: This loops has been rewritten to use a string builder to try to reduce the string allocations - inspired by https://stackoverflow.com/a/244933/3813189)
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             if (startIndexNumber > 1)
                 sb.Append(valueString.Substring(0, startIndexNumber - 1));
-            var indexToStartAt = startIndexNumber - 1;
-            var comparison = (compareModeNumber == 0) ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            int indexToStartAt = startIndexNumber - 1;
+            StringComparison comparison = (compareModeNumber == 0) ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
             while ((maxNumberOfReplacementsNumber == -1) || (maxNumberOfReplacementsNumber > 0))
             {
-                var index = valueString.IndexOf(toSearchForString, indexToStartAt, comparison);
+                int index = valueString.IndexOf(toSearchForString, indexToStartAt, comparison);
                 if (index == -1)
                     break;
 
@@ -1278,8 +1282,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Should be fine to translate both values into strings using the standard mechanism (no exception should arise)
             // Note that Empty and blank string are special cases; always return an empty array, NOT an array with a single element (which would seem more logical)
             // - eg. Split(" ", ",") returns an array with a single element " " while Split("", ",") returns an empty array
-            var valueString = _valueRetriever.STR(value, "'Split'");
-            var delimiterString = _valueRetriever.STR(delimiter, "'Split'");
+            string valueString = _valueRetriever.STR(value, "'Split'");
+            string delimiterString = _valueRetriever.STR(delimiter, "'Split'");
             if (string.IsNullOrEmpty(valueString))
                 return [];
             return valueString.Split(new[] { delimiterString }, StringSplitOptions.None).Cast<object>().ToArray();
@@ -1349,14 +1353,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if (value == DBNull.Value)
                 return DBNull.Value;
 
-            var valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(value);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (valueString == "")
                 return "";
 #pragma warning restore CA1820 // Test for empty strings using string length
 
-            var sb = new StringBuilder();
-            foreach (var c in valueString)
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in valueString)
             {
                 if (NonEscapedChars.IndexOf(c) != -1)
                 {
@@ -1395,14 +1399,14 @@ namespace Skrypton.RuntimeSupport.Implementations
             else if (value == DBNull.Value)
                 return DBNull.Value;
 
-            var valueString = _valueRetriever.STR(value);
+            string valueString = _valueRetriever.STR(value);
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (valueString == "")
                 return "";
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             int length = valueString.Length;
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < length; i++)
             {
                 if (valueString[i] == '%')
@@ -1466,7 +1470,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public bool ISDATE(object value)
         {
             // Use the same basic approach as for ISEMPTY..
-            var swallowAnyError = false;
+            bool swallowAnyError = false;
             try
             {
                 bool parameterLessDefaultMemberWasAvailable;
@@ -1570,7 +1574,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (IsVBScriptNothing(value))
                 return "Nothing";
 
-            var type = value.GetType();
+            Type type = value.GetType();
             if (type.IsArray && (type.GetElementType() == typeof(Object)))
                 return "Variant()";
             if (_valueRetriever.IsVBScriptValueType(value))
@@ -1594,18 +1598,18 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             if (type.IsCOMObject)
             {
-                var typeDescriptorClassName = TypeDescriptor.GetClassName(value);
+                string typeDescriptorClassName = TypeDescriptor.GetClassName(value);
                 if (!string.IsNullOrWhiteSpace(typeDescriptorClassName))
                     return typeDescriptorClassName;
             }
-            var sourceClassName = type.GetCustomAttributes(typeof(SourceClassName), inherit: true).FirstOrDefault() as SourceClassName;
+            SourceClassName sourceClassName = type.GetCustomAttributes(typeof(SourceClassName), inherit: true).FirstOrDefault() as SourceClassName;
             if (sourceClassName != null)
                 return sourceClassName.Name;
 
             // This will always fall through to Object if it finds nothing better along the way
             while (true)
             {
-                var comVisibleAttributeIfAny = type.GetCustomAttributes(typeof(ComVisibleAttribute), inherit: false).Cast<ComVisibleAttribute>().FirstOrDefault();
+                ComVisibleAttribute comVisibleAttributeIfAny = type.GetCustomAttributes(typeof(ComVisibleAttribute), inherit: false).Cast<ComVisibleAttribute>().FirstOrDefault();
                 if ((comVisibleAttributeIfAny != null) && comVisibleAttributeIfAny.Value)
                     return type.Name;
                 type = type.BaseType;
@@ -1643,12 +1647,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             // is also an array, that is what will get erased. If the argument count does not match the array rank then it's a subscript-out-of-range failure (this
             // includes the case of zero arguments, which is what "ERASE a()" is translated into - it needs to get to this point at runtime so that the type of
             // "a" can be checked, which determines whether the failure is a type-mismatch or subscript-out-of-range).
-            var targetArray = target as Array;
+            Array targetArray = target as Array;
             if (targetArray == null)
                 throw new TypeMismatchException("'Erase'");
             if ((arguments == null) || (arguments.Length == 0))
                 throw new SubscriptOutOfRangeException("'Erase'");
-            var numericArguments = arguments.Select(a => CLNG(a, "'Erase'")).ToArray();
+            int[] numericArguments = arguments.Select(a => CLNG(a, "'Erase'")).ToArray();
             if (targetArray.Rank != numericArguments.Length)
                 throw new SubscriptOutOfRangeException("'Erase'");
             object elementValue;
@@ -1680,10 +1684,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new TypeMismatchException("'Join'");
             if (value == DBNull.Value)
                 throw new InvalidUseOfNullException("'Join'");
-            var valueType = value.GetType();
+            Type valueType = value.GetType();
             if (!valueType.IsArray)
                 throw new TypeMismatchException("'Join'");
-            var arrayRank = valueType.GetArrayRank();
+            int arrayRank = valueType.GetArrayRank();
             if (arrayRank == 0)
                 return "";
             else if (arrayRank > 1)
@@ -1705,8 +1709,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         public int LBOUND(object value, object dimension)
         {
             // If both the value and dimension are invalid values, the dimension errors should be raised first (so try to process that value first)
-            var dimensionInt = CLNG(dimension, "'LBound'");
-            var array = _valueRetriever.VAL(value, "'LBound'") as Array;
+            int dimensionInt = CLNG(dimension, "'LBound'");
+            Array array = _valueRetriever.VAL(value, "'LBound'") as Array;
             if (array == null)
                 throw new TypeMismatchException("'LBound'");
             if ((dimensionInt < 1) || (dimensionInt > array.Rank))
@@ -1717,8 +1721,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         public int UBOUND(object value, object dimension)
         {
             // If both the value and dimension are invalid values, the dimension errors should be raised first (so try to process that value first)
-            var dimensionInt = CLNG(dimension, "'UBound'");
-            var array = _valueRetriever.VAL(value, "'UBound'") as Array;
+            int dimensionInt = CLNG(dimension, "'UBound'");
+            Array array = _valueRetriever.VAL(value, "'UBound'") as Array;
             if (array == null)
                 throw new TypeMismatchException("'UBound'");
             if ((dimensionInt < 1) || (dimensionInt > array.Rank))
@@ -1738,7 +1742,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'DateAdd'");
             if (value == DBNull.Value)
                 return DBNull.Value; // Don't even check the other arguments if we got a Null value argument
-            var dateValue = CDATECore(value, "'DateAdd'");
+            DateTime dateValue = CDATECore(value, "'DateAdd'");
             // The MSDN documentation (for VBA, but which is the closest I could find: https://msdn.microsoft.com/en-us/library/aa262710%28v=vs.60%29.aspx) says that "If
             // number isn't a Long value, it is rounded to the nearest whole number before being evaluated." However, testing with VBScript shows this not to be the case.
             // For example, adding (for any interval) 103, 103.1, 103.5 or 103.9 all have the same effect, as do adding 102, 102.1, 102.5 or 102.9, which indicates that
@@ -1749,7 +1753,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   over and gets stuck at Int32.MinValue; for example any of the following number values will result in the same as if -2147483648 (Int32.MinValue) had been
             //   specified as the number argument: 2147483648 (Int32.MaxValue + 1), 21474836470 (Int32.MaxValue * 10), 1844674407370955161500 (UInt64.MaxValue * 10)
             int intNumber;
-            var doubleNumber = Math.Truncate(CDBL_Precise(number, "'DateAdd'"));
+            double doubleNumber = Math.Truncate(CDBL_Precise(number, "'DateAdd'"));
             if ((doubleNumber < int.MinValue) || (doubleNumber > int.MaxValue))
                 intNumber = int.MinValue;
             else
@@ -1757,7 +1761,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             interval = _valueRetriever.VAL(interval, "'DateAdd'");
             if (interval == DBNull.Value)
                 throw new InvalidUseOfNullException("'DateAdd'");
-            var intervalString = interval as string;
+            string intervalString = interval as string;
             if (intervalString == null)
                 throw new InvalidProcedureCallOrArgumentException("'DateAdd'");
             Func<DateTime, int, DateTime> dateManipulator;
@@ -1813,11 +1817,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // TODO: Need to confirm that arguments are evaluated in the correct order (if date1 and date2 are invalid, which is reported?)
             // TODO: Document that it returns VBScript "Long" (aka .NET Int32)
-            var i = CSTR(interval, "'DateDiff'");
-            var d1 = CDATECore(date1, "'DateDiff'");
-            var d2 = CDATECore(date2, "'DateDiff'");
+            string i = CSTR(interval, "'DateDiff'");
+            DateTime d1 = CDATECore(date1, "'DateDiff'");
+            DateTime d2 = CDATECore(date2, "'DateDiff'");
 
-            var difference = d2.Subtract(d1);
+            TimeSpan difference = d2.Subtract(d1);
             switch (i)
             {
                 default:
@@ -1826,8 +1830,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 case "d":
                     return (int)Math.Ceiling(difference.TotalDays);
                 case "m":
-                    var yearDifference = d2.Year - d1.Year;
-                    var monthDifference = d2.Month - d1.Month;
+                    int yearDifference = d2.Year - d1.Year;
+                    int monthDifference = d2.Month - d1.Month;
                     return (yearDifference * 12) + monthDifference;
             }
         }
@@ -1838,13 +1842,13 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // TODO: Implement (and write tests) for this more thoroughly - eg. (99,2,10) => 1999-2-10, (99,14,10) => 100-2-10, (2017,13,1) => 2018-1-1
 
-            var numericYear = CLNG(year);
-            var numericMonth = CLNG(month);
-            var numericDate = CLNG(date);
+            int numericYear = CLNG(year);
+            int numericMonth = CLNG(month);
+            int numericDate = CLNG(date);
 
             if ((numericMonth < 0) || (numericMonth > 12))
             {
-                var numberOfYearsToAdd = (int)Math.Floor((double)numericMonth / 12);
+                int numberOfYearsToAdd = (int)Math.Floor((double)numericMonth / 12);
                 numericYear += numberOfYearsToAdd;
                 numericMonth = numericMonth % 12;
                 if (numericMonth < 0)
@@ -1887,13 +1891,13 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public DateTime TIMESERIAL(object hours, object minutes, object seconds)
         {
-            var secondsAsNumber = CINT(seconds, "'TimeSerial'");
-            var minutesAsNumber = CINT(minutes, "'TimeSerial'");
-            var hoursAsNumber = CINT(hours, "'TimeSerial'");
+            short secondsAsNumber = CINT(seconds, "'TimeSerial'");
+            short minutesAsNumber = CINT(minutes, "'TimeSerial'");
+            short hoursAsNumber = CINT(hours, "'TimeSerial'");
 
             minutesAsNumber += GetQuantityAtNextLargestUnit(ref secondsAsNumber, 60);
             hoursAsNumber += GetQuantityAtNextLargestUnit(ref minutesAsNumber, 60);
-            var days = GetQuantityAtNextLargestUnit(ref hoursAsNumber, 24);
+            short days = GetQuantityAtNextLargestUnit(ref hoursAsNumber, 24);
 
             // I have no idea what the original VBScript library authors must have been thinking when they wrote their code, I've just tried to work out an algorithm
             // that matches their results. The first oddity is that (2, 0, 0) and (-2, 0, 0) both return the same value, as if the "-" from -2 is ignored. However,
@@ -1905,8 +1909,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // ensure that the seconds and minutes values are smaller than sixty - for example, (2, 0, -8000) is adjusted by realising that -8000s is the same
             // as -2h, -13m and -20s and so the hours value is cancelled out (2 - 2), leaving the three time values as (0, -13, -20) and so the final result
             // from VBScript is 1899-12-30 00:13:20.
-            var nonZeroTermsInDescendingMagnitude = new[] { days, hoursAsNumber, minutesAsNumber, secondsAsNumber }.Where(value => value != 0).ToArray();
-            var multiplier = (nonZeroTermsInDescendingMagnitude.Length != 0 && (nonZeroTermsInDescendingMagnitude.First() < 0)) ? -1 : 1;
+            short[] nonZeroTermsInDescendingMagnitude = new[] { days, hoursAsNumber, minutesAsNumber, secondsAsNumber }.Where(value => value != 0).ToArray();
+            int multiplier = (nonZeroTermsInDescendingMagnitude.Length != 0 && (nonZeroTermsInDescendingMagnitude.First() < 0)) ? -1 : 1;
             return VBScriptConstants.ZeroDate
                 .AddDays(days)
                 .AddHours(hoursAsNumber * multiplier)
@@ -1915,7 +1919,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         private static short GetQuantityAtNextLargestUnit(ref short value, short numberInNextUnit)
         {
-            var valueOfNextUnit = (value > 0) ? (short)Math.Floor(value / (double)numberInNextUnit) : (short)Math.Ceiling(value / (double)numberInNextUnit);
+            short valueOfNextUnit = (value > 0) ? (short)Math.Floor(value / (double)numberInNextUnit) : (short)Math.Ceiling(value / (double)numberInNextUnit);
             value = (short)(value - (valueOfNextUnit * numberInNextUnit));
             return valueOfNextUnit;
         }
@@ -1978,10 +1982,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             value = _valueRetriever.VAL(value, "'Weekday'");
             if (value == DBNull.Value)
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
-            var date = ToClosestSecond(CDATECore(value, "'Weekday'"));
+            DateTime date = ToClosestSecond(CDATECore(value, "'Weekday'"));
 
             // NOTE: VBScript weekdays go from Sunday (1) to Saturday (7) (unless overriden by firstDayOfWeek), while .NET DayOfWeek goes from Sunday (0) to Saturday (6)
-            var vbsFirstDayOfWeek = CLNG(firstDayOfWeek, "'Weekday'");
+            int vbsFirstDayOfWeek = CLNG(firstDayOfWeek, "'Weekday'");
             if (vbsFirstDayOfWeek < 0 || vbsFirstDayOfWeek > 7)
                 throw new InvalidProcedureCallOrArgumentException("'Weekday'");
             if (vbsFirstDayOfWeek == VBScriptConstants.vbUseSystemDayOfWeek)
@@ -1993,13 +1997,13 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object WEEKDAYNAME(object value, object abbreviate) { return WEEKDAYNAME(value, abbreviate, firstDayOfWeek: VBScriptConstants.vbSunday); }
         public object WEEKDAYNAME(object value, object abbreviate, object firstDayOfWeek)
         {
-            var numericValue = CLNG(value, "'WeekdayName'");
+            int numericValue = CLNG(value, "'WeekdayName'");
             if ((numericValue < 1) || (numericValue > 7))
                 throw new InvalidProcedureCallOrArgumentException();
 
-            var booleanAbbreviate = CBOOL(abbreviate, "'WeekdayName'"); // TODO: Ensure that this behaviour is correct (including errors) and ensure evaluate arguments in correct order
+            bool booleanAbbreviate = CBOOL(abbreviate, "'WeekdayName'"); // TODO: Ensure that this behaviour is correct (including errors) and ensure evaluate arguments in correct order
 
-            var numericFirstDayOfWeek = CLNG(firstDayOfWeek, "'WeekdayName'");
+            int numericFirstDayOfWeek = CLNG(firstDayOfWeek, "'WeekdayName'");
             if (numericFirstDayOfWeek != VBScriptConstants.vbSunday)
                 throw new NotSupportedException(); // TODO: Deal with firstDayOfWeek properly (and ensure evaluate arguments in correct order)
 
@@ -2030,7 +2034,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         private static DateTime ToClosestSecond(DateTime value)
         {
-            var approximateValue = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
+            DateTime approximateValue = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
             if (value.Millisecond >= 500) // TODO: Check whether this rounding is correct, should it be banker's rounding?
             {
                 if ((DateTime.MaxValue - approximateValue).TotalSeconds > 1.0)
@@ -2052,7 +2056,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             string classProgId = _valueRetriever.STR(value);
             if (string.IsNullOrEmpty(classProgId))
                 throw new InvalidOperationException("object id:" + value);
-            if (_objectCreateFactories.TryGetValue(classProgId, out var objectFactory))
+            if (_objectCreateFactories.TryGetValue(classProgId, out Func<object> objectFactory))
                 return HandlePostInitializationHandler(classProgId, objectFactory());
 
             try
@@ -2068,7 +2072,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public static IReflect TestCreateComObjectTest(string classProgId, Type comType)
         {
-            var prx = MyComProxy.CreateComProxy(classProgId, comType);
+            MyComProxy prx = MyComProxy.CreateComProxy(classProgId, comType);
             return prx._comInstance is IReflect rfl ? rfl : prx;
         }
 
@@ -2076,7 +2080,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
         private static object CreateComObject(string classProgId, Type comType)
         {
-            var prx = MyComProxy.CreateComProxy(classProgId, comType);
+            MyComProxy prx = MyComProxy.CreateComProxy(classProgId, comType);
             return prx._comInstance;
         }
         public object GETOBJECT(object value)
@@ -2115,7 +2119,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            var disposableResource = value as IDisposable;
+            IDisposable disposableResource = value as IDisposable;
             if (disposableResource != null)
                 _disposableReferencesToClearAfterTheRequest.Add(disposableResource);
             return value;
@@ -2132,7 +2136,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // -1 means zero in C#, which is not an unreasonable request - eg. object[0]) then an out-of-memory error is raised. It shouldn't
             // be possible for this to be called without any dimensions from translated code since that would be a syntax error (and so may
             // be an ArgumentException rather than a specialise VBScript exception).
-            var dimensionSizes = dimensions.Select(d => CLNG(d, "'NewArray'") + 1).ToArray();
+            int[] dimensionSizes = dimensions.Select(d => CLNG(d, "'NewArray'") + 1).ToArray();
             if (dimensionSizes.Length == 0)
                 throw new ArgumentException("No dimensions specified for NEWARRAY");
             if (dimensionSizes.Any(d => d < 0))
@@ -2153,10 +2157,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             // be an ArgumentException rather than a specialise VBScript exception).
             // - The dimensions are evaulated before the target array is validated (before it is even checked for null, even) in order to
             //   be consistent with VBScript's runtime behaviour
-            var dimensionSizes = dimensions.Select(d => CLNG(d, "'ResizeArray'") + 1).ToArray();
+            int[] dimensionSizes = dimensions.Select(d => CLNG(d, "'ResizeArray'") + 1).ToArray();
             if (dimensionSizes.Length == 0)
                 throw new ArgumentException("No dimensions specified for RESIZEARRAY");
-            var arrayTyped = array as Array;
+            Array arrayTyped = array as Array;
             if (arrayTyped == null)
                 throw new TypeMismatchException("'ResizeArray' target not an array");
             if (dimensionSizes.Length != arrayTyped.Rank)
@@ -2164,7 +2168,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (dimensionSizes.Any(d => d < 0))
                 throw new InvalidOperationException("Invalid negative dimensions used for RESIZEARRAY call");
 
-            for (var dimension = 0; dimension < arrayTyped.Rank - 1; dimension++)
+            for (int dimension = 0; dimension < arrayTyped.Rank - 1; dimension++)
             {
                 if (arrayTyped.GetLength(dimension) != dimensionSizes[dimension])
                     throw new SubscriptOutOfRangeException("Invalid dimensions specified for RESIZEARRAY - only the last dimension may vary in size");
@@ -2173,7 +2177,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (dimensionSizes.Length == 1)
             {
                 // Copying a 1D array is easy..
-                var newArray = new object[dimensionSizes[0]];
+                object[] newArray = new object[dimensionSizes[0]];
                 Array.Copy(arrayTyped, newArray, Math.Min(arrayTyped.Length, dimensionSizes[0]));
                 return newArray;
             }
@@ -2181,12 +2185,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // Copying a 2D array can be done column-by-column, so there's only one loop and an Array.Copy per iteration..
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-                var newArray = new object[dimensionSizes[0], dimensionSizes[1]];
+                object[,] newArray = new object[dimensionSizes[0], dimensionSizes[1]];
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
-                var numberOfElementsToCopyEachTime = Math.Min(arrayTyped.GetLength(1), dimensionSizes[1]);
+                int numberOfElementsToCopyEachTime = Math.Min(arrayTyped.GetLength(1), dimensionSizes[1]);
                 if (numberOfElementsToCopyEachTime > 0)
                 {
-                    for (var i = 0; i < dimensionSizes[0]; i++)
+                    for (int i = 0; i < dimensionSizes[0]; i++)
                     {
                         Array.Copy(
                             arrayTyped,
@@ -2204,14 +2208,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Copying an array with more dimensions is more awkward.. the only way I can think of is to go through every element of the
                 // new array and copy each value from the old array, so long as the element exists in the old array. This is MUCH less
                 // efficient than the process for the 1D or 2D arrays.
-                var newArray = Array.CreateInstance(typeof(object), dimensionSizes);
-                var totalNumberOfElements = dimensionSizes.Aggregate(1, (acc, value) => acc * value);
-                var indicesOfElementToCopy = new int[dimensionSizes.Length];
-                for (var i = 0; i < totalNumberOfElements; i++)
+                Array newArray = Array.CreateInstance(typeof(object), dimensionSizes);
+                int totalNumberOfElements = dimensionSizes.Aggregate(1, (acc, value) => acc * value);
+                int[] indicesOfElementToCopy = new int[dimensionSizes.Length];
+                for (int i = 0; i < totalNumberOfElements; i++)
                 {
                     if (i > 0)
                     {
-                        var indexToIncrementNext = 0;
+                        int indexToIncrementNext = 0;
                         while (true)
                         {
                             if (indicesOfElementToCopy[indexToIncrementNext] < (dimensionSizes[indexToIncrementNext] - 1))
@@ -2223,8 +2227,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                             indexToIncrementNext++;
                         }
                     }
-                    var elementDoesNotExistInSource = false;
-                    for (var j = 0; j < indicesOfElementToCopy.Length; j++)
+                    bool elementDoesNotExistInSource = false;
+                    for (int j = 0; j < indicesOfElementToCopy.Length; j++)
                     {
                         if (arrayTyped.GetLength(j) <= indicesOfElementToCopy[j])
                         {
@@ -2253,10 +2257,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get
             {
-                var currentError = _trappedErrorIfAny;
+                Exception currentError = _trappedErrorIfAny;
                 if (currentError == null)
                     return ErrorDetails.NoError;
-                var currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
+                SpecificVBScriptException currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
                 return new ErrorDetails(
                     number: (currentErrorAsVBScriptSpecificError != null) ? currentErrorAsVBScriptSpecificError.ErrorNumber : currentError.HResult, // TODO: Is HResult appropriate?
                     source: currentError.Source,
@@ -2443,7 +2447,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // that error will be allowed to propagate up. If there is no error raised then the result of the IF evaluation is returned.
             // - Note: In http://blogs.msdn.com/b/ericlippert/archive/2004/08/19/error-handling-in-vbscript-part-one.aspx, Eric Lippert does sort of
             //   describe this in passing (see the note that reads "If Blah raises an error then it resumes on the Print "Hello" in either case")
-            var result = true;
+            bool result = true;
             HANDLEERROR(
                 errorToken,
                 () => { result = _valueRetriever.IF(valueEvaluator()); }

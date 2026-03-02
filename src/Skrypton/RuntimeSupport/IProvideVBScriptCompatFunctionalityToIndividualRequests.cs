@@ -104,8 +104,10 @@ namespace Skrypton.RuntimeSupport
         int CLNG(object value);
         float CSNG(object value);
         string CSTR(object value);
+#pragma warning disable CA1720 // Identifier contains type name
         object INT(object value);
         string STRING(object numberOfTimesToRepeat, object character);
+#pragma warning restore CA1720 // Identifier contains type name
 
         // - Number functions
         object ABS(object value);
