@@ -8,7 +8,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
-    public static class FuncByRefMappingList_Extensions
+    internal static class FuncByRefMappingListExtensions
     {
         /// <summary>
         /// Where variables must be stored in temporary references in order to be accessed within lambas (which is the case for variables that are "ref" arguments of the containing function, the common cases

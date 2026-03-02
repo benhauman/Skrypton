@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class ScopeAccessInformation_Error_Extensions
+    internal static class ScopeAccessInformationErrorExtensions
     {
         public static ScopeAccessInformation SetErrorRegistrationToken(this ScopeAccessInformation scopeAccessInformation, CSharpName errorRegistrationTokenIfAny)
         {

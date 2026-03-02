@@ -6,7 +6,7 @@ using Expression = Skrypton.StageTwoParser.ExpressionParsing.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class Statement_Extensions
+    internal static class StatementExtensions
     {
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null statement reference)

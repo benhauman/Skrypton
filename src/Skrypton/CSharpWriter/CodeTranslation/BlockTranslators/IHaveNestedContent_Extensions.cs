@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
-    public static class IHaveNestedContent_Extensions
+    internal static class IHaveNestedContentExtensions
     {
         /// <summary>
         /// The IHaveNestedContent property AllExecutableBlocks will return executable blocks that are directly contained within a code block and, in the case

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class String_Extensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// Although VBScript only supports escaping of quotes, we need to run the full gamut when considering generating C# string literals since ANY

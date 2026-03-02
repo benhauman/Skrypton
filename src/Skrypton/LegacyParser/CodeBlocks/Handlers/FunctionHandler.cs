@@ -194,7 +194,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // if optional - including the brackets)
             if (!isEndOfStatement(tokens, offset))
             {
-                token = getToken_AtomOnly(tokens, offset);
+                token = getTokenAtomOnly(tokens, offset);
                 if (token.Content == "(")
                 {
                     // Look for parameter content
@@ -202,7 +202,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     while (true)
                     {
                         // Have we reached the closing bracket?
-                        token = getToken_AtomOnly(tokens, offset);
+                        token = getTokenAtomOnly(tokens, offset);
                         if (token.Content == ")")
                         {
                             // Yes - exit loop
@@ -220,7 +220,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
                         // Next token should be close bracket (handled above) or
                         // parameter separator (check for now)
-                        token = getToken_AtomOnly(tokens, offset);
+                        token = getTokenAtomOnly(tokens, offset);
                         if (token.Content == ",")
                             offset++;
                     }
@@ -251,7 +251,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             name = null;
 
             // Determine ByRef / ByVal (default to ByVal if not specified)
-            IToken token = getToken_AtomOnly(tokens, offset);
+            IToken token = getTokenAtomOnly(tokens, offset);
             if (token.Content.Equals("BYREF", StringComparison.OrdinalIgnoreCase))
             {
                 byRef = true;
@@ -268,18 +268,18 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 byRef = true; // VBScript defaults to ByRef behaviour
 
             // Grab parameter name
-            token = getToken_AtomOnly(tokens, offset);
+            token = getTokenAtomOnly(tokens, offset);
             name = token.Content;
             paramTokens.Add(token);
             offset++;
 
             // Check for open-close brackets (ie. whether parameter is array or not)
-            token = getToken_AtomOnly(tokens, offset);
+            token = getTokenAtomOnly(tokens, offset);
             if (token.Content == "(")
             {
                 paramTokens.Add(token);
                 offset++;
-                token = getToken_AtomOnly(tokens, offset);
+                token = getTokenAtomOnly(tokens, offset);
                 if (token.Content != ")")
                     throw new InvalidOperationException("Invalid content in function array parameter declaration");
                 paramTokens.Add(token);

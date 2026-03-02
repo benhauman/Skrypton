@@ -34,7 +34,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     tokensProcessed++;
                     break;
                 }
-                seedTokens.Add(getToken_AtomOrDateStringLiteralOnly(tokens, index));
+                seedTokens.Add(getTokenAtomOrDateStringLiteralOnly(tokens, index));
                 tokensProcessed++;
             }
             if ((seedTokens.Count == 2) && (seedTokens[0] is OpenBrace) && (seedTokens[1] is CloseBrace))

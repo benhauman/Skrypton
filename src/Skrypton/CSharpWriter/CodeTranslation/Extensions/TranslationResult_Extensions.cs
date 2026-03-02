@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class TranslationResult_Extensions
+    internal static class TranslationResultExtensions
     {
         public static TranslationResult Add(this TranslationResult source, TranslatedStatement toAdd)
         {

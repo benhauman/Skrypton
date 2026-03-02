@@ -82,7 +82,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             if (token is StringToken stringToken)
             {
-                return String_Extensions.ToLiteral(stringToken.Content);
+                return StringExtensions.ToLiteral(stringToken.Content);
             }
             else if (token is NumericValueToken numericToken)
             {

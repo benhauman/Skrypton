@@ -130,7 +130,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 if (tokens[index] is AbstractEndOfStatementToken)
                     break;
-                IToken token = getToken_AtomOrDateStringLiteralOnly(tokens, index);
+                IToken token = getTokenAtomOrDateStringLiteralOnly(tokens, index);
                 if ((token is AtomToken) && (endMarkerContent != null))
                 {
                     if (((AtomToken)token).Content.Equals(endMarkerContent, StringComparison.OrdinalIgnoreCase))

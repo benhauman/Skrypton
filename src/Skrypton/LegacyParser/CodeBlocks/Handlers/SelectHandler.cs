@@ -49,7 +49,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 }
 
                 // Add token to expression (must be Atom or String)
-                expressionTokens.Add(getToken_AtomOrDateStringLiteralOnly(tokens, index));
+                expressionTokens.Add(getTokenAtomOrDateStringLiteralOnly(tokens, index));
             }
 
             // Look for the first CASE entry (note: it's allowable for there to be no

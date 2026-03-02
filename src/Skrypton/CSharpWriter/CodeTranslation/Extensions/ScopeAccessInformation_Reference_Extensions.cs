@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class ScopeAccessInformation_Reference_Extensions
+    internal static class ScopeAccessInformationReferenceExtensions
     {
         public static bool IsDeclaredReference(this ScopeAccessInformation scopeInformation, NameToken target, VBScriptNameRewriter nameRewriter)
         {

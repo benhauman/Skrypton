@@ -4,7 +4,7 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class ITranslateIndividualStatements_Extensions
+    internal static class ITranslateIndividualStatementsExtensions
     {
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null statement reference)

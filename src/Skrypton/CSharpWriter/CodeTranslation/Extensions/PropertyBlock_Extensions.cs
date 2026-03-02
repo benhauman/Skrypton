@@ -4,7 +4,7 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class PropertyBlock_Extensions
+    internal static class PropertyBlockExtensions
     {
         public static bool IsIndexedProperty(this PropertyBlock source)
         {

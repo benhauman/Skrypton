@@ -33,10 +33,12 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA1028 // Enum Storage should be Int32
         {
             None = 0,
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             DISPATCH_METHOD = 1,
             DISPATCH_PROPERTYGET = 2,
             DISPATCH_PROPERTYPUT = 4,
             DISPATCH_PROPERTYPUTREF = 8
+#pragma warning restore CA1707 // Identifiers should not contain underscores
         }
 
         public static bool ImplementsIDispatch(object source, out IDispatch dispatch)
@@ -366,6 +368,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public enum CommonErrors
         {
             Unknown = 0,
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 
             E_UNEXPECTED = -2147418113,
             E_NOTIMPL = -2147467263,
@@ -397,6 +400,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             DISP_E_NOTACOLLECTION = -2147352559,
             DISP_E_DIVBYZERO = -2147352558,
             DISP_E_BUFFERTOOSMALL = -2147352557
+#pragma warning restore CA1707 // Identifiers should not contain underscores
         }
 
         [ComImport()]

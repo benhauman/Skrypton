@@ -8,7 +8,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class ScopeAccessInformation_Extend_Extensions
+    internal static class ScopeAccessInformationExtendExtensions
     {
         public static ScopeAccessInformation Extend(
             this ScopeAccessInformation scopeInformation,

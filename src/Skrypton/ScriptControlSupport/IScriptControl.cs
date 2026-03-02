@@ -156,7 +156,9 @@ namespace Skrypton.ScriptControlSupport
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(-552)]
         [TypeLibFunc(64)]
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         void _AboutBox();
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2500)]

@@ -5,7 +5,7 @@ using Skrypton.RuntimeSupport;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class VBScriptNameRewriter_Extensions
+    internal static class VBScriptNameRewriterExtensions
     {
         /// <summary>
         /// When trying to access variables, functions, classes, etc.. we need to pass the member's name through the VBScriptNameRewriter. In

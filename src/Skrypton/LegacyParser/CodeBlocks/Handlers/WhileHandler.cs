@@ -39,7 +39,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     tokens.RemoveAt(0);
                     break;
                 }
-                IToken tokenCondition = getToken_AtomOrDateStringLiteralOnly(tokens, 0);
+                IToken tokenCondition = getTokenAtomOrDateStringLiteralOnly(tokens, 0);
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }

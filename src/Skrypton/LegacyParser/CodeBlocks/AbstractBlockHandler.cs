@@ -72,7 +72,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             }
         }
 
-        protected static IToken getToken_AtomOnly(IReadOnlyCollection<IToken> tokens, int offset)
+        protected static IToken getTokenAtomOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {
@@ -80,7 +80,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
             });
         }
 
-        protected static IToken getToken_AtomOrDateStringLiteralOnly(IReadOnlyCollection<IToken> tokens, int offset)
+        protected static IToken getTokenAtomOrDateStringLiteralOnly(IReadOnlyCollection<IToken> tokens, int offset)
         {
             return getToken(tokens, offset, new List<Type>()
             {

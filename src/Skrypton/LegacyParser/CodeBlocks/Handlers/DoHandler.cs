@@ -116,7 +116,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 // Once the end-of-statement has been identified, don't try to remove it - leave that up to the caller
                 if (isEndOfStatement(tokens, 0))
                     break;
-                var tokenCondition = getToken_AtomOrDateStringLiteralOnly(tokens, 0);
+                var tokenCondition = getTokenAtomOrDateStringLiteralOnly(tokens, 0);
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }

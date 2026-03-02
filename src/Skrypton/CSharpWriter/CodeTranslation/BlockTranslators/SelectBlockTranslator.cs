@@ -819,7 +819,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         {
             public ConditionMatchingByRefArgAliasingDetails(
                 NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite,
-                FuncByRefMappingList_Extensions.ByRefReplacementTranslationResultDetails byRefAliasWrappingDetails,
+                FuncByRefMappingListExtensions.ByRefReplacementTranslationResultDetails byRefAliasWrappingDetails,
                 CSharpName caseValueMatchResultName)
             {
                 if (byRefArgumentsToRewrite == null)
@@ -839,7 +839,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             /// <summary>
             /// This will never be null
             /// </summary>
-            public FuncByRefMappingList_Extensions.ByRefReplacementTranslationResultDetails ByRefAliasWrappingDetails { get; private set; }
+            public FuncByRefMappingListExtensions.ByRefReplacementTranslationResultDetails ByRefAliasWrappingDetails { get; private set; }
 
             /// <summary>
             /// This will never be null

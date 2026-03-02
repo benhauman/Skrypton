@@ -8,7 +8,7 @@ using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
-    public static class IEnumerableOfCodeBlocks_Extensions
+    internal static class IEnumerableOfCodeBlocksExtensions
     {
         public static bool DoesScopeContainOnErrorResumeNext(this IEnumerable<ICodeBlock> blocks)
         {
