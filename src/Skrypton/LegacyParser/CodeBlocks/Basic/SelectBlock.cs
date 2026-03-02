@@ -106,7 +106,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         }
 
         [DataContract(Namespace = "http://vbs")]
+#pragma warning disable CA1034 // Nested types should not be visible
         public sealed class CaseBlockExpressionSegment : CaseBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public CaseBlockExpressionSegment(IEnumerable<Expression> values, IEnumerable<ICodeBlock> statements) : base(statements)
             {
@@ -129,7 +131,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         }
 
         [DataContract(Namespace = "http://vbs")]
+#pragma warning disable CA1034 // Nested types should not be visible
         public sealed class CaseBlockElseSegment : CaseBlockSegment
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public CaseBlockElseSegment(IEnumerable<ICodeBlock> statements) : base(statements) { }
         }

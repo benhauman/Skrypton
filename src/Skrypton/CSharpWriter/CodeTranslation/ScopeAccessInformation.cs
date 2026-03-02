@@ -7,7 +7,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class ScopeAccessInformation
+    public sealed class ScopeAccessInformation
     {
         public ScopeAccessInformation(
             IHaveNestedContent parent,
@@ -177,7 +177,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             }
         }
 
+#pragma warning disable CA1034 // Nested types should not be visible
         public sealed class ExitableNonScopeDefiningConstructDetails
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             public ExitableNonScopeDefiningConstructDetails(CSharpName exitEarlyBooleanNameIfAny, ExitableNonScopeDefiningConstructOptions structureType)
             {
