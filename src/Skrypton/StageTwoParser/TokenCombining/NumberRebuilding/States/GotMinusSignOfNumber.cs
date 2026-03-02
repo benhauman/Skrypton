@@ -40,7 +40,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                     GotSomeDecimalNumberContent.Instance
                 );
             }
-            return Common.Reset(tokens, numberContent);
+            return CommonUtilities.Reset(tokens, numberContent);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                 );
             }
 
-            return Common.Reset(tokens, numberContent);
+            return CommonUtilities.Reset(tokens, numberContent);
         }
     }
 }

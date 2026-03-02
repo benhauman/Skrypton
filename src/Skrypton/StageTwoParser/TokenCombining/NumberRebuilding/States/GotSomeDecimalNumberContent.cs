@@ -36,7 +36,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                 return new TokenProcessResult(
                     new PartialNumberContent(),
                     new[] { numbericValueToken },
-                    Common.GetDefaultProcessor(tokens)
+                    CommonUtilities.GetDefaultProcessor(tokens)
                 );
             }
             else
@@ -55,7 +55,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                         return new TokenProcessResult(
                             new PartialNumberContent(),
                             new[] { numberContent.Tokens.Single(), token },
-                            Common.GetDefaultProcessor(tokens)
+                            CommonUtilities.GetDefaultProcessor(tokens)
                         );
                     }
                     else
@@ -64,7 +64,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
                 return new TokenProcessResult(
                     new PartialNumberContent(),
                     new[] { numbericValueToken, token },
-                    Common.GetDefaultProcessor(tokens)
+                    CommonUtilities.GetDefaultProcessor(tokens)
                 );
             }
         }

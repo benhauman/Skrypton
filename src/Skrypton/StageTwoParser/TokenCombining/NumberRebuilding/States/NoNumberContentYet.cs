@@ -62,7 +62,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             return new TokenProcessResult(
                 numberContent,
                 new[] { token },
-                Common.GetDefaultProcessor(tokens)
+                CommonUtilities.GetDefaultProcessor(tokens)
             );
         }
     }

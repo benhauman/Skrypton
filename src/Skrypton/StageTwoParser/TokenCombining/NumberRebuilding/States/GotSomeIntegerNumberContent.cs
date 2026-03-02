@@ -42,7 +42,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
             return new TokenProcessResult(
                 new PartialNumberContent(),
                 new[] { numbericValueToken, token },
-                Common.GetDefaultProcessor(tokens)
+                CommonUtilities.GetDefaultProcessor(tokens)
             );
         }
     }

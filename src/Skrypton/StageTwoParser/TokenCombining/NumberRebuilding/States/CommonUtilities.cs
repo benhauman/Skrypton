@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States
 {
-    public static class Common
+    internal static class CommonUtilities
     {
         /// <summary>
         /// If a processor has encountered a token that has invalidated the assumptions it was making that it would be able to rebuild a number
