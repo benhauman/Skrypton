@@ -219,7 +219,7 @@ namespace Skrypton.CSharpWriter.Lists
 
             // Now build a new chain by taking the content before the value-to-remove and adding back the values that were stepped through
             node = lastNodeThatMatched.Previous;
-            for (int index = lastNodeIndexThatMatched.Value - 1; index >= 0; index--)
+            for (int index = lastNodeIndexThatMatched!.Value - 1; index >= 0; index--)
                 node = new Node(valuesBeforeRemoval[index], node);
             return new ImmutableList<T>(node, _optionalValueValidator);
         }

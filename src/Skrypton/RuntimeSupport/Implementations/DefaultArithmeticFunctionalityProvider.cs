@@ -93,8 +93,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             DateTime? rDate = TryToCoerceInto<DateTime>(r);
             if (((lCurrency != null) && (rDate != null)) || ((rCurrency != null) && (lDate != null)))
             {
-                decimal currencyValue = lCurrency ?? rCurrency.Value;
-                DateTime dateValue = lDate ?? rDate.Value;
+                decimal currencyValue = lCurrency ?? rCurrency!.Value;
+                DateTime dateValue = lDate ?? rDate!.Value;
                 double result = (double)currencyValue + dateValue.Subtract(VBScriptConstants.ZeroDate).TotalDays;
                 if ((result >= MIN_DATE_VALUE_AS_DOUBLE) && (result <= MAX_DATE_VALUE_AS_DOUBLE))
                 {
@@ -116,7 +116,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     // We know that one (and only one) of the values is a Currency and that the other is not a Date. We can retrieve the other value as a Double and
                     // then perform the translation (there is no way that precision can be lost since only Currency has different precision rules from Double and we
                     // know that the "other value" is not a Currency).
-                    firstCurrencyValue = lCurrency ?? rCurrency.Value;
+                    firstCurrencyValue = lCurrency ?? rCurrency!.Value;
                     try
                     {
                         secondCurrencyValue = Convert.ToDecimal(AsDouble(lCurrency == null ? l : r));
@@ -193,7 +193,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             short? lInteger = TryToCoerceInto<Int16>(l);
             short? rInteger = TryToCoerceInto<Int16>(r);
             if (((lInteger != null) && (r == null)) || ((rInteger != null) && (l == null)))
-                return lInteger ?? rInteger.Value;
+                return lInteger ?? rInteger!.Value;
             if (lInteger == null)
             {
                 if (lBoolean != null)
@@ -216,13 +216,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return result;
             }
             else if (((lInteger != null) && (r == null)) || ((rInteger != null) && (l == null)))
-                return lInteger ?? rInteger.Value;
+                return lInteger ?? rInteger!.Value;
 
             // Long (aka Int32) is handled in the same manner similar as Integer (Int16), it will overflow into Double if required
             int? lLong = TryToCoerceInto<Int32>(l);
             int? rLong = TryToCoerceInto<Int32>(r);
             if (((lLong != null) && (r == null)) || ((rLong != null) && (l == null)))
-                return lLong ?? rLong.Value;
+                return lLong ?? rLong!.Value;
             if ((lLong == null) && (lInteger != null))
                 lLong = (Int32)lInteger; // This will already have considered lBoolean and lByte values where applicable (see above)
             if ((rLong == null) && (rInteger != null))
