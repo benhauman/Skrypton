@@ -25,7 +25,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         internal static MyComProxy CreateComProxy(string progId, Type comType)
         {
             object comInstance = Activator.CreateInstance(comType);
-            if (IDispatchAccess.ImplementsIDispatch(comInstance, out IDispatchAccess.IDispatch dispatch))
+            if (IDispatchAccess.ImplementsIDispatch(comInstance, out IDispatchAccess.IDispatch? dispatch))
             {
                 // ok! => can be used 'IDispatchAccess'
             }

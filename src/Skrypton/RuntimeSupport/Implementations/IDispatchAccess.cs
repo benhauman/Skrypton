@@ -41,7 +41,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA1707 // Identifiers should not contain underscores
         }
 
-        public static bool ImplementsIDispatch(object source, out IDispatch dispatch)
+        public static bool ImplementsIDispatch(object source, out IDispatch? dispatch)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

@@ -629,7 +629,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // some weird cases (eg. http://stackoverflow.com/questions/42626484/msxmll-6-0-xmldomnodelist-fails-when-is-invoked-getenumerator,
             // where the DOM Node List from MSXML 6.0 implements IEnumerable but throws "The object's type must not be a Windows Runtime type"
             // if you try to actually call GetEnumerator.
-            if (IDispatchAccess.ImplementsIDispatch(o, out IDispatchAccess.IDispatch oDispatch))
+            if (IDispatchAccess.ImplementsIDispatch(o, out IDispatchAccess.IDispatch? oDispatch))
             {
                 object enumerator;
                 try
@@ -1036,7 +1036,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ).Compile();
             }
 
-            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch targetDispatch))
+            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
             {
                 return (invokeTarget, invokeArguments) =>
                 {
@@ -1427,7 +1427,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ).Compile();
             }
 
-            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch targetDispatch))
+            if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
             {
                 return (invokeTarget, invokeArguments, value) =>
                 {
