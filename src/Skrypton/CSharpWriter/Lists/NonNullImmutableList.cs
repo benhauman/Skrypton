@@ -8,7 +8,7 @@ namespace Skrypton.CSharpWriter.Lists
     public sealed class NonNullImmutableList<T> : ImmutableList<T> where T : class
     {
         private readonly static Validator _defaultValidator = new Validator(null);
-        private IValueValidator<T> _optionalValueValidator;
+        private readonly IValueValidator<T> _optionalValueValidator;
 
         public NonNullImmutableList() : this((IValueValidator<T>)null) { }
         public NonNullImmutableList(IEnumerable<T> values) : this(values, null) { }

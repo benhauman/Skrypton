@@ -9,11 +9,11 @@ namespace Skrypton.CSharpWriter.Lists
     [DebuggerDisplay("{Count}")]
     public class ImmutableList<T> : IReadOnlyCollection<T>
     {
-        private readonly Node _tail;
-        private readonly IValueValidator<T> _optionalValueValidator;
-        private T[] _allValues;
+        private readonly Node _tail; // can be null when empty
+        private readonly IValueValidator<T> _optionalValueValidator; // optional;can be null
+        private T[] _allValues; // lazy populated in 'EnsureAllValuesDataIsPopulated'
 
-        public ImmutableList() : this((IValueValidator<T>)null) { }
+        public ImmutableList() : this((Node)null, (IValueValidator<T>)null) { }
         public ImmutableList(IEnumerable<T> values) : this(values, null) { }
         public ImmutableList(IValueValidator<T> optionalValueValidator) : this((Node)null, optionalValueValidator) { }
         public ImmutableList(IEnumerable<T> values, IValueValidator<T> optionalValueValidator)
@@ -322,7 +322,9 @@ namespace Skrypton.CSharpWriter.Lists
         /// initialisation (of the NonNullOrEmptyStringList) but it allows for more strictly-typed return values from the NonNullOrEmptyStringList's
         /// methods.
         /// </summary>
+#pragma warning disable CA1715 // Identifiers should have correct prefix
         protected static U To<U>(ImmutableList<T> list, Func<Node, U> generator)
+#pragma warning restore CA1715 // Identifiers should have correct prefix
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
@@ -335,7 +337,7 @@ namespace Skrypton.CSharpWriter.Lists
         /// <summary>
         /// For enumerating the values we need to walk through all of the nodes and then reverse the set (since we start with the tail and work backwards).
         /// This can be relatively expensive so the list is cached in the "_allValues" member array so that subsequent requests are fast (wouldn't be a
-        /// big deal for a single enumeration of the contents but it could be for multiple calls to the indexed property).
+        /// big deal for a single enumeration of the contents, but it could be for multiple calls to the indexed property).
         /// </summary>
         private void EnsureAllValuesDataIsPopulated()
         {

@@ -270,7 +270,9 @@ namespace Skrypton.ScriptControlSupport
     //[Guid("70841C78-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ErrorClass))]
 #pragma warning disable CA1716 // Identifiers should not match keywords
+#pragma warning disable CA1715 // Identifiers should have correct prefix
     public interface Error : IScriptError
+#pragma warning restore CA1715 // Identifiers should have correct prefix
 #pragma warning restore CA1716 // Identifiers should not match keywords
     {
     }
@@ -308,7 +310,9 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[CoClass(typeof(ProcedureClass))]
     //[Guid("70841C73-067D-11D0-95D8-00A02463AB28")]
+#pragma warning disable CA1715 // Identifiers should have correct prefix
     public interface Procedure : IScriptProcedure
+#pragma warning restore CA1715 // Identifiers should have correct prefix
     {
     }
     //[ComImport]
@@ -342,7 +346,9 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[Guid("70841C71-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ProceduresClass))]
+#pragma warning disable CA1715 // Identifiers should have correct prefix
     public interface Procedures : IScriptProcedureCollection
+#pragma warning restore CA1715 // Identifiers should have correct prefix
     {
     }
 
@@ -401,7 +407,9 @@ namespace Skrypton.ScriptControlSupport
     //[Guid("70841C70-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ModuleClass))]
 #pragma warning disable CA1716 // Identifiers should not match keywords
+#pragma warning disable CA1715 // Identifiers should have correct prefix
     public interface Module : IScriptModule
+#pragma warning restore CA1715 // Identifiers should have correct prefix
 #pragma warning restore CA1716 // Identifiers should not match keywords
     {
     }
@@ -441,7 +449,9 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport(t)]
     //[Guid("70841C6F-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ModulesClass))]
+#pragma warning disable CA1715 // Identifiers should have correct prefix
     public interface Modules : IScriptModuleCollection
+#pragma warning restore CA1715 // Identifiers should have correct prefix
     {
     }
 

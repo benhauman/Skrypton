@@ -83,7 +83,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // DESCRIPTION CLASSES
         // =======================================================================================
 #pragma warning disable CA1034 // Nested types should not be visible
+#pragma warning disable CA1715 // Identifiers should have correct prefix
         public interface IfBlockSegment
+#pragma warning restore CA1715 // Identifiers should have correct prefix
 #pragma warning restore CA1034 // Nested types should not be visible
         {
             IEnumerable<ICodeBlock> Statements { get; }
