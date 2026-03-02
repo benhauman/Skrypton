@@ -1,8 +1,8 @@
 ﻿namespace Skrypton.LegacyParser.CodeBlocks.SourceRendering
 {
-    public class NullIndenter : ISourceIndentHandler
+    internal sealed class NullIndenter : ISourceIndentHandler
     {
-        public static readonly NullIndenter _instance = new NullIndenter();
+        private static readonly NullIndenter _instance = new NullIndenter();
         public static NullIndenter Instance { get { return _instance; } }
         private NullIndenter() { }
 
@@ -16,9 +16,6 @@
             return NullIndenter.Instance;
         }
 
-        public string Indent
-        {
-            get { return ""; }
-        }
+        public string Indent => string.Empty;
     }
 }
