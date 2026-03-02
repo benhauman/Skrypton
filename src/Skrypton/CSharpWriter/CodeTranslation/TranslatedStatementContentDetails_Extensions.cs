@@ -6,7 +6,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public static class TranslatedStatementContentDetails_Extensions
+    internal static class TranslatedStatementContentDetailsExtensions
     {
         /// <summary>
         /// This will never be null

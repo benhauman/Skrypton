@@ -2,7 +2,7 @@
 
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
-    public static class NumericValueToken_Extensions
+    internal static class NumericValueTokenExtensions
     {
         /// <summary>
         /// When dealing with number literals, VBScript determines what type to use based upon whether it's a decimal or integer and then the size of the integer.

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Skrypton.RuntimeSupport
 {
-    public static class IBuildCallArgumentProviders_Extensions
+    internal static class IBuildCallArgumentProvidersExtensions
     {
         /// <summary>
         /// TODO

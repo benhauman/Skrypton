@@ -2,7 +2,7 @@
 
 namespace Skrypton.CSharpWriter.Lists
 {
-    public static class ImmutableList_Extensions
+    internal static class ImmutableListExtensions
     {
         /// <summary>
         /// It's common for the LINQ Any() extension method to be used with any enumerable sets but with the ImmutableList this can be a relatively expensive

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Skrypton.RuntimeSupport.Implementations
 {
-    public static class MissingMemberException_Extensions
+    internal static class MissingMemberExceptionExtensions
     {
         public static bool RelatesTo(this MissingMemberException source, Type type, string memberNameIfAny)
         {

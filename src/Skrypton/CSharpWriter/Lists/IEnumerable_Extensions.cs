@@ -2,7 +2,7 @@
 
 namespace Skrypton.CSharpWriter.Lists
 {
-    public static class IEnumerable_Extensions
+    internal static class IEnumerableExtensions
     {
         public static ImmutableList<T> ToImmutableList<T>(this IEnumerable<T> data)
         {
