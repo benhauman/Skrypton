@@ -1836,7 +1836,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
         }
         public object DATEPART(object value) { throw new NotImplementedException(); }
-        public object DATESERIAL(object year, object month, object date)
+        public object DATESERIAL(object year, object month, object day)
         {
             // TODO: This is not a complete implementation, it's just enough to get moving
 
@@ -1844,7 +1844,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             int numericYear = CLNG(year);
             int numericMonth = CLNG(month);
-            int numericDate = CLNG(date);
+            int numericDate = CLNG(day);
 
             if ((numericMonth < 0) || (numericMonth > 12))
             {

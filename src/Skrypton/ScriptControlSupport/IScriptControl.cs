@@ -124,7 +124,9 @@ namespace Skrypton.ScriptControlSupport
         }
 
         [DispId(1507)]
+#pragma warning disable CA1716 // Identifiers should not match keywords
         Error Error
+#pragma warning restore CA1716 // Identifiers should not match keywords
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(1507)]
@@ -267,7 +269,9 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[Guid("70841C78-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ErrorClass))]
+#pragma warning disable CA1716 // Identifiers should not match keywords
     public interface Error : IScriptError
+#pragma warning restore CA1716 // Identifiers should not match keywords
     {
     }
     //[ComImport]
@@ -396,7 +400,9 @@ namespace Skrypton.ScriptControlSupport
     //[ComImport]
     //[Guid("70841C70-067D-11D0-95D8-00A02463AB28")]
     //[CoClass(typeof(ModuleClass))]
+#pragma warning disable CA1716 // Identifiers should not match keywords
     public interface Module : IScriptModule
+#pragma warning restore CA1716 // Identifiers should not match keywords
     {
     }
     //[ComImport]

@@ -16,7 +16,9 @@ namespace Skrypton.RuntimeSupport
         object DIV(object l, object r);
         object MULT(object l, object r);
         int INTDIV(object l, object r);
+#pragma warning disable CA1716 // Identifiers should not match keywords
         object MOD(object l, object r);
+#pragma warning restore CA1716 // Identifiers should not match keywords
         object ADD(object l, object r);
         object SUBT(object o);
         object SUBT(object l, object r);
@@ -29,10 +31,12 @@ namespace Skrypton.RuntimeSupport
         object CONCAT(params object[] values);
 
         // Logical operators (these return VBScript Null if one or both sides of the comparison are VBScript Null)
+#pragma warning disable CA1716 // Identifiers should not match keywords
         object NOT(object o);
         object AND(object l, object r);
         object OR(object l, object r);
         object XOR(object l, object r);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         // Comparison operators
         /// <summary>
@@ -49,7 +53,9 @@ namespace Skrypton.RuntimeSupport
         object GT(object l, object r);
         object LTE(object l, object r);
         object GTE(object l, object r);
+#pragma warning disable CA1716 // Identifiers should not match keywords
         bool IS(object l, object r);
+#pragma warning restore CA1716 // Identifiers should not match keywords
         object EQV(object l, object r);
         object IMP(object l, object r);
         /// <summary>
@@ -80,7 +86,9 @@ namespace Skrypton.RuntimeSupport
         /// be called by the translated code, it may be called after the request ends if the requests are tracked here. This will throw an
         /// exception for a null value.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         object NEW(object value);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         // Note that dimensions may be an empty set for NEWARRAY (such that "Dim a()" creates an empty array), though it is not permissible for
         // RESIZEARRAY (since "ReDim b()" is not valid, nor is "ReDim b", there must be at least one dimension). If an empty set of dimensions
@@ -95,18 +103,24 @@ namespace Skrypton.RuntimeSupport
         // Builtin functions - TODO: These are not fully specified yet (eg. LEFT requires more than one parameter and INSTR requires multiple
         // parameters and overloads to deal with optional parameters)
         // - Type conversions
+#pragma warning disable CA1716 // Identifiers should not match keywords
         byte CBYTE(object value);
         bool CBOOL(object value);
+#pragma warning restore CA1716 // Identifiers should not match keywords
         decimal CCUR(object value);
+#pragma warning disable CA1716 // Identifiers should not match keywords
         double CDBL(object value);
         DateTime CDATE(object value);
         Int16 CINT(object value);
         int CLNG(object value);
         float CSNG(object value);
         string CSTR(object value);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 #pragma warning disable CA1720 // Identifier contains type name
         object INT(object value);
+#pragma warning disable CA1716 // Identifiers should not match keywords
         string STRING(object numberOfTimesToRepeat, object character);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 #pragma warning restore CA1720 // Identifier contains type name
 
         // - Number functions
@@ -180,8 +194,10 @@ namespace Skrypton.RuntimeSupport
         object VARTYPE(object value);
         // - Array functions
         object ARRAY(params object[] value);
+#pragma warning disable CA1716 // Identifiers should not match keywords
         void ERASE(object target, Action<object> targetSetter);
         void ERASE(object target, params object[] arguments);
+#pragma warning restore CA1716 // Identifiers should not match keywords
         string JOIN(object value);
         string JOIN(object value, object delimiter);
         int LBOUND(object value, object dimension);
@@ -190,12 +206,14 @@ namespace Skrypton.RuntimeSupport
         int UBOUND(object value, object dimension);
         // - Date functions
         DateTime NOW();
+#pragma warning disable CA1716 // Identifiers should not match keywords
         DateTime DATE();
+#pragma warning restore CA1716 // Identifiers should not match keywords
         DateTime TIME();
         object DATEADD(object interval, object number, object value);
         object DATEDIFF(object interval, object date1, object date2);
         object DATEPART(object value);
-        object DATESERIAL(object year, object month, object date);
+        object DATESERIAL(object year, object month, object day);
         DateTime DATEVALUE(object value);
         object DAY(object value);
         object MONTH(object value);
@@ -293,7 +311,9 @@ namespace Skrypton.RuntimeSupport
         /// token then evaluation of the value will be attempted - if an error occurs then it will be recorded and the condition will be treated
         /// as true, since this is VBScript's behaviour. It will throw an exception for a null valueEvaluator or an invalid errorToken.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         bool IF(Func<object> valueEvaluator, int errorToken);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
         /// Where date literals were present in the source code, in a format that does not specify a date, they must be translated into dates at

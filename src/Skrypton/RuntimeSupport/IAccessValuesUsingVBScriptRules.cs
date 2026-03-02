@@ -18,6 +18,7 @@ namespace Skrypton.RuntimeSupport
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         object CALL(object context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace Skrypton.RuntimeSupport
         /// if an error is raised at some point in the operation.
         /// </summary>
         void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
         /// This will never throw an exception, a value is either considered by VBScript to be a value type (including values such as Empty,
@@ -96,7 +98,9 @@ namespace Skrypton.RuntimeSupport
         /// parsed using VBScript's rules (and taking into account culture, where applicable). Null is acceptable and will return in the zero date being
         /// returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being raised.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         DateTime DATE(object o, string optionalExceptionMessageForInvalidContent = null);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
         /// Apply the same logic as STR but allow DBNull.Value (returning it back). This conversion should only used for comparisons with string literals,
@@ -116,7 +120,9 @@ namespace Skrypton.RuntimeSupport
         /// Reduce a reference down to a boolean, throwing an exception if this is not possible. This will apply the same logic as VAL but then
         /// require a numeric value or null, otherwise an exception will be raised. Zero and null equate to false, non-zero numbers to true.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         bool IF(object o);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
         /// Layer an enumerable wrapper over a reference, if possible (an exception will be thrown if not)
