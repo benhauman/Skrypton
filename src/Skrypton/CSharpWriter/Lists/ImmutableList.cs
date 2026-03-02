@@ -11,9 +11,9 @@ namespace Skrypton.CSharpWriter.Lists
     public class ImmutableList<T> : IReadOnlyCollection<T>
 #pragma warning restore CA1710 // Identifiers should have correct suffix
     {
-        private readonly Node _tail; // can be null when empty
-        private readonly IValueValidator<T> _optionalValueValidator; // optional;can be null
-        private T[] _allValues; // lazy populated in 'EnsureAllValuesDataIsPopulated'
+        private readonly Node? _tail; // can be null when empty
+        private readonly IValueValidator<T>? _optionalValueValidator; // optional;can be null
+        private T[]? _allValues; // lazy populated in 'EnsureAllValuesDataIsPopulated'
 
         public ImmutableList() : this((Node)null, (IValueValidator<T>)null) { }
         public ImmutableList(IEnumerable<T> values) : this(values, null) { }

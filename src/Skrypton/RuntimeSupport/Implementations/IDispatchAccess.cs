@@ -453,7 +453,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             [Obsolete("do not use it")] private IDispatchAccessException() : this(null, innerException: null) { }
             [Obsolete("do not use it")] private IDispatchAccessException(string message) : this(message, innerException: null) { }
-            [Obsolete("do not use it")] private IDispatchAccessException(string message, Exception innerException) : this(message, null, null, null, CommonErrors.Unknown, innerException: null) { }
+            [Obsolete("do not use it")]
+            private IDispatchAccessException(string message, Exception innerException) : this(message, null, null, null, CommonErrors.Unknown, innerException: null) { }
 
             public IDispatchAccessException(string message, object target, string memberNameIfSpecified, int? dispIdIfKnown, CommonErrors errorType, Exception innerException = null)
                 : base(message, innerException)
@@ -469,7 +470,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ErrorType = errorType;
             }
 
-            private IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+            private IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context) {
+                Target = new object();
+            }
 
             /// <summary>
             /// This will never be null
@@ -479,7 +482,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             /// <summary>
             /// At least one of MemberNameIfSpecified and DispIdIfKnown will have a value
             /// </summary>
-            public string MemberNameIfSpecified { get; private set; }
+            public string? MemberNameIfSpecified { get; private set; }
 
             /// <summary>
             /// At least one of MemberNameIfSpecified and DispIdIfKnown will have a value

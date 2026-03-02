@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 
         public abstract string Content { get; }
 
-        [NonSerialized] StringUpper contentUpper;
+        [NonSerialized] StringUpper? contentUpper;
         public StringUpper ContentUpperX()
 
         {

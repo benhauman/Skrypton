@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// This will not include the quotes in the value
         /// </summary>
         [DataMember] public string Content { get; private set; }
-        [NonSerialized] StringUpper contentUpper;
+        [NonSerialized] StringUpper? contentUpper;
         public StringUpper ContentUpperX()
 
         {

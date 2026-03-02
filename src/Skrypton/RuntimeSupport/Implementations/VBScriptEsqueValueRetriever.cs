@@ -2069,7 +2069,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             /// <summary>
             /// This is optional and may be null
             /// </summary>
-            public string OptionalName { get; }
+            public string? OptionalName { get; }
 
             /// <summary>
             /// This will always be zero or greater
@@ -2123,7 +2123,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private sealed class IDispatchEnumeratorWrapper : IEnumerator
         {
             private readonly IEnumVariant _enumerator;
-            private object _current;
+            private object? _current;
             public IDispatchEnumeratorWrapper(IEnumVariant enumerator)
             {
                 _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));

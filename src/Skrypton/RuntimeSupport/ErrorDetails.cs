@@ -40,7 +40,7 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public Exception OriginalExceptionIfKnown { get; private set; }
 
-        public string HelpFile { get; }
+        public string? HelpFile { get; set; }
         public int HelpContext { get; }
         public int Line { get; }
         public int Column { get; }

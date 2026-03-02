@@ -27,6 +27,12 @@ namespace Skrypton.ScriptControlSupport
 //        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
 //#pragma warning restore CS0414 // The field is assigned but its value is never used
 
+        public ScriptControlClass(CultureInfo engineCulture, IRuntimeLogger engineRuntimeLogger)
+        {
+            EngineCulture = engineCulture ?? throw new ArgumentNullException(nameof(engineCulture));
+            EngineRuntimeLogger = engineRuntimeLogger ?? throw new ArgumentNullException(nameof(engineRuntimeLogger));
+        }
+
         string IScriptControl.Language { get => _language; set => _language = value; }
         ScriptControlStates IScriptControl.State
         {

@@ -53,6 +53,6 @@ namespace Skrypton.RuntimeSupport
         /// was successfully evaluated. However, if there IS a default member, but an exception was raised while it was being executed then that exception may need
         /// to be re-thrown after the fact that a default member is present has been processed.
         /// </summary>
-        public Exception ExceptionEncounteredWhileEvaluatingDefaultMemberIfAny { get; set; }
+        public Exception? ExceptionEncounteredWhileEvaluatingDefaultMemberIfAny { get; set; }
     }
 }

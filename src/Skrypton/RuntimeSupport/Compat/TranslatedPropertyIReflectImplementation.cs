@@ -157,7 +157,8 @@ namespace Skrypton.RuntimeSupport.Compat
         {
             private readonly string _name;
             private readonly Type _owningType;
-            private readonly MethodInfo _getter, _setter;
+            private readonly MethodInfo? _getter;
+            private readonly MethodInfo? _setter;
             public TranslatedPropertyInfo(string name, Type owningType, MethodInfo getter, MethodInfo setter)
             {
                 if ((getter == null) && (setter == null))
@@ -165,7 +166,9 @@ namespace Skrypton.RuntimeSupport.Compat
 
                 ParameterInfo[] setterParameters;
                 if (setter == null)
+                {
                     setterParameters = null;
+                }
                 else
                 {
                     setterParameters = setter.GetParameters();

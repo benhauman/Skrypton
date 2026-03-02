@@ -22,7 +22,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 
         public string Content { get; private set; }
 
-        [NonSerialized] StringUpper contentUpper;
+        [NonSerialized] StringUpper? contentUpper;
         public StringUpper ContentUpperX()
 
         {

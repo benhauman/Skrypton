@@ -26,7 +26,7 @@ internal static class KnownTextResolver
     /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     /// </summary>
-    public static KnownTextContent[] k_ArithmeticAndStringOperatorTokenValues = new KnownTextContent[]
+    public static KnownTextContent[] k_ArithmeticAndStringOperatorTokenValues = CollectArithmeticAndStringOperatorTokenValues(); private static KnownTextContent[] CollectArithmeticAndStringOperatorTokenValues() => new KnownTextContent[]
     {
         new KnownTextContent("^", false, false, OperatorKind.Exponentiation),
         new KnownTextContent("/", false, false, OperatorKind.Division),
@@ -49,7 +49,7 @@ internal static class KnownTextResolver
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
     /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
-    public static KnownTextContent[] k_LogicalOperatorTokenValues = new KnownTextContent[]
+    public static KnownTextContent[] k_LogicalOperatorTokenValues = CollectLogicalOperatorTokenValues();  private static KnownTextContent[] CollectLogicalOperatorTokenValues() => new KnownTextContent[]
     {
         new KnownTextContent("NOT", false, false, OperatorKind.LogicalNot),
         new KnownTextContent("AND", false, false, OperatorKind.LogicalAnd),
@@ -68,15 +68,17 @@ internal static class KnownTextResolver
     /// 		ArithmeticAndStringOperatorTokenValues.Concat(LogicalOperatorTokenValues).Concat(ComparisonTokenValues)
     /// 	);
     /// }
-    private static KnownTextContent[] k_OperatorNames;
+    private static KnownTextContent[] k_OperatorNames = CollectArithmeticAndStringOperatorTokenValues()
+        .Concat(CollectLogicalOperatorTokenValues())
+        .Concat(CollectComparisonTokenValues()).ToArray();
     internal static OperatorKind? isOperatorUpper(StringUpper atomContent)
     {
-        if (k_OperatorNames == null)
-        {
-            k_OperatorNames = k_ArithmeticAndStringOperatorTokenValues
-                .Concat(k_LogicalOperatorTokenValues)
-                .Concat(k_ComparisonTokenValues).ToArray();
-        }
+        //if (k_OperatorNames == null)
+        //{
+        //    k_OperatorNames = k_ArithmeticAndStringOperatorTokenValues
+        //        .Concat(k_LogicalOperatorTokenValues)
+        //        .Concat(k_ComparisonTokenValues).ToArray();
+        //}
         KnownTextContent ktc = isTypeUpper(atomContent, k_OperatorNames);
         return ktc == null ? default(OperatorKind?) : (OperatorKind)ktc.ThePayload;
     }
@@ -108,7 +110,7 @@ internal static class KnownTextResolver
     /// 	"=", "<>", "<", ">", "<=", ">=", "IS",
     /// 	"EQV", "IMP"
     /// }.AsReadOnly();
-    public static readonly KnownTextContent[] k_ComparisonTokenValues = new KnownTextContent[]
+    public static readonly KnownTextContent[] k_ComparisonTokenValues = CollectComparisonTokenValues(); private static KnownTextContent[] CollectComparisonTokenValues() => new KnownTextContent[]
     {
         new KnownTextContent("=", false, false, OperatorKind.Equal),
         new KnownTextContent("<>", false, false, OperatorKind.NotEqual),

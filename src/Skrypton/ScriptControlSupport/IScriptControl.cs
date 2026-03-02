@@ -223,7 +223,7 @@ namespace Skrypton.ScriptControlSupport
         }
 
         [DispId(204)]
-        string HelpFile
+        string? HelpFile
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(204)]

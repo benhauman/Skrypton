@@ -119,7 +119,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// This is optional and may be null (indicating no arguments and no argument-wrapping brackets) or empty (meaning no arguments but WITH brackets)
             /// or non-empty (in which case there were also brackets around the arguments). If non-null, it will never contain any null references.
             /// </summary>
-            [DataMember] public IEnumerable<Expression> ArgumentsIfAny { get; private set; }
+            [DataMember] public IEnumerable<Expression>? ArgumentsIfAny { get; private set; }
 
             /// <summary>
             /// It's invalid for targets to be wrapped in braces (it will result in a runtime error), so this is important information

@@ -110,7 +110,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// if the list is non-null and non-empty, it will never contain any null references)
         /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
-        [DataMember] public Expression[] Dimensions { get; private set; }
+        [DataMember] public Expression[]? Dimensions { get; private set; }
 #pragma warning restore CA1819 // Properties should not return arrays
 
         public override string ToString()

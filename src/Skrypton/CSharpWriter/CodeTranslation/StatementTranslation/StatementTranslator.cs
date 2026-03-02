@@ -2026,7 +2026,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             /// This will be null if DesiredNumberOfArgumentsMatchedAgainst is null and non-null if not since it relies upon the same criteria when trying
             /// to identify a target support function.
             /// </summary>
-            public Type ReturnTypeIfKnown { get; set; }
+            public Type? ReturnTypeIfKnown { get; set; }
         }
     }
 }

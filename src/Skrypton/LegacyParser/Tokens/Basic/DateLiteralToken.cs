@@ -52,7 +52,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// may require parsing at the runtime of the translated program (if they vary by culture) - the RequiresRuntimeValidation property indicates which this is.
         /// </summary>
         public string Content { get; private set; }
-        [NonSerialized] StringUpper contentUpper;
+        [NonSerialized] StringUpper? contentUpper;
         public StringUpper ContentUpperX()
 
         {

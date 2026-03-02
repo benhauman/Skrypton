@@ -166,11 +166,11 @@ namespace Skrypton.ScriptControlSupport
             peStream.Seek(0, SeekOrigin.Begin);
             // return Assembly.Load(peStream.ToArray());
             var assemblyBytes = peStream.ToArray();
-            var context = new UnloadableAssemblyLoadContextContext();
+            var context = new UnloadableAssemblyLoadContextContext(Assembly.Load(assemblyBytes));
             //context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
             //context.LoadFromAssemblyPath
             //return context;
-            context.LoadedAssembly = Assembly.Load(assemblyBytes);
+            //context.LoadedAssembly = Assembly.Load(assemblyBytes);
 
             // var type = asm.GetType("MyClass1");
             // var method = type.GetMethod("MyMethod1", BindingFlags.Public | BindingFlags.Static);
@@ -184,8 +184,9 @@ namespace Skrypton.ScriptControlSupport
     {
         public Assembly LoadedAssembly { get; set; }
 
-        public UnloadableAssemblyLoadContextContext()// : base(isCollectible: true)
+        public UnloadableAssemblyLoadContextContext(Assembly loadedAssembly)// : base(isCollectible: true)
         {
+            LoadedAssembly = loadedAssembly ?? throw new ArgumentNullException(nameof(loadedAssembly));
         }
         //protected override Assembly Load(AssemblyName assemblyName)
         //{

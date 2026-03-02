@@ -30,6 +30,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// used, otherwise a VBScript compile error will have been raised - ReDim may be used to specify variable dimensions but they
         /// will be represented by a VariableDeclaration with no dimensions and a separate statement to set the reference to an array)
         /// </summary>
-        public IEnumerable<uint> ConstantDimensionsIfAny { get; private set; }
+        public IEnumerable<uint>? ConstantDimensionsIfAny { get; private set; }
     }
 }

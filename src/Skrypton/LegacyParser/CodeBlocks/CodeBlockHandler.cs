@@ -9,7 +9,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
 {
     internal sealed class CodeBlockHandler
     {
-        private readonly IReadOnlyCollection<string[]> blockEnds;
+        private readonly IReadOnlyCollection<string[]>? blockEnds;
         internal static readonly CodeBlockHandler RootBlock = new CodeBlockHandler(true, null);
 
         public CodeBlockHandler(string[] optionalBlockEndsOrNull) : this(false, [optionalBlockEndsOrNull]) { }

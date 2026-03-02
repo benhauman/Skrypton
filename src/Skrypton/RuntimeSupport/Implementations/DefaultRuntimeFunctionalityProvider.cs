@@ -39,7 +39,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private readonly Dictionary<int, ErrorTokenState> _activeErrorTokens;
         private readonly DefaultArithmeticFunctionalityProvider _arithmeticHandler;
         private int _randomSeed;
-        private Exception _trappedErrorIfAny;
+        private Exception? _trappedErrorIfAny;
 
         public DefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {

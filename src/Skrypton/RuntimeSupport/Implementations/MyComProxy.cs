@@ -192,7 +192,7 @@ Returns the remaining ref count
         }
 
         public override Type ReturnType => typeof(object);
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes { get; }
+        public override ICustomAttributeProvider? ReturnTypeCustomAttributes { get; }
     }
     internal sealed class DispatchPropertyInfo : PropertyInfo
     {
@@ -225,7 +225,7 @@ Returns the remaining ref count
         public override PropertyAttributes Attributes => PropertyAttributes.None;
         public override bool CanRead => true;
         public override bool CanWrite => true;
-        public override Type PropertyType { get; }
+        public override Type? PropertyType { get; }
 
         public override MethodInfo[] GetAccessors(bool nonPublic)
         {
