@@ -43,14 +43,14 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// Add an argument to the set that will be passed by-ref if the target call site expects a by-ref argument and if the value is an array
         /// (otherwise it will be treated as by-val). This should return a reference to itself to enable chaining when building up argument sets.
         /// </summary>
-        public IBuildCallArgumentProviders RefIfArray(object target, IEnumerable<IProvideCallArguments> argumentProviders)
+        public IBuildCallArgumentProviders RefIfArray(object target, params IProvideCallArguments[] argumentProviders)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (argumentProviders == null)
                 throw new ArgumentNullException(nameof(argumentProviders));
 
-            var argumentProvidersArray = argumentProviders.ToArray();
+            IProvideCallArguments[] argumentProvidersArray = argumentProviders.ToArray();
             if (argumentProvidersArray.Length == 0)
                 throw new ArgumentException("There must be at least one argument provider");
             if (argumentProvidersArray.Any(p => p.NumberOfArguments == 0))
@@ -65,8 +65,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Process all but the last set of argument providers, updating target with each call. If at any point target is not an array
             // then the final value will be passed ByVal (since there must be a function or property access involved, the result of which
             // is never passed ByRef).
-            var passByVal = false;
-            for (var index = 0; index < argumentProvidersArray.Length - 1; index++)
+            bool passByVal = false;
+            for (int index = 0; index < argumentProvidersArray.Length - 1; index++)
             {
                 if (!target.GetType().IsArray)
                     passByVal = true;
@@ -77,8 +77,8 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Process the final arguments to get the value that should actually be passed as the argument. If we've determined that this
             // value should be passed ByVal then hand straight off to the Val method.
-            var lastArgumentProvider = argumentProvidersArray.Last();
-            var valueForArgument = _vbscriptValueAccessor.CALL(context, target, [], lastArgumentProvider, line: 0);
+            IProvideCallArguments lastArgumentProvider = argumentProvidersArray.Last();
+            object valueForArgument = _vbscriptValueAccessor.CALL(context, target, [], lastArgumentProvider, line: 0);
             if (passByVal)
                 return Val(valueForArgument);
 
@@ -150,7 +150,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if ((index < 0) || (index >= _valuesWithUpdatesWhereRequired.Count))
                     throw new ArgumentOutOfRangeException(nameof(index));
 
-                var valueUpdater = _valuesWithUpdatesWhereRequired[index].Item2;
+                Action<object> valueUpdater = _valuesWithUpdatesWhereRequired[index].Item2;
                 if (valueUpdater != null)
                     valueUpdater(value);
             }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Skrypton.RuntimeSupport
 {
-    internal static class IBuildCallArgumentProvidersExtensions
+    public static class IBuildCallArgumentProvidersExtensions // public : used by generated code
     {
         /// <summary>
         /// TODO
@@ -18,7 +18,7 @@ namespace Skrypton.RuntimeSupport
             if (argumentProviderBuilders == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilders));
 
-            var argumentProviders = argumentProviderBuilders.Select(b => (b == null) ? null : b.GetArgs()).ToArray();
+            IProvideCallArguments[] argumentProviders = argumentProviderBuilders.Select(b => (b == null) ? null : b.GetArgs()).ToArray();
             if (argumentProviders.Any(p => p == null))
                 throw new ArgumentException("Null reference encountered in argumentProviderBuilders set");
 

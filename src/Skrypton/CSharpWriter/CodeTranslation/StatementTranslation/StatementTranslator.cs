@@ -1416,13 +1416,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
                 .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false)).ToArray();
             return new TranslatedStatementContentDetails(
-                string.Format(CultureInfo.InvariantCulture,
-                    ".RefIfArray({0}, {1})",
-                    possibleByRefTarget.TranslatedContent,
-                    string.Join(
-                        ", ",
-                        translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent)
-                    )
+                    FormattableString.Invariant($".{nameof(IBuildCallArgumentProvidersExtensions.RefIfArray)}({possibleByRefTarget.TranslatedContent}, {string.Join(", ", translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent))})"
                 ),
                 possibleByRefTarget.VariablesAccessed.AddRange(
                     translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray()

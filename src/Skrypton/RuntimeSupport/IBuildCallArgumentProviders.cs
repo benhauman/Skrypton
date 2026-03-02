@@ -21,7 +21,8 @@ namespace Skrypton.RuntimeSupport
         /// Add an argument to the set that will be passed by-ref if the target call site expects a by-ref argument and if the value is an array
         /// (otherwise it will be treated as by-val). This should return a reference to itself to enable chaining when building up argument sets.
         /// </summary>
-		IBuildCallArgumentProviders RefIfArray(object target, IEnumerable<IProvideCallArguments> argumentProviders);
+		IBuildCallArgumentProviders RefIfArray(object target, params IProvideCallArguments[] argumentProviders);
+        //IBuildCallArgumentProviders RefIfArray(object target, params IBuildCallArgumentProviders[] argumentProviderBuilders);
 
         /// <summary>
         /// Specify that brackets were specified, even if there were zero arguments - this may affect the available call mechanisms (eg. it will
