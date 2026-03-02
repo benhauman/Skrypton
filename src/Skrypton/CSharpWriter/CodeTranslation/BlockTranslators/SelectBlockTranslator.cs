@@ -545,7 +545,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
-                        successfullyEvaluatedTargetNameIfRequired.Name + " = true;",
+                        successfullyEvaluatedTargetNameIfRequired!.Name + " = true;",
                         indentationDepth,
                         targetExpression.Tokens.First().LineIndex
                     ));

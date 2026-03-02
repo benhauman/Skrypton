@@ -74,7 +74,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 #pragma warning restore CA1033 // Interface methods should be callable by child types
             {
                 return new ICodeBlock[] { Expression }
-                    .Concat(Content.Select(c => c as CaseBlockExpressionSegment).Where(c => c != null).SelectMany(c => c.Values))
+                    .Concat(Content.Select(c => c as CaseBlockExpressionSegment).Where(c => c != null).SelectMany(c => c!.Values))
                     .Concat(Content.SelectMany(c => c.Statements));
             }
         }

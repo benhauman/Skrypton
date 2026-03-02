@@ -28,14 +28,13 @@ namespace Skrypton.LegacyParser.CodeBlocks
             if (optionalBlockEndsOrNull == null) throw new ArgumentNullException(nameof(optionalBlockEndsOrNull));
 
             var blockEnds = new List<string[]>();
-            foreach (var endSequence in optionalBlockEndsOrNull)
+            foreach (string[]? endSequence in optionalBlockEndsOrNull)
             {
-                var endSequenceClone = (endSequence ?? []).ToArray();
-                if (endSequence.Length == 0)
+                if (endSequence == null || endSequence!.Length == 0)
                     throw new ArgumentException("Invalid BlockEnd sequence specified: null or blank");
-                if (endSequenceClone.Any(s => s == null))
+                if (endSequence.Any(s => s == null))
                     throw new ArgumentException("Invalid BlockEnd sequence specified: null value within sequence");
-                blockEnds.Add(endSequenceClone);
+                blockEnds.Add(endSequence.ToArray()); // clone
             }
             this.blockEnds = blockEnds;
         }

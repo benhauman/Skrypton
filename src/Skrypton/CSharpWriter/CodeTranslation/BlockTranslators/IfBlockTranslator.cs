@@ -159,7 +159,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             "{0}.IF(() => {1}, {2})",
                             _supportRefName.Name,
                             conditionalContent.TranslatedContent,
-                            scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
+                            scopeAccessInformation.ErrorRegistrationTokenIfAny!.Name
                         ),
                         conditionalContent.VariablesAccessed
                     );

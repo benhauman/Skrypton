@@ -343,13 +343,17 @@ namespace Skrypton.RuntimeSupport
             public static int CompareString(string? Left, string? Right, bool TextCompare, CultureInfo culture) // System.Threading.Thread.CurrentThread.CurrentCulture
             {
                 int result;
-                if (Left == Right)
+                if (Left == null && Right == null)
+                {
+                    result = 0;
+                }
+                else if (Left == Right)
                 {
                     result = 0;
                 }
                 else if (Left == null)
                 {
-                    if (Right.Length == 0)
+                    if (Right!.Length == 0)
                     {
                         result = 0;
                     }

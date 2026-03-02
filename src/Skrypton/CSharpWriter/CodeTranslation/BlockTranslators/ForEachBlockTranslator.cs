@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
@@ -7,6 +8,7 @@ using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
@@ -51,13 +53,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // However, to make the output marginally easier to read, the ENUMERABLE method will deal with this logic and so the ExpressionReturnTypeOptions
             // value passed to the statement translator is "NotSpecified".
 
-            var loopSourceContent = _statementTranslator.Translate(forEachBlock.LoopSrc, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
-            var undeclaredVariablesInLoopSourceContent = loopSourceContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-            foreach (var undeclaredVariable in undeclaredVariablesInLoopSourceContent)
+            TranslatedStatementContentDetails loopSourceContent = _statementTranslator.Translate(forEachBlock.LoopSrc, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
+            NonNullImmutableList<NameToken> undeclaredVariablesInLoopSourceContent = loopSourceContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
+            foreach (NameToken? undeclaredVariable in undeclaredVariablesInLoopSourceContent)
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
-            var translationResult = TranslationResult.Empty.AddUndeclaredVariables(undeclaredVariablesInLoopSourceContent);
-            var enumerationContentVariableName = _tempNameGenerator(new CSharpName("enumerationContent"), scopeAccessInformation);
-            var enumeratorInitialisationContent = string.Format(CultureInfo.InvariantCulture,
+            TranslationResult translationResult = TranslationResult.Empty.AddUndeclaredVariables(undeclaredVariablesInLoopSourceContent);
+            CSharpName enumerationContentVariableName = _tempNameGenerator(new CSharpName("enumerationContent"), scopeAccessInformation);
+            string enumeratorInitialisationContent = string.Format(CultureInfo.InvariantCulture,
                 "{0} = {1}.ENUMERABLE({2}).GetEnumerator();",
                 enumerationContentVariableName.Name,
                 _supportRefName.Name,
@@ -65,8 +67,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
             if (!scopeAccessInformation.IsDeclaredReference(forEachBlock.LoopVar, _nameRewriter))
                 translationResult = translationResult.AddUndeclaredVariables(new[] { forEachBlock.LoopVar });
-            var rewrittenLoopVarName = _nameRewriter.GetMemberAccessTokenName(forEachBlock.LoopVar);
-            var loopVarTargetContainer = scopeAccessInformation.GetNameOfTargetContainerIfAnyRequired(forEachBlock.LoopVar, _envRefName, _outerRefName, _nameRewriter);
+            string rewrittenLoopVarName = _nameRewriter.GetMemberAccessTokenName(forEachBlock.LoopVar);
+            CSharpName? loopVarTargetContainer = scopeAccessInformation.GetNameOfTargetContainerIfAnyRequired(forEachBlock.LoopVar, _envRefName, _outerRefName, _nameRewriter);
             if (loopVarTargetContainer != null)
                 rewrittenLoopVarName = loopVarTargetContainer.Name + "." + rewrittenLoopVarName;
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
@@ -169,7 +171,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forEachBlock.LoopVar.LineIndex));
                 indentationDepth--;
             }
-            var earlyExitNameIfAny = GetEarlyExitNameIfRequired(forEachBlock, scopeAccessInformation);
+            CSharpName? earlyExitNameIfAny = GetEarlyExitNameIfRequired(forEachBlock, scopeAccessInformation);
             if (earlyExitNameIfAny != null)
             {
                 translationResult = translationResult.Add(new TranslatedStatement(
@@ -204,10 +206,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forEachBlock.LoopVar.LineIndex));
 
-            var earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
+            string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
-                .Select(e => e.ExitEarlyBooleanNameIfAny.Name);
-            if (earlyExitFlagNamesToCheck.Any())
+                .Select(e => e.ExitEarlyBooleanNameIfAny!.Name)
+                .ToArray();
+            if (earlyExitFlagNamesToCheck.Length > 0)
             {
                 // Perform early-exit checks for any scopeAccessInformation.StructureExitPoints - if this is FOR loop inside a DO..LOOP loop and an
                 // EXIT DO was encountered within the FOR that must refer to the containing DO, then the FOR loop will have been broken out of, but

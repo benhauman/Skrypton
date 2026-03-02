@@ -45,9 +45,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
-            var assignmentFormatDetails = GetAssignmentFormatDetails(statement, scopeAccessInformation);
+            ValueSettingStatementAssigmentFormatDetails assignmentFormatDetails = GetAssignmentFormatDetails(statement, scopeAccessInformation);
 
-            var translatedExpressionContentDetails = _statementTranslator.Translate(
+            TranslatedStatementContentDetails translatedExpressionContentDetails = _statementTranslator.Translate(
                 statement.Expression,
                 scopeAccessInformation,
                 (statement.ValueSetType == ValueSetTypeOptions.Set)
@@ -73,29 +73,29 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // 2014-04-03 DWR: Used to pass valueSettingStatement.ValueToSet.BracketStandardisedTokens here but there is no opportunity for "optional"
             // brackets in VBScript for the target of an assignment statement so the BracketStandardisedTokens added nothing here but complexity and
             // so has been removed.
-            var directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null : scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
-            var targetExpression = ExpressionGenerator.Generate(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
+            NameToken? directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null : scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
+            Expression[] targetExpression = ExpressionGenerator.Generate(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
             if (targetExpression.Length != 1)
                 throw new ArgumentException("The ValueToSet should always be described by a single expression");
-            var targetExpressionSegments = targetExpression[0].Segments.ToArray();
+            IExpressionSegment[] targetExpressionSegments = targetExpression[0].Segments.ToArray();
             if (targetExpressionSegments.Length != 1)
                 throw new ArgumentException("The ValueToSet should always be described by a single expression containing a single segment");
 
             // If there is only a single CallExpressionSegment with a single token then that token must be a NameToken otherwise the statement would be
             // trying to assign a value to a constant or keyword or something inappropriate. If it IS a NameToken, then this is the easiest case - it's
             // a simple assignment, no SET method call required.
-            var expressionSegment = targetExpressionSegments[0];
-            var callExpressionSegment = expressionSegment as CallExpressionSegment;
+            IExpressionSegment expressionSegment = targetExpressionSegments[0];
+            CallExpressionSegment? callExpressionSegment = expressionSegment as CallExpressionSegment;
             if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Take(2).Count() < 2) && !callExpressionSegment.Arguments.Any())
             {
-                var singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
+                NameToken? singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
                 if (singleTokenAsName == null)
                     throw new ArgumentException("Where a ValueSettingStatement's ValueToSet expression is a single expression with a single CallExpressionSegment with one token, that token must be a NameToken");
 
                 // If this single token is the function name (if we're in a function or property) then we need to make the ParentReturnValueNameIfAny
                 // replacement so that the return value reference is updated.
-                var rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(singleTokenAsName);
-                var isSingleTokenSettingParentScopeReturnValue = (
+                string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(singleTokenAsName);
+                bool isSingleTokenSettingParentScopeReturnValue = (
                     (scopeAccessInformation.ParentReturnValueNameIfAny != null) &&
                     rewrittenFirstMemberAccessor == _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name)
                 );
@@ -103,8 +103,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // Now we need to confirm that the target token is a variable (either an explicitly-declared variable or an implicitly-declared variable
                 // or an external dependency or the return value for the containing function, where applicable). If it's not a variable of one of these
                 // types then a runtime exception will need to be thrown, and so this "short cut" simple assignment route may not be followed.
-                var targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(singleTokenAsName, _nameRewriter);
-                var targetIsVariable =
+                DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(singleTokenAsName, _nameRewriter);
+                bool targetIsVariable =
                     (targetReferenceDetailsIfAvailable == null) ||
                     (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.ExternalDependency) ||
                     (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Variable) ||
@@ -118,23 +118,33 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // constants (can never set those). Properties ARE allowed to be set in this manner.
                     bool invalidZeroArgumentBracketsArePresent;
                     if (callExpressionSegment.ZeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+                    {
                         invalidZeroArgumentBracketsArePresent = false;
+                    }
                     else if ((targetReferenceDetailsIfAvailable != null) && (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property))
+                    {
                         invalidZeroArgumentBracketsArePresent = false;
+                    }
                     else
+                    {
                         invalidZeroArgumentBracketsArePresent = true;
+                    }
+
                     if (!invalidZeroArgumentBracketsArePresent)
                     {
                         // If the "targetAccessor" is an undeclared variable then it must be accessed through the envRefName (this is a reference that should
                         // be passed into the containing class' constructor since C# doesn't support the concept of abritrary unintialised references)
-                        var targetContainerIfRequired = scopeAccessInformation.GetNameOfTargetContainerIfAnyRequired(singleTokenAsName, _envRefName, _outerRefName, _nameRewriter);
+                        CSharpName? targetContainerIfRequired = scopeAccessInformation.GetNameOfTargetContainerIfAnyRequired(singleTokenAsName, _envRefName, _outerRefName, _nameRewriter);
                         if (targetContainerIfRequired != null)
+                        {
                             rewrittenFirstMemberAccessor = targetContainerIfRequired.Name + "." + rewrittenFirstMemberAccessor;
+                        }
+
                         return new ValueSettingStatementAssigmentFormatDetails(
                             translatedExpression => string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1}",
                                 isSingleTokenSettingParentScopeReturnValue
-                                    ? scopeAccessInformation.ParentReturnValueNameIfAny.Name
+                                    ? scopeAccessInformation.ParentReturnValueNameIfAny!.Name
                                     : rewrittenFirstMemberAccessor,
                                 translatedExpression
                             ),
@@ -168,9 +178,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // though, so a simple StartsWith check is performed.
                     string wrapperFunction;
                     if (valueSettingStatement.ValueSetType == ValueSetTypeOptions.Let)
+                    {
                         wrapperFunction = _supportRefName.Name + ".VAL";
+                    }
                     else
+                    {
                         wrapperFunction = _supportRefName.Name + ".OBJ";
+                    }
+
                     return new ValueSettingStatementAssigmentFormatDetails(
                         translatedExpression =>
                         {
@@ -210,7 +225,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callExpressionSegments = new List<CallSetItemExpressionSegment> { callExpressionSegment };
             else
             {
-                var callSetExpressionSegment = expressionSegment as CallSetExpressionSegment;
+                CallSetExpressionSegment? callSetExpressionSegment = expressionSegment as CallSetExpressionSegment;
                 if (callSetExpressionSegment == null)
                     throw new ArgumentException("The ValueToSet should always be described by a single expression containing a single segment, of type CallExpressionSegment or CallSetExpressionSegment");
                 callExpressionSegments = callSetExpressionSegment.CallExpressionSegments.ToList();
@@ -219,10 +234,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // If the last CallExpressionSegment has more than two member accessor then it needs breaking up since we need a target, at most a single
             // member accessor against that target and arguments. So if there are more than two member accessors in the last segments then we want to
             // split it so that all but one are in one segment (with no arguments) and then the last one (to go WITH the arguments) in the last entry.
-            var numberOfMemberAccessTokensInLastCallExpressionSegment = callExpressionSegments.Last().MemberAccessTokens.Count();
+            int numberOfMemberAccessTokensInLastCallExpressionSegment = callExpressionSegments.Last().MemberAccessTokens.Count();
             if (numberOfMemberAccessTokensInLastCallExpressionSegment > 2)
             {
-                var lastCallExpressionSegments = callExpressionSegments.Last();
+                CallSetItemExpressionSegment? lastCallExpressionSegments = callExpressionSegments.Last();
                 callExpressionSegments.RemoveAt(callExpressionSegments.Count - 1);
                 callExpressionSegments.Add(
                     new CallExpressionSegment(
@@ -249,7 +264,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (callExpressionSegments.Count == 1)
             {
                 // The single CallExpressionSegment may have one or two member accessors
-                var targetAccessor = callExpressionSegments[0].MemberAccessTokens.First();
+                IToken targetAccessor = callExpressionSegments[0].MemberAccessTokens.First();
                 targetAccessorName = _nameRewriter.GetMemberAccessTokenName(targetAccessor);
                 if (callExpressionSegments[0].MemberAccessTokens.Count() == 1)
                 {
@@ -262,11 +277,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 arguments = callExpressionSegments[0].Arguments;
 
-                var targetAccessorNameToken = targetAccessor as NameToken;
-                var targetReferenceDetailsIfAvailable = (targetAccessorNameToken == null) ? null : scopeAccessInformation.TryToGetDeclaredReferenceDetails(targetAccessorNameToken, _nameRewriter);
+                NameToken? targetAccessorNameToken = targetAccessor as NameToken;
+                DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = (targetAccessorNameToken == null) ? null : scopeAccessInformation.TryToGetDeclaredReferenceDetails(targetAccessorNameToken, _nameRewriter);
                 if (targetReferenceDetailsIfAvailable == null)
                 {
-                    if (callExpressionSegment.ZeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+                    if (callExpressionSegment!.ZeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
                     {
                         // If an undeclared variable is accessed like a function - eg. "a() = 1" - then it's a type mismatch
                         targetAccessorName = TranslateIntoErrorRaise("TypeMismatchException", targetAccessor);
@@ -286,13 +301,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // properties are an exception, they are a weird hybrid of a function and a settable reference and VBScript allows them - "p() = 1" is
                     // acceptable within a class where "p" is a settable property.
                     bool invalidZeroArgumentBracketsArePresent;
-                    if (callExpressionSegment.ZeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+                    if (callExpressionSegment!.ZeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
                         invalidZeroArgumentBracketsArePresent = false;
                     else if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property)
                         invalidZeroArgumentBracketsArePresent = false;
                     else
                         invalidZeroArgumentBracketsArePresent = true;
-                    var isSingleTokenSettingParentScopeReturnValue = (
+                    bool isSingleTokenSettingParentScopeReturnValue = (
                         (scopeAccessInformation.ParentReturnValueNameIfAny != null) &&
                         targetAccessorName == _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name)
                     );
@@ -312,7 +327,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     else
                     {
                         if (isSingleTokenSettingParentScopeReturnValue)
-                            targetAccessorName = scopeAccessInformation.ParentReturnValueNameIfAny.Name;
+                            targetAccessorName = scopeAccessInformation.ParentReturnValueNameIfAny!.Name;
                         else if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.ExternalDependency)
                             targetAccessorName = _envRefName.Name + "." + targetAccessorName;
                         else if (targetReferenceDetailsIfAvailable.ScopeLocation == ScopeLocationOptions.OutermostScope)
@@ -325,7 +340,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             // there is a single "callExpressionSegments" entry since this is the only case where the first named target is extracted
                             // from its arguments - eg. "a(0).Name = 1" is represented by two callExpressionSegments ("a(0)" and ".Name") which will
                             // be translated into "_.SET(1, _.CALL(this, _outer, "a"), "Name", _.ARGS.Val(0))" and not require any special messing around.
-                            var targetAccessCallExpressionSegments = new IExpressionSegment[]
+                            IExpressionSegment[] targetAccessCallExpressionSegments = new IExpressionSegment[]
                             {
                                 new CallExpressionSegment(
                                     callExpressionSegments.Single().MemberAccessTokens.Take(1),
@@ -355,8 +370,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                var targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count - 1).ToArray();
-                var targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Length > 1)
+                CallSetItemExpressionSegment[] targetAccessCallExpressionSegments = callExpressionSegments.Take(callExpressionSegments.Count - 1).ToArray();
+                IExpressionSegment[] targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Length > 1)
                     ? new IExpressionSegment[] { new CallSetExpressionSegment(targetAccessCallExpressionSegments) }
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };
                 targetAccessorName =
@@ -368,7 +383,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 // The last CallExpressionSegment may only have one member accessor
                 // - Note: it may have zero member accessors if the assignment target was of the form "a(0, 1)(2)"
-                var lastCallExpressionSegment = callExpressionSegments.Last();
+                CallSetItemExpressionSegment? lastCallExpressionSegment = callExpressionSegments.Last();
                 optionalMemberAccessor = lastCallExpressionSegment.MemberAccessTokens.Any() ? lastCallExpressionSegment.MemberAccessTokens.Single().Content : null;
                 arguments = lastCallExpressionSegment.Arguments;
 
@@ -419,7 +434,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string argumentsInitialisation;
             if (arguments.Any())
             {
-                var argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
+                TranslatedStatementContentDetails argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
                 variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
                 argumentsInitialisation = argumentsContent.TranslatedContent;
             }

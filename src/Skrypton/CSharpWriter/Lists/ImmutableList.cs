@@ -33,7 +33,7 @@ namespace Skrypton.CSharpWriter.Lists
                 throw new ArgumentNullException(nameof(values));
 
             Node? node = null;
-            foreach (var value in values)
+            foreach (T value in values)
             {
                 if (optionalValueValidator != null)
                 {
@@ -61,10 +61,10 @@ namespace Skrypton.CSharpWriter.Lists
 
                 // Getting the value of the last item is a very quick operation so we can add a shortcut for it
                 if (index == Count - 1)
-                    return _tail.Value;
+                    return _tail!.Value;
 
                 EnsureAllValuesDataIsPopulated();
-                return _allValues[index];
+                return _allValues![index];
             }
         }
 
@@ -84,7 +84,7 @@ namespace Skrypton.CSharpWriter.Lists
                 return false;
 
             EnsureAllValuesDataIsPopulated();
-            for (var index = 0; index < _allValues.Length; index++)
+            for (int index = 0; index < _allValues!.Length; index++)
             {
                 if (DoValuesMatch(_allValues[index], value, optionalComparer))
                     return true;
@@ -111,8 +111,8 @@ namespace Skrypton.CSharpWriter.Lists
                 return this;
 
             // AddRange is easy for the same reason as Add
-            var node = _tail;
-            foreach (var value in values)
+            Node? node = _tail;
+            foreach (T value in values)
             {
                 if (_optionalValueValidator != null)
                     _optionalValueValidator.EnsureValid(value);
@@ -150,11 +150,11 @@ namespace Skrypton.CSharpWriter.Lists
             }
 
             // Starting with the tail, walk back to the insertion point, record the values we pass over
-            var node = _tail;
-            var valuesBeforeInsertionPoint = new T[Count - insertAtIndex];
-            for (var index = 0; index < valuesBeforeInsertionPoint.Length; index++)
+            Node? node = _tail;
+            T[] valuesBeforeInsertionPoint = new T[Count - insertAtIndex];
+            for (int index = 0; index < valuesBeforeInsertionPoint.Length; index++)
             {
-                valuesBeforeInsertionPoint[index] = node.Value;
+                valuesBeforeInsertionPoint[index] = node!.Value;
                 node = node.Previous;
             }
 
@@ -167,7 +167,7 @@ namespace Skrypton.CSharpWriter.Lists
             }
             else
             {
-                foreach (var valueToAdd in multipleValuesToAdd)
+                foreach (T valueToAdd in multipleValuesToAdd)
                 {
                     if (_optionalValueValidator != null)
                         _optionalValueValidator.EnsureValid(valueToAdd);
@@ -176,7 +176,7 @@ namespace Skrypton.CSharpWriter.Lists
             }
 
             // Finally, toAdd back the values we walked through before to complete the chain
-            for (var index = valuesBeforeInsertionPoint.Length - 1; index >= 0; index--)
+            for (int index = valuesBeforeInsertionPoint.Length - 1; index >= 0; index--)
                 node = new Node(valuesBeforeInsertionPoint[index], node);
             return new ImmutableList<T>(node, _optionalValueValidator);
         }
@@ -200,13 +200,13 @@ namespace Skrypton.CSharpWriter.Lists
 
             // Try to find the last node that matches the value when walking backwards from the tail; this will be the first in the list
             // when considered from start to end
-            var node = _tail;
+            Node? node = _tail;
             Node? lastNodeThatMatched = null;
             int? lastNodeIndexThatMatched = null;
-            var valuesBeforeRemoval = new T[Count];
-            for (var index = 0; index < Count; index++)
+            T[] valuesBeforeRemoval = new T[Count];
+            for (int index = 0; index < Count; index++)
             {
-                if (DoValuesMatch(value, node.Value, optionalComparer))
+                if (DoValuesMatch(value, node!.Value, optionalComparer))
                 {
                     lastNodeThatMatched = node;
                     lastNodeIndexThatMatched = index;
@@ -219,7 +219,7 @@ namespace Skrypton.CSharpWriter.Lists
 
             // Now build a new chain by taking the content before the value-to-remove and adding back the values that were stepped through
             node = lastNodeThatMatched.Previous;
-            for (var index = lastNodeIndexThatMatched.Value - 1; index >= 0; index--)
+            for (int index = lastNodeIndexThatMatched.Value - 1; index >= 0; index--)
                 node = new Node(valuesBeforeRemoval[index], node);
             return new ImmutableList<T>(node, _optionalValueValidator);
         }
@@ -273,20 +273,22 @@ namespace Skrypton.CSharpWriter.Lists
                 throw new ArgumentException("removeAtIndex + count must not exceed Count");
 
             // Starting with the tail, walk back to the end of the removal range, recording the values we pass over
-            var node = _tail;
-            var valuesBeforeRemovalRange = new T[Count - (removeAtIndex + count)];
-            for (var index = 0; index < valuesBeforeRemovalRange.Length; index++)
+            Node? node = _tail;
+            T[] valuesBeforeRemovalRange = new T[Count - (removeAtIndex + count)];
+            for (int index = 0; index < valuesBeforeRemovalRange.Length; index++)
             {
-                valuesBeforeRemovalRange[index] = node.Value;
+                valuesBeforeRemovalRange[index] = node!.Value;
                 node = node.Previous;
             }
 
             // Move past the values in the removal range
-            for (var index = 0; index < count; index++)
-                node = node.Previous;
+            for (int index = 0; index < count; index++)
+            {
+                node = node!.Previous;
+            }
 
             // Now toAdd back the values we walked through above to the part of the chain that can be persisted
-            for (var index = valuesBeforeRemovalRange.Length - 1; index >= 0; index--)
+            for (int index = valuesBeforeRemovalRange.Length - 1; index >= 0; index--)
                 node = new Node(valuesBeforeRemovalRange[index], node);
             return new ImmutableList<T>(node, _optionalValueValidator);
         }
@@ -303,9 +305,12 @@ namespace Skrypton.CSharpWriter.Lists
             if (numberToRemove > Count)
                 throw new ArgumentOutOfRangeException(nameof(numberToRemove), "must not be greater than Count");
 
-            var node = _tail;
-            for (var index = 0; index < numberToRemove; index++)
-                node = node.Previous;
+            Node? node = _tail;
+            for (int index = 0; index < numberToRemove; index++)
+            {
+                node = node!.Previous;
+            }
+
             return new ImmutableList<T>(node, _optionalValueValidator);
         }
 
@@ -355,12 +360,12 @@ namespace Skrypton.CSharpWriter.Lists
                 return;
 
             // Since we start at the tail and work backwards, we need to reverse the order of the items in values array that is populated here
-            var numberOfValues = Count;
-            var values = new T[numberOfValues];
-            var node = _tail;
-            for (var index = 0; index < numberOfValues; index++)
+            int numberOfValues = Count;
+            T[] values = new T[numberOfValues];
+            Node? node = _tail;
+            for (int index = 0; index < numberOfValues; index++)
             {
-                values[(numberOfValues - 1) - index] = node.Value;
+                values[(numberOfValues - 1) - index] = node!.Value;
                 node = node.Previous;
             }
             _allValues = values;

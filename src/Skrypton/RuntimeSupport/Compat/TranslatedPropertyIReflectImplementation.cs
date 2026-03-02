@@ -180,13 +180,13 @@ namespace Skrypton.RuntimeSupport.Compat
                 if ((getter != null) && (setter != null))
                 {
                     ParameterInfo[] getterParameters = getter.GetParameters();
-                    if (getterParameters.Length != (setterParameters.Length - 1))
+                    if (getterParameters.Length != (setterParameters!.Length - 1))
                         throw new ArgumentException("Where both getter and setter are non-null, the setter must have one more parameter than the gettter");
 
                     // Ensure setter's last parameter is the same type as the getter's return type
                     Type setterLastParameterType = setterParameters.Last().ParameterType;
                     if (setterLastParameterType.IsByRef)
-                        setterLastParameterType = setterLastParameterType.GetElementType(); // Use the element type in case the setter's parameter is passed by reference or pointer
+                        setterLastParameterType = setterLastParameterType.GetElementType()!; // Use the element type in case the setter's parameter is passed by reference or pointer
                     if (setterLastParameterType != getter.ReturnType)
                         throw new ArgumentException("Where both getter and setter are non-null, the setter's last parameter's type must match the getter's return type");
 
@@ -222,12 +222,12 @@ namespace Skrypton.RuntimeSupport.Compat
 
             public override MethodInfo? GetGetMethod(bool nonPublic)
             {
-                return _getter;
+                return _getter!;
             }
 
             public override ParameterInfo[] GetIndexParameters()
             {
-                return _getter.GetParameters();
+                return _getter!.GetParameters();
             }
 
             public override MethodInfo? GetSetMethod(bool nonPublic)
@@ -237,7 +237,7 @@ namespace Skrypton.RuntimeSupport.Compat
 
             public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
             {
-                return _getter.Invoke(obj, invokeAttr | BindingFlags.InvokeMethod, binder, index, culture);
+                return _getter!.Invoke(obj, invokeAttr | BindingFlags.InvokeMethod, binder, index, culture);
             }
 
             public override Type PropertyType
@@ -246,13 +246,13 @@ namespace Skrypton.RuntimeSupport.Compat
                 {
                     if (_getter != null)
                         return _getter.ReturnType;
-                    return _setter.GetParameters().Last().ParameterType;
+                    return _setter!.GetParameters().Last().ParameterType;
                 }
             }
 
             public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
             {
-                _setter.Invoke(obj, invokeAttr | BindingFlags.InvokeMethod, binder, index.Concat(new[] { value }).ToArray(), culture);
+                _setter!.Invoke(obj, invokeAttr | BindingFlags.InvokeMethod, binder, index.Concat(new[] { value }).ToArray(), culture);
             }
 
             public override Type DeclaringType

@@ -273,7 +273,7 @@ namespace Skrypton.RuntimeSupport
 
             if (VbDateParser.TryParseVbDate(monthNameTranslator, culture, input, defaultYear, out var dtParts))
             {
-                return NewDateTime(input, dtParts.Year, dtParts.Month, dtParts.Day);
+                return NewDateTime(input, dtParts!.Year, dtParts.Month, dtParts.Day);
             }
             // Split by space or dash
             var parts = input.Split([' ', '-', '/'], StringSplitOptions.RemoveEmptyEntries);

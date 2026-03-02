@@ -137,7 +137,7 @@ namespace Skrypton.ScriptControlSupport
             {
                 DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeLogger, EngineCulture);
                 using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
-                Type tRunner = asmctx.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
+                Type tRunner = asmctx!.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
                 EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
@@ -151,7 +151,7 @@ namespace Skrypton.ScriptControlSupport
             }
             finally
             {
-                asmctx.UnloadContextCollectAndWait();
+                asmctx?.UnloadContextCollectAndWait();
                 asmctx = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();

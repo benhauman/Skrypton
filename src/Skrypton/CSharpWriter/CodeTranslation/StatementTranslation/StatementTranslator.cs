@@ -118,7 +118,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         throw new ArgumentException("If there are any only two segments then the first must be a negation operator (the first here isn't an operator)");
                     }
 
-                    if ((operatorSegmentWithIndex.Segment.Token.Content != "-")
+                    if ((operatorSegmentWithIndex.Segment!.Token.Content != "-")
                         && !operatorSegmentWithIndex.Segment.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new ArgumentException("If there are any only two segments then the first must be a negation operator (here it has the token content \"" + operatorSegmentWithIndex.Segment.Token.Content + "\")");
@@ -152,7 +152,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.{1}({2})",
                             _supportRefName.Name,
-                            GetSupportFunctionName(operatorSegmentWithIndex.Segment.Token),
+                            GetSupportFunctionName(operatorSegmentWithIndex!.Segment!.Token),
                             result.TranslatedContent
                         ),
                         ExpressionReturnTypeOptions.Value, // This will be a negation operation and so will always return a numeric value
@@ -168,7 +168,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             bool mustConvertLeftValueToNumber, mustConvertRightValueToNumber;
             bool mustConvertLeftValueToDate, mustConvertRightValueToDate;
             bool mustConvertLeftValueToString, mustConvertRightValueToString;
-            if (operatorSegmentWithIndex.Segment.Token is ComparisonOperatorToken)
+            if (operatorSegmentWithIndex!.Segment!.Token is ComparisonOperatorToken)
             {
                 // If the operator segment is a ComparisonOperatorToken (not a LogicalOperatorToken and not any other type of OperatorToken, such
                 // as an arithmetic operation or string concatenation) then there are special rules to apply if one side of the operation is known

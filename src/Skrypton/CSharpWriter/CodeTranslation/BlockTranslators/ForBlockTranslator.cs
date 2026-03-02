@@ -114,7 +114,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var numericLoopStepValueIfAny = (forBlock.LoopStep == null)
                 ? new NumericValueToken("1".ToUpperX(), forBlock.LoopTo.Tokens.Last().LineIndex) // Default to Step 1 if no LoopStep expression was specified
                 : TryToGetExpressionAsNumericConstant(forBlock.LoopStep);
-            if ((numericLoopStepValueIfAny == null) && (forBlock.LoopStep.Tokens.Count() == 2))
+            if ((numericLoopStepValueIfAny == null) && (forBlock.LoopStep!.Tokens.Count() == 2))
             {
                 // If the loop step is "-1" then this will still appear as distinct tokens "-" and "1" since the NumberRebuilder can't safely combine
                 // the two tokens at the level of knowledge that it has, since it doesn't know if the "STEP" token is a keyword (meaning it's part of
@@ -152,7 +152,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 loopConstraintInitialisersWhereRequired.Add(new LoopConstraintInitialiser(
                     loopStepName,
                     numericLoopStepContent.TranslatedContent,
-                    forBlock.LoopStep.Tokens.First().LineIndex
+                    forBlock.LoopStep!.Tokens.First().LineIndex
                 ));
                 loopStep = loopStepName.Name;
                 undeclaredVariableReferencesAccessedByLoopConstraints = undeclaredVariableReferencesAccessedByLoopConstraints.AddRange(
@@ -741,10 +741,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             foreach (var undeclaredVariable in undeclaredVariableReferencesAccessedByLoopConstraints)
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
-            var earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
+            string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
-                .Select(e => e.ExitEarlyBooleanNameIfAny.Name);
-            if (earlyExitFlagNamesToCheck.Any())
+                .Select(e => e.ExitEarlyBooleanNameIfAny!.Name)
+                .ToArray();
+            if (earlyExitFlagNamesToCheck.Length > 0)
             {
                 // Perform early-exit checks for any scopeAccessInformation.StructureExitPoints - if this is FOR loop inside a DO..LOOP loop and an
                 // EXIT DO was encountered within the FOR that must refer to the containing DO, then the FOR loop will have been broken out of, but

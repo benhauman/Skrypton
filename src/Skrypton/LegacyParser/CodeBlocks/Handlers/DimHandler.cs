@@ -153,7 +153,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Get name (if no other content, we're all done!)
             var nameToken = tokens[0];
             if (tokens.Count == 1)
+            {
                 return new DimVariable(new NameToken(false, nameToken.ContentUpperX(), nameToken.LineIndex), null);
+            }
 
             // Ensure next token and last token are "(" and ")"
             if (tokens.Count == 2)
@@ -163,14 +165,18 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // If there were only three tokens, we're all done!
             if (tokens.Count == 3)
+            {
                 return new DimVariable(new NameToken(false, nameToken.ContentUpperX(), nameToken.LineIndex), new List<Expression>());
+            }
 
             // Use base.getEntryList to be flexible and grab dimension declarations
             // as Statement instances
             List<Expression> dimensions = new List<Expression>();
             List<List<IToken>> dimStatements = getEntryList(tokens, 2, AtomToken.GetNewToken(")".ToUpperX(), nameToken.LineIndex));
             foreach (List<IToken> dimStatement in dimStatements)
+            {
                 dimensions.Add(new Expression(dimStatement));
+            }
 
             return new DimVariable(new NameToken(false, nameToken.ContentUpperX(), nameToken.LineIndex), dimensions);
         }

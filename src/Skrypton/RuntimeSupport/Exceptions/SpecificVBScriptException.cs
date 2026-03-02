@@ -24,7 +24,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
             var message = basicErrorDescription;
             if (!string.IsNullOrWhiteSpace(additionalInformationIfAny))
-                message += ": " + additionalInformationIfAny.Trim();
+                message += ": " + additionalInformationIfAny!.Trim();
             return message;
         }
     }

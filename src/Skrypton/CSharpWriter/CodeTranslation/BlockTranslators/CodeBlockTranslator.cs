@@ -665,7 +665,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement(
                         GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!),
                         indentationDepth,
-                        randomizeStatement.SeedIfAny.Tokens.First().LineIndex
+                        randomizeStatement.SeedIfAny!.Tokens.First().LineIndex
                     )
                 );
             }
@@ -701,7 +701,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement(
                         "});",
                         indentationDepth,
-                        randomizeStatement.SeedIfAny.Tokens.First().LineIndex
+                        randomizeStatement.SeedIfAny!.Tokens.First().LineIndex
                     )
                 );
             }
@@ -829,7 +829,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     translatedContentFormat = "{0} = " + translatedContentFormat;
 
                 var translatedArguments = new List<string>();
-                foreach (var dimension in variable.Dimensions)
+                foreach (var dimension in variable.Dimensions!)
                 {
                     var translatedArgumentDetails = _statementTranslator.Translate(
                         dimension,

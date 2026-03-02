@@ -108,7 +108,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     .Add(new TranslatedStatement(
                         string.Format(CultureInfo.InvariantCulture,
                             "return {0};",
-                            functionBlock.Statements.Any() ? returnValueName.Name : "null"
+                            functionBlock.Statements.Any() ? returnValueName!.Name : "null"
                         ),
                         indentationDepth + 1,
                         lineIndexForClosingScaffolding
@@ -255,7 +255,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     base.TranslateVariableInitialization(
                         new VariableDeclaration(
                             new DoNotRenameNameToken(
-                                returnValueNameIfAny.Name.ToUpperX(),
+                                returnValueNameIfAny!.Name.ToUpperX(),
                                 functionBlock.Name.LineIndex
                             ),
                             VariableDeclarationScopeOptions.Private,

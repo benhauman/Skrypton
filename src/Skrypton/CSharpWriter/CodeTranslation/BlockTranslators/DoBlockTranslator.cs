@@ -171,13 +171,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translationResult = translationResult.Add(new TranslatedStatement(
                     "} while (" + whileConditionExpressionContentIfAny.TranslatedContent + ");",
                     indentationDepth,
-                    doBlock.ConditionIfAny.Tokens.First().LineIndex
+                    doBlock.ConditionIfAny!.Tokens.First().LineIndex
                 ));
             }
-            var earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
+            string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
-                .Select(e => e.ExitEarlyBooleanNameIfAny.Name);
-            if (earlyExitFlagNamesToCheck.Any())
+                .Select(e => e.ExitEarlyBooleanNameIfAny!.Name)
+                .ToArray();
+            if (earlyExitFlagNamesToCheck.Length > 0)
             {
                 // These lines do not directly have equivalents in the source, so just take the line index of the previous line that was generated
                 // by the above code

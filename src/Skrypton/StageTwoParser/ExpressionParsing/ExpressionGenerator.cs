@@ -36,12 +36,12 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            var expressions = new List<Expression>();
-            var expressionSegments = new List<IExpressionSegment>();
-            var accessorBuffer = new List<IToken>();
+            List<Expression> expressions = new List<Expression>();
+            List<IExpressionSegment> expressionSegments = new List<IExpressionSegment>();
+            List<IToken> accessorBuffer = new List<IToken>();
             while (true)
             {
-                var token = tokenNavigator.Value;
+                IToken? token = tokenNavigator.Value;
                 if (token == null)
                 {
                     if (depth > 0)
@@ -56,7 +56,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     tokenNavigator.MoveNext(); // Move on since this token has been processed
                     if (expressionSegments.Count == 1)
                     {
-                        var callExpressionSegment = expressionSegments[0] as CallExpressionSegment;
+                        CallExpressionSegment? callExpressionSegment = expressionSegments[0] as CallExpressionSegment;
                         if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Count() == 1) && !callExpressionSegment.Arguments.Any())
                         {
                             // VBScript gives special meaning to a reference wrapped in brackets when passing it to a function (or property); if
@@ -109,7 +109,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     // Get the content from inside the brackets (using a TokenNavigator here that is passed again into the Generate
                     // method means that when the below call returns, the tokenNavigator here will have been moved along to after
                     // the bracketed content that is about to be processed)
-                    var bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
+                    Expression[] bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
 
                     // If the accessorBuffer isn't empty then the bracketed content should be arguments, if not then it's just a bracketed expression
                     if (accessorBuffer.Count != 0)
@@ -154,7 +154,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     continue;
                 }
 
-                var operatorToken = token as OperatorToken;
+                OperatorToken? operatorToken = token as OperatorToken;
                 if (operatorToken != null)
                 {
                     if (accessorBuffer.Count != 0)
@@ -212,7 +212,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // first of its segments. Same logic applies if the previous expression segment was an operator since this will be the first part of an expression
             // that contains multiple expressions - eg. "a * b". Otherwise, the next expression segment must be part of a single expression that is being
             // processed (eg. ".Name" from "a.Name").
-            var lastExpressionSegmentIfAny = expressionSegmentBuffer.LastOrDefault();
+            IExpressionSegment? lastExpressionSegmentIfAny = expressionSegmentBuffer.LastOrDefault();
             return (lastExpressionSegmentIfAny == null) || (lastExpressionSegmentIfAny is OperationExpressionSegment);
         }
 
@@ -224,14 +224,14 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
 
-            var segmentsArray = segments.ToArray();
+            IExpressionSegment[] segmentsArray = segments.ToArray();
             if (segmentsArray.Length == 0)
                 throw new ArgumentException("Empty segments set specified - invalid");
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
 
             // If there are zero or one operators in the expression content then we don't need to do any bracketing to guarantee operator precedence
-            var operatorSegments = segmentsArray
+            Tuple<OperationExpressionSegment, int>[] operatorSegments = segmentsArray
                 .Select((s, index) => Tuple.Create(s as OperationExpressionSegment, index))
                 .Where(s => s.Item1 != null)
                 .ToArray();
@@ -265,8 +265,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // after arithmetic (and string concatenation) and comparisons.
 
             // First, check for an arithmetic and wrap that operation and the corresponding value, feeding back into this method (this is the first special case)
-            var firstArithmeticNegationOperation = operatorSegments.FirstOrDefault(s =>
-                (s.Item1.Token.Content == "-") && ((s.Item2 == 0) || (segmentsArray[s.Item2 - 1] is OperationExpressionSegment))
+            Tuple<OperationExpressionSegment?, int>? firstArithmeticNegationOperation = operatorSegments.FirstOrDefault(s =>
+                (s.Item1!.Token.Content == "-") && ((s.Item2 == 0) || (segmentsArray[s.Item2 - 1] is OperationExpressionSegment))
             );
             if (firstArithmeticNegationOperation != null)
             {
@@ -281,13 +281,13 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // - This is to handle cases such as "a AND NOT b" where "NOT b" must be combined and then considered by the "a AND x" operation, in
             //   other cases, "NOT" takes lower precedence (eg. "NOT a IS Nothing" is dealt with by combining "a IS Nothing" and then applying
             //   the NOT operation, this is dealt with further down)
-            if (operatorSegments.All(s => s.Item1.Token is LogicalOperatorToken))
+            if (operatorSegments.All(s => s.Item1!.Token is LogicalOperatorToken))
             {
                 // Note: Group on the LAST operator, rather than the first, to ensure that expressions such as "NOT NOT a" get the "NOT" grouped
                 // with the value. If the first NOT was grouped with the subsequent terms then "NOT NOT a" would become "(NOT NOT) a" instead of
                 // "NOT(NOT(a))".
-                var lastLogicalInversion = operatorSegments.LastOrDefault(s =>
-                    s.Item1.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase)
+                Tuple<OperationExpressionSegment?, int>? lastLogicalInversion = operatorSegments.LastOrDefault(s =>
+                    s.Item1!.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase)
                 );
                 if (lastLogicalInversion != null)
                 {
@@ -304,16 +304,16 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //   "a + b * c" then "b * c" should be bracketed since multiplication takes precedence, so we break on the "+" and bracket off the b,
             //   c multiplication against the remaining a token - so we had to break on the operator with the least precedence, hence taking the
             //   last element of the ordered set)
-            var operatorSegmentToBreakOn = operatorSegments
+            Tuple<OperationExpressionSegment?, int>? operatorSegmentToBreakOn = operatorSegments
                 .OrderBy(s => s, new IndexerOperationExpressionSegmentSorter())
                 .Last();
 
-            var left = segmentsArray.Take(operatorSegmentToBreakOn.Item2);
-            var right = segmentsArray.Skip(operatorSegmentToBreakOn.Item2 + 1);
-            var expressionSegmentsToGroup = new List<IExpressionSegment>();
+            IEnumerable<IExpressionSegment> left = segmentsArray.Take(operatorSegmentToBreakOn.Item2);
+            IEnumerable<IExpressionSegment> right = segmentsArray.Skip(operatorSegmentToBreakOn.Item2 + 1);
+            List<IExpressionSegment> expressionSegmentsToGroup = new List<IExpressionSegment>();
             if (left.Any())
                 expressionSegmentsToGroup.Add(WrapExpressionSegments(GetExpression(left).Segments, unwrapSingleBracketedTerm: true));
-            else if (!operatorSegmentToBreakOn.Item1.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
+            else if (!operatorSegmentToBreakOn.Item1!.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("The content to the left of an operator may only be empty if it is a \"NOT\" logical operator");
             expressionSegmentsToGroup.Add(operatorSegmentToBreakOn.Item1!);
             if (!right.Any())
@@ -333,7 +333,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (count < 2)
                 throw new ArgumentOutOfRangeException(nameof(count), "must be at least two"); // Otherwise there's no point bracketing off the segments!
 
-            var segmentsArray = segments.ToArray();
+            IExpressionSegment[] segmentsArray = segments.ToArray();
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
             if (index > (segmentsArray.Length - 1))
@@ -369,7 +369,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            var tokensList = tokens.ToList();
+            List<IToken> tokensList = tokens.ToList();
             if (tokensList.Count == 0)
                 throw new ArgumentException("Empty tokens set specified, invalid");
             if (tokensList.Any(t => t == null))
@@ -396,7 +396,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //   WScript.Echo 1.a
             if ((tokensList.Count > 1) && tokensList.Any(t => t is NumericValueToken))
             {
-                var tokenF = tokensList.First();
+                IToken? tokenF = tokensList.First();
                 throw new ArgumentException($"Invalid member access - involving numeric literal (this is VBScript compile time error \"Expected end of statement\"). LineIndex:{tokenF.LineIndex}: {tokenF.Content}");
             }
 
@@ -410,7 +410,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             {
                 if (tokensList.Count == 1)
                 {
-                    var numericValue = tokensList[0] as NumericValueToken;
+                    NumericValueToken? numericValue = tokensList[0] as NumericValueToken;
                     if (numericValue != null)
                     {
                         if (argumentsAreBracketed)
@@ -425,7 +425,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         }
                         return new NumericValueExpressionSegment(numericValue);
                     }
-                    var stringValue = tokensList[0] as StringToken;
+                    StringToken? stringValue = tokensList[0] as StringToken;
                     if (stringValue != null)
                     {
                         if (argumentsAreBracketed)
@@ -440,7 +440,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         }
                         return new StringValueExpressionSegment(stringValue);
                     }
-                    var dateValue = tokensList[0] as DateLiteralToken;
+                    DateLiteralToken? dateValue = tokensList[0] as DateLiteralToken;
                     if (dateValue != null)
                     {
                         if (argumentsAreBracketed)
@@ -455,7 +455,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         }
                         return new DateValueExpressionSegment(dateValue);
                     }
-                    var builtInValue = tokensList[0] as BuiltInValueToken;
+                    BuiltInValueToken? builtInValue = tokensList[0] as BuiltInValueToken;
                     if (builtInValue != null)
                     {
                         if (argumentsAreBracketed)
@@ -475,7 +475,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 && (tokensList[0] is KeyWordToken)
                 && tokensList[0].Content.Equals("new", StringComparison.OrdinalIgnoreCase))
                 {
-                    var newInstanceName = tokensList[1] as NameToken;
+                    NameToken? newInstanceName = tokensList[1] as NameToken;
                     if (newInstanceName != null)
                     {
                         if (argumentsAreBracketed)
@@ -512,7 +512,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
 
-            var segmentsArray = segments.ToArray();
+            IExpressionSegment[] segmentsArray = segments.ToArray();
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
 
@@ -521,7 +521,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 if (segmentsArray.Length != 1)
                     break;
 
-                var onlySegmentAsBracketedSegment = segmentsArray[0] as BracketedExpressionSegment;
+                BracketedExpressionSegment? onlySegmentAsBracketedSegment = segmentsArray[0] as BracketedExpressionSegment;
                 if (onlySegmentAsBracketedSegment == null)
                     break;
 
@@ -552,14 +552,14 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
 
-            var callSetItemExpressionSegmentBuffer = new List<CallSetItemExpressionSegment>();
-            var expressionSegments = new List<IExpressionSegment>();
-            foreach (var segment in segments)
+            List<CallSetItemExpressionSegment> callSetItemExpressionSegmentBuffer = new List<CallSetItemExpressionSegment>();
+            List<IExpressionSegment> expressionSegments = new List<IExpressionSegment>();
+            foreach (IExpressionSegment? segment in segments)
             {
                 if (segment == null)
                     throw new ArgumentException("Null reference encountered in segments set");
 
-                var callExpressionSegment = segment as CallSetItemExpressionSegment;
+                CallSetItemExpressionSegment? callExpressionSegment = segment as CallSetItemExpressionSegment;
                 if (callExpressionSegment != null)
                 {
                     callSetItemExpressionSegmentBuffer.Add(callExpressionSegment);
@@ -582,7 +582,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 {
                     // A CallSetItemExpressionSegment should never exist in isolation, so if there is only one segment here it should
                     // be promoted to a CallExpressionSegment (if it wasn't one already)
-                    var callExpressionSegment = callSetItemExpressionSegmentBuffer[0];
+                    CallSetItemExpressionSegment? callExpressionSegment = callSetItemExpressionSegmentBuffer[0];
                     if (!callExpressionSegment.MemberAccessTokens.Any())
                         throw new ArgumentException("Encountered individual CallSetItemExpressionSegment with no Member Access Tokens, zero Member Access Tokens are only allowable with segments are part of a CallSetExpressionSegment (so long as it's not the first segment in that set's content)");
                     expressionSegments.Add(
@@ -611,13 +611,13 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 if (y == null)
                     throw new ArgumentNullException(nameof(y));
 
-                var operatorTypeValueX = GetOperatorTypeValue(x.Item1);
-                var operatorTypeValueY = GetOperatorTypeValue(y.Item1);
+                int operatorTypeValueX = GetOperatorTypeValue(x.Item1);
+                int operatorTypeValueY = GetOperatorTypeValue(y.Item1);
                 if (operatorTypeValueX != operatorTypeValueY)
                     return operatorTypeValueX.CompareTo(operatorTypeValueY);
 
-                var contentValueX = GetContentValue(x.Item1);
-                var contentValueY = GetContentValue(y.Item1);
+                int contentValueX = GetContentValue(x.Item1);
+                int contentValueY = GetContentValue(y.Item1);
                 if (contentValueX != contentValueY)
                     return contentValueX.CompareTo(contentValueY);
 
