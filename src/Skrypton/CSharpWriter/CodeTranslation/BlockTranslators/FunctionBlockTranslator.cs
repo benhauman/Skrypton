@@ -223,7 +223,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             List<TranslatedStatement> translatedStatements = new List<TranslatedStatement>();
             if (functionBlock.IsDefault)
-                translatedStatements.Add(new TranslatedStatement("[" + typeof(IsDefault).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
+                translatedStatements.Add(new TranslatedStatement("[" + typeof(IsDefaultAttribute).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
             PropertyBlock property = functionBlock as PropertyBlock;
             if (property != null)
             {

@@ -7,9 +7,9 @@ namespace Skrypton.RuntimeSupport.Attributes
     /// where they WERE changed). Generated classes should be decorated with this attribute to expose that information.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SourceClassName : Attribute
+    public sealed class SourceClassNameAttribute : Attribute
     {
-        public SourceClassName(string name)
+        public SourceClassNameAttribute(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }

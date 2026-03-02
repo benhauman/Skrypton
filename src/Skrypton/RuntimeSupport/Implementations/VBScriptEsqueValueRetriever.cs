@@ -1773,7 +1773,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     .Where(m => nameMatcher(m.Name))
                     .Where(m =>
                         (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
-                        (m.GetCustomAttributes(typeof(IsDefault), true).Length != 0) ||
+                        (m.GetCustomAttributes(typeof(IsDefaultAttribute), true).Length != 0) ||
                         (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(m) || IsDefaultMember(m)))
                     )
                     .Where(m => matchesArgumentCount(m))
@@ -1783,7 +1783,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .Where(p => nameMatcher(p.Name))
                 .Where(p =>
                     (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
-                    (p.GetCustomAttributes(typeof(IsDefault), true).Length != 0) ||
+                    (p.GetCustomAttributes(typeof(IsDefaultAttribute), true).Length != 0) ||
                     (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(p) || IsDefaultMember(p)))
                 )
                 .Select(p => p.GetGetMethod())
@@ -1842,7 +1842,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     .Where(m =>
                         (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
                         IsDefaultMember(m) ||
-                        (m.GetCustomAttributes(true).Cast<Attribute>().Any(a => a is IsDefault))
+                        (m.GetCustomAttributes(true).Cast<Attribute>().Any(a => a is IsDefaultAttribute))
                     )
                 .Concat(
                     type.GetProperties()
@@ -1852,7 +1852,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         .Where(p =>
                             (defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
                             IsDefaultMember(p) ||
-                            (p.GetCustomAttributes(true).Cast<Attribute>().Any(a => a is IsDefault))
+                            (p.GetCustomAttributes(true).Cast<Attribute>().Any(a => a is IsDefaultAttribute))
                         )
                         .Select(p => p.GetSetMethod())
                 )
@@ -1925,7 +1925,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            return type.GetCustomAttributes(typeof(SourceClassName), true).Length != 0;
+            return type.GetCustomAttributes(typeof(SourceClassNameAttribute), true).Length != 0;
         }
 
         private static bool TypeIsComVisible(Type type)

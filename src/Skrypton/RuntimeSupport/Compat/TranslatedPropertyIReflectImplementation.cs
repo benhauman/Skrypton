@@ -141,12 +141,12 @@ namespace Skrypton.RuntimeSupport.Compat
             Private
         }
 
-        private static TranslatedProperty GetTranslatedPropertyAttributeIfAny(MethodInfo method)
+        private static TranslatedPropertyAttribute GetTranslatedPropertyAttributeIfAny(MethodInfo method)
         {
             if (method == null)
                 throw new ArgumentNullException(nameof(method));
 
-            TranslatedProperty[] translatedPropertyAttributes = method.GetCustomAttributes(typeof(TranslatedProperty), true).Cast<TranslatedProperty>().ToArray();
+            TranslatedPropertyAttribute[] translatedPropertyAttributes = method.GetCustomAttributes(typeof(TranslatedPropertyAttribute), true).Cast<TranslatedPropertyAttribute>().ToArray();
             if (translatedPropertyAttributes.Length > 1)
                 throw new ArgumentException("Method " + method.Name + " has multiple TranslatedProperty attributes - invalid");
             return translatedPropertyAttributes.SingleOrDefault();

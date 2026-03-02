@@ -7,7 +7,9 @@ using System.Linq;
 namespace Skrypton.CSharpWriter.Lists
 {
     [DebuggerDisplay("{Count}")]
+#pragma warning disable CA1710 // Identifiers should have correct suffix
     public class ImmutableList<T> : IReadOnlyCollection<T>
+#pragma warning restore CA1710 // Identifiers should have correct suffix
     {
         private readonly Node _tail; // can be null when empty
         private readonly IValueValidator<T> _optionalValueValidator; // optional;can be null

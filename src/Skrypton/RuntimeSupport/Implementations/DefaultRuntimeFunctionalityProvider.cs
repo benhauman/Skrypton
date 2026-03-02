@@ -1602,7 +1602,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (!string.IsNullOrWhiteSpace(typeDescriptorClassName))
                     return typeDescriptorClassName;
             }
-            SourceClassName sourceClassName = type.GetCustomAttributes(typeof(SourceClassName), inherit: true).FirstOrDefault() as SourceClassName;
+            SourceClassNameAttribute sourceClassName = type.GetCustomAttributes(typeof(SourceClassNameAttribute), inherit: true).FirstOrDefault() as SourceClassNameAttribute;
             if (sourceClassName != null)
                 return sourceClassName.Name;
 

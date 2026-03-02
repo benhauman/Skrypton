@@ -9,9 +9,9 @@ namespace Skrypton.RuntimeSupport.Attributes
     /// and void return types, resp.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class TranslatedProperty : Attribute
+    public sealed class TranslatedPropertyAttribute : Attribute
     {
-        public TranslatedProperty(string name)
+        public TranslatedPropertyAttribute(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
@@ -19,6 +19,6 @@ namespace Skrypton.RuntimeSupport.Attributes
         /// <summary>
         /// This will never be null (but this is pretty much the only guarantee we can make due to VBScript's crazy variable name escaping support)
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 }
