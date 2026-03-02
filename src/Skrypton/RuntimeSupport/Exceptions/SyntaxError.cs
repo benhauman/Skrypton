@@ -20,7 +20,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         [Obsolete("do not use it")] private SyntaxError() : this(null, innerException: null) { }
         public SyntaxError(string message) : this(message, innerException: null) { }
-        public SyntaxError(string additionalInformationIfAny, Exception innerException)
+        public SyntaxError(string? additionalInformationIfAny, Exception? innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 1002; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

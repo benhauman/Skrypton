@@ -13,7 +13,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         [Obsolete("do not use it")] private ObjectVariableNotSetException() : this(null, innerException: null) { }
         public ObjectVariableNotSetException(string message) : this(message, innerException: null) { }
-        public ObjectVariableNotSetException(string additionalInformationIfAny, Exception innerException)
+        public ObjectVariableNotSetException(string? additionalInformationIfAny, Exception? innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 91; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

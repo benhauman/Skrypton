@@ -20,8 +20,8 @@ namespace Skrypton.RuntimeSupport
         private DefaultMemberDetails(
             bool isDefaultMemberPresent,
             bool wasDefaultMemberRetrieved,
-            object defaultMemberValueIfRetrieved,
-            Exception exceptionEncounteredWhileEvaluatingDefaultMemberIfAny)
+            object? defaultMemberValueIfRetrieved,
+            Exception? exceptionEncounteredWhileEvaluatingDefaultMemberIfAny)
         {
             if ((!isDefaultMemberPresent || wasDefaultMemberRetrieved) && (exceptionEncounteredWhileEvaluatingDefaultMemberIfAny != null))
                 throw new ArgumentException("exceptionEncounteredWhileEvaluatingDefaultMemberIfAny may only be non-null if there IS a default member present and it's value failed during retrieval");
@@ -46,7 +46,7 @@ namespace Skrypton.RuntimeSupport
         /// This value should be considered undefined if DefaultMemberRetrieved is false (if DefaultMemberRetrieved is true then this may or may not be null,
         /// since null may be a valid value for a default member call)
         /// </summary>
-        public object DefaultMemberValueIfRetrieved { get; private set; }
+        public object? DefaultMemberValueIfRetrieved { get; private set; }
 
         /// <summary>
         /// This will always be null if IsDefaultMemberPresent is false or if WasDefaultMemberRetrieved is true false and it will also be null if the default value

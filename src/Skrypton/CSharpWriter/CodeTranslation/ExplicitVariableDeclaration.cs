@@ -5,9 +5,9 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class VariableDeclaration
+    public sealed class VariableDeclaration
     {
-        public VariableDeclaration(NameToken name, VariableDeclarationScopeOptions scope, IEnumerable<uint> constantDimensionsIfAny)
+        public VariableDeclaration(NameToken name, VariableDeclarationScopeOptions scope, IEnumerable<uint>? constantDimensionsIfAny)
         {
             if (!Enum.IsDefined(typeof(VariableDeclarationScopeOptions), scope))
                 throw new ArgumentOutOfRangeException(nameof(scope));

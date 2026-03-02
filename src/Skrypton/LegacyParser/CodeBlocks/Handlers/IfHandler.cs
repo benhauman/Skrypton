@@ -98,7 +98,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // ======================================================================
             // Grab content inside IF blocks
             string[][] endSequences = [["END", "IF"], ["ELSEIF"], ["ELSE"]];
-            string[] endSequenceMet = ["IF"];
+            string[]? endSequenceMet = ["IF"];
             List<IfBlock.IfBlockSegment> ifContent = new List<IfBlock.IfBlockSegment>();
             List<IToken>? conditionTokens = null;
             while (true)
@@ -269,9 +269,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 tokens.RemoveAt(0);
 
             // Translate token sets into code blocks
-            string[] endSequenceMet;
             CodeBlockHandler codeBlockHandler = CodeBlockHandler.RootBlock;
-            List<ICodeBlock> truthStatement = codeBlockHandler.Process(truthTokens, out endSequenceMet);
+            List<ICodeBlock> truthStatement = codeBlockHandler.Process(truthTokens, out var _);
             List<ICodeBlock>? notStatement;
             if (notTokens == null)
             {
@@ -279,7 +278,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
             else
             {
-                notStatement = codeBlockHandler.Process(notTokens, out endSequenceMet);
+                notStatement = codeBlockHandler.Process(notTokens, out var _);
             }
 
             Expression conditionStatement = new Expression(conditionTokens);

@@ -78,7 +78,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return false;
             }
 
-            var defaultMemberPresenceSummary = GetDefaultMemberPresenceSummary(o);
+            DefaultMemberDetails defaultMemberPresenceSummary = GetDefaultMemberPresenceSummary(o);
             if (defaultMemberPresenceSummary.IsDefaultMemberPresent)
             {
                 // If the default value had to be evaluated in order to determine that a default member was present, and an exception occurred
@@ -88,8 +88,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw defaultMemberPresenceSummary.ExceptionEncounteredWhileEvaluatingDefaultMemberIfAny;
 
                 // Note: We don't recursively try defaults, so if this default is still not a value type then we're out of luck
-                var defaultValueFromObject = defaultMemberPresenceSummary.WasDefaultMemberRetrieved
-                    ? defaultMemberPresenceSummary.DefaultMemberValueIfRetrieved
+                object? defaultValueFromObject = defaultMemberPresenceSummary.WasDefaultMemberRetrieved
+                    ? defaultMemberPresenceSummary.DefaultMemberValueIfRetrieved!
                     : GetDefaultValueFromObject(o);
                 asValueType = defaultValueFromObject;
                 parameterLessDefaultMemberWasAvailable = true;
@@ -105,7 +105,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// Reduce a reference down to a value type, applying VBScript defaults logic - thrown an exception if this is not possible (null is
         /// acceptable as an input and corresponding return value)
         /// </summary>
-        public object VAL(object o, string exceptionMessageForInvalidContent = null)
+        public object VAL(object o, string? exceptionMessageForInvalidContent = null)
         {
             bool parameterLessDefaultMemberWasAvailable;
             if (TryVAL(o, out parameterLessDefaultMemberWasAvailable, out o))
@@ -130,7 +130,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new ArgumentNullException(nameof(o));
 
             string? cacheKeyIfApplicable;
-            var oType = o.GetType();
+            Type oType = o.GetType();
             if (oType.IsCOMObject)
             {
                 if (_absentDefaultMemberOnComObjectCacheOptions == AbsentDefaultMemberOnComObjectCacheOptions.DoNotCache)
@@ -158,7 +158,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // .. then try to retrieve the default value for the target - if this succeeds, then we know we have a default member (add that information to the cache and
                 // return the retrieved value in the "yes, this object has a default member" response)
-                var defaultValue = GetDefaultValueFromObject(o);
+                object defaultValue = GetDefaultValueFromObject(o);
                 if (cacheKeyIfApplicable != null)
                     _absentDefaultMemberCache.TryAdd(cacheKeyIfApplicable, true);
                 return DefaultMemberDetails.RetrievedResult(defaultValue);
@@ -245,7 +245,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// This will only return a non-VBScript-value-type, if unable to then an exception will be raised (this is used to wrap the right-hand
         /// side of a SET assignment)
         /// </summary>
-        public object OBJ(object o, string optionalExceptionMessageForInvalidContent = null)
+        public object OBJ(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             if ((o == null) || IsVBScriptValueType(o))
                 throw new ObjectRequiredException(optionalExceptionMessageForInvalidContent);
@@ -256,7 +256,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Reduce a reference down to a boolean value type, in the same ways that VBScript would attempt.
         /// </summary>
-        public bool BOOL(object o, string optionalExceptionMessageForInvalidContent = null)
+        public bool BOOL(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             o = VAL(o, optionalExceptionMessageForInvalidContent);
             if (o == null)
@@ -267,7 +267,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (bool)o;
             if (o is DateTime)
                 return ((DateTime)o) != VBScriptConstants.ZeroDate;
-            var valueString = o.ToString();
+            string? valueString = o.ToString();
             if (valueString.Equals("true", StringComparison.OrdinalIgnoreCase))
                 return true;
             if (valueString.Equals("false", StringComparison.OrdinalIgnoreCase))
@@ -333,7 +333,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Now we have a numeric value, we need to check numericValuesTheTypeMustBeAbleToContain. They all must be parseable as numbers.
             // If there are no related values or if all of the related value have the same type as the primary value then nothing has to
             // change. Otherwise we need to ensure that the type we return can contain them all..
-            var relatedNumericValues = (numericValuesTheTypeMustBeAbleToContain ?? [])
+            object[] relatedNumericValues = (numericValuesTheTypeMustBeAbleToContain ?? [])
                 .Select(v => NUM(v))
                 .ToArray();
             if (relatedNumericValues.Length == 0 || relatedNumericValues.All(v => v.GetType() == valueToConvert.GetType()))
@@ -349,7 +349,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   eg. For i = 1 To Date()
             if ((valueToConvert is DateTime) || relatedNumericValues.Any(v => v is DateTime))
             {
-                var relatedNonDateNumericValuesAsDouble = relatedNumericValues
+                double[] relatedNonDateNumericValuesAsDouble = relatedNumericValues
                     .Where(v => !(v is DateTime)) // Ignore Dates since they obviously can't cause a Date overflow!
                     .Select(v => Convert.ToDouble(v, _culture))
                     .ToArray();
@@ -368,7 +368,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // overflow (note that the relatedNumericValuesAsDouble set defined below will never have to consider dates since if any
             // of the values are dates then we will have exited above, so we don't have to worry about doing a TotalDays calculation
             // rather than calling Convert.ToDouble for everything).
-            var relatedNumericValuesAsDouble = relatedNumericValues
+            double[] relatedNumericValuesAsDouble = relatedNumericValues
                 .Select(v => Convert.ToDouble(v, CultureInfo.InvariantCulture))
                 .ToArray();
             if ((valueToConvert is decimal) || relatedNumericValues.Any(v => v is decimal))
@@ -428,7 +428,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// parsed using VBScript's rules (and taking into account culture, where applicable). Null is acceptable and will return in the zero date being
         /// returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being raised.
         /// </summary>
-        public DateTime DATE(object o, string optionalExceptionMessageForInvalidContent = null)
+        public DateTime DATE(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             o = VAL(o);
             if (o == null)
@@ -481,7 +481,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // Handle the cases of null, DBNull.Value, empty string, booleans, Dates, etc.. (some of these will error, the function will return null if it
             // can't help)
-            var specialCaseResult = TryToGetNumberConsideringSpecialCases(value);
+            object? specialCaseResult = TryToGetNumberConsideringSpecialCases(value);
             if (specialCaseResult != null)
                 return specialCaseResult;
 
@@ -582,7 +582,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// and will return in a blank string being returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being
         /// raised.
         /// </summary>
-        public string STR(object o, string optionalExceptionMessageForInvalidContent = null)
+        public string STR(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             o = VAL(o, optionalExceptionMessageForInvalidContent);
             if (o == null)
@@ -601,9 +601,9 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private static string DateToString(DateTime value, CultureInfo culture)
         {
-            var dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : DateParser.DateTimeToShortDateString(value, culture, false);
+            string dateComponent = (value.Date == VBScriptConstants.ZeroDate) ? "" : DateParser.DateTimeToShortDateString(value, culture, false);
 #pragma warning disable CA1820 // Test for empty strings using string length
-            var timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : DateParser.DateTimeToLongTimeString(value, culture);
+            string timeComponent = ((value.TimeOfDay == TimeSpan.Zero) && (dateComponent != "")) ? "" : DateParser.DateTimeToLongTimeString(value, culture);
             if ((dateComponent != "") && (timeComponent != ""))
                 return dateComponent + " " + timeComponent;
 #pragma warning restore CA1820 // Test for empty strings using string length
@@ -620,7 +620,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // VBScript will only consider object references to be enumerable (unlike C#, which will consider a string to be an enumerable set
             // characters, for example)
-            var type = o.GetType();
+            Type type = o.GetType();
             if (IsVBScriptValueType(o) && !type.IsArray)
                 throw new ObjectNotCollectionException("Object not a collection");
 
@@ -643,21 +643,21 @@ namespace Skrypton.RuntimeSupport.Implementations
                         // The VBScript.RegExp Execute method returns a match collection that is enumerable and implements IDispatch but doesn't
                         // have a DispId -4 enumerator property. In this case, we need to allow IEnumerable access (but we prefer IDispatch access
                         // as explained above in relation to MSXML).
-                        var enumerableIDispatchFallback = o as IEnumerable;
+                        IEnumerable? enumerableIDispatchFallback = o as IEnumerable;
                         if (enumerableIDispatchFallback != null)
                             return enumerableIDispatchFallback;
                         throw new ObjectNotCollectionException("IDispatch reference does not have a method with DispId -4");
                     }
                     throw;
                 }
-                var enumeratorAsEnumVariant = enumerator as IEnumVariant;
+                IEnumVariant? enumeratorAsEnumVariant = enumerator as IEnumVariant;
                 if (enumeratorAsEnumVariant == null)
                     throw new ObjectNotCollectionException("IDispatch reference has a DispId -4 return value that does not implement IEnumVariant");
                 return new ManagedEnumeratorWrapper(new IDispatchEnumeratorWrapper(enumeratorAsEnumVariant));
             }
 
             // Now try casting to IEnumerable - it's the easiest approach and will work with (many) managed references and some COM objects
-            var enumerable = o as IEnumerable;
+            IEnumerable? enumerable = o as IEnumerable;
             if (enumerable != null)
                 return enumerable;
 
@@ -683,29 +683,29 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            var getEnumeratorMethod = GetAllImplementedTypes(type)
+            MethodInfo? getEnumeratorMethod = GetAllImplementedTypes(type)
                 .Select(t => t.GetMethod("GetEnumerator", Type.EmptyTypes))
                 .FirstOrDefault(m => (m != null) && !m.IsStatic && (m.ReturnType != typeof(void)));
             if (getEnumeratorMethod == null)
                 return null;
 
-            var enumeratorType = getEnumeratorMethod.ReturnType;
-            var implementedTypes = GetAllImplementedTypes(enumeratorType).ToArray();
-            var moveNextMethod = implementedTypes
+            Type enumeratorType = getEnumeratorMethod.ReturnType;
+            Type[] implementedTypes = GetAllImplementedTypes(enumeratorType).ToArray();
+            MethodInfo? moveNextMethod = implementedTypes
                 .Select(t => t.GetMethod("MoveNext", Type.EmptyTypes))
                 .FirstOrDefault(m => (m != null) && !m.IsStatic && (m.ReturnType == typeof(bool)));
-            var resetMethod = implementedTypes
+            MethodInfo? resetMethod = implementedTypes
                 .Select(t => t.GetMethod("Reset", Type.EmptyTypes))
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
-            var currentGetterMethod = implementedTypes
+            MethodInfo? currentGetterMethod = implementedTypes
                 .Select(t => t.GetProperty("Current", Type.EmptyTypes))
                 .Select(p => ((p == null) || !p.CanRead || (p.GetIndexParameters() ?? []).Length != 0) ? null : p.GetGetMethod())
                 .FirstOrDefault(m => (m != null) && !m.IsStatic);
             if ((moveNextMethod == null) || (resetMethod == null) || (currentGetterMethod == null))
                 return null;
 
-            var targetParameter = Expression.Parameter(typeof(object), "target");
-            var getEnumerator = Expression.Lambda<Func<object, object>>(
+            ParameterExpression targetParameter = Expression.Parameter(typeof(object), "target");
+            Func<object, object> getEnumerator = Expression.Lambda<Func<object, object>>(
                 Expression.Convert(
                     Expression.Call(
                         Expression.Convert(targetParameter, getEnumeratorMethod.DeclaringType),
@@ -715,7 +715,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ),
                 targetParameter
             ).Compile();
-            var moveNext = Expression.Lambda<Func<object, bool>>(
+            Func<object, bool> moveNext = Expression.Lambda<Func<object, bool>>(
                 Expression.Convert(
                     Expression.Call(
                         Expression.Convert(targetParameter, moveNextMethod.DeclaringType),
@@ -725,14 +725,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ),
                 targetParameter
             ).Compile();
-            var reset = Expression.Lambda<Action<object>>(
+            Action<object> reset = Expression.Lambda<Action<object>>(
                 Expression.Call(
                     Expression.Convert(targetParameter, resetMethod.DeclaringType),
                     resetMethod
                 ),
                 targetParameter
             ).Compile();
-            var getCurrent = Expression.Lambda<Func<object, object>>(
+            Func<object, object> getCurrent = Expression.Lambda<Func<object, object>>(
                 Expression.Convert(
                     Expression.Call(
                         Expression.Convert(targetParameter, currentGetterMethod.DeclaringType),
@@ -745,7 +745,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return target =>
             {
-                var enumerator = getEnumerator(target);
+                object? enumerator = getEnumerator(target);
                 if (enumerator == null)
                     throw new InvalidOperationException("GetEnumerator returned null");
                 return new DuckTypingEnumeratorWrapper(enumerator, moveNext, getCurrent, reset);
@@ -760,12 +760,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             yield return type;
             if (type.BaseType != null)
             {
-                foreach (var nestedType in GetAllImplementedTypes(type.BaseType))
+                foreach (Type? nestedType in GetAllImplementedTypes(type.BaseType))
                     yield return nestedType;
             }
-            foreach (var i in type.GetInterfaces())
+            foreach (Type i in type.GetInterfaces())
             {
-                foreach (var nestedType in GetAllImplementedTypes(i))
+                foreach (Type? nestedType in GetAllImplementedTypes(i))
                     yield return nestedType;
             }
         }
@@ -781,7 +781,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // The BOOL function will not accept VBScript Null since it can't strictly be translated into a boolean, in the context of an IF
             // condition it can be taken to mean false, though
-            var value = VAL(o);
+            object value = VAL(o);
             if (value == DBNull.Value)
                 return false;
             return BOOL(value);
@@ -810,7 +810,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Note: The arguments are evaluated here before the CALL is attempted - so if the target or members are invalid then this is only
             // determined AFTER processing the arguments. This is correct behaviour (consistent with VBScript).
-            var arguments = argumentProvider.GetInitialValues().ToArray();
+            object[] arguments = argumentProvider.GetInitialValues().ToArray();
             try
             {
                 return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
@@ -818,7 +818,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             finally
             {
                 // Even if an exception if thrown somewhere in the target call, any ByRef argument values that were changed must be persisted
-                for (var index = 0; index < arguments.Length; index++)
+                for (int index = 0; index < arguments.Length; index++)
                     argumentProvider.OverwriteValueIfByRef(index, arguments[index]);
             }
         }
@@ -833,7 +833,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
-            var memberAccessorsArray = members.ToArray();
+            string[] memberAccessorsArray = members.ToArray();
             if (memberAccessorsArray.Any(m => string.IsNullOrWhiteSpace(m)))
                 throw new ArgumentException("Null/blank value in members set");
 
@@ -842,7 +842,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // has a ToString method. Note that some value types are compile errors (eg. "123.ToString()") and so those should have been caught by
             // the translation process. VBScript considers arrays to be value types (ie. when returning an array from a function, you don't have
             // to call SET), so we need to exclude that case since clearly arguments CAN be used with arrays.
-            var isArray = (target != null) && target.GetType().IsArray;
+            bool isArray = (target != null) && target.GetType().IsArray;
             if (!isArray && IsVBScriptValueType(target))
             {
                 string targetDescription;
@@ -863,7 +863,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // must either be a direct reference, meaning its being passed around as a function pointer or sorts, or it must be an execution
             // of the delegate (indicated by the presence of arguments or by there being brackets following the reference, even when there
             // are zero arguments).
-            var delegateTarget = target as Delegate;
+            Delegate? delegateTarget = target as Delegate;
             if (delegateTarget != null)
             {
                 if (memberAccessorsArray.Length != 0)
@@ -879,7 +879,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // - Frankly, I'm not sure why target can EVER be null, even if there ARE no member accessor or aguments... unfortunately, there
             //   are currently no tests illustrating why at this time and the code here explicitly allows for a null target (in this case),
             //   so I'm going to leave this be for now (May 2015).
-            var noMemberAccessorsOrArguments = memberAccessorsArray.Length == 0 && arguments.Length == 0;
+            bool noMemberAccessorsOrArguments = memberAccessorsArray.Length == 0 && arguments.Length == 0;
             if (noMemberAccessorsOrArguments && !useBracketsWhereZeroArguments)
             {
                 return target;
@@ -900,7 +900,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // 2. If target implements IDispatch then try accessing the DispId zero method or property, passing the arguments
             // 3. If it's not an IDispatch reference, then the arguments will be passed to a method or indexed property that will accept them,
             //    taking into account the IsDefault attribute
-            var allowPrivateAccess = AllowPrivateMemberAccess(context, target);
+            bool allowPrivateAccess = AllowPrivateMemberAccess(context, target);
             if (memberAccessorsArray.Length == 0 && arguments.Length != 0)
                 return InvokeGetter(target, null, arguments, allowPrivateAccess, onlyConsiderMethods: false);
 
@@ -918,7 +918,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // and the final member accessor should be a method or property call whose name matches the member accessor. Note that the arguments
             // can never be for an array look up at this point because there are member accessors, therefor it must be a function or property.
             target = WalkMemberAccessors(target, memberAccessorsArray.Take(memberAccessorsArray.Length - 1), allowPrivateAccess, onlyConsiderMethods: false);
-            var finalMemberAccessor = memberAccessorsArray[memberAccessorsArray.Length - 1];
+            string finalMemberAccessor = memberAccessorsArray[memberAccessorsArray.Length - 1];
             if (target == null)
                 throw new ArgumentException("Unable to access member \"" + finalMemberAccessor + "\" on null reference");
             return InvokeGetter(target, finalMemberAccessor, arguments, allowPrivateAccess, onlyConsiderMethods: false);
@@ -932,17 +932,17 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
 
-            var arguments = argumentProvider.GetInitialValues().ToArray();
+            object[] arguments = argumentProvider.GetInitialValues().ToArray();
             if ((optionalMemberAccessor == null) && arguments.Length == 0)
                 throw new ArgumentException("This must be called with a non-null optionalMemberAccessor and/or one or more arguments, null optionalMemberAccessor and zero arguments is not supported");
 
-            var allowPrivateAccess = AllowPrivateMemberAccess(context, target);
-            var cacheKey = new InvokerCacheKey(target.GetType(), optionalMemberAccessor, arguments.Length, allowPrivateAccess, onlyConsiderMethods: false);
+            bool allowPrivateAccess = AllowPrivateMemberAccess(context, target);
+            InvokerCacheKey cacheKey = new InvokerCacheKey(target.GetType(), optionalMemberAccessor, arguments.Length, allowPrivateAccess, onlyConsiderMethods: false);
             SetInvoker invoker;
             if (!_setInvokerCache.TryGetValue(cacheKey, out invoker))
             {
@@ -950,7 +950,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 _setInvokerCache.TryAdd(cacheKey, invoker);
             }
             invoker(target, arguments, valueToSetTo);
-            for (var index = 0; index < arguments.Length; index++)
+            for (int index = 0; index < arguments.Length; index++)
                 argumentProvider.OverwriteValueIfByRef(index, arguments[index]);
         }
 
@@ -969,14 +969,14 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// The arguments set must be an array since its contents may be mutated if the call target has "ref" parameters
         /// </summary>
-        private object InvokeGetter(object target, string optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private object InvokeGetter(object target, string? optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
-            var cacheKey = new InvokerCacheKey(target.GetType(), optionalName, arguments.Length, allowPrivateAccess, onlyConsiderMethods);
+            InvokerCacheKey cacheKey = new InvokerCacheKey(target.GetType(), optionalName, arguments.Length, allowPrivateAccess, onlyConsiderMethods);
             GetInvoker invoker;
             if (!_getInvokerCache.TryGetValue(cacheKey, out invoker))
             {
@@ -987,23 +987,23 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
 
         private delegate object GetInvoker(object target, object[] arguments);
-        private GetInvoker GenerateGetInvoker(object target, string optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private GetInvoker GenerateGetInvoker(object target, string? optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
-            var argumentsArray = arguments.ToArray();
-            var targetType = target.GetType();
+            object[] argumentsArray = arguments.ToArray();
+            Type targetType = target.GetType();
             if (targetType.IsArray)
             {
                 if (targetType.GetArrayRank() != argumentsArray.Length)
                     throw new SubscriptOutOfRangeException("Argument count (" + argumentsArray.Length + ") does not match array rank (" + targetType.GetArrayRank() + ")");
 
-                var arrayTargetParameter = Expression.Parameter(typeof(object), "target");
-                var indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
-                var arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
+                ParameterExpression arrayTargetParameter = Expression.Parameter(typeof(object), "target");
+                ParameterExpression indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
+                ParameterExpression arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
                 return Expression.Lambda<GetInvoker>(
                     Expression.TryCatch(
                         Expression.Convert(
@@ -1065,14 +1065,14 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             if (target is IReflect targetIReflect)
             {
-                var ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
+                MethodInfo? ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
                 return (invokeTarget, invokeArguments) =>
                 {
                     // Note: An InvalidCastException will be raised if the arguments are not of appropriate types, so there's a temptation
                     // to wrap that up into a "Type mismatch" error. But it's possible that the member was called with correctly-typed
                     // arguments and the InvalidCastException originated from an operation inside it. There's no way to know so it's
                     // better to err on the side of caution and not try to wrap up that error.
-                    var invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.OptionalParamBinding;
+                    BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.OptionalParamBinding;
                     if (allowPrivateAccess)
                         invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
                     return (targetIReflect).InvokeMember(
@@ -1126,7 +1126,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         {
                             argstext += ", ";
                         }
-                        var argval = argumentsArray[aix];
+                        object? argval = argumentsArray[aix];
                         string marker = "";
                         if (argval != null && (argval is string || argval is DateTime || argval is Guid))
                         {
@@ -1161,15 +1161,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (method == null)
                 throw new ArgumentNullException(nameof(method));
 
-            var targetParameter = Expression.Parameter(typeof(object), "target");
-            var targetValue = Expression.Convert(targetParameter, targetType);
+            ParameterExpression targetParameter = Expression.Parameter(typeof(object), "target");
+            UnaryExpression targetValue = Expression.Convert(targetParameter, targetType);
 
-            var argumentsParameter = Expression.Parameter(typeof(object[]), "arguments");
+            ParameterExpression argumentsParameter = Expression.Parameter(typeof(object[]), "arguments");
 
             // If there are any ByRef arguments then we need local variables that are of ByRef types. These will be populated with values from the
             // arguments array before the method call, then used AS arguments in the method call, then their values copied back into the slots in
             // the arguments array that they came from.
-            var methodParameters = method.GetParameters();
+            ParameterInfo[] methodParameters = method.GetParameters();
             Expression[] argExpressions;
             IEnumerable<Expression> byRefArgAssignmentsForMethodCall, byRefArgAssignmentsForReturn;
             ParameterExpression[] variablesToDeclareForHandlingOfArguments;
@@ -1199,7 +1199,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else
             {
                 var argParameters = methodParameters.Select((p, index) => new { Parameter = p, Index = index });
-                var changeTypeMethod = typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(Type) });
+                MethodInfo? changeTypeMethod = typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(Type) });
                 argExpressions = argParameters
                     .Select(a =>
                     {
@@ -1216,7 +1216,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         // If this parameter's type can only hold VBScript value types - wrap the argument access in a VAL call
                         if (IsCLRTypeVBScriptValueType(a.Parameter.ParameterType))
                         {
-                            var coerceToVBSValueTypeMethod = typeof(VBScriptEsqueValueRetriever).GetMethod("VAL", new[] { typeof(object), typeof(string) });
+                            MethodInfo? coerceToVBSValueTypeMethod = typeof(VBScriptEsqueValueRetriever).GetMethod("VAL", new[] { typeof(object), typeof(string) });
                             argumentParameterInArray = Expression.Call(
                                 Expression.Constant(this),
                                 coerceToVBSValueTypeMethod,
@@ -1249,7 +1249,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     .Where(a => a.Parameter is ParameterExpression)
                     .Select(a =>
                     {
-                        var argumentParameterInArray = Expression.ArrayAccess(argumentsParameter, Expression.Constant(a.Index));
+                        IndexExpression argumentParameterInArray = Expression.ArrayAccess(argumentsParameter, Expression.Constant(a.Index));
                         return (Expression)Expression.Assign(
                             a.Parameter,
                             Expression.Condition(
@@ -1283,14 +1283,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 variablesToDeclareForHandlingOfArguments = argExpressions.OfType<ParameterExpression>().ToArray();
             }
 
-            var methodCall = Expression.Call(
+            MethodCallExpression methodCall = Expression.Call(
                 targetValue,
                 method,
                 argExpressions
             );
 
             Expression[] methodCallAndAndResultAssignments;
-            var resultVariable = Expression.Variable(typeof(object));
+            ParameterExpression resultVariable = Expression.Variable(typeof(object));
             if (method.ReturnType == typeof(void))
             {
                 // If the method has no return type then we'll need to just return null since the GetInvoker delegate that
@@ -1308,7 +1308,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else
             {
                 // If there IS a a return type then assign the method call's return value to the result variable
-                var result = methodCall.Type.IsValueType ? (Expression)Expression.Convert(methodCall, typeof(object)) : methodCall;
+                Expression result = methodCall.Type.IsValueType ? (Expression)Expression.Convert(methodCall, typeof(object)) : methodCall;
                 methodCallAndAndResultAssignments = new Expression[]
                 {
                     Expression.Assign(
@@ -1322,7 +1322,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     // null return value into Nothing (aka. new DispatchWrapper(null)). We can only do this when retrieving
                     // values over reflection in this manner, there's no way for us to try to add this behaviour to IDispatch
                     // or IReflect calls, we'll have to hope that those classes behave properly already.
-                    var dispatchWrapperConstructor = typeof(DispatchWrapper).GetConstructor(new[] { typeof(object) });
+                    ConstructorInfo? dispatchWrapperConstructor = typeof(DispatchWrapper).GetConstructor(new[] { typeof(object) });
                     methodCallAndAndResultAssignments = methodCallAndAndResultAssignments
                         .Concat(new[]
                         {
@@ -1354,7 +1354,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     Expression.Block(byRefArgAssignmentsForReturn) // Finally block (always set any ByRef arguments, even if an exception is thrown)
                 );
             }
-            var variablesToDeclare = variablesToDeclareForHandlingOfArguments.Concat(new[] { resultVariable });
+            IEnumerable<ParameterExpression> variablesToDeclare = variablesToDeclareForHandlingOfArguments.Concat(new[] { resultVariable });
             return Expression.Lambda<GetInvoker>(
                 Expression.Block(
                     variablesToDeclare,
@@ -1378,8 +1378,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // If there are no member accessors but there are arguments then firstly attempt array access, this is the only time that array access is acceptable
             // (o.Names(0) is not allowed by VBScript if the "Names" property is an array, it will only work if Names is a Function or indexed Property and since
             // we're attempting a set here, it will only work if it's an indexed Property)
-            var argumentsArray = arguments.ToArray();
-            var targetType = target.GetType();
+            object[] argumentsArray = arguments.ToArray();
+            Type targetType = target.GetType();
             if ((optionalMemberAccessor == null) && targetType.IsArray)
             {
                 if (targetType.GetArrayRank() != argumentsArray.Length)
@@ -1387,10 +1387,10 @@ namespace Skrypton.RuntimeSupport.Implementations
 
                 // Without the targetType.GetElementType() specified for the Expression.Catch, a "Body of catch must have the same type as body of try" exception
                 // will be raised. Since I would have expected the try block to return nothing (void) I'm not quite sure why this is.
-                var arrayTargetParameter = Expression.Parameter(typeof(object), "target");
-                var indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
-                var arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
-                var arrayValueParameter = Expression.Parameter(typeof(object), "value");
+                ParameterExpression arrayTargetParameter = Expression.Parameter(typeof(object), "target");
+                ParameterExpression indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
+                ParameterExpression arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
+                ParameterExpression arrayValueParameter = Expression.Parameter(typeof(object), "value");
                 return Expression.Lambda<SetInvoker>(
                     Expression.TryCatch(
                         Expression.Assign(
@@ -1454,10 +1454,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 return (invokeTarget, invokeArguments, value) =>
                 {
-                    var invokeAttributes = BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.IgnoreCase;
+                    BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.IgnoreCase;
                     if (allowPrivateAccess)
                         invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
-                    var combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
+                    object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
                     ((IReflect)invokeTarget).InvokeMember(
                         name: optionalMemberAccessor ?? "[DISPID=0]",
                         invokeAttr: invokeAttributes,
@@ -1470,7 +1470,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     );
                     // Ensure that any ByRef-altered arguments are propagated back onto the callers arguments array (note that VBScript does not support
                     // the value reference being changed ByRef but it does support the index arguments - if any - being altered ByRef)
-                    for (var i = 0; i < invokeArguments.Length; i++)
+                    for (int i = 0; i < invokeArguments.Length; i++)
                         invokeArguments[i] = combinedArguments[i];
                 };
             }
@@ -1488,7 +1488,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             else
             {
                 // Try accessing a default indexed property (either a a native C# property or a method with IsDefault and TranslatedProperty attributes)
-                var mis = GetDefaultSetMethods(targetType, argumentsArray.Length, allowPrivateAccess);
+                MethodInfo[] mis = GetDefaultSetMethods(targetType, argumentsArray.Length, allowPrivateAccess);
                 method = mis.FirstOrDefault();
                 if (method == null)
                     throw new MissingMemberException(targetType.FullName, "(?)");
@@ -1496,15 +1496,15 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Rather than trying to do more LINQ Expression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
             // that the index-arguments-plus-value get flattened into a single arguments array
-            var getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
+            GetInvoker getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
             return (invokeTarget, invokeArguments, value) =>
             {
-                var combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
+                object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
                 getInvoker(invokeTarget, combinedArguments);
 
                 // Ensure that any ByRef-altered arguments are propagated back onto the callers arguments array (note that VBScript does not support
                 // the value reference being changed ByRef but it does support the index arguments - if any - being altered ByRef)
-                for (var i = 0; i < invokeArguments.Length; i++)
+                for (int i = 0; i < invokeArguments.Length; i++)
                     invokeArguments[i] = combinedArguments[i];
             };
         }
@@ -1518,7 +1518,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (index == null)
                 throw new ArgumentNullException(nameof(index));
 
-            var returnValueParameter = Expression.Parameter(typeof(int), "retVal");
+            ParameterExpression returnValueParameter = Expression.Parameter(typeof(int), "retVal");
             return Expression.Block(
                 typeof(int),
                 new[] { returnValueParameter },
@@ -1601,8 +1601,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (!byRefType.IsByRef)
                 throw new ArgumentException("Must be a type which reports IsByRef true");
 
-            var byRefFullName = byRefType.FullName;
-            var nonByRefFullName = byRefFullName.Substring(0, byRefFullName.Length - 1);
+            string? byRefFullName = byRefType.FullName;
+            string nonByRefFullName = byRefFullName.Substring(0, byRefFullName.Length - 1);
             return Type.GetType(
                 byRefType.AssemblyQualifiedName.Replace(byRefFullName, nonByRefFullName),
                 true
@@ -1621,7 +1621,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (memberAccessors == null)
                 throw new ArgumentNullException(nameof(memberAccessors));
 
-            foreach (var memberAccessor in memberAccessors)
+            foreach (string? memberAccessor in memberAccessors)
             {
                 if (string.IsNullOrWhiteSpace(memberAccessor))
                     throw new ArgumentException("Encountered null/blank in memberAccessors set");
@@ -1667,12 +1667,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             // There the nameRewriter WILL be considered in case it's trying to access classes we've translated. However, there's also a chance that
             // we could be accessing a non-IDispatch CLR type from somewhere, so GetNamedGetMethods will try to match using the nameRewriter first and
             // then fallback to a perfect match non-rewritten name and finally to a case-insensitive match to a non-rewritten name.
-            var mis1 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.UseNameRewriter, numberOfArguments, allowPrivateAccess).ToArray();
+            MethodInfo[] mis1 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.UseNameRewriter, numberOfArguments, allowPrivateAccess).ToArray();
             //.Concat(
-            var mis2 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess).ToArray();
+            MethodInfo[] mis2 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.Precise, numberOfArguments, allowPrivateAccess).ToArray();
             //)
             //.Concat(
-            var mis3 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.CaseInsensitive, numberOfArguments, allowPrivateAccess).ToArray();
+            MethodInfo[] mis3 = GetGetMethods(type, name, DefaultMemberBehaviourOptions.DoesNotMatter, MemberNameMatchBehaviourOptions.CaseInsensitive, numberOfArguments, allowPrivateAccess).ToArray();
             //);
             return mis1.Concat(mis2).Concat(mis3);
         }
@@ -1700,7 +1700,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private MethodInfo[] GetGetMethods(
             Type type,
-            string optionalName,
+            string? optionalName,
             DefaultMemberBehaviourOptions defaultMemberBehaviour,
             MemberNameMatchBehaviourOptions memberNameMatchBehaviour,
             int numberOfArguments,
@@ -1753,15 +1753,15 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Try to locate methods and/or properties that meet the criteria; have the correct number of arguments and match the name or are default, if
             // default member access is desired (dealing with the differing logic for translated-from-VBScript types and non-translated-from-VBScript).
-            var nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
-            var typeWasTranslatedFromVBScript = TypeIsTranslatedFromVBScript(type);
-            var typeIsComVisible = TypeIsComVisible(type);
-            var typeHasAnyDispIdZeroMember = AnyDispIdZeroMemberExists(type);
-            var typeHasAmbiguousDispIdZeroMember = typeHasAnyDispIdZeroMember && DispIdZeroIsAmbiguous(type);
-            var allMethods = GetMethodsThatAreNotRelatedToProperties(type, allowPrivateAccess);
+            Predicate<string> nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
+            bool typeWasTranslatedFromVBScript = TypeIsTranslatedFromVBScript(type);
+            bool typeIsComVisible = TypeIsComVisible(type);
+            bool typeHasAnyDispIdZeroMember = AnyDispIdZeroMemberExists(type);
+            bool typeHasAmbiguousDispIdZeroMember = typeHasAnyDispIdZeroMember && DispIdZeroIsAmbiguous(type);
+            MethodInfo[] allMethods = GetMethodsThatAreNotRelatedToProperties(type, allowPrivateAccess);
             Predicate<MethodInfo> matchesArgumentCount = m =>
             {
-                var args = m.GetParameters();
+                ParameterInfo[] args = m.GetParameters();
                 if (args.Length == numberOfArguments)
                     return true;
 
@@ -1829,7 +1829,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private MethodInfo[] GetSetMethods(
             Type type,
-            string optionalName,
+            string? optionalName,
             DefaultMemberBehaviourOptions defaultMemberBehaviour,
             MemberNameMatchBehaviourOptions memberNameMatchBehaviour,
             int numberOfArguments,
@@ -1844,7 +1844,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (numberOfArguments < 0)
                 throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
 
-            var nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
+            Predicate<string> nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
             return
                 GetMethodsThatAreNotRelatedToProperties(type, allowPrivateAccess)
                     .Where(m => nameMatcher(m.Name))
@@ -1874,10 +1874,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            var bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static; // This gets all public methods, whether they're declared in the specified type or anywhere in its inheritance tree
+            BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static; // This gets all public methods, whether they're declared in the specified type or anywhere in its inheritance tree
             if (allowPrivateAccess)
                 bindingFlags = bindingFlags | BindingFlags.NonPublic;
-            var mis = type.GetMethods(bindingFlags)
+            MethodInfo[] mis = type.GetMethods(bindingFlags)
                 .Except(type.GetProperties().Where(p => p.CanRead).Select(p => p.GetGetMethod()))
                 .Except(type.GetProperties().Where(p => p.CanWrite).Select(p => p.GetSetMethod()))
                 .ToArray();
@@ -1911,7 +1911,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return n => n.Equals(name, StringComparison.OrdinalIgnoreCase);
             if (memberNameMatchBehaviour == MemberNameMatchBehaviourOptions.UseNameRewriter)
             {
-                var rewritterName = _nameRewriter(name, 0);
+                string? rewritterName = _nameRewriter(name, 0);
                 return n => n == rewritterName;
             }
             throw new ArgumentOutOfRangeException(nameof(memberNameMatchBehaviour));
@@ -1976,7 +1976,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (memberInfo == null)
                 throw new ArgumentNullException(nameof(memberInfo));
 
-            var defaultMemberAttributeForContainingType = memberInfo.DeclaringType.GetCustomAttribute<DefaultMemberAttribute>(inherit: true);
+            DefaultMemberAttribute? defaultMemberAttributeForContainingType = memberInfo.DeclaringType.GetCustomAttribute<DefaultMemberAttribute>(inherit: true);
             return (defaultMemberAttributeForContainingType != null) && (defaultMemberAttributeForContainingType.MemberName == memberInfo.Name);
         }
 
@@ -2031,7 +2031,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 .Except(allMethods)
                 .ToArray();
 
-            var rslt = otherDispIdZeroMembers
+            MemberInfo[] rslt = otherDispIdZeroMembers
                 .Cast<MemberInfo>()
                 .Concat(dispIdZeroProperties)
                 .Concat(dispIdZeroMethodsThatAreNotRelatedToDispIdZeroProperties)
@@ -2097,7 +2097,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             public override bool Equals(object obj)
             {
-                var cacheKey = obj as InvokerCacheKey;
+                InvokerCacheKey? cacheKey = obj as InvokerCacheKey;
                 if (cacheKey == null)
                     return false;
                 return (

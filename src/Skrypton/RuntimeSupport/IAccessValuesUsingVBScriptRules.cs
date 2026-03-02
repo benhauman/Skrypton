@@ -29,7 +29,7 @@ namespace Skrypton.RuntimeSupport
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
+        void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
@@ -52,18 +52,18 @@ namespace Skrypton.RuntimeSupport
         /// Reduce a reference down to a value type, applying VBScript defaults logic - thrown an exception if this is not possible (null is
         /// acceptable as an input and corresponding return value)
         /// </summary>
-        object? VAL(object o, string exceptionMessageForInvalidContent = null);
+        object? VAL(object o, string? exceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// This will only return a non-VBScript-value-type, if unable to then an exception will be raised (this is used to wrap the right-hand
         /// side of a SET assignment)
         /// </summary>
-        object OBJ(object o, string optionalExceptionMessageForInvalidContent = null);
+        object OBJ(object o, string? optionalExceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// Reduce a reference down to a boolean value type, in the same ways that VBScript would attempt.
         /// </summary>
-        bool BOOL(object o, string optionalExceptionMessageForInvalidContent = null);
+        bool BOOL(object o, string? optionalExceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// Reduce a reference down to a numeric value type, applying VBScript defaults logic and then trying to parse as a number - throwing
@@ -99,7 +99,7 @@ namespace Skrypton.RuntimeSupport
         /// returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being raised.
         /// </summary>
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        DateTime DATE(object o, string optionalExceptionMessageForInvalidContent = null);
+        DateTime DATE(object o, string? optionalExceptionMessageForInvalidContent = null);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Skrypton.RuntimeSupport
         /// and will return in a blank string being returned, DBNull.Value (aka VBScript Null) is not acceptable and will return in an exception being
         /// raised.
         /// </summary>
-        string STR(object o, string optionalExceptionMessageForInvalidContent = null);
+        string STR(object o, string? optionalExceptionMessageForInvalidContent = null);
 
         /// <summary>
         /// Reduce a reference down to a boolean, throwing an exception if this is not possible. This will apply the same logic as VAL but then

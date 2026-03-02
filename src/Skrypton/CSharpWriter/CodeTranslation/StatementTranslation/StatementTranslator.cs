@@ -1985,7 +1985,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
         private sealed class BuiltInFunctionDetails
         {
-            public BuiltInFunctionDetails(IToken token, string supportFunctionName, int? desiredNumberOfArgumentsMatchedAgainst, Type returnTypeIfKnown)
+            public BuiltInFunctionDetails(IToken token, string supportFunctionName, int? desiredNumberOfArgumentsMatchedAgainst, Type? returnTypeIfKnown)
             {
                 if (string.IsNullOrWhiteSpace(supportFunctionName))
                 {

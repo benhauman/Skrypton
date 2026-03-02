@@ -17,7 +17,7 @@ namespace Skrypton.CSharpWriter.Lists
         {
             _optionalValueValidator = optionalValueValidator;
         }
-        public NonNullImmutableList(IEnumerable<T> values, IValueValidator<T> optionalValueValidator)
+        public NonNullImmutableList(IEnumerable<T> values, IValueValidator<T>? optionalValueValidator)
             : base(values, GetValidator(optionalValueValidator))
         {
             _optionalValueValidator = optionalValueValidator;
@@ -100,8 +100,8 @@ namespace Skrypton.CSharpWriter.Lists
 
         private sealed class Validator : IValueValidator<T>
         {
-            private IValueValidator<T> _optionalInnerValidator;
-            public Validator(IValueValidator<T> optionalInnerValidator)
+            private IValueValidator<T>? _optionalInnerValidator;
+            public Validator(IValueValidator<T>? optionalInnerValidator)
             {
                 _optionalInnerValidator = optionalInnerValidator;
             }

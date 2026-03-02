@@ -34,7 +34,7 @@ namespace Skrypton.CSharpWriter
         {
             return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
-        internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation logger = null) => renderCommentsAboutUndeclaredVariables
+        internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
             : new NullLogger();
 
@@ -135,10 +135,9 @@ namespace Skrypton.CSharpWriter
         public static IEnumerable<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
         {
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
-            string[] endSequenceMet;
             return CodeBlockHandler.RootBlock.Process(
                 GetTokens(culture, scriptContent).ToList(),
-                out endSequenceMet
+                out var _
             );
         }
 

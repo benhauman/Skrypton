@@ -129,9 +129,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             // Get function content
-            string[] endSequenceMet;
             CodeBlockHandler codeBlockHandler = new CodeBlockHandler(endSequences);
-            List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");
 
@@ -248,7 +247,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // We need to return the tokens related to the current parameter so that the
             // caller knows how many tokens that have been processed
             List<IToken> paramTokens = new List<IToken>();
-            name = null;
+            //name = null;
 
             // Determine ByRef / ByVal (default to ByVal if not specified)
             IToken token = getTokenAtomOnly(tokens, offset);

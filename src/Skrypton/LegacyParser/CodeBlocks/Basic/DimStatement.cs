@@ -64,7 +64,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public sealed class ConstantNonNegativeArrayDimensionDimVariable : DimVariable
     {
-        public ConstantNonNegativeArrayDimensionDimVariable(NameToken name, IEnumerable<NumericValueToken> dimensions)
+        public ConstantNonNegativeArrayDimensionDimVariable(NameToken name, IEnumerable<NumericValueToken>? dimensions)
             : base(name, (dimensions == null) ? null : dimensions.Select(d => new Expression(new[] { d })))
         {
             if (base.Dimensions != null)

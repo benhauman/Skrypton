@@ -14,7 +14,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// present the terms will be bracketed up to apply the max-one-operator restriction and to enforce VBScript operator precedence. This will
         /// never return null nor a set containing any nulls, it will raise an exception for a null token set or a set containing any nulls.
         /// </summary>
-        public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, IToken directedWithReferenceIfAny, Action<string> warningLogger)
+        public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, IToken? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

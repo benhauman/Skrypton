@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         public CodeBlockHandler(string[] optionalBlockEndsOrNull) : this(false, [optionalBlockEndsOrNull]) { }
 
         public CodeBlockHandler(IEnumerable<string[]> optionalBlockEndsOrNull) : this(false, optionalBlockEndsOrNull) { }
-        private CodeBlockHandler(bool root, IEnumerable<string[]> optionalBlockEndsOrNull)
+        private CodeBlockHandler(bool root, IEnumerable<string[]>? optionalBlockEndsOrNull)
         {
             // Null blockEnds value is valid - for the root code block - but if a non-null
             // list IS specified then every sequence must be non-null, have at least one
@@ -46,7 +46,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// ends when an end sequence (defined at class initialisation) is met, that sequence will be passed out. This will never return null. Note that
         /// the token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated.
         /// </summary>
-        public List<ICodeBlock> Process(List<IToken> tokens, out string[] endSequenceMet)
+        public List<ICodeBlock> Process(List<IToken> tokens, out string[]? endSequenceMet)
         {
             if (tokens == null) throw new ArgumentNullException(nameof(tokens));
             var handlers = new AbstractBlockHandler[]
@@ -114,7 +114,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// Have we encountered a token sequence that marks the end for this code block? Only KeyWordTokens are considered since this should be looking
         /// for structural termination sequences.
         /// </summary>
-        private bool atBlockEnd(List<IToken> tokens, out string[] endSequenceMet)
+        private bool atBlockEnd(List<IToken> tokens, out string[]? endSequenceMet)
         {
             if (this.blockEnds != null)
             {

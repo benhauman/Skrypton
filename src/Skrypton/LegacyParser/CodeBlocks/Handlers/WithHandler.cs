@@ -40,9 +40,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             tokens.RemoveRange(0, 1 + numberOfItemsProcessedInTarget); // Remove the "WITH" plus the tokens in the target reference
 
             // Get block content
-            string[] endSequenceMet;
             var codeBlockHandler = new CodeBlockHandler(["END", "WITH"]);
-            var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            var blockContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");
 

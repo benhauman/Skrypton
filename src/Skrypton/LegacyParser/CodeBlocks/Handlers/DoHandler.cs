@@ -61,9 +61,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             // Get block content
-            string[] endSequenceMet;
             var codeBlockHandler = new CodeBlockHandler(["LOOP"]);
-            var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            var blockContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");
             tokens.RemoveAt(0); // Remove "LOOP"

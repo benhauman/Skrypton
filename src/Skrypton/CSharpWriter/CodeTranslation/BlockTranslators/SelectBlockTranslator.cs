@@ -786,7 +786,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private sealed class SelectTargetExpressionTranslationData
         {
-            public SelectTargetExpressionTranslationData(IToken evaluatedTarget, CSharpName successfullyEvaluatedTargetNameIfRequired, TranslationResult extendedTranslationResult, ScopeAccessInformation extendedScopeAccessInformation)
+            public SelectTargetExpressionTranslationData(IToken evaluatedTarget, CSharpName? successfullyEvaluatedTargetNameIfRequired, TranslationResult extendedTranslationResult, ScopeAccessInformation extendedScopeAccessInformation)
             {
                 EvaluatedTarget = evaluatedTarget ?? throw new ArgumentNullException(nameof(evaluatedTarget));
                 SuccessfullyEvaluatedTargetNameIfRequired = successfullyEvaluatedTargetNameIfRequired;
@@ -804,7 +804,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             /// If the target expresssion is simple and does not require evaluation, or if there is no error-handling (in which case a failed evaluation would result in a termination of
             /// work at this point), then this will be null.
             /// </summary>
-            public CSharpName SuccessfullyEvaluatedTargetNameIfRequired { get; private set; }
+            public CSharpName? SuccessfullyEvaluatedTargetNameIfRequired { get; private set; }
 
             /// <summary>
             /// This will never be null

@@ -14,12 +14,12 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         [Obsolete("do not use it")] private VBScriptOverflowException() : this(null, innerException: null) { }
         internal VBScriptOverflowException(string message) : this(message, innerException: null) { }
-        internal VBScriptOverflowException(string additionalInformationIfAny, Exception innerException)
+        internal VBScriptOverflowException(string? additionalInformationIfAny, Exception? innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
-        public VBScriptOverflowException(double value, Exception innerException = null) : this((object)value, innerException) { }
-        public VBScriptOverflowException(decimal value, Exception innerException = null) : this((object)value, innerException) { }
-        private VBScriptOverflowException(object numericValue, Exception innerException = null)
+        public VBScriptOverflowException(double value, Exception? innerException = null) : this((object)value, innerException: innerException) { }
+        //public VBScriptOverflowException(decimal value) : this((object)value, innerException: null) { }
+        private VBScriptOverflowException(object? numericValue, Exception? innerException = null)
             : base(BASIC_ERROR_DESCRIPTION, "'[number: " + ((numericValue == null) ? "" : numericValue.ToString()) + "]'", innerException) { }
 
         public override int ErrorNumber { get { return 6; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

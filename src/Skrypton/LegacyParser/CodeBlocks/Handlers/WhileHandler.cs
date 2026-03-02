@@ -46,9 +46,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var conditionStatement = new Expression(tokensInCondition);
 
             // Get block content
-            string[] endSequenceMet;
             var codeBlockHandler = new CodeBlockHandler(["WEND"]);
-            var blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            var blockContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");
 

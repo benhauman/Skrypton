@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport
     {
         public static readonly ErrorDetails NoError = new ErrorDetails(0, "", "", "", null);
 
-        public ErrorDetails(int number, string source, string text, string description, Exception originalExceptionIfKnown)
+        public ErrorDetails(int number, string source, string text, string description, Exception? originalExceptionIfKnown)
         {
             Number = number;
             Source = source ?? "";
@@ -38,7 +38,7 @@ namespace Skrypton.RuntimeSupport
         /// This will be non-null Number is non-zero and if the exception was caught and translated into an ErrorDetails instance, but it may be null even
         /// if Number is non-zero (if the error was created with a RAISEERROR call)
         /// </summary>
-        public Exception OriginalExceptionIfKnown { get; private set; }
+        public Exception? OriginalExceptionIfKnown { get; private set; }
 
         public string? HelpFile { get; set; }
         public int HelpContext { get; }

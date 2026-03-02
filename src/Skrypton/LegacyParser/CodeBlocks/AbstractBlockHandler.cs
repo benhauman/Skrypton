@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks
         /// order to be valid. Will raise an exception if there are no more tokens available,
         /// or if a AtomToken was required but the next token was of a different type.
         /// </summary>
-        protected static IToken getToken(IReadOnlyCollection<IToken> tokens, int offset, IReadOnlyCollection<Type> allowedTokenTypes)
+        protected static IToken getToken(IReadOnlyCollection<IToken> tokens, int offset, IReadOnlyCollection<Type>? allowedTokenTypes)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));

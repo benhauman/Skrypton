@@ -7,7 +7,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
     internal static class ScopeAccessInformationErrorExtensions
     {
-        public static ScopeAccessInformation SetErrorRegistrationToken(this ScopeAccessInformation scopeAccessInformation, CSharpName errorRegistrationTokenIfAny)
+        public static ScopeAccessInformation SetErrorRegistrationToken(this ScopeAccessInformation scopeAccessInformation, CSharpName? errorRegistrationTokenIfAny)
         {
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));

@@ -150,7 +150,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new TypeMismatchException("left parameterLessDefaultMemberWasAvailable");
                 if (IsVBScriptNothing(l))
                     throw new ObjectVariableNotSetException("left is nothing");
-                throw new ObjectDoesNotSupportPropertyOrMemberException();
+                throw new ObjectDoesNotSupportPropertyOrMemberException($"l:{l}");
             }
             if (!TryVAL(r, out parameterLessDefaultMemberWasAvailable, out r))
             {
@@ -158,7 +158,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new TypeMismatchException("right parameterLessDefaultMemberWasAvailable");
                 if (IsVBScriptNothing(r))
                     throw new ObjectVariableNotSetException("right is nothing");
-                throw new ObjectDoesNotSupportPropertyOrMemberException();
+                throw new ObjectDoesNotSupportPropertyOrMemberException($"r:{r}");
             }
             if ((l == DBNull.Value) && (r == DBNull.Value))
                 return DBNull.Value;
@@ -557,7 +557,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return (double)((decimal)CDBL_Precise(value, "'CDbl'"));
         }
         private double CDBL_Precise(object value) { return CDBL_Precise(value, null); }
-        private double CDBL_Precise(object value, string optionalExceptionMessageForInvalidContent)
+        private double CDBL_Precise(object value, string? optionalExceptionMessageForInvalidContent)
         {
             return GetAsNumber<double>(value, optionalExceptionMessageForInvalidContent, Convert.ToDouble);
         }
@@ -2461,7 +2461,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// translated into the desired type. If there are no applicable special cases then the value will be passed through the VAL function and then through
         /// the processor (if this fails then a TypeMismatchException will be raised).
         /// </summary>
-        private T GetAsNumber<T>(object? value, string optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
+        private T GetAsNumber<T>(object? value, string? optionalExceptionMessageForInvalidContent, Func<object, T> converter, bool rethrowUn = false) where T : struct
         {
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));
@@ -2610,7 +2610,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }
-        public void SET(object valueToSetTo, object context, object target, string optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public void SET(object valueToSetTo, object context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             _valueRetriever.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProvider, line);
         }
@@ -2622,15 +2622,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.TryVAL(o, out parameterLessDefaultMemberWasAvailable, out asValueType);
         }
-        public object VAL(object o, string exceptionMessageForInvalidContent = null)
+        public object VAL(object o, string? exceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.VAL(o, exceptionMessageForInvalidContent);
         }
-        public object OBJ(object o, string optionalExceptionMessageForInvalidContent = null)
+        public object OBJ(object o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.OBJ(o, optionalExceptionMessageForInvalidContent);
         }
-        public bool BOOL(object o, string optionalExceptionMessageForInvalidContent = null)
+        public bool BOOL(object o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.BOOL(o, optionalExceptionMessageForInvalidContent);
         }
@@ -2646,7 +2646,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.NullableDATE(o);
         }
-        public DateTime DATE(object o, string optionalExceptionMessageForInvalidContent = null)
+        public DateTime DATE(object o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.DATE(o);
         }
@@ -2654,7 +2654,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.NullableSTR(o);
         }
-        public string STR(object o, string optionalExceptionMessageForInvalidContent = null)
+        public string STR(object o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.STR(o);
         }

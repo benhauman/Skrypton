@@ -134,8 +134,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         public static ScopeAccessInformation Extend(
             this ScopeAccessInformation scopeInformation,
             IDefineScope parent,
-            CSharpName parentReturnValueNameIfAny,
-            CSharpName errorRegistrationTokenIfAny,
+            CSharpName? parentReturnValueNameIfAny,
+            CSharpName? errorRegistrationTokenIfAny,
             NonNullImmutableList<ICodeBlock> blocks)
         {
             if (scopeInformation == null)

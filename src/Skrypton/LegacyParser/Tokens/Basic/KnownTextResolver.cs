@@ -603,9 +603,9 @@ public sealed class KnownTextContent
     /// {
     /// TheContent = content;
     /// }
-    private readonly object thePayload;
+    private readonly object? thePayload;
     private readonly int length;
-    public KnownTextContent(string content, bool isWhiteSpace, bool isNull, object payload)
+    public KnownTextContent(string content, bool isWhiteSpace, bool isNull, object? payload)
     {
         if (isWhiteSpace || isNull)
         {

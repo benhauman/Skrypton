@@ -18,7 +18,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         [Obsolete("do not use it")] private CustomException() { }
         [Obsolete("do not use it")] private CustomException(string message) : base(message) { }
         [Obsolete("do not use it")] private CustomException(string message, Exception innerException) : base(message, innerException) { }
-        public CustomException(int number, string source, string description) : base(GetMessage(source, description), additionalInformationIfAny: null)
+        public CustomException(int number, string source, string description) : base(GetMessage(source, description), additionalInformationIfAny: null, innerException: null)
         {
             if (number == 0)
                 throw new ArgumentOutOfRangeException(nameof(number));

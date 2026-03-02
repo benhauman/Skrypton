@@ -439,12 +439,14 @@ namespace Skrypton.RuntimeSupport
             //    .Distinct()
             //    .ToDictionary(x => x.Item1, x => x.Item2);
 
-            public static bool TryParseVbDate(DateMonthNameTranslator monthNameTranslator, CultureInfo culture, string input, int defaultYear, out DateTimeParts result)
+            public static bool TryParseVbDate(DateMonthNameTranslator monthNameTranslator, CultureInfo culture, string input, int defaultYear, out DateTimeParts? result)
             {
-                result = default;
 
                 if (string.IsNullOrWhiteSpace(input))
+                {
+                    result = null;
                     return false;
+                }
 
                 var tokens = input
                     .Replace('-', ' ')
@@ -462,11 +464,15 @@ namespace Skrypton.RuntimeSupport
                 foreach (var t in tokens)
                 {
                     if (!int.TryParse(t, out var n))
+                    {
+                        result = null;
                         return false;
+                    }
                     nums.Add(n);
                 }
                 bool useISOymd = input.IndexOf('-') > 0; // // This uses hyphens, which VBScript treats as an ISO‑like format
                 bool useFormatDayMonth = !useISOymd && DetermineUseFormatDayMonth(culture);
+                result = null;
                 return nums.Count switch
                 {
                     2 => TryParse2Part(culture, input, useFormatDayMonth, nums, defaultYear, out result),
@@ -507,7 +513,7 @@ namespace Skrypton.RuntimeSupport
 
             private static bool TryParse2Part(CultureInfo culture, string input, bool useFormatDayMonth, List<int> p, int defaultYear, out DateTimeParts result)
             {
-                result = null;
+                //result = null;
 
                 int a = p[0], b = p[1];
 
@@ -551,7 +557,7 @@ namespace Skrypton.RuntimeSupport
 
             private static bool TryParse3Part(CultureInfo culture, string input, bool useFormatDayMonth, bool useISOymd, List<int> p, int defaultYear, out DateTimeParts result)
             {
-                result = default;
+                //result = default;
 
                 int p1 = p[0], p2 = p[1], p3 = p[2];
 
@@ -667,9 +673,9 @@ namespace Skrypton.RuntimeSupport
                 List<string> tokens,
                 int monthIndex,
                 int defaultYear,
-                out DateTimeParts result)
+                out DateTimeParts? result)
             {
-                result = default;
+                //result = default;
 
                 //int month = MonthNames[tokens[monthIndex]];
                 int month = monthNameTranslator.TranslateMonthName(tokens[monthIndex]);
@@ -680,7 +686,10 @@ namespace Skrypton.RuntimeSupport
                     .ToList();
 
                 if (nums.Any(n => n < 0))
+                {
+                    result = null;
                     return false;
+                }
 
                 if (nums.Count == 1)
                 {
@@ -707,7 +716,7 @@ namespace Skrypton.RuntimeSupport
                     int year = b <= 29 ? 2000 + b : 1900 + b;
                     return MakeDate(culture, input, year, month, a, out result);
                 }
-
+                result = null;
                 return false;
             }
 

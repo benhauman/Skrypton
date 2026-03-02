@@ -5,7 +5,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 {
     internal static class MissingMemberExceptionExtensions
     {
-        public static bool RelatesTo(this MissingMemberException source, Type type, string memberNameIfAny)
+        public static bool RelatesTo(this MissingMemberException source, Type type, string? memberNameIfAny)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

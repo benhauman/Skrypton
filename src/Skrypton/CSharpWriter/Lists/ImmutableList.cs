@@ -18,7 +18,7 @@ namespace Skrypton.CSharpWriter.Lists
         //public ImmutableList() : this((Node?)null, (IValueValidator<T>?)null) { }
         public ImmutableList(IEnumerable<T> values) : this(values, null) { }
         //public ImmutableList(IValueValidator<T> optionalValueValidator) : this((Node?)null, optionalValueValidator) { }
-        public ImmutableList(IEnumerable<T> values, IValueValidator<T> optionalValueValidator)
+        public ImmutableList(IEnumerable<T> values, IValueValidator<T>? optionalValueValidator)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -70,7 +70,7 @@ namespace Skrypton.CSharpWriter.Lists
             return Contains(value, null);
         }
 
-        public bool Contains(T value, IEqualityComparer<T> optionalComparer)
+        public bool Contains(T value, IEqualityComparer<T>? optionalComparer)
         {
             if (_tail == null)
                 return false;
@@ -126,7 +126,7 @@ namespace Skrypton.CSharpWriter.Lists
             return Insert(null, value, insertAtIndex);
         }
 
-        private ImmutableList<T> Insert(IReadOnlyCollection<T> multipleValuesToAdd, T singleValueToAdd, int insertAtIndex)
+        private ImmutableList<T> Insert(IReadOnlyCollection<T>? multipleValuesToAdd, T singleValueToAdd, int insertAtIndex)
         {
             if ((insertAtIndex < 0) || (insertAtIndex > Count))
                 throw new ArgumentOutOfRangeException(nameof(insertAtIndex));
@@ -184,7 +184,7 @@ namespace Skrypton.CSharpWriter.Lists
         /// <summary>
         /// Removes the first occurrence of a specific object from the list, if the item is not present then this instance will be returned
         /// </summary>
-        public ImmutableList<T> Remove(T value, IEqualityComparer<T> optionalComparer)
+        public ImmutableList<T> Remove(T value, IEqualityComparer<T>? optionalComparer)
         {
             // If there are no items in the list then the specified value can't be present, so do nothing
             if (_tail == null)
@@ -237,7 +237,7 @@ namespace Skrypton.CSharpWriter.Lists
             );
         }
 
-        private static bool DoValuesMatch(T x, T y, IEqualityComparer<T> optionalComparer)
+        private static bool DoValuesMatch(T x, T y, IEqualityComparer<T>? optionalComparer)
         {
             if (optionalComparer != null)
                 return optionalComparer.Equals(x, y);
@@ -377,7 +377,7 @@ namespace Skrypton.CSharpWriter.Lists
 
         protected class Node
         {
-            public Node(T value, Node previous)
+            public Node(T value, Node? previous)
             {
                 Value = value;
                 Previous = previous;
@@ -389,7 +389,7 @@ namespace Skrypton.CSharpWriter.Lists
             /// <summary>
             /// This will be null if there is no previous node (ie. this is the start of the chain, the head)
             /// </summary>
-            public Node Previous { get; private set; }
+            public Node? Previous { get; private set; }
 
             public int Count { get; private set; }
         }

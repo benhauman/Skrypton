@@ -108,7 +108,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             List<SelectBlock.CaseBlockSegment> content = new List<SelectBlock.CaseBlockSegment>();
             if (!tokens[0].Content.Equals("END", StringComparison.OrdinalIgnoreCase))
             {
-                string[] endSequenceMet;
+                string[]? endSequenceMet;
                 CodeBlockHandler codeBlockHandler = new CodeBlockHandler([["CASE"], ["END", "SELECT"]]);
                 while (true)
                 {

@@ -12,9 +12,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public ScopeAccessInformation(
             IHaveNestedContent parent,
             IDefineScope scopeDefiningParent,
-            CSharpName parentReturnValueNameIfAny,
-            CSharpName errorRegistrationTokenIfAny,
-            DirectedWithReferenceDetails directedWithReferenceIfAny,
+            CSharpName? parentReturnValueNameIfAny,
+            CSharpName? errorRegistrationTokenIfAny,
+            DirectedWithReferenceDetails? directedWithReferenceIfAny,
             NonNullImmutableList<NameToken> externalDependencies,
             NonNullImmutableList<ScopedNameToken> classes,
             NonNullImmutableList<ScopedNameToken> functions,
@@ -90,20 +90,20 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// This will be null if the ScopeDefining is not a structure that returns a value. If ScopeDefiningParent IS a structure that returns a value
         /// (ie. FUNCTION or PROPERTY) then this will be non-null.
         /// </summary>
-        public CSharpName ParentReturnValueNameIfAny { get; private set; }
+        public CSharpName? ParentReturnValueNameIfAny { get; private set; }
 
         /// <summary>
         /// This must not be null if error-trapping is to be supported by the current scope. If it is null then error-trapping can be never be applied
         /// to translated statements (it being non-null does not mean that error-trapping will be applied to ALL statements, it depends upon where and
         /// how error-trapping is enabled by the code being translated).
         /// </summary>
-        public CSharpName ErrorRegistrationTokenIfAny { get; private set; }
+        public CSharpName? ErrorRegistrationTokenIfAny { get; private set; }
 
         /// <summary>
         /// This will be non-null if the current scope is within a WITH statement that resolves relative method or property accesses. It will be null
         /// otherwise.
         /// </summary>
-        public DirectedWithReferenceDetails DirectedWithReferenceIfAny { get; private set; }
+        public DirectedWithReferenceDetails? DirectedWithReferenceIfAny { get; private set; }
 
         /// <summary>
         /// These are references that are declared as being a compulsory and expected part of the Environment References - eg. if a command line

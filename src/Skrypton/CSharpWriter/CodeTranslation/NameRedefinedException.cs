@@ -7,9 +7,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 {
     public sealed class NameRedefinedException : Exception
     {
-        [Obsolete("do not use it")] private NameRedefinedException() : this(null, innerException: null) { }
+        [Obsolete("do not use it")] private NameRedefinedException() : this(null!, innerException: null) { }
         [Obsolete("do not use it")] private NameRedefinedException(string message) : this(message, innerException: null) { }
-        [Obsolete("do not use it")] private NameRedefinedException(string message, Exception innerException) : base(message, innerException) { Name = new NameToken("", 0); }
+        [Obsolete("do not use it")] private NameRedefinedException(string message, Exception? innerException) : base(message, innerException) { Name = new NameToken("", 0); }
         public NameRedefinedException(NameToken name) : base(GetMessage(name))
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));

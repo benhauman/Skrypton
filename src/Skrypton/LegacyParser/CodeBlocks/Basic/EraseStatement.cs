@@ -101,7 +101,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public sealed class TargetDetails
 #pragma warning restore CA1034 // Nested types should not be visible
         {
-            public TargetDetails(Expression target, IEnumerable<Expression> argumentsIfAny, bool wrappedInBraces)
+            public TargetDetails(Expression target, IEnumerable<Expression>? argumentsIfAny, bool wrappedInBraces)
             {
                 Target = target ?? throw new ArgumentNullException(nameof(target));
                 ArgumentsIfAny = (argumentsIfAny == null) ? null : argumentsIfAny.ToList().AsReadOnly();

@@ -119,7 +119,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             );
         }
 
-        private static List<IToken> getExpressionContent(List<IToken> tokens, int offset, string endMarkerContent)
+        private static List<IToken> getExpressionContent(List<IToken> tokens, int offset, string? endMarkerContent)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -155,9 +155,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
         /// </summary>
         private static List<ICodeBlock> getForBlockContent(List<IToken> tokens)
         {
-            string[] endSequenceMet;
             CodeBlockHandler codeBlockHandler = new CodeBlockHandler(["NEXT"]);
-            List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            List<ICodeBlock> blockContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find end sequence!");
 

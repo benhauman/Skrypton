@@ -15,7 +15,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         [Obsolete("do not use it")] public InvalidUseOfNullException(Exception innerException) : this(null, innerException) { }
 
         public InvalidUseOfNullException(string additionalInformationIfAny) : this(additionalInformationIfAny, innerException: null) { }
-        public InvalidUseOfNullException(string additionalInformationIfAny, Exception innerException)
+        public InvalidUseOfNullException(string? additionalInformationIfAny, Exception? innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 
         public override int ErrorNumber { get { return 94; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm

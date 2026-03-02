@@ -29,9 +29,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             tokens.RemoveRange(0, 3);
 
             // Get function content
-            string[] endSequenceMet;
             var codeBlockHandler = new CodeBlockHandler(["END", "CLASS"]);
-            var functionContent = codeBlockHandler.Process(tokens, out endSequenceMet);
+            var functionContent = codeBlockHandler.Process(tokens, out string[]? endSequenceMet);
             if (endSequenceMet == null)
                 throw new InvalidOperationException("Didn't find encounter end sequence!");
 

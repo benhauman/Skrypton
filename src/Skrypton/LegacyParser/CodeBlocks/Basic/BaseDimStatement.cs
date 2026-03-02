@@ -85,7 +85,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class DimVariable // cannot be abstract due to 'translateRawVariableData'
     {
-        public DimVariable(NameToken name, IEnumerable<Expression> dimensions)
+        public DimVariable(NameToken name, IEnumerable<Expression>? dimensions)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             if (dimensions == null)

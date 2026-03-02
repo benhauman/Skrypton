@@ -39,8 +39,7 @@ namespace Skrypton.LegacyParser
             }
 
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
-            string[] endSequenceMet;
-            return (CodeBlockHandler.RootBlock).Process(atomTokens, out endSequenceMet);
+            return (CodeBlockHandler.RootBlock).Process(atomTokens, out var _);
         }
     }
 }
