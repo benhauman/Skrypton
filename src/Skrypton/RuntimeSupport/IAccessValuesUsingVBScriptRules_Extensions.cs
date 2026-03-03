@@ -110,7 +110,7 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, [], argumentProviderBuilder.GetArgs(), line);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
+        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object? context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

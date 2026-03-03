@@ -35,7 +35,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (valueUpdater == null)
                 throw new ArgumentNullException(nameof(valueUpdater));
 
-            _valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, valueUpdater));
+            _valuesWithUpdatesWhereRequired.Add(Tuple.Create<object, Action<object>?>(value, valueUpdater));
             return this;
         }
 
@@ -122,8 +122,8 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private sealed class ArgumentProvider : IProvideCallArguments
         {
-            private readonly List<Tuple<object, Action<object>>> _valuesWithUpdatesWhereRequired;
-            public ArgumentProvider(List<Tuple<object, Action<object>>> valuesWithUpdatesWhereRequired, bool useBracketsWhereZeroArguments)
+            private readonly List<Tuple<object, Action<object>?>> _valuesWithUpdatesWhereRequired;
+            public ArgumentProvider(List<Tuple<object, Action<object>?>> valuesWithUpdatesWhereRequired, bool useBracketsWhereZeroArguments)
             {
                 _valuesWithUpdatesWhereRequired = valuesWithUpdatesWhereRequired ?? throw new ArgumentNullException(nameof(valuesWithUpdatesWhereRequired));
                 UseBracketsWhereZeroArguments = useBracketsWhereZeroArguments;
@@ -149,7 +149,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
 
             /// <summary>
-            /// The index must be zero or greater and less than NumberOfArguments. If the argument at that index may not be overrwritten then the
+            /// The index must be zero or greater and less than NumberOfArguments. If the argument at that index may not be overwritten then the
             /// function call will have no effect.
             /// </summary>
             public void OverwriteValueIfByRef(int index, object value)
@@ -157,7 +157,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if ((index < 0) || (index >= _valuesWithUpdatesWhereRequired.Count))
                     throw new ArgumentOutOfRangeException(nameof(index));
 
-                Action<object> valueUpdater = _valuesWithUpdatesWhereRequired[index].Item2;
+                Action<object>? valueUpdater = _valuesWithUpdatesWhereRequired[index].Item2;
                 if (valueUpdater != null)
                     valueUpdater(value);
             }

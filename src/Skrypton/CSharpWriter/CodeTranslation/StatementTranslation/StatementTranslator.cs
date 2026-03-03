@@ -60,14 +60,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // See notes in TryToGetShortCutStatementResponse method..
-            var shortCutStatementResponse = TryToGetShortCutStatementResponse(expression, scopeAccessInformation, returnRequirements);
+            TranslatedStatementContentDetails? shortCutStatementResponse = TryToGetShortCutStatementResponse(expression, scopeAccessInformation, returnRequirements);
             if (shortCutStatementResponse != null)
             {
                 return shortCutStatementResponse;
             }
 
             // See notes in TryToGetConcatFlattenedSpecialCaseResponse method..
-            var concatFlattenedSpecialCaseResponse = TryToGetConcatFlattenedSpecialCaseResponse(expression, scopeAccessInformation, returnRequirements);
+            TranslatedStatementContentDetails? concatFlattenedSpecialCaseResponse = TryToGetConcatFlattenedSpecialCaseResponse(expression, scopeAccessInformation, returnRequirements);
             if (concatFlattenedSpecialCaseResponse != null)
             {
                 return concatFlattenedSpecialCaseResponse;
@@ -76,7 +76,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Assert expectations about numbers of segments and operators (if any)
             // - There may not be more than three segments, and only three where there are two values or calls separated by an operator. CallSetExpressionSegments and
             //   BracketedExpressionSegments are key to ensuring that this format is met.
-            var segments = expression.Segments.ToArray();
+            IExpressionSegment[] segments = expression.Segments.ToArray();
             if (segments.Length == 0)
             {
                 throw new ArgumentException("The expression was broken down into zero segments - invalid content");
@@ -132,7 +132,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             if (segments.Length == 1)
             {
-                var result = TranslateNonOperatorSegment(segments[0], scopeAccessInformation);
+                TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[0], scopeAccessInformation);
                 return new TranslatedStatementContentDetails(
                     ApplyReturnTypeGuarantee(
                         result.TranslatedContent,
@@ -146,7 +146,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             if (segments.Length == 2)
             {
-                var result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
+                TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
                 return new TranslatedStatementContentDetails(
                     ApplyReturnTypeGuarantee(
                         string.Format(CultureInfo.InvariantCulture,
@@ -163,8 +163,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            var segmentLeft = segments[0];
-            var segmentRight = segments[2];
+            IExpressionSegment segmentLeft = segments[0];
+            IExpressionSegment segmentRight = segments[2];
             bool mustConvertLeftValueToNumber, mustConvertRightValueToNumber;
             bool mustConvertLeftValueToDate, mustConvertRightValueToDate;
             bool mustConvertLeftValueToString, mustConvertRightValueToString;
@@ -194,10 +194,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 //     If (-657435 = #2015-5-27#) Then
                 //   is not an error, even though -657435 falls just outside of the VBScript date ranges (because #2015-5-27# is interpreted as
                 //   a number, rather than -657435 being parsed as a date)
-                var segmentLeftAsNumericValue = segmentLeft as NumericValueExpressionSegment;
-                var segmentRightAsNumericValue = segmentRight as NumericValueExpressionSegment;
-                var segmentLeftIsNonNegativeNumericValue = (segmentLeftAsNumericValue != null) && (segmentLeftAsNumericValue.Token.Value >= 0);
-                var segmentRightIsNonNegativeNumericValue = (segmentRightAsNumericValue != null) && (segmentRightAsNumericValue.Token.Value >= 0);
+                NumericValueExpressionSegment? segmentLeftAsNumericValue = segmentLeft as NumericValueExpressionSegment;
+                NumericValueExpressionSegment? segmentRightAsNumericValue = segmentRight as NumericValueExpressionSegment;
+                bool segmentLeftIsNonNegativeNumericValue = (segmentLeftAsNumericValue != null) && (segmentLeftAsNumericValue.Token.Value >= 0);
+                bool segmentRightIsNonNegativeNumericValue = (segmentRightAsNumericValue != null) && (segmentRightAsNumericValue.Token.Value >= 0);
                 if ((segmentLeftAsNumericValue != null) && (segmentRightAsNumericValue != null))
                 {
                     // If both sides of an operation are numeric constants, then the comparison will be simple and not require any interfering in
@@ -292,7 +292,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 mustConvertLeftValueToString = false;
                 mustConvertRightValueToString = false;
             }
-            var resultLeft = TranslateNonOperatorSegment(segmentLeft, scopeAccessInformation);
+            TranslatedStatementContentDetailsWithContentType resultLeft = TranslateNonOperatorSegment(segmentLeft, scopeAccessInformation);
             if (new[] { mustConvertLeftValueToNumber, mustConvertLeftValueToDate, mustConvertLeftValueToString }.Count(v => v) > 1)
             {
                 throw new InvalidOperationException("Something went wrong in the processing, no more than one of mustConvertLeftValueToNumber, mustConvertLeftValueToDate and mustConvertLeftValueToString may be set for a comparison");
@@ -311,7 +311,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 resultLeft = WrapTranslatedResultInStringConversion(resultLeft);
             }
 
-            var resultRight = TranslateNonOperatorSegment(segmentRight, scopeAccessInformation);
+            TranslatedStatementContentDetailsWithContentType resultRight = TranslateNonOperatorSegment(segmentRight, scopeAccessInformation);
             if (new[] { mustConvertRightValueToNumber, mustConvertRightValueToDate, mustConvertRightValueToString }.Count(v => v) > 1)
             {
                 throw new InvalidOperationException("Something went wrong in the processing, no more than one of mustConvertRightValueToNumber, mustConvertRightValueToDate and mustConvertRightValueToString may be set for a comparison");
@@ -422,7 +422,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            var numericValueSegment = segment as NumericValueExpressionSegment;
+            NumericValueExpressionSegment? numericValueSegment = segment as NumericValueExpressionSegment;
             if (numericValueSegment != null)
             {
                 return new TranslatedStatementContentDetailsWithContentType(
@@ -432,7 +432,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            var stringValueSegment = segment as StringValueExpressionSegment;
+            StringValueExpressionSegment? stringValueSegment = segment as StringValueExpressionSegment;
             if (stringValueSegment != null)
             {
                 return new TranslatedStatementContentDetailsWithContentType(
@@ -442,7 +442,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            var dateValueSegment = segment as DateValueExpressionSegment;
+            DateValueExpressionSegment? dateValueSegment = segment as DateValueExpressionSegment;
             if (dateValueSegment != null)
             {
                 // When initialising a date literal, the culture at runtime may affect the value, as may the current year if the format of the literal did not specify
@@ -461,37 +461,37 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            var builtInValueExpressionSegment = segment as BuiltInValueExpressionSegment;
+            BuiltInValueExpressionSegment? builtInValueExpressionSegment = segment as BuiltInValueExpressionSegment;
             if (builtInValueExpressionSegment != null)
             {
                 return Translate(builtInValueExpressionSegment);
             }
 
-            var callExpressionSegment = segment as CallExpressionSegment;
+            CallExpressionSegment? callExpressionSegment = segment as CallExpressionSegment;
             if (callExpressionSegment != null)
             {
                 return Translate(callExpressionSegment, scopeAccessInformation);
             }
 
-            var callSetExpressionSegment = segment as CallSetExpressionSegment;
+            CallSetExpressionSegment? callSetExpressionSegment = segment as CallSetExpressionSegment;
             if (callSetExpressionSegment != null)
             {
                 return Translate(callSetExpressionSegment, scopeAccessInformation);
             }
 
-            var bracketedExpressionSegment = segment as BracketedExpressionSegment;
+            BracketedExpressionSegment? bracketedExpressionSegment = segment as BracketedExpressionSegment;
             if (bracketedExpressionSegment != null)
             {
                 return Translate(bracketedExpressionSegment, scopeAccessInformation);
             }
 
-            var newInstanceExpressionSegment = segment as NewInstanceExpressionSegment;
+            NewInstanceExpressionSegment? newInstanceExpressionSegment = segment as NewInstanceExpressionSegment;
             if (newInstanceExpressionSegment != null)
             {
                 return Translate(newInstanceExpressionSegment, scopeAccessInformation.ScopeDefiningParent.Scope);
             }
 
-            var runtimeErrorExpressionSegment = segment as RuntimeErrorExpressionSegment;
+            RuntimeErrorExpressionSegment? runtimeErrorExpressionSegment = segment as RuntimeErrorExpressionSegment;
             if (runtimeErrorExpressionSegment != null)
             {
                 return Translate(runtimeErrorExpressionSegment);
@@ -515,7 +515,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // 2014-12-08 DWR: This previously wrapped the returned content in brackets - largely only because the source is a bracketed expression. But
             // since they're always broken down to respect VBScript's operator precedence and then passed through functions for every operation, there
             // is no benefit to adding further bracketing, so it's been removed.
-            var translatedInnerContentDetails = Translate(
+            TranslatedStatementContentDetails translatedInnerContentDetails = Translate(
                 new Expression(bracketedExpressionSegment.Segments),
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified
@@ -583,7 +583,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // Handle regular value-type constants
-            var constantProperty = typeof(VBScriptConstants).GetProperty(
+            PropertyInfo? constantProperty = typeof(VBScriptConstants).GetProperty(
                 builtInValueExpressionSegment.Token.Content,
                 BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Static
             );
@@ -622,8 +622,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             // We may have to monkey about with the data here - if there are references to the return value of the current function (if we're in one) then these
             // need to be replaced with the scopeAccessInformation's parentReturnValueNameIfAny value (if there is one).
-            var firstMemberAccessToken = callExpressionSegment.MemberAccessTokens.First();
-            var firstMemberAccessTokenIsParentReturnValueName = false;
+            IToken firstMemberAccessToken = callExpressionSegment.MemberAccessTokens.First();
+            bool firstMemberAccessTokenIsParentReturnValueName = false;
             if (scopeAccessInformation.ParentReturnValueNameIfAny != null)
             {
                 // If the segment's first (or only) member accessor has no arguments and wasn't expressed in the source code as a function call (ie. it didn't
@@ -632,8 +632,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // - If arguments are specified or brackets used with no arguments then it is always a function (or property) call and the return-value
                 //   replacement does not need to be made (the return value may not be DIM'd or REDIM'd to an array and so element access is not allowed,
                 //   so ANY argument use always points to a function / property call)
-                var rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(firstMemberAccessToken);
-                var rewrittenScopeDefiningParentName = _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name);
+                string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(firstMemberAccessToken);
+                string rewrittenScopeDefiningParentName = _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name);
                 if ((rewrittenFirstMemberAccessor == rewrittenScopeDefiningParentName)
                 && !callExpressionSegment.Arguments.Any()
                 && (callExpressionSegment.ZeroArgumentBracketsPresence == CallExpressionSegment.ArgumentBracketPresenceOptions.Absent))
@@ -641,7 +641,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // The ScopeDefiningParent's Name will have come from a TempValueNameGenerator rather than VBScript source code, and as such it should
                     // not be passed through any VBScriptNameRewriter processing. Using a DoNotRenameNameToken means that, if the extension method
                     // GetMemberAccessTokenName is consistently used for VBScriptNameRewriter access, its name won't be altered.
-                    var parentReturnValueNameToken = new DoNotRenameNameToken(
+                    DoNotRenameNameToken parentReturnValueNameToken = new DoNotRenameNameToken(
                         scopeAccessInformation.ParentReturnValueNameIfAny.Name.ToUpperX(),
                         firstMemberAccessToken.LineIndex
                     );
@@ -655,11 +655,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
             }
 
-            var targetBuiltInFunction = firstMemberAccessToken as BuiltInFunctionToken;
+            BuiltInFunctionToken? targetBuiltInFunction = firstMemberAccessToken as BuiltInFunctionToken;
             if (targetBuiltInFunction != null)
             {
-                var supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count());
-                var rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
+                BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count());
+                IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
                     .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
 
                 // If the call expression is a single-argument call to "CDbl" and the argument is a numeric literal that VBScript would declare as "Double",
@@ -670,8 +670,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // as number literals in comparisons or not).
                 if ((callExpressionSegment.Arguments.Count() == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
                 {
-                    var singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
-                    var singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
+                    IExpressionSegment? singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
+                    NumericValueExpressionSegment? singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
                     if ((singleArgumentSegmentAsNumericValue != null) && singleArgumentSegmentAsNumericValue.Token.IsSafeToUnwrapFrom(targetBuiltInFunction))
                     {
                         return TranslateNonOperatorSegment(singleArgumentSegmentAsNumericValue, scopeAccessInformation);
@@ -706,15 +706,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // The only BuiltInValueToken that is acceptable here is "Err", since it is the only one that has members that may be accessed. If any other builtin
             // value is accessed in this manner then an "Object required" error needs to be raised at runtime (this will be handled by the code that is generated
             // since it will likely have use the support library's CALL function which will realise that there is no way to access a property on a value type)
-            var targetBuiltInValue = firstMemberAccessToken as BuiltInValueToken;
-            var targetIsErrReference = (targetBuiltInValue != null) && targetBuiltInValue.Content.Equals("Err", StringComparison.OrdinalIgnoreCase);
+            BuiltInValueToken? targetBuiltInValue = firstMemberAccessToken as BuiltInValueToken;
+            bool targetIsErrReference = (targetBuiltInValue != null) && targetBuiltInValue.Content.Equals("Err", StringComparison.OrdinalIgnoreCase);
 
             // If the target reference IS "Err", then there is a special case of "Err.Raise" to consider. If Err.Raise is called with the correct number of arguments
             // then it may be mapped directly onto the support function (either 1, 2 or 3 arguments must be present). If a different number of arguments are present
             // then the target still needs rewriting from "Err.Raise" to "_.RAISEERROR", but it will have to go through the CALL function. Same goes for "Err.Clear".
             TranslatedStatementContentDetailsWithContentType? specialErrorHandlingFunctionStatementIfApplicable;
             NameToken target;
-            var memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1).ToArray();
+            IToken[] memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1).ToArray();
             if (targetIsErrReference)
             {
                 string? specialErrorHandlingFunctionNameIfApplicable;
@@ -740,8 +740,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 if (specialErrorHandlingFunctionNameIfApplicable != null)
                 {
-                    var specialErrorHandlingFunctionToken = new NameToken(false, specialErrorHandlingFunctionNameIfApplicable.ToUpperX(), memberAccessors.Single().LineIndex);
-                    var errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, callExpressionSegment.Arguments.Count());
+                    NameToken specialErrorHandlingFunctionToken = new NameToken(false, specialErrorHandlingFunctionNameIfApplicable.ToUpperX(), memberAccessors.Single().LineIndex);
+                    BuiltInFunctionDetails errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, callExpressionSegment.Arguments.Count());
                     if (errorSupportFunction.DesiredNumberOfArgumentsMatchedAgainst != null)
                     {
                         specialErrorHandlingFunctionStatementIfApplicable = TranslateAsDirectSupportFunctionCall(errorSupportFunction, callExpressionSegment.Arguments, scopeAccessInformation);
@@ -773,7 +773,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // the function name must become one of the member accessors (eg. GetSomething().Name can not be represented by _.CALL(GetSomething, "Name") since that is not
             // valid C#, however it CAN be represented by _.CALL(this, _outer, "GetSomething", "Name") or _.CALL(this, "GetSomething", "Name"), depending upon where the function
             // is defined).
-            var targetReferenceDetails = scopeAccessInformation.TryToGetDeclaredReferenceDetails(target, _nameRewriter);
+            DeclaredReferenceDetails? targetReferenceDetails = scopeAccessInformation.TryToGetDeclaredReferenceDetails(target, _nameRewriter);
             if (targetReferenceDetails != null)
             {
                 if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Class)
@@ -812,7 +812,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     targetIsKnownToBeBuiltInFunction: targetIsErrReference // Don't try to rewrite the target reference if it's the Err reference, we've already got it correct
                 );
             }
-            var targetNameToken = firstMemberAccessToken as NameToken;
+            NameToken? targetNameToken = firstMemberAccessToken as NameToken;
             if ((targetNameToken != null) && !firstMemberAccessTokenIsParentReturnValueName)
             {
                 result = new TranslatedStatementContentDetailsWithContentType(
@@ -842,7 +842,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentOutOfRangeException(nameof(desiredNumberOfArguments), "may not be a negative value");
             }
 
-            var supportFunctionMatches = typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests)
+            MethodInfo[] supportFunctionMatches = typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests)
                 .GetMethods(BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
                 .Where(m => m.Name.Equals(builtInFunctionToken.Content, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
@@ -851,7 +851,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new NotSupportedException("Unsupported BuiltInFunctionToken content: " + builtInFunctionToken.Content);
             }
 
-            var idealMatch = supportFunctionMatches
+            MethodInfo? idealMatch = supportFunctionMatches
                 .Where(m => m.GetParameters().All(p => !p.IsOut && !p.ParameterType.IsByRef && p.ParameterType == typeof(object)))
                 .FirstOrDefault(m => m.GetParameters().Length == desiredNumberOfArguments);
             if (idealMatch != null)
@@ -900,13 +900,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentOutOfRangeException(nameof(indexInCallSet));
             }
 
-            var targetMemberAccessTokensArray = targetMemberAccessTokens.ToArray();
+            IToken[] targetMemberAccessTokensArray = targetMemberAccessTokens.ToArray();
             if (targetMemberAccessTokensArray.Any(t => t == null))
             {
                 throw new ArgumentException("Null reference encountered in targetMemberAccessTokens set");
             }
 
-            var argumentsArray = arguments.ToArray();
+            Expression[] argumentsArray = arguments.ToArray();
             if (argumentsArray.Any(a => a == null))
             {
                 throw new ArgumentException("Null reference encountered in arguments set");
@@ -935,7 +935,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // to guess whether it's a function or what variables were accessed since this has already been done. (It's still important to check for
             // undeclared variables referenced in the arguments but that is all handled later on). The same applies if the target is known to be
             // a built-in function (such as CDate).
-            var targetName = _nameRewriter.GetMemberAccessTokenName(target);
+            string targetName = _nameRewriter.GetMemberAccessTokenName(target);
             DeclaredReferenceDetails? targetReferenceDetailsIfAvailable;
             CSharpName? nameOfTargetContainerIfRequired;
             if (targetIsKnownToBeBuiltInFunction || (indexInCallSet > 0))
@@ -975,22 +975,22 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         // arguments that should be passed ByRef. So now this code path uses .CALL as the code further down does.
                         // Note: This relies upon the extension method which allows .CALL to be executed with a target reference and single named
                         // member accessor but no arguments
-                        var memberCallVariablesAccessed = new NonNullImmutableList<NameToken>();
-                        var memberCallContent = new StringBuilder();
+                        NonNullImmutableList<NameToken> memberCallVariablesAccessed = new NonNullImmutableList<NameToken>();
+                        StringBuilder memberCallContent = new StringBuilder();
                         memberCallContent.AppendFormat(CultureInfo.InvariantCulture,
                             "{0}.CALL(this, {1}, \"{2}\"", // Pass "this" as the "context" argument
                             _supportRefName.Name,
-                            (nameOfTargetContainerIfRequired == null) ? "this" : nameOfTargetContainerIfRequired.Name,
-                            targetName
+                            (nameOfTargetContainerIfRequired == null) ? "this" : nameOfTargetContainerIfRequired.Name, // context
+                            targetName // target
                         );
                         if (argumentsArray.Length != 0)
                         {
                             memberCallContent.Append(", ");
                             memberCallContent.Append(_supportRefName.Name);
                             memberCallContent.Append(".ARGS");
-                            for (var index = 0; index < argumentsArray.Length; index++)
+                            for (int index = 0; index < argumentsArray.Length; index++)
                             {
-                                var argumentContent = TranslateAsArgumentContent(
+                                TranslatedStatementContentDetails argumentContent = TranslateAsArgumentContent(
                                     argumentsArray[index],
                                     scopeAccessInformation,
                                     forceAllArgumentsToBeByVal: targetIsKnownToBeBuiltInFunction
@@ -1063,7 +1063,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            var callExpressionContent = new StringBuilder();
+            StringBuilder callExpressionContent = new StringBuilder();
             callExpressionContent.AppendFormat(CultureInfo.InvariantCulture,
                 "{0}.CALL(this, {1}{2}", // Pass "this" as the "context" argument
                 _supportRefName.Name,
@@ -1071,7 +1071,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 targetName
             );
 
-            var ableToUseShorthandCallSignature = (targetMemberAccessTokensArray.Length <= IAccessValuesUsingVBScriptRulesExtensions.MaxNumberOfMemberAccessorBeforeArraysRequired);
+            bool ableToUseShorthandCallSignature = (targetMemberAccessTokensArray.Length <= IAccessValuesUsingVBScriptRulesExtensions.MaxNumberOfMemberAccessorBeforeArraysRequired);
             if (targetMemberAccessTokensArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
@@ -1080,7 +1080,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     callExpressionContent.Append(" new[] { ");
                 }
 
-                for (var index = 0; index < targetMemberAccessTokensArray.Length; index++)
+                for (int index = 0; index < targetMemberAccessTokensArray.Length; index++)
                 {
                     callExpressionContent.Append(
                         targetMemberAccessTokensArray[index].Content.ToLiteral()
@@ -1096,11 +1096,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
             }
 
-            var callExpressionVariablesAccessed = new NonNullImmutableList<NameToken>();
+            NonNullImmutableList<NameToken> callExpressionVariablesAccessed = new NonNullImmutableList<NameToken>();
             if (argumentsArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
-                var argumentProviderContent = TranslateAsArgumentProvider(argumentsArray, scopeAccessInformation, forceAllArgumentsToBeByVal: targetIsKnownToBeBuiltInFunction);
+                TranslatedStatementContentDetails argumentProviderContent = TranslateAsArgumentProvider(argumentsArray, scopeAccessInformation, forceAllArgumentsToBeByVal: targetIsKnownToBeBuiltInFunction);
                 callExpressionContent.Append(argumentProviderContent.TranslatedContent);
                 callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(
                     argumentProviderContent.VariablesAccessed
@@ -1142,18 +1142,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            var variablesAccessed = new NonNullImmutableList<NameToken>();
-            var argumentProviderContent = new StringBuilder();
+            NonNullImmutableList<NameToken> variablesAccessed = new NonNullImmutableList<NameToken>();
+            StringBuilder argumentProviderContent = new StringBuilder();
             argumentProviderContent.Append(_supportRefName.Name);
             argumentProviderContent.Append(".ARGS");
-            foreach (var argumentValue in argumentValues)
+            foreach (Expression? argumentValue in argumentValues)
             {
                 if (argumentValue == null)
                 {
                     throw new ArgumentException("Null reference encountered in argumentValues set");
                 }
 
-                var argumentContent = TranslateAsArgumentContent(argumentValue, scopeAccessInformation, forceAllArgumentsToBeByVal);
+                TranslatedStatementContentDetails argumentContent = TranslateAsArgumentContent(argumentValue, scopeAccessInformation, forceAllArgumentsToBeByVal);
                 argumentProviderContent.Append(argumentContent.TranslatedContent);
                 variablesAccessed = variablesAccessed.AddRange(
                     argumentContent.VariablesAccessed
@@ -1191,15 +1191,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            var variablesAccessed = new NonNullImmutableList<NameToken>();
-            var supportFunctionCallContent = new StringBuilder();
+            NonNullImmutableList<NameToken> variablesAccessed = new NonNullImmutableList<NameToken>();
+            StringBuilder supportFunctionCallContent = new StringBuilder();
             supportFunctionCallContent.Append(_supportRefName.Name);
             supportFunctionCallContent.Append('.');
             supportFunctionCallContent.Append(function.SupportFunctionName);
             supportFunctionCallContent.Append('(');
             foreach (var indexedArgumentValue in argumentValues.Select((arg, index) => new { Argument = arg, Index = index }))
             {
-                var argumentValue = indexedArgumentValue.Argument;
+                Expression? argumentValue = indexedArgumentValue.Argument;
                 if (argumentValue == null)
                 {
                     throw new ArgumentException("Null reference encountered in argumentValues set");
@@ -1214,14 +1214,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // just the numeric value and drop any type information, since this will be thrown away when the number-returning function does its work
                 // - eg. don't emit "CDBL((Int16)1)" since it's going to return a double so the Int16 type information is useless, "CDBL(1)" is no less
                 // useful while being more succinct (and more natural when compared to the source it's being translated from)
-                var argumentValueAsNumericConstant = TryToGetExpressionAsSingleNumericValueExpressionSegment(argumentValue);
+                NumericValueExpressionSegment? argumentValueAsNumericConstant = TryToGetExpressionAsSingleNumericValueExpressionSegment(argumentValue);
                 if ((argumentValueAsNumericConstant != null) && (function.Token is BuiltInFunctionToken) && ((BuiltInFunctionToken)function.Token).GuaranteedToReturnNumericContent())
                 {
                     supportFunctionCallContent.Append(argumentValueAsNumericConstant.Token.Value);
                     continue;
                 }
 
-                var argumentContent = Translate(
+                TranslatedStatementContentDetails argumentContent = Translate(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1301,10 +1301,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            var isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+            bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
             if (isConfirmedToBeByVal)
             {
-                var translatedCallExpressionByValArgumentContent = Translate(
+                TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = Translate(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1327,7 +1327,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // will be ByVal) or array indices (in which case it will be ByRef).
             if ((argumentValue.Segments.Single() is CallExpressionSegment) && !((CallExpressionSegment)argumentValue.Segments.Single()).Arguments.Any())
             {
-                var translatedCallExpressionByRefArgumentContent = Translate(
+                TranslatedStatementContentDetails translatedCallExpressionByRefArgumentContent = Translate(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1348,7 +1348,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // be passed ByRef) or default function or property calls (which will be passed ByVal).
             TranslatedStatementContentDetails possibleByRefTarget;
             IEnumerable<IEnumerable<Expression>> possibleByRefArgumentSets;
-            var possibleByRefCallExpressionSegment = argumentValue.Segments.Single() as CallExpressionSegment;
+            CallExpressionSegment? possibleByRefCallExpressionSegment = argumentValue.Segments.Single() as CallExpressionSegment;
             if (possibleByRefCallExpressionSegment != null)
             {
                 // Note: Know that there is at least one argument, so possibleByRefCallExpressionSegment's ZeroArgumentBracketsPresence value will
@@ -1377,7 +1377,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                var possibleByRefCallSetExpressionSegment = argumentValue.Segments.Single() as CallSetExpressionSegment;
+                CallSetExpressionSegment? possibleByRefCallSetExpressionSegment = argumentValue.Segments.Single() as CallSetExpressionSegment;
                 if (possibleByRefCallSetExpressionSegment != null)
                 {
                     if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count() > 2)
@@ -1413,7 +1413,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // "a(0, 1)(2)" is effectively passed as "RefIfArray(a, (0, 1), (2))". If it only checked whether the (2) argument was for an array
             // access or a function/property call then it would ignore whether the (0, 1) arguments were for array access or function/property.
             // - Note: This RefIfArray call relies upon the extension method that takes a param array instead of an IEnumerable
-            var translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
+            TranslatedStatementContentDetails[] translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
                 .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false)).ToArray();
             return new TranslatedStatementContentDetails(
                     FormattableString.Invariant($".{nameof(IBuildCallArgumentProvidersExtensions.RefIfArray)}({possibleByRefTarget.TranslatedContent}, {string.Join(", ", translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent))})"
@@ -1458,7 +1458,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // If there is a single segment that is a constant then it must be ByVal, same if it's a bracketed segment (VBScript treats values
             // passed wrapped in extra brackets as being ByVal), same if it's a NewInstanceExpressionSegment (there is no point allowing the
             // reference to be changed since nothing has a reference to the new instance being passed in)
-            var singleSegment = argumentValue.Segments.First();
+            IExpressionSegment? singleSegment = argumentValue.Segments.First();
             if ((singleSegment is DateValueExpressionSegment)
             || (singleSegment is NumericValueExpressionSegment)
             || (singleSegment is StringValueExpressionSegment)
@@ -1486,7 +1486,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // the first call segment is to a built-in function then pass ByVal
             bool isConfirmedToBeByVal;
             CallSetItemExpressionSegment? initialCallSetItemExpressionSegmentToCheckIfAny;
-            var callExpressionSegment = singleSegment as CallExpressionSegment;
+            CallExpressionSegment? callExpressionSegment = singleSegment as CallExpressionSegment;
             if (callExpressionSegment != null)
             {
                 initialCallSetItemExpressionSegmentToCheckIfAny = callExpressionSegment;
@@ -1494,7 +1494,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                var callSetExpressionSegment = singleSegment as CallSetExpressionSegment;
+                CallSetExpressionSegment? callSetExpressionSegment = singleSegment as CallSetExpressionSegment;
                 if (callSetExpressionSegment != null)
                 {
                     // The first call expression segment must have at least one member access tokens (otherwise there would be no target) but
@@ -1531,7 +1531,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 else
                 {
                     // .. then check for a known function
-                    var targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(
+                    DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(
                         (NameToken)initialCallSetItemExpressionSegmentToCheckIfAny.MemberAccessTokens.First(), // TODO: Are we sure this is always going to be a NameToken??
                         _nameRewriter
                     );
@@ -1566,12 +1566,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            var content = "";
-            var variablesAccessed = new NonNullImmutableList<NameToken>();
-            var numberOfCallExpressions = callSetExpressionSegment.CallExpressionSegments.Count(); // This will always be at least two (see notes in CallSetExpressionSegment)
-            for (var index = 0; index < numberOfCallExpressions; index++)
+            string content = "";
+            NonNullImmutableList<NameToken> variablesAccessed = new NonNullImmutableList<NameToken>();
+            int numberOfCallExpressions = callSetExpressionSegment.CallExpressionSegments.Count(); // This will always be at least two (see notes in CallSetExpressionSegment)
+            for (int index = 0; index < numberOfCallExpressions; index++)
             {
-                var callSetItemExpression = callSetExpressionSegment.CallExpressionSegments.ElementAt(index);
+                CallSetItemExpressionSegment callSetItemExpression = callSetExpressionSegment.CallExpressionSegments.ElementAt(index);
                 TranslatedStatementContentDetailsWithContentType translatedContent;
                 if (index == 0)
                 {
@@ -1843,7 +1843,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return null;
             }
 
-            var onlyExpressionSegmentAsCallExpression = expression.Segments.Single() as CallExpressionSegment;
+            CallExpressionSegment? onlyExpressionSegmentAsCallExpression = expression.Segments.Single() as CallExpressionSegment;
             if (onlyExpressionSegmentAsCallExpression == null)
             {
                 return null;
@@ -1857,15 +1857,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return null;
             }
 
-            var onlyMemberAccessTokenAsName = onlyExpressionSegmentAsCallExpression.MemberAccessTokens.Single() as NameToken;
+            NameToken? onlyMemberAccessTokenAsName = onlyExpressionSegmentAsCallExpression.MemberAccessTokens.Single() as NameToken;
             if (onlyMemberAccessTokenAsName == null)
             {
                 return null;
             }
 
             // If this is a function of property then we can't consider it for this shortcut
-            var rewrittenName = _nameRewriter.GetMemberAccessTokenName(onlyMemberAccessTokenAsName);
-            var targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(onlyMemberAccessTokenAsName, _nameRewriter);
+            string rewrittenName = _nameRewriter.GetMemberAccessTokenName(onlyMemberAccessTokenAsName);
+            DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(onlyMemberAccessTokenAsName, _nameRewriter);
             if ((targetReferenceDetailsIfAvailable == null) || (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.ExternalDependency))
             {
                 rewrittenName = _envRefName.Name + "." + rewrittenName;
@@ -1926,26 +1926,26 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             // If there are three or less expression segments after any possible concat-flattening then this is not a special case, it can be handled
             // by the common flow for one, two or three segments
-            var expressionSegmentsArray = ConcatFlattener.Flatten(expression).Segments.ToArray();
+            IExpressionSegment[] expressionSegmentsArray = ConcatFlattener.Flatten(expression).Segments.ToArray();
             if (expressionSegmentsArray.Length <= 3)
             {
                 return null;
             }
 
             // The even segments must be values and the odd segments must all be concat operators
-            var evenSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 0).ToArray();
+            IExpressionSegment[] evenSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 0).ToArray();
             if (evenSegments.Any(s => s is OperationExpressionSegment))
             {
                 return null;
             }
 
-            var oddSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 1).ToArray();
+            IExpressionSegment[] oddSegments = expressionSegmentsArray.Where((segment, index) => (index % 2) == 1).ToArray();
             if (!oddSegments.All(s => s is OperationExpressionSegment) || oddSegments.OfType<OperationExpressionSegment>().Any(s => s.Token.Content != "&"))
             {
                 return null;
             }
 
-            var translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation));
+            IEnumerable<TranslatedStatementContentDetailsWithContentType> translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation));
             return new TranslatedStatementContentDetails(
                 ApplyReturnTypeGuarantee(
                     string.Format(CultureInfo.InvariantCulture,
