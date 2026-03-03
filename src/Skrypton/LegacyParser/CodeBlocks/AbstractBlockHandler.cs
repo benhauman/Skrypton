@@ -50,7 +50,11 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     }
                 }
                 if (!validTokenType)
-                    throw new InvalidOperationException("Token is not of an allowed type [" + token.GetType().ToString() + " on line " + (token.LineIndex + 1) + "]");
+                {
+                    //token.Content
+                    string handlingPatternText = "";// handlingPattern != null ? $"'{handlingPattern}' - " : "";
+                    throw new InvalidOperationException($"{handlingPatternText}Token type '{token.GetType().Name}' is not allowed. Content: '{token.Content}', line:{token.LineIndex}].");
+                }
             }
             return token;
         }

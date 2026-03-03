@@ -75,14 +75,14 @@ namespace Skrypton.Tests.Application
             {
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
-            ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
+            ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, CultureInfo culture, string chainName, Dictionary<string, object> externalReferences)
+        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             //
             UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(chainName);
@@ -113,7 +113,8 @@ namespace Skrypton.Tests.Application
                     _ = pi_externalReference1.GetValue(environmentReferences);
                 }
 
-                runner.Run(environmentReferences);
+                GlobalReferencesBase gr = runner.Run(environmentReferences);
+                dialogHandler(gr);
             }
             asmctx.UnloadContextCollectAndWait();
 
@@ -130,6 +131,7 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
             provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
             provider.RegisterObjectCreateFactory("VBScript.RegExp", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
+            provider.RegisterObjectCreateFactory("WScript.Shell", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell());
             return provider;
         }
 

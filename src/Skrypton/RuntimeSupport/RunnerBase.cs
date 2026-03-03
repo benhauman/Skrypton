@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -90,6 +91,72 @@ namespace Skrypton.RuntimeSupport
         protected GlobalReferencesBase(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferencesBase env)
         {
 
+        }
+
+        //internal bool MembersCollected { get; set; }
+        //private readonly Dictionary<string, bool> _methodNames = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        //internal void CollectMembers()
+        //{
+        //    if (!MembersCollected)
+        //    {
+        //        var declaringType = GetType();
+
+        //        var mis = declaringType.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+        //        foreach(MethodInfo mi in mis)
+        //        {
+
+        //        }
+
+
+        //        MembersCollected = true;
+        //    }
+
+        //}
+
+        internal MethodInfo GetMethodInfoByNameAndArgs(string methodName, object[] args)
+        {
+            var declaringType = GetType();
+
+            var mis = declaringType.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+
+            MethodInfo? candidate = null;
+            foreach (MethodInfo mi in mis)
+            {
+                if (string.Equals(mi.Name, methodName, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (args.Length <= mi.GetParameters().Length)
+                    {
+                        if (args.Length > 0)
+                        {
+                            // validate parameter types if their type are acceptable.
+                            throw new NotSupportedException($"{mi.Name} args.Count:{args.Length}");
+                        }
+                        if (mi.GetParameters().Length > 0)
+                        {
+                            throw new NotSupportedException($"{mi.Name} prms.Count:{mi.GetParameters().Length}");
+                        }
+
+
+
+                        if (candidate == null)
+                        {
+                            candidate = mi;
+                        }
+                        else
+                        {
+                            if (candidate.GetParameters().Length > mi.GetParameters().Length)
+                            {
+                                candidate = mi; // this method accepts less arguments, take it
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            if (candidate == null)
+                throw new InvalidOperationException($"Method '{methodName}'() could not be found");
+            return candidate;
         }
     }
     public abstract class GlobalReferencesBaseT<TEnvironmentReferences> : GlobalReferencesBase where TEnvironmentReferences : EnvironmentReferencesBase

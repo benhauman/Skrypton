@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Linq;
 using Skrypton.Tests.Application.Controls;
 
 namespace Skrypton.Tests.Application
@@ -49,6 +51,16 @@ namespace Skrypton.Tests.Application
         {
             return AddControlCore(controlName, new DialogGuiImageControl() { });
         }
+
+        internal DialogBuilder AddExternalObject(string objectName, object objectInstance)
+        {
+            if (_externalReferences.ContainsKey(objectName))
+            {
+                throw new InvalidOperationException($"objectName:{objectName}");
+            }
+            _externalReferences.Add(objectName, objectInstance);
+            return this;
+        }
     }
 
     public class DialogGuiButtonControl : DialogGuiControlBase
@@ -65,11 +77,11 @@ namespace Skrypton.Tests.Application
 
     public sealed class DialogBase
     {
-        public Dictionary<string, object> Controls { get; }
+        public IReadOnlyDictionary<string, object> ExternalReferences { get; }
 
-        public DialogBase(Dictionary<string, object> controls)
+        public DialogBase(IReadOnlyDictionary<string, object> externalReferences)
         {
-            Controls = controls ?? throw new ArgumentNullException(nameof(controls));
+            ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
         }
     }
 }

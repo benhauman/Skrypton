@@ -38,7 +38,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// Break down scriptContent into a combination of StringToken, CommentToken, UnprocessedContentToken and EndOfStatementNewLine instances (the
         /// end of statement tokens will not have been comprehensively handled).  This will never return null nor a set containing any null references.
         /// </summary>
-        internal static IEnumerable<IToken> SegmentString(CultureInfo culture, string scriptContent)
+        internal static IReadOnlyCollection<IToken> SegmentString(CultureInfo culture, string scriptContent)
         {
             if (scriptContent == null)
                 throw new ArgumentNullException(nameof(scriptContent));
@@ -48,23 +48,25 @@ namespace Skrypton.LegacyParser.ContentBreaking
             // Normalise line returns
             scriptContent = scriptContent.Replace("\r\n", "\n").Replace('\r', '\n');
 
-            var index = 0;
-            var tokenContent = "";
-            var tokens = new List<IToken>();
-            var lineIndex = 0;
-            var lineIndexForStartOfContent = 0;
+            int index = 0;
+            string tokenContent = "";
+            List<IToken> tokens = new List<IToken>();
+            int lineIndex = 0;
+            int lineIndexForStartOfContent = 0;
             while (index < scriptContent.Length)
             {
-                var chr = scriptContent.Substring(index, 1);
+                string chr = scriptContent.Substring(index, 1);
 
                 // Check for comment
                 bool isComment;
                 if (chr == "'")
+                {
                     isComment = true;
+                }
                 else if (index <= (scriptContent.Length - 3))
                 {
-                    var threeChars = scriptContent.Substring(index, 3);
-                    var fourthChar = (index == scriptContent.Length - 3) ? (char?)null : scriptContent[index + 3];
+                    string threeChars = scriptContent.Substring(index, 3);
+                    char? fourthChar = (index == scriptContent.Length - 3) ? (char?)null : scriptContent[index + 3];
                     if (threeChars.Equals("REM", StringComparison.OrdinalIgnoreCase)
                     && ((fourthChar == null) || _whiteSpaceCharsExceptLineReturn.Contains(fourthChar.Value)))
                     {
@@ -72,10 +74,15 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         index += 2;
                     }
                     else
+                    {
                         isComment = false;
+                    }
                 }
                 else
+                {
                     isComment = false;
+                }
+
                 if (isComment)
                 {
                     // Store any previous token content
@@ -84,7 +91,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     if (tokenContent != "")
                     {
                         // If there has been any one the same line as this comment, then this is an inline comment
-                        var contentAfterLastLineReturn = tokenContent.Split('\n').Last();
+                        string contentAfterLastLineReturn = tokenContent.Split('\n').Last();
                         isInlineComment = (contentAfterLastLineReturn.Trim() != "");
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
                         tokenContent = "";
@@ -106,14 +113,14 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         breakPoint = scriptContent.Length;
                     if (tokens.Count > 0)
                     {
-                        var prevToken = tokens[tokens.Count - 1];
+                        IToken? prevToken = tokens[tokens.Count - 1];
                         if (prevToken is UnprocessedContentToken)
                         {
                             // UnprocessedContentToken MAY conclude with end-of-statement content, we'll need to check
                             if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith("\n", StringComparison.Ordinal))
                             {
                                 tokens.RemoveAt(tokens.Count - 1);
-                                var unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');
+                                string unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');
 #pragma warning disable CA1820 // Test for empty strings using string length
                                 if (unprocessedContentToRecord != "")
                                 {
@@ -133,11 +140,16 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         // of-statement token between them!
                         tokens.Add(new EndOfStatementSameLineToken(lineIndexForStartOfContent));
                     }
-                    var commentContent = scriptContent.Substring(index, breakPoint - index);
+                    string commentContent = scriptContent.Substring(index, breakPoint - index);
                     if (isInlineComment)
+                    {
                         tokens.Add(new InlineCommentToken(commentContent, lineIndexForStartOfContent));
+                    }
                     else
+                    {
                         tokens.Add(new CommentToken(commentContent, lineIndexForStartOfContent));
+                    }
+
                     index = breakPoint;
                     lineIndex++;
                     lineIndexForStartOfContent = lineIndex;
@@ -157,22 +169,32 @@ namespace Skrypton.LegacyParser.ContentBreaking
 
                     // Try to grab string content
                     lineIndexForStartOfContent = lineIndex;
-                    var indexString = index + 1;
+                    int indexString = index + 1;
                     while (true)
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
+                        {
                             throw new InvalidOperationException("Encountered line return in string content around line " + (lineIndexForStartOfContent + 1));
+                        }
+
                         if (chr != "\"")
+                        {
                             tokenContent += chr;
+                        }
                         else
                         {
                             // Quote character - is it doubled (ie. escaped quote)?
                             string? chrNext;
                             if (indexString < (scriptContent.Length - 1))
+                            {
                                 chrNext = scriptContent.Substring(indexString + 1, 1);
+                            }
                             else
+                            {
                                 chrNext = null;
+                            }
+
                             if (chrNext == "\"")
                             {
                                 // Escaped quote: push past and add singe chr to content
@@ -203,17 +225,22 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     // Store any previous token content
 #pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
+                    {
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+                    }
 #pragma warning restore CA1820 // Test for empty strings using string length
 
                     lineIndexForStartOfContent = lineIndex;
                     tokenContent = "[";
-                    var indexString = index + 1;
+                    int indexString = index + 1;
                     while (true)
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
+                        {
                             throw new InvalidOperationException("Encountered line return in escaped-content variable name");
+                        }
+
                         tokenContent += chr;
                         if (chr == "]")
                         {
@@ -249,17 +276,22 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     // Store any previous token content
 #pragma warning disable CA1820 // Test for empty strings using string length
                     if (tokenContent != "")
+                    {
                         tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+                    }
 #pragma warning restore CA1820 // Test for empty strings using string length
 
                     lineIndexForStartOfContent = lineIndex;
                     tokenContent = "";
-                    var indexString = index + 1;
+                    int indexString = index + 1;
                     while (true)
                     {
                         chr = scriptContent.Substring(indexString, 1);
                         if (chr == "\n")
+                        {
                             throw new InvalidOperationException("Encountered line return in date literal content");
+                        }
+
                         if (chr == "#")
                         {
                             // We can only catch certain kinds of invalid date literal format here since some formats are culture-dependent (eg. "1 May 2010" is
@@ -281,14 +313,19 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             break;
                         }
                         else
+                        {
                             tokenContent += chr;
+                        }
+
                         indexString++;
                     }
                 }
 
                 // Mustn't be neither comment, string, date nor VBScript-escaped-variable-name..
                 else
+                {
                     tokenContent += chr;
+                }
 
                 // Move to next character (if any)..
                 index++;
@@ -299,7 +336,9 @@ namespace Skrypton.LegacyParser.ContentBreaking
             // Don't let any unhandled content get away!
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (tokenContent != "")
+            {
                 tokens.Add(new UnprocessedContentToken(tokenContent, lineIndexForStartOfContent));
+            }
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             return tokens;

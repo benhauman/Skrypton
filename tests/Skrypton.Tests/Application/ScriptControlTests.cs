@@ -84,6 +84,6 @@ ok:64bit! CreateObject("VBScript.RegExp") - not on linux! C:\Windows\SysWOW64\vb
 !!! CreateObject("WinHttp.WinHttpRequest.5.1")	_CustomerTest_HDM	448
 !!! CreateObject("Word.Application")  _CustomerTest_BerlinerFw	393
 !!! CreateObject("WScript.Shell") _CustomerTest_Tamedia	567
-
+!!! CreateObject("Msxml2.ServerXMLHTTP.6.0")
      */
 }

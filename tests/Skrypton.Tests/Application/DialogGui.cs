@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
+using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application.Controls;
 using Skrypton.Tests.RuntimeSupport.Implementations;
 
@@ -22,13 +25,12 @@ namespace Skrypton.Tests.Application
             var dialog = new DialogBuilder()
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
-            var externalReferences = dialog.Controls;
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, externalReferences);
-            DoDialogGui(externalReferences);
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(dialog.ExternalReferences, gr => { });
         }
 
         [TestMethod]
-        public void CT35_LogChecklist_Dialog_388_OnSave() // 35:DFSnDLNeu
+        public void CT35_LogChecklist_Dialog_388_OnSave() // 35:DFSnDLNeu  id = select id, dbname from _databasestats order by dbname asc -- [hlsysdialog]
         {
             var dialog = new DialogBuilder()
                 .AddTextControl("TextBoxChecklist1URL")
@@ -43,9 +45,8 @@ namespace Skrypton.Tests.Application
                 .AddTextControl("TextBoxChecklist10URL")
                 .BuildDialog();
 
-            var externalReferences = dialog.Controls;
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, externalReferences);
-            DoDialogGui(externalReferences);
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(dialog.ExternalReferences, gr => { });
 
         }
 
@@ -276,7 +277,13 @@ WScript.Echo xmlhttp.responseText
             TestCS();
             TestCS_IDispatch();
             Test_IDispatch_Invoke(); //works only on windows
-            var dialog = new DialogBuilder()
+
+            var hlobj = new HLObjectInstance()
+                    .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
+                ;
+            var model = new DialogGuidModel();
+
+            var dialog = new DialogBuilder().AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
 
@@ -510,21 +517,14 @@ WScript.Echo xmlhttp.responseText
 
                     .BuildDialog();
 
-            var hlobj = new HLObjectInstance()
-                .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
-                ;
-            var model = new DialogGuidModel();
 
-            var externalReferences = dialog.Controls;
-            externalReferences.Add("hlobj", hlobj);
-            externalReferences.Add("model", model);
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.Controls);
-            DoDialogGui(externalReferences);
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(dialog.ExternalReferences, gr => { });
         }
 
-        private void DoDialogGui(Dictionary<string, object> externalReferences)
+        private void DoDialogGui(IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
-            CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences);
+            CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
@@ -595,6 +595,34 @@ WScript.Echo xmlhttp.responseText
             }
 
             return ptr;
+        }
+
+        [TestMethod]
+        public void CT130_ClientComputer_Dialog_567_Button1_Click() // select content_uncompressed from hlsysdialog where dbname = '_CustomerTest_Tamedia' and dialogid = 567; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Tamedia';
+        {
+            var hlobj = new HLObjectInstance()
+                    .RegisterValueKey<string>("vRealize.LansweeperURL", 0, 0, "hst-X_1")
+                ;
+            var model = new DialogGuidModel();
+
+            var dialog = new DialogBuilder().AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+                .AddButton("Button1_Click")
+                .BuildDialog();
+
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(dialog.ExternalReferences, (GlobalReferencesBase gr) =>
+            {
+                var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
+                foreach (var mi in mis)
+                {
+                    if (mi.DeclaringType == gr.GetType())
+                    {
+                        Console.WriteLine($"Method: {mi.Name}");
+                    }
+                }
+
+                //todo:ScriptControlClass.RunProcedure(gr, "Button1_click", []);
+            });
         }
     }
 

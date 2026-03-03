@@ -147,7 +147,7 @@ namespace Skrypton.ScriptControlSupport
                     environmentReferences.InitializeExternalReference(externalReferencesEntry.Key, externalReferencesEntry.Value);
                 }
 
-                var globalRefs = runner.Run(environmentReferences);
+                GlobalReferencesBase globalRefs = runner.Run(environmentReferences);
             }
             finally
             {
@@ -168,7 +168,17 @@ namespace Skrypton.ScriptControlSupport
         object IScriptControl.Run(string procedureName, ref object[] parameters)
         {
             //RoslynScriptControl sc = StartAsync(null, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
+            //return RunProcedure(procedureName);
             throw new NotImplementedException();
+        }
+
+        public static object RunProcedure(GlobalReferencesBase globalRefs, string procedureName, object[] parameters)
+        {
+            if (globalRefs == null) throw new ArgumentNullException(nameof(globalRefs));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+
+            var mi = globalRefs.GetMethodInfoByNameAndArgs(procedureName, parameters);
+            return mi.Invoke(globalRefs, parameters);
         }
 
         public IRuntimeLogger EngineRuntimeLogger { get; set; }

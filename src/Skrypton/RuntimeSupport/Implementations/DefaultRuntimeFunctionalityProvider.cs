@@ -2061,6 +2061,8 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             try
             {
+                if (classProgId.Length > 0)
+                    throw new NotSupportedException($"classProgId:{classProgId}");
                 Type comType = Type.GetTypeFromProgID(classProgId, true);
 
                 return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));

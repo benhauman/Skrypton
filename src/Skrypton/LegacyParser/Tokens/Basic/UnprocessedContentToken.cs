@@ -6,8 +6,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// This token represents a section of script content (not string or comment) that
     /// has not been broken down into its constituent parts yet
     /// </summary>
-    [Serializable]
-    public class UnprocessedContentToken : IToken
+    //[Serializable]
+    public sealed class UnprocessedContentToken : IToken
     {
         public UnprocessedContentToken(string content, int lineIndex)
         {
@@ -20,7 +20,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             Content = content;
         }
 
-        public string Content { get; private set; }
+        public string Content { get; }
 
         [NonSerialized] StringUpper? contentUpper;
         public StringUpper ContentUpperX()
@@ -34,6 +34,6 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// <summary>
         /// This will always be zero or greater
         /// </summary>
-        public int LineIndex { get; private set; }
+        public int LineIndex { get; }
     }
 }

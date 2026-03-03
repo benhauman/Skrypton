@@ -28,7 +28,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // be another redirected reference (from an ancester WITH) - eg. "WITH .Item". We'll use the StatementHandler to determine what
             // content is part of the WITH target, but we don't directly require the returned Statement - we just needs its tokens (to
             // generate an Expression for the WithBlock).
-            var token = getToken(tokens, offset: 1, allowedTokenTypes: new Type[] { typeof(OpenBrace), typeof(MemberAccessorOrDecimalPointToken), typeof(NameToken) });
+            var token = getToken(tokens, offset: 1, allowedTokenTypes: new Type[] { typeof(OpenBrace), typeof(MemberAccessorOrDecimalPointToken), typeof(NameToken)
+                , typeof(BuiltInFunctionToken)  // 'CreateObject' immediately after WITH. With accepts any object expression! Test:CT130_ClientComputer_Dialog_567_Button1_Click
+            });
             var targetTokensSource = tokens.Skip(1).ToList();
             var numberOfItemsInTargetTokensSource = targetTokensSource.Count;
             var target = new StatementHandler().Process(targetTokensSource) as Statement;

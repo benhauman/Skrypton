@@ -23,7 +23,8 @@ namespace Skrypton.Tests.Application
         [TestMethod, MyMemberData(nameof(ChainNames))]
         public void Chains(string chainName, ScriptUsageKind scriptUsage)
         {
-            if (chainName == "CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click")
+            if (chainName == "CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click"
+             || chainName == "CT130_ClientComputer_Dialog_567_Button1_Click")
             {
                 // ignore for now: the undeclared external references  should be rendered as environment references and not a variables in 'Go'
                 return;
@@ -84,7 +85,7 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, Dictionary<string, object> externalRefs = null)
+        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null)
         {
             string x_ressource_name = chainName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");

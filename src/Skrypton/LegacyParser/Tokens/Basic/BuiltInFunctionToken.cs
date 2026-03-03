@@ -3,9 +3,8 @@ using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
-    [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class BuiltInFunctionToken : AtomToken
+    public sealed class BuiltInFunctionToken : AtomToken
     {
         /// <summary>
         /// This inherits from AtomToken since a lot of processing would consider them the
