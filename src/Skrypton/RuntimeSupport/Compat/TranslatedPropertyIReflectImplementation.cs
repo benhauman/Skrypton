@@ -217,17 +217,26 @@ namespace Skrypton.RuntimeSupport.Compat
 
             public override MethodInfo[] GetAccessors(bool nonPublic)
             {
-                return new[] { _getter, _setter }.Where(m => m != null).ToArray();
+                if (_getter == null)
+                {
+                    return _setter == null ? [] : [_setter];
+                }
+                else
+                {
+                    return _setter == null ? [_getter] : [_getter, _setter];
+                }
             }
 
             public override MethodInfo? GetGetMethod(bool nonPublic)
             {
-                return _getter!;
+                return _getter;
             }
 
             public override ParameterInfo[] GetIndexParameters()
             {
-                return _getter!.GetParameters();
+                if (_getter == null)
+                    throw new InvalidOperationException("Read not possible.");
+                return _getter.GetParameters();
             }
 
             public override MethodInfo? GetSetMethod(bool nonPublic)

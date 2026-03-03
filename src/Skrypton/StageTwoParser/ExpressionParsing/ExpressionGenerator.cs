@@ -219,7 +219,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This applies bracketing to expression segments to enforce VBScript's operator precedence rules
         /// </summary>
-        private static Expression GetExpression(IEnumerable<IExpressionSegment> segments)
+        private static Expression GetExpression(IReadOnlyCollection<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
@@ -234,6 +234,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             Tuple<OperationExpressionSegment, int>[] operatorSegments = segmentsArray
                 .Select((s, index) => Tuple.Create(s as OperationExpressionSegment, index))
                 .Where(s => s.Item1 != null)
+                .Select(x => Tuple.Create(x.Item1!, x.Item2))
                 .ToArray();
             if (operatorSegments.Length < 2)
             {
@@ -265,7 +266,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             // after arithmetic (and string concatenation) and comparisons.
 
             // First, check for an arithmetic and wrap that operation and the corresponding value, feeding back into this method (this is the first special case)
-            Tuple<OperationExpressionSegment?, int>? firstArithmeticNegationOperation = operatorSegments.FirstOrDefault(s =>
+            Tuple<OperationExpressionSegment, int>? firstArithmeticNegationOperation = operatorSegments.FirstOrDefault(s =>
                 (s.Item1!.Token.Content == "-") && ((s.Item2 == 0) || (segmentsArray[s.Item2 - 1] is OperationExpressionSegment))
             );
             if (firstArithmeticNegationOperation != null)
@@ -286,7 +287,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 // Note: Group on the LAST operator, rather than the first, to ensure that expressions such as "NOT NOT a" get the "NOT" grouped
                 // with the value. If the first NOT was grouped with the subsequent terms then "NOT NOT a" would become "(NOT NOT) a" instead of
                 // "NOT(NOT(a))".
-                Tuple<OperationExpressionSegment?, int>? lastLogicalInversion = operatorSegments.LastOrDefault(s =>
+                Tuple<OperationExpressionSegment, int>? lastLogicalInversion = operatorSegments.LastOrDefault(s =>
                     s.Item1!.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase)
                 );
                 if (lastLogicalInversion != null)
@@ -304,27 +305,36 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //   "a + b * c" then "b * c" should be bracketed since multiplication takes precedence, so we break on the "+" and bracket off the b,
             //   c multiplication against the remaining a token - so we had to break on the operator with the least precedence, hence taking the
             //   last element of the ordered set)
-            Tuple<OperationExpressionSegment?, int>? operatorSegmentToBreakOn = operatorSegments
+            Tuple<OperationExpressionSegment, int>? operatorSegmentToBreakOn = operatorSegments
                 .OrderBy(s => s, new IndexerOperationExpressionSegmentSorter())
                 .Last();
 
-            IEnumerable<IExpressionSegment> left = segmentsArray.Take(operatorSegmentToBreakOn.Item2);
-            IEnumerable<IExpressionSegment> right = segmentsArray.Skip(operatorSegmentToBreakOn.Item2 + 1);
+            IExpressionSegment[] left = segmentsArray.Take(operatorSegmentToBreakOn.Item2).ToArray();
+            IExpressionSegment[] right = segmentsArray.Skip(operatorSegmentToBreakOn.Item2 + 1).ToArray();
             List<IExpressionSegment> expressionSegmentsToGroup = new List<IExpressionSegment>();
-            if (left.Any())
+            if (left.Length != 0)
+            {
                 expressionSegmentsToGroup.Add(WrapExpressionSegments(GetExpression(left).Segments, unwrapSingleBracketedTerm: true));
-            else if (!operatorSegmentToBreakOn.Item1!.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
+            }
+            else if (!operatorSegmentToBreakOn.Item1.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
+            {
                 throw new ArgumentException("The content to the left of an operator may only be empty if it is a \"NOT\" logical operator");
-            expressionSegmentsToGroup.Add(operatorSegmentToBreakOn.Item1!);
-            if (!right.Any())
+            }
+
+            expressionSegmentsToGroup.Add(operatorSegmentToBreakOn.Item1);
+
+            if (right.Length == 0)
+            {
                 throw new ArgumentException("The content to the right of an operator may not be empty");
+            }
             expressionSegmentsToGroup.Add(WrapExpressionSegments(GetExpression(right).Segments, unwrapSingleBracketedTerm: true));
+
             return GetCallExpressionSegmentGroupedExpression(
                 expressionSegmentsToGroup
             );
         }
 
-        private static IEnumerable<IExpressionSegment> BracketOffTerms(IEnumerable<IExpressionSegment> segments, int index, int count)
+        private static IExpressionSegment[] BracketOffTerms(IEnumerable<IExpressionSegment> segments, int index, int count)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
@@ -347,7 +357,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 })
                 .Concat(
                     segmentsArray.Skip(index + count)
-                );
+                ).ToArray();
         }
 
         /// <summary>

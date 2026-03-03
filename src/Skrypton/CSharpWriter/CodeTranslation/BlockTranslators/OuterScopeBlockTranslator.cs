@@ -551,6 +551,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translatedStatements
                 .Select((s, i) => ((i == 0) || (s.HasContent) || (translatedStatements[i - 1].HasContent)) ? s : null)
                 .Where(s => s != null)
+                .Select(s => s!)
                 .ToNonNullImmutableList();
         }
 

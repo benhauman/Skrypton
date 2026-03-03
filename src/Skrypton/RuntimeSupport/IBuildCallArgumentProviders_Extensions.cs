@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Skrypton.RuntimeSupport
@@ -18,7 +19,7 @@ namespace Skrypton.RuntimeSupport
             if (argumentProviderBuilders == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilders));
 
-            IProvideCallArguments[] argumentProviders = argumentProviderBuilders.Select(b => (b == null) ? null : b.GetArgs()).ToArray();
+            IProvideCallArguments[] argumentProviders = argumentProviderBuilders.Select(b => (b == null) ? throw new ArgumentException("Null reference encountered in argumentProviderBuilders set") : b.GetArgs()).ToArray();
             if (argumentProviders.Any(p => p == null))
                 throw new ArgumentException("Null reference encountered in argumentProviderBuilders set");
 

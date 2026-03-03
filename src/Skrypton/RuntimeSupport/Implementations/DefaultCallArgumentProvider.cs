@@ -12,7 +12,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public DefaultCallArgumentProvider(IAccessValuesUsingVBScriptRules vbscriptValueAccessor)
         {
             _vbscriptValueAccessor = vbscriptValueAccessor ?? throw new ArgumentNullException(nameof(vbscriptValueAccessor));
-            _valuesWithUpdatesWhereRequired = new List<Tuple<object, Action<object>>>();
+            _valuesWithUpdatesWhereRequired = new List<Tuple<object, Action<object>?>>();
             _useBracketsWhereZeroArguments = false;
         }
 
