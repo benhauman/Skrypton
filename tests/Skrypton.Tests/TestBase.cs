@@ -207,6 +207,13 @@ namespace Skrypton.Tests
             int take = Math.Min(maxLength, endOfLine - startIndex);
             return s.Substring(startIndex, take);
         }
+
+        internal TestHostServices CreateTestHostServices(Action<TestHostServices> setup = null)
+        {
+            var container = new TestHostServices();
+            setup?.Invoke(container);
+            return container;
+        }
     }
 
     internal sealed class TestRuntimeLogger : IRuntimeLogger
@@ -219,6 +226,28 @@ namespace Skrypton.Tests
         {
             if (exception == null) throw new ArgumentNullException(nameof(exception));
             Console.WriteLine("VBS-Exception:" + exception);
+        }
+    }
+
+    internal sealed class TestHostServices : IServiceProvider
+    {
+        private readonly Dictionary<string, Func<object>> _providers = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+        public TestHostServices()
+        {
+        }
+        internal TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class
+        {
+            _providers.Add(typeof(T).FullName, () => (object)serviceProvider());
+            return this;
+        }
+        public object GetService(Type serviceType)
+        {
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if (_providers.TryGetValue(serviceType.FullName ?? "", out Func<object> serviceProvider))
+            {
+                return serviceProvider() ?? throw new InvalidOperationException($"Service '{serviceType.FullName}' factorization failed.");
+            }
+            throw new NotSupportedException($"Service '{serviceType.FullName}' not registered.");
         }
     }
 }

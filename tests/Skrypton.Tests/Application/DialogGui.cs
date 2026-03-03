@@ -22,17 +22,17 @@ namespace Skrypton.Tests.Application
         public void QUX_HLData_Contact_Dialog_2_ButtonShowWebsite_Click()// => TestDialogGui();
         //private void TestDialogGui()
         {
-            var dialog = new DialogBuilder()
+            var dialog = new DialogBuilder(CreateTestHostServices())
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog.ExternalReferences, gr => { });
+            DoDialogGui(dialog, gr => { });
         }
 
         [TestMethod]
         public void CT35_LogChecklist_Dialog_388_OnSave() // 35:DFSnDLNeu  id = select id, dbname from _databasestats order by dbname asc -- [hlsysdialog]
         {
-            var dialog = new DialogBuilder()
+            var dialog = new DialogBuilder(CreateTestHostServices())
                 .AddTextControl("TextBoxChecklist1URL")
                 .AddTextControl("TextBoxChecklist2URL")
                 .AddTextControl("TextBoxChecklist3URL")
@@ -46,7 +46,7 @@ namespace Skrypton.Tests.Application
                 .BuildDialog();
 
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog.ExternalReferences, gr => { });
+            DoDialogGui(dialog, gr => { });
 
         }
 
@@ -283,7 +283,7 @@ WScript.Echo xmlhttp.responseText
                 ;
             var model = new DialogGuidModel();
 
-            var dialog = new DialogBuilder().AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices()).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
 
@@ -519,12 +519,12 @@ WScript.Echo xmlhttp.responseText
 
 
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog.ExternalReferences, gr => { });
+            DoDialogGui(dialog, gr => { });
         }
 
-        private void DoDialogGui(IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        private void DoDialogGui(DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
         {
-            CncIn.ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, externalReferences, dialogHandler);
+            CncIn.ExecuteTranslatedProgram(RuntimeLogger, dialog.HostServices, TestCulture, TestContext.TestName, dialog.ExternalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
@@ -605,12 +605,14 @@ WScript.Echo xmlhttp.responseText
                 ;
             var model = new DialogGuidModel();
 
-            var dialog = new DialogBuilder().AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            IHostProcessControlHostService processControlHostService = CreateTestProcessControlHostService();
+
+            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostProcessControlHostService>(() => processControlHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                 .AddButton("Button1_Click")
                 .BuildDialog();
 
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog.ExternalReferences, (GlobalReferencesBase gr) =>
+            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
                 foreach (var mi in mis)
@@ -621,8 +623,26 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                //todo:ScriptControlClass.RunProcedure(gr, "Button1_click", []);
+                //ScriptControlClass.RunProcedure(gr, "Button1_click", []);
             });
+        }
+
+        private IHostProcessControlHostService CreateTestProcessControlHostService()
+        {
+            return new TestHostProcessControlHostService();
+        }
+    }
+
+    internal sealed class TestHostProcessControlHostService : IHostProcessControlHostService
+    {
+        public TestHostProcessControlHostService()
+        {
+
+        }
+
+        public void ProcessStart(string command, byte windowMode, bool waitOnReturn)
+        {
+            Console.WriteLine($"[IHostProcessControlHostService] 'ProcessStart(m:{windowMode}, w:{waitOnReturn}):' {command}");
         }
     }
 

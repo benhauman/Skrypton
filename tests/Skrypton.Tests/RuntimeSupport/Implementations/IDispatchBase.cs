@@ -16,9 +16,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         //protected abstract IReflect ReflectTarget();
-        private IDispatchOnReflect ReflectTarget()
+        private IReflectOnClrType ReflectTarget()
         {
-            return IDispatchBase.IDispatchOnReflect.ForType(GetType());
+            return IDispatchBase.IReflectOnClrType.ForType(GetType());
         }
         private object TargetInstanceForInvoke()
         {
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 var rgsName = rgsNames[idx];
 
-                var mbs = reflect.GetMember(rgsName, IDispatchOnReflect.BindingFlagsVBScript);
+                var mbs = reflect.GetMember(rgsName, IReflectOnClrType.BindingFlagsVBScript);
                 if (mbs == null)
                     throw new MissingMethodException(rgsName);
 
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             if (invFlags.HasFlag(IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYGET) || invFlags.HasFlag(IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYPUT) || invFlags.HasFlag(IDispatchAccess.InvokeFlags.DISPATCH_PROPERTYPUTREF))
             {
-                var pis = reflect.GetProperties(IDispatchOnReflect.BindingFlagsVBScript);
+                var pis = reflect.GetProperties(IReflectOnClrType.BindingFlagsVBScript);
 
                 foreach (var pi in pis)
                 {
@@ -114,7 +114,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             // find method by metadata token
             if (invFlags.HasFlag(IDispatchAccess.InvokeFlags.DISPATCH_METHOD))
             {
-                var mis = reflect.GetMethods(IDispatchOnReflect.BindingFlagsVBScript);
+                var mis = reflect.GetMethods(IReflectOnClrType.BindingFlagsVBScript);
                 foreach (var mi in mis)
                 {
                     var attrDispid = mi.GetCustomAttribute<DispIdAttribute>() ?? throw new MissingMethodException($"Method {mi.Name} is missing DispId attribute");
@@ -300,18 +300,18 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 */
 
-        internal class IDispatchOnReflect : IReflect
+        internal class IReflectOnClrType : IReflect
         {
             private readonly Type _type;
 
-            public IDispatchOnReflect(Type type)
+            public IReflectOnClrType(Type type)
             {
                 _type = type;
             }
 
-            internal static IDispatchOnReflect ForType(Type type)
+            internal static IReflectOnClrType ForType(Type type)
             {
-                return new IDispatchOnReflect(type);
+                return new IReflectOnClrType(type);
             }
 
             // --- IReflect default forwarding to the real Type ---

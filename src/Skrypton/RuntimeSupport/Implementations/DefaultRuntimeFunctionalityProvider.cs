@@ -2047,15 +2047,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         // - Object creation
         public object CREATEOBJECT(object value)
         {
+            string classProgId = _valueRetriever.STR(value);
+            if (string.IsNullOrEmpty(classProgId))
+                throw new InvalidOperationException("object id:" + value);
+            return CREATEOBJECTCore(classProgId);
+        }
+        private object CREATEOBJECTCore(string classProgId)
+        {
             // Creates a new instance of the specified COM object
             // => Set obj = CreateObject("Excel.Application") → always starts a new Excel process
             // => for files: Cannot open persisted objects from file
             // => Works as long as the ProgID is valid
             // Automating applications by starting fresh
 
-            string classProgId = _valueRetriever.STR(value);
             if (string.IsNullOrEmpty(classProgId))
-                throw new InvalidOperationException("object id:" + value);
+                throw new ArgumentException("object prog-id cannot be null or empty.", nameof(classProgId));
             if (_objectCreateFactories.TryGetValue(classProgId, out Func<object> objectFactory))
                 return HandlePostInitializationHandler(classProgId, objectFactory());
 
@@ -2092,7 +2098,48 @@ namespace Skrypton.RuntimeSupport.Implementations
             // => Can open objects stored in files (e.g., GetObject("C:\MyDoc.doc"))
             // => Fails if no instance exists and no file is specified (Run-time error 429)
             // Controlling or reusing an already running application instance
-            throw new NotImplementedException();
+            // Designed to bind to system services via monikers not ProgId (progid is for CreateObject)
+            // Samples:
+            //   "winmgmts:"
+            //   "LDAP:"
+            //   "IIS:"
+
+            /*
+            A moniker is a COM naming string that tells Windows how to bind to an object or service.
+            It:
+            - Often ends with a colon :
+            - Can include a path or server info
+
+            Examples of Monikers
+              GetObject("winmgmts:")
+              GetObject("LDAP://CN=Users,DC=domain,DC=com")
+              GetObject("IIS://localhost/W3SVC")
+
+            File moniker:
+                Set obj = GetObject("C:\Windows\System32\notepad.exe")
+                Set obj = GetObject(".\MyComObject.dll")
+             */
+            string valueText = _valueRetriever.STR(value, $"'{nameof(GETOBJECT)}'");
+            string[] tokens = valueText.Split([':'], StringSplitOptions.RemoveEmptyEntries);
+
+            if (tokens[0].Length == 1) // C:\\
+                throw new InvalidOperationException("Local file moniker not supported:" + valueText);
+
+            if (valueText.StartsWith("\\", StringComparison.Ordinal)) // \\192.01.01.01\sharedfiles\
+                throw new InvalidOperationException("Shared file moniker not supported:" + valueText);
+
+            var unbindedInstance = CREATEOBJECTCore(tokens[0]);
+            if (tokens.Length == 1)
+            {
+                return unbindedInstance;
+            }
+            else
+            {
+                string path = valueText.Substring(tokens.Length + 1);
+                //IBindableServiceInstance svc = (IBindableServiceInstance)unbindedInstance;
+                //return unbindedInstance;
+                throw new NotImplementedException($"{valueText} > {path}");
+            }
         }
         public object EVAL(object value) { throw new NotImplementedException(); }
         public object EXECUTE(object value) { throw new NotImplementedException(); }

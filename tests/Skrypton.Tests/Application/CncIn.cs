@@ -75,14 +75,15 @@ namespace Skrypton.Tests.Application
             {
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
-            ExecuteTranslatedProgram(RuntimeLogger, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
+            var hostServices = CreateTestHostServices();
+            ExecuteTranslatedProgram(RuntimeLogger, hostServices, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             //
             UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(chainName);
@@ -91,7 +92,7 @@ namespace Skrypton.Tests.Application
                 Assembly asm = asmctx.LoadedAssembly;
 
                 DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeLogger, culture);
-                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
+                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
 
                 Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
@@ -123,7 +124,7 @@ namespace Skrypton.Tests.Application
             else
                 Console.WriteLine("ALC still alive");
         }
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
         {
             DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
@@ -131,7 +132,7 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
             provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
             provider.RegisterObjectCreateFactory("VBScript.RegExp", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
-            provider.RegisterObjectCreateFactory("WScript.Shell", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell());
+            provider.RegisterObjectCreateFactory("WScript.Shell", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell(hostServices));
             return provider;
         }
 

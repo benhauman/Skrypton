@@ -9,10 +9,17 @@ namespace Skrypton.Tests.Application
 
     public class DialogBuilder
     {
+        private readonly IServiceProvider _hostServices;
         private readonly Dictionary<string, object> _externalReferences = new Dictionary<string, object>();
+
+        public DialogBuilder(IServiceProvider hostServices)
+        {
+            _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+        }
+
         public DialogBase BuildDialog()
         {
-            return new DialogBase(_externalReferences);
+            return new DialogBase(_hostServices, _externalReferences);
         }
         private DialogBuilder AddControlCore(string controlName, DialogGuiControlBase c)
         {
@@ -78,9 +85,11 @@ namespace Skrypton.Tests.Application
     public sealed class DialogBase
     {
         public IReadOnlyDictionary<string, object> ExternalReferences { get; }
+        public IServiceProvider HostServices { get; }
 
-        public DialogBase(IReadOnlyDictionary<string, object> externalReferences)
+        public DialogBase(IServiceProvider hostServices, IReadOnlyDictionary<string, object> externalReferences)
         {
+            HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
         }
     }

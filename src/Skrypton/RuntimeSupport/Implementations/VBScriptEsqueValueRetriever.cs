@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -1703,7 +1704,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             string? optionalName,
             DefaultMemberBehaviourOptions defaultMemberBehaviour,
             MemberNameMatchBehaviourOptions memberNameMatchBehaviour,
-            int numberOfArguments,
+            int numberOfArguments, // lubo better argumentNames
             bool allowPrivateAccess)
         {
             if (type == null)
@@ -1777,8 +1778,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if ((numberOfArguments == 0) && args.All(arg => arg.CustomAttributes.Any(attribute => attribute.AttributeType == typeof(OptionalAttribute))))
                     return true;
 
+                if (numberOfArguments > 0 && numberOfArguments < args.Length && args.Skip(numberOfArguments).All(arg => arg.CustomAttributes.Any(attribute => attribute.AttributeType == typeof(OptionalAttribute))))
+                    return true; // lubo
+
                 return false;
             };
+            /*
             MethodInfo[] applicableMethods = allMethods
                     .Where(m => nameMatcher(m.Name))
                     .Where(m =>
@@ -1787,7 +1792,35 @@ namespace Skrypton.RuntimeSupport.Implementations
                         (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(m) || IsDefaultMember(m)))
                     )
                     .Where(m => matchesArgumentCount(m))
-                    .ToArray();
+                    .ToArray();*/
+            MethodInfo[] applicableMethods = allMethods.Where(m =>
+                    {
+                        if (nameMatcher(m.Name))
+                        {
+                            if ((defaultMemberBehaviour == DefaultMemberBehaviourOptions.DoesNotMatter) ||
+                                (m.GetCustomAttributes(typeof(IsDefaultAttribute), true).Length != 0) ||
+                                (!typeWasTranslatedFromVBScript && typeIsComVisible && !typeHasAmbiguousDispIdZeroMember && (MemberHasDispIdZero(m) || IsDefaultMember(m))))
+                            {
+                                if (matchesArgumentCount(m))
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    // skipped due to it's parameter count
+                                }
+                            }
+                            else
+                            {
+                                // skipped due to it's behavior
+                            }
+                        }
+                        else
+                        {
+                            // skipped due to its name
+                        }
+                        return false;
+                    }).ToArray();
             PropertyInfo[] readableProperties = type.GetProperties().Where(p => p.CanRead).ToArray();
             MethodInfo[] applicableProperties = readableProperties
                 .Where(p => nameMatcher(p.Name))
@@ -1876,8 +1909,11 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static; // This gets all public methods, whether they're declared in the specified type or anywhere in its inheritance tree
             if (allowPrivateAccess)
+            {
                 bindingFlags = bindingFlags | BindingFlags.NonPublic;
+            }
             MethodInfo[] mis = type.GetMethods(bindingFlags)
+                .Where(x => x.DeclaringType != typeof(object)) // ToString, GetType, HashCode
                 .Except(type.GetProperties().Where(p => p.CanRead).Select(p => p.GetGetMethod()))
                 .Except(type.GetProperties().Where(p => p.CanWrite).Select(p => p.GetSetMethod()))
                 .ToArray();
@@ -2039,10 +2075,11 @@ namespace Skrypton.RuntimeSupport.Implementations
             return rslt.Length > 1;
         }
 
+        [DebuggerDisplay("{DebugText}")]
         private sealed class InvokerCacheKey
         {
             private readonly int _hashCode;
-            public InvokerCacheKey(object targetType, string? optionalName, int numberOfArguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+            public InvokerCacheKey(Type targetType, string? optionalName, int numberOfArguments, bool allowPrivateAccess, bool onlyConsiderMethods)
             {
                 if (numberOfArguments < 0)
                     throw new ArgumentOutOfRangeException(nameof(numberOfArguments), "must be zero or greater");
@@ -2063,7 +2100,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                     _hashCode = (_hashCode * 16777619) ^ AllowPrivateAccess.GetHashCode();
                     _hashCode = (_hashCode * 16777619) ^ OnlyConsiderMethods.GetHashCode();
                 }
+
+                DebugText = $"{targetType.FullName}/{optionalName}/{numberOfArguments}/{allowPrivateAccess}/{onlyConsiderMethods}";
             }
+            internal readonly string DebugText;
 
             /// <summary>
             /// This will never be null
