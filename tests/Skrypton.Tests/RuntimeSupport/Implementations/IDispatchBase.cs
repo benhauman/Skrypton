@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Xml;
 using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
@@ -18,7 +19,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         //protected abstract IReflect ReflectTarget();
         private IReflectOnClrType ReflectTarget()
         {
-            return IDispatchBase.IReflectOnClrType.ForType(GetType());
+            return IReflectOnClrType.ForType(GetType());
         }
         private object TargetInstanceForInvoke()
         {
@@ -300,128 +301,215 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 */
 
-        internal class IReflectOnClrType : IReflect
+
+    }
+
+    internal class IReflectOnClrType : IReflect
+    {
+        private readonly Type _type;
+
+        public IReflectOnClrType(Type type)
         {
-            private readonly Type _type;
+            _type = type;
+        }
 
-            public IReflectOnClrType(Type type)
+        internal static IReflectOnClrType ForType(Type type)
+        {
+            return new IReflectOnClrType(type);
+        }
+
+        // --- IReflect default forwarding to the real Type ---
+        public FieldInfo GetField(string name, BindingFlags bindingAttr)
+        {
+            var fi = _type.GetField(name, bindingAttr);
+            return fi?.GetCustomAttribute<DispIdAttribute>() != null ? fi : null;
+        }
+
+        public FieldInfo[] GetFields(BindingFlags bindingAttr)
+            => _type.GetFields(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
+
+        public MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
+        {
+            return _type.GetMember(name, bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
+        }
+
+        public MemberInfo[] GetMembers(BindingFlags bindingAttr)
+            => _type.GetMembers(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
+
+        public MethodInfo GetMethod(string name, BindingFlags bindingAttr)
+        {
+            var mis = _type.GetMethods(bindingAttr);
+            foreach (var mi in mis)
             {
-                _type = type;
-            }
-
-            internal static IReflectOnClrType ForType(Type type)
-            {
-                return new IReflectOnClrType(type);
-            }
-
-            // --- IReflect default forwarding to the real Type ---
-            public FieldInfo GetField(string name, BindingFlags bindingAttr)
-            {
-                var fi = _type.GetField(name, bindingAttr);
-                return fi?.GetCustomAttribute<DispIdAttribute>() != null ? fi : null;
-            }
-
-            public FieldInfo[] GetFields(BindingFlags bindingAttr)
-                => _type.GetFields(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
-
-            public MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
-            {
-                return _type.GetMember(name, bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
-            }
-
-            public MemberInfo[] GetMembers(BindingFlags bindingAttr)
-                => _type.GetMembers(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
-
-            public MethodInfo GetMethod(string name, BindingFlags bindingAttr)
-            {
-                var mis = _type.GetMethods(bindingAttr);
-                foreach (var mi in mis)
+                if (string.Equals(mi.Name, name, StringComparison.Ordinal))
                 {
-                    if (string.Equals(mi.Name, name, StringComparison.Ordinal))
+                    if (mi.GetCustomAttribute<DispIdAttribute>() != null)
                     {
-                        if (mi.GetCustomAttribute<DispIdAttribute>() != null)
+                        return mi;
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        public MethodInfo GetMethod(
+            string name,
+            BindingFlags bindingAttr,
+            Binder binder,
+            Type[] types,
+            ParameterModifier[] modifiers)
+        {
+            var mi = _type.GetMethod(name, bindingAttr, binder, types, modifiers);
+            if (mi != null && mi.GetCustomAttribute<DispIdAttribute>() != null)
+                return mi;
+            return null;
+        }
+
+        public MethodInfo[] GetMethods(BindingFlags bindingAttr)
+        {
+            var mis = _type.GetMethods(bindingAttr);
+            var misDISPID = mis.Where(mi => mi.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
+            return misDISPID;
+        }
+
+        public PropertyInfo[] GetProperties(BindingFlags bindingAttr)
+        {
+            return _type.GetProperties(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
+        }
+
+        public PropertyInfo GetProperty(string name, BindingFlags bindingAttr)
+        {
+            var pi = _type.GetProperty(name, bindingAttr);
+            return pi?.GetCustomAttribute<DispIdAttribute>() != null ? pi : null;
+        }
+
+        public PropertyInfo GetProperty(
+            string name,
+            BindingFlags bindingAttr,
+            Binder binder,
+            Type returnType,
+            Type[] types,
+            ParameterModifier[] modifiers)
+        {
+            var pi = _type.GetProperty(name, bindingAttr, binder, returnType, types, modifiers);
+            return pi?.GetCustomAttribute<DispIdAttribute>() != null ? pi : null;
+        }
+
+        public Type UnderlyingSystemType => _type;
+
+        // Default behavior: instance + public, case-insensitive (VB/VBA style),
+        // and allow property get/put/method.
+        internal const BindingFlags BindingFlagsVBScript = BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase;
+
+        /// <summary>
+        /// The key hook: COM late-binding calls come here via the CCW.
+        /// You can customize name resolution, case sensitivity, default members, etc.
+        /// </summary>
+        public object InvokeMember(
+            string name,
+            BindingFlags invokeAttr,
+            Binder binder,
+            object target,
+            object[] args,
+            ParameterModifier[] modifiers,
+            CultureInfo culture,
+            string[] namedParameters)
+        {
+            /*
+            MemberInfo[] members = _type.GetMembers(invokeAttr | BindingFlagsVBScript);
+            MethodInfo candidate = null;
+            foreach (var member in members)
+            {
+                if (string.Equals(member.Name, name, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (member is MethodInfo mi)
+                    {
+                        var prms = mi.GetParameters();
+                        if (candidate == null)
                         {
-                            return mi;
+                            candidate = mi;
+                        }
+                        else
+                        {
+                            if (prms.Length > candidate.GetParameters().Length)
+                            {
+                                candidate = mi;
+                            }
                         }
                     }
                 }
-                return null;
             }
 
-
-            public MethodInfo GetMethod(
-                string name,
-                BindingFlags bindingAttr,
-                Binder binder,
-                Type[] types,
-                ParameterModifier[] modifiers)
+            object[] args_allmembers;
+            if (candidate == null)
             {
-                var mi = _type.GetMethod(name, bindingAttr, binder, types, modifiers);
-                if (mi != null && mi.GetCustomAttribute<DispIdAttribute>() != null)
-                    return mi;
-                return null;
+                args_allmembers = args;
             }
-
-            public MethodInfo[] GetMethods(BindingFlags bindingAttr)
+            else
             {
-                var mis = _type.GetMethods(bindingAttr);
-                var misDISPID = mis.Where(mi => mi.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
-                return misDISPID;
-            }
+                var prms = candidate.GetParameters();
+                if (prms.Length == args.Length)
+                {
+                    args_allmembers = args;
+                }
+                else
+                {
+                    args_allmembers = new object[prms.Length];
 
-            public PropertyInfo[] GetProperties(BindingFlags bindingAttr)
-            {
-                return _type.GetProperties(bindingAttr).Where(mb => mb.GetCustomAttribute<DispIdAttribute>() != null).ToArray();
-            }
+                    if (prms.Length > args.Length)
+                    {
+                        int ix = 0;
+                        for (; ix < args.Length; ix++)
+                        {
+                            var arg = args[ix];
+                            args_allmembers[ix] = arg;
+                        }
+                        for (; ix < prms.Length; ix++)
+                        {
+                            var prm = prms[ix];
+                            if (prm.HasDefaultValue)
+                            {
+                                args_allmembers[ix] = prm.DefaultValue;
+                            }
+                            else
+                            {
+                                Type parameterType = prm.ParameterType;
+                                if (!parameterType.IsValueType || Nullable.GetUnderlyingType(parameterType) != null)
+                                {
+                                    args_allmembers[ix] = null;
+                                }
+                                else
+                                {
+                                    //object defvalue = Activator.CreateInstance(parameterType);
+                                    object defvalue = parameterType switch
+                                    {
+                                        Type t when t == typeof(int) => default(int),
+                                        Type t when t == typeof(short) => default(short),
+                                        Type t when t == typeof(bool) => default(bool),
+                                        Type t when t == typeof(long) => default(long),
+                                        Type t when t == typeof(DateTime) => default(DateTime),
+                                        Type t when t == typeof(Guid) => default(Guid),
+                                        _ => Activator.CreateInstance(parameterType)
+                                    };
 
-            public PropertyInfo GetProperty(string name, BindingFlags bindingAttr)
-            {
-                var pi = _type.GetProperty(name, bindingAttr);
-                return pi?.GetCustomAttribute<DispIdAttribute>() != null ? pi : null;
-            }
+                                    args_allmembers[ix] = defvalue; // or the default value for the type
+                                }
+                            }
+                        }
+                    }
+                }
+            }*/
 
-            public PropertyInfo GetProperty(
-                string name,
-                BindingFlags bindingAttr,
-                Binder binder,
-                Type returnType,
-                Type[] types,
-                ParameterModifier[] modifiers)
-            {
-                var pi = _type.GetProperty(name, bindingAttr, binder, returnType, types, modifiers);
-                return pi?.GetCustomAttribute<DispIdAttribute>() != null ? pi : null;
-            }
-
-            public Type UnderlyingSystemType => _type;
-
-            // Default behavior: instance + public, case-insensitive (VB/VBA style),
-            // and allow property get/put/method.
-            internal const BindingFlags BindingFlagsVBScript = BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase;
-
-            /// <summary>
-            /// The key hook: COM late-binding calls come here via the CCW.
-            /// You can customize name resolution, case sensitivity, default members, etc.
-            /// </summary>
-            public object InvokeMember(
-                string name,
-                BindingFlags invokeAttr,
-                Binder binder,
-                object target,
-                object[] args,
-                ParameterModifier[] modifiers,
-                CultureInfo culture,
-                string[] namedParameters)
-            {
-                return _type.InvokeMember(
-                    name,
-                    invokeAttr | BindingFlagsVBScript,
-                    binder,
-                    target ?? this,
-                    args,
-                    modifiers,
-                    culture,
-                    namedParameters);
-            }
+            return _type.InvokeMember(
+                name,
+                invokeAttr | BindingFlagsVBScript,
+                binder,
+                target ?? this,
+                args, //args_allmembers, use [DefaultParameterValue(...)] for optional parameters!
+                modifiers,
+                culture,
+                namedParameters);
         }
     }
 }

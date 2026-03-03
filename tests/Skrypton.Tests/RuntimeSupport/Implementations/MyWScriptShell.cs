@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 using Skrypton.RuntimeSupport.Attributes;
@@ -11,7 +12,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     // CLSID: 72C24DD5-D70A-438B-8A42-98424B88AFB8, HKEY_CLASSES_ROOT\WScript.Shell, %SystemRoot%\System32\wshom.ocx -> Interop.IWshRuntimeLibrary.dll
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    internal sealed class MyWScriptShell : IDispatchBase.IReflectOnClrType, IWshShell3
+    internal sealed class MyWScriptShell : IReflectOnClrType, IWshShell3
     {
         private readonly IServiceProvider _hostServices;
 
@@ -21,7 +22,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         [DispId(1000)]
-        public int Run([In, MarshalAs(UnmanagedType.BStr)] string Command, [In, MarshalAs(UnmanagedType.Struct), Optional] object WindowStyle, [In, MarshalAs(UnmanagedType.Struct), Optional] object WaitOnReturn)
+        public int Run([In, MarshalAs(UnmanagedType.BStr)] string Command, [In, MarshalAs(UnmanagedType.Struct), DefaultParameterValue(1), Optional] object WindowStyle, [In, MarshalAs(UnmanagedType.Struct), Optional] object WaitOnReturn)
         {
             // WindowStyle:             0 = Hidden, 1 = Normal (DEFAULT), 3 = Maximized, etc.
             /*
@@ -69,6 +70,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             //throw new NotImplementedException($"[WshShell] Run(Command:{Command})");
             return 0; // S_OK;
         }
+
+        public bool AppActivate([MarshalAs(UnmanagedType.Struct)] object App, [MarshalAs(UnmanagedType.Struct), Optional, DefaultParameterValue(null)] object Wait)
+        {
+            int processId = Convert.ToInt32(App);
+            var svc = _hostServices.GetRequiredService<IHostProcessControlHostService>();
+            return svc.ProcessActivate(processId);// Process.GetProcessesByName("notepad"); SetForegroundWindow(processes[0].MainWindowHandle);
+        }
     }
 
     internal static class IHostProcessControlHostServiceExtensions
@@ -83,14 +91,23 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     public interface IHostProcessControlHostService
     {
         void ProcessStart(string command, byte windowMode, bool waitOnReturn);
+        bool ProcessActivate(int processId);
+        void ProcessesCollect(Func<int, string, bool> collector);
     }
 
     internal interface IWshShell
     {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1000)]
-        int Run([In][MarshalAs(UnmanagedType.BStr)] string Command, [Optional][In][MarshalAs(UnmanagedType.Struct)] object WindowStyle, [Optional][In][MarshalAs(UnmanagedType.Struct)] object WaitOnReturn);
+        int Run([In][MarshalAs(UnmanagedType.BStr)] string Command,
+            [Optional][In][MarshalAs(UnmanagedType.Struct), DefaultParameterValue(1), DefaultValue(2)] object WindowStyle,
+            [Optional][In][MarshalAs(UnmanagedType.Struct), DefaultParameterValue(false)] object WaitOnReturn);
 
+        [DispId(1000)]
+        bool AppActivate(
+            [MarshalAs(UnmanagedType.Struct)] object App,
+            [Optional][MarshalAs(UnmanagedType.Struct), DefaultParameterValue(null)] object Wait
+        );
     }
 
     internal interface IWshShell2 : IWshShell

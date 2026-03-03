@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -55,7 +56,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             _trappedErrorIfAny = null;
         }
 
-        private readonly Dictionary<string, Func<object>> _objectCreateFactories = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, Func<string?, object>> _objectCreateFactories = new Dictionary<string, Func<string?, object>>(StringComparer.OrdinalIgnoreCase);
 
         private static object HandlePostInitializationHandler(string progId, object objectInstance)
         {
@@ -88,7 +89,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return objectInstance;
         }
 
-        public void RegisterObjectCreateFactory(string progId, Func<object> factory)
+        public void RegisterObjectCreateFactory(string progId, Func<string?, object> factory)
         {
             if (string.IsNullOrEmpty(progId))
                 throw new ArgumentException("Value can not be null or empty", nameof(progId));
@@ -1290,9 +1291,23 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object STRCOMP(object string1, object string2) { return STRCOMP(string1, string2, 0); }
         public object STRCOMP(object string1, object string2, object compare) { return ToVBScriptNullable<int>(STRCOMP_Internal(string1, string2, compare)); }
-        private int? STRCOMP_Internal(object string1, object string2, object compare)
+        private int? STRCOMP_Internal(object? string1, object? string2, object compare)
         {
-            throw new NotImplementedException();
+            string? text1 = string1 == null || string1 == DBNull.Value ? null : _valueRetriever.STR(string1);
+            string? text2 = string2 == null || string2 == DBNull.Value ? null : _valueRetriever.STR(string2);
+            if (text1 == null && text2 == null)
+                return null;
+
+            int compareModeCode = compare is bool compareBool ?
+                                                  compareBool
+                                                    ? 1 // Text compare => ignore case
+                                                    : 0 // Binary compare => don't ignore case
+                            : (int)compare;
+            //_valueRetriever.(compare);
+            var comparison = compareModeCode == 1
+                ? StringComparison.OrdinalIgnoreCase
+                : StringComparison.Ordinal;
+            return string.Compare(text1, text2, comparison);
         }
         public object STRREVERSE(object value) { throw new NotImplementedException(); }
         public object TRIM(object? value)
@@ -2050,9 +2065,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             string classProgId = _valueRetriever.STR(value);
             if (string.IsNullOrEmpty(classProgId))
                 throw new InvalidOperationException("object id:" + value);
-            return CREATEOBJECTCore(classProgId);
+            return CREATEOBJECTCore(classProgId, optionalMonikerValues: null);
         }
-        private object CREATEOBJECTCore(string classProgId)
+
+        private object CREATEOBJECTCore(string classProgId, string? optionalMonikerValues)
         {
             // Creates a new instance of the specified COM object
             // => Set obj = CreateObject("Excel.Application") → always starts a new Excel process
@@ -2062,8 +2078,8 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             if (string.IsNullOrEmpty(classProgId))
                 throw new ArgumentException("object prog-id cannot be null or empty.", nameof(classProgId));
-            if (_objectCreateFactories.TryGetValue(classProgId, out Func<object> objectFactory))
-                return HandlePostInitializationHandler(classProgId, objectFactory());
+            if (_objectCreateFactories.TryGetValue(classProgId, out Func<string?, object> objectFactory))
+                return HandlePostInitializationHandler(classProgId, objectFactory(optionalMonikerValues));
 
             try
             {
@@ -2101,6 +2117,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Designed to bind to system services via monikers not ProgId (progid is for CreateObject)
             // Samples:
             //   "winmgmts:"
+            //   "winMgmts::Win32_scheduledJob"
+            //   "winMgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\Root\CIMv2:Win32_ScheduledJob""
             //   "LDAP:"
             //   "IIS:"
 
@@ -2128,19 +2146,34 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (valueText.StartsWith("\\", StringComparison.Ordinal)) // \\192.01.01.01\sharedfiles\
                 throw new InvalidOperationException("Shared file moniker not supported:" + valueText);
 
-            var unbindedInstance = CREATEOBJECTCore(tokens[0]);
-            if (tokens.Length == 1)
-            {
-                return unbindedInstance;
-            }
-            else
-            {
-                string path = valueText.Substring(tokens.Length + 1);
-                //IBindableServiceInstance svc = (IBindableServiceInstance)unbindedInstance;
-                //return unbindedInstance;
-                throw new NotImplementedException($"{valueText} > {path}");
-            }
+            string progid = ResolveMonikerName(tokens[0]);
+
+            string optionalMonikerValues = valueText.Substring(tokens.Length + 1);
+            IMyMoniker moniker = (IMyMoniker)CREATEOBJECTCore(progid, optionalMonikerValues);
+            Guid riid = Guid.Empty;
+            object bindedInstance = moniker.BindToObject(null, null, ref riid);
+            return bindedInstance;
+
+            //if (tokens.Length == 1)
+            //{
+            //}
+            //else
+            //{
+            //    //IMyMoniker svc = (IMyMoniker)unbindedInstance;
+            //    //return unbindedInstance;
+            //    throw new NotImplementedException($"{valueText} > {optionalMonikerValues}");
+            //}
         }
+
+        private static FrozenDictionary<string, string> _monikerToProgIdMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+            { "winmgmts", "WbemScripting.SWbemLocator"}
+        }.ToFrozenDictionary();
+        private static string ResolveMonikerName(string monikerName)
+        {
+            return _monikerToProgIdMap.TryGetValue(monikerName, out string? progid) ? progid : throw new InvalidOperationException($"Unsupported moniker name: '{monikerName}'");
+        }
+
+
         public object EVAL(object value) { throw new NotImplementedException(); }
         public object EXECUTE(object value) { throw new NotImplementedException(); }
         public object EXECUTEGLOBAL(object value) { throw new NotImplementedException(); }
@@ -2724,5 +2757,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// must be associatedw ith the new year (this is consistent with how the VBScript interpreter would re-process the script each time).
         /// </summary>
         public DateParser DateLiteralParser { get; private set; }
+    }
+
+    public interface IMyMoniker
+    {
+        object BindToObject(object? pbc, object? pmkToLeft, ref Guid riid);
     }
 }

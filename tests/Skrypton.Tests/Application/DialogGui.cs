@@ -623,7 +623,7 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                //ScriptControlClass.RunProcedure(gr, "Button1_click", []);
+                ScriptControlClass.RunProcedure(gr, "Button1_click", []);
             });
         }
 
@@ -643,6 +643,19 @@ WScript.Echo xmlhttp.responseText
         public void ProcessStart(string command, byte windowMode, bool waitOnReturn)
         {
             Console.WriteLine($"[IHostProcessControlHostService] 'ProcessStart(m:{windowMode}, w:{waitOnReturn}):' {command}");
+        }
+
+        public bool ProcessActivate(int processId)
+        {
+            Console.WriteLine($"[IHostProcessControlHostService] 'ProcessActivate(pid:{processId})");
+            return false;
+        }
+
+        public void ProcessesCollect(Func<int, string, bool> collector)
+        {
+            Console.WriteLine($"[IHostProcessControlHostService] 'ProcessesCollect()");
+            collector(666, "xxx");
+            collector(4444, "IExplore.exe");
         }
     }
 

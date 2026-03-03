@@ -127,32 +127,15 @@ namespace Skrypton.Tests.Application
         internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
         {
             DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);
-            provider.RegisterObjectCreateFactory("Scripting.Dictionary", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
-            provider.RegisterObjectCreateFactory("Shell.Application", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
-            provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
-            provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
-            provider.RegisterObjectCreateFactory("VBScript.RegExp", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
-            provider.RegisterObjectCreateFactory("WScript.Shell", () => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell(hostServices));
+            provider.RegisterObjectCreateFactory("Scripting.Dictionary", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
+            provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
+            provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
+            provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
+            provider.RegisterObjectCreateFactory("VBScript.RegExp", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
+            provider.RegisterObjectCreateFactory("WScript.Shell", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell(hostServices));
+            provider.RegisterObjectCreateFactory("WbemScripting.SWbemLocator", (optionalMonikerValues) => new Skrypton.Tests.RuntimeSupport.Implementations.MySWbemLocator(hostServices, optionalMonikerValues));
             return provider;
         }
-
-        //class MyDefaultRuntimeFunctionalityProvider : Skrypton.RuntimeSupport.Implementations.DefaultRuntimeFunctionalityProvider
-        //{
-        //    public MyDefaultRuntimeFunctionalityProvider(Func<string, string> nameRewriter, Skrypton.RuntimeSupport.IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
-        //        : base(valueRetriever, culture)
-        //    {
-        //    }
-        //
-        //    //public override object CREATEOBJECT(object value)
-        //    //{
-        //    //    string progid = (string)value;
-        //    //    if (string.Equals(progid, "Scripting.Dictionary", StringComparison.OrdinalIgnoreCase))
-        //    //    {
-        //    //        return new ScriptingDictionary();
-        //    //    }
-        //    //    return base.CREATEOBJECT(value);
-        //    //}
-        //}
 
         internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName)
         {

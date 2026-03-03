@@ -572,7 +572,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// where special rules apply (which makes the method slightly less useful than NUM, which is used in comparisons with numeric literals but also
         /// in some other cases, such as FOR loops).
         /// </summary>
-        public object NullableSTR(object o)
+        public object NullableSTR(object? o)
         {
             o = VAL(o);
             return (o == DBNull.Value) ? DBNull.Value : (object)STR(o);
