@@ -21,10 +21,10 @@ namespace Skrypton.Tests.LegacyParser
                     new Statement(
                         [
                             new NameToken("WScript", lineIndex1),
-                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                             new NameToken("Echo", lineIndex1),
                             new NumericValueToken("1", lineIndex1),
-                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                             new NumericValueToken("1", lineIndex1)
                         ],
                         Statement.CallPrefixOptions.Absent
@@ -43,11 +43,11 @@ namespace Skrypton.Tests.LegacyParser
                     new Statement(
                         [
                             new NameToken("WScript", lineIndex1),
-                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                             new NameToken("Echo", lineIndex1),
                             new OpenBrace(lineIndex1),
                             new NumericValueToken("1", lineIndex1),
-                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                             new NumericValueToken("1", lineIndex1),
                             new CloseBrace(lineIndex1)
                         ],

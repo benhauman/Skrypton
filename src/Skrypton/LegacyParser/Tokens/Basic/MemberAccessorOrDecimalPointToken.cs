@@ -15,8 +15,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// This inherits from AtomToken since a lot of processing would consider them the
         /// same token type while parsing the original content.
         /// </summary>
-        public MemberAccessorOrDecimalPointToken(string content, int lineIndex) : this(content.ToUpperX(), lineIndex) { } // test
-        public MemberAccessorOrDecimalPointToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Disallow, lineIndex)
+        public MemberAccessorOrDecimalPointToken(string content, bool hasLeadingWhiteSpace, int lineIndex) : this(content.ToUpperX(), hasLeadingWhiteSpace, lineIndex) { } // test
+        public MemberAccessorOrDecimalPointToken(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Disallow, lineIndex)
         {
             // Do all this validation (again) here in case this constructor wasn't called
             // by the AtomToken.GetNewToken method
@@ -24,6 +24,19 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 throw new ArgumentException("Blank content specified for MemberAccessorToken - invalid");
             if (!AtomToken.isMemberAccessorUpper(contentUpper))
                 throw new ArgumentException("Invalid content specified - not a MemberAccessor");
+
+            if (hasLeadingWhiteSpace)
+            {
+                // put a breakpoint here
+            }
+            else
+            {
+                // put a breakpoint here
+            }
+
+            HasLeadingWhiteSpace = hasLeadingWhiteSpace;
         }
+
+        public bool HasLeadingWhiteSpace { get; }
     }
 }

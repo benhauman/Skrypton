@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Skrypton.LegacyParser.Tokens.Basic;
@@ -681,7 +682,7 @@ public sealed class KnownTextContent
     //}
 }
 
-[Serializable]
+[DebuggerDisplay("{UpperText}")]
 public sealed class StringUpper
 {
     internal readonly string Original;

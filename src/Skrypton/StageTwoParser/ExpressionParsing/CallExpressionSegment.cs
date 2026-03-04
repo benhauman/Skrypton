@@ -11,10 +11,10 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     /// </summary>
     public sealed class CallExpressionSegment : CallSetItemExpressionSegment
     {
-        public CallExpressionSegment(IEnumerable<IToken> memberAccessTokens, IEnumerable<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+        public CallExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
             : base(memberAccessTokens, arguments, zeroArgumentBracketsPresence)
         {
-            if (!base.MemberAccessTokens.Any())
+            if (base.MemberAccessTokens.Count == 0)
                 throw new ArgumentException("The memberAccessTokens set may not be empty");
         }
 
@@ -23,6 +23,6 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// token here (this will never contain any MemberAccessorOrDecimalPointToken references). The only token types that may be present in this data are
         /// BuiltInFunctionToken, BuiltInValueToken, KeyWordToken and NameToken.
         /// </summary>
-        public new IEnumerable<IToken> MemberAccessTokens { get { return base.MemberAccessTokens; } }
+        public new IReadOnlyCollection<IToken> MemberAccessTokens { get { return base.MemberAccessTokens; } }
     }
 }

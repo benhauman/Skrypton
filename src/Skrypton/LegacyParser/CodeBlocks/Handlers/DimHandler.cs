@@ -172,7 +172,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Use base.getEntryList to be flexible and grab dimension declarations
             // as Statement instances
             List<Expression> dimensions = new List<Expression>();
-            List<List<IToken>> dimStatements = getEntryList(tokens, 2, AtomToken.GetNewToken(")".ToUpperX(), nameToken.LineIndex));
+            List<List<IToken>> dimStatements = getEntryList(tokens, 2, AtomToken.GetNewToken(")".ToUpperX(), hasLeadingWhiteSpace: false, nameToken.LineIndex));
             foreach (List<IToken> dimStatement in dimStatements)
             {
                 dimensions.Add(new Expression(dimStatement));

@@ -86,7 +86,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // a simple assignment, no SET method call required.
             IExpressionSegment expressionSegment = targetExpressionSegments[0];
             CallExpressionSegment? callExpressionSegment = expressionSegment as CallExpressionSegment;
-            if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Take(2).Count() < 2) && !callExpressionSegment.Arguments.Any())
+            if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Take(2).Count() < 2) && callExpressionSegment.Arguments.Count == 0)
             {
                 NameToken? singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
                 if (singleTokenAsName == null)
@@ -234,14 +234,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // If the last CallExpressionSegment has more than two member accessor then it needs breaking up since we need a target, at most a single
             // member accessor against that target and arguments. So if there are more than two member accessors in the last segments then we want to
             // split it so that all but one are in one segment (with no arguments) and then the last one (to go WITH the arguments) in the last entry.
-            int numberOfMemberAccessTokensInLastCallExpressionSegment = callExpressionSegments.Last().MemberAccessTokens.Count();
+            int numberOfMemberAccessTokensInLastCallExpressionSegment = callExpressionSegments.Last().MemberAccessTokens.Count;
             if (numberOfMemberAccessTokensInLastCallExpressionSegment > 2)
             {
                 CallSetItemExpressionSegment? lastCallExpressionSegments = callExpressionSegments.Last();
                 callExpressionSegments.RemoveAt(callExpressionSegments.Count - 1);
                 callExpressionSegments.Add(
                     new CallExpressionSegment(
-                        lastCallExpressionSegments.MemberAccessTokens.Take(numberOfMemberAccessTokensInLastCallExpressionSegment - 1),
+                        lastCallExpressionSegments.MemberAccessTokens.Take(numberOfMemberAccessTokensInLastCallExpressionSegment - 1).ToArray(),
                         [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent // Can't be any brackets as we're splitting a CallExpressionSegment in two
                     )
@@ -266,7 +266,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // The single CallExpressionSegment may have one or two member accessors
                 IToken targetAccessor = callExpressionSegments[0].MemberAccessTokens.First();
                 targetAccessorName = _nameRewriter.GetMemberAccessTokenName(targetAccessor);
-                if (callExpressionSegments[0].MemberAccessTokens.Count() == 1)
+                if (callExpressionSegments[0].MemberAccessTokens.Count == 1)
                 {
                     optionalMemberAccessor = null;
                 }
@@ -343,7 +343,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             IExpressionSegment[] targetAccessCallExpressionSegments = new IExpressionSegment[]
                             {
                                 new CallExpressionSegment(
-                                    callExpressionSegments.Single().MemberAccessTokens.Take(1),
+                                    callExpressionSegments.Single().MemberAccessTokens.Take(1).ToArray(),
                                     [],
                                     CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
                                 )
@@ -384,7 +384,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // The last CallExpressionSegment may only have one member accessor
                 // - Note: it may have zero member accessors if the assignment target was of the form "a(0, 1)(2)"
                 CallSetItemExpressionSegment? lastCallExpressionSegment = callExpressionSegments.Last();
-                optionalMemberAccessor = lastCallExpressionSegment.MemberAccessTokens.Any() ? lastCallExpressionSegment.MemberAccessTokens.Single().Content : null;
+                optionalMemberAccessor = lastCallExpressionSegment.MemberAccessTokens.Count != 0 ? lastCallExpressionSegment.MemberAccessTokens.Single().Content : null;
                 arguments = lastCallExpressionSegment.Arguments;
 
                 // Note: In this case, we don't have to apply any special logic to make "return value replacements" for assignment targets

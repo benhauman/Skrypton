@@ -244,7 +244,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         tokenContent += chr;
                         if (chr == "]")
                         {
-                            tokens.Add(AtomToken.GetNewToken(tokenContent.ToUpperX(), lineIndexForStartOfContent));
+                            tokens.Add(AtomToken.GetNewToken(tokenContent.ToUpperX(), hasLeadingWhiteSpace: false, lineIndexForStartOfContent));
                             tokenContent = "";
                             lineIndexForStartOfContent = lineIndex;
                             index = indexString;

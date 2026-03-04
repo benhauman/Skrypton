@@ -10,11 +10,11 @@ namespace Skrypton.LegacyParser
 {
     public static class Parser
     {
-        public static CSharpWriter.CodeTranslation.IOutermostScope ParseToOutermostScope(CultureInfo culture, string scriptContent)
+        public static CSharpWriter.CodeTranslation.IOutermostScope ParseToOutermostScope(IReadOnlyCollection<ICodeBlock> rootCodeBlocks)
         {
             //var rootName = new CSharpWriter.CodeTranslation.Extensions.DoNotRenameNameToken("Root", 0);
             CSharpWriter.CodeTranslation.CSharpName rootName = new CSharpWriter.CodeTranslation.CSharpName("Root");
-            IEnumerable<ICodeBlock> rootCodeBlocks = Parser.Parse(culture, scriptContent);
+            //IEnumerable<ICodeBlock> rootCodeBlocks = Parser.Parse(culture, scriptContent);
             //CodeBlockCollection rootStatements = new CodeBlockCollection(rootCodeBlocks);
             return new CSharpWriter.CodeTranslation.OutermostScope(rootName, new CSharpWriter.Lists.NonNullImmutableList<ICodeBlock>(rootCodeBlocks));
         }

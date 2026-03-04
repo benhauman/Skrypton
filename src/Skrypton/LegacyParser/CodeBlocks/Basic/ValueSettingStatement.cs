@@ -74,10 +74,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             // The Statement class' GenerateBaseSource has logic about rendering strings of tokens and rules about whitespace around
             // (or not around) particular tokens, so the content from this class is wrapped up as a Statement so that the method may
             // be re-used without copying any of it here
-            var assignmentOperator = AtomToken.GetNewToken("=".ToUpperX(), ValueToSet.Tokens.Last().LineIndex);
+            var assignmentOperator = AtomToken.GetNewToken("=".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.Last().LineIndex);
             var tokensList = ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
             if (ValueSetType == ValueSetTypeOptions.Set)
-                tokensList.Insert(0, AtomToken.GetNewToken("Set".ToUpperX(), ValueToSet.Tokens.First().LineIndex));
+                tokensList.Insert(0, AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace:false, ValueToSet.Tokens.First().LineIndex));
 
             return (new Statement(tokensList, Statement.CallPrefixOptions.Absent)).GenerateBaseSource(indenter);
         }

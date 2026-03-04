@@ -93,7 +93,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (indenter == null) throw new ArgumentNullException(nameof(indenter));
             var tokensList = Tokens.ToList();
             if (CallPrefix == CallPrefixOptions.Present)
-                tokensList.Insert(0, AtomToken.GetNewToken("Call".ToUpperX(), tokensList[0].LineIndex));
+                tokensList.Insert(0, AtomToken.GetNewToken("Call".ToUpperX(), hasLeadingWhiteSpace: false, tokensList[0].LineIndex));
 
             var output = new StringBuilder();
             output.Append(indenter.Indent);
@@ -101,15 +101,47 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             {
                 var token = tokensList[index];
                 if (token is StringToken)
+                {
                     output.Append("\"" + token.Content + "\"");
+                }
                 else if (token is DateLiteralToken)
+                {
                     output.Append("#" + token.Content + "#");
-                else
+                }
+                else if (token is WhiteSpaceToken)
+                {
+                    // do nothing see below:
+                    //  inside of a WITH statement:  .MethodX .PropertyA
+                }
+                else if (token is MemberAccessorOrDecimalPointToken mad)
+                {
+                    if (index > 0 && mad.HasLeadingWhiteSpace)
+                    {
+                        output.Append(' ');
+                    }
                     output.Append(token.Content);
+                }
+                else
+                {
+                    output.Append(token.Content);
+                }
 
                 var nextToken = (index < (tokensList.Count - 1)) ? tokensList[index + 1] : null;
                 if (nextToken == null)
                     continue;
+
+                // inside of a WITH statement: Set .PropertyA = .PropertyB
+                if (token is WhiteSpaceToken && nextToken is MemberAccessorOrDecimalPointToken)
+                {
+                    output.Append(' ');
+                    continue;
+                }
+                //if ((token is KeyWordToken) && (nextToken is MemberAccessorOrDecimalPointToken))
+                //{
+                //    output.Append(' ');
+                //    continue;
+                //}
+                //if ((token is ComparisonOperatorToken) && (nextToken is ))
 
                 if ((token is MemberAccessorOrDecimalPointToken)
                 || (token is OpenBrace)

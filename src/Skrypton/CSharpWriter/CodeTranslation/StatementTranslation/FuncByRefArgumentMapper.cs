@@ -228,7 +228,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Note: The ByRef argument must be being passed DIRECTLY into another function as a ByRef argument, otherwise the ByRef rules do not apply - eg. if "a.Name" is passed
             // into a function as ByRef argument, that function can not affect the value of the expression "a.Name", nor can it affect the value of "a". There sometimes-exception
             // is expressions such as "a(0)" which may be altered when passed as a ByRef argument value, but only if "a" is an array and not if "a(0)" is a default member access.
-            if (expressionIsDirectArgumentValue && (callSetItemCount == 1) && (callSetItemExpressionSegment.MemberAccessTokens.Count() == 1))
+            if (expressionIsDirectArgumentValue && (callSetItemCount == 1) && (callSetItemExpressionSegment.MemberAccessTokens.Count == 1))
             {
                 var targetAsNameToken = callSetItemExpressionSegment.MemberAccessTokens.Single() as NameToken;
                 if (targetAsNameToken != null)
@@ -272,7 +272,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // to fix any functional issue). Note: If error-trapping may be in play then none of this matters - if we're passing a ByRef argument to a builtin function within
             // a HANDLEERROR lambda then we'll need a ByRef alias otherwise we'd be trying to reference a ref argument within a lambda (which is not gonna fly).
             var isCallToBuiltInFunction =
-                (callSetItemExpressionSegment.MemberAccessTokens.Count() == 1) &&
+                (callSetItemExpressionSegment.MemberAccessTokens.Count == 1) &&
                 (callSetItemExpressionSegment.MemberAccessTokens.Single() is BuiltInFunctionToken);
             var callToFunctionHasArgumentsThatAreNestedCalls = callSetItemExpressionSegment.Arguments
                 .SelectMany(argumentExpression => argumentExpression.Segments)
@@ -286,7 +286,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 })
                 .Where(callSetItemSegments => callSetItemSegments != null)
                 .SelectMany(callSetItemSegment => callSetItemSegment)
-                .Where(callExpressionSegment => callExpressionSegment.Arguments.Any())
+                .Where(callExpressionSegment => callExpressionSegment.Arguments.Count != 0)
                 .Any();
             if (!isCallToBuiltInFunction || callToFunctionHasArgumentsThatAreNestedCalls || (scopeAccessInformation.ErrorRegistrationTokenIfAny != null))
             {
@@ -350,8 +350,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             var callExpressionSegment = expression.Segments.Single() as CallExpressionSegment;
             if ((callExpressionSegment == null)
-            || (callExpressionSegment.MemberAccessTokens.Count() != 1)
-            || callExpressionSegment.Arguments.Any()
+            || (callExpressionSegment.MemberAccessTokens.Count != 1)
+            || callExpressionSegment.Arguments.Count != 0
             || (callExpressionSegment.ZeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
                 return null;
 

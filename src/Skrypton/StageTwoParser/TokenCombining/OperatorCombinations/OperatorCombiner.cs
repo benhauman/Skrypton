@@ -111,7 +111,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.OperatorCombinations
                 );
                 if (combineTokens)
                 {
-                    comparisonRewrittenTokens.Add(AtomToken.GetNewToken((token.Content + nextToken.Content).ToUpperX(), token.LineIndex));
+                    comparisonRewrittenTokens.Add(AtomToken.GetNewToken((token.Content + nextToken.Content).ToUpperX(), hasLeadingWhiteSpace: false, token.LineIndex));
                     index++;
                     continue;
                 }

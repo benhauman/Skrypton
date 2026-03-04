@@ -838,7 +838,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var callExpression = expressions[0].Segments.Single() as CallExpressionSegment;
             if (callExpression == null)
                 return false;
-            if (callExpression.MemberAccessTokens.Count() != 1)
+            if (callExpression.MemberAccessTokens.Count != 1)
                 return false;
             var builtInFunctionToken = callExpression.MemberAccessTokens.Single() as BuiltInFunctionToken;
             return (builtInFunctionToken != null) && builtInFunctionToken.GuaranteedToReturnNumericContent();

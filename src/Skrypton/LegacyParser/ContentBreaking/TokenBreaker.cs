@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 
@@ -23,18 +24,27 @@ namespace Skrypton.LegacyParser.ContentBreaking
             var buffer = "";
             var content = token.Content;
             var tokens = new List<IToken>();
+            bool? last_chr0IsWhitespace = null;
             for (var index = 0; index < content.Length; index++)
             {
-                var chr = content.Substring(index, 1);
+                string debug_remaining_text = content.Substring(index);
+                string chr = content.Substring(index, 1);
+                bool chr0IsWhitespace = char.IsWhiteSpace(chr, 0);
                 if (char.IsWhiteSpace(chr, 0) && (chr != "\n"))
                 {
                     // If we've found a (non-line-return) whitespace character, push content retrieved from the token so far (if any), into a fresh token on the
                     // list and clear the buffer to accept following data.
                     if (buffer != "")
                     {
-                        tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+                        var tkn = AtomToken.GetNewToken(buffer.ToUpperX(), hasLeadingWhiteSpace: true, lineIndex);
+                        var prevToken = tokens.LastOrDefault();
+                        tokens.Add(tkn);
+                        //if (prevToken is MemberAccessorOrDecimalPointToken && tkn is NameToken)
+                        if (buffer == "") // false
+                        {
+                            tokens.Add(new WhiteSpaceToken(lineIndex)); //  inside of a WITH statement:  .MethodX .PropertyA
+                        }
                     }
-
                     buffer = "";
                 }
                 else
@@ -75,10 +85,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         // unlike with whitespace breaks), then do similar to above.
                         if (buffer != "")
                         {
-                            tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+                            tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), last_chr0IsWhitespace ?? false, lineIndex));
                         }
 
-                        tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), lineIndex));
+                        tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), hasLeadingWhiteSpace: last_chr0IsWhitespace ?? false, lineIndex));
                         buffer = "";
                     }
                     else
@@ -90,10 +100,12 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 {
                     lineIndex++;
                 }
-            }
+
+                last_chr0IsWhitespace = chr0IsWhitespace;
+            }// while
             if (buffer != "")
             {
-                tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+                tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), hasLeadingWhiteSpace: false, lineIndex));
             }
 #pragma warning restore CA1820 // Test for empty strings using string length
 

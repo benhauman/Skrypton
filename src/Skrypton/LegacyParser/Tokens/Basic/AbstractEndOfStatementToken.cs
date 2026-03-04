@@ -28,6 +28,6 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// <summary>
         /// This will always be zero or greater
         /// </summary>
-        public int LineIndex { get; private set; }
+        public int LineIndex { get; }
     }
 }

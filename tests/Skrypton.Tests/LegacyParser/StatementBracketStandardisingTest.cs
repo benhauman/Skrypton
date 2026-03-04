@@ -158,7 +158,7 @@ namespace Skrypton.Tests.LegacyParser
                     new OpenBrace(lineIndex1),
                     new NameToken("a", lineIndex1),
                     new CloseBrace(lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Go", lineIndex1)
             };
             var statement = new Statement(tokens, Statement.CallPrefixOptions.Absent);
@@ -182,7 +182,7 @@ namespace Skrypton.Tests.LegacyParser
                     new NameToken("a", lineIndex1),
                     new CloseBrace(lineIndex1),
                     new CloseBrace(lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Go", lineIndex1)
             };
             var statement = new Statement(tokens, Statement.CallPrefixOptions.Absent);
@@ -348,7 +348,7 @@ namespace Skrypton.Tests.LegacyParser
             var statement = new Statement(
                 [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                 ],
@@ -357,7 +357,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
@@ -376,7 +376,7 @@ namespace Skrypton.Tests.LegacyParser
             var tokens = new IToken[]
             {
                     new NameToken("a", lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Test", lineIndex1),
                     new OpenBrace(lineIndex1),
                     new NameToken("b", lineIndex1),
@@ -386,7 +386,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -523,7 +523,7 @@ namespace Skrypton.Tests.LegacyParser
                     new OpenBrace(lineIndex1),
                     new NameToken("a", lineIndex1),
                     new CloseBrace(lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Go", lineIndex1),
                     new NameToken("b", lineIndex1)
             };
@@ -534,7 +534,7 @@ namespace Skrypton.Tests.LegacyParser
                         new OpenBrace(lineIndex1),
                         new NameToken("a", lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Go", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NameToken("b", lineIndex1),
@@ -556,7 +556,7 @@ namespace Skrypton.Tests.LegacyParser
                     new OpenBrace(lineIndex1),
                     new NameToken("a", lineIndex1),
                     new CloseBrace(lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Go", lineIndex1),
                     new OpenBrace(lineIndex1),
                     new NameToken("b", lineIndex1),
@@ -569,7 +569,7 @@ namespace Skrypton.Tests.LegacyParser
                         new OpenBrace(lineIndex1),
                         new NameToken("a", lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Go", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -597,7 +597,7 @@ namespace Skrypton.Tests.LegacyParser
                     new NameToken("a", lineIndex1),
                     new CloseBrace(lineIndex1),
                     new CloseBrace(lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Go", lineIndex1),
                     new OpenBrace(lineIndex1),
                     new NameToken("b", lineIndex1),
@@ -612,7 +612,7 @@ namespace Skrypton.Tests.LegacyParser
                         new NameToken("a", lineIndex1),
                         new CloseBrace(lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Go", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -661,7 +661,7 @@ namespace Skrypton.Tests.LegacyParser
             var tokens = new IToken[]
             {
                     new NameToken("x", lineIndex1),
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("y", lineIndex1),
                     new OpenBrace(lineIndex1),
                     new NameToken("i", lineIndex1),
@@ -673,7 +673,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                         new NameToken("x", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("y", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -697,7 +697,7 @@ namespace Skrypton.Tests.LegacyParser
         {
             var tokens = new IToken[]
             {
-                    new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                    new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Draw", lineIndex1),
                     new StringToken("Test", lineIndex1)
             };
@@ -705,7 +705,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                         new DoNotRenameNameToken("x", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Draw", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new StringToken("Test", lineIndex1),

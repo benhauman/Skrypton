@@ -10,6 +10,6 @@ namespace Skrypton.StageTwoParser.Tokens
     [Serializable]
     public sealed class MemberAccessorToken : MemberAccessorOrDecimalPointToken
     {
-        public MemberAccessorToken(int lineIndex) : base(".".ToUpperX(), lineIndex) { }
+        public MemberAccessorToken(bool hasLeadingWhiteSpace, int lineIndex) : base(".".ToUpperX(), hasLeadingWhiteSpace, lineIndex) { }
     }
 }

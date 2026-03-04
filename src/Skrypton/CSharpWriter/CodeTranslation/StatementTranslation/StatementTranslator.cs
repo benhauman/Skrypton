@@ -635,7 +635,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(firstMemberAccessToken);
                 string rewrittenScopeDefiningParentName = _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name);
                 if ((rewrittenFirstMemberAccessor == rewrittenScopeDefiningParentName)
-                && !callExpressionSegment.Arguments.Any()
+                && callExpressionSegment.Arguments.Count == 0
                 && (callExpressionSegment.ZeroArgumentBracketsPresence == CallExpressionSegment.ArgumentBracketPresenceOptions.Absent))
                 {
                     // The ScopeDefiningParent's Name will have come from a TempValueNameGenerator rather than VBScript source code, and as such it should
@@ -646,7 +646,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         firstMemberAccessToken.LineIndex
                     );
                     callExpressionSegment = new CallExpressionSegment(
-                        new[] { parentReturnValueNameToken }.Concat(callExpressionSegment.MemberAccessTokens.Skip(1)),
+                        new[] { parentReturnValueNameToken }.Concat(callExpressionSegment.MemberAccessTokens.Skip(1)).ToArray(),
                         [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
                     );
@@ -658,7 +658,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             BuiltInFunctionToken? targetBuiltInFunction = firstMemberAccessToken as BuiltInFunctionToken;
             if (targetBuiltInFunction != null)
             {
-                BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count());
+                BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count);
                 IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
                     .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
 
@@ -668,7 +668,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // call (whichever is appropriate) - this code allows us to remove those injected functions right at the very last minute without changing the
                 // meaning of the translate code. (Note: It is elsewhere in this class where it is important whether tokens should be given "special treatment"
                 // as number literals in comparisons or not).
-                if ((callExpressionSegment.Arguments.Count() == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
+                if ((callExpressionSegment.Arguments.Count == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
                 {
                     IExpressionSegment? singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
                     NumericValueExpressionSegment? singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
@@ -741,7 +741,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 if (specialErrorHandlingFunctionNameIfApplicable != null)
                 {
                     NameToken specialErrorHandlingFunctionToken = new NameToken(false, specialErrorHandlingFunctionNameIfApplicable.ToUpperX(), memberAccessors.Single().LineIndex);
-                    BuiltInFunctionDetails errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, callExpressionSegment.Arguments.Count());
+                    BuiltInFunctionDetails errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, callExpressionSegment.Arguments.Count);
                     if (errorSupportFunction.DesiredNumberOfArgumentsMatchedAgainst != null)
                     {
                         specialErrorHandlingFunctionStatementIfApplicable = TranslateAsDirectSupportFunctionCall(errorSupportFunction, callExpressionSegment.Arguments, scopeAccessInformation);
@@ -1325,7 +1325,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // point is if we do indeed have a CallExpressionSegment with a single member accessor token and zero arguments since that will definitely
             // be passed ByRef. Otherwise there are arguments to consider which may be arguments on default functions or properties (in which case it
             // will be ByVal) or array indices (in which case it will be ByRef).
-            if ((argumentValue.Segments.Single() is CallExpressionSegment) && !((CallExpressionSegment)argumentValue.Segments.Single()).Arguments.Any())
+            if ((argumentValue.Segments.Single() is CallExpressionSegment) && ((CallExpressionSegment)argumentValue.Segments.Single()).Arguments.Count == 0)
             {
                 TranslatedStatementContentDetails translatedCallExpressionByRefArgumentContent = Translate(
                     argumentValue,
@@ -1355,12 +1355,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // be null, but we need a non-null value since we'll be creating a new CallExpressionSegment that targets the by-ref alias but that
                 // strips off the arguments for now. If the value we used was "Present" then we would risk introducing additional CALL logic that
                 // we don't want, so specify it as "Absent".
-                if (possibleByRefCallExpressionSegment.MemberAccessTokens.Count() > 2)
+                if (possibleByRefCallExpressionSegment.MemberAccessTokens.Count > 2)
                 {
                     throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallExpressionSegment with multiple MemberAccessTokens at this point");
                 }
 
-                if (!possibleByRefCallExpressionSegment.MemberAccessTokens.Any())
+                if (possibleByRefCallExpressionSegment.MemberAccessTokens.Count == 0)
                 {
                     throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallExpressionSegment without any arguments at this point");
                 }
@@ -1380,12 +1380,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 CallSetExpressionSegment? possibleByRefCallSetExpressionSegment = argumentValue.Segments.Single() as CallSetExpressionSegment;
                 if (possibleByRefCallSetExpressionSegment != null)
                 {
-                    if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count() > 2)
+                    if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count > 2)
                     {
                         throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with multiple MemberAccessTokens in its first CallExpressionSegment at this point");
                     }
 
-                    if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.Skip(1).Any(s => s.MemberAccessTokens.Any()))
+                    if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.Skip(1).Any(s => s.MemberAccessTokens.Count != 0))
                     {
                         throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with subsequent CallExpressionSegments that have MemberAccessTokens at this point");
                     }
@@ -1501,7 +1501,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // if there are multiple (checked for further down) or if any of the subsequent segments have ANY accessors) then it's ByVal
                     // (a CallSetExpression would have segments without any member accessors if it was describing jagged array access - eg.
                     // "a(0)(1)" - or if the same source code was accessing default properties or members).
-                    if (callSetExpressionSegment.CallExpressionSegments.Skip(1).Any(s => s.MemberAccessTokens.Any()))
+                    if (callSetExpressionSegment.CallExpressionSegments.Skip(1).Any(s => s.MemberAccessTokens.Count != 0))
                     {
                         isConfirmedToBeByVal = true;
                         initialCallSetItemExpressionSegmentToCheckIfAny = null; // No point doing any more checks so set this to null
@@ -1523,7 +1523,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // If this is a call with multiple member accessors (indicating property access - eg. "a.Name") then it's passed ByVal. If it's
                 // a built-in function then it's passed ByVal. If it's a known function within the current scope then it's passed ByVal.
                 // - Check for multiple member accessor or built-in function access first, cos it's easy..
-                if ((initialCallSetItemExpressionSegmentToCheckIfAny.MemberAccessTokens.Count() > 1)
+                if ((initialCallSetItemExpressionSegmentToCheckIfAny.MemberAccessTokens.Count > 1)
                 || (initialCallSetItemExpressionSegmentToCheckIfAny.MemberAccessTokens.First() is BuiltInFunctionToken))
                 {
                     isConfirmedToBeByVal = true;
@@ -1851,7 +1851,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             // If there are multiple member accessor tokens, arguments or if there were brackets following the single member accessor then this logic doesn't apply
             if ((onlyExpressionSegmentAsCallExpression.MemberAccessTokens.Take(2).Count() > 1)
-            || onlyExpressionSegmentAsCallExpression.Arguments.Any()
+            || onlyExpressionSegmentAsCallExpression.Arguments.Count != 0
             || onlyExpressionSegmentAsCallExpression.ZeroArgumentBracketsPresence == CallExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
                 return null;

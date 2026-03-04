@@ -25,10 +25,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             typeof(KeyWordToken),
             typeof(NumericValueToken),
             typeof(NameToken),
-            typeof(StringToken)
+            typeof(StringToken),
+            //typeof(WhiteSpaceToken)
         };
 
-        public CallSetItemExpressionSegment(IEnumerable<IToken> memberAccessTokens, IEnumerable<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+        public CallSetItemExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
         {
             if (memberAccessTokens == null)
                 throw new ArgumentNullException(nameof(memberAccessTokens));
@@ -48,7 +49,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (Arguments.Any(e => e == null))
                 throw new ArgumentException("Null reference encountered in arguments set");
 
-            if (Arguments.Any())
+            if (Arguments.Count != 0)
             {
                 if (zeroArgumentBracketsPresence != null)
                     throw new ArgumentException("ZeroArgumentBracketsPresence must be null if there are arguments for this CallExpressionSegment");
@@ -72,12 +73,12 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// here, if any (this will never contain any MemberAccessorOrDecimalPointToken references). The only token types that may be present in this data
         /// are BuiltInFunctionToken, BuiltInValueToken, KeyWordToken and NameToken.
         /// </summary>
-        public IEnumerable<IToken> MemberAccessTokens { get; private set; }
+        public IReadOnlyCollection<IToken> MemberAccessTokens { get; }
 
         /// <summary>
         /// This will never be null nor contain any null references
         /// </summary>
-        public IEnumerable<Expression> Arguments { get; private set; }
+        public IReadOnlyCollection<Expression> Arguments { get; }
 
         /// <summary>
         /// In very particular scenarios, VBScript uses brackets to determine whether a zero-argument call is a method call or a value assignment (when
@@ -101,9 +102,12 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 {
                     combinedTokens.Add(tokens[index]);
                     if (index < (tokens.Length - 1))
-                        combinedTokens.Add(new MemberAccessorToken(combinedTokens.Last().LineIndex));
+                    {
+                        var mad = tokens[index] as MemberAccessorOrDecimalPointToken;
+                        combinedTokens.Add(new MemberAccessorToken(mad?.HasLeadingWhiteSpace ?? false, combinedTokens.Last().LineIndex));
+                    }
                 }
-                if (Arguments.Any())
+                if (Arguments.Count != 0)
                 {
                     int lineIndex;
                     if (combinedTokens.Count != 0)

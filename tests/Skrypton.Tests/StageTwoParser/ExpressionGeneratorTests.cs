@@ -76,7 +76,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -101,9 +101,9 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("b", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -232,7 +232,7 @@ namespace Skrypton.Tests.StageTwoParser
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("0", lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -263,12 +263,12 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("b", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("0", lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -301,9 +301,9 @@ namespace Skrypton.Tests.StageTwoParser
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("0", lineIndex1),
                         new CloseBrace(lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("b", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -652,7 +652,7 @@ namespace Skrypton.Tests.StageTwoParser
                         new NameToken("b", lineIndex1),
                         new OperatorToken("*", 1),
                         new NameToken("c", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("d", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NameToken("Test", lineIndex1),
@@ -879,7 +879,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ],
                 ExpressionGenerator.Generate(
                     [
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
                     ],
                     directedWithReferenceIfAny: new DoNotRenameNameToken("a", lineIndex1),
@@ -900,11 +900,11 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("a", lineIndex1),
                         new CloseBrace(lineIndex1)
                     ],
@@ -925,11 +925,11 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NameToken("a", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1),
                         new CloseBrace(lineIndex1)
                     ],
@@ -950,11 +950,11 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorToken(0),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new CloseBrace(lineIndex1),
@@ -990,7 +990,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
@@ -1016,11 +1016,11 @@ namespace Skrypton.Tests.StageTwoParser
                  ExpressionGenerator.Generate(
                      [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NameToken("b", lineIndex1),
@@ -1054,11 +1054,11 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new StringToken("1", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("a", lineIndex1),
                         new CloseBrace(lineIndex1)
                     ],
@@ -1093,7 +1093,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
@@ -1119,11 +1119,11 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.Generate(
                     [
                         new NameToken("wscript", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("echo", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorToken(lineIndex1),
+                        new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NameToken("b", lineIndex1),
@@ -1164,7 +1164,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// whether the signature which takes an IToken set and a params IToken set or the one that takes a params Expression set would be a better match (I'm not
         /// sure why Visual Studio 2013 didn't pick up this ambiguity, but it was new for 2015)
         /// </summary>
-        private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens)
         {
             return CALL(memberAccessTokens, new Expression[0]);
         }
@@ -1173,7 +1173,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create an CallExpressionSegment from member access tokens and argument expressions (the zeroArgBrackets is only considered if arguments is an empty set,
         /// if arguments is empty and zeroArgBrackets is null then a Absent will be used as a default)
         /// </summary>
-        private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens, IEnumerable<Expression> arguments, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Expression> arguments, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets)
         {
             if ((memberAccessTokens.Count() == 1) && !arguments.Any())
             {
@@ -1212,21 +1212,21 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create a CallExpressionSegment from member access tokens and argument expressions (the zeroArgBrackets is only considered if arguments is an empty set,
         /// if arguments is empty and zeroArgBrackets is null then a Absent will be used as a default)
         /// </summary>
-        private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets, params Expression[] arguments)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets, params Expression[] arguments)
         {
-            return CALL(memberAccessTokens, (IEnumerable<Expression>)arguments, zeroArgBrackets);
+            return CALL(memberAccessTokens, arguments, zeroArgBrackets);
         }
 
         /// <summary>
         /// Create a CallExpressionSegment from member access tokens and argument expressions (applying the default logic for ArgumentBracketPresenceOptions; null
         /// if there are arguments and Absent otherwise)
         /// </summary>
-        private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens, params Expression[] arguments)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, params Expression[] arguments)
         {
-            return CALL(memberAccessTokens, (IEnumerable<Expression>)arguments, null);
+            return CALL(memberAccessTokens, arguments, null);
         }
 
-        private static IExpressionSegment CALLARGSONLY(params IEnumerable<IToken>[] arguments)
+        private static IExpressionSegment CALLARGSONLY(params IReadOnlyCollection<IToken>[] arguments)
         {
             return CALL([], arguments);
         }
@@ -1252,7 +1252,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create a CallExpressionSegment from a single member access token and argument expressions expressed as token sets (applying the default logic for
         /// ArgumentBracketPresenceOptions; null if there are arguments and Absent otherwise)
         /// </summary>
-        private static IExpressionSegment CALL(IEnumerable<IToken> memberAccessTokens, params IEnumerable<IToken>[] arguments)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, params IReadOnlyCollection<IToken>[] arguments)
         {
             if ((memberAccessTokens.Count() == 1) && arguments.Length == 0)
             {
@@ -1265,7 +1265,7 @@ namespace Skrypton.Tests.StageTwoParser
             }
             return CALL(
                 memberAccessTokens,
-                arguments.Select(a => new Expression([CALL(a)])),
+                arguments.Select(a => new Expression([CALL(a)])).ToArray(),
                 null
             );
         }

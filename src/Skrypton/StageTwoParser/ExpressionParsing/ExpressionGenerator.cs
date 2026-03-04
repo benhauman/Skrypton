@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport.Exceptions;
@@ -57,7 +58,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     if (expressionSegments.Count == 1)
                     {
                         CallExpressionSegment? callExpressionSegment = expressionSegments[0] as CallExpressionSegment;
-                        if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Count() == 1) && !callExpressionSegment.Arguments.Any())
+                        if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Count == 1) && callExpressionSegment.Arguments.Count == 0)
                         {
                             // VBScript gives special meaning to a reference wrapped in brackets when passing it to a function (or property); if
                             // the argument would otherwise be passed ByRef, it will be passed ByVal. If this close bracket terminates a section
@@ -146,17 +147,37 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         {
                             if (bracketedExpressions.Length > 1)
                             {
-                                string additionalErrorText = $" Token '{token.GetType().Name}', line:{token.LineIndex}:{token.Content}. Expressions:";
-                                foreach (Expression bracketedExpression in bracketedExpressions)
+                                // test: CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click
+                                if (directedWithReferenceIfAny != null && directedWithReferenceIfAny is DoNotRenameNameToken donotrename && donotrename.ContentUpperX().UpperText == "WITH")
                                 {
-                                    additionalErrorText += ", " + bracketedExpression.RenderedContent;
+                                    expressionSegments.Add(
+                                        GetCallOrNewOrValueExpressionSegment(
+                                            [directedWithReferenceIfAny],//accessorBuffer is empty => get memberAccessTokens for from the 'with',
+                                            bracketedExpressions,
+                                            directedWithReferenceIfAny,
+                                            argumentsAreBracketed: true,
+                                            willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
+                                            warningLogger: warningLogger
+                                        )
+                                    );
                                 }
+                                else
+                                {
+                                    string additionalErrorText = $" Token '{token.GetType().Name}', line:{token.LineIndex}:{token.Content}. Expressions:";
+                                    foreach (Expression bracketedExpression in bracketedExpressions)
+                                    {
+                                        additionalErrorText += ", " + bracketedExpression.RenderedContent;
+                                    }
 
-                                throw new ArgumentException("If bracketed content is not for an argument list then it's invalid for there to be multiple expressions within it." + additionalErrorText);
+                                    throw new ArgumentException("If bracketed content is not for an argument list then it's invalid for there to be multiple expressions within it." + additionalErrorText);
+                                }
                             }
-                            expressionSegments.Add(
-                                WrapExpressionSegments(bracketedExpressions.Single().Segments, unwrapSingleBracketedTerm: false)
-                            );
+                            else
+                            {
+                                expressionSegments.Add(
+                                    WrapExpressionSegments(bracketedExpressions.Single().Segments, unwrapSingleBracketedTerm: false)
+                                );
+                            }
                         }
                     }
                     continue;
@@ -514,7 +535,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             else
                 zeroArgumentBracketsPresence = CallExpressionSegment.ArgumentBracketPresenceOptions.Absent;
             return new CallExpressionSegment(
-                tokensList.Where(t => !(t is MemberAccessorOrDecimalPointToken)),
+                tokensList.Where(t => !(t is MemberAccessorOrDecimalPointToken)).ToArray(),
                 arguments,
                 zeroArgumentBracketsPresence
             );
@@ -601,7 +622,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     // A CallSetItemExpressionSegment should never exist in isolation, so if there is only one segment here it should
                     // be promoted to a CallExpressionSegment (if it wasn't one already)
                     CallSetItemExpressionSegment? callExpressionSegment = callSetItemExpressionSegmentBuffer[0];
-                    if (!callExpressionSegment.MemberAccessTokens.Any())
+                    if (callExpressionSegment.MemberAccessTokens.Count == 0)
                         throw new ArgumentException("Encountered individual CallSetItemExpressionSegment with no Member Access Tokens, zero Member Access Tokens are only allowable with segments are part of a CallSetExpressionSegment (so long as it's not the first segment in that set's content)");
                     expressionSegments.Add(
                         new CallExpressionSegment(

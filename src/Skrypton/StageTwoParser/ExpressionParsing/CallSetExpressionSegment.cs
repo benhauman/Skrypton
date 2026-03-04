@@ -49,7 +49,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 {
                     tokens.AddRange(((IExpressionSegment)CallExpressionSegments.ElementAt(index)).AllTokens);
                     if (index < (numberOfExpressions - 1))
-                        tokens.Add(new MemberAccessorToken(tokens.Last().LineIndex));
+                    {
+                        var lst = tokens.Last();
+                        var mad = lst as MemberAccessorOrDecimalPointToken;
+                        tokens.Add(new MemberAccessorToken(mad?.HasLeadingWhiteSpace ?? false, lst.LineIndex));
+                    }
                 }
                 return tokens;
             }

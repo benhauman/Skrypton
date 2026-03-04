@@ -60,7 +60,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ],
                 NumberRebuilder.Rebuild(
                     [
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -78,7 +78,7 @@ namespace Skrypton.Tests.StageTwoParser
                 NumberRebuilder.Rebuild(
                     [
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -97,7 +97,7 @@ namespace Skrypton.Tests.StageTwoParser
                     [
                         new OperatorToken("-", lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.StageTwoParser
                 NumberRebuilder.Rebuild(
                     [
                         new OperatorToken("-", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -156,7 +156,7 @@ namespace Skrypton.Tests.StageTwoParser
                     [
                         new NameToken("fnc", lineIndex1),
                         new NumericValueToken("1", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -175,7 +175,7 @@ namespace Skrypton.Tests.StageTwoParser
                 NumberRebuilder.Rebuild(
                     [
                         new NameToken("fnc", lineIndex1),
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),
@@ -225,12 +225,12 @@ namespace Skrypton.Tests.StageTwoParser
         {
             myAssert.AreEqual(
                 [
-                    new MemberAccessorToken(lineIndex1),
+                    new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                     new NameToken("Name", lineIndex1),
                 ],
                 NumberRebuilder.Rebuild(
                     [
-                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Name", lineIndex1),
                     ]
                 ),

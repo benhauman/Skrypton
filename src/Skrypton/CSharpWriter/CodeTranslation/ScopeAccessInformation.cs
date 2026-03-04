@@ -35,6 +35,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             Constants = constants ?? throw new ArgumentNullException(nameof(constants));
             Variables = variables ?? throw new ArgumentNullException(nameof(variables));
             StructureExitPoints = structureExitPoints ?? throw new ArgumentNullException(nameof(structureExitPoints));
+
+            if (directedWithReferenceIfAny != null)
+            {
+                if (parent is WithBlock wb)
+                {
+                    // ok
+                }
+                else
+                {
+                    throw new NotSupportedException("Not a WITH parent.");
+                }
+            }
         }
 
         public static ScopeAccessInformation FromOutermostScope(

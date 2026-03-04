@@ -16,7 +16,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
     /// </summary>
     public static class NumberRebuilder
     {
-        public static IEnumerable<IToken> Rebuild(IEnumerable<IToken> tokens)
+        public static IReadOnlyCollection<IToken> Rebuild(IEnumerable<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -53,7 +53,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
                 else
                     rebuiltTokens.Add(numbericValueToken);
             }
-            return rebuiltTokens.Select(t => (t is MemberAccessorOrDecimalPointToken) ? new MemberAccessorToken(t.LineIndex) : t);
+            return rebuiltTokens.Select(t => (t is MemberAccessorOrDecimalPointToken mad) ? new MemberAccessorToken(mad.HasLeadingWhiteSpace, t.LineIndex) : t).ToArray();
         }
     }
 }

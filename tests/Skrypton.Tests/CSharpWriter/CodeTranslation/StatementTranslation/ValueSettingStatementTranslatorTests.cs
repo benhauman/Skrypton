@@ -65,7 +65,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             var expressionToSet = new Expression(
             [
                 new NameToken("a", lineIndex1),
-                new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                 new NameToken("b", lineIndex1)
             ]);
             var expressionToSetTo = new Expression(

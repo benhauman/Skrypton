@@ -163,7 +163,7 @@ namespace Skrypton.Tests.Application
                 failed_text = "VBS generation failed. See 'Output' for more information. storedFile:" + storedFile;
             }
 
-            var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(tst.TestCulture, scriptContent);
+            var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(parsed_items);
             string xml_actual = ToXml(outermostBlock, x => failed_text = x);
 
             if (xml_expected != xml_actual)

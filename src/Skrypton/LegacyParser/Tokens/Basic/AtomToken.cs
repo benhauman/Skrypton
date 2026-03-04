@@ -81,25 +81,25 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// null, non-blank and contain no whitespace - unless it's a single line-
         /// return)
         /// </summary>
-        public static IToken GetNewToken(StringUpper contentUpper, int lineIndex)
+        public static IToken GetNewToken(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Blank content specified for AtomToken - invalid");
 
-            return GetNewTokenCore(contentUpper, lineIndex);
+            return GetNewTokenCore(contentUpper, hasLeadingWhiteSpace, lineIndex);
         }
-        public static IToken GetNewToken(KnownTextContent content, int lineIndex)
+        public static IToken GetNewToken(KnownTextContent content, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
-            return GetNewTokenCore(content.TheContentUpper, lineIndex);
+            return GetNewTokenCore(content.TheContentUpper, hasLeadingWhiteSpace, lineIndex);
         }
-        private static IToken GetNewTokenCore(StringUpper contentUpper, int lineIndex)
+        private static IToken GetNewTokenCore(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex), "must be zero or greater");
 
-            var recognisedType = TryToGetAsRecognisedType(contentUpper, lineIndex);
+            var recognisedType = TryToGetAsRecognisedType(contentUpper, hasLeadingWhiteSpace, lineIndex);
             if (recognisedType != null)
                 return recognisedType;
 
@@ -121,7 +121,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// separator or numeric value. If unable to match its type then it will return null - this should indicate the name of a function, property,
         /// variable, etc.. defined in the source code being processed.
         /// </summary>
-        protected static IToken? TryToGetAsRecognisedType(StringUpper contentUpper, int lineIndex)
+        protected static IToken? TryToGetAsRecognisedType(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (lineIndex < 0)
@@ -152,7 +152,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (isOperatorUpper(contentUpper))
                 return new OperatorToken(contentUpper, lineIndex);
             if (isMemberAccessorUpper(contentUpper))
-                return new MemberAccessorOrDecimalPointToken(contentUpper, lineIndex);
+                return new MemberAccessorOrDecimalPointToken(contentUpper, hasLeadingWhiteSpace, lineIndex);
             if (isArgumentSeparatorUpper(contentUpper))
                 return new ArgumentSeparatorToken(lineIndex);
             if (isOpenBraceUpper(contentUpper))
