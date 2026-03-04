@@ -30,12 +30,18 @@ namespace Skrypton.LegacyParser
 
             // Break down further into String, Comment, Atom and AbstractEndOfStatement tokens
             var atomTokens = new List<IToken>();
-            foreach (var token in tokens)
+            //foreach (var token in tokens)
+            for (int ix = 0; ix < tokens.Count; ix++)
             {
-                if (token is UnprocessedContentToken)
-                    atomTokens.AddRange(TokenBreaker.BreakUnprocessedToken((UnprocessedContentToken)token));
+                IToken token = tokens[ix];
+                if (token is UnprocessedContentToken uct)
+                {
+                    atomTokens.AddRange(TokenBreaker.BreakUnprocessedToken(uct));
+                }
                 else
+                {
                     atomTokens.Add(token);
+                }
             }
 
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)

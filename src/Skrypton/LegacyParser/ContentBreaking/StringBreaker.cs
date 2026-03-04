@@ -38,7 +38,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// Break down scriptContent into a combination of StringToken, CommentToken, UnprocessedContentToken and EndOfStatementNewLine instances (the
         /// end of statement tokens will not have been comprehensively handled).  This will never return null nor a set containing any null references.
         /// </summary>
-        internal static IReadOnlyCollection<IToken> SegmentString(CultureInfo culture, string scriptContent)
+        internal static List<IToken> SegmentString(CultureInfo culture, string scriptContent)
         {
             if (scriptContent == null)
                 throw new ArgumentNullException(nameof(scriptContent));

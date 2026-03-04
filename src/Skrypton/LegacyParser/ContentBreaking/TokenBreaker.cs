@@ -13,7 +13,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
         /// Break down an UnprocessedContentToken into a combination of AtomToken and AbstractEndOfStatementToken references. This will never return null nor a set
         /// containing any null references.
         /// </summary>
-        public static IEnumerable<IToken> BreakUnprocessedToken(UnprocessedContentToken token)
+        public static IReadOnlyCollection<IToken> BreakUnprocessedToken(UnprocessedContentToken token)
         {
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (token == null)

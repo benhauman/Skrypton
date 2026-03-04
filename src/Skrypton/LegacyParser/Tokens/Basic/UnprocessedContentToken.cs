@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
@@ -6,7 +7,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// This token represents a section of script content (not string or comment) that
     /// has not been broken down into its constituent parts yet
     /// </summary>
-    //[Serializable]
+    [DebuggerDisplay("Ln:{LineIndex} UNPROCESSED:{Content}")]
     public sealed class UnprocessedContentToken : IToken
     {
         public UnprocessedContentToken(string content, int lineIndex)
