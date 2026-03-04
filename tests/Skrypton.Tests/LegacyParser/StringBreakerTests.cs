@@ -15,12 +15,11 @@ namespace Skrypton.Tests.LegacyParser
         public void VariableSetToStringContentIncludedQuotedContent()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
+                [
                     new UnprocessedContentToken("strValue = ", 0),
                     new StringToken("Test string with \"quoted\" content", 0),
                     new UnprocessedContentToken("\n", 0)
-                },
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "strValue = \"Test string with \"\"quoted\"\" content\"\n"
                 ),
@@ -35,11 +34,10 @@ namespace Skrypton.Tests.LegacyParser
         public void EmptyContentEscapedVariableNameIsSetToNumericValue()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new EscapedNameToken("[]", 0),
-                    new UnprocessedContentToken(" = 1", 0)
-                },
+                [
+                    new EscapedNameToken("[]", lineIndex1),
+                    new UnprocessedContentToken(" = 1", lineIndex1)
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "[] = 1"
                 ),
@@ -54,14 +52,13 @@ namespace Skrypton.Tests.LegacyParser
         public void DeclaredEmptyContentEscapedVariableNameIsSetToNumericValue()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new UnprocessedContentToken("Dim ", 0),
-                    new EscapedNameToken("[]", 0),
-                    new UnprocessedContentToken(": ", 0),
-                    new EscapedNameToken("[]", 0),
-                    new UnprocessedContentToken(" = 1", 0)
-                },
+                [
+                    new UnprocessedContentToken("Dim ", lineIndex1),
+                    new EscapedNameToken("[]", lineIndex1),
+                    new UnprocessedContentToken(": ", lineIndex1),
+                    new EscapedNameToken("[]", lineIndex1),
+                    new UnprocessedContentToken(" = 1", lineIndex1)
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "Dim []: [] = 1"
                 ),
@@ -75,12 +72,11 @@ namespace Skrypton.Tests.LegacyParser
             // The StringBreaker will insert an EndOfStatementSameLineToken between the UnprocessedContentToken and InlineCommentToken
             // since that the later processes rely on end-of-statement tokens, even before an inline comment
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new UnprocessedContentToken("WScript.Echo 1", 0),
-                    new EndOfStatementSameLineToken(0),
-                    new InlineCommentToken(" Test", 0)
-                },
+                [
+                    new UnprocessedContentToken("WScript.Echo 1", lineIndex1),
+                    new EndOfStatementSameLineToken(lineIndex1),
+                    new InlineCommentToken(" Test", lineIndex1)
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "WScript.Echo 1 ' Test"
                 ),
@@ -98,12 +94,11 @@ namespace Skrypton.Tests.LegacyParser
             // The StringBreaker will insert an EndOfStatementSameLineToken between the UnprocessedContentToken and InlineCommentToken
             // since that the later processes rely on end-of-statement tokens, even before an inline comment
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new UnprocessedContentToken("\nWScript.Echo 1", 0),
-                    new EndOfStatementSameLineToken(0),
-                    new InlineCommentToken(" Test", 1)
-                },
+                [
+                    new UnprocessedContentToken("\nWScript.Echo 1", lineIndex1),
+                    new EndOfStatementSameLineToken(lineIndex1),
+                    new InlineCommentToken(" Test", lineIndex1)
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "\nWScript.Echo 1 ' Test"
                 ),
@@ -115,11 +110,10 @@ namespace Skrypton.Tests.LegacyParser
         public void REMCommentsAreIdentified()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new CommentToken(" Test", 0),
-                    new UnprocessedContentToken("WScript.Echo 1", 1)
-                },
+                [
+                    new CommentToken(" Test", lineIndex1),
+                    new UnprocessedContentToken("WScript.Echo 1", lineIndex2)
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "REM Test\nWScript.Echo 1"
                 ),
@@ -131,12 +125,11 @@ namespace Skrypton.Tests.LegacyParser
         public void InlineREMCommentsAreIdentified()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
+                [
                     new UnprocessedContentToken("WScript.Echo 1", 0),
                     new EndOfStatementSameLineToken(0),
                     new InlineCommentToken(" Test", 0)
-                },
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "WScript.Echo 1 REM Test"
                 ),
@@ -153,11 +146,10 @@ namespace Skrypton.Tests.LegacyParser
         public void NonLineReturningWhiteSpaceBetweenCommentsIsIgnored()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
+                [
                     new CommentToken(" Comment 1", 0),
                     new CommentToken(" Comment 2", 1)
-                },
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "' Comment 1\n ' Comment 2"
                 ),
@@ -174,13 +166,12 @@ namespace Skrypton.Tests.LegacyParser
         public void WhitespaceBetweenStringTokenAndCommentDoesNotPreventEndOfStatementBeingInserted()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
+                [
                     new UnprocessedContentToken("a = ", 0),
                     new StringToken("", 0),
                     new EndOfStatementSameLineToken(0),
                     new CommentToken(" Comment", 0)
-                },
+                ],
                 StringBreaker.TestSegmentStringTest(TestCulture,
                     "a = \"\" ' Comment"
                 ),

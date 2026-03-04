@@ -38,14 +38,14 @@ namespace Skrypton.Tests
                 {
                     AssertEqualityComparer<T>.TypeErasedEqualityComparer.s_equalsMethod = typeof(AssertEqualityComparer<T>.TypeErasedEqualityComparer).GetTypeInfo().GetDeclaredMethod("EqualsGeneric");
                 }
-                return (bool)AssertEqualityComparer<T>.TypeErasedEqualityComparer.s_equalsMethod.MakeGenericMethod(new Type[]
-                {
+                return (bool)AssertEqualityComparer<T>.TypeErasedEqualityComparer.s_equalsMethod.MakeGenericMethod(
+                [
                     type
-                }).Invoke(this, new object[]
-                {
+                ]).Invoke(this,
+                [
                     x,
                     y
-                });
+                ]);
             }
 
             private bool EqualsGeneric<U>(U x, U y)
@@ -191,30 +191,30 @@ namespace Skrypton.Tests
                 {
                     return true;
                 }
-                TypeInfo typeInfo2 = typeof(IEquatable<>).MakeGenericType(new Type[]
-                {
+                TypeInfo typeInfo2 = typeof(IEquatable<>).MakeGenericType(
+                [
                     y.GetType()
-                }).GetTypeInfo();
+                ]).GetTypeInfo();
                 if (typeInfo2.IsAssignableFrom(x.GetType().GetTypeInfo()))
                 {
-                    return (bool)typeInfo2.GetDeclaredMethod("Equals").Invoke(x, new object[]
-                    {
+                    return (bool)typeInfo2.GetDeclaredMethod("Equals").Invoke(x,
+                    [
                         y
-                    });
+                    ]);
                 }
-                TypeInfo typeInfo3 = typeof(IComparable<>).MakeGenericType(new Type[]
-                {
+                TypeInfo typeInfo3 = typeof(IComparable<>).MakeGenericType(
+                [
                     y.GetType()
-                }).GetTypeInfo();
+                ]).GetTypeInfo();
                 if (typeInfo3.IsAssignableFrom(x.GetType().GetTypeInfo()))
                 {
                     MethodInfo declaredMethod = typeInfo3.GetDeclaredMethod("CompareTo");
                     try
                     {
-                        result = ((int)declaredMethod.Invoke(x, new object[]
-                        {
+                        result = ((int)declaredMethod.Invoke(x,
+                        [
                             y
-                        }) == 0);
+                        ]) == 0);
                         return result;
                     }
                     catch
@@ -338,14 +338,14 @@ namespace Skrypton.Tests
             {
                 AssertEqualityComparer<T>.s_compareTypedSetsMethod = base.GetType().GetTypeInfo().GetDeclaredMethod("CompareTypedSets");
             }
-            return new bool?((bool)AssertEqualityComparer<T>.s_compareTypedSetsMethod.MakeGenericMethod(new Type[]
-            {
+            return new bool?((bool)AssertEqualityComparer<T>.s_compareTypedSetsMethod.MakeGenericMethod(
+            [
                 type
-            }).Invoke(this, new object[]
-            {
+            ]).Invoke(this,
+            [
                 enumerable,
                 enumerable2
-            }));
+            ]));
         }
 
         private bool CompareTypedSets<R>(System.Collections.IEnumerable enumX, System.Collections.IEnumerable enumY)

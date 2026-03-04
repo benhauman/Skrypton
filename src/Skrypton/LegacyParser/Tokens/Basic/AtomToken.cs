@@ -19,6 +19,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         // =======================================================================================
         protected AtomToken(StringUpper contentUpper, WhiteSpaceBehaviourOptions whiteSpaceBehaviour, int lineIndex)
         {
+            if (lineIndex == 0)
+                throw new ArgumentException("Line index is 1 based.", nameof(lineIndex));
             // Do all this validation AGAIN because we may re-use this from inheriting classes (eg. OperatorToken)
             if (contentUpper == null)
                 throw new ArgumentNullException(nameof(contentUpper));

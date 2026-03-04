@@ -21,9 +21,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string source = @"
                     ReDim a(0)
                 ";
-            string[] expected = new[] {
+            string[] expected = [
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
-                };
+                ];
             myAssert.AreEqual(
                 expected,
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -36,9 +36,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string source = @"
                     ReDim Preserve a(0)
                 ";
-            string[] expected = new[] {
+            string[] expected = [
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
-                };
+                ];
             myAssert.AreEqual(
                 expected,
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -187,9 +187,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Dim a
                     ReDim a(0)
                 ";
-            string[] expected = new[] {
+            string[] expected = [
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
-                };
+                ];
             myAssert.AreEqual(
                 expected,
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -203,9 +203,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Dim a
                     ReDim Preserve a(0)
                 ";
-            string[] expected = new[] {
+            string[] expected = [
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
-                };
+                ];
             myAssert.AreEqual(
                 expected,
                 WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)

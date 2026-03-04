@@ -281,7 +281,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 _.CALL(
                     context: null,
                     target: new PseudoRecordset(),
-                    members: new[] { "fields" },
+                    members: ["fields"],
                     argumentProviderBuilder: _.ARGS.Val("F1")
                 ),
                 new PseudoFieldObjectComparer()
@@ -297,7 +297,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 _.CALL(
                     context: null,
                     target: new PseudoRecordset(),
-                    members: new string[0],
+                    members: [],
                     argumentProviderBuilder: _.ARGS.Val("F1")
                 ),
                 new PseudoFieldObjectComparer()
@@ -390,7 +390,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 _.CALL(
                     context: null,
                     target: data,
-                    members: new string[0],
+                    members: [],
                     argumentProviderBuilder: _.ARGS.Val("0")
                 )
             );
@@ -473,7 +473,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var parameterLessDelegate = (Func<object>)(() => "delegate result");
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<TargetParameterCountException>(
-                () => _.CALL(context: null, target: parameterLessDelegate, members: new string[0], argumentProvider: _.ARGS.Val(1).GetArgs())
+                () => _.CALL(context: null, target: parameterLessDelegate, members: [], argumentProvider: _.ARGS.Val(1).GetArgs())
             );
         }
 
@@ -485,7 +485,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<TypeMismatchException>(
-                () => _.CALL(context: null, target: "abc", members: new string[0], argumentProvider: _.ARGS.Val(0).GetArgs())
+                () => _.CALL(context: null, target: "abc", members: [], argumentProvider: _.ARGS.Val(0).GetArgs())
             );
         }
 
@@ -961,13 +961,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 dictionary.Add("key2", "value2");
                 yield return new object[] { "Scripting Dictionary COM component", dictionary, new object[] { "key1", "key2" } };
 
-                var customIntEnumerable = new CustomEnumerable<int>(new[] { 1, 2, 3 });
+                var customIntEnumerable = new CustomEnumerable<int>([1, 2, 3]);
                 yield return new object[] { "Object with int values that has a valid GetEnumerator but does not implement IEnumerable", customIntEnumerable, new object[] { 1, 2, 3 } };
 
-                var customIntEnumerableWithStructEnumerator = new CustomEnumerableWithStructEnumerator<int>(new[] { 1, 2, 3 });
+                var customIntEnumerableWithStructEnumerator = new CustomEnumerableWithStructEnumerator<int>([1, 2, 3]);
                 yield return new object[] { "Object with int values that has a valid GetEnumerator (that returns a struct) but does not implement IEnumerable", customIntEnumerableWithStructEnumerator, new object[] { 1, 2, 3 } };
 
-                var customStringEnumerable = new CustomEnumerable<string>(new[] { "a", "b", "c" });
+                var customStringEnumerable = new CustomEnumerable<string>(["a", "b", "c"]);
                 yield return new object[] { "Object with string values that has a valid GetEnumerator but does not implement IEnumerable", customStringEnumerable, new object[] { "a", "b", "c" } };
             }
         }

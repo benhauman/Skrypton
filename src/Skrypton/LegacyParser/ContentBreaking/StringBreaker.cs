@@ -51,8 +51,8 @@ namespace Skrypton.LegacyParser.ContentBreaking
             int index = 0;
             string tokenContent = "";
             List<IToken> tokens = new List<IToken>();
-            int lineIndex = 0;
-            int lineIndexForStartOfContent = 0;
+            int lineIndex = 1;
+            int lineIndexForStartOfContent = 1;
             while (index < scriptContent.Length)
             {
                 string chr = scriptContent.Substring(index, 1);

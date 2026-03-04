@@ -63,8 +63,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				float[] values1, values2;
 				using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
 				{
-					values1 = new[] { _.RND(seed), _.RND(), _.RND() };
-					values2 = new[] { _.RND(seed), _.RND(), _.RND() };
+					values1 = [_.RND(seed), _.RND(), _.RND()];
+					values2 = [_.RND(seed), _.RND(), _.RND()];
 				}
 				myAssert.AreEqual(values1, values2);
 			}

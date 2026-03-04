@@ -11,7 +11,7 @@ using Skrypton.Tests.Shared.Comparers;
 namespace Skrypton.Tests.LegacyParser
 {
     [TestClass]
-    public class StatementHandlerTests
+    public class StatementHandlerTests : TestBase
     {
         /// <summary>
         /// Only the first non-bracketed equality sign in a statement may indicate the separation between the value-to-set and the expression-to-set-it-to
@@ -23,11 +23,11 @@ namespace Skrypton.Tests.LegacyParser
         {
             var statement = (new StatementHandler()).Process(new List<IToken>
             {
-                new NameToken("bMatch", 0),
-                new ComparisonOperatorToken("=", 0),
-                new NumericValueToken("1", 0),
-                new ComparisonOperatorToken("=", 0),
-                new NumericValueToken("2", 0)
+                new NameToken("bMatch", lineIndex1),
+                new ComparisonOperatorToken("=", lineIndex1),
+                new NumericValueToken("1", lineIndex1),
+                new ComparisonOperatorToken("=", lineIndex1),
+                new NumericValueToken("2", lineIndex1)
             });
 
             myAssert.IsType<ValueSettingStatement>(statement);
@@ -35,17 +35,16 @@ namespace Skrypton.Tests.LegacyParser
             var valueSettingStatement = (ValueSettingStatement)statement;
             myAssert.AreEqual(ValueSetTypeOptions.Let, valueSettingStatement.ValueSetType);
             myAssert.AreEqual(
-                new IToken[] { new NameToken("bMatch", 0) },
+                [new NameToken("bMatch", lineIndex1)],
                 valueSettingStatement.ValueToSet.Tokens,
                 new TokenSetComparer()
             );
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NumericValueToken("1", 0),
-                    new ComparisonOperatorToken("=", 0),
-                    new NumericValueToken("2", 0)
-                },
+                [
+                    new NumericValueToken("1", lineIndex1),
+                    new ComparisonOperatorToken("=", lineIndex1),
+                    new NumericValueToken("2", lineIndex1)
+                ],
                 valueSettingStatement.Expression.Tokens,
                 new TokenSetComparer()
             );

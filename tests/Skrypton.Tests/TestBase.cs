@@ -14,6 +14,10 @@ namespace Skrypton.Tests
 {
     public abstract class TestBase
     {
+        protected const int lineIndex1 = 1;
+        protected const int lineIndex2 = 2;
+        protected const int lineIndex3 = 3;
+
         public const string CSFileExtension = ".cs"; // ".cstxt"
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
@@ -199,7 +203,7 @@ namespace Skrypton.Tests
         {
             if (startIndex > s.Length)
                 return "";
-            int endOfLine = s.IndexOfAny(new char[] { '\r', '\n' }, startIndex);
+            int endOfLine = s.IndexOfAny(['\r', '\n'], startIndex);
             if (endOfLine == -1)
                 endOfLine = s.Length;
 

@@ -145,15 +145,15 @@ namespace Skrypton.Tests.Application
         internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName, string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
-            PortableExecutableReference[] references = new[]
-            {
+            PortableExecutableReference[] references =
+            [
                 MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
                 MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
                 MetadataReference.CreateFromFile(typeof(IDisposable).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
-            };
+            ];
             // Compilation options (warnings as errors, warning level 4)
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,
@@ -167,7 +167,7 @@ namespace Skrypton.Tests.Application
 
             CSharpCompilation compilation = CSharpCompilation.Create(
                 "InMemDynAsmKey2",
-                new[] { syntaxTree },
+                [syntaxTree],
                 references,
                 options
             );

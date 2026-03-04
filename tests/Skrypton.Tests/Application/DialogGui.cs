@@ -107,15 +107,15 @@ WScript.Echo xmlhttp.responseText
             object xmlhttp = Activator.CreateInstance(t);
 
             // xmlhttp.setOption(2, 13056)
-            ComInvoke.Call(xmlhttp, "setOption", new object[] { 2, 13056 });
+            ComInvoke.Call(xmlhttp, "setOption", [2, 13056]);
 
             string url = "https://httpbin.org/get";
 
             // xmlhttp.open("GET", url, false, "myusr2", "mypwd2")
-            ComInvoke.Call(xmlhttp, "open", new object[] { "GET", url, false, "myusr2", "mypwd2" });
+            ComInvoke.Call(xmlhttp, "open", ["GET", url, false, "myusr2", "mypwd2"]);
 
             // xmlhttp.send()
-            ComInvoke.Call(xmlhttp, "send", new object[] { });
+            ComInvoke.Call(xmlhttp, "send", []);
 
             // Read status
             object status = xmlhttp.GetType().InvokeMember(
@@ -207,9 +207,9 @@ WScript.Echo xmlhttp.responseText
 #pragma warning restore CA1416 // Validate platform compatibility
             object xmlDoc = Activator.CreateInstance(domType);
 
-            domType.InvokeMember("setProperty", BindingFlags.InvokeMethod, null, xmlDoc, new object[] { "SelectionLanguage", "XPath" });
+            domType.InvokeMember("setProperty", BindingFlags.InvokeMethod, null, xmlDoc, ["SelectionLanguage", "XPath"]);
             // xmlDoc.async = false
-            domType.InvokeMember("async", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+            domType.InvokeMember("async", BindingFlags.SetProperty, null, xmlDoc, [false]);
 
             // !!!! VBScript silently sets:             xmlDoc.preserveWhiteSpace = False
             // The behavior comes from three different layers that were never fully documented together:
@@ -220,12 +220,12 @@ WScript.Echo xmlhttp.responseText
             //  -> retries calls with different type coercions
             //  -> suppresses many COM errors
             // * 3/3) The IDispatch binder inside Windows Script Host
-            domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
+            domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, [false]);
 
             //object responseXML = MyServerXMLHTTP60.SampleResponseXml;
             object responseXML = Encoding.UTF8.GetBytes(MyServerXMLHTTP60.SampleResponseXml);
             //xmlSource[in] An indicator of the source XML to parse. This may be an URL(String / BSTR), a Request object(in an ASP page), an IStream, SAFEARRAY of bytes(VT_ARRAY| VT_UI1), a DOMDocument object, or any object that supports IStream, ISequentialStream, or IPersistStream.See Remarks for more information.
-            domType.InvokeMember("load", BindingFlags.InvokeMethod, null, xmlDoc, new object[] { responseXML });
+            domType.InvokeMember("load", BindingFlags.InvokeMethod, null, xmlDoc, [responseXML]);
 
             // Select header nodes
             object headerNodes = domType.InvokeMember(
@@ -233,7 +233,7 @@ WScript.Echo xmlhttp.responseText
                 BindingFlags.InvokeMethod,
                 null,
                 xmlDoc,
-                new object[] { "//table/header/*" }
+                ["//table/header/*"]
             );
             // Iterate header nodes
             int length = (int)headerNodes.GetType().InvokeMember("length", BindingFlags.GetProperty, null, headerNodes, null);
@@ -248,7 +248,7 @@ WScript.Echo xmlhttp.responseText
             for (int idx = 0; idx < length; idx++)
             {
                 // n = headerNodes.item(idx)
-                object n = headerNodes.GetType().InvokeMember("item", BindingFlags.InvokeMethod, null, headerNodes, new object[] { idx });
+                object n = headerNodes.GetType().InvokeMember("item", BindingFlags.InvokeMethod, null, headerNodes, [idx]);
 
                 // curnode = xmlDoc.documentElement.selectSingleNode("//table/body/r/c" & i)
                 object curnode = docElem.GetType().InvokeMember(
@@ -256,7 +256,7 @@ WScript.Echo xmlhttp.responseText
                     BindingFlags.InvokeMethod,
                     null,
                     docElem,
-                    new object[] { "//table/body/r/c" + i }
+                    ["//table/body/r/c" + i]
                 );
 
                 // dict.Add n.text, curnode.text
@@ -627,6 +627,39 @@ WScript.Echo xmlhttp.responseText
             });
         }
 
+        [TestMethod]
+        public void CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click() // select * from hlsysdialog where dbname = '_CustomerTest_Mainova' and dialogid = 2; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Mainova';
+        {
+            Assert.Inconclusive();
+            if (TestContext != null) return;
+            var hlobj = new HLObjectInstance()
+                    .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
+                    .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
+                ;
+            var model = new DialogGuidModel();
+
+            IHostProcessControlHostService processControlHostService = CreateTestProcessControlHostService();
+
+            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostProcessControlHostService>(() => processControlHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+                .AddButton("ButtonShowWebsite_Click")
+                .BuildDialog();
+
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            {
+                var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
+                foreach (var mi in mis)
+                {
+                    if (mi.DeclaringType == gr.GetType())
+                    {
+                        Console.WriteLine($"Method: {mi.Name}");
+                    }
+                }
+
+                ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
+            });
+        }
+
         private IHostProcessControlHostService CreateTestProcessControlHostService()
         {
             return new TestHostProcessControlHostService();
@@ -693,7 +726,7 @@ WScript.Echo xmlhttp.responseText
                 BindingFlags.SetProperty,
                 null,
                 comObj,
-                new object[] { value }
+                [value]
             );
         }
     }

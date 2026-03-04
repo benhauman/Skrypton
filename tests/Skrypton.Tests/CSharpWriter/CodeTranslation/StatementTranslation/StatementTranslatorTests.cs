@@ -15,7 +15,7 @@ using Skrypton.Tests.Shared.Comparers;
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
 {
     [TestClass]
-    public class StatementTranslatorTests
+    public class StatementTranslatorTests : TestBase
     {
         // TODO: "o" where "o" has a default parameter-less property => try to access that property, doesn't matter if returns value-type or reference
         // TODO: "o" where "o" has a default parameter-less function => try to access that property, doesn't matter if returns value-type or reference
@@ -30,17 +30,17 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void IsolatedNonFunctionOrPropertyReferenceHasValueTypeAccessLogic()
         {
             // "o" (where there is no function or property in scope called "o")
-            var expression = new Expression(new[]
-            {
+            var expression = new Expression(
+            [
                 new CallExpressionSegment(
-                    new[] { new NameToken("o", 0) },
-                    new Expression[0],
+                    [new NameToken("o", lineIndex1)],
+                    [],
                     CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
                 )
-            });
+            ]);
             var expected = new TranslatedStatementContentDetails(
                 "_.VAL(_env.o)",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("o", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("o", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             myAssert.AreEqual(
@@ -54,23 +54,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void IsolatedFunctionCallAccordingToScopeDoesNotHaveValueTypeAccessLogic()
         {
             // "o" (where there is a function in scope called "o")
-            var expression = new Expression(new[]
-            {
+            var expression = new Expression(
+            [
                 new CallExpressionSegment(
-                    new[] { new NameToken("o", 0) },
-                    new Expression[0],
+                    [new NameToken("o", lineIndex1)],
+                    [],
                     CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
                 )
-            });
+            ]);
 
             var scopeAccessInformation = AddOutermostScopeFunction(
                 GetEmptyScopeAccessInformation(),
                 "o",
-                0
+                lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
                 "_.CALL(this, _outer, \"o\")",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("o", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("o", lineIndex1)])
             );
             myAssert.Equal(
                 expected,
@@ -83,35 +83,34 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByRef()
         {
             // "o(a)" (where there is a function in scope called "o" and a variable "a")
-            var expression = new Expression(new[]
-            {
+            var expression = new Expression(
+            [
                 new CallExpressionSegment(
-                    new[] { new NameToken("o", 0) },
-                    new[]
-                    {
-                        new Expression(new[] {
-                            new CallExpressionSegment(new[] { new NameToken("a", 0) }, new Expression[0], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
-                        })
-                    },
+                    [new NameToken("o", lineIndex1)],
+                    [
+                        new Expression([
+                            new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+                        ])
+                    ],
                     null
                 )
-            });
+            ]);
 
             var scopeAccessInformation = AddOutermostScopeVariable(
                 AddOutermostScopeFunction(
                     GetEmptyScopeAccessInformation(),
                     "o",
-                    0
+                    lineIndex1
                 ),
                 "a",
-                0
+                lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
                 "_.CALL(this, _outer, \"o\", _.ARGS.Ref(_outer.a, v0 => { _outer.a = v0; }))",
-                new NonNullImmutableList<NameToken>(new[] {
-                    new NameToken("a", 0),
-                    new NameToken("o", 0)
-                })
+                new NonNullImmutableList<NameToken>([
+                    new NameToken("a", lineIndex1),
+                    new NameToken("o", lineIndex1)
+                ])
             );
             myAssert.AreEqual(
                 expected,
@@ -128,37 +127,36 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByValIfWrappedInBrackets()
         {
             // "o((a))" (where there is a function in scope called "o" and a variable "a")
-            var expression = new Expression(new[]
-            {
+            var expression = new Expression(
+            [
                 new CallExpressionSegment(
-                    new[] { new NameToken("o", 0) },
-                    new[]
-                    {
-                        new Expression(new[] {
-                            new BracketedExpressionSegment(new[] {
-                                new CallExpressionSegment(new[] { new NameToken("a", 0) }, new Expression[0], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
-                            })
-                        })
-                    },
+                    [new NameToken("o", lineIndex1)],
+                    [
+                        new Expression([
+                            new BracketedExpressionSegment([
+                                new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+                            ])
+                        ])
+                    ],
                     null
                 )
-            });
+            ]);
 
             var scopeAccessInformation = AddOutermostScopeVariable(
                 AddOutermostScopeFunction(
                     GetEmptyScopeAccessInformation(),
                     "o",
-                    0
+                    lineIndex1
                 ),
                 "a",
-                0
+                lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
                 "_.CALL(this, _outer, \"o\", _.ARGS.Val(_outer.a))",
-                new NonNullImmutableList<NameToken>(new[] {
-                    new NameToken("a", 0),
-                    new NameToken("o", 0)
-                })
+                new NonNullImmutableList<NameToken>([
+                    new NameToken("a", lineIndex1),
+                    new NameToken("o", lineIndex1)
+                ])
             );
             myAssert.AreEqual(
                 expected,
@@ -171,26 +169,26 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void NestedFunctionOrArrayAccess()
         {
             // "a(0)(b)" (where neither a nor b are defined and so there could be method calls OR array accesses)
-            var expression = new Expression(new[]
-            {
-                new CallSetExpressionSegment(new[]
-                {
+            var expression = new Expression(
+            [
+                new CallSetExpressionSegment(
+                [
                     new CallSetItemExpressionSegment(
-                        new[] { new NameToken("a", 0) },
-                        new[] { new Expression(new[] { new NumericValueExpressionSegment(new NumericValueToken("0", 0)) }) },
+                        [new NameToken("a", lineIndex1)],
+                        [new Expression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         null
                     ),
                     new CallSetItemExpressionSegment(
-                        new IToken[0],
-                        new[] { new Expression(new[] { new CallExpressionSegment(
-                            new[] { new NameToken("b", 0) },
-                            new Expression[0],
+                        [],
+                        [ new Expression([ new CallExpressionSegment(
+                            [new NameToken("b", lineIndex1)],
+                            [],
                             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
-                        )})},
+                        )])],
                         null
                     )
-                })
-            });
+                ])
+            ]);
 
             // Since we can't know until runtime if "a" is an array that is being accessed or a function/property, the arguments need to
             // be constructed to work as ByVal or ByRef if it IS a function or property. Since "0" is a constant it will be ByVal but
@@ -199,10 +197,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // know that until runtime).
             var expected = new TranslatedStatementContentDetails(
                 "_.CALL(this, _.CALL(this, _env.a, _.ARGS.Val((Int16)0)), _.ARGS.Ref(_env.b, v0 => { _env.b = v0; }))",
-                new NonNullImmutableList<NameToken>(new[] {
-                    new NameToken("a", 0),
-                    new NameToken("b", 0)
-                })
+                new NonNullImmutableList<NameToken>([
+                    new NameToken("a", lineIndex1),
+                    new NameToken("b", lineIndex1)
+                ])
             );
             myAssert.AreEqual(
                 expected,
@@ -216,32 +214,32 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // When "a.b(0).c" is considered as an argument, it should be identified as ByVal (since only a direct reference - eg. "a" or even "a(0)" if "a"
             // is an array - can be changed ByRef as a function argument). Before adding this test, there was an issue where "a.b(0).c" would throw an exception
             // during translation.
-            var expression = new Expression(new[]
-            {
-                new CallSetExpressionSegment(new[]
-                {
+            var expression = new Expression(
+            [
+                new CallSetExpressionSegment(
+                [
                     new CallSetItemExpressionSegment(
-                        new[] { new NameToken("a", 0), new NameToken("b", 0) },
-                        new[] { new Expression(new[] { new NumericValueExpressionSegment(new NumericValueToken("0", 0)) }) },
+                        [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)],
+                        [new Expression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         zeroArgumentBracketsPresence: null
                     ),
                     new CallSetItemExpressionSegment(
-                        new[] { new NameToken("c", 0) },
-                        new Expression[0],
+                        [new NameToken("c", lineIndex1)],
+                        [],
                         CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
                     )
-                })
-            });
+                ])
+            ]);
 
             var expected = new TranslatedStatementContentDetails(
                 "_.ARGS.Val(_.CALL(this, _.CALL(this, _env.a, \"b\", _.ARGS.Val((Int16)0)), \"c\"))",
-                new NonNullImmutableList<NameToken>(new[] {
-                    new NameToken("a", 0)
-                })
+                new NonNullImmutableList<NameToken>([
+                    new NameToken("a", lineIndex1)
+                ])
             );
             myAssert.AreEqual(
                 expected,
-                GetDefaultStatementTranslator().TranslateAsArgumentProvider(new[] { expression }, GetEmptyScopeAccessInformation(), forceAllArgumentsToBeByVal: false),
+                GetDefaultStatementTranslator().TranslateAsArgumentProvider([expression], GetEmptyScopeAccessInformation(), forceAllArgumentsToBeByVal: false),
                 new TranslatedStatementContentDetailsComparer()
             );
         }

@@ -11,22 +11,20 @@ using Skrypton.Tests.Shared.Comparers;
 namespace Skrypton.Tests.StageTwoParser
 {
     [TestClass]
-    public class NumberRebuilderTests
+    public class NumberRebuilderTests : TestBase
     {
         [TestMethod, MyFact]
         public void NegativeOne()
         {
             myAssert.AreEqual(
-                new[]
-                {
-                    new NumericValueToken("-1", 0)
-                },
+                [
+                    new NumericValueToken("-1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -36,20 +34,18 @@ namespace Skrypton.Tests.StageTwoParser
         public void BracketedNegativeOne()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new OpenBrace(0),
-                    new NumericValueToken("-1", 0),
-                    new CloseBrace(0)
-                },
+                [
+                    new OpenBrace(lineIndex1),
+                    new NumericValueToken("-1", lineIndex1),
+                    new CloseBrace(lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new OpenBrace(0),
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0),
-                        new CloseBrace(0)
-                    }
+                    [
+                        new OpenBrace(lineIndex1),
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1),
+                        new CloseBrace(lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -59,16 +55,14 @@ namespace Skrypton.Tests.StageTwoParser
         public void PointOne()
         {
             myAssert.AreEqual(
-                new[]
-                {
-                    new NumericValueToken(".1", 0)
-                },
+                [
+                    new NumericValueToken(".1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -78,17 +72,15 @@ namespace Skrypton.Tests.StageTwoParser
         public void OnePointOne()
         {
             myAssert.AreEqual(
-                new[]
-                {
-                    new NumericValueToken("1.1", 0)
-                },
+                [
+                    new NumericValueToken("1.1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new NumericValueToken("1", 0),
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new NumericValueToken("1", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -98,18 +90,16 @@ namespace Skrypton.Tests.StageTwoParser
         public void NegativeOnePointOne()
         {
             myAssert.AreEqual(
-                new[]
-                {
-                    new NumericValueToken("-1.1", 0)
-                },
+                [
+                    new NumericValueToken("-1.1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0),
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -119,17 +109,15 @@ namespace Skrypton.Tests.StageTwoParser
         public void NegativePointOne()
         {
             myAssert.AreEqual(
-                new[]
-                {
-                    new NumericValueToken("-.1", 0)
-                },
+                [
+                    new NumericValueToken("-.1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new OperatorToken("-", 0),
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new OperatorToken("-", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -139,20 +127,18 @@ namespace Skrypton.Tests.StageTwoParser
         public void OnePlusNegativeOne()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NumericValueToken("1", 0),
-                    new OperatorToken("+", 0),
-                    new NumericValueToken("-1", 0)
-                },
+                [
+                    new NumericValueToken("1", lineIndex1),
+                    new OperatorToken("+", lineIndex1),
+                    new NumericValueToken("-1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new NumericValueToken("1", 0),
-                        new OperatorToken("+", 0),
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new NumericValueToken("1", lineIndex1),
+                        new OperatorToken("+", lineIndex1),
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -162,19 +148,17 @@ namespace Skrypton.Tests.StageTwoParser
         public void NegativeOneAsNonBracketedArgument()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("fnc", 0),
-                    new NumericValueToken("1.1", 0)
-                },
+                [
+                    new NameToken("fnc", lineIndex1),
+                    new NumericValueToken("1.1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new NameToken("fnc", 0),
-                        new NumericValueToken("1", 0),
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new NameToken("fnc", lineIndex1),
+                        new NumericValueToken("1", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -184,18 +168,16 @@ namespace Skrypton.Tests.StageTwoParser
         public void PointOneAsNonBracketedArgument()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("fnc", 0),
-                    new NumericValueToken(".1", 0)
-                },
+                [
+                    new NameToken("fnc", lineIndex1),
+                    new NumericValueToken(".1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new NameToken("fnc", 0),
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new NameToken("fnc", lineIndex1),
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -205,32 +187,30 @@ namespace Skrypton.Tests.StageTwoParser
         public void ForLoopWithNegativeConstraints()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new KeyWordToken("FOR", 0),
-                    new NameToken("i", 0),
-                    new ComparisonOperatorToken("=", 0),
-                    new NumericValueToken("-1", 0),
-                    new KeyWordToken("TO", 0),
-                    new NumericValueToken("-4", 0),
-                    new KeyWordToken("STEP", 0),
-                    new NumericValueToken("-1", 0)
-                },
+                [
+                    new KeyWordToken("FOR", lineIndex1),
+                    new NameToken("i", lineIndex1),
+                    new ComparisonOperatorToken("=", lineIndex1),
+                    new NumericValueToken("-1", lineIndex1),
+                    new KeyWordToken("TO", lineIndex1),
+                    new NumericValueToken("-4", lineIndex1),
+                    new KeyWordToken("STEP", lineIndex1),
+                    new NumericValueToken("-1", lineIndex1)
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new KeyWordToken("FOR", 0),
-                        new NameToken("i", 0),
-                        new ComparisonOperatorToken("=", 0),
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0),
-                        new KeyWordToken("TO", 0),
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("4", 0),
-                        new KeyWordToken("STEP", 0),
-                        new OperatorToken("-", 0),
-                        new NumericValueToken("1", 0)
-                    }
+                    [
+                        new KeyWordToken("FOR", lineIndex1),
+                        new NameToken("i", lineIndex1),
+                        new ComparisonOperatorToken("=", lineIndex1),
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1),
+                        new KeyWordToken("TO", lineIndex1),
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("4", lineIndex1),
+                        new KeyWordToken("STEP", lineIndex1),
+                        new OperatorToken("-", lineIndex1),
+                        new NumericValueToken("1", lineIndex1)
+                    ]
                 ),
                 new TokenSetComparer()
             );
@@ -244,17 +224,15 @@ namespace Skrypton.Tests.StageTwoParser
         public void DoNotTryToTreatMemberSeparatorRelyUponWithKeywordAsDecimalPoint()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new MemberAccessorToken(0),
-                    new NameToken("Name", 0),
-                },
+                [
+                    new MemberAccessorToken(lineIndex1),
+                    new NameToken("Name", lineIndex1),
+                ],
                 NumberRebuilder.Rebuild(
-                    new IToken[]
-                    {
-                        new MemberAccessorOrDecimalPointToken(".", 0),
-                        new NameToken("Name", 0),
-                    }
+                    [
+                        new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                        new NameToken("Name", lineIndex1),
+                    ]
                 ),
                 new TokenSetComparer()
             );

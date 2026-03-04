@@ -17,21 +17,19 @@ namespace Skrypton.Tests.LegacyParser
         public void StatementWithMemberAccessAndDecimalValueAndUnwrappedMethodArgument()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new Statement(
-                        new IToken[]
-                        {
-                            new NameToken("WScript", 0),
-                            new MemberAccessorOrDecimalPointToken(".", 0),
-                            new NameToken("Echo", 0),
-                            new NumericValueToken("1", 0),
-                            new MemberAccessorOrDecimalPointToken(".", 0),
-                            new NumericValueToken("1", 0)
-                        },
+                        [
+                            new NameToken("WScript", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new NameToken("Echo", lineIndex1),
+                            new NumericValueToken("1", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new NumericValueToken("1", lineIndex1)
+                        ],
                         Statement.CallPrefixOptions.Absent
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "WScript.Echo 1.1"),
                 new CodeBlockSetComparer()
             );
@@ -41,23 +39,21 @@ namespace Skrypton.Tests.LegacyParser
         public void StatementWithMemberAccessAndDecimalValueAndWrappedMethodArgument()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new Statement(
-                        new IToken[]
-                        {
-                            new NameToken("WScript", 0),
-                            new MemberAccessorOrDecimalPointToken(".", 0),
-                            new NameToken("Echo", 0),
-                            new OpenBrace(0),
-                            new NumericValueToken("1", 0),
-                            new MemberAccessorOrDecimalPointToken(".", 0),
-                            new NumericValueToken("1", 0),
-                            new CloseBrace(0)
-                        },
+                        [
+                            new NameToken("WScript", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new NameToken("Echo", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NumericValueToken("1", lineIndex1),
+                            new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                            new NumericValueToken("1", lineIndex1),
+                            new CloseBrace(lineIndex1)
+                        ],
                         Statement.CallPrefixOptions.Absent
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "WScript.Echo(1.1)"),
                 new CodeBlockSetComparer()
             );
@@ -67,20 +63,13 @@ namespace Skrypton.Tests.LegacyParser
         public void SingleValueSetToNothing()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new ValueSettingStatement(
-                        new Expression(new[]
-                        {
-                            new NameToken("a", 0),
-                        }),
-                        new Expression(new[]
-                        {
-                            new BuiltInValueToken("Nothing", 0),
-                        }),
+                        new Expression([new NameToken("a", lineIndex1)]),
+                        new Expression([new BuiltInValueToken("Nothing", lineIndex1)]),
                         ValueSetTypeOptions.Set
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "Set a = Nothing"),
                 new CodeBlockSetComparer()
             );
@@ -90,25 +79,22 @@ namespace Skrypton.Tests.LegacyParser
         public void TwoDimensionalArrayElementSetToNumber()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new ValueSettingStatement(
-                        new Expression(new IToken[]
-                        {
-                            new NameToken("a", 0),
-                            new OpenBrace(0),
-                            new NumericValueToken("0", 0),
-                            new ArgumentSeparatorToken(0),
-                            new NumericValueToken("0", 0),
-                            new CloseBrace(0),
-                        }),
-                        new Expression(new[]
-                        {
-                            new NumericValueToken("1", 0),
-                        }),
+                        new Expression([
+                            new NameToken("a", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new ArgumentSeparatorToken(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new CloseBrace(lineIndex1)
+                        ]),
+                        new Expression([
+                            new NumericValueToken("1", lineIndex1)
+                        ]),
                         ValueSetTypeOptions.Let
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "a(0, 0) = 1"),
                 new CodeBlockSetComparer()
             );
@@ -118,25 +104,22 @@ namespace Skrypton.Tests.LegacyParser
         public void TwoDimensionalArrayElementSetToNumberWithExplicitLet()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new ValueSettingStatement(
-                        new Expression(new IToken[]
-                        {
-                            new NameToken("a", 0),
-                            new OpenBrace(0),
-                            new NumericValueToken("0", 0),
-                            new ArgumentSeparatorToken(0),
-                            new NumericValueToken("0", 0),
-                            new CloseBrace(0),
-                        }),
-                        new Expression(new[]
-                        {
-                            new NumericValueToken("1", 0),
-                        }),
+                        new Expression([
+                            new NameToken("a", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new ArgumentSeparatorToken(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new CloseBrace(lineIndex1)
+                        ]),
+                        new Expression([
+                            new NumericValueToken("1", lineIndex1)
+                        ]),
                         ValueSetTypeOptions.Let
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "Let a(0, 0) = 1"),
                 new CodeBlockSetComparer()
             );
@@ -146,25 +129,22 @@ namespace Skrypton.Tests.LegacyParser
         public void TwoDimensionalArrayElementSetToNothing()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new ValueSettingStatement(
-                        new Expression(new IToken[]
-                        {
-                            new NameToken("a", 0),
-                            new OpenBrace(0),
-                            new NumericValueToken("0", 0),
-                            new ArgumentSeparatorToken(0),
-                            new NumericValueToken("0", 0),
-                            new CloseBrace(0),
-                        }),
-                        new Expression(new[]
-                        {
-                            new BuiltInValueToken("Nothing", 0),
-                        }),
+                        new Expression([
+                            new NameToken("a", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new ArgumentSeparatorToken(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new CloseBrace(lineIndex1)
+                        ]),
+                        new Expression([
+                            new BuiltInValueToken("Nothing", lineIndex1)
+                        ]),
                         ValueSetTypeOptions.Set
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "Set a(0, 0) = Nothing"),
                 new CodeBlockSetComparer()
             );
@@ -174,30 +154,27 @@ namespace Skrypton.Tests.LegacyParser
         public void TwoDimensionalArrayElementWithMethodCallIndexSetToNothing()
         {
             myAssert.AreEqual(
-                new ICodeBlock[]
-                {
+                [
                     new ValueSettingStatement(
-                        new Expression(new IToken[]
-                        {
-                            new NameToken("a", 0),
-                            new OpenBrace(0),
-                            new NameToken("GetValue", 0),
-                            new OpenBrace(0),
-                            new NumericValueToken("1", 0),
-                            new ArgumentSeparatorToken(0),
-                            new NumericValueToken("3", 0),
-                            new CloseBrace(0),
-                            new ArgumentSeparatorToken(0),
-                            new NumericValueToken("0", 0),
-                            new CloseBrace(0),
-                        }),
-                        new Expression(new[]
-                        {
-                            new BuiltInValueToken("Nothing", 0),
-                        }),
+                        new Expression([
+                            new NameToken("a", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NameToken("GetValue", lineIndex1),
+                            new OpenBrace(lineIndex1),
+                            new NumericValueToken("1", lineIndex1),
+                            new ArgumentSeparatorToken(lineIndex1),
+                            new NumericValueToken("3", lineIndex1),
+                            new CloseBrace(lineIndex1),
+                            new ArgumentSeparatorToken(lineIndex1),
+                            new NumericValueToken("0", lineIndex1),
+                            new CloseBrace(lineIndex1)
+                        ]),
+                        new Expression([
+                            new BuiltInValueToken("Nothing", lineIndex1)
+                        ]),
                         ValueSetTypeOptions.Set
                     )
-                },
+                ],
                 Parser.Parse(TestCulture, "Set a(GetValue(1, 3), 0) = Nothing"),
                 new CodeBlockSetComparer()
             );

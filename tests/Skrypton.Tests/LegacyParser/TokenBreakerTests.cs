@@ -4,12 +4,11 @@ using Skrypton.LegacyParser.ContentBreaking;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.Tests.Shared.Comparers;
-//#using Xunit#;
 
 namespace Skrypton.Tests.LegacyParser
 {
     [TestClass]
-    public class TokenBreakerTests
+    public class TokenBreakerTests : TestBase
     {
         /// <summary>
         /// Previously, there was an error where a line break would result in a LineIndex increment for both the line break token and the token
@@ -19,13 +18,12 @@ namespace Skrypton.Tests.LegacyParser
         public void IncrementLineIndexAfterLineBreaks()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("Test", 0),
-                    new NameToken("z", 0),
-                    new EndOfStatementNewLineToken(0)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("Test z\n", 0)),
+                [
+                    new NameToken("Test", lineIndex1),
+                    new NameToken("z", lineIndex1),
+                    new EndOfStatementNewLineToken(lineIndex1)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("Test z\n", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -34,13 +32,12 @@ namespace Skrypton.Tests.LegacyParser
         public void UnderscoresAreLineContinuationsWhenTheyArePrecededByWhitespace()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("a", 0),
-                    new OperatorToken("&", 0),
-                    new NameToken("b", 1)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a & _\nb", 0)),
+                [
+                    new NameToken("a", lineIndex1),
+                    new OperatorToken("&", lineIndex1),
+                    new NameToken("b", lineIndex2)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a & _\nb", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -49,13 +46,12 @@ namespace Skrypton.Tests.LegacyParser
         public void UnderscoresAreLineContinuationsWhenTheyArePrecededByTokenBreakers()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("a", 0),
-                    new OperatorToken("&", 0),
-                    new NameToken("b", 1)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a&_\nb", 0)),
+                [
+                    new NameToken("a", lineIndex1),
+                    new OperatorToken("&", lineIndex1),
+                    new NameToken("b", lineIndex2)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a&_\nb", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -64,11 +60,10 @@ namespace Skrypton.Tests.LegacyParser
         public void DoNotConsiderUnderscoresToBeLineContinuationsWhenTheyArePartOfVariableNames()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("a_b", 0)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a_b", 0)),
+                [
+                    new NameToken("a_b", lineIndex1)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("a_b", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -81,13 +76,12 @@ namespace Skrypton.Tests.LegacyParser
         public void EnsureThatDivisionOperatorsAreRecognised()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NumericValueToken("1", 0),
-                    new OperatorToken("/", 0),
-                    new NumericValueToken("0", 0)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("1/0", 0)),
+                [
+                    new NumericValueToken("1", lineIndex1),
+                    new OperatorToken("/", lineIndex1),
+                    new NumericValueToken("0", lineIndex1)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("1/0", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -100,13 +94,12 @@ namespace Skrypton.Tests.LegacyParser
         public void EnsureThatIntegerDivisionOperatorsAreRecognised()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NumericValueToken("1", 0),
-                    new OperatorToken("\\", 0),
-                    new NumericValueToken("0", 0)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("1\\0", 0)),
+                [
+                    new NumericValueToken("1", lineIndex1),
+                    new OperatorToken("\\", lineIndex1),
+                    new NumericValueToken("0", lineIndex1)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("1\\0", lineIndex1)),
                 new TokenSetComparer()
             );
         }
@@ -126,13 +119,12 @@ namespace Skrypton.Tests.LegacyParser
         public void LessThanComparisonOperatorIndicatesTokenBreakRegardlessOfWhitespace()
         {
             myAssert.AreEqual(
-                new IToken[]
-                {
-                    new NameToken("value", 0),
-                    new ComparisonOperatorToken("<", 0),
-                    new ComparisonOperatorToken(">", 0)
-                },
-                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("value<>", 0)),
+                [
+                    new NameToken("value", lineIndex1),
+                    new ComparisonOperatorToken("<", lineIndex1),
+                    new ComparisonOperatorToken(">", lineIndex1)
+                ],
+                TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("value<>", lineIndex1)),
                 new TokenSetComparer()
             );
         }

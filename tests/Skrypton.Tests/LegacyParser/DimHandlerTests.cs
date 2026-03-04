@@ -8,7 +8,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 namespace Skrypton.Tests.LegacyParser
 {
     [TestClass]
-    public class DimHandlerTests
+    public class DimHandlerTests : TestBase
     {
         /// <summary>
         /// There was an issue where the argument separator tokens weren't being removed from DIM statements for multiple variables - this is the
@@ -19,14 +19,14 @@ namespace Skrypton.Tests.LegacyParser
         {
             var tokens = new List<IToken>
             {
-                new KeyWordToken("Dim", 0),
-                new NameToken("i", 0),
-                new ArgumentSeparatorToken(0),
-                new NameToken("j", 0),
-                new ArgumentSeparatorToken(0),
-                new NameToken("k", 0),
-                new ArgumentSeparatorToken(0),
-                new NameToken("l", 0)
+                new KeyWordToken("Dim", lineIndex1),
+                new NameToken("i", lineIndex1),
+                new ArgumentSeparatorToken(lineIndex1),
+                new NameToken("j", lineIndex1),
+                new ArgumentSeparatorToken(lineIndex1),
+                new NameToken("k", lineIndex1),
+                new ArgumentSeparatorToken(lineIndex1),
+                new NameToken("l", lineIndex1)
             };
             (new DimHandler()).Process(tokens);
             myAssert.AreEqual(0, tokens.Count);

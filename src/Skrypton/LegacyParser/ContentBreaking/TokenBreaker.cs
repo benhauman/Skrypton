@@ -31,14 +31,19 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     // If we've found a (non-line-return) whitespace character, push content retrieved from the token so far (if any), into a fresh token on the
                     // list and clear the buffer to accept following data.
                     if (buffer != "")
+                    {
                         tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+                    }
+
                     buffer = "";
                 }
                 else
                 {
                     bool characterIsTokenBreaker;
                     if (TokenBreakChars.IndexOf(chr, StringComparison.Ordinal) != -1)
+                    {
                         characterIsTokenBreaker = true;
+                    }
                     else if (chr == "_")
                     {
                         // An underscore is a line return continuation character if it follows whitespace, but it must be part of a variable name if it is not
@@ -47,7 +52,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         characterIsTokenBreaker = (index > 0) && char.IsWhiteSpace(content, index - 1);
                     }
                     else
+                    {
                         characterIsTokenBreaker = false;
+                    }
+
                     if (characterIsTokenBreaker)
                     {
                         // If the current character is a "&" then it may be a string concatenation or it may be the start of a hex number (eg. "&h001"), if it's
@@ -66,18 +74,27 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         // If we've found another "break" character (which means a token split is identified, but that we want to keep the break character itself,
                         // unlike with whitespace breaks), then do similar to above.
                         if (buffer != "")
+                        {
                             tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+                        }
+
                         tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), lineIndex));
                         buffer = "";
                     }
                     else
+                    {
                         buffer += chr;
+                    }
                 }
                 if (chr == "\n")
+                {
                     lineIndex++;
+                }
             }
             if (buffer != "")
+            {
                 tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), lineIndex));
+            }
 #pragma warning restore CA1820 // Test for empty strings using string length
 
             // Handle ignore-line-return / end-of-statement combinations

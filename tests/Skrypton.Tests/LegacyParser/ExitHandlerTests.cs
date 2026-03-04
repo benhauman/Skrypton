@@ -4,20 +4,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.LegacyParser.CodeBlocks.Handlers;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
-//#using Xunit#;
 
 namespace Skrypton.Tests.LegacyParser
 {
     [TestClass]
-    public class ExitHandlerTests
+    public class ExitHandlerTests : TestBase
     {
         [TestMethod, MyFact]
         public void DoNotCrashIfReachEndOfContent()
         {
             var tokens = new List<IToken>
             {
-                new KeyWordToken("Exit", 0),
-                new KeyWordToken("function", 0)
+                new KeyWordToken("Exit", lineIndex1),
+                new KeyWordToken("function", lineIndex1)
             };
             (new ExitHandler()).Process(tokens);
         }

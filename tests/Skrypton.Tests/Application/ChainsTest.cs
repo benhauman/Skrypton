@@ -24,7 +24,10 @@ namespace Skrypton.Tests.Application
         public void Chains(string chainName, ScriptUsageKind scriptUsage)
         {
             if (chainName == "CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click"
-             || chainName == "CT130_ClientComputer_Dialog_567_Button1_Click")
+             || chainName == "CT130_ClientComputer_Dialog_567_Button1_Click"
+             || chainName == "CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click"
+
+             )
             {
                 // ignore for now: the undeclared external references  should be rendered as environment references and not a variables in 'Go'
                 return;
@@ -79,7 +82,7 @@ namespace Skrypton.Tests.Application
                             : ScriptUsageKind.EBL;
                     //scriptContent.Contains("hlContext")
 
-                    result.Add(new object[] { chainName, scriptUsage });
+                    result.Add([chainName, scriptUsage]);
                 }
 
                 return result.ToArray();

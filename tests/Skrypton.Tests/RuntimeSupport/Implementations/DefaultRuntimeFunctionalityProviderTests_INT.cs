@@ -51,35 +51,35 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new[]
-                {
+                return
+                [
                         new object[] { "Empty", null, (Int16)0 },
-                        new object[] { "Null", DBNull.Value, DBNull.Value },
-                        new object[] { "True", true, (Int16)(-1) },
-                        new object[] { "False", false, (Int16)0 },
-                        new object[] { "Byte", (byte)123, (byte)123 },
-                        new object[] { "Integer", (Int16)123, (Int16)123 },
-                        new object[] { "Long (within Integer range)", (Int32)123, (Int32)123 },
-                        new object[] { "Single (within Integer range)", (Single)123, (Single)123 },
-                        new object[] { "Double (within Integer range)", (Double)123, (Double)123 },
-                        new object[] { "Decimal (within Integer range)", (Decimal)123, (Decimal)123 },
-                        new object[] { "Date (removes time component)", new DateTime(2017, 3, 8, 18, 30, 12, 22), new DateTime(2017, 3, 8) },
-                        new object[] { "String representing numeric value", "123.45", (double)123 },
-                        new object[] { "String representing numeric value with leading and trailing whitespace", " 123.45 ", (double)123 },
-                        new object[] { "Object with default property which is decimal 123.45", new exampledefaultpropertytype { result = 123.45m }, 123m },
+                        ["Null", DBNull.Value, DBNull.Value],
+                        ["True", true, (Int16)(-1)],
+                        ["False", false, (Int16)0],
+                        ["Byte", (byte)123, (byte)123],
+                        ["Integer", (Int16)123, (Int16)123],
+                        ["Long (within Integer range)", (Int32)123, (Int32)123],
+                        ["Single (within Integer range)", (Single)123, (Single)123],
+                        ["Double (within Integer range)", (Double)123, (Double)123],
+                        ["Decimal (within Integer range)", (Decimal)123, (Decimal)123],
+                        ["Date (removes time component)", new DateTime(2017, 3, 8, 18, 30, 12, 22), new DateTime(2017, 3, 8)],
+                        ["String representing numeric value", "123.45", (double)123],
+                        ["String representing numeric value with leading and trailing whitespace", " 123.45 ", (double)123],
+                        ["Object with default property which is decimal 123.45", new exampledefaultpropertytype { result = 123.45m }, 123m],
 
 						// A few tests to reinforce that the fraction is removed, it's NOT rounded away from zero or even numbers
-						new object[] { "0.5", (double)0.5, (double)0 },
-                        new object[] { "1.5", (double)1.5, (double)1 },
-                        new object[] { "2.5", (double)2.5, (double)2 },
-                        new object[] { "3.5", (double)3.5, (double)3 },
+						["0.5", (double)0.5, (double)0],
+                        ["1.5", (double)1.5, (double)1],
+                        ["2.5", (double)2.5, (double)2],
+                        ["3.5", (double)3.5, (double)3],
 
 						// These results are surprising, I had expected VBScript to remove the fraction from a number like -0.5 to leave 0 (or from -1.5 to leave -1) but it doesn't!
-						new object[] { "-0.5", (double)(-0.5), (double)(-1) },
-                        new object[] { "-1.5", (double)(-1.5), (double)(-2) },
-                        new object[] { "-2.5", (double)(-2.5), (double)(-3) },
-                        new object[] { "-3.5", (double)(-3.5), (double)(-4) }
-                    };
+						["-0.5", (double)(-0.5), (double)(-1)],
+                        ["-1.5", (double)(-1.5), (double)(-2)],
+                        ["-2.5", (double)(-2.5), (double)(-3)],
+                        ["-3.5", (double)(-3.5), (double)(-4)]
+                    ];
             }
         }
 
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new[] { new object[] { "Nothing", VBScriptConstants.Nothing } };
+                return [new object[] { "Nothing", VBScriptConstants.Nothing }];
             }
         }
 
@@ -95,14 +95,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new[]
-                {
+                return
+                [
                         new object[] { "Blank String", "" },
-                        new object[] { "Whitespace", " " },
-                        new object[] { "String representation of boolean", "True" },
-                        new object[] { "String representing of numeric value whitespace around decimal point", "123. 45" },
-                        new object[] { "Unintialised array", new object[0] }
-                    };
+                        ["Whitespace", " "],
+                        ["String representation of boolean", "True"],
+                        ["String representing of numeric value whitespace around decimal point", "123. 45"],
+                        ["Unintialised array", new object[0]]
+                    ];
             }
         }
 
@@ -110,7 +110,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new[] { new object[] { "Object without default property", new object() } };
+                return [new object[] { "Object without default property", new object() }];
             }
         }
     }

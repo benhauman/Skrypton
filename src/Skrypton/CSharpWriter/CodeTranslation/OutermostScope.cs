@@ -22,7 +22,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         {
             if (wrapperName == null)
                 throw new ArgumentNullException(nameof(wrapperName));
-            Name = new DoNotRenameNameToken(wrapperName.Name.ToUpperX(), 0);
+            Name = new DoNotRenameNameToken(wrapperName.Name.ToUpperX(), 1); // 1:First line
             AllExecutableBlocks = codeBlocks ?? throw new ArgumentNullException(nameof(codeBlocks));
         }
 

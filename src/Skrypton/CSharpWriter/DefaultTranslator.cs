@@ -118,7 +118,7 @@ namespace Skrypton.CSharpWriter
                 tempNameGenerator,
                 statementTranslator,
                 new ValueSettingStatementsTranslator(supportRefName, envRefName, outerRefName, nameRewriter, statementTranslator, logger),
-                externalDependencies.Select(name => new NameToken(false, name.ToUpperX(), 0)).ToNonNullImmutableList(),
+                externalDependencies.Select(name => new NameToken(false, name.ToUpperX(), 1)).ToNonNullImmutableList(), //1:First line
                 outputType,
                 logger
             );
@@ -170,10 +170,14 @@ namespace Skrypton.CSharpWriter
             var atomTokens = new List<IToken>();
             foreach (var token in tokens)
             {
-                if (token is UnprocessedContentToken)
-                    atomTokens.AddRange(TokenBreaker.BreakUnprocessedToken((UnprocessedContentToken)token));
+                if (token is UnprocessedContentToken unProccessed)
+                {
+                    atomTokens.AddRange(TokenBreaker.BreakUnprocessedToken(unProccessed));
+                }
                 else
+                {
                     atomTokens.Add(token);
+                }
             }
 
             return NumberRebuilder.Rebuild(OperatorCombiner.Combine(atomTokens)).ToArray();

@@ -81,7 +81,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new object[0][]; // TODO
+                return []; // TODO
             }
         }
 
@@ -89,7 +89,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new object[0][]; // TODO
+                return []; // TODO
             }
         }
 
@@ -97,7 +97,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new object[0][]; // TODO
+                return []; // TODO
             }
         }
 
@@ -105,7 +105,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                return new object[0][]; // TODO
+                return []; // TODO
             }
         }
     }

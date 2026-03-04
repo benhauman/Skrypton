@@ -118,7 +118,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                     "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line {0})\");",
-                    eraseStatement.KeywordLineIndex + 1
+                    eraseStatement.KeywordLineIndex// + 1
                 );
             }
             else
@@ -130,7 +130,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // "Erase a.Roles" is invalid, the target must be a direct reference (again, since an indirect reference like this would not be passed by-ref)
                     exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                         "throw new TypeMismatchException(\"'Erase' (line {0})\");",
-                        eraseStatement.KeywordLineIndex + 1
+                        eraseStatement.KeywordLineIndex// + 1
                     );
                 }
                 else
@@ -144,7 +144,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         // it means that it's definitely not a function
                         exceptionStatementIfTargetConfigurationIsInvalid = string.Format(CultureInfo.InvariantCulture,
                             "throw new TypeMismatchException(\"'Erase' (line {0})\");",
-                            eraseStatement.KeywordLineIndex + 1
+                            eraseStatement.KeywordLineIndex// + 1
                         );
                     }
                     else

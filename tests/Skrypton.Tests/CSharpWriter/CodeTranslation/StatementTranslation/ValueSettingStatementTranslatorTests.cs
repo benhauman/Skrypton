@@ -6,30 +6,22 @@ using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
-using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.Tests.Shared.Comparers;
-//#using Xunit#;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
 {
     [TestClass]
-	public class ValueSettingStatementTranslatorTests
-	{
+    public class ValueSettingStatementTranslatorTests : TestBase
+    {
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdate()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression([new NameToken("a", lineIndex1)]);
+            var expressionToSetTo = new Expression([new NumericValueToken("1", lineIndex1)]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = (Int16)1",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -49,17 +41,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdateToBoolean()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new BuiltInValueToken("true", 0)
-			});
+            var expressionToSet = new Expression([new NameToken("a", lineIndex1)]);
+            var expressionToSetTo = new Expression([new BuiltInValueToken("true", lineIndex1)]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = true",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -76,19 +62,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void IfThereAreZeroArgumentsThenSpecifyingArgumentProviderIsNotRequired()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0),
-                new MemberAccessorOrDecimalPointToken(".", 0),
-                new NameToken("b", 0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1),
+                new MemberAccessorOrDecimalPointToken(".", lineIndex1),
+                new NameToken("b", lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _env.a, \"b\")",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                "_.SET((Int16)1, this, _env.a, \"b\")",
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -105,22 +91,22 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void OutermostScopeDeclaredSimpleValueTypeUpdate()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
                 "_outer.a = (Int16)1",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeVariable(
                 GetEmptyScopeAccessInformation(),
                 "a",
-                0
+                lineIndex1
             );
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -139,25 +125,25 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void OutermostScopeDeclaredSimpleValueTypeUpdateOfArray()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0),
-                new OpenBrace(0),
-                new NumericValueToken("1", 0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new NumericValueToken("1", lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _outer.a, null, _.ARGS.Val((Int16)1))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                "_.SET((Int16)1, this, _outer.a, null, _.ARGS.Val((Int16)1))",
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeVariable(
                 GetEmptyScopeAccessInformation(),
                 "a",
-                0
+                lineIndex1
             );
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -176,20 +162,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdateOfArray()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0),
-                new OpenBrace(0),
-                new NumericValueToken("1", 0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new NumericValueToken("1", lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _env.a, null, _.ARGS.Val((Int16)1))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                "_.SET((Int16)1, this, _env.a, null, _.ARGS.Val((Int16)1))",
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -209,25 +195,25 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void InvalidFunctionSettingMustCompileThoughFailAtRunTime()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0),
-                new OpenBrace(0),
-                new NumericValueToken("1", 0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new NumericValueToken("1", lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), null, _.ARGS.Val((Int16)1))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                "_.SET((Int16)1, this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), null, _.ARGS.Val((Int16)1))",
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeFunction(
                 GetEmptyScopeAccessInformation(),
                 "a",
-                0
+                lineIndex1
             );
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -246,20 +232,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // CDate(..) needs to be mapped to _.CDATE(..) - this may be called directly if the correct number of arguments are specified. If an incorrect number
             // of arguments is passed then the support function must be executed via the "CALL" method (so that the error arises at runtime, rather than compile
             // time, in order to be consistent with VBScript), see BuiltInFunctionsAreMappedToTheSupportClassButMayNotBeCalledDirectlyIfArgumentCountsMatch.
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new IToken[]
-			{
-                new BuiltInFunctionToken("CDate", 0),
-                new OpenBrace(0),
-                new NameToken("a", 0),
-                new CloseBrace(0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new BuiltInFunctionToken("CDate", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new NameToken("a", lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = _.CDATE(_env.a)",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -280,22 +266,22 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // arguments is being passed to a support function. As such, it may not be called directly and must pass through the "CALL" method, so that the
             // mistake becomes a runtime error rather than compile time. On the plus side, all of the support functions may be called with ByVal parameters,
             // so the translated code is slightly more succinct that it would be if they had to support ByRef.
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new IToken[]
-			{
-                new BuiltInFunctionToken("CDate", 0),
-                new OpenBrace(0),
-                new NameToken("a", 0),
-                new ArgumentSeparatorToken(0),
-                new NameToken("b", 0),
-                new CloseBrace(0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new BuiltInFunctionToken("CDate", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new NameToken("a", lineIndex1),
+                new ArgumentSeparatorToken(lineIndex1),
+                new NameToken("b", lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = _.VAL(_.CALL(this, _, \"CDATE\", _.ARGS.Val(_env.a).Val(_env.b)))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0), new NameToken("b", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -316,14 +302,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // was incorrectly applying the logic that it should have gotten for free by using that method - if an undeclared variable was being accessed
             // within a method (for the to-set target) then it was being mapped back to the "Environment References" class instead of being treated as
             // local to the function.
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0)
-			});
-            var expressionToSetTo = new Expression(new IToken[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var valueSettingStatement = new ValueSettingStatement(
                 expressionToSet,
                 expressionToSetTo,
@@ -333,14 +319,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             var containingFunction = new FunctionBlock(
                 isPublic: true,
                 isDefault: false,
-                name: new NameToken("F1", 0),
-                parameters: new AbstractFunctionBlock.Parameter[0],
-                statements: new[] { valueSettingStatement }
+                name: new NameToken("F1", lineIndex1),
+                parameters: [],
+                statements: [valueSettingStatement]
             );
 
             var expected = new TranslatedStatementContentDetails(
                 "a = (Int16)1",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             scopeAccessInformation = new ScopeAccessInformation(
@@ -351,7 +337,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
                 scopeAccessInformation.Classes,
-                scopeAccessInformation.Functions.Add(new ScopedNameToken("F1", 0, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)),
+                scopeAccessInformation.Functions.Add(new ScopedNameToken("F1", lineIndex1, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)),
                 scopeAccessInformation.Properties,
                 scopeAccessInformation.Constants,
                 scopeAccessInformation.Variables,
@@ -368,19 +354,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypeVariableWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("a", 0),
-                new OpenBrace(0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("a", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("a", 0) })
+                "_.SET((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
+                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
@@ -400,21 +386,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypeFunctionWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("F1", 0),
-                new OpenBrace(0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("F1", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("F1", 0) })
+                "_.SET((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
+                new NonNullImmutableList<NameToken>([new NameToken("F1", lineIndex1)])
             );
-            var scopeAccessInformation = AddOutermostScopeFunction(GetEmptyScopeAccessInformation(), "F1", 0);
+            var scopeAccessInformation = AddOutermostScopeFunction(GetEmptyScopeAccessInformation(), "F1", lineIndex1);
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
                     expressionToSet,
@@ -433,21 +419,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypePropertyWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(new IToken[]
-			{
-                new NameToken("Name", 0),
-                new OpenBrace(0),
-                new CloseBrace(0)
-			});
-            var expressionToSetTo = new Expression(new[]
-			{
-                new NumericValueToken("1", 0)
-			});
+            var expressionToSet = new Expression(
+            [
+                new NameToken("Name", lineIndex1),
+                new OpenBrace(lineIndex1),
+                new CloseBrace(lineIndex1)
+            ]);
+            var expressionToSetTo = new Expression(
+            [
+                new NumericValueToken("1", lineIndex1)
+            ]);
             var expected = new TranslatedStatementContentDetails(
-				"_.SET((Int16)1, this, this, \"Name\")",
-                new NonNullImmutableList<NameToken>(new[] { new NameToken("Name", 0) })
+                "_.SET((Int16)1, this, this, \"Name\")",
+                new NonNullImmutableList<NameToken>([new NameToken("Name", lineIndex1)])
             );
-            var scopeAccessInformation = AddPropertyToScope(GetEmptyScopeAccessInformation(), "Name", 0);
+            var scopeAccessInformation = AddPropertyToScope(GetEmptyScopeAccessInformation(), "Name", lineIndex1);
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
                     expressionToSet,
@@ -480,23 +466,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         private static ValueSettingStatementsTranslator GetDefaultValueSettingStatementTranslator()
-		{
+        {
             return new ValueSettingStatementsTranslator(
                 DefaultSupportRefName,
                 DefaultSupportEnvName,
                 DefaultOuterScopeName,
                 DefaultNameRewriter,
-    			new StatementTranslator(
+                new StatementTranslator(
                     DefaultSupportRefName,
                     DefaultSupportEnvName,
                     DefaultOuterScopeName,
                     DefaultNameRewriter,
-				    GetDefaultTempValueNameGenerator(),
+                    GetDefaultTempValueNameGenerator(),
                     new NullLogger()
                 ),
                 new NullLogger()
-			);
-		}
+            );
+        }
 
         private static ScopeAccessInformation AddOutermostScopeFunction(ScopeAccessInformation scopeAccessInformation, string name, int lineIndex)
         {
@@ -589,15 +575,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         private static CSharpName DefaultSupportEnvName = new CSharpName("_env");
         private static CSharpName DefaultOuterScopeName = new CSharpName("_outer");
         private static VBScriptNameRewriter DefaultNameRewriter = new DefaultVBScriptNameRewriter();// nameToken => new CSharpName(nameToken.Content.ToLower()));
-		private static TempValueNameGenerator GetDefaultTempValueNameGenerator()
-		{
-			var index = 0;
-			return (optionalPrefix, scopeAccessInformation) =>
-			{
-				var name = ((optionalPrefix == null) ? "temp" : optionalPrefix.Name) + index;
-				index++;
-				return new CSharpName(name);
-			};
-		}
-	}
+        private static TempValueNameGenerator GetDefaultTempValueNameGenerator()
+        {
+            var index = 0;
+            return (optionalPrefix, scopeAccessInformation) =>
+            {
+                var name = ((optionalPrefix == null) ? "temp" : optionalPrefix.Name) + index;
+                index++;
+                return new CSharpName(name);
+            };
+        }
+    }
 }
