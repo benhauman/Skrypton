@@ -145,7 +145,15 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         else
                         {
                             if (bracketedExpressions.Length > 1)
-                                throw new ArgumentException("If bracketed content is not for an argument list then it's invalid for there to be multiple expressions within it");
+                            {
+                                string additionalErrorText = $" Token '{token.GetType().Name}', line:{token.LineIndex}:{token.Content}. Expressions:";
+                                foreach (Expression bracketedExpression in bracketedExpressions)
+                                {
+                                    additionalErrorText += ", " + bracketedExpression.RenderedContent;
+                                }
+
+                                throw new ArgumentException("If bracketed content is not for an argument list then it's invalid for there to be multiple expressions within it." + additionalErrorText);
+                            }
                             expressionSegments.Add(
                                 WrapExpressionSegments(bracketedExpressions.Single().Segments, unwrapSingleBracketedTerm: false)
                             );
