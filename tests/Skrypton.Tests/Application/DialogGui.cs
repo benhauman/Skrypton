@@ -630,8 +630,6 @@ WScript.Echo xmlhttp.responseText
         [TestMethod]
         public void CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click() // select * from hlsysdialog where dbname = '_CustomerTest_Mainova' and dialogid = 2; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Mainova';
         {
-            Assert.Inconclusive();
-            if (TestContext != null) return;
             var hlobj = new HLObjectInstance()
                     .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
@@ -656,6 +654,7 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
+                Assert.Inconclusive();
                 //ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
             });
         }
