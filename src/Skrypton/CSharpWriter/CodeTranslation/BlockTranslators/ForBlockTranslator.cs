@@ -829,7 +829,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var expressions =
                   ExpressionGenerator.Generate(
                       expression.Tokens,
-                      (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null : scopeAccessInformation.DirectedWithReferenceIfAny.AsToken(),
+                      WithStatementInformation.TryGet(scopeAccessInformation),
                       _logger.Warning
                   )
                   .ToArray();

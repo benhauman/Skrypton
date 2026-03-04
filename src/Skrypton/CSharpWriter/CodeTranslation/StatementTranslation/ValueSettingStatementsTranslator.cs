@@ -73,7 +73,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // 2014-04-03 DWR: Used to pass valueSettingStatement.ValueToSet.BracketStandardisedTokens here but there is no opportunity for "optional"
             // brackets in VBScript for the target of an assignment statement so the BracketStandardisedTokens added nothing here but complexity and
             // so has been removed.
-            NameToken? directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null : scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
+            //NameToken? directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null :  scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
+            WithStatementInformation? directedWithReferenceTokenIfAny = WithStatementInformation.TryGet(scopeAccessInformation);
             Expression[] targetExpression = ExpressionGenerator.Generate(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
             if (targetExpression.Length != 1)
                 throw new ArgumentException("The ValueToSet should always be described by a single expression");

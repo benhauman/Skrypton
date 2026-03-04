@@ -33,7 +33,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             var expressions =
                 ExpressionGenerator.Generate(
                     (returnRequirements == ExpressionReturnTypeOptions.None) ? statement.GetBracketStandardisedTokens(scopeAccessInformation.DirectedWithReferenceIfAny?.AsToken()) : statement.Tokens,
-                    (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null : scopeAccessInformation.DirectedWithReferenceIfAny.AsToken(),
+                    WithStatementInformation.TryGet(scopeAccessInformation),
                     warningLogger
                 ).ToArray();
             if (expressions.Length != 1)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport.Exceptions;
@@ -15,7 +16,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// present the terms will be bracketed up to apply the max-one-operator restriction and to enforce VBScript operator precedence. This will
         /// never return null nor a set containing any nulls, it will raise an exception for a null token set or a set containing any nulls.
         /// </summary>
-        public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, IToken? directedWithReferenceIfAny, Action<string> warningLogger)
+        public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -28,7 +29,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never return null nor a set containing any nulls
         /// </summary>
-        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, IToken? directedWithReferenceIfAny, Action<string> warningLogger)
+        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokenNavigator == null)
                 throw new ArgumentNullException(nameof(tokenNavigator));
@@ -148,11 +149,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                             if (bracketedExpressions.Length > 1)
                             {
                                 // test: CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click
-                                if (directedWithReferenceIfAny != null && directedWithReferenceIfAny is DoNotRenameNameToken donotrename && donotrename.ContentUpperX().UpperText == "WITH")
+                                if (directedWithReferenceIfAny != null)// && directedWithReferenceIfAny.TokenWith is DoNotRenameNameToken donotrename && donotrename.ContentUpperX().UpperText == "WITH")
                                 {
                                     expressionSegments.Add(
                                         GetCallOrNewOrValueExpressionSegment(
-                                            [directedWithReferenceIfAny],//accessorBuffer is empty => get memberAccessTokens for from the 'with',
+                                            [directedWithReferenceIfAny.WithTokenRef],//accessorBuffer is empty => get memberAccessTokens for from the 'with',
                                             bracketedExpressions,
                                             directedWithReferenceIfAny,
                                             argumentsAreBracketed: true,
@@ -398,7 +399,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         private static IExpressionSegment GetCallOrNewOrValueExpressionSegment(
             IReadOnlyCollection<IToken> tokens,
             Expression[] arguments,
-            IToken? directedWithReferenceIfAny,
+            WithStatementInformation? directedWithReferenceIfAny,
             bool argumentsAreBracketed,
             bool willBeFirstSegmentInCallExpression,
             Action<string> warningLogger)
@@ -423,7 +424,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 {
                     if (directedWithReferenceIfAny == null)
                         throw new ArgumentException("The first token in the first segment of an expression can not be a MemberAccessorOrDecimalPointToken unless the statement is found within a WITH construct");
-                    tokensList.Insert(0, directedWithReferenceIfAny);
+                    tokensList.Insert(0, directedWithReferenceIfAny.WithTokenRef);
                 }
             }
             else if (!willBeFirstSegmentInCallExpression)
@@ -729,5 +730,24 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 get { return _index >= _tokens.Length; }
             }
         }
+    }
+
+    public sealed class WithStatementInformation
+    {
+        private readonly WithBlock _withBlockContent;
+        internal readonly IToken WithTokenRef;
+        internal Skrypton.LegacyParser.CodeBlocks.Basic.Expression WithTarget => _withBlockContent.Target;
+        public WithStatementInformation(WithBlock withBlockContent, IToken directedWithReference)
+        {
+            _withBlockContent = withBlockContent ?? throw new ArgumentNullException(nameof(withBlockContent));
+            WithTokenRef = directedWithReference ?? throw new ArgumentNullException(nameof(directedWithReference));
+        }
+
+        internal static WithStatementInformation? TryGet(CSharpWriter.CodeTranslation.ScopeAccessInformation scopeAccessInformation)
+        {
+            return scopeAccessInformation.DirectedWithReferenceIfAny == null ? null : new WithStatementInformation((WithBlock)scopeAccessInformation.Parent, scopeAccessInformation.DirectedWithReferenceIfAny!.AsToken());
+        }
+
+        public static WithStatementInformation CreateForTest(WithBlock withBlockContent, IToken directedWithReference) => new WithStatementInformation(withBlockContent, directedWithReference);
     }
 }

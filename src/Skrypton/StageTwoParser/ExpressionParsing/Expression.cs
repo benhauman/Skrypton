@@ -5,7 +5,7 @@ using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.StageTwoParser.ExpressionParsing
 {
-    public class Expression
+    public sealed class Expression // Rename to 'ParsingExpression'
     {
         public Expression(IReadOnlyCollection<IExpressionSegment> segments)
         {

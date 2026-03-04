@@ -656,7 +656,7 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
+                //ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
             });
         }
 
