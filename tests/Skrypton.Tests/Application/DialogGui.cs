@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
-using Skrypton.Tests.Application.Controls;
 using Skrypton.Tests.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.Application
@@ -630,15 +629,16 @@ WScript.Echo xmlhttp.responseText
         [TestMethod]
         public void CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click() // select * from hlsysdialog where dbname = '_CustomerTest_Mainova' and dialogid = 2; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Mainova';
         {
-            var hlobj = new HLObjectInstance()
+            var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true)
                     .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
+                    .RegisterValueKey<string>("PersonGeneral.Name", 0, 0, "Kuku-Muku")
                 ;
             var model = new DialogGuidModel();
 
-            IHostProcessControlHostService processControlHostService = CreateTestProcessControlHostService();
+            IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
 
-            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostProcessControlHostService>(() => processControlHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
@@ -662,6 +662,11 @@ WScript.Echo xmlhttp.responseText
         private IHostProcessControlHostService CreateTestProcessControlHostService()
         {
             return new TestHostProcessControlHostService();
+        }
+
+        private IHostDatabaseConnectionFactoryHostService CreateTestDatabaseConnectionFactoryHostService()
+        {
+            return new TestDatabaseConnectionFactoryHostService();
         }
     }
 

@@ -17,6 +17,14 @@ namespace Skrypton.Tests.Application
         {
         }
 
+        public HLObjectInstance InitializeObjectInstance(bool isNew)
+        {
+            IsNew = isNew ? 1 : 0;
+            return this;
+        }
+
+        public object IsNew { get; private set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GetValue")]
         [return: MarshalAs(UnmanagedType.Struct)]
         public object GetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
