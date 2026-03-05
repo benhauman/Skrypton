@@ -12,11 +12,11 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     public static class ExpressionGenerator
     {
         /// <summary>
-        /// This will arrange a token set into an expression tree where no expression will have more than one operator, where multiple operators are
+        /// This will arrange a token set into an codeExpression tree where no codeExpression will have more than one operator, where multiple operators are
         /// present the terms will be bracketed up to apply the max-one-operator restriction and to enforce VBScript operator precedence. This will
         /// never return null nor a set containing any nulls, it will raise an exception for a null token set or a set containing any nulls.
         /// </summary>
-        public static IEnumerable<Expression> Generate(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
+        public static IEnumerable<ParsingExpression> Generate(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -29,7 +29,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never return null nor a set containing any nulls
         /// </summary>
-        private static Expression[] Generate(TokenNavigator tokenNavigator, int depth, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
+        private static ParsingExpression[] Generate(TokenNavigator tokenNavigator, int depth, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokenNavigator == null)
                 throw new ArgumentNullException(nameof(tokenNavigator));
@@ -38,7 +38,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            List<Expression> expressions = new List<Expression>();
+            List<ParsingExpression> expressions = new List<ParsingExpression>();
             List<IExpressionSegment> expressionSegments = new List<IExpressionSegment>();
             List<IToken> accessorBuffer = new List<IToken>();
             while (true)
@@ -75,8 +75,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     }
                     break;
                 }
-
-                if (token is ArgumentSeparatorToken)
+                else if (token is ArgumentSeparatorToken)
                 {
                     if (depth == 0)
                         throw new ArgumentException("Encountered ArgumentSeparatorToken in top-level content - invalid");
@@ -103,17 +102,16 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     tokenNavigator.MoveNext(); // Move on since this token has been processed
                     continue;
                 }
-
-                if (token is OpenBrace)
+                else if (token is OpenBrace)
                 {
                     tokenNavigator.MoveNext(); // Move on since this token has been processed
 
                     // Get the content from inside the brackets (using a TokenNavigator here that is passed again into the Generate
                     // method means that when the below call returns, the tokenNavigator here will have been moved along to after
                     // the bracketed content that is about to be processed)
-                    Expression[] bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
+                    ParsingExpression[] bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
 
-                    // If the accessorBuffer isn't empty then the bracketed content should be arguments, if not then it's just a bracketed expression
+                    // If the accessorBuffer isn't empty then the bracketed content should be arguments, if not then it's just a bracketed codeExpression
                     if (accessorBuffer.Count != 0)
                     {
                         expressionSegments.Add(
@@ -132,7 +130,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     {
                         if (expressionSegments.Count != 0 && (expressionSegments.Last() is CallSetItemExpressionSegment))
                         {
-                            // If the previous expression segment was a CallExpressionSegment or CallSetItemExpressionSegment (the first
+                            // If the previous codeExpression segment was a CallExpressionSegment or CallSetItemExpressionSegment (the first
                             // is derived from the second so only a single type check is required) then this bracketed content should
                             // be considered a continuation of the call (these segments will later be grouped into a single
                             // CallSetExpression)
@@ -165,7 +163,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                                 else
                                 {
                                     string additionalErrorText = $" Token '{token.GetType().Name}', line:{token.LineIndex}:{token.Content}. Expressions:";
-                                    foreach (Expression bracketedExpression in bracketedExpressions)
+                                    foreach (ParsingExpression bracketedExpression in bracketedExpressions)
                                     {
                                         additionalErrorText += ", " + bracketedExpression.RenderedContent;
                                     }
@@ -183,9 +181,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     }
                     continue;
                 }
-
-                OperatorToken? operatorToken = token as OperatorToken;
-                if (operatorToken != null)
+                else if (token is OperatorToken operatorToken)
                 {
                     if (accessorBuffer.Count != 0)
                     {
@@ -210,7 +206,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
 
                 accessorBuffer.Add(token);
                 tokenNavigator.MoveNext();
-            }
+            } // while
+
             if (accessorBuffer.Count != 0)
             {
                 expressionSegments.Add(
@@ -238,18 +235,18 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (expressionSegmentBuffer == null)
                 throw new ArgumentNullException(nameof(expressionSegmentBuffer));
 
-            // If the expressionSegmentBuffer is empty and the next segment to be to processed is a part of a call expression then it will definitely be the
-            // first of its segments. Same logic applies if the previous expression segment was an operator since this will be the first part of an expression
-            // that contains multiple expressions - eg. "a * b". Otherwise, the next expression segment must be part of a single expression that is being
+            // If the expressionSegmentBuffer is empty and the next segment to be to processed is a part of a call codeExpression then it will definitely be the
+            // first of its segments. Same logic applies if the previous codeExpression segment was an operator since this will be the first part of an codeExpression
+            // that contains multiple expressions - eg. "a * b". Otherwise, the next codeExpression segment must be part of a single codeExpression that is being
             // processed (eg. ".Name" from "a.Name").
             IExpressionSegment? lastExpressionSegmentIfAny = expressionSegmentBuffer.LastOrDefault();
             return (lastExpressionSegmentIfAny == null) || (lastExpressionSegmentIfAny is OperationExpressionSegment);
         }
 
         /// <summary>
-        /// This applies bracketing to expression segments to enforce VBScript's operator precedence rules
+        /// This applies bracketing to codeExpression segments to enforce VBScript's operator precedence rules
         /// </summary>
-        private static Expression GetExpression(IReadOnlyCollection<IExpressionSegment> segments)
+        private static ParsingExpression GetExpression(IReadOnlyCollection<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
@@ -260,7 +257,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (segmentsArray.Any(s => s == null))
                 throw new ArgumentException("Null reference encountered in segments set");
 
-            // If there are zero or one operators in the expression content then we don't need to do any bracketing to guarantee operator precedence
+            // If there are zero or one operators in the codeExpression content then we don't need to do any bracketing to guarantee operator precedence
             Tuple<OperationExpressionSegment, int>[] operatorSegments = segmentsArray
                 .Select((s, index) => Tuple.Create(s as OperationExpressionSegment, index))
                 .Where(s => s.Item1 != null)
@@ -275,7 +272,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     // with cases such as
                     //   If (a = (1)) Then
                     // where the unnecessary brackets around the "1" need to be removed so that the comparison forces "a" into a number. This only needs to be
-                    // done when there is an operator in the expression and only CAN be done in there is an operator, so that the brackets are not deemed
+                    // done when there is an operator in the codeExpression and only CAN be done in there is an operator, so that the brackets are not deemed
                     // unnecessary in
                     //   a = Test((b))
                     // since the "extra" brackets around "b" are NOT extraneous and indicate that "b" must be passed ByVal into Test.
@@ -302,7 +299,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (firstArithmeticNegationOperation != null)
             {
                 if (firstArithmeticNegationOperation.Item2 == (segmentsArray.Length - 1))
-                    throw new ArgumentException("Encountered negation operator at end of expression segment content - invalid");
+                    throw new ArgumentException("Encountered negation operator at end of codeExpression segment content - invalid");
                 return GetExpression(
                     BracketOffTerms(segmentsArray, firstArithmeticNegationOperation.Item2, 2)
                 );
@@ -323,7 +320,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 if (lastLogicalInversion != null)
                 {
                     if (lastLogicalInversion.Item2 == (segmentsArray.Length - 1))
-                        throw new ArgumentException("Encountered NOT operator at end of expression segment content - invalid");
+                        throw new ArgumentException("Encountered NOT operator at end of codeExpression segment content - invalid");
                     return GetExpression(
                         BracketOffTerms(segmentsArray, lastLogicalInversion.Item2, 2)
                     );
@@ -331,7 +328,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             }
 
             // Now that the special cases are out of the way, we just need to determine which of the current operators needs addressing first
-            // - We follow the VBScript rules of precedence and then reverse them in order to determine where to break on (if we have the expression
+            // - We follow the VBScript rules of precedence and then reverse them in order to determine where to break on (if we have the codeExpression
             //   "a + b * c" then "b * c" should be bracketed since multiplication takes precedence, so we break on the "+" and bracket off the b,
             //   c multiplication against the remaining a token - so we had to break on the operator with the least precedence, hence taking the
             //   last element of the ordered set)
@@ -398,7 +395,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// </summary>
         private static IExpressionSegment GetCallOrNewOrValueExpressionSegment(
             IReadOnlyCollection<IToken> tokens,
-            Expression[] arguments,
+            ParsingExpression[] arguments,
             WithStatementInformation? directedWithReferenceIfAny,
             bool argumentsAreBracketed,
             bool willBeFirstSegmentInCallExpression,
@@ -415,7 +412,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (tokensList.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in tokens set");
 
-            // If the first segment in a call expression and the first token is a "." then directedWithReferenceIfAny must be non-null (meaning this statement is
+            // If the first segment in a call codeExpression and the first token is a "." then directedWithReferenceIfAny must be non-null (meaning this statement is
             // found within a "WITH x" construct) or the statement is invalid. The statement "a(0).Name" is broken down into two segments; "a(0)" and ".Name" -
             // clearly starting with a "." is acceptable (mandatory, in fact!) for ".Name" but would only be in the first segment if found within a WITH.
             if (tokensList[0] is MemberAccessorOrDecimalPointToken)
@@ -423,12 +420,12 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 if (willBeFirstSegmentInCallExpression)
                 {
                     if (directedWithReferenceIfAny == null)
-                        throw new ArgumentException("The first token in the first segment of an expression can not be a MemberAccessorOrDecimalPointToken unless the statement is found within a WITH construct");
+                        throw new ArgumentException("The first token in the first segment of an codeExpression can not be a MemberAccessorOrDecimalPointToken unless the statement is found within a WITH construct");
                     tokensList.Insert(0, directedWithReferenceIfAny.WithTokenRef);
                 }
             }
             else if (!willBeFirstSegmentInCallExpression)
-                throw new ArgumentException("All segments in a call expression after the first must start with a MemberAccessorOrDecimalPointToken");
+                throw new ArgumentException("All segments in a call codeExpression after the first must start with a MemberAccessorOrDecimalPointToken");
 
             // Any member access involving a numeric literal will result in a compile time error - eg.
             //   WScript.Echo a.1
@@ -440,7 +437,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 throw new ArgumentException($"Invalid member access - involving numeric literal (this is VBScript compile time error \"Expected end of statement\"). LineIndex:{tokenF.LineIndex}: {tokenF.Content}");
             }
 
-            // If there are no arguments and no brackets then there's a chance of representing this as a constant-type expression or as a new instance request
+            // If there are no arguments and no brackets then there's a chance of representing this as a constant-type codeExpression or as a new instance request
             // - If there are brackets following a number literal then it's a runtime error ("Type mismatch")
             // - If there are brackets following a constant then it's a runtime error ("Type mismatch")
             // - If there are brackets following a class instantiation then it's a compile time error
@@ -543,9 +540,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         }
 
         /// <summary>
-		/// Generate a BracketedExpressionSegment instance - if there is only a single expression segment, where that segment is a bracketed segment, then return
+		/// Generate a BracketedExpressionSegment instance - if there is only a single codeExpression segment, where that segment is a bracketed segment, then return
 		/// that segment rather than wrapping it again (this is done recursively in case there are multiple layers of over-wrapped bracketed segments). Note: If
-		/// it ends up that there's only one expression segment in total then this will be returned, unwrapped.
+		/// it ends up that there's only one codeExpression segment in total then this will be returned, unwrapped.
 		/// </summary>
         private static IExpressionSegment WrapExpressionSegments(IEnumerable<IExpressionSegment> segments, bool unwrapSingleBracketedTerm)
         {
@@ -570,9 +567,9 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if ((segmentsArray.Length == 1) && (unwrapSingleBracketedTerm || (segmentsArray[0] is BracketedExpressionSegment)))
             {
                 // If we've ended up with a single segment then we might not have to wrap it up further. This is the case if it is a BracketedExpressionSegment
-                // (if this is the case then it brackets multiple segments). It may also be the case it the expression is for a simple expression (eg. "a") -
+                // (if this is the case then it brackets multiple segments). It may also be the case it the codeExpression is for a simple codeExpression (eg. "a") -
                 // in this case we may or may not bracket it up, depending upon the unwrapSingleBracketedTerm argument value; this will vary depending upon
-                // whether the simple expression is one side of an operator (in which case bracketing will never be required and so unwrapSingleBracketedTerm
+                // whether the simple codeExpression is one side of an operator (in which case bracketing will never be required and so unwrapSingleBracketedTerm
                 // will be true) or if it is a function argument (in which case we can't be sure that removing bracketing will have no effect, it may force
                 // an argument to be passed ByVal when it would otherwise be ByRef, for example - in this case unwrapSingleBracketedTerm will be false and
                 // the single term WILL be bracketed up).
@@ -582,12 +579,12 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         }
 
         /// <summary>
-        /// Consecutive CallExpressionSegments should not appear in an Expression as consecutive CallExpressionSegments are segments that represent part
+        /// Consecutive CallExpressionSegments should not appear in an ParsingExpression as consecutive CallExpressionSegments are segments that represent part
         /// of the same operation - eg. "a(0).Test" is represented by two CallExpressionSegments, one for "a(0)" and one for "Test" - but really they
         /// describe two parts of a single retrieval. As such, they should be wrapped in a CallSetExpressionSegment (single CallExpressionSegments
         /// are fine).
         /// </summary>
-        private static Expression GetCallExpressionSegmentGroupedExpression(IEnumerable<IExpressionSegment> segments)
+        private static ParsingExpression GetCallExpressionSegmentGroupedExpression(IEnumerable<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));
@@ -636,7 +633,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 else
                     expressionSegments.Add(new CallSetExpressionSegment(callSetItemExpressionSegmentBuffer));
             }
-            return new Expression(expressionSegments);
+            return new ParsingExpression(expressionSegments);
         }
 
         /// <summary>
@@ -736,7 +733,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     {
         private readonly WithBlock _withBlockContent;
         internal readonly IToken WithTokenRef;
-        internal Skrypton.LegacyParser.CodeBlocks.Basic.Expression WithTarget => _withBlockContent.Target;
+        internal Skrypton.LegacyParser.CodeBlocks.Basic.CodeExpression WithTarget => _withBlockContent.Target;
         public WithStatementInformation(WithBlock withBlockContent, IToken directedWithReference)
         {
             _withBlockContent = withBlockContent ?? throw new ArgumentNullException(nameof(withBlockContent));

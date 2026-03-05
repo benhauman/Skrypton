@@ -22,7 +22,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 throw new ArgumentException("Empty segments set specified - invalid");
 
             // 2015-03-23 DWR: For deeply-nested bracketed segments, it can be very expensive to enumerate over their AllTokens sets repeatedly so it's worth preparing the data once and
-            // avoiding doing it over and over again. This is often seen with an expression with many string concatenations - currently they are broken down into pairs of operations,
+            // avoiding doing it over and over again. This is often seen with an codeExpression with many string concatenations - currently they are broken down into pairs of operations,
             // which results in many bracketed operations (I want to change this for concatenations going forward, since it's so common to have sets of concatenations and it would
             // be better if the CONCAT took a variable number of arguments rather than just two, but this hasn't been done yet).
             _allTokens =

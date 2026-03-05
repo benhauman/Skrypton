@@ -55,7 +55,7 @@ namespace Skrypton.ScriptControlSupport
         //// Run a function with parameters like Run in ScriptControl
         //public async Task<object> RunAsync(string functionName, params object[] args)
         //{
-        //    // Generate call expression dynamically
+        //    // Generate call codeExpression dynamically
         //    var argList = string.Join(",", args.Select((a, i) => $"args[{i}]").ToArray());
         //    var code = $"{functionName}({argList})";
         //    var globals = GetGlobalsObject();

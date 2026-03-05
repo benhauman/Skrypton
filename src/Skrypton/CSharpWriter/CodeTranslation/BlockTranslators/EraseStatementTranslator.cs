@@ -187,7 +187,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         targetExpressionTokens.Add(new CloseBrace(targetExpressionTokens.Last().LineIndex));
                     }
                     var translatedTarget = _statementTranslator.Translate(
-                        new Expression(targetExpressionTokens),
+                        new CodeExpression(targetExpressionTokens),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified,
                         _logger.Warning

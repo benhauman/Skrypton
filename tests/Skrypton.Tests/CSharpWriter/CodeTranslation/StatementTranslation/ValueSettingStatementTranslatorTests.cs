@@ -17,8 +17,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdate()
         {
-            var expressionToSet = new Expression([new NameToken("a", lineIndex1)]);
-            var expressionToSetTo = new Expression([new NumericValueToken("1", lineIndex1)]);
+            var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
+            var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = (Int16)1",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
@@ -41,8 +41,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdateToBoolean()
         {
-            var expressionToSet = new Expression([new NameToken("a", lineIndex1)]);
-            var expressionToSetTo = new Expression([new BuiltInValueToken("true", lineIndex1)]);
+            var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
+            var expressionToSetTo = new CodeExpression([new BuiltInValueToken("true", lineIndex1)]);
             var expected = new TranslatedStatementContentDetails(
                 "_env.a = true",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
@@ -62,13 +62,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void IfThereAreZeroArgumentsThenSpecifyingArgumentProviderIsNotRequired()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1),
                 new MemberAccessorOrDecimalPointToken(".", hasLeadingWhiteSpace: false, lineIndex1),
                 new NameToken("b", lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -91,11 +91,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void OutermostScopeDeclaredSimpleValueTypeUpdate()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -125,14 +125,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void OutermostScopeDeclaredSimpleValueTypeUpdateOfArray()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NumericValueToken("1", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -162,14 +162,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void UndeclaredSimpleValueTypeUpdateOfArray()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NumericValueToken("1", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -195,14 +195,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void InvalidFunctionSettingMustCompileThoughFailAtRunTime()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NumericValueToken("1", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -232,11 +232,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // CDate(..) needs to be mapped to _.CDATE(..) - this may be called directly if the correct number of arguments are specified. If an incorrect number
             // of arguments is passed then the support function must be executed via the "CALL" method (so that the error arises at runtime, rather than compile
             // time, in order to be consistent with VBScript), see BuiltInFunctionsAreMappedToTheSupportClassButMayNotBeCalledDirectlyIfArgumentCountsMatch.
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new BuiltInFunctionToken("CDate", lineIndex1),
                 new OpenBrace(lineIndex1),
@@ -266,11 +266,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // arguments is being passed to a support function. As such, it may not be called directly and must pass through the "CALL" method, so that the
             // mistake becomes a runtime error rather than compile time. On the plus side, all of the support functions may be called with ByVal parameters,
             // so the translated code is slightly more succinct that it would be if they had to support ByRef.
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new BuiltInFunctionToken("CDate", lineIndex1),
                 new OpenBrace(lineIndex1),
@@ -302,11 +302,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // was incorrectly applying the logic that it should have gotten for free by using that method - if an undeclared variable was being accessed
             // within a method (for the to-set target) then it was being mapped back to the "Environment References" class instead of being treated as
             // local to the function.
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -354,13 +354,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypeVariableWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("a", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -386,13 +386,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypeFunctionWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("F1", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
@@ -419,13 +419,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         [TestMethod, MyFact]
         public void ValueSettingTargetOfTypePropertyWithZeroArgumentBracketsResultsInTypeMismatch()
         {
-            var expressionToSet = new Expression(
+            var expressionToSet = new CodeExpression(
             [
                 new NameToken("Name", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new Expression(
+            var expressionToSetTo = new CodeExpression(
             [
                 new NumericValueToken("1", lineIndex1)
             ]);

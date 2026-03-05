@@ -15,7 +15,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// It is valid to have a null conditionStatement in VBScript - in case the
         /// doUntil value is not of any consequence
         /// </summary>
-        public ForEachBlock(NameToken loopVar, Expression loopSrc, IList<ICodeBlock> statements)
+        public ForEachBlock(NameToken loopVar, CodeExpression loopSrc, IList<ICodeBlock> statements)
         {
             this.LoopVar = loopVar ?? throw new ArgumentNullException(nameof(loopVar));
             this.LoopSrc = loopSrc ?? throw new ArgumentNullException(nameof(loopSrc));
@@ -27,7 +27,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         [DataMember] public NameToken LoopVar { get; private set; }
 
-        [DataMember] public Expression LoopSrc { get; private set; }
+        [DataMember] public CodeExpression LoopSrc { get; private set; }
 
         [DataMember] public IList<ICodeBlock> Statements { get; private set; }
 
@@ -39,7 +39,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// </summary>
         IEnumerable<ICodeBlock> IHaveNestedContent.AllExecutableBlocks
         {
-            get { return new ICodeBlock[] { new Expression(new[] { LoopVar }), LoopSrc }.Concat(Statements); }
+            get { return new ICodeBlock[] { new CodeExpression(new[] { LoopVar }), LoopSrc }.Concat(Statements); }
         }
 
         // =======================================================================================

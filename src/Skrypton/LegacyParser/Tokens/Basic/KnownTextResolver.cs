@@ -12,7 +12,7 @@ internal static class KnownTextResolver
     // =======================================================================================
     /// <summary>
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     /// </summary>
     /// public static IEnumerable<string> ArithmeticAndStringOperatorTokenValues = new List<string>
@@ -24,7 +24,7 @@ internal static class KnownTextResolver
     // =======================================================================================
     /// <summary>
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     /// </summary>
     public static KnownTextContent[] k_ArithmeticAndStringOperatorTokenValues = CollectArithmeticAndStringOperatorTokenValues(); private static KnownTextContent[] CollectArithmeticAndStringOperatorTokenValues() => new KnownTextContent[]
@@ -41,14 +41,14 @@ internal static class KnownTextResolver
     };
 
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     /// public static IEnumerable<string> LogicalOperatorTokenValues = new List<string>
     /// {
     /// 	"NOT", "AND", "OR", "XOR"
     /// }.AsReadOnly();
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     public static KnownTextContent[] k_LogicalOperatorTokenValues = CollectLogicalOperatorTokenValues();  private static KnownTextContent[] CollectLogicalOperatorTokenValues() => new KnownTextContent[]
     {
@@ -103,7 +103,7 @@ internal static class KnownTextResolver
 
     /// <summary>
     /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+    /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
     /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
     /// </summary>
     /// public static IEnumerable<string> ComparisonTokenValues = new List<string>
@@ -339,7 +339,7 @@ internal static class KnownTextResolver
 
 
     /// <summary>
-    /// Does the content appear to represent a VBScript expression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
+    /// Does the content appear to represent a VBScript codeExpression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
     /// </summary>
     /// protected static bool isVBScriptValue(string atomContent)
     /// {
@@ -384,7 +384,7 @@ internal static class KnownTextResolver
     /// 	);
     /// }
     /// <summary>
-    /// Does the content appear to represent a VBScript expression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
+    /// Does the content appear to represent a VBScript codeExpression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
     /// </summary>
     private static readonly KnownTextContent[] k_VBScriptValue = StringContentCollectionCreate(
         new string[]

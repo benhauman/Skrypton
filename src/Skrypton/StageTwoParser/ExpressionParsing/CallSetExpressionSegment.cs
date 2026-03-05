@@ -8,7 +8,7 @@ using Skrypton.StageTwoParser.Tokens;
 namespace Skrypton.StageTwoParser.ExpressionParsing
 {
     /// <summary>
-    /// Consecutive CallExpressionSegment instance should not exist within an Expression if they all relates to parts of the same operation, instead
+    /// Consecutive CallExpressionSegment instance should not exist within an ParsingExpression if they all relates to parts of the same operation, instead
     /// they should be wrapped in a CallSetExpressionSegment so that it is clear that they are part of one action. This is because "a(0).Test" should
     /// be seen as one retrieval and not the constituent parts "a(0)" and "Test".
     /// </summary>

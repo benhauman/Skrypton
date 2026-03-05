@@ -3,13 +3,13 @@
     public enum ExpressionReturnTypeOptions
     {
         /// <summary>
-        /// This refers to a true .net boolean, where the expression is going to be used in a C# if statement (VBScript always returns pseudo-booleans,
+        /// This refers to a true .net boolean, where the codeExpression is going to be used in a C# if statement (VBScript always returns pseudo-booleans,
         /// represented by numbers, true and false are just -1 and 0, resp.)
         /// </summary>
         Boolean,
 
         /// <summary>
-        /// This means that the expression is a non-value-returning statement, in some cases different logic is applied to statements than value-returning
+        /// This means that the codeExpression is a non-value-returning statement, in some cases different logic is applied to statements than value-returning
         /// expressions and so a distinction is required between None and NotSpecified
         /// </summary>
         None,

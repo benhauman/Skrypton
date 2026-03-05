@@ -58,13 +58,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translationResult = TryToTranslateComment(translationResult!, openingComment, scopeAccessInformation, indentationDepth);
             }
 
-            // Do all of the work to decide what needs doing with the target expression (if it's not a simple value then it will be evaluating - this is done once for the entire
+            // Do all of the work to decide what needs doing with the target codeExpression (if it's not a simple value then it will be evaluating - this is done once for the entire
             // block and the resulting value reused for each case-value comparison)
             var targetExpressionTranslationDetails = TranslateTargetExpression(selectBlock.Expression, translationResult!, scopeAccessInformation, indentationDepth);
             translationResult = targetExpressionTranslationDetails.ExtendedTranslationResult;
             scopeAccessInformation = targetExpressionTranslationDetails.ExtendedScopeAccessInformation;
 
-            // If evaluation of the target expression fails at runtime then no comparisons work is required - note that this check is not required if there are zero comparisons
+            // If evaluation of the target codeExpression fails at runtime then no comparisons work is required - note that this check is not required if there are zero comparisons
             // to deal with. In this case, VBScript would still evaluate the target even though there's nothing to compare it to (and we remain consistent with that; the target
             // evaluation occurs above but we do nothing more if there are no comparison values).
             if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Length != 0)
@@ -129,8 +129,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     var lineIndexForScaffolding = explicitOptionsCaseBlock.Values.First().Tokens.First().LineIndex;
 
                     // If we're inside a function with by-ref arguments and any of those arguments needs to be accessed within a lambda (such as if error-trapping is enabled,
-                    // meaning we'll be performing the "IF" comparisons using the method signature that takes the expression to evaluate in as a lambda) then we'll need aliases
-                    // for those by-ref arguments. In this case, we'll use a temporary boolean to record the did-any-case-values-match-the-target-expression and set this flag
+                    // meaning we'll be performing the "IF" comparisons using the method signature that takes the codeExpression to evaluate in as a lambda) then we'll need aliases
+                    // for those by-ref arguments. In this case, we'll use a temporary boolean to record the did-any-case-values-match-the-target-codeExpression and set this flag
                     // using the aliases. We'll then tidy up the aliases and the "if" block itself will just reference that flag. If there are no by-ref argument aliases
                     // required then this complexity and temporary boolean are not required.
                     var byRefArgumentIdentifier = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
@@ -284,7 +284,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             // If error-trapping may be active at runtime then the meat of translated content will have been wrapped in an "if", based upon whether the select target was successfully evaluated (in which case
-            // we'll need to close that content here). Note that this will not have been the case if there were no expression to compare the target to (VBScript allows this - it evaluates the target expression
+            // we'll need to close that content here). Note that this will not have been the case if there were no codeExpression to compare the target to (VBScript allows this - it evaluates the target codeExpression
             // but then does nothing more).
             if ((targetExpressionTranslationDetails.SuccessfullyEvaluatedTargetNameIfRequired != null) && selectBlock.Content.Length != 0)
             {
@@ -410,10 +410,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult;
         }
 
-        private SelectTargetExpressionTranslationData TranslateTargetExpression(Expression targetExpression, TranslationResult translationResult, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
+        private SelectTargetExpressionTranslationData TranslateTargetExpression(CodeExpression targetCodeExpression, TranslationResult translationResult, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {
-            if (targetExpression == null)
-                throw new ArgumentNullException(nameof(targetExpression));
+            if (targetCodeExpression == null)
+                throw new ArgumentNullException(nameof(targetCodeExpression));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (translationResult == null)
@@ -421,11 +421,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth));
 
-            // If the target expression is a simple constant then we can skip any work required in evaluating its value
-            if (Is<NumericValueToken>(targetExpression) || Is<DateLiteralToken>(targetExpression) || Is<StringToken>(targetExpression) || Is<BuiltInValueToken>(targetExpression))
+            // If the target codeExpression is a simple constant then we can skip any work required in evaluating its value
+            if (Is<NumericValueToken>(targetCodeExpression) || Is<DateLiteralToken>(targetCodeExpression) || Is<StringToken>(targetCodeExpression) || Is<BuiltInValueToken>(targetCodeExpression))
             {
                 return new SelectTargetExpressionTranslationData(
-                    evaluatedTarget: targetExpression.Tokens.Single(),
+                    evaluatedTarget: targetCodeExpression.Tokens.Single(),
                     successfullyEvaluatedTargetNameIfRequired: null,
                     extendedTranslationResult: translationResult,
                     extendedScopeAccessInformation: scopeAccessInformation
@@ -437,9 +437,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // will need a default parameterless method or property, but that will be called when each comparison is made (this is important; the default member will not be called once and
             // its value stashed, it will be called for EACH comparison - so the NameToken is not wrapped in a VAL call at this point, the must-be-value-type logic will be handled in the EQ
             // implementation in the compat library since EQ only deals with value types, the IS operator deals with object types).
-            if (Is<NameToken>(targetExpression))
+            if (Is<NameToken>(targetCodeExpression))
             {
-                var targetNameToken = (NameToken)targetExpression.Tokens.Single();
+                var targetNameToken = (NameToken)targetCodeExpression.Tokens.Single();
                 if (!scopeAccessInformation.IsDeclaredReference(targetNameToken, _nameRewriter))
                 {
                     _logger.Warning("Undeclared variable: \"" + targetNameToken.Content + "\" (line " + (targetNameToken.LineIndex + 1) + ")");
@@ -453,7 +453,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 );
             }
 
-            // If we have to evaluate the target expression then we'll store it in a local variable which will be referenced by the comparisons. This variable needs to be added to the
+            // If we have to evaluate the target codeExpression then we'll store it in a local variable which will be referenced by the comparisons. This variable needs to be added to the
             // scope access information so that when the comparisons are translated into C#, the code that does so knows that it is a declared local variable and not an undeclared variable
             // that must be accessed through the "Environment References" class. Note that there is currently no way to add a name token to the scope that will not pass through the name
             // rewriter, so the name "target" needs to be one that we do not expect the name rewriter to affect (this is not great since it means that there is an undeclared implicit
@@ -461,7 +461,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // around to support a ScopedDoNotRenameNameToken).
             var evaluatedTargetName = _tempNameGenerator(new CSharpName("target"), scopeAccessInformation);
             scopeAccessInformation = scopeAccessInformation.ExtendVariables(new NonNullImmutableList<ScopedNameToken>(new[] {
-                new ScopedNameToken(evaluatedTargetName.Name.ToUpperX(), targetExpression.Tokens.First().LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)
+                new ScopedNameToken(evaluatedTargetName.Name.ToUpperX(), targetCodeExpression.Tokens.First().LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)
             }));
 
             // If error-trapping may be enabled at runtime then we need to wrap the select target evaluation in a HANDLEERROR call. If the evaulation fails then nothing else in the select
@@ -473,7 +473,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             TranslatedStatementContentDetails evaluatedTargetContent;
             var byRefArgumentIdentifier = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
             var byRefArgumentsToRewrite = byRefArgumentIdentifier.GetByRefArgumentsThatNeedRewriting(
-                targetExpression.ToStageTwoParserExpression(scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning),
+                targetCodeExpression.ToStageTwoParserExpression(scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning),
                 scopeAccessInformation,
                 new NonNullImmutableList<FuncByRefMapping>()
             );
@@ -496,7 +496,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         evaluatedTargetName.Name
                     ),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
                 {
@@ -508,7 +508,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     translationResult = translationResult.Add(new TranslatedStatement(
                         "var " + successfullyEvaluatedTargetNameIfRequired.Name + " = false;",
                         indentationDepth,
-                        targetExpression.Tokens.First().LineIndex
+                        targetCodeExpression.Tokens.First().LineIndex
                     ));
                 }
                 var byRefMappingOpeningTranslationDetails = byRefArgumentsToRewrite.OpenByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
@@ -523,12 +523,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
                         ),
                         indentationDepth,
-                        targetExpression.Tokens.First().LineIndex
+                        targetCodeExpression.Tokens.First().LineIndex
                     ));
                     indentationDepth++;
                 }
                 var rewrittenConditionalContent = _statementTranslator.Translate(
-                    byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(targetExpression, _nameRewriter),
+                    byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(targetCodeExpression, _nameRewriter),
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified,
                     _logger.Warning
@@ -540,17 +540,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         rewrittenConditionalContent.TranslatedContent
                     ),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
                     translationResult = translationResult.Add(new TranslatedStatement(
                         successfullyEvaluatedTargetNameIfRequired!.Name + " = true;",
                         indentationDepth,
-                        targetExpression.Tokens.First().LineIndex
+                        targetCodeExpression.Tokens.First().LineIndex
                     ));
                     indentationDepth--;
-                    translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth, targetExpression.Tokens.First().LineIndex));
+                    translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth, targetCodeExpression.Tokens.First().LineIndex));
                 }
                 indentationDepth -= byRefMappingOpeningTranslationDetails.DistanceToIndentCodeWithMappedValues;
                 translationResult = byRefArgumentsToRewrite.CloseByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
@@ -567,13 +567,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         evaluatedTargetName.Name
                     ),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 successfullyEvaluatedTargetNameIfRequired = _tempNameGenerator(new CSharpName("targetWasEvaluated"), scopeAccessInformation);
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture, "var {0} = false;", successfullyEvaluatedTargetNameIfRequired.Name),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture,
@@ -582,9 +582,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         scopeAccessInformation.ErrorRegistrationTokenIfAny.Name
                     ),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
-                evaluatedTargetContent = _statementTranslator.Translate(targetExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
+                evaluatedTargetContent = _statementTranslator.Translate(targetCodeExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1};",
@@ -592,18 +592,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         evaluatedTargetContent.TranslatedContent
                     ),
                     indentationDepth + 1,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture, "{0} = true;", successfullyEvaluatedTargetNameIfRequired.Name),
                     indentationDepth + 1,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
-                translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth, targetExpression.Tokens.First().LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth, targetCodeExpression.Tokens.First().LineIndex));
             }
             else
             {
-                evaluatedTargetContent = _statementTranslator.Translate(targetExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
+                evaluatedTargetContent = _statementTranslator.Translate(targetCodeExpression, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
                 translationResult = translationResult.Add(new TranslatedStatement(
                     string.Format(CultureInfo.InvariantCulture,
                         "object {0} = {1};", // Best to declare "object" type rather than "var" in case the SELECT CASE target is Empty (ie. null)
@@ -611,7 +611,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         evaluatedTargetContent.TranslatedContent
                     ),
                     indentationDepth,
-                    targetExpression.Tokens.First().LineIndex
+                    targetCodeExpression.Tokens.First().LineIndex
                 ));
                 successfullyEvaluatedTargetNameIfRequired = null; // Not required since we can don't have to deal with fail cases (since error handling is not enabled)
             }
@@ -620,13 +620,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
             translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesAccessedInTargetExpression);
 
-            // Since the target expression wasn't something simple (like a literal or built-in value), then it's stored in a variable so that it's not evaluated for each case
+            // Since the target codeExpression wasn't something simple (like a literal or built-in value), then it's stored in a variable so that it's not evaluated for each case
             // comparison (if it's a function call, for example, then the function shouldn't be called for each comparison). However, if it's an object reference, then each
             // comparison is going to try to force it into a value type reference - meaning it will require a parameter-less default method or property. Assuming it has one
             // of these, this WILL be accessed for each comparison (so it's important not to try to force the evaluatedTarget into a VAL at this point - the comparisons
             // will force it into a value type and the getter / default property will be called each time then, as is consistent with VBScript).
             return new SelectTargetExpressionTranslationData(
-                evaluatedTarget: new NameToken(false, evaluatedTargetName.Name.ToUpperX(), targetExpression.Tokens.First().LineIndex),
+                evaluatedTarget: new NameToken(false, evaluatedTargetName.Name.ToUpperX(), targetCodeExpression.Tokens.First().LineIndex),
                 successfullyEvaluatedTargetNameIfRequired: successfullyEvaluatedTargetNameIfRequired,
                 extendedTranslationResult: translationResult,
                 extendedScopeAccessInformation: scopeAccessInformation
@@ -635,7 +635,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private TranslatedStatementContentDetails GetComparison(
             IToken evaluatedTarget,
-            Expression value,
+            CodeExpression value,
             bool isFirstValueInCaseSet,
             ScopeAccessInformation scopeAccessInformation)
         {
@@ -647,7 +647,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var translatedTargetToCompareTo = _statementTranslator.Translate(
-                new Expression(new[] { evaluatedTarget }),
+                new CodeExpression(new[] { evaluatedTarget }),
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified,
                 _logger.Warning
@@ -727,7 +727,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             // If neither value (target nor case option) are numeric literals, then no flexible matching is applied (there is apparently no special behaviour applied to string literals in either the target
-            // expression nor any value within a case set)
+            // codeExpression nor any value within a case set)
             return new TranslatedStatementContentDetails(
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.EQ({1}, {2})",
@@ -742,12 +742,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// <summary>
         /// VBScript does not consider -1 to be a numeric literal, it is a subtraction operation against the numeric literal 1 (so special rules around numeric literals do not apply to negative values)
         /// </summary>
-        private static bool IsNumericLiteral(Expression expression)
+        private static bool IsNumericLiteral(CodeExpression codeExpression)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
 
-            return Is<NumericValueToken>(expression) && IsNumericLiteral((NumericValueToken)expression.Tokens.Single());
+            return Is<NumericValueToken>(codeExpression) && IsNumericLiteral((NumericValueToken)codeExpression.Tokens.Single());
         }
 
         /// <summary>
@@ -761,12 +761,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return !numericValueToken.Content.StartsWith("-", StringComparison.Ordinal);
         }
 
-        private static bool Is<TSingleTokenType>(Expression expression) where TSingleTokenType : IToken
+        private static bool Is<TSingleTokenType>(CodeExpression codeExpression) where TSingleTokenType : IToken
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
 
-            return (expression.Tokens.Count() == 1) && (expression.Tokens.Single() is TSingleTokenType);
+            return (codeExpression.Tokens.Count() == 1) && (codeExpression.Tokens.Single() is TSingleTokenType);
         }
 
         private TranslationResult Translate(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -797,8 +797,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             /// <summary>
-            /// This will always be a single token since either the target expression is a simple constant or a single NameToken (in which case the token for it will be present here) or
-            /// it's something that needs evaluating, in which case a NameToken will be generated for the temporary value that the expression result will be set into
+            /// This will always be a single token since either the target codeExpression is a simple constant or a single NameToken (in which case the token for it will be present here) or
+            /// it's something that needs evaluating, in which case a NameToken will be generated for the temporary value that the codeExpression result will be set into
             /// </summary>
             public IToken EvaluatedTarget { get; private set; }
 

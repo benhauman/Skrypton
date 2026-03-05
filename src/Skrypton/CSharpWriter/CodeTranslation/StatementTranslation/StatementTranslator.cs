@@ -13,7 +13,6 @@ using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Exceptions;
 using Skrypton.StageTwoParser.ExpressionParsing;
-using Expression = Skrypton.StageTwoParser.ExpressionParsing.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
@@ -40,13 +39,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         /// <summary>
-        /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null expression reference)
+        /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null parsingExpression reference)
         /// </summary>
-        public TranslatedStatementContentDetails Translate(Expression expression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements)
+        public TranslatedStatementContentDetails Translate(ParsingExpression parsingExpression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements)
         {
-            if (expression == null)
+            if (parsingExpression == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parsingExpression));
             }
 
             if (scopeAccessInformation == null)
@@ -60,14 +59,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // See notes in TryToGetShortCutStatementResponse method..
-            TranslatedStatementContentDetails? shortCutStatementResponse = TryToGetShortCutStatementResponse(expression, scopeAccessInformation, returnRequirements);
+            TranslatedStatementContentDetails? shortCutStatementResponse = TryToGetShortCutStatementResponse(parsingExpression, scopeAccessInformation, returnRequirements);
             if (shortCutStatementResponse != null)
             {
                 return shortCutStatementResponse;
             }
 
             // See notes in TryToGetConcatFlattenedSpecialCaseResponse method..
-            TranslatedStatementContentDetails? concatFlattenedSpecialCaseResponse = TryToGetConcatFlattenedSpecialCaseResponse(expression, scopeAccessInformation, returnRequirements);
+            TranslatedStatementContentDetails? concatFlattenedSpecialCaseResponse = TryToGetConcatFlattenedSpecialCaseResponse(parsingExpression, scopeAccessInformation, returnRequirements);
             if (concatFlattenedSpecialCaseResponse != null)
             {
                 return concatFlattenedSpecialCaseResponse;
@@ -76,10 +75,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Assert expectations about numbers of segments and operators (if any)
             // - There may not be more than three segments, and only three where there are two values or calls separated by an operator. CallSetExpressionSegments and
             //   BracketedExpressionSegments are key to ensuring that this format is met.
-            IExpressionSegment[] segments = expression.Segments.ToArray();
+            IExpressionSegment[] segments = parsingExpression.Segments.ToArray();
             if (segments.Length == 0)
             {
-                throw new ArgumentException("The expression was broken down into zero segments - invalid content");
+                throw new ArgumentException("The parsingExpression was broken down into zero segments - invalid content");
             }
 
             if (segments.Length > 3)
@@ -512,11 +511,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            // 2014-12-08 DWR: This previously wrapped the returned content in brackets - largely only because the source is a bracketed expression. But
+            // 2014-12-08 DWR: This previously wrapped the returned content in brackets - largely only because the source is a bracketed codeExpression. But
             // since they're always broken down to respect VBScript's operator precedence and then passed through functions for every operation, there
             // is no benefit to adding further bracketing, so it's been removed.
             TranslatedStatementContentDetails translatedInnerContentDetails = Translate(
-                new Expression(bracketedExpressionSegment.Segments),
+                new ParsingExpression(bracketedExpressionSegment.Segments),
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified
             );
@@ -604,7 +603,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         /// <summary>
-        /// This may only be called when a CallExpressionSegment is encountered as one of the segments in the Expression passed into the public Translate method
+        /// This may only be called when a CallExpressionSegment is encountered as one of the segments in the ParsingExpression passed into the public Translate method
         /// or if it is the first segment in a CallSetExpressionSegment, subsequent segments in a CallSetExpressionSegment should be passed direct into the
         /// TranslateCallExpressionSegment method)
         /// </summary>
@@ -662,7 +661,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
                     .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
 
-                // If the call expression is a single-argument call to "CDbl" and the argument is a numeric literal that VBScript would declare as "Double",
+                // If the call codeExpression is a single-argument call to "CDbl" and the argument is a numeric literal that VBScript would declare as "Double",
                 // we can skip the call entirely. Likewise for "CInt" / "Integer" and "CLng" / "Long". The OperatorCombiner identifies some cases where what
                 // appear to be numeric literals must not be treated as numeric literal later on in the process, so it wraps them in a "CInt" / "CLng" / "CDbl"
                 // call (whichever is appropriate) - this code allows us to remove those injected functions right at the very last minute without changing the
@@ -869,7 +868,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private TranslatedStatementContentDetailsWithContentType TranslateCallExpressionSegment(
             NameToken target,
             IEnumerable<IToken> targetMemberAccessTokens,
-            IEnumerable<Expression> arguments,
+            IEnumerable<ParsingExpression> arguments,
             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence,
             ScopeAccessInformation scopeAccessInformation,
             int indexInCallSet,
@@ -906,7 +905,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentException("Null reference encountered in targetMemberAccessTokens set");
             }
 
-            Expression[] argumentsArray = arguments.ToArray();
+            ParsingExpression[] argumentsArray = arguments.ToArray();
             if (argumentsArray.Any(a => a == null))
             {
                 throw new ArgumentException("Null reference encountered in arguments set");
@@ -1128,7 +1127,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// if unable to satisfy the request.
         /// </summary>
         public TranslatedStatementContentDetails TranslateAsArgumentProvider(
-            IEnumerable<Expression> argumentValues,
+            IEnumerable<ParsingExpression> argumentValues,
             ScopeAccessInformation scopeAccessInformation,
             bool forceAllArgumentsToBeByVal)
         {
@@ -1146,7 +1145,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             StringBuilder argumentProviderContent = new StringBuilder();
             argumentProviderContent.Append(_supportRefName.Name);
             argumentProviderContent.Append(".ARGS");
-            foreach (Expression? argumentValue in argumentValues)
+            foreach (ParsingExpression? argumentValue in argumentValues)
             {
                 if (argumentValue == null)
                 {
@@ -1166,14 +1165,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         /// <summary>
-        /// If a call expression is for a support function and all of the arguments are of type object and none of them are out or ref arguments, and the number
-        /// of arguments in a call expression matches the signature of the support function, then the support function can be called directly instead of going
+        /// If a call codeExpression is for a support function and all of the arguments are of type object and none of them are out or ref arguments, and the number
+        /// of arguments in a call codeExpression matches the signature of the support function, then the support function can be called directly instead of going
         /// thorough a CALL execution. This makes the output code less verbose. If there is no matching signature then CALL must be used so that the argument
         /// mismatch becomes a runtime error, rather than compile time (since that's what VBScript does).
         /// </summary>
         private TranslatedStatementContentDetailsWithContentType TranslateAsDirectSupportFunctionCall(
             BuiltInFunctionDetails function,
-            IEnumerable<Expression> argumentValues,
+            IEnumerable<ParsingExpression> argumentValues,
             ScopeAccessInformation scopeAccessInformation)
         {
             if (function == null)
@@ -1199,7 +1198,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             supportFunctionCallContent.Append('(');
             foreach (var indexedArgumentValue in argumentValues.Select((arg, index) => new { Argument = arg, Index = index }))
             {
-                Expression? argumentValue = indexedArgumentValue.Argument;
+                ParsingExpression? argumentValue = indexedArgumentValue.Argument;
                 if (argumentValue == null)
                 {
                     throw new ArgumentException("Null reference encountered in argumentValues set");
@@ -1264,19 +1263,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private static NumericValueExpressionSegment? TryToGetExpressionAsSingleNumericValueExpressionSegment(Expression expression)
+        private static NumericValueExpressionSegment? TryToGetExpressionAsSingleNumericValueExpressionSegment(ParsingExpression parsingExpression)
         {
-            if (expression == null)
+            if (parsingExpression == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parsingExpression));
             }
 
-            if (expression.Segments.Count != 1)
+            if (parsingExpression.Segments.Count != 1)
             {
                 return null;
             }
 
-            return expression.Segments.Single() as NumericValueExpressionSegment;
+            return parsingExpression.Segments.Single() as NumericValueExpressionSegment;
         }
 
         /// <summary>
@@ -1287,7 +1286,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// where required.
         /// </summary>
         private TranslatedStatementContentDetails TranslateAsArgumentContent(
-            Expression argumentValue,
+            ParsingExpression argumentValue,
             ScopeAccessInformation scopeAccessInformation,
             bool forceAllArgumentsToBeByVal)
         {
@@ -1318,9 +1317,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            // If we've got this far then then argumentValue expression has only a single segment. If it is a CallExpressionSegment or a CallSetExpression
+            // If we've got this far then then argumentValue codeExpression has only a single segment. If it is a CallExpressionSegment or a CallSetExpression
             // then there won't be any nested member accessors (such as "a.Name" or "a(0).Name" since they would have been caught as a ByVal situation
-            // above). On the other hand, there shouldn't be any other type of expression segment that could get this far either! (Access of a variable
+            // above). On the other hand, there shouldn't be any other type of codeExpression segment that could get this far either! (Access of a variable
             // "a" is represented by a CallExpressionSegment with a single member accessor token and zero arguments). The only easy out we have at this
             // point is if we do indeed have a CallExpressionSegment with a single member accessor token and zero arguments since that will definitely
             // be passed ByRef. Otherwise there are arguments to consider which may be arguments on default functions or properties (in which case it
@@ -1347,7 +1346,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // accessors but one or more arguments. It's impossible to know at this point whether those "arguments" are array accesses (which will
             // be passed ByRef) or default function or property calls (which will be passed ByVal).
             TranslatedStatementContentDetails possibleByRefTarget;
-            IEnumerable<IEnumerable<Expression>> possibleByRefArgumentSets;
+            IEnumerable<IEnumerable<ParsingExpression>> possibleByRefArgumentSets;
             CallExpressionSegment? possibleByRefCallExpressionSegment = argumentValue.Segments.Single() as CallExpressionSegment;
             if (possibleByRefCallExpressionSegment != null)
             {
@@ -1434,7 +1433,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// may be an array access - in the case of an array element, that must be passed ByRef and so it is not safe to say that "a(0)"
         /// may definitely be passed ByVal.
         /// </summary>
-        public bool ArgumentWouldBePassedByValBasedUponItsContent(Expression argumentValue, ScopeAccessInformation scopeAccessInformation)
+        public bool ArgumentWouldBePassedByValBasedUponItsContent(ParsingExpression argumentValue, ScopeAccessInformation scopeAccessInformation)
         {
             if (argumentValue == null)
             {
@@ -1477,7 +1476,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // call further down).
                 while ((singleSegment is BracketedExpressionSegment) && (((BracketedExpressionSegment)singleSegment).Segments.Count == 1))
                     singleSegment = ((BracketedExpressionSegment)singleSegment).Segments.First();
-                argumentValue = new Expression(new[] { singleSegment });
+                argumentValue = new ParsingExpression(new[] { singleSegment });
                 return true;
             }
 
@@ -1497,7 +1496,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 CallSetExpressionSegment? callSetExpressionSegment = singleSegment as CallSetExpressionSegment;
                 if (callSetExpressionSegment != null)
                 {
-                    // The first call expression segment must have at least one member access tokens (otherwise there would be no target) but
+                    // The first call codeExpression segment must have at least one member access tokens (otherwise there would be no target) but
                     // if there are multiple (checked for further down) or if any of the subsequent segments have ANY accessors) then it's ByVal
                     // (a CallSetExpression would have segments without any member accessors if it was describing jagged array access - eg.
                     // "a(0)(1)" - or if the same source code was accessing default properties or members).
@@ -1661,7 +1660,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(runtimeErrorExpressionSegment));
             }
 
-            // This expression segment is generated when there is VBScript that is known to cause a runtime error - an exception needs to be thrown when
+            // This codeExpression segment is generated when there is VBScript that is known to cause a runtime error - an exception needs to be thrown when
             // the translated code is run, but not at compile time (since runtime errors can be trapped with ON ERROR RESUME NEXT, but not if they cause
             // the translation process to blow up!)
             // - eg. "WScript.Echo 1()" will result in a type mismatch since the numeric constant can not be called like a function
@@ -1756,7 +1755,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 case ExpressionReturnTypeOptions.Reference:
                     // If we know that this returns a value type then we can tell at this point that it's not going to work. If it returns a Reference
                     // type then we're golden. If contentType is NotSpecified then we need to pass it through the OBJ method so that a runtime exception
-                    // is raised if the expression is NOT a reference type, in order to be consistent with VBScript's behaviour. (Previously, this would
+                    // is raised if the codeExpression is NOT a reference type, in order to be consistent with VBScript's behaviour. (Previously, this would
                     // throw an exception at "translation time" - the runtime of the translator, as opposed to the runtime of the generated C# - that
                     // would indicate that the content was invalid for a Reference result if contentType was Boolean or Value, but this is inconsistent
                     // with VBScript, which would throw an exception at runtime - equivalent to the generated C#'s runtime. Now a log warning is
@@ -1797,13 +1796,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         private TranslatedStatementContentDetails? TryToGetShortCutStatementResponse(
-            Expression expression,
+            ParsingExpression parsingExpression,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements)
         {
-            if (expression == null)
+            if (parsingExpression == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parsingExpression));
             }
 
             if (scopeAccessInformation == null)
@@ -1828,7 +1827,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Nothing, in which case a "Type mismatch error" is raised. If the NamToken is an object reference WITH a default member then no error occurs (the
             // default member is accessed / executed).
 
-            // The specific case that we want to address with this "shortcut" avenue is where we have a statement (so return type is None) with a single call expression
+            // The specific case that we want to address with this "shortcut" avenue is where we have a statement (so return type is None) with a single call parsingExpression
             // segment with a single NameToken, which does not indicate a function or property. If these conditions are met then we can avoid all of the rest of the
             // translation process. Note: We can't do this if return type is anything other than None since in C# it's not valid to have a statement that is only an
             // instance of a class (if it's wrapped in a call to OBJ or VAL then it's ok since it's a method call, but that would be handled by the standard
@@ -1838,12 +1837,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return null;
             }
 
-            if (expression.Segments.Take(2).Count() > 1)
+            if (parsingExpression.Segments.Take(2).Count() > 1)
             {
                 return null;
             }
 
-            CallExpressionSegment? onlyExpressionSegmentAsCallExpression = expression.Segments.Single() as CallExpressionSegment;
+            CallExpressionSegment? onlyExpressionSegmentAsCallExpression = parsingExpression.Segments.Single() as CallExpressionSegment;
             if (onlyExpressionSegmentAsCallExpression == null)
             {
                 return null;
@@ -1905,13 +1904,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// that might be applicable and performs a "special mode translation".
         /// </summary>
         private TranslatedStatementContentDetails? TryToGetConcatFlattenedSpecialCaseResponse(
-            Expression expression,
+            ParsingExpression parsingExpression,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements)
         {
-            if (expression == null)
+            if (parsingExpression == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parsingExpression));
             }
 
             if (scopeAccessInformation == null)
@@ -1924,9 +1923,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentOutOfRangeException(nameof(returnRequirements));
             }
 
-            // If there are three or less expression segments after any possible concat-flattening then this is not a special case, it can be handled
+            // If there are three or less parsingExpression segments after any possible concat-flattening then this is not a special case, it can be handled
             // by the common flow for one, two or three segments
-            IExpressionSegment[] expressionSegmentsArray = ConcatFlattener.Flatten(expression).Segments.ToArray();
+            IExpressionSegment[] expressionSegmentsArray = ConcatFlattener.Flatten(parsingExpression).Segments.ToArray();
             if (expressionSegmentsArray.Length <= 3)
             {
                 return null;

@@ -32,23 +32,23 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Trim out "SELECT CASE" tokens
             tokens.RemoveRange(0, 2);
 
-            // Grab content for the case expression
+            // Grab content for the case codeExpression
             List<IToken> expressionTokens = new List<IToken>();
             for (int index = 0; index < tokens.Count; index++)
             {
                 if (isEndOfStatement(tokens, index))
                 {
-                    // Remove expression tokens (plus end-of-statement) from stream
+                    // Remove codeExpression tokens (plus end-of-statement) from stream
                     tokens.RemoveRange(0, expressionTokens.Count + 1);
                     break;
                 }
 
                 if (index == 1)
                 {
-                    throw new NotImplementedException($"Multiple tokens on the 'expression' line. Line:{tokens.ElementAt(index).LineIndex}");
+                    throw new NotImplementedException($"Multiple tokens on the 'codeExpression' line. Line:{tokens.ElementAt(index).LineIndex}");
                 }
 
-                // Add token to expression (must be Atom or String)
+                // Add token to codeExpression (must be Atom or String)
                 expressionTokens.Add(getTokenAtomOrDateStringLiteralOnly(tokens, index));
             }
 
@@ -203,10 +203,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     }
                     else
                     {
-                        List<Expression> values = new List<Expression>();
+                        List<CodeExpression> values = new List<CodeExpression>();
                         foreach (List<IToken> valueTokens in exprValues)
                         {
-                            values.Add(new Expression(valueTokens));
+                            values.Add(new CodeExpression(valueTokens));
                         }
 
                         content.Add(new SelectBlock.CaseBlockExpressionSegment(values, blockContent));
@@ -235,7 +235,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             }
 
             // All done!
-            return new SelectBlock(new Expression(expressionTokens), openingComments, content);
+            return new SelectBlock(new CodeExpression(expressionTokens), openingComments, content);
         }
     }
 }

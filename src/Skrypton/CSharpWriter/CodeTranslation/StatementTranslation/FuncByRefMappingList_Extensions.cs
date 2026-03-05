@@ -89,12 +89,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        public static Expression RewriteExpressionUsingByRefArgumentMappings(this NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite, Expression expression, VBScriptNameRewriter nameRewriter)
+        public static CodeExpression RewriteExpressionUsingByRefArgumentMappings(this NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite, CodeExpression codeExpression, VBScriptNameRewriter nameRewriter)
         {
             if (byRefArgumentsToRewrite == null)
                 throw new ArgumentNullException(nameof(byRefArgumentsToRewrite));
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
             if (nameRewriter == null)
                 throw new ArgumentNullException(nameof(nameRewriter));
 
@@ -102,10 +102,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // code?) but in some cases it's easier to be able to call it without having check whether there were any value that need rewriting and the cases where being so strict may catch unintentional
             // calls are few
             if (!byRefArgumentsToRewrite.Any())
-                return expression;
+                return codeExpression;
 
-            return new Expression(
-                expression.Tokens.Select(t =>
+            return new CodeExpression(
+                codeExpression.Tokens.Select(t =>
                 {
                     var nameToken = t as NameToken;
                     if (nameToken == null)

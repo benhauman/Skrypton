@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     public sealed class SelectBlock : IHaveNestedContent, ICodeBlock
     {
         public SelectBlock(
-            Expression expression,
+            CodeExpression codeExpression,
             IEnumerable<CommentStatement> openingComments,
             IEnumerable<CaseBlockSegment> content)
         {
@@ -33,7 +33,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (((IEnumerable<CaseBlockSegment>)Content).Reverse().Skip(1).Any(c => c is CaseBlockElseSegment))
                 throw new ArgumentException("Only the last content segment may be a CaseBlockElseSegment");
 
-            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Expression = codeExpression ?? throw new ArgumentNullException(nameof(codeExpression));
         }
 
         // =======================================================================================
@@ -42,7 +42,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null
         /// </summary>
-        [DataMember] public Expression Expression { get; private set; }
+        [DataMember] public CodeExpression Expression { get; private set; }
 
         /// <summary>
         /// This will never be null nor contain any null references, but it may be an empty set
@@ -54,7 +54,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null nor contain any null references, but it may be an empty set. All items will be CaseBlockExpressionSegment or
         /// CaseBlockElseSegment instances and only the last segment may be a CaseBlockElseSegment (note that it is valid in VBScript for the
-        /// ONLY segment to be a CaseBlockElseSegment - in which case the select "Expression" will still be evaluated but the "Case Else"
+        /// ONLY segment to be a CaseBlockElseSegment - in which case the select "ParsingExpression" will still be evaluated but the "Case Else"
         /// will always be entered)
         /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
@@ -110,7 +110,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public sealed class CaseBlockExpressionSegment : CaseBlockSegment
 #pragma warning restore CA1034 // Nested types should not be visible
         {
-            public CaseBlockExpressionSegment(IEnumerable<Expression> values, IEnumerable<ICodeBlock> statements) : base(statements)
+            public CaseBlockExpressionSegment(IEnumerable<CodeExpression> values, IEnumerable<ICodeBlock> statements) : base(statements)
             {
                 if (values == null)
                     throw new ArgumentNullException(nameof(values));
@@ -126,7 +126,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// This will never be null, empty nor contain any null references
             /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
-            [DataMember] public Expression[] Values { get; private set; }
+            [DataMember] public CodeExpression[] Values { get; private set; }
 #pragma warning restore CA1819 // Properties should not return arrays
         }
 
@@ -171,7 +171,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     var valuesArray = ((CaseBlockExpressionSegment)segment).Values.ToArray();
                     for (int indexValue = 0; indexValue < valuesArray.Length; indexValue++)
                     {
-                        Expression statement = valuesArray[indexValue];
+                        CodeExpression statement = valuesArray[indexValue];
                         output.Append(statement.GenerateBaseSource(NullIndenter.Instance));
                         if (indexValue < (valuesArray.Length - 1))
                             output.Append(", ");

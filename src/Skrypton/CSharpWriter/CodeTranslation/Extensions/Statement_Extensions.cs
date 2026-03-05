@@ -2,7 +2,6 @@
 using System.Linq;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.StageTwoParser.ExpressionParsing;
-using Expression = Skrypton.StageTwoParser.ExpressionParsing.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
@@ -11,7 +10,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null statement reference)
         /// </summary>
-        public static Expression ToStageTwoParserExpression(
+        public static ParsingExpression ToStageTwoParserExpression(
             this Statement statement,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements,
@@ -37,7 +36,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                     warningLogger
                 ).ToArray();
             if (expressions.Length != 1)
-                throw new ArgumentException("Statement translation should always result in a single expression being generated");
+                throw new ArgumentException("Statement translation should always result in a single codeExpression being generated");
             return expressions[0];
         }
     }

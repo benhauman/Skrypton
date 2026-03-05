@@ -5,9 +5,9 @@ using Skrypton.StageTwoParser.ExpressionParsing;
 
 namespace Skrypton.Tests.Shared.Comparers
 {
-    public class ExpressionSetComparer : IEqualityComparer<IEnumerable<Expression>>
+    public class ExpressionSetComparer : IEqualityComparer<IEnumerable<ParsingExpression>>
     {
-        public bool Equals(IEnumerable<Expression> x, IEnumerable<Expression> y)
+        public bool Equals(IEnumerable<ParsingExpression> x, IEnumerable<ParsingExpression> y)
         {
             if (x == null)
                 throw new ArgumentNullException(nameof(x));
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.Shared.Comparers
             return true;
         }
 
-        public int GetHashCode(IEnumerable<Expression> obj)
+        public int GetHashCode(IEnumerable<ParsingExpression> obj)
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));

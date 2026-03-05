@@ -54,7 +54,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var blockContent = getForBlockContent(tokens);
             return new ForEachBlock(
                 new NameToken(false, loopVarToken.ContentUpperX(), loopVarToken.LineIndex),
-                new Expression(loopSrc),
+                new CodeExpression(loopSrc),
                 blockContent
             );
         }
@@ -74,10 +74,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // Grab loop variable name
             var loopVarToken = tokens[1];
 
-            // Grab "from" expression
+            // Grab "from" codeExpression
             List<IToken> loopFrom = getExpressionContent(tokens, 3, "TO");
 
-            // Grab "to" expression
+            // Grab "to" codeExpression
             List<IToken> loopTo = getExpressionContent(tokens, 4 + loopFrom.Count, "STEP");
 
             // Ensure we hit either end-of-statement or "STEP"??
@@ -112,9 +112,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             // All done!
             return new ForBlock(
                 new NameToken(false, loopVarToken.ContentUpperX(), loopVarToken.LineIndex),
-                new Expression(loopFrom),
-                new Expression(loopTo),
-                (stepExpr == null ? null : new Expression(stepExpr)),
+                new CodeExpression(loopFrom),
+                new CodeExpression(loopTo),
+                (stepExpr == null ? null : new CodeExpression(stepExpr)),
                 blockContent
             );
         }

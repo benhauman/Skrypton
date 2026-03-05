@@ -41,7 +41,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Remove DO keyword and grab pre-condition content (if any)
             tokens.RemoveAt(0);
-            Expression? conditionStatement;
+            CodeExpression? conditionStatement;
             if (!hasPreCondition)
                 conditionStatement = null;
             else
@@ -101,7 +101,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return new DoBlock(conditionStatement!, hasPreCondition, doUntil, supportsExit, blockContent, lineIndexOfStartOfConstruct);
         }
 
-        private static Expression ExtractConditionFromTokens(List<IToken> tokens)
+        private static CodeExpression ExtractConditionFromTokens(List<IToken> tokens)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
@@ -119,7 +119,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }
-            return new Expression(tokensInCondition);
+            return new CodeExpression(tokensInCondition);
         }
     }
 }

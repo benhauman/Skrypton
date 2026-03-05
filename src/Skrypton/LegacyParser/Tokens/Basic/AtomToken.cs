@@ -199,7 +199,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         // =======================================================================================
         /// <summary>
         /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
         /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
         /// </summary>
         public static readonly string[] ArithmeticAndStringOperatorTokenValues = new List<string>
@@ -208,7 +208,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 		}.ToArray();
 
         /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
         /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
         public static readonly IEnumerable<string> LogicalOperatorTokenValues = new List<string>
         {
@@ -235,7 +235,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 
         /// <summary>
         /// This will not be null, empty, contain any null or blank values, any duplicates or any content containing whitespace. These are ordered
-        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an expression
+        /// according to the precedence that the VBScript interpreter will give to them when multiple occurences are encountered within an codeExpression
         /// (see http://msdn.microsoft.com/en-us/library/6s7zy3d1(v=vs.84).aspx).
         /// </summary>
         public static readonly IEnumerable<string> ComparisonTokenValues = new List<string>
@@ -310,7 +310,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         }
 
         /// <summary>
-        /// Does the content appear to represent a VBScript expression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
+        /// Does the content appear to represent a VBScript codeExpression - eg. "NOTHING". An exception will be raised for null, blank or whitespace-containing input.
         /// </summary>
         internal static bool isVBScriptValueUpper(StringUpper atomContent)
         {

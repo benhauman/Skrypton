@@ -14,7 +14,7 @@ namespace Skrypton.RuntimeSupport
 
         /// <summary>
         /// This requires a target with optional member accessors and arguments - eg. "Test" is a target only, "a.Test" has target "a" with one
-        /// named member "Test", "a.Test(0)" has target "a", named member "Test" and a single argument "0". The expression "a(Test(0))" would
+        /// named member "Test", "a.Test(0)" has target "a", named member "Test" and a single argument "0". The codeExpression "a(Test(0))" would
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>

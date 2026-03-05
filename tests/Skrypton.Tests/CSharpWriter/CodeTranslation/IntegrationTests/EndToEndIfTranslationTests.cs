@@ -632,7 +632,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
             /// <summary>
             /// This is a complement to ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByRefArgument - if a ByRef argument of the containing
-            /// function is used within an expression where it will not be considered ByRef (eg. if argument "a" is indirectly referenced as "a.Name" to specify
+            /// function is used within an codeExpression where it will not be considered ByRef (eg. if argument "a" is indirectly referenced as "a.Name" to specify
             /// another function argument then it be passed ByVal, since neither "a" nor "a.Name" may be affected by the function it is being passed into it)
             /// </summary>
             [TestMethod, MyFact]

@@ -97,7 +97,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 var token = initialTokens[index];
                 if ((token is ComparisonOperatorToken) & (token.Content == "=") && (bracketCount == 0) && !inExpressionContent)
                 {
-                    // Taken an equals sign to indicate the break between a value-to-set and expression-to-set in a value-setting-
+                    // Taken an equals sign to indicate the break between a value-to-set and codeExpression-to-set in a value-setting-
                     // statement (eg. "a = 1") unless this has already been done, in which case it is a comparison operator (eg.
                     // the second equals sign in "a = b = c", meaning compare "b" to "c" and set "a" to be the result of that)
                     inExpressionContent = true;
@@ -119,14 +119,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     valueToSetTokens.Add(token);
             }
 
-            // If we encountered a "=" which caused a switch from value-to-set tokens to expression-to-set-value-to tokens then this
+            // If we encountered a "=" which caused a switch from value-to-set tokens to codeExpression-to-set-value-to tokens then this
             // must be a ValueSettingStatement. Otherwise, it's a non-value-setting statement, all of the tokens for which will be
             // in the valueToSet set.
             if (inExpressionContent)
             {
                 return new ValueSettingStatement(
-                    new Expression(valueToSetTokens),
-                    new Expression(expressionTokens),
+                    new CodeExpression(valueToSetTokens),
+                    new CodeExpression(expressionTokens),
                     isSetStatement ? ValueSetTypeOptions.Set : ValueSetTypeOptions.Let
                 );
             }

@@ -3,7 +3,7 @@
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     /// <summary>
-    /// This interface is used for code blocks that directly wrap expressions but that don't inherit from the Statement class - it allows the Seed Expression
+    /// This interface is used for code blocks that directly wrap expressions but that don't inherit from the Statement class - it allows the Seed ParsingExpression
     /// to be retrieved from the RandomizeStatement statement, for example, or for the two expressions to be retrieved from the ValueSettingStatement. This
     /// is not appropriate for code blocks that act as parents for other statements, these are represented by the IHaveNestedContent interface.
     /// </summary>

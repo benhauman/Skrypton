@@ -20,16 +20,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // CLASS INITIALISATION
         // =======================================================================================
         /// <summary>
-        /// This statement represents the setting of one value to the result of another expression, whether that be a fixed
+        /// This statement represents the setting of one value to the result of another codeExpression, whether that be a fixed
         /// value, a variable's value or the return value of a method call
         /// </summary>
-        public ValueSettingStatement(Expression valueToSet, Expression expression, ValueSetTypeOptions valueSetType)
+        public ValueSettingStatement(CodeExpression valueToSet, CodeExpression codeExpression, ValueSetTypeOptions valueSetType)
         {
             if (!Enum.IsDefined(typeof(ValueSetTypeOptions), valueSetType))
                 throw new ArgumentOutOfRangeException(nameof(valueSetType));
 
             ValueToSet = valueToSet ?? throw new ArgumentNullException(nameof(valueToSet));
-            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Expression = codeExpression ?? throw new ArgumentNullException(nameof(codeExpression));
             ValueSetType = valueSetType;
         }
 
@@ -39,12 +39,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null
         /// </summary>
-        [DataMember] public Expression ValueToSet { get; private set; }
+        [DataMember] public CodeExpression ValueToSet { get; private set; }
 
         /// <summary>
         /// This will never be null
         /// </summary>
-        [DataMember] public Expression Expression { get; private set; }
+        [DataMember] public CodeExpression Expression { get; private set; }
 
         [DataMember] public ValueSetTypeOptions ValueSetType { get; private set; }
 

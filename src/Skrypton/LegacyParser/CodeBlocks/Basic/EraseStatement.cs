@@ -101,7 +101,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public sealed class TargetDetails
 #pragma warning restore CA1034 // Nested types should not be visible
         {
-            public TargetDetails(Expression target, IEnumerable<Expression>? argumentsIfAny, bool wrappedInBraces)
+            public TargetDetails(CodeExpression target, IEnumerable<CodeExpression>? argumentsIfAny, bool wrappedInBraces)
             {
                 Target = target ?? throw new ArgumentNullException(nameof(target));
                 ArgumentsIfAny = (argumentsIfAny == null) ? null : argumentsIfAny.ToList().AsReadOnly();
@@ -113,13 +113,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// <summary>
             /// This will never be null
             /// </summary>
-            [DataMember] public Expression Target { get; private set; }
+            [DataMember] public CodeExpression Target { get; private set; }
 
             /// <summary>
             /// This is optional and may be null (indicating no arguments and no argument-wrapping brackets) or empty (meaning no arguments but WITH brackets)
             /// or non-empty (in which case there were also brackets around the arguments). If non-null, it will never contain any null references.
             /// </summary>
-            [DataMember] public IEnumerable<Expression>? ArgumentsIfAny { get; private set; }
+            [DataMember] public IEnumerable<CodeExpression>? ArgumentsIfAny { get; private set; }
 
             /// <summary>
             /// It's invalid for targets to be wrapped in braces (it will result in a runtime error), so this is important information

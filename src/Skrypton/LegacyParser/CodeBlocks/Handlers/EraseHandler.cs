@@ -33,7 +33,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 return null;
 
             // Note: getEntryList will return a list of lists of tokens, where there will be multiple lists if there are multiple comma-separated expressions. Each
-            // of these token sets needs to be wrapped in an Expression to initialise an EraseStatement. VBScript only works with a single target that is an array,
+            // of these token sets needs to be wrapped in an ParsingExpression to initialise an EraseStatement. VBScript only works with a single target that is an array,
             // if there are zero or multiple targets then it will fail at runtime (but it's not a compile error so it's not an error case here).
             // - If the CALL keyword is present, then valid VBScript will have wrapped the argument(s) in brackets which will need stripping and then the arguments
             //   re-parsing. The getEntryList function will throw an exception if arguments are mismatched, indicating invalid VBScript. The translation process
@@ -127,7 +127,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             {
                 return Tuple.Create(
                     new EraseStatement.TargetDetails(
-                        new Expression(new[] { bracesRemoved.First(), bracesRemoved.Last() }),
+                        new CodeExpression(new[] { bracesRemoved.First(), bracesRemoved.Last() }),
                         argumentsIfAny: null,
                         wrappedInBraces: true
                     ),
@@ -137,7 +137,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             var targetTokens = tokensArray.TakeWhile(token => !(token is OpenBrace)).ToArray();
             var targetArgumentTokens = tokensArray.Skip(targetTokens.Length).ToArray();
-            IEnumerable<Expression>? targetArgumentsIfAny;
+            IEnumerable<CodeExpression>? targetArgumentsIfAny;
             int numberOfTokensInArguments;
             if (targetArgumentTokens.Length != 0)
             {
@@ -147,7 +147,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     throw new InvalidOperationException("Invalid token sequence, mismatched brackets on line (" + (openBrace.LineIndex + 1) + ")");
 
                 targetArgumentsIfAny = getEntryList(tokensArray, 2, closeBrace)
-                    .Select(argumentTokens => new Expression(argumentTokens))
+                    .Select(argumentTokens => new CodeExpression(argumentTokens))
                     .ToArray();
 
                 // The number of tokens consumed is 2 (for the braces) + the total number of those in the argument expressions + the separator tokens between arguments
@@ -164,7 +164,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             return Tuple.Create(
                 new EraseStatement.TargetDetails(
-                    new Expression(targetTokens),
+                    new CodeExpression(targetTokens),
                     targetArgumentsIfAny,
                     wrappedInBraces: bracesRemoved.Count != 0
                 ),

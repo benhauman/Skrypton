@@ -16,7 +16,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// It is valid to have a null conditionStatement in VBScript - in case the isPreCondition and doUntil constructor arguments are of no consequence
         /// </summary>
-        public DoBlock(Expression conditionIfAny, bool isPreCondition, bool doUntil, bool supportsExit, IEnumerable<ICodeBlock> statements, int lineIndexOfStartOfConstruct)
+        public DoBlock(CodeExpression conditionIfAny, bool isPreCondition, bool doUntil, bool supportsExit, IEnumerable<ICodeBlock> statements, int lineIndexOfStartOfConstruct)
         {
             if (statements == null)
                 throw new ArgumentNullException(nameof(statements));
@@ -39,7 +39,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This may be null since VBScript supports DO..WHILE loops with no constraint
         /// </summary>
-        [DataMember] public Expression ConditionIfAny { get; private set; }
+        [DataMember] public CodeExpression ConditionIfAny { get; private set; }
 
         [DataMember] public bool IsPreCondition { get; private set; }
 

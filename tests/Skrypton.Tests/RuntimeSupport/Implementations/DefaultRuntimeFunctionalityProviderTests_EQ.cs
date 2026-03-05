@@ -241,7 +241,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod, MyFact]
         public void NumericContentStringValueDoesNotEqualNumericValue() // @lubo : this is changed due to CNC mailType compare!
         {
-            // Recall that the VBScript expression ("12" = 12) will return true, but if v12String = "12" and v12 = 12 then (v12String = v12) will return
+            // Recall that the VBScript codeExpression ("12" = 12) will return true, but if v12String = "12" and v12 = 12 then (v12String = v12) will return
             // false. For cases where string or number literals are present in the comparison, the translator must cast the other side so that they both
             // are consistent but the EQ method does not have to deal with it - so, here, "12" does not equal 12.
             myAssert.AreEqual(

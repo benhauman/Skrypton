@@ -6,14 +6,14 @@ using Skrypton.LegacyParser.Tokens;
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
     [DataContract(Namespace = "http://vbs")]
-    public sealed class Expression : Statement // TODO: Rename To CodeExpression to reduce collisions with 'Skrypton.StageTwoParser.ExpressionParsing.Expression' and  'System.Linq.Expressions.Expression'
+    public sealed class CodeExpression : Statement
     {
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
         /// <summary>
-        /// An expression is code that evalutes to a value
+        /// An codeExpression is code that evaluates to a value
         /// </summary>
-        public Expression(IReadOnlyCollection<IToken> tokens) : base(tokens, CallPrefixOptions.Absent) { }
+        public CodeExpression(IReadOnlyCollection<IToken> tokens) : base(tokens, CallPrefixOptions.Absent) { }
     }
 }

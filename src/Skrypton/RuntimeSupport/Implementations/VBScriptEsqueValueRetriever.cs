@@ -798,7 +798,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         /// <summary>
         /// This requires a target with optional member accessors and arguments - eg. "Test" is a target only, "a.Test" has target "a" with one
-        /// named member "Test", "a.Test(0)" has target "a", named member "Test" and a single argument "0". The expression "a(Test(0))" would
+        /// named member "Test", "a.Test(0)" has target "a", named member "Test" and a single argument "0". The codeExpression "a(Test(0))" would
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
@@ -1016,7 +1016,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                                     )
                                 )
                             ),
-                            typeof(object) // Without this we may get an "Expression of type 'System.Int32' cannot be used for return type 'System.Object'" or similar
+                            typeof(object) // Without this we may get an "ParsingExpression of type 'System.Int32' cannot be used for return type 'System.Object'" or similar
                         ),
                         Expression.Catch(
                             arrayAccessExceptionParameter,
@@ -1339,7 +1339,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
             }
 
-            // Note: The Throw expression will require a return type to be specified since the Try block has a return type
+            // Note: The Throw codeExpression will require a return type to be specified since the Try block has a return type
             // - without this a runtime "Body of catch must have the same type as body of try" exception will be raised
             Expression methodCallResultAssignmentsAndResultSettingExpression = Expression.Block(
                 methodCallAndAndResultAssignments.Concat(new[] { resultVariable })
@@ -1349,7 +1349,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // If there are ByRef arguments that need setting then this must be done in a finally block, since they must
                 // be set even if the target method throws an exception at some point. If there are no ByRef arguments then
                 // don't generate a try..finally block at all since there will be an exception thrown about a block
-                // for the finally that is an empty expression collection.
+                // for the finally that is an empty codeExpression collection.
                 methodCallResultAssignmentsAndResultSettingExpression = Expression.TryFinally(
                     methodCallResultAssignmentsAndResultSettingExpression,
                     Expression.Block(byRefArgAssignmentsForReturn) // Finally block (always set any ByRef arguments, even if an exception is thrown)
@@ -1386,7 +1386,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (targetType.GetArrayRank() != argumentsArray.Length)
                     throw new ArgumentException("Argument count (" + argumentsArray.Length + ") does not match array rank (" + targetType.GetArrayRank() + ")");
 
-                // Without the targetType.GetElementType() specified for the Expression.Catch, a "Body of catch must have the same type as body of try" exception
+                // Without the targetType.GetElementType() specified for the ParsingExpression.Catch, a "Body of catch must have the same type as body of try" exception
                 // will be raised. Since I would have expected the try block to return nothing (void) I'm not quite sure why this is.
                 ParameterExpression arrayTargetParameter = Expression.Parameter(typeof(object), "target");
                 ParameterExpression indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
@@ -1495,7 +1495,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new MissingMemberException(targetType.FullName, "(?)");
             }
 
-            // Rather than trying to do more LINQ Expression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
+            // Rather than trying to do more LINQ ParsingExpression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
             // that the index-arguments-plus-value get flattened into a single arguments array
             GetInvoker getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
             return (invokeTarget, invokeArguments, value) =>

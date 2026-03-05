@@ -30,7 +30,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void IsolatedNonFunctionOrPropertyReferenceHasValueTypeAccessLogic()
         {
             // "o" (where there is no function or property in scope called "o")
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallExpressionSegment(
                     [new NameToken("o", lineIndex1)],
@@ -54,7 +54,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void IsolatedFunctionCallAccordingToScopeDoesNotHaveValueTypeAccessLogic()
         {
             // "o" (where there is a function in scope called "o")
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallExpressionSegment(
                     [new NameToken("o", lineIndex1)],
@@ -83,12 +83,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByRef()
         {
             // "o(a)" (where there is a function in scope called "o" and a variable "a")
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallExpressionSegment(
                     [new NameToken("o", lineIndex1)],
                     [
-                        new Expression([
+                        new ParsingExpression([
                             new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
                         ])
                     ],
@@ -127,12 +127,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByValIfWrappedInBrackets()
         {
             // "o((a))" (where there is a function in scope called "o" and a variable "a")
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallExpressionSegment(
                     [new NameToken("o", lineIndex1)],
                     [
-                        new Expression([
+                        new ParsingExpression([
                             new BracketedExpressionSegment([
                                 new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
                             ])
@@ -169,18 +169,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         public void NestedFunctionOrArrayAccess()
         {
             // "a(0)(b)" (where neither a nor b are defined and so there could be method calls OR array accesses)
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallSetExpressionSegment(
                 [
                     new CallSetItemExpressionSegment(
                         [new NameToken("a", lineIndex1)],
-                        [new Expression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
+                        [new ParsingExpression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         null
                     ),
                     new CallSetItemExpressionSegment(
                         [],
-                        [ new Expression([ new CallExpressionSegment(
+                        [ new ParsingExpression([ new CallExpressionSegment(
                             [new NameToken("b", lineIndex1)],
                             [],
                             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -214,13 +214,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // When "a.b(0).c" is considered as an argument, it should be identified as ByVal (since only a direct reference - eg. "a" or even "a(0)" if "a"
             // is an array - can be changed ByRef as a function argument). Before adding this test, there was an issue where "a.b(0).c" would throw an exception
             // during translation.
-            var expression = new Expression(
+            var expression = new ParsingExpression(
             [
                 new CallSetExpressionSegment(
                 [
                     new CallSetItemExpressionSegment(
                         [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)],
-                        [new Expression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
+                        [new ParsingExpression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         zeroArgumentBracketsPresence: null
                     ),
                     new CallSetItemExpressionSegment(

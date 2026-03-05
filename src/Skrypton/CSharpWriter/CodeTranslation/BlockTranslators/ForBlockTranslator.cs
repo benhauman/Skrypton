@@ -11,7 +11,6 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.StageTwoParser.ExpressionParsing;
 using CallExpressionSegment = Skrypton.StageTwoParser.ExpressionParsing.CallExpressionSegment;
-using Expression = Skrypton.LegacyParser.CodeBlocks.Basic.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
@@ -112,7 +111,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             string loopStep;
             var numericLoopStepValueIfAny = (forBlock.LoopStep == null)
-                ? new NumericValueToken("1".ToUpperX(), forBlock.LoopTo.Tokens.Last().LineIndex) // Default to Step 1 if no LoopStep expression was specified
+                ? new NumericValueToken("1".ToUpperX(), forBlock.LoopTo.Tokens.Last().LineIndex) // Default to Step 1 if no LoopStep codeExpression was specified
                 : TryToGetExpressionAsNumericConstant(forBlock.LoopStep);
             if ((numericLoopStepValueIfAny == null) && (forBlock.LoopStep!.Tokens.Count() == 2))
             {
@@ -165,9 +164,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // loop changes it, which is allowed to happen - but not something we need to worry about here). So in the loop "FOR i = 1 To 5" it's fine
             // for the loopStart to be a VBScript "Integer" (Int16) since that can run the loop from 1..5 without changing type. However, in the loop
             // "FOR i = 1 To 32768" an Int16 wouldn't be able to describe all of the values, 32768 would be an overflow. So VBScript would set the
-            // loop variable to be a "Long" (Int32). It's important that the loopStart expression we generate here includes sufficient type information
+            // loop variable to be a "Long" (Int32). It's important that the loopStart codeExpression we generate here includes sufficient type information
             // to do the same sort of thing. (There is similar-but-different handling for dates - eg. "FOR i = Date() TO Date() + 2" - where the type
-            // of the loop variable will be a Date, but if the loopEnd expression is too high - eg. "FOR i = Date() To 10000000" - then there will be
+            // of the loop variable will be a Date, but if the loopEnd codeExpression is too high - eg. "FOR i = Date() To 10000000" - then there will be
             // an overflow error, rather than the loop variable type being changed so that it can contain the entire range).
             string loopStart;
             var numericLoopStartValueIfAny = TryToGetExpressionAsNumericConstant(forBlock.LoopFrom);
@@ -791,23 +790,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         }
 
         /// <summary>
-        /// If the expression is guaranteed to return a true numeric value (not null, not empty, not a boolean) then we don't need to wrap it in a NUM call
-        /// (if the expression does not meet these criteria then this function will return content that does include a NUM call)
+        /// If the codeExpression is guaranteed to return a true numeric value (not null, not empty, not a boolean) then we don't need to wrap it in a NUM call
+        /// (if the codeExpression does not meet these criteria then this function will return content that does include a NUM call)
         /// </summary>
-        private TranslatedStatementContentDetails WrapInNUMCallIfRequired(Expression expression, ScopeAccessInformation scopeAccessInformation)
+        private TranslatedStatementContentDetails WrapInNUMCallIfRequired(CodeExpression codeExpression, ScopeAccessInformation scopeAccessInformation)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var translatedExpressionContent = _statementTranslator.Translate(
-                expression,
+                codeExpression,
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified,
                 _logger.Warning
             );
-            if (IsCallingBuiltInNumberReturningFunction(expression, scopeAccessInformation))
+            if (IsCallingBuiltInNumberReturningFunction(codeExpression, scopeAccessInformation))
                 return translatedExpressionContent;
             return new TranslatedStatementContentDetails(
                 string.Format(CultureInfo.InvariantCulture,
@@ -819,16 +818,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
         }
 
-        private bool IsCallingBuiltInNumberReturningFunction(Expression expression, ScopeAccessInformation scopeAccessInformation)
+        private bool IsCallingBuiltInNumberReturningFunction(CodeExpression codeExpression, ScopeAccessInformation scopeAccessInformation)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             var expressions =
                   ExpressionGenerator.Generate(
-                      expression.Tokens,
+                      codeExpression.Tokens,
                       WithStatementInformation.TryGet(scopeAccessInformation),
                       _logger.Warning
                   )
@@ -844,12 +843,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return (builtInFunctionToken != null) && builtInFunctionToken.GuaranteedToReturnNumericContent();
         }
 
-        private static NumericValueToken? TryToGetExpressionAsNumericConstant(Expression expression)
+        private static NumericValueToken? TryToGetExpressionAsNumericConstant(CodeExpression codeExpression)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
 
-            var tokens = expression.Tokens.ToArray();
+            var tokens = codeExpression.Tokens.ToArray();
             if (tokens.Length != 1)
                 return null;
             return tokens[0] as NumericValueToken;

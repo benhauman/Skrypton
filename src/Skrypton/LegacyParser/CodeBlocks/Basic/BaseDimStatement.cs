@@ -85,7 +85,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class DimVariable // cannot be abstract due to 'translateRawVariableData'
     {
-        public DimVariable(NameToken name, IEnumerable<Expression>? dimensions)
+        public DimVariable(NameToken name, IEnumerable<CodeExpression>? dimensions)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             if (dimensions == null)
@@ -110,7 +110,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// if the list is non-null and non-empty, it will never contain any null references)
         /// </summary>
 #pragma warning disable CA1819 // Properties should not return arrays
-        [DataMember] public Expression[]? Dimensions { get; private set; }
+        [DataMember] public CodeExpression[]? Dimensions { get; private set; }
 #pragma warning restore CA1819 // Properties should not return arrays
 
         public override string ToString()

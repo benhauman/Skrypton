@@ -220,7 +220,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         /// <summary>
-        /// The string values that specify target member names in a CALL expression must not be manipulated by the name rewriter at runtime. This means that
+        /// The string values that specify target member names in a CALL codeExpression must not be manipulated by the name rewriter at runtime. This means that
         /// their casing will not be affected and - more importantly, any manipulations relating to C# keywords will NOT be applied. When the target is a
         /// translated class, the name rewriter manipulations would not cause any issue but if the target is not something that is translated (a COM component,
         /// for example), then trying to access its members with the name-rewritten versions will fail. This means that the CALL implementation must be able to
@@ -288,7 +288,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         /// <summary>
-        /// If a CALL expression has a function as its target then it needs to be rewritten so that that the owner of the function (or property) is the target
+        /// If a CALL codeExpression has a function as its target then it needs to be rewritten so that that the owner of the function (or property) is the target
         /// and the function and one of the member accessors (since it's not valid C# to provide a delegate for an object argument)
         /// </summary>
         [TestMethod, MyFact]

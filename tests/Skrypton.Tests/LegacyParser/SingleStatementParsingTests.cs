@@ -65,8 +65,8 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new ValueSettingStatement(
-                        new Expression([new NameToken("a", lineIndex1)]),
-                        new Expression([new BuiltInValueToken("Nothing", lineIndex1)]),
+                        new CodeExpression([new NameToken("a", lineIndex1)]),
+                        new CodeExpression([new BuiltInValueToken("Nothing", lineIndex1)]),
                         ValueSetTypeOptions.Set
                     )
                 ],
@@ -81,7 +81,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new ValueSettingStatement(
-                        new Expression([
+                        new CodeExpression([
                             new NameToken("a", lineIndex1),
                             new OpenBrace(lineIndex1),
                             new NumericValueToken("0", lineIndex1),
@@ -89,7 +89,7 @@ namespace Skrypton.Tests.LegacyParser
                             new NumericValueToken("0", lineIndex1),
                             new CloseBrace(lineIndex1)
                         ]),
-                        new Expression([
+                        new CodeExpression([
                             new NumericValueToken("1", lineIndex1)
                         ]),
                         ValueSetTypeOptions.Let
@@ -106,7 +106,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new ValueSettingStatement(
-                        new Expression([
+                        new CodeExpression([
                             new NameToken("a", lineIndex1),
                             new OpenBrace(lineIndex1),
                             new NumericValueToken("0", lineIndex1),
@@ -114,7 +114,7 @@ namespace Skrypton.Tests.LegacyParser
                             new NumericValueToken("0", lineIndex1),
                             new CloseBrace(lineIndex1)
                         ]),
-                        new Expression([
+                        new CodeExpression([
                             new NumericValueToken("1", lineIndex1)
                         ]),
                         ValueSetTypeOptions.Let
@@ -131,7 +131,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new ValueSettingStatement(
-                        new Expression([
+                        new CodeExpression([
                             new NameToken("a", lineIndex1),
                             new OpenBrace(lineIndex1),
                             new NumericValueToken("0", lineIndex1),
@@ -139,7 +139,7 @@ namespace Skrypton.Tests.LegacyParser
                             new NumericValueToken("0", lineIndex1),
                             new CloseBrace(lineIndex1)
                         ]),
-                        new Expression([
+                        new CodeExpression([
                             new BuiltInValueToken("Nothing", lineIndex1)
                         ]),
                         ValueSetTypeOptions.Set
@@ -156,7 +156,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new ValueSettingStatement(
-                        new Expression([
+                        new CodeExpression([
                             new NameToken("a", lineIndex1),
                             new OpenBrace(lineIndex1),
                             new NameToken("GetValue", lineIndex1),
@@ -169,7 +169,7 @@ namespace Skrypton.Tests.LegacyParser
                             new NumericValueToken("0", lineIndex1),
                             new CloseBrace(lineIndex1)
                         ]),
-                        new Expression([
+                        new CodeExpression([
                             new BuiltInValueToken("Nothing", lineIndex1)
                         ]),
                         ValueSetTypeOptions.Set

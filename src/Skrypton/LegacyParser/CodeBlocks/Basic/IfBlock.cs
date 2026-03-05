@@ -96,7 +96,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public sealed class IfBlockConditionSegment : IfBlockSegment
 #pragma warning restore CA1034 // Nested types should not be visible
         {
-            public IfBlockConditionSegment(Expression conditionStatement, IEnumerable<ICodeBlock> statements)
+            public IfBlockConditionSegment(CodeExpression conditionStatement, IEnumerable<ICodeBlock> statements)
             {
                 if (statements == null)
                     throw new ArgumentNullException(nameof(statements));
@@ -110,7 +110,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             /// <summary>
             /// This will never be null
             /// </summary>
-            [DataMember] public Expression Condition { get; private set; }
+            [DataMember] public CodeExpression Condition { get; private set; }
 
             /// <summary>
             /// This will never be null or contain any nulls

@@ -474,7 +474,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new VBScriptOverflowException($"l:{l}, r:{r}");
 
             // There are specific cases where the return type will be Single instead of Double, but I *think* those are the only possible return types apart from Null, covered above.
-            // If one side of the expression is a Single and the other side of the expression is Bool, Byte, Integer or Single - the result will be a Single, as long as the result
+            // If one side of the codeExpression is a Single and the other side of the codeExpression is Bool, Byte, Integer or Single - the result will be a Single, as long as the result
             // doesn't overflow the range of a single-precision number. If the result would overflow a Single (e.g. CSng(3.402823000e+38) / CSng(0.1)), it gets promoted to a Double.
             if ((l is float && (r is bool || r is byte || r is short || r is float)) ||
                 (r is float && (l is bool || l is byte || l is short || l is float)))

@@ -612,7 +612,7 @@ namespace Skrypton.Tests.StageTwoParser
         }
 
         /// <summary>
-        /// This covers an array of different types of expression
+        /// This covers an array of different types of codeExpression
         /// </summary>
         [TestMethod, MyFact]
         public void TestArrayAccessObjectAccessMethodArgumentsMixedArithmeticAndComparisonOperations()
@@ -895,7 +895,7 @@ namespace Skrypton.Tests.StageTwoParser
         {
             return WithStatementInformation.CreateForTest(
                 new WithBlock(
-                    target: new Skrypton.LegacyParser.CodeBlocks.Basic.Expression([new NameToken("a", lineIndex)]),
+                    target: new Skrypton.LegacyParser.CodeBlocks.Basic.CodeExpression([new NameToken("a", lineIndex)]),
                     content: [new CommentStatement("", lineIndex)]
                 ),
                 directedWithReference: new DoNotRenameNameToken("a", lineIndex)
@@ -996,7 +996,7 @@ namespace Skrypton.Tests.StageTwoParser
                     EXP(
                         CALL(
                             [new NameToken("wscript", lineIndex1), new NameToken("echo", lineIndex1)],
-                            new Skrypton.StageTwoParser.ExpressionParsing.Expression([runtimeErrorExpressionSegment])
+                            new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression([runtimeErrorExpressionSegment])
                         )
                     )
                 ],
@@ -1058,7 +1058,7 @@ namespace Skrypton.Tests.StageTwoParser
                     EXP(
                         CALL(
                             [new NameToken("wscript", lineIndex1), new NameToken("echo", lineIndex1)],
-                            new Skrypton.StageTwoParser.ExpressionParsing.Expression([
+                            new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression([
                                 CALL([new StringToken("1", lineIndex1), new NameToken("a", lineIndex1)])
                             ])
                         )
@@ -1099,7 +1099,7 @@ namespace Skrypton.Tests.StageTwoParser
                     EXP(
                         CALL(
                             [new NameToken("wscript", lineIndex1), new NameToken("echo", lineIndex1)],
-                            new Skrypton.StageTwoParser.ExpressionParsing.Expression([runtimeErrorExpressionSegment])
+                            new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression([runtimeErrorExpressionSegment])
                         )
                     )
                 ],
@@ -1174,19 +1174,19 @@ namespace Skrypton.Tests.StageTwoParser
 
         /// <summary>
         /// This method signature is required by Visual Studio 2015 to remove any ambiguity between calls to CALL which specify an IToken set since it is not clear
-        /// whether the signature which takes an IToken set and a params IToken set or the one that takes a params Expression set would be a better match (I'm not
+        /// whether the signature which takes an IToken set and a params IToken set or the one that takes a params ParsingExpression set would be a better match (I'm not
         /// sure why Visual Studio 2013 didn't pick up this ambiguity, but it was new for 2015)
         /// </summary>
         private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens)
         {
-            return CALL(memberAccessTokens, new Skrypton.StageTwoParser.ExpressionParsing.Expression[0]);
+            return CALL(memberAccessTokens, new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression[0]);
         }
 
         /// <summary>
         /// Create an CallExpressionSegment from member access tokens and argument expressions (the zeroArgBrackets is only considered if arguments is an empty set,
         /// if arguments is empty and zeroArgBrackets is null then a Absent will be used as a default)
         /// </summary>
-        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Skrypton.StageTwoParser.ExpressionParsing.Expression> arguments, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression> arguments, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets)
         {
             if ((memberAccessTokens.Count() == 1) && !arguments.Any())
             {
@@ -1225,7 +1225,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create a CallExpressionSegment from member access tokens and argument expressions (the zeroArgBrackets is only considered if arguments is an empty set,
         /// if arguments is empty and zeroArgBrackets is null then a Absent will be used as a default)
         /// </summary>
-        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets, params Skrypton.StageTwoParser.ExpressionParsing.Expression[] arguments)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets, params Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression[] arguments)
         {
             return CALL(memberAccessTokens, arguments, zeroArgBrackets);
         }
@@ -1234,7 +1234,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create a CallExpressionSegment from member access tokens and argument expressions (applying the default logic for ArgumentBracketPresenceOptions; null
         /// if there are arguments and Absent otherwise)
         /// </summary>
-        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, params Skrypton.StageTwoParser.ExpressionParsing.Expression[] arguments)
+        private static IExpressionSegment CALL(IReadOnlyCollection<IToken> memberAccessTokens, params Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression[] arguments)
         {
             return CALL(memberAccessTokens, arguments, null);
         }
@@ -1248,7 +1248,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Create a CallExpressionSegment from a single member access token and argument expressions (applying the default logic for ArgumentBracketPresenceOptions;
         /// null if there are arguments and Absent otherwise)
         /// </summary>
-        private static IExpressionSegment CALL(IToken memberAccessToken, params Skrypton.StageTwoParser.ExpressionParsing.Expression[] arguments)
+        private static IExpressionSegment CALL(IToken memberAccessToken, params Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression[] arguments)
         {
             return CALL([memberAccessToken], arguments);
         }
@@ -1278,7 +1278,7 @@ namespace Skrypton.Tests.StageTwoParser
             }
             return CALL(
                 memberAccessTokens,
-                arguments.Select(a => new Skrypton.StageTwoParser.ExpressionParsing.Expression([CALL(a)])).ToArray(),
+                arguments.Select(a => new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression([CALL(a)])).ToArray(),
                 null
             );
         }
@@ -1294,17 +1294,17 @@ namespace Skrypton.Tests.StageTwoParser
         }
 
         /// <summary>
-        /// Create an Expression from multiple ExpressionSegments
+        /// Create an ParsingExpression from multiple ExpressionSegments
         /// </summary>
-        private static Skrypton.StageTwoParser.ExpressionParsing.Expression EXP(params IExpressionSegment[] segments)
+        private static Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression EXP(params IExpressionSegment[] segments)
         {
-            return new Skrypton.StageTwoParser.ExpressionParsing.Expression(segments);
+            return new Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression(segments);
         }
 
         /// <summary>
-        /// Create an Expression from a single ExpressionSegment
+        /// Create an ParsingExpression from a single ExpressionSegment
         /// </summary>
-        private static Skrypton.StageTwoParser.ExpressionParsing.Expression EXP(IExpressionSegment segment)
+        private static Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression EXP(IExpressionSegment segment)
         {
             return EXP([segment]);
         }

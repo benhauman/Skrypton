@@ -144,7 +144,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     ifContent.Add(new IfBlock.IfBlockElseSegment(blockContent));
                 else
                 {
-                    Expression conditionStatement = new Expression(conditionTokens);
+                    CodeExpression conditionStatement = new CodeExpression(conditionTokens);
                     ifContent.Add(new IfBlock.IfBlockConditionSegment(conditionStatement, blockContent));
                 }
 
@@ -281,7 +281,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 notStatement = codeBlockHandler.Process(notTokens, out var _);
             }
 
-            Expression conditionStatement = new Expression(conditionTokens);
+            CodeExpression conditionStatement = new CodeExpression(conditionTokens);
 
             // Generate IfBlock
             List<IfBlock.IfBlockSegment> ifContent = new List<IfBlock.IfBlockSegment>();

@@ -303,7 +303,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// This is related to IfBlockStatementsMustBeWrappedInErrorHandlingIfWithinFunctionWithOnErrorResumeNextBeforeIfBlock - if the OERN comes after
         /// the IF block then it will not affect the IF block and so the IF block does not need to consider any error-trapping (around either its own
-        /// conditional expression or its inner statements)
+        /// conditional codeExpression or its inner statements)
         /// </summary>
         [TestMethod, MyFact]
         public void IfBlockStatementsNeedNotBeWrappedInErrorHandlingIfWithinFunctionWithOnErrorResumeNextAfterIfBlock()
@@ -346,7 +346,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is related to IfBlockStatementsNeedNotBeWrappedInErrorHandlingIfWithinFunctionWithOnErrorResumeNextAfterIfBlock - if the OERN comes after
         /// the IF block but both it and the IF block are within a looping structure (such as a FOR block) then the IF block *does* need error handling
         /// because there is a chance that the second pass through the loop could occur with error-trapping enabled.
-        /// conditional expression or its inner statements)
+        /// conditional codeExpression or its inner statements)
         /// </summary>
         [TestMethod, MyFact]
         public void IfBlockStatementsNeedsToBeWrappedInErrorHandlingIfOnErrorResumeNextAfterComesAfterItWithinLoopingStructure()

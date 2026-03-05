@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public sealed class WithBlock : IHaveNestedContent
     {
-        public WithBlock(Expression target, IEnumerable<ICodeBlock> content)
+        public WithBlock(CodeExpression target, IEnumerable<ICodeBlock> content)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
@@ -24,7 +24,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This will never be null
         /// </summary>
-        [DataMember] public Expression Target { get; private set; }
+        [DataMember] public CodeExpression Target { get; private set; }
 
         /// <summary>
         /// This will never be null nor contain any null references

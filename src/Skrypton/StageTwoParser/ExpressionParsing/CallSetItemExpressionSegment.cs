@@ -29,7 +29,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //typeof(WhiteSpaceToken)
         };
 
-        public CallSetItemExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+        public CallSetItemExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
         {
             if (memberAccessTokens == null)
                 throw new ArgumentNullException(nameof(memberAccessTokens));
@@ -78,7 +78,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// <summary>
         /// This will never be null nor contain any null references
         /// </summary>
-        public IReadOnlyCollection<Expression> Arguments { get; }
+        public IReadOnlyCollection<ParsingExpression> Arguments { get; }
 
         /// <summary>
         /// In very particular scenarios, VBScript uses brackets to determine whether a zero-argument call is a method call or a value assignment (when

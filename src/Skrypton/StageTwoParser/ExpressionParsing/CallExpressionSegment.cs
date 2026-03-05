@@ -11,7 +11,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     /// </summary>
     public sealed class CallExpressionSegment : CallSetItemExpressionSegment
     {
-        public CallExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<Expression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+        public CallExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
             : base(memberAccessTokens, arguments, zeroArgumentBracketsPresence)
         {
             if (base.MemberAccessTokens.Count == 0)

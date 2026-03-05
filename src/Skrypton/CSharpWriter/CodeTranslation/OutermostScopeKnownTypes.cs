@@ -54,7 +54,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     ,typeof(SelectBlock.CaseBlockSegment) // [DataContract(Namespace = "http://vbs")]
     ,typeof(SelectBlock.CaseBlockElseSegment) // [DataContract(Namespace = "http://vbs")]
     ,typeof(SelectBlock.CaseBlockExpressionSegment) // [DataContract(Namespace = "http://vbs")]
-    ,typeof(Expression) // [DataContract(Namespace = "http://vbs")]
+    ,typeof(CodeExpression) // [DataContract(Namespace = "http://vbs")]
         ,typeof(OutermostScope) // [DataContract(Namespace = "http://vbs")]
 
         ,typeof(WhiteSpaceToken) // [DataContract(Namespace = "http://vbs")]

@@ -9,7 +9,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     public class EndToEndFunctionTranslationTests : TestBase
     {
         /// <summary>
-        /// When a function (or property) has only a single executable statement that is a return-this-expression statement, then this can be translated
+        /// When a function (or property) has only a single executable statement that is a return-this-codeExpression statement, then this can be translated
         /// into a single line C# return statement. Anything more complicated requires a temporary variable which is used to track the return value and
         /// returned from any exit point.
         /// </summary>
@@ -355,10 +355,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         /// <summary>
-        /// If a ByRef argument of a function is required within an expression that must potentially trap errors, then an alias of that argument will be
+        /// If a ByRef argument of a function is required within an codeExpression that must potentially trap errors, then an alias of that argument will be
         /// required since the potentially-error-trapped content will be executed within a lambda and C# does not allow "ref" arguments to be accessed
         /// within lambdas. If this alias may be altered - if it is passed into another function as a ByRef argument, for example - then the alias value
-        /// must be used to overwrite the original function argument reference, even if the expression evaluation failed (since it might have changed
+        /// must be used to overwrite the original function argument reference, even if the codeExpression evaluation failed (since it might have changed
         /// the value before the error occurred).
         /// </summary>
         [TestMethod, MyFact]
@@ -396,7 +396,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         /// <summary>
-        /// If a ByRef argument of a function is required within an expression that must potentially trap errors, then an alias of that argument will be
+        /// If a ByRef argument of a function is required within an codeExpression that must potentially trap errors, then an alias of that argument will be
         /// required since the potentially-error-trapped content will be executed within a lambda and C# does not allow "ref" arguments to be accessed
         /// within lambdas. If this alias may not be altered then the alias need not be written back over the original reference, it is a read-only
         /// alias. This would be the case if there is a ByRef argument "a" of the current function and "a.Name" is passed to another function (as a

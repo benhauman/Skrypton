@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.StageTwoParser.ExpressionParsing
 {
-    public sealed class Expression // Rename to 'ParsingExpression'
+    [DataContract(Namespace = "http://vbs")]
+    public sealed class ParsingExpression // Rename to 'ParsingExpression'
     {
-        public Expression(IReadOnlyCollection<IExpressionSegment> segments)
+        public ParsingExpression(IReadOnlyCollection<IExpressionSegment> segments)
         {
             if (segments == null)
                 throw new ArgumentNullException(nameof(segments));

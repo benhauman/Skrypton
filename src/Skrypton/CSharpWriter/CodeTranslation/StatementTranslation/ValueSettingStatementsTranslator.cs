@@ -9,7 +9,6 @@ using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.StageTwoParser.ExpressionParsing;
-using Expression = Skrypton.StageTwoParser.ExpressionParsing.Expression;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
@@ -69,18 +68,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
-            // The ValueToSet content should be reducable to a single expression segment; a CallExpression or a CallSetExpression
+            // The ValueToSet content should be reducable to a single codeExpression segment; a CallExpression or a CallSetExpression
             // 2014-04-03 DWR: Used to pass valueSettingStatement.ValueToSet.BracketStandardisedTokens here but there is no opportunity for "optional"
             // brackets in VBScript for the target of an assignment statement so the BracketStandardisedTokens added nothing here but complexity and
             // so has been removed.
             //NameToken? directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null :  scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
             WithStatementInformation? directedWithReferenceTokenIfAny = WithStatementInformation.TryGet(scopeAccessInformation);
-            Expression[] targetExpression = ExpressionGenerator.Generate(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
+            ParsingExpression[] targetExpression = ExpressionGenerator.Generate(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
             if (targetExpression.Length != 1)
-                throw new ArgumentException("The ValueToSet should always be described by a single expression");
+                throw new ArgumentException("The ValueToSet should always be described by a single codeExpression");
             IExpressionSegment[] targetExpressionSegments = targetExpression[0].Segments.ToArray();
             if (targetExpressionSegments.Length != 1)
-                throw new ArgumentException("The ValueToSet should always be described by a single expression containing a single segment");
+                throw new ArgumentException("The ValueToSet should always be described by a single codeExpression containing a single segment");
 
             // If there is only a single CallExpressionSegment with a single token then that token must be a NameToken otherwise the statement would be
             // trying to assign a value to a constant or keyword or something inappropriate. If it IS a NameToken, then this is the easiest case - it's
@@ -91,7 +90,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 NameToken? singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
                 if (singleTokenAsName == null)
-                    throw new ArgumentException("Where a ValueSettingStatement's ValueToSet expression is a single expression with a single CallExpressionSegment with one token, that token must be a NameToken");
+                    throw new ArgumentException("Where a ValueSettingStatement's ValueToSet codeExpression is a single codeExpression with a single CallExpressionSegment with one token, that token must be a NameToken");
 
                 // If this single token is the function name (if we're in a function or property) then we need to make the ParentReturnValueNameIfAny
                 // replacement so that the return value reference is updated.
@@ -228,7 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 CallSetExpressionSegment? callSetExpressionSegment = expressionSegment as CallSetExpressionSegment;
                 if (callSetExpressionSegment == null)
-                    throw new ArgumentException("The ValueToSet should always be described by a single expression containing a single segment, of type CallExpressionSegment or CallSetExpressionSegment");
+                    throw new ArgumentException("The ValueToSet should always be described by a single codeExpression containing a single segment, of type CallExpressionSegment or CallSetExpressionSegment");
                 callExpressionSegments = callSetExpressionSegment.CallExpressionSegments.ToList();
             }
 
@@ -261,7 +260,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // has the optional member accessor and any arguments.
             string targetAccessorName;
             string? optionalMemberAccessor;
-            IEnumerable<Expression> arguments;
+            IEnumerable<ParsingExpression> arguments;
             if (callExpressionSegments.Count == 1)
             {
                 // The single CallExpressionSegment may have one or two member accessors
@@ -351,7 +350,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             };
                             targetAccessorName =
                                 _statementTranslator.Translate(
-                                    new Expression(targetAccessCallExpressionSegments),
+                                    new ParsingExpression(targetAccessCallExpressionSegments),
                                     scopeAccessInformation,
                                     ExpressionReturnTypeOptions.NotSpecified
                                 ).TranslatedContent;
@@ -377,7 +376,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };
                 targetAccessorName =
                     _statementTranslator.Translate(
-                        new Expression(targetAccessExpressionSegments),
+                        new ParsingExpression(targetAccessExpressionSegments),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified
                     ).TranslatedContent;
@@ -391,8 +390,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // Note: In this case, we don't have to apply any special logic to make "return value replacements" for assignment targets
                 // (when "F2 = 1" is setting the return value for the function "F2" that we're inside of, for example) since this will be
                 // handled by the statement translator. The cases above where there was only a single token or only a single call
-                // expression segment needed additional logic since they don't use the statement translator for the left hand
-                // side of the assignment expression.
+                // codeExpression segment needed additional logic since they don't use the statement translator for the left hand
+                // side of the assignment codeExpression.
             }
 
             // Regardless of how we've gone about trying to access the data in the callExpressionSegments data above, we now need to get a
@@ -421,7 +420,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 else
                     expressionToAnalyseForVariablesAccessed = new CallSetExpressionSegment(callExpressionSegments);
                 variablesAccessed = _statementTranslator.Translate(
-                        new Expression(new[] { expressionToAnalyseForVariablesAccessed }),
+                        new ParsingExpression(new[] { expressionToAnalyseForVariablesAccessed }),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified
                     )

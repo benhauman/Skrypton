@@ -43,7 +43,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 tokensInCondition.Add(tokenCondition);
                 tokens.RemoveAt(0);
             }
-            var conditionStatement = new Expression(tokensInCondition);
+            var conditionStatement = new CodeExpression(tokensInCondition);
 
             // Get block content
             var codeBlockHandler = new CodeBlockHandler(["WEND"]);

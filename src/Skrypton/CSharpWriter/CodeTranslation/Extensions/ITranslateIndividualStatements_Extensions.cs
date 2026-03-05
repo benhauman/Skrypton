@@ -28,19 +28,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         }
 
         /// <summary>
-        /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null expression reference)
+        /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null codeExpression reference)
         /// </summary>
         public static TranslatedStatementContentDetails Translate(
             this ITranslateIndividualStatements statementTranslator,
-            Expression expression,
+            CodeExpression codeExpression,
             ScopeAccessInformation scopeAccessInformation,
             ExpressionReturnTypeOptions returnRequirements,
             Action<string> warningLogger)
         {
             if (statementTranslator == null)
                 throw new ArgumentNullException(nameof(statementTranslator));
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (codeExpression == null)
+                throw new ArgumentNullException(nameof(codeExpression));
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), returnRequirements))
@@ -48,7 +48,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            return Translate(statementTranslator, (Statement)expression, scopeAccessInformation, returnRequirements, warningLogger);
+            return Translate(statementTranslator, (Statement)codeExpression, scopeAccessInformation, returnRequirements, warningLogger);
         }
 
         private static TranslatedStatementContentDetails Translate(

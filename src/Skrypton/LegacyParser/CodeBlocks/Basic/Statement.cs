@@ -16,7 +16,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // CLASS INITIALISATION
         // =======================================================================================
         /// <summary>
-        /// A statement should be solely an expression with no return value or whose return value is ignored - eg. a function call. Tokens that
+        /// A statement should be solely an codeExpression with no return value or whose return value is ignored - eg. a function call. Tokens that
         /// represent a statement where the return value is used to set another variable's value should be described by a ValueSettingStatement.
         /// It is recommended to pass any tokens that are thought to be one Statement through the StatementHandler, which will break down the
         /// content into multiple Statements (if there are any AbstractEndOfStatementToken tokens).
@@ -212,7 +212,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             // assumption that the content was valid VBScript, which would make things easier. (Should this method be in a translator and this data
             // be returned from a method GetBracketStandardisedTokensIfContentValid?)
 
-            // No need to try to re-arrange things if this is a new-instance expression, no brackets are required
+            // No need to try to re-arrange things if this is a new-instance codeExpression, no brackets are required
             if ((tokenArray[0] is KeyWordToken) && tokenArray[0].Content.Equals("new", StringComparison.OrdinalIgnoreCase))
                 return tokenArray;
 
@@ -438,7 +438,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
         /// <summary>
         /// Is the current token something that could represent the start of, or the entirety of, a call or value access - values may be of types
-        /// NumericValueToken or BuiltInValueToken (in which case they should be entirety of an expression segment) or it might be the start of
+        /// NumericValueToken or BuiltInValueToken (in which case they should be entirety of an codeExpression segment) or it might be the start of
         /// a function call (eg.  BuiltInFunctionToken or NameToken, in some cases). Tokens that would not be acceptable would be open braces
         /// (since bracketed expressions should be handled separately above) or ArgumentSeparatorToken, amongst others.
         /// </summary>

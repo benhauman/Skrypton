@@ -71,7 +71,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 					yield return new object[] { "0 / Null", (short)0, DBNull.Value, DBNull.Value };
 
 					// These are all the cases that lead to a Single being returned (instead of a Double)
-					// One side of the expression needs to be a Single, and the other side must be either Single, Integer (Int16), Byte, or Boolean
+					// One side of the codeExpression needs to be a Single, and the other side must be either Single, Integer (Int16), Byte, or Boolean
 					// In addition, if the result of the calculation would overflow a Single, the value is promoted to a Double
 					yield return new object[] { "CByte(5) / CSng(2)", (byte)5, 2.0f, 2.5f };
 					yield return new object[] { "CInt(5) / CSng(2)", (short)5, 2.0f, 2.5f };

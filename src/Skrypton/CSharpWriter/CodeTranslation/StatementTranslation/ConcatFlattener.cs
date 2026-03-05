@@ -8,19 +8,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
     /// <summary>
     /// Runs of multiple string concatenations are a common occurrence in VBScript, so rather then making the translated code longer than it needs to be, by limiting
     /// the number of arguments takens by the CONCAT method to two (like the other operators - except for NOT, which takes only one argument), the CONCAT method may
-    /// may also take more than two arguments if it would make no difference to the enforcing of operator precedence. This methods will change an expression that has
+    /// may also take more than two arguments if it would make no difference to the enforcing of operator precedence. This methods will change an codeExpression that has
     /// been strictly parsed to allow only two CONCAT arguments and rearrange it to support more arguments for a single CONCAT call if it would have no other effect
-    /// on the expression. If this manipulation is not possible then no change to the data will be performed.
+    /// on the codeExpression. If this manipulation is not possible then no change to the data will be performed.
     /// </summary>
     public static class ConcatFlattener
     {
-        public static Expression Flatten(Expression expression)
+        public static ParsingExpression Flatten(ParsingExpression parsingExpression)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (parsingExpression == null)
+                throw new ArgumentNullException(nameof(parsingExpression));
 
-            return new Expression(
-                Flatten(expression.Segments)
+            return new ParsingExpression(
+                Flatten(parsingExpression.Segments)
             );
         }
 
@@ -39,13 +39,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             var flattenedSegments = new List<IExpressionSegment>();
             var firstSegmentAsBracketedExpressionSegment = expressionSegmentsArray[0] as BracketedExpressionSegment;
             if ((firstSegmentAsBracketedExpressionSegment != null) && IsTwoValueConcat(firstSegmentAsBracketedExpressionSegment.Segments))
-                flattenedSegments.AddRange(Flatten(new Expression(firstSegmentAsBracketedExpressionSegment.Segments)).Segments);
+                flattenedSegments.AddRange(Flatten(new ParsingExpression(firstSegmentAsBracketedExpressionSegment.Segments)).Segments);
             else
                 flattenedSegments.Add(expressionSegmentsArray[0]);
             flattenedSegments.Add(expressionSegmentsArray[1]);
             var lastSegmentAsBracketedExpressionSegment = expressionSegmentsArray[2] as BracketedExpressionSegment;
             if ((lastSegmentAsBracketedExpressionSegment != null) && IsTwoValueConcat(lastSegmentAsBracketedExpressionSegment.Segments))
-                flattenedSegments.AddRange(Flatten(new Expression(lastSegmentAsBracketedExpressionSegment.Segments)).Segments);
+                flattenedSegments.AddRange(Flatten(new ParsingExpression(lastSegmentAsBracketedExpressionSegment.Segments)).Segments);
             else
                 flattenedSegments.Add(expressionSegmentsArray[2]);
             return flattenedSegments;

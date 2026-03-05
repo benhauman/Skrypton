@@ -14,7 +14,7 @@ namespace Skrypton.Tests.LegacyParser
     public class StatementHandlerTests : TestBase
     {
         /// <summary>
-        /// Only the first non-bracketed equality sign in a statement may indicate the separation between the value-to-set and the expression-to-set-it-to
+        /// Only the first non-bracketed equality sign in a statement may indicate the separation between the value-to-set and the codeExpression-to-set-it-to
         /// in a value-setting-statement, any subsequent equals signs are comparison operators (C# uses "==" for comparisons, as opposed to "=" for setting
         /// values, which is clearer.. but this is VBScript)
         /// </summary>

@@ -29,7 +29,7 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
 
             // At the beginning of a token set, if the first token is a minus sign then it is elligible to be part of a number. If it is not the
             // first token then it may only incorporated into a number if preceded by another operator or an opening brace (which effectively
-            // would make the token the start of a new expression). The same principle applies to a decimal point. This is why the initial
+            // would make the token the start of a new codeExpression). The same principle applies to a decimal point. This is why the initial
             // processor is a PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber.
             var processor = (IAmLookingForNumberContent)PeriodOrMinusSignOrNumberCouldIndicateStartOfNumber.Instance;
             var numberContent = new PartialNumberContent();
