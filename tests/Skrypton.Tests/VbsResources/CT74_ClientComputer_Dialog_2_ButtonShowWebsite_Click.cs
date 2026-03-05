@@ -88,9 +88,9 @@ namespace TranslatedProgram
                 _.SET(_.OBJ(oConn), this, with, "ActiveConnection");
                 _.SET("CreateNewSBCode", this, with, "CommandText");
                 _.SET(_.VAL(adCmdStoredProc), this, with, "CommandType");
-                _.CALL(this, with, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with, _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue)));
-                _.CALL(this, with, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with, _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
-                _.CALL(this, with, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with, _.ARGS.Val("@NewSBCode").Val(adVarWChar).Val(adParamOutput).Val((Int16)10)));
+                _.CALL(this, with, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue));
+                _.CALL(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; }));
+                _.CALL(this, with, "CreateParameter", _.ARGS.Val("@NewSBCode").Val(adVarWChar).Val(adParamOutput).Val((Int16)10));
                 _.CALL(this, with, "Execute");
                 parmval = _.VAL(_.CALL(this, _.CALL(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
 
@@ -113,9 +113,9 @@ namespace TranslatedProgram
                 _.SET(_.OBJ(oConn), this, with2, "ActiveConnection");
                 _.SET("CreateNewPersonalID", this, with2, "CommandText");
                 _.SET(_.VAL(adCmdStoredProc), this, with2, "CommandType");
-                _.CALL(this, with2, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with2, _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue)));
-                _.CALL(this, with2, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with2, _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
-                _.CALL(this, with2, "Parameters", "Append", "CreateParameter", _.ARGS.RefIfArray(with2, _.ARGS.Val("@NewPersonalID").Val(adVarWChar).Val(adParamOutput).Val((Int16)10)));
+                _.CALL(this, with2, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue));
+                _.CALL(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; }));
+                _.CALL(this, with2, "CreateParameter", _.ARGS.Val("@NewPersonalID").Val(adVarWChar).Val(adParamOutput).Val((Int16)10));
                 _.CALL(this, with2, "Execute");
                 parmval = _.VAL(_.CALL(this, _.CALL(this, with2, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
 

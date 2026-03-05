@@ -8,7 +8,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// </summary>
     [Serializable]
     [DataContract(Namespace = "http://vbs")]
-    public class NameToken : AtomToken
+    public class NameToken : AtomToken // not sealed due to 'DoNotRenameNameToken', 'ForRenamingNameToken', 'ScopedNameToken', 'EscapedNameToken', 'MayBeKeywordOrNameToken', 'TargetCurrentClassToken'
     {
         public NameToken(string content, int lineIndex) : this(false, content.ToUpperX(), lineIndex) { } // test
 

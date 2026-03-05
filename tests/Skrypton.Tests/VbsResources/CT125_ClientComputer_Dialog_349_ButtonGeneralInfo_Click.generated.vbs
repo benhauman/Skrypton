@@ -23,7 +23,6 @@ Public Function ConvertSize(ByRef Size)
   END IF
 
   SELECT CASE Suffix
-
     CASE " KB"
       Size = Round(Size / 1024, 2)
     CASE " MB"

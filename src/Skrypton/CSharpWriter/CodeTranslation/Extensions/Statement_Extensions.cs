@@ -29,12 +29,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             // or "Test(a)", which would be translated into "Test()", "Test(1)" or "Test((a))", respectively) since that is the only time
             // that brackets appear "optional". When this statement's return value is considered (eg. the "Test(1)" in "a = Test(1)"), the
             // brackets will already be in a format in valid VBScript that matches what would be expected in C#.
-            var expressions =
-                ExpressionGenerator.Generate(
+            ParsingExpression[] expressions =
+                ExpressionGenerator.GenerateExpressions(
                     (returnRequirements == ExpressionReturnTypeOptions.None) ? statement.GetBracketStandardisedTokens(scopeAccessInformation.DirectedWithReferenceIfAny?.AsToken()) : statement.Tokens,
                     WithStatementInformation.TryGet(scopeAccessInformation),
                     warningLogger
-                ).ToArray();
+                );
             if (expressions.Length != 1)
                 throw new ArgumentException("Statement translation should always result in a single codeExpression being generated");
             return expressions[0];

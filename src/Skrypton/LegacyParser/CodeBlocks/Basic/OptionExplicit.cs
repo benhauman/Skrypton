@@ -14,10 +14,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
-            return indenter.Indent + "Option Explicit";
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
+            return generationContext.Indent + "Option Explicit";
         }
     }
 }

@@ -592,7 +592,6 @@ Public Sub ExportObjectIncident(ByRef hlContext, ByRef hlObj)
 
 
   SELECT CASE Buchungskreis
-
     CASE "107"
       TeamKeyword = "KOControllingDitzingen"
     CASE "110"

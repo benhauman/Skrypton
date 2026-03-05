@@ -4,7 +4,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class ScopedNameToken : NameToken
+    public sealed class ScopedNameToken : NameToken
     {
         public ScopedNameToken(StringUpper contentUpper, int lineIndex, ScopeLocationOptions scopeLocation) : base(contentUpper, lineIndex)
         {

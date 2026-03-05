@@ -43,14 +43,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
 #pragma warning disable CA1820 // Test for empty strings using string length
             if (Content.Trim() == "")
                 return "";
 #pragma warning restore CA1820 // Test for empty strings using string length
-            return indenter.Indent + "'" + Content;
+            return generationContext.Indent + "'" + Content;
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public override string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public override string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             // Grab content from DimStatement..
-            string baseContent = base.GenerateBaseSource(NullIndenter.Instance);
+            string baseContent = base.GenerateBaseSource(generationContext.NullIndenter());
             if ((baseContent == null)
             || (baseContent.Length < 4)
             || (!baseContent.Substring(0, 4).Equals("DIM ", StringComparison.OrdinalIgnoreCase)))
@@ -32,7 +32,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
             // .. and change to be ReDim (add in Preserve keyword, if required)
             StringBuilder output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indenter.Indent);
             output.Append("Private ");
             output.Append(baseContent.Substring(4));
             return output.ToString();

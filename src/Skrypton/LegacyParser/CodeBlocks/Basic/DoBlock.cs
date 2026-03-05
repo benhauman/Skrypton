@@ -39,7 +39,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// This may be null since VBScript supports DO..WHILE loops with no constraint
         /// </summary>
-        [DataMember] public CodeExpression ConditionIfAny { get; private set; }
+        [DataMember] public CodeExpression? ConditionIfAny { get; private set; }
 
         [DataMember] public bool IsPreCondition { get; private set; }
 
@@ -94,13 +94,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Re-generate equivalent VBScript source code for this block - there should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             var output = new StringBuilder();
 
             // Open statement (with condition if this construct has a pre condition)
-            output.Append(indenter.Indent + "Do");
+            output.Append(generationContext.Indent + "Do");
             if (IsPreCondition && (ConditionIfAny != null))
             {
                 output.Append(' ');
@@ -108,17 +108,17 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     output.Append("While ");
                 else
                     output.Append("Until ");
-                output.AppendLine(ConditionIfAny.GenerateBaseSource(NullIndenter.Instance));
+                output.AppendLine(ConditionIfAny.GenerateBaseSource(generationContext.NullIndenter()));
             }
             else
                 output.AppendLine();
 
             // Render inner content
             foreach (var statement in Statements)
-                output.AppendLine(statement.GenerateBaseSource(indenter.Increase()));
+                output.AppendLine(statement.GenerateBaseSource(generationContext.Increase()));
 
             // Close statement (with condition if this construct has a pre condition)
-            output.Append(indenter.Indent + "Loop");
+            output.Append(generationContext.Indent + "Loop");
             if (!IsPreCondition && (ConditionIfAny != null))
             {
                 output.Append(' ');
@@ -126,7 +126,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     output.Append("While ");
                 else
                     output.Append("Until ");
-                output.Append(ConditionIfAny.GenerateBaseSource(NullIndenter.Instance));
+                output.Append(ConditionIfAny.GenerateBaseSource(generationContext.NullIndenter()));
             }
             return output.ToString();
         }

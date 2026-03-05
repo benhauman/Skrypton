@@ -16,20 +16,20 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// present the terms will be bracketed up to apply the max-one-operator restriction and to enforce VBScript operator precedence. This will
         /// never return null nor a set containing any nulls, it will raise an exception for a null token set or a set containing any nulls.
         /// </summary>
-        public static IEnumerable<ParsingExpression> Generate(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
+        public static ParsingExpression[] GenerateExpressions(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            return Generate(new TokenNavigator(tokens), 0, directedWithReferenceIfAny, warningLogger);
+            return GenerateCore(new TokenNavigator(tokens), 0, directedWithReferenceIfAny, warningLogger, []);
         }
 
         /// <summary>
         /// This will never return null nor a set containing any nulls
         /// </summary>
-        private static ParsingExpression[] Generate(TokenNavigator tokenNavigator, int depth, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
+        private static ParsingExpression[] GenerateCore(TokenNavigator tokenNavigator, int depth, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger, List<IToken> directedWithAccessors)
         {
             if (tokenNavigator == null)
                 throw new ArgumentNullException(nameof(tokenNavigator));
@@ -75,33 +75,6 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     }
                     break;
                 }
-                else if (token is ArgumentSeparatorToken)
-                {
-                    if (depth == 0)
-                        throw new ArgumentException("Encountered ArgumentSeparatorToken in top-level content - invalid");
-
-                    if (accessorBuffer.Count != 0)
-                    {
-                        expressionSegments.Add(
-                            GetCallOrNewOrValueExpressionSegment(
-                                accessorBuffer,
-                                [],
-                                directedWithReferenceIfAny,
-                                argumentsAreBracketed: false,
-                                willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
-                                warningLogger: warningLogger
-                            )
-                        );
-                        accessorBuffer.Clear();
-                    }
-                    if (expressionSegments.Count == 0)
-                        throw new ArgumentException("Unexpected ArgumentSeparatorToken - invalid content");
-
-                    expressions.Add(GetExpression(expressionSegments));
-                    expressionSegments.Clear();
-                    tokenNavigator.MoveNext(); // Move on since this token has been processed
-                    continue;
-                }
                 else if (token is OpenBrace)
                 {
                     tokenNavigator.MoveNext(); // Move on since this token has been processed
@@ -109,14 +82,40 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     // Get the content from inside the brackets (using a TokenNavigator here that is passed again into the Generate
                     // method means that when the below call returns, the tokenNavigator here will have been moved along to after
                     // the bracketed content that is about to be processed)
-                    ParsingExpression[] bracketedExpressions = Generate(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger);
+                    //List<IToken> xxx = directedWithAccessors.ToArray().Concat(accessorBuffer).ToList();
+                    ParsingExpression[] bracketedExpressions = GenerateCore(tokenNavigator, depth + 1, directedWithReferenceIfAny, warningLogger, []);
 
                     // If the accessorBuffer isn't empty then the bracketed content should be arguments, if not then it's just a bracketed codeExpression
                     if (accessorBuffer.Count != 0)
                     {
+                        List<IToken> ttt;
+                        if (directedWithReferenceIfAny != null)// && bracketedExpressions.Length != 0)// && expressionSegments.Count != 0 && (expressionSegments.Last() is CallSetItemExpressionSegment))
+                        {
+
+                            //if (accessorBuffer.FirstOrDefault() is DoNotRenameNameToken accessor0With && string.Equals(accessor0With.ContentUpperX().UpperText, "WITH", StringComparison.Ordinal))
+                            //{
+                            //    ttt = accessorBuffer;// the 'WITH' is already at the begging.
+                            //}
+                            //else
+                            {
+                                if (directedWithAccessors.Count > 0) // WITH.Member?
+                                {
+                                    ttt = new IToken[] { directedWithReferenceIfAny.WithTokenRef }.Concat(accessorBuffer).ToList();
+                                }
+                                else
+                                {
+                                    ttt = accessorBuffer;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ttt = accessorBuffer;
+                        }
+
                         expressionSegments.Add(
                             GetCallOrNewOrValueExpressionSegment(
-                                accessorBuffer,
+                                ttt,
                                 bracketedExpressions,
                                 directedWithReferenceIfAny,
                                 argumentsAreBracketed: true,
@@ -149,16 +148,17 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                                 // test: CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click
                                 if (directedWithReferenceIfAny != null)// && directedWithReferenceIfAny.TokenWith is DoNotRenameNameToken donotrename && donotrename.ContentUpperX().UpperText == "WITH")
                                 {
-                                    expressionSegments.Add(
-                                        GetCallOrNewOrValueExpressionSegment(
-                                            [directedWithReferenceIfAny.WithTokenRef],//accessorBuffer is empty => get memberAccessTokens for from the 'with',
-                                            bracketedExpressions,
-                                            directedWithReferenceIfAny,
-                                            argumentsAreBracketed: true,
-                                            willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
-                                            warningLogger: warningLogger
-                                        )
-                                    );
+                                    //expressionSegments.Add(
+                                    //    GetCallOrNewOrValueExpressionSegment(
+                                    //        directedWithAccessors,//[directedWithReferenceIfAny.WithTokenRef],//accessorBuffer is empty => get memberAccessTokens for from the 'with',
+                                    //        bracketedExpressions,
+                                    //        directedWithReferenceIfAny,
+                                    //        argumentsAreBracketed: true,
+                                    //        willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
+                                    //        warningLogger: warningLogger
+                                    //    )
+                                    //);
+                                    expressions.AddRange(bracketedExpressions);
                                 }
                                 else
                                 {
@@ -179,7 +179,32 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                             }
                         }
                     }
-                    continue;
+                }
+                else if (token is ArgumentSeparatorToken)
+                {
+                    if (depth == 0)
+                        throw new ArgumentException("Encountered ArgumentSeparatorToken in top-level content - invalid");
+
+                    if (accessorBuffer.Count != 0)
+                    {
+                        expressionSegments.Add(
+                            GetCallOrNewOrValueExpressionSegment(
+                                accessorBuffer,
+                                [],
+                                directedWithReferenceIfAny,
+                                argumentsAreBracketed: false,
+                                willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
+                                warningLogger: warningLogger
+                            )
+                        );
+                        accessorBuffer.Clear();
+                    }
+                    if (expressionSegments.Count == 0)
+                        throw new ArgumentException("Unexpected ArgumentSeparatorToken - invalid content");
+
+                    expressions.Add(GetExpression(expressionSegments));
+                    expressionSegments.Clear();
+                    tokenNavigator.MoveNext(); // Move on since this token has been processed
                 }
                 else if (token is OperatorToken operatorToken)
                 {
@@ -201,11 +226,80 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         new OperationExpressionSegment(operatorToken)
                     );
                     tokenNavigator.MoveNext();
-                    continue;
                 }
+                else
+                {
+                    IToken? lastTokenIfAny = accessorBuffer.LastOrDefault();
+                    if (directedWithReferenceIfAny != null && accessorBuffer.Count > 0 && lastTokenIfAny != null && token is MemberAccessorOrDecimalPointToken mad && mad.HasLeadingWhiteSpace && lastTokenIfAny is not DoNotRenameNameToken && lastTokenIfAny is NameToken nt)
+                    {
+                        // start a method call access : PropertyGet or CALL. VBScript: WITH obj \r .Append .MethodA(...)
 
-                accessorBuffer.Add(token);
-                tokenNavigator.MoveNext();
+                        tokenNavigator.MoveNext(); // Move on since this token has been processed
+                        ParsingExpression[] memberAccessExpressions = GenerateCore(tokenNavigator, 0, directedWithReferenceIfAny, warningLogger, [directedWithReferenceIfAny.WithTokenRef]);
+                        ParsingExpression callExpr = memberAccessExpressions.Single();
+                        //                        var expressionSegment0 = (//expressionSegments.Add(
+                        //                            GetCallOrNewOrValueExpressionSegment(
+                        //                                [directedWithReferenceIfAny.WithTokenRef], // empty
+                        //                                bracketedExpressions,
+                        //                                directedWithReferenceIfAny,
+                        //                                argumentsAreBracketed: false,
+                        //                                willBeFirstSegmentInCallExpression: true, //WillBeFirstSegmentInCallExpression(expressionSegments),
+                        //                                warningLogger: warningLogger
+                        //                            )
+                        //                        );
+                        //                        CallExpressionSegment? callExpressionSegment = memberAccessExpressions as CallExpressionSegment;
+                        accessorBuffer.Clear();
+
+                        expressions.AddRange(memberAccessExpressions);
+                        /*
+Part1: 'Open'
+                        tokenNavigator.MoveNext(); // Move on since this token has been processed
+
+                            // Get the content from inside the brackets (using a TokenNavigator here that is passed again into the Generate
+                            // method means that when the below call returns, the tokenNavigator here will have been moved along to after
+                            // the bracketed content that is about to be processed)
+                    ParsingExpression[] bracketedExpressions = Generate(tokenNavigatorX, 0, directedWithReferenceIfAny, warningLogger);
+
+                        expressionSegments.Add(
+                               GetCallOrNewOrValueExpressionSegment(
+                                   accessorBuffer,
+                                   bracketedExpressions,
+                                   directedWithReferenceIfAny,
+                                   argumentsAreBracketed: true,
+                                   willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
+                                   warningLogger: warningLogger
+                               )
+                           );
+                           accessorBuffer.Clear();
+Part2: 'Close'
+
+                           //if (expressionSegments.Count == 1)
+                           {
+                               CallExpressionSegment? callExpressionSegment = expressionSegments[0] as CallExpressionSegment;
+                               if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Count == 1) && callExpressionSegment.Arguments.Count == 0)
+                               {
+                                   // VBScript gives special meaning to a reference wrapped in brackets when passing it to a function (or property); if
+                                   // the argument would otherwise be passed ByRef, it will be passed ByVal. If this close bracket terminates a section
+                                   // containing only a single CallExpressionSegment without property accesses or arguments, then the brackets have
+                                   // significance and the content must be represented by a BracketedExpressionSegment. (If it's a variable access with
+                                   // function / property accesses - meaning there would be multiple MemberAccessTokens - or if there are arguments -
+                                   // meaning that it's a function or property call - then the value would not be elligible for being passed ByRef anyway,
+                                   // so the extra brackets need not be maintained). There is chance that ths single token represents a non-argument call
+                                   // to a function, but we don't have enough information at this point to know that, so we have to presume the worst and
+                                   // keep the brackets here.
+                                   expressionSegments[0] = new BracketedExpressionSegment(new[] { callExpressionSegment });
+                               }
+                           }
+
+                        //at the end: return expressions.Add(GetExpression(expressionSegments));
+                         */
+                    }
+                    else
+                    {
+                        accessorBuffer.Add(token);
+                        tokenNavigator.MoveNext();
+                    }
+                }
             } // while
 
             if (accessorBuffer.Count != 0)

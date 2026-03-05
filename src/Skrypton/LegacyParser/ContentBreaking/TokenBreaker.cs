@@ -88,7 +88,36 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), last_chr0IsWhitespace ?? false, lineIndex));
                         }
 
-                        tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), hasLeadingWhiteSpace: last_chr0IsWhitespace ?? false, lineIndex));
+                        bool hasLeadingWhiteSpace;
+                        if (last_chr0IsWhitespace != null && last_chr0IsWhitespace.Value && !chr.ToUpperX().containsWhiteSpace() && AtomToken.isMemberAccessorUpper(chr.ToUpperX())) // isMemberAccessorUpper
+                        {
+                            IToken? lastTokenIfAny = tokens.LastOrDefault();
+                            if (lastTokenIfAny == null)
+                            {
+                                hasLeadingWhiteSpace = false;
+                            }
+                            else
+                            {
+                                if (lastTokenIfAny is NameToken)
+                                {
+                                    hasLeadingWhiteSpace = true; // VBScript:
+                                }
+                                else if (lastTokenIfAny is KeyWordToken kw && kw.KeyWordId == KnownKeyWordId.KeywordSet)
+                                {
+                                    hasLeadingWhiteSpace = true; // VBScript: Set .ActiveConnection = oConn
+                                }
+                                else
+                                {
+                                    hasLeadingWhiteSpace = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            hasLeadingWhiteSpace = false;// last_chr0IsWhitespace ?? false;
+                        }
+
+                        tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), hasLeadingWhiteSpace, lineIndex));
                         buffer = "";
                     }
                     else

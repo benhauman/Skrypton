@@ -22,8 +22,9 @@ namespace TranslatedProgram
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             var with = _.OBJ(_outer.adoSQLCmdParam);
-            _.CALL(this, with, "Pr", "Ap", "CreateParameterX", _.ARGS.RefIfArray(with, _.ARGS.Val("RETURN_VALUEx").Val((Int16)3).Val((Int16)4)));
-            _.CALL(this, with, "Parameters", "Append", "CreateParameterY", _.ARGS.RefIfArray(with, _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName")));
+            _.SET(VBScriptConstants.Nothing, this, with, "ActiveConnection");
+            _.CALL(this, with, "CreateParameterX", _.ARGS.Val("RETURN_VALUEx").Val((Int16)3).Val((Int16)4));
+            _.CALL(this, with, "CreateParameterY", _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName"));
             _.CALL(this, with, "Execute");
             _outer.parmval = _.VAL(_.CALL(this, _.CALL(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
         }

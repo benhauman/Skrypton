@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// live in the wild, but it's valid nonetheless and this class is how names of that form are represented.
     /// </summary>
     [Serializable]
-    public class EscapedNameToken : NameToken
+    public sealed class EscapedNameToken : NameToken
     {
         public EscapedNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Allow, lineIndex)
         {

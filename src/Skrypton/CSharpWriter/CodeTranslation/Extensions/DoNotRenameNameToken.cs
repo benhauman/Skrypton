@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Skrypton.LegacyParser.Tokens.Basic;
 
@@ -10,14 +11,26 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
     /// for example)
     /// </summary>
     [DataContract(Namespace = "http://vbs")]
-    public class DoNotRenameNameToken : NameToken
+    public class DoNotRenameNameToken : NameToken // not sealed due to 'ProcessedNameToken'
     {
         public DoNotRenameNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Allow, lineIndex)
         {
             if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (contentUpper.Length == 0)
                 throw new ArgumentException("Null/blank content specified");
+
+            //if (!KnownDoNotRenameNames.TryGetValue(contentUpper.UpperText, out var isKnown))
+            //{
+            //    //throw new ArgumentException("Unknown name:" + contentUpper.UpperText, nameof(contentUpper));
+            //}
         }
         public DoNotRenameNameToken(string content, int lineIndex) : this(content.ToUpperX(), lineIndex) { } // test
+
+        //private static readonly Dictionary<string, bool> KnownDoNotRenameNames = new Dictionary<string, bool>()
+        //{
+        //    {"ROOT", false},
+        //    {"RUNNER", false},
+        //    {"WITH", false}
+        //};
     }
 }

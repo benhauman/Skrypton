@@ -129,9 +129,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             // Ensure derived class has behaved itself
 #pragma warning disable CA1820 // Test for empty strings using string length
             if ((this.keyWord ?? "").Trim() == "")
@@ -140,7 +140,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
             // Render opening declaration (scope, name, arguments)
             StringBuilder output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indent);
             if (IsPublic)
                 output.Append("Public ");
             else
@@ -168,10 +168,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
 
             // Render content
             foreach (var block in Statements)
-                output.AppendLine(block.GenerateBaseSource(indenter.Increase()));
+                output.AppendLine(block.GenerateBaseSource(generationContext.Increase()));
 
             // Close
-            output.Append(indenter.Indent + "End " + this.keyWord);
+            output.Append(generationContext.Indent + "End " + this.keyWord);
             return output.ToString();
         }
     }

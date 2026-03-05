@@ -5,7 +5,7 @@ using Skrypton.StageTwoParser.ExpressionParsing;
 
 namespace Skrypton.Tests.Shared.Comparers
 {
-    public class ExpressionSetComparer : IEqualityComparer<IEnumerable<ParsingExpression>>
+    public sealed class ExpressionSetComparer : IEqualityComparer<IEnumerable<ParsingExpression>>
     {
         public bool Equals(IEnumerable<ParsingExpression> x, IEnumerable<ParsingExpression> y)
         {
@@ -22,7 +22,9 @@ namespace Skrypton.Tests.Shared.Comparers
             var expressionComparer = new ExpressionSegmentSetComparer();
             for (var index = 0; index < arrayX.Length; index++)
             {
-                if (!expressionComparer.Equals(arrayX[index].Segments, arrayY[index].Segments))
+                var xExpr = arrayX[index].Segments;
+                var yExpr = arrayY[index].Segments;
+                if (!expressionComparer.Equals(xExpr, yExpr))
                     return false;
             }
             return true;

@@ -49,24 +49,24 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             StringBuilder output = new StringBuilder();
 
             // Open statement
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indent);
             output.Append("For Each ");
             output.Append(this.LoopVar.Content);
             output.Append(" In ");
-            output.AppendLine(this.LoopSrc.GenerateBaseSource(NullIndenter.Instance));
+            output.AppendLine(this.LoopSrc.GenerateBaseSource(generationContext.NullIndenter()));
 
             // Render inner content
             foreach (ICodeBlock statement in this.Statements)
-                output.AppendLine(statement.GenerateBaseSource(indenter.Increase()));
+                output.AppendLine(statement.GenerateBaseSource(generationContext.Increase()));
 
             // Close statement
-            output.Append(indenter.Indent + "Next");
+            output.Append(generationContext.Indent + "Next");
             return output.ToString();
         }
     }

@@ -50,11 +50,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public virtual string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public virtual string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             var output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indenter.Indent);
             output.Append("Dim ");
             var numberOfVariables = Variables.Count();
             foreach (var indexedVariable in Variables.Select((v, i) => new { Variable = v, Index = i }))
@@ -66,7 +66,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     var numberOfDimensions = indexedVariable.Variable.Dimensions.Length;
                     foreach (var indexedDimension in indexedVariable.Variable.Dimensions.Select((d, i) => new { Dimension = d, Index = i }))
                     {
-                        output.Append(indexedDimension.Dimension.GenerateBaseSource(NullIndenter.Instance));
+                        output.Append(indexedDimension.Dimension.GenerateBaseSource(generationContext.NullIndenter()));
                         if (indexedDimension.Index < (numberOfDimensions - 1))
                             output.Append(", ");
                     }

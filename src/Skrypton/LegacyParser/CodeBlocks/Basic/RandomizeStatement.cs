@@ -51,16 +51,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             StringBuilder output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indent);
             output.Append("Randomize");
             if (SeedIfAny != null)
             {
                 output.Append(' ');
-                output.Append(SeedIfAny.GenerateBaseSource(NullIndenter.Instance));
+                output.Append(SeedIfAny.GenerateBaseSource(generationContext.NullIndenter()));
             }
             return output.ToString();
         }

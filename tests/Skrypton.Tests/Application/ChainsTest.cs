@@ -145,10 +145,10 @@ namespace Skrypton.Tests.Application
             var parsed_items = Skrypton.LegacyParser.Parser.Parse(tst.TestCulture, scriptContent);
 
             StringBuilder parsed_output = new StringBuilder();
-            ISourceIndentHandler parsed_intender = new Skrypton.LegacyParser.CodeBlocks.SourceRendering.SourceIndentHandler();
-            foreach (ICodeBlock parsed_item in parsed_items)
+            var generationContext = BaseSourceGenerationContextDefault.CreateBaseSourceGenerationContext();
+            foreach (ICodeBlock parsedBlock in parsed_items)
             {
-                parsed_output.AppendLine(parsed_item.GenerateBaseSource(parsed_intender));
+                parsed_output.AppendLine(parsedBlock.GenerateBaseSource(generationContext));
             }
 
             string workItemName = "Script";// TestContext.TestName;

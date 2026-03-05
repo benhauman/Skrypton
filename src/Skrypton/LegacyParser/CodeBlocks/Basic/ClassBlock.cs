@@ -74,14 +74,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             StringBuilder output = new StringBuilder();
-            output.AppendLine(indenter.Indent + "Class " + this.className.Content);
+            output.AppendLine(generationContext.Indent + "Class " + this.className.Content);
             foreach (ICodeBlock block in this.statements)
-                output.AppendLine(block.GenerateBaseSource(indenter.Increase()));
-            output.Append(indenter.Indent + "End Class");
+                output.AppendLine(block.GenerateBaseSource(generationContext.Increase()));
+            output.Append(generationContext.Indent + "End Class");
             return output.ToString();
         }
     }

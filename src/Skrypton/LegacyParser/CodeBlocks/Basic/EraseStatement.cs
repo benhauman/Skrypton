@@ -63,11 +63,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Re-generate equivalent VBScript source code for this block - there should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             var output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indent);
             output.Append("ERASE ");
             foreach (var indexedTarget in Targets.Select((t, i) => new { Index = i, Value = t }))
             {
@@ -77,7 +77,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 if (indexedTarget.Value.WrappedInBraces)
                     output.Append('(');
 
-                output.Append(indexedTarget.Value.Target.GenerateBaseSource(NullIndenter.Instance));
+                output.Append(indexedTarget.Value.Target.GenerateBaseSource(generationContext.NullIndenter()));
                 if (indexedTarget.Value.ArgumentsIfAny != null)
                 {
                     output.Append('(');
@@ -85,7 +85,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     {
                         if (indexedArgument.Index > 0)
                             output.Append(", ");
-                        output.Append(indexedArgument.Value.GenerateBaseSource(NullIndenter.Instance));
+                        output.Append(indexedArgument.Value.GenerateBaseSource(generationContext.NullIndenter()));
                     }
                     output.Append(')');
                 }

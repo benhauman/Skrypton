@@ -48,10 +48,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public override string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public override string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
             // Grab content from DimStatement..
-            string baseContent = base.GenerateBaseSource(NullIndenter.Instance);
+            string baseContent = base.GenerateBaseSource(generationContext.NullIndenter());
             if ((baseContent == null)
             || (baseContent.Length < 4)
             || (!baseContent.Substring(0, 4).Equals("DIM ", StringComparison.OrdinalIgnoreCase)))

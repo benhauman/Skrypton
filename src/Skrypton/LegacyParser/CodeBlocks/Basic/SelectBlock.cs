@@ -145,18 +145,18 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             var output = new StringBuilder();
 
-            output.Append(indenter.Indent + "SELECT CASE ");
-            output.AppendLine(Expression.GenerateBaseSource(NullIndenter.Instance));
+            output.Append(generationContext.Indent + "SELECT CASE ");
+            output.AppendLine(Expression.GenerateBaseSource(generationContext.NullIndenter()));
 
-            if (OpeningComments != null)
+            if (OpeningComments.Length > 0)
             {
                 foreach (CommentStatement statement in OpeningComments)
-                    output.AppendLine(statement.GenerateBaseSource(indenter.Increase()));
+                    output.AppendLine(statement.GenerateBaseSource(generationContext.Increase()));
                 output.AppendLine("");
             }
 
@@ -166,27 +166,27 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 CaseBlockSegment segment = Content.ElementAt(index);
                 if (segment is CaseBlockExpressionSegment)
                 {
-                    output.Append(indenter.Increase().Indent);
+                    output.Append(generationContext.Increase().Indent);
                     output.Append("CASE ");
                     var valuesArray = ((CaseBlockExpressionSegment)segment).Values.ToArray();
                     for (int indexValue = 0; indexValue < valuesArray.Length; indexValue++)
                     {
                         CodeExpression statement = valuesArray[indexValue];
-                        output.Append(statement.GenerateBaseSource(NullIndenter.Instance));
+                        output.Append(statement.GenerateBaseSource(generationContext.NullIndenter()));
                         if (indexValue < (valuesArray.Length - 1))
                             output.Append(", ");
                     }
                     output.AppendLine("");
                 }
                 else
-                    output.AppendLine(indenter.Increase().Indent + "CASE ELSE");
+                    output.AppendLine(generationContext.Increase().Indent + "CASE ELSE");
 
                 // Render branch content
                 foreach (ICodeBlock statement in segment.Statements)
-                    output.AppendLine(statement.GenerateBaseSource(indenter.Increase().Increase()));
+                    output.AppendLine(statement.GenerateBaseSource(generationContext.Increase().Increase()));
             }
 
-            output.Append(indenter.Indent + "END SELECT");
+            output.Append(generationContext.Indent + "END SELECT");
             return output.ToString();
         }
     }

@@ -170,6 +170,10 @@ namespace Skrypton.Tests
         }
         public static void AreEqual<T>(T expected, T actual)
         {
+            AreEqualCore<T>(expected, actual);
+        }
+        private static void AreEqualCore<T>(T expected, T actual)
+        {
             {
                 string[] arr_e = expected as string[];
                 if (arr_e != null)
@@ -268,6 +272,13 @@ namespace Skrypton.Tests
             return new AssertEqualityComparer<T>(innerComparer);
         }
         public static void AreEqual<T>(T expected, T actual, IEqualityComparer<T> comparer)
+        {
+            if (!comparer.Equals(expected, actual))
+            {
+                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+            }
+        }
+        public static void AreEqualCollection<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<IEnumerable<T>> comparer)
         {
             if (!comparer.Equals(expected, actual))
             {

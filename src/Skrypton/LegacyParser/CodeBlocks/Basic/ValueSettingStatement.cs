@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
@@ -69,17 +70,29 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
             // The Statement class' GenerateBaseSource has logic about rendering strings of tokens and rules about whitespace around
             // (or not around) particular tokens, so the content from this class is wrapped up as a Statement so that the method may
             // be re-used without copying any of it here
-            var assignmentOperator = AtomToken.GetNewToken("=".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.Last().LineIndex);
-            var tokensList = ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
-            if (ValueSetType == ValueSetTypeOptions.Set)
-                tokensList.Insert(0, AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace:false, ValueToSet.Tokens.First().LineIndex));
+            var assignmentOperator = AtomToken.GetNewToken("=".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.First().LineIndex);
+            IToken[] tokensList = (ValueSetType == ValueSetTypeOptions.Set
+                ? new IToken[]{ AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.First().LineIndex)}
+                : [])
 
-            return (new Statement(tokensList, Statement.CallPrefixOptions.Absent)).GenerateBaseSource(indenter);
+                .Concat(ValueToSet.Tokens)
+                .Concat([assignmentOperator])
+                .Concat(Expression.Tokens)
+                .ToArray();
+
+            //ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
+            ;
+
+                //ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
+            //if (ValueSetType == ValueSetTypeOptions.Set)
+            //    tokensList.Insert(0, AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace:false, ValueToSet.Tokens.First().LineIndex));
+
+            return (new Statement(tokensList, Statement.CallPrefixOptions.Absent)).GenerateBaseSource(generationContext);
         }
     }
 }

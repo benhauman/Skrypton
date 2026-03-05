@@ -68,12 +68,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// <summary>
         /// Re-generate equivalent VBScript source code for this block - there should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             return string.Format(CultureInfo.InvariantCulture,
                 "{0}Const {1}",
-                indenter.Indent,
+                generationContext.Indent,
                 string.Join(", ", Values.Select(v => v.Name.Content + " = " + TokenValueAsVbsCode(v.Value)))
             );
         }

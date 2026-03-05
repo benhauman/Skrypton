@@ -145,9 +145,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             StringBuilder output = new StringBuilder();
 
             List<IfBlockSegment> allClauses = ConditionalClauses.Cast<IfBlockSegment>().ToList();
@@ -162,28 +162,28 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 IfBlockSegment? segment = allClauses[index];
                 if (segment is IfBlockConditionSegment ifSegment)
                 {
-                    output.Append(indenter.Indent);
+                    output.Append(generationContext.Indent);
                     if (index == 0)
                         output.Append("IF ");
                     else
                         output.Append("ELSEIF ");
                     output.Append(
-                        ifSegment.Condition.GenerateBaseSource(NullIndenter.Instance)
+                        ifSegment.Condition.GenerateBaseSource(generationContext.NullIndenter())
                     );
                     output.AppendLine(" THEN");
                 }
                 else
                 {
-                    output.AppendLine(indenter.Indent + "ELSE");
+                    output.AppendLine(generationContext.Indent + "ELSE");
                 }
 
                 // Render branch content
                 foreach (ICodeBlock statement in segment.Statements)
                 {
-                    output.AppendLine(statement.GenerateBaseSource(indenter.Increase()));
+                    output.AppendLine(statement.GenerateBaseSource(generationContext.Increase()));
                 }
             }
-            output.Append(indenter.Indent + "END IF");
+            output.Append(generationContext.Indent + "END IF");
             return output.ToString();
         }
     }

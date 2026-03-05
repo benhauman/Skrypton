@@ -88,18 +88,19 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// Re-generate equivalent VBScript source code for this block - there
         /// should not be a line return at the end of the content
         /// </summary>
-        public string GenerateBaseSource(SourceRendering.ISourceIndentHandler indenter)
+        public string GenerateBaseSource(IBaseSourceGenerationContext generationContext)
         {
-            if (indenter == null) throw new ArgumentNullException(nameof(indenter));
+            if (generationContext == null) throw new ArgumentNullException(nameof(generationContext));
             var tokensList = Tokens.ToList();
             if (CallPrefix == CallPrefixOptions.Present)
                 tokensList.Insert(0, AtomToken.GetNewToken("Call".ToUpperX(), hasLeadingWhiteSpace: false, tokensList[0].LineIndex));
 
             var output = new StringBuilder();
-            output.Append(indenter.Indent);
+            output.Append(generationContext.Indent);
             for (int index = 0; index < tokensList.Count; index++)
             {
                 var token = tokensList[index];
+                IToken? prevTokenIfAny = index > 0 ? tokensList[index - 1] : null;
                 if (token is StringToken)
                 {
                     output.Append("\"" + token.Content + "\"");
@@ -115,10 +116,28 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 }
                 else if (token is MemberAccessorOrDecimalPointToken mad)
                 {
-                    if (index > 0 && mad.HasLeadingWhiteSpace)
+                    if (prevTokenIfAny is ComparisonOperatorToken)
                     {
                         output.Append(' ');
                     }
+                    else if (prevTokenIfAny is KeyWordToken)
+                    {
+                        output.Append(' ');
+                    }
+                    else
+                    //if (index > 0 && mad.HasLeadingWhiteSpace)
+                    if (index > 0 && !mad.HasLeadingWhiteSpace)
+                    {
+                        //output.Append(' '); //VBScript: SET .Member
+                    }
+                    else if (mad.HasLeadingWhiteSpace)
+                    {
+                        output.Append(' '); //VBScript: .MethodA .MemberX
+                    }
+                    //else if (indenter.Indent.Length == 0)
+                    //{
+                    //    output.Append(' ');
+                    //}
                     output.Append(token.Content);
                 }
                 else

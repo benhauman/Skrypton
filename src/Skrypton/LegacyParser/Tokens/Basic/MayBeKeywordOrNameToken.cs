@@ -7,7 +7,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// (such as "step") are represented by these tokens.
     /// </summary>
     [Serializable]
-    public class MayBeKeywordOrNameToken : NameToken
+    public sealed class MayBeKeywordOrNameToken : NameToken
     {
         public MayBeKeywordOrNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Disallow, lineIndex)
         {
