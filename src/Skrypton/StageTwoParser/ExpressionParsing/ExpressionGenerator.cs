@@ -248,9 +248,24 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         //                            )
                         //                        );
                         //                        CallExpressionSegment? callExpressionSegment = memberAccessExpressions as CallExpressionSegment;
-                        accessorBuffer.Clear();
+                        //if (accessorBuffer.Count > 0)
+                        {
+                            expressionSegments.Add(
+                                GetCallOrNewOrValueExpressionSegment(
+                                    accessorBuffer,
+                                    [callExpr],
+                                    directedWithReferenceIfAny,
+                                    argumentsAreBracketed: false, // zero-argument content not bracketed
+                                    willBeFirstSegmentInCallExpression: WillBeFirstSegmentInCallExpression(expressionSegments),
+                                    warningLogger: warningLogger
+                                )
+                            );
+                            accessorBuffer.Clear();
+                        }
 
-                        expressions.AddRange(memberAccessExpressions);
+                        //expressionSegments.Add()
+
+                        //expressions.AddRange(memberAccessExpressions);
                         /*
 Part1: 'Open'
                         tokenNavigator.MoveNext(); // Move on since this token has been processed
