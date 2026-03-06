@@ -96,7 +96,11 @@ namespace Skrypton.LegacyParser.CodeBlocks
 
         protected static bool isEndOfStatement(IReadOnlyCollection<IToken> tokens, int offset)
         {
-            var token = getToken(tokens, offset, null);
+            IToken token = getToken(tokens, offset, null);
+            return (token is AbstractEndOfStatementToken);
+        }
+        protected static bool isEndOfStatement(IToken token)
+        {
             return (token is AbstractEndOfStatementToken);
         }
 

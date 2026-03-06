@@ -36,20 +36,25 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             List<IToken> expressionTokens = new List<IToken>();
             for (int index = 0; index < tokens.Count; index++)
             {
-                if (isEndOfStatement(tokens, index))
+                IToken token = getToken(tokens, index, null);
+                if (isEndOfStatement(token))
                 {
                     // Remove codeExpression tokens (plus end-of-statement) from stream
                     tokens.RemoveRange(0, expressionTokens.Count + 1);
                     break;
                 }
 
-                if (index == 1)
+                if (index >= 1)
                 {
-                    throw new NotImplementedException($"Multiple tokens on the 'codeExpression' line. Line:{tokens.ElementAt(index).LineIndex}");
+                    // VBScript: Select Case hlObj.GetValue("CaseClassificationAttribute.Priority",0,0,0,0)
+                    // Test: XSelectCaseOnCall1
+                    expressionTokens.Add(token);
                 }
-
-                // Add token to codeExpression (must be Atom or String)
-                expressionTokens.Add(getTokenAtomOrDateStringLiteralOnly(tokens, index));
+                else
+                {
+                    // Add token to codeExpression (must be Atom or String)
+                    expressionTokens.Add(getTokenAtomOrDateStringLiteralOnly(tokens, index));
+                }
             }
 
             // Look for the first CASE entry (note: it's allowable for there to be no
