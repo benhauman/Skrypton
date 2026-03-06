@@ -93,7 +93,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public object Item(object key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key)); ;
+            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key));
 
             if (!_dict.TryGetValue(k, out var value))
                 throw new KeyNotFoundException($"Key '{key}' not found");
@@ -105,7 +105,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void Item(object key, object value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
-            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key)); ;
+            string k = key.ToString() ?? throw new ArgumentException("Key cannot be null", nameof(key));
             _dict[k] = value;
         }
 

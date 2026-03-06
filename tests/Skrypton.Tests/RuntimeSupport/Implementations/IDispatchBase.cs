@@ -312,6 +312,10 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             _type = type;
         }
+        protected IReflectOnClrType()
+        {
+            _type = GetType();
+        }
 
         internal static IReflectOnClrType ForType(Type type)
         {
@@ -416,7 +420,28 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             CultureInfo culture,
             string[] namedParameters)
         {
-            /*
+            try
+            {
+                return _type.InvokeMember(
+                    name,
+                    invokeAttr | BindingFlagsVBScript,
+                    binder,
+                    target ?? this,
+                    args, //args_allmembers, use [DefaultParameterValue(...)] for optional parameters!
+                    modifiers,
+                    culture,
+                    namedParameters);
+            }
+            catch (System.MissingMemberException ex)
+            {
+                if (ex.Message.Length > 0)
+                    DebugInspectMember(name, invokeAttr, args);
+                throw;
+            }
+        }
+        private void DebugInspectMember(string name, BindingFlags invokeAttr, object[] args)
+        {
+
             MemberInfo[] members = _type.GetMembers(invokeAttr | BindingFlagsVBScript);
             MethodInfo candidate = null;
             foreach (var member in members)
@@ -499,17 +524,16 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                         }
                     }
                 }
-            }*/
+            }
 
-            return _type.InvokeMember(
-                name,
-                invokeAttr | BindingFlagsVBScript,
-                binder,
-                target ?? this,
-                args, //args_allmembers, use [DefaultParameterValue(...)] for optional parameters!
-                modifiers,
-                culture,
-                namedParameters);
+            if (candidate == null)
+            {
+                // NOT FOUND: put a breakpoint here
+            }
+            else
+            {
+                // FOUND: put a breakpoint here
+            }
         }
     }
 }

@@ -43,6 +43,18 @@ namespace Skrypton.Tests.Application
             throw new InvalidOperationException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             //return null;
         }
+        public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
+        {
+            Console.WriteLine($"SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name)}):{newValue})");
+            if (_values.TryGetValue(new ObjectValueKey((string)key, ContentID, suidx), out var ov))
+            {
+                ov.UpdateValue(newValue);
+            }
+            else
+            {
+                throw new InvalidOperationException($"SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+            }
+        }
         internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)
         {
             _values.Add(new ObjectValueKey(key, contentId, suidx), new ObjectValueData(typeof(TValue)).InitializeValue(value));
@@ -79,6 +91,11 @@ namespace Skrypton.Tests.Application
 
             public ObjectValueData InitializeValue(object value)
             {
+                SetData(value);
+                return this;
+            }
+            private void SetData(object value)
+            {
                 if (value == null)
                 {
                     HasValue = false;
@@ -95,7 +112,10 @@ namespace Skrypton.Tests.Application
                     HasValue = true;
                     DataRaw = newValue;
                 }
-                return this;
+            }
+            public void UpdateValue(object newValue)
+            {
+                SetData(newValue);
             }
         }
     }

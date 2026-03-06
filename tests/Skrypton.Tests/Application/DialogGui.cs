@@ -633,6 +633,8 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonGeneral.Name", 0, 0, "Kuku-Muku")
+                    .RegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
+                    .RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
                 ;
             var model = new DialogGuidModel();
 
@@ -654,8 +656,8 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                Assert.Inconclusive();
-                //ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
+                //Assert.Inconclusive();
+                ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
             });
         }
 

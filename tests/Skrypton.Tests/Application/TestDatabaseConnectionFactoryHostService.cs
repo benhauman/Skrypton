@@ -9,16 +9,17 @@ namespace Skrypton.Tests.Application
     {
         public DbConnection CreateAndOpenDatabaseConnectionString(string connectionString, string userName, string password)
         {
-            return new MyOleDbConnection(connectionString);
+            return new TestOleDbConnection(connectionString);
             //throw new NotImplementedException($"connectionString:'{connectionString}', user:'{userName}', pwd:{password}");
         }
     }
 
-    internal sealed class MyOleDbConnection : DbConnection
+    // for OLEDB see 'System.Data.OleDb' package : https://www.nuget.org/packages/System.Data.OleDb
+    internal sealed class TestOleDbConnection : DbConnection
     {
         private readonly string _connectionString;
 
-        public MyOleDbConnection(string connectionString)
+        public TestOleDbConnection(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -37,7 +38,7 @@ namespace Skrypton.Tests.Application
         {
             if (_state == ConnectionState.Closed)
                 throw new InvalidOperationException("Connection is already closed.");
-            if (_state == ConnectionState.Open)
+            if (_state != ConnectionState.Open)
                 throw new InvalidOperationException("Connection is not open.");
             _state = ConnectionState.Closed;
         }
@@ -52,7 +53,7 @@ namespace Skrypton.Tests.Application
 
         public override string ConnectionString { get; set; }
         public override string Database { get; }
-        public override ConnectionState State { get; }
+        public override ConnectionState State => _state;
         public override string DataSource { get; }
         public override string ServerVersion { get; }
 
