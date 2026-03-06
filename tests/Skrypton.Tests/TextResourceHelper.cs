@@ -10,27 +10,29 @@
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public static string LoadResourceText<T>(string resourceName)
+        public static string LoadResourceText<T>(string resourceName, bool isOptional = false)
         {
-            return LoadResourceText(typeof(T), resourceName);
+            return LoadResourceText(typeof(T), resourceName, isOptional);
         }
 
-        public static string LoadResourceText(Type typeFromResourceAssembly, string resourceName)
+        public static string LoadResourceText(Type typeFromResourceAssembly, string resourceName, bool isOptional)
         {
-            using (TextReader textReader = LoadResourceString(typeFromResourceAssembly, resourceName))
+            using (TextReader textReader = LoadResourceString(typeFromResourceAssembly, resourceName, isOptional))
             {
-                return textReader.ReadToEnd().NormalizeLineEndings();
+                if (textReader == null && isOptional) return null;
+                return textReader!.ReadToEnd().NormalizeLineEndings();
             }
         }
 
-        public static TextReader LoadResourceString(Type typeFromResourceAssembly, string resourceName)
+        public static TextReader LoadResourceString(Type typeFromResourceAssembly, string resourceName, bool isOptional)
         {
-            Stream resourceStream = GetResourceStream(typeFromResourceAssembly, resourceName);
-            TextReader textReader = new StreamReader(resourceStream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            Stream resourceStream = GetResourceStream(typeFromResourceAssembly, resourceName, isOptional);
+            if (resourceStream == null && isOptional) return null;
+            TextReader textReader = new StreamReader(resourceStream!, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
             return textReader;
         }
 
-        public static Stream GetResourceStream(Type typeResourceAssembly, string resourceName)
+        public static Stream GetResourceStream(Type typeResourceAssembly, string resourceName, bool isOptional)
         {
             if (typeResourceAssembly == null)
                 throw new ArgumentNullException(nameof(typeResourceAssembly));
@@ -41,6 +43,8 @@
             Stream resourceStream = resourceAssembly.GetManifestResourceStream(resourceName);
             if (resourceStream == null)
             {
+                if (isOptional)
+                    return null;
                 string[] names = resourceAssembly.GetManifestResourceNames()
                     .OrderBy(x => x).ToArray();
 

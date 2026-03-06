@@ -85,8 +85,8 @@ namespace Skrypton.Tests.Application
         }
         internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
-            //
-            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(chainName);
+            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
+            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(translated_cs_expected);
             WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             {
                 Assembly asm = asmctx.LoadedAssembly;
@@ -139,12 +139,7 @@ namespace Skrypton.Tests.Application
             return provider;
         }
 
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName)
-        {
-            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
-            return CompileCSharpProgram(chainName, translated_cs_expected);
-        }
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string chainName, string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
             PortableExecutableReference[] references =

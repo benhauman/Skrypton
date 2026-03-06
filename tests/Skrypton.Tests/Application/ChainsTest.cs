@@ -88,13 +88,14 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null)
+        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
         {
             string x_ressource_name = chainName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
-            string generated_vbs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".generated.vbs");
-            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
-            string xml_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".xml");
+
+            string generated_vbs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".generated.vbs", isOptionalAssert);
+            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension, isOptionalAssert);
+            string xml_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".xml", isOptionalAssert);
 
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
             if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
@@ -157,19 +158,25 @@ namespace Skrypton.Tests.Application
             string failed_text = null;
             string storedFile;
 
-            if (generated_vbs_expected != generated_vbs_actual)
+            if (generated_vbs_expected != null)
             {
-                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
-                failed_text = "VBS generation failed. See 'Output' for more information. storedFile:" + storedFile;
+                if (generated_vbs_expected != generated_vbs_actual)
+                {
+                    storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected, generated_vbs_actual);
+                    failed_text = "VBS generation failed. See 'Output' for more information. storedFile:" + storedFile;
+                }
             }
 
             var outermostBlock = Skrypton.LegacyParser.Parser.ParseToOutermostScope(parsed_items);
             string xml_actual = ToXml(outermostBlock, x => failed_text = x);
 
-            if (xml_expected != xml_actual)
+            if (xml_expected != null)
             {
-                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
-                failed_text = "Xml generation failed. See 'Output' for more information. storedFile:" + storedFile;
+                if (xml_expected != xml_actual)
+                {
+                    storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".xml", xml_expected, xml_actual);
+                    failed_text = "Xml generation failed. See 'Output' for more information. storedFile:" + storedFile;
+                }
             }
 
 
@@ -194,13 +201,16 @@ namespace Skrypton.Tests.Application
             //}
 
             //string translated_cs_actual = translated_buffer.ToString();
-            if (translated_cs_expected != translated_cs_actual)
+            if (translated_cs_expected != null)
             {
-                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
-                int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
-                string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
-                string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
-                failed_text = $"C# translation failed. See 'Output' for more information. {NewLineNormalized}Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) {NewLineNormalized}E:'{snippetE}' {NewLineNormalized}A:'{snippetA}'. storedFile:" + storedFile;
+                if (translated_cs_expected != translated_cs_actual)
+                {
+                    storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
+                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
+                    string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
+                    string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
+                    failed_text = $"C# translation failed. See 'Output' for more information. {NewLineNormalized}Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) {NewLineNormalized}E:'{snippetE}' {NewLineNormalized}A:'{snippetA}'. storedFile:" + storedFile;
+                }
             }
 
             if (!string.IsNullOrEmpty(failed_text))
@@ -208,7 +218,8 @@ namespace Skrypton.Tests.Application
                 Assert.Fail(failed_text);
             }
 
-            _ = CncIn.CompileCSharpProgram(chainName, translated_cs_actual);
+            //string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
+            _ = CncIn.CompileCSharpProgram(translated_cs_actual);
         }
 
         private static IOutermostScope FromXml(string xmlA)

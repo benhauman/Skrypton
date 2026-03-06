@@ -682,7 +682,29 @@ WScript.Echo xmlhttp.responseText
             var model = new DialogGuidModel();
 
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
+                .AddExternalObject("model", model)
                 .BuildDialog();
+
+            Assert.Inconclusive();
+            //ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: true);
+
+            /*
+            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            {
+                var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
+                foreach (var mi in mis)
+                {
+                    if (mi.DeclaringType == gr.GetType())
+                    {
+                        Console.WriteLine($"Method: {mi.Name}");
+                    }
+                }
+
+                //Assert.Inconclusive();
+                ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
+            });
+            /*
+            */
         }
     }
 
@@ -750,17 +772,20 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-
-                //foreach (var controlProperty in controlProperties)
-                //{
-                //    controlBase.InitControlProperty(controlProperty.Key, controlProperty.Value);
-                //
-                //}
-
                 controls.Add(controlBase);
             }
 
             DialogBuilder builder = new DialogBuilder(hostServices, controls.ToArray());
+
+            var xGuiScripts = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "GuiScripts");
+
+            foreach (var xScript in xGuiScripts.Elements())
+            {
+                string scriptName = xScript.Elements().Single(x => x.Name.LocalName == "Name").Value;
+                string scriptCode = xScript.Elements().Single(x => x.Name.LocalName == "Code").Value;
+
+                builder.AddScriptCode(scriptName, scriptCode);
+            }
 
             return builder;
         }

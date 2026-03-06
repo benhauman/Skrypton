@@ -2,6 +2,7 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Skrypton.Tests.Application.Controls;
 
 namespace Skrypton.Tests.Application
@@ -24,9 +25,27 @@ namespace Skrypton.Tests.Application
             }
         }
 
-        public DialogBase BuildDialog()
+        public DialogBase BuildDialog(bool gui = true)
         {
-            return new DialogBase(_hostServices, _externalReferences);
+            StringBuilder dialogCode = new StringBuilder();
+            if (gui)
+            {
+                foreach (var script in GuiScripts)
+                {
+                    dialogCode.Append($"SUB {script.Key}()");
+                    if (script.Value.Length > 0)
+                    {
+                        if (script.Value[0] != '\n')
+                            dialogCode.AppendLine();
+                        dialogCode.Append(script.Value);
+                        if (script.Value[script.Value.Length - 1] != '\n')
+                            dialogCode.AppendLine();
+                    }
+                    dialogCode.AppendLine($"END SUB");
+                }
+            }
+
+            return new DialogBase(_hostServices, dialogCode.ToString(), _externalReferences);
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
@@ -75,6 +94,13 @@ namespace Skrypton.Tests.Application
             _externalReferences.Add(objectName, objectInstance);
             return this;
         }
+
+        public void AddScriptCode(string scriptName, string scriptCode)
+        {
+            GuiScripts.Add(scriptName, scriptCode);
+        }
+
+        private readonly Dictionary<string, string> GuiScripts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     }
 
     public sealed class DialogGuiRoot : DialogGuiControlBase
@@ -98,10 +124,12 @@ namespace Skrypton.Tests.Application
     {
         public IReadOnlyDictionary<string, object> ExternalReferences { get; }
         public IServiceProvider HostServices { get; }
+        public string DialogScriptCode { get; }
 
-        public DialogBase(IServiceProvider hostServices, IReadOnlyDictionary<string, object> externalReferences)
+        public DialogBase(IServiceProvider hostServices, string dialogScriptCode, IReadOnlyDictionary<string, object> externalReferences)
         {
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+            DialogScriptCode = dialogScriptCode ?? throw new ArgumentNullException(nameof(dialogScriptCode));
             ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
         }
     }
