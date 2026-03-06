@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
+using Skrypton.Tests.Application.Controls;
 using Skrypton.Tests.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.Application
@@ -669,6 +673,119 @@ WScript.Echo xmlhttp.responseText
         private IHostDatabaseConnectionFactoryHostService CreateTestDatabaseConnectionFactoryHostService()
         {
             return new TestDatabaseConnectionFactoryHostService();
+        }
+        [TestMethod]
+        public void CT132_Dialog_83() // select * from hlsysdialog where dbname = '_CustomerTest_Trumpf' and dialogid = 83; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Trumpf';
+        {
+            // Trumpf, 83, 83, cb_template_load_onfocus : rs.eof + rs.MoveFirst + rs.MoveNext + rs.fields("templatename").value
+            // Trumpf, 78, FlagNoLicenseEndDate_ondatachange : rs.fields(0).value
+            var model = new DialogGuidModel();
+
+            var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
+                .BuildDialog();
+        }
+    }
+
+    internal static class DialogBuilderXmlExtensions
+    {
+        internal static DialogBuilder BuildDialogFromXml(this TestBase tst, IServiceProvider hostServices)
+        {
+            //new DialogBuilder(hostServices, "zzz").AddExternalObject("model", model)
+
+            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + tst.TestName + ".xml");
+
+            XElement xHelpLineDialogData = XElement.Parse(dialogXml);
+            XElement xProperties = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "Properties");
+            string ObjectName = null;
+            foreach (var xProperty in xProperties.Elements())
+            {
+                XElement xName = xProperty.Elements().Single(x => x.Name.LocalName == "Name");
+                if (xName.Value == "ObjectName")
+                {
+                    ObjectName = xProperty.Elements().Single(x => x.Name.LocalName == "Value").Value;
+                    break;
+                }
+            }
+
+            Console.WriteLine($"ObjectName:{ObjectName}");
+            //var xObjectName = xProperties.Elements().Single(x => x.Name.LocalName == "ObjectName").Value;
+
+            List<DialogGuiControlBase> controls = new List<DialogGuiControlBase>();
+
+            XElement xControls = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "Controls");
+            foreach (var xControl in xControls.Elements())
+            {
+                string ControlTypeName = xControl.Elements().Single(x => x.Name.LocalName == "ControlName").Value;
+
+                Console.WriteLine($"{ControlTypeName}");
+                DialogGuiControlBase controlBase = DialogGuiControlBase.ControlFactoryCreateDialogControl(ControlTypeName); // DialogGuiGroupBox
+
+                var xControlProperties = xControl.Elements().Single(x => x.Name.LocalName == "Properties");
+                //Dictionary<string, object> controlProperties = new Dictionary<string, object>();
+                foreach (var xControlProperty in xControlProperties.Elements())
+                {
+                    string controlPropertyName = xControlProperty.Elements().Single(x => x.Name.LocalName == "Name").Value;
+
+                    //Console.WriteLine($"{ControlTypeName} | {controlPropertyName}");
+
+                    var setter = controlBase.ShouldInitValueForProperty(controlPropertyName);
+                    if (setter != null)
+                    {
+                        // xsi:type
+
+                        var xValue = xControlProperty.Elements().Single(x => x.Name.LocalName == "Value");
+                        string valueTypeName = xValue.Attributes().Single(x => x.Name.LocalName == "type").Value;
+                        object controlPropertyValue = valueTypeName switch
+                        {
+                            "HelpLineScript" => new HelpLineScript(xValue.Elements().Single().Value),
+                            "SymbolName" => new SymbolName(xValue.Value),
+                            "xsd:string" => xValue.Value,
+                            "xsd:int" => XmlConvert.ToInt32(xValue.Value),
+                            "xsd:boolean" => XmlConvert.ToBoolean(xValue.Value),
+                            _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
+                        };
+
+                        Console.WriteLine($"{ControlTypeName} | {controlPropertyName} = {controlPropertyValue}");
+                        setter(controlPropertyValue);
+                    }
+                }
+
+
+                //foreach (var controlProperty in controlProperties)
+                //{
+                //    controlBase.InitControlProperty(controlProperty.Key, controlProperty.Value);
+                //
+                //}
+
+                controls.Add(controlBase);
+            }
+
+            DialogBuilder builder = new DialogBuilder(hostServices, controls.ToArray());
+
+            return builder;
+        }
+    }
+
+    [DebuggerDisplay("{Name}")]
+    internal sealed class SymbolName
+    {
+        public string Name { get; }
+
+        public SymbolName(string nameOrEmpty)
+        {
+            Name = nameOrEmpty;
+        }
+
+    }
+
+    [DebuggerDisplay("{Name}")]
+    internal sealed class HelpLineScript
+    {
+        public string Name { get; }
+
+        public HelpLineScript(string nameOrEmpty)
+        {
+            Name = nameOrEmpty;
         }
     }
 

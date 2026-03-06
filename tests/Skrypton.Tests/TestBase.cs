@@ -22,7 +22,7 @@ namespace Skrypton.Tests
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
         public TestContext TestContext { get; set; }
-        protected string TestName => this.TestContext!.TestName;
+        internal string TestName => this.TestContext!.TestName;
         internal string SaveExpectedActualFiles(string testName, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml

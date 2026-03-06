@@ -12,51 +12,58 @@ namespace Skrypton.Tests.Application
         private readonly IServiceProvider _hostServices;
         private readonly Dictionary<string, object> _externalReferences = new Dictionary<string, object>();
 
-        public DialogBuilder(IServiceProvider hostServices)
+        public DialogBuilder(IServiceProvider hostServices) : this(hostServices, [])
+        {
+        }
+        public DialogBuilder(IServiceProvider hostServices, params DialogGuiControlBase[] controls)
         {
             _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+            foreach (var control in controls)
+            {
+                AddControlCore(control.ID, control);
+            }
         }
 
         public DialogBase BuildDialog()
         {
             return new DialogBase(_hostServices, _externalReferences);
         }
-        private DialogBuilder AddControlCore(string controlName, DialogGuiControlBase c)
+        private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
-            c.InitializeControl(controlName);
-            if (_externalReferences.ContainsKey(controlName))
+            c.InitializeControl(controlId);
+            if (_externalReferences.ContainsKey(controlId))
             {
-                throw new InvalidOperationException($"controlName:{controlName}");
+                throw new InvalidOperationException($"controlId:{controlId}");
             }
-            _externalReferences.Add(c.ControlName, c);
+            _externalReferences.Add(c.ID, c);
             return this;
         }
-        public DialogBuilder AddTabControl(string controlName)
+        public DialogBuilder AddTabControl(string controlId)
         {
-            return AddControlCore(controlName, new DialogGuiTabPage() { });
+            return AddControlCore(controlId, new DialogGuiTabPage() { });
         }
 
-        public DialogBuilder AddTextControl(string controlName)
+        public DialogBuilder AddTextControl(string controlId)
         {
-            return AddControlCore(controlName, new DialogGuiTextControl() { });
+            return AddControlCore(controlId, new DialogGuiTextControl() { });
         }
-        public DialogBuilder AddLabelControl(string controlName)
+        public DialogBuilder AddLabelControl(string controlId)
         {
-            return AddControlCore(controlName, new DialogGuiLabelControl() { });
-        }
-
-        public DialogBuilder AddGroupBox(string controlName)
-        {
-            return AddControlCore(controlName, new DialogGuiGroupBox() { });
-        }
-        public DialogBuilder AddButton(string controlName)
-        {
-            return AddControlCore(controlName, new DialogGuiButtonControl() { });
+            return AddControlCore(controlId, new DialogGuiLabelControl() { });
         }
 
-        internal DialogBuilder AddImageControl(string controlName)
+        public DialogBuilder AddGroupBox(string controlId)
         {
-            return AddControlCore(controlName, new DialogGuiImageControl() { });
+            return AddControlCore(controlId, new DialogGuiGroupBox() { });
+        }
+        public DialogBuilder AddButton(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiButtonControl() { });
+        }
+
+        internal DialogBuilder AddImageControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiImageControl() { });
         }
 
         internal DialogBuilder AddExternalObject(string objectName, object objectInstance)
@@ -68,6 +75,11 @@ namespace Skrypton.Tests.Application
             _externalReferences.Add(objectName, objectInstance);
             return this;
         }
+    }
+
+    public sealed class DialogGuiRoot : DialogGuiControlBase
+    {
+
     }
 
     public class DialogGuiButtonControl : DialogGuiControlBase
