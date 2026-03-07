@@ -4,6 +4,6 @@ namespace Skrypton.RuntimeSupport.Implementations
 {
     public interface IRuntimeHost
     {
-        object? TryGetRuntimeHostService(Type serviceType);
+        TService? TryGetRuntimeHostService<TService>() where TService : class;
     }
 }

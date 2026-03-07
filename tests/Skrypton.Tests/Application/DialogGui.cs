@@ -706,11 +706,11 @@ WScript.Echo xmlhttp.responseText
                 .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
                 .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
                 .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zzzzzzzzzzz")
-                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                    //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
                 .RegisterServiceUnitIndex(1)
                 .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
 
@@ -722,7 +722,15 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
                 ;
 
-            var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
+            var dialog = this.BuildDialogFromXml(CreateTestHostServices(services =>
+            {
+
+                services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
+                        .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA())
+                    );
+                // helpline.hlcontrols.HLHelperPFA
+
+            }))
                 .AddExternalObject("model", model)
                 .AddExternalObject("hlSession", hlSession)
                 .AddExternalObject("hlobj", hlobj)
@@ -748,7 +756,7 @@ WScript.Echo xmlhttp.responseText
                 // 1: IncReqOnLoad
                 foreach (string scriptName in dialog.ScriptNames)
                 {
-                    Assert.Inconclusive();
+                    Assert.Inconclusive(); // last issue: 'OnSUIDAdded' person local dim not generated but 'person' global object used
                     //ScriptControlClass.RunProcedure(gr, scriptName, []);
                 }
             });
@@ -916,6 +924,11 @@ WScript.Echo xmlhttp.responseText
         public void MsgBox(string message)
         {
             Console.WriteLine($"MsgBox('{message}')");
+        }
+
+        public object GetClientContext()
+        {
+            return null;
         }
     }
 

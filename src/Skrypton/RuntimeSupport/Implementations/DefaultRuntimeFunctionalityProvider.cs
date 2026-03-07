@@ -32,7 +32,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private const int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
 
-        private readonly IRuntimeHost _hostServices;
+        private readonly IRuntimeHost _runtimeHost;
         private readonly IRuntimeLogger _runtimeLogger;
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
         private readonly CultureInfo _culture;
@@ -45,7 +45,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public DefaultRuntimeFunctionalityProvider(IRuntimeHost hostServices, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
-            _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+            _runtimeHost = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             _runtimeLogger = runtimeLogger ?? throw new ArgumentNullException(nameof(runtimeLogger));
             _valueRetriever = valueRetriever ?? throw new ArgumentNullException(nameof(valueRetriever));
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
@@ -2107,12 +2107,21 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             try
             {
-                _ = _hostServices.TryGetRuntimeHostService(typeof(string)); // Host
-                if (classProgId.Length > 0)
-                    throw new NotSupportedException($"classProgId:{classProgId}");
-                Type comType = Type.GetTypeFromProgID(classProgId, true);
+                IHostObjectFactoryHostService? objectFactories = _runtimeHost.TryGetRuntimeHostService<IHostObjectFactoryHostService>();
+                if (objectFactories != null)
+                {
+                    Func<IRuntimeHost, object>? creator = objectFactories.TryGetObjectFactoryRegistration(classProgId);
+                    if (creator != null)
+                    {
+                        return (IReflect)creator(_runtimeHost);
+                    }
+                }
 
-                return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
+                //if (classProgId.Length > 0)
+                    throw new NotSupportedException($"classProgId:{classProgId}");
+                //Type comType = Type.GetTypeFromProgID(classProgId, true);
+                //
+                //return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.RuntimeSupport;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.RuntimeSupport.Implementations;
+using Microsoft.Testing.Platform.Services;
 
 namespace Skrypton.Tests
 {
@@ -243,9 +244,10 @@ namespace Skrypton.Tests
             _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
         }
 
-        public object TryGetRuntimeHostService(Type serviceType)
+        TService IRuntimeHost.TryGetRuntimeHostService<TService>()
         {
-            throw new NotImplementedException();
+            //return _hostServices.GetService(typeof(TService)) as TService;
+            return _hostServices.GetService<TService>();
         }
     }
 
@@ -269,6 +271,25 @@ namespace Skrypton.Tests
                 return serviceProvider() ?? throw new InvalidOperationException($"Service '{serviceType.FullName}' factorization failed.");
             }
             throw new NotSupportedException($"Service '{serviceType.FullName}' not registered.");
+        }
+    }
+    internal sealed class TestHostObjectFactoryHostService : IHostObjectFactoryHostService
+    {
+        public TestHostObjectFactoryHostService()
+        {
+
+        }
+
+        private readonly Dictionary<string, Func<IRuntimeHost, object>> _factories = new Dictionary<string, Func<IRuntimeHost, object>>(StringComparer.OrdinalIgnoreCase);
+        internal TestHostObjectFactoryHostService RegisterObjectFactory<T>(string progId, Func<IRuntimeHost, T> factory)
+        {
+            _factories.Add(progId, (h) => factory(h));
+            return this;
+        }
+
+        public Func<IRuntimeHost, object> TryGetObjectFactoryRegistration(string progId)
+        {
+            return _factories.TryGetValue(progId, out Func<IRuntimeHost, object> factory) ? factory : null;
         }
     }
 }
