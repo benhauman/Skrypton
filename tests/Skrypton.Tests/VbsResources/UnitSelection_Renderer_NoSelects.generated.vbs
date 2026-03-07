@@ -819,7 +819,7 @@ Private Function BookingUI_RenderAvailCalLink(ByRef dCalStartDate, ByRef strTitl
     strLink = Replace(strLink, "&amp;", "?", 1, 1, 0)
   END IF
 
-  IF DateDiff("m", Date(), dCalStartDate) > = 0 THEN
+  IF DateDiff("m", Date(), dCalStartDate) >= 0 THEN
     BookingUI_RenderAvailCalLink = "<a href="" & strLink & "" class="" & strClass & "" title="" & strTitle & "" rel="nofollow">" & strTitle & "</a>" & vbCrLf
   ELSE
     BookingUI_RenderAvailCalLink = ""
@@ -1493,7 +1493,7 @@ Private Function BookingUI_UnitSel_AddReqUnitSelection(ByRef arrReqUnitSelection
   ON ERROR GOTO 0
 
   ' Ensure values look reasonable
-  IF ((intUnitKey < = 0) Or(intNumAdults < 0) Or(intNumChildren < 0) Or((intNumAdults + intNumChildren) < = 0)) THEN
+  IF ((intUnitKey <= 0) Or(intNumAdults < 0) Or(intNumChildren < 0) Or((intNumAdults + intNumChildren) <= 0)) THEN
     Exit Function
   END IF
 
@@ -1904,7 +1904,7 @@ Private Function BookingUI_GetPreSelectedUnitKey(ByVal lsRemoteUnitSelections, B
   IF Not(lsRemoteUnitSelections is Nothing) THEN
     ' Get unit selection passed in (may be zero if invalid request was made)
     ' Note: lsRemoteUnitSelections has zero-based index, iReqNo is one-based
-    IF ((iReqNo > = 1) And(iReqNo < = lsRemoteUnitSelections.Count)) THEN
+    IF ((iReqNo >= 1) And(iReqNo <= lsRemoteUnitSelections.Count)) THEN
       BookingUI_GetPreSelectedUnitKey = lsRemoteUnitSelections(iReqNo - 1)
       Exit Function
     END IF

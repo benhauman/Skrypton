@@ -187,11 +187,7 @@
                     <d1p1:LineIndex>12</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>&gt;</d1p1:Content>
-                    <d1p1:LineIndex>12</d1p1:LineIndex>
-                  </d2p1:anyType>
-                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:Content>&gt;=</d1p1:Content>
                     <d1p1:LineIndex>12</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:NumericValueToken">
@@ -238,11 +234,7 @@
                     <d1p1:LineIndex>13</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>&gt;</d1p1:Content>
-                    <d1p1:LineIndex>13</d1p1:LineIndex>
-                  </d2p1:anyType>
-                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:Content>&gt;=</d1p1:Content>
                     <d1p1:LineIndex>13</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:NumericValueToken">
@@ -289,11 +281,7 @@
                     <d1p1:LineIndex>14</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>&gt;</d1p1:Content>
-                    <d1p1:LineIndex>14</d1p1:LineIndex>
-                  </d2p1:anyType>
-                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:Content>&gt;=</d1p1:Content>
                     <d1p1:LineIndex>14</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:NumericValueToken">
@@ -340,11 +328,7 @@
                     <d1p1:LineIndex>15</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>&gt;</d1p1:Content>
-                    <d1p1:LineIndex>15</d1p1:LineIndex>
-                  </d2p1:anyType>
-                  <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
-                    <d1p1:Content>=</d1p1:Content>
+                    <d1p1:Content>&gt;=</d1p1:Content>
                     <d1p1:LineIndex>15</d1p1:LineIndex>
                   </d2p1:anyType>
                   <d2p1:anyType i:type="d1p1:NumericValueToken">

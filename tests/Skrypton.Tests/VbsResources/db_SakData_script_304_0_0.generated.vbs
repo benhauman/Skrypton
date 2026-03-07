@@ -107,7 +107,7 @@ Public Function GetPersonOrganisation(ByRef hlContext, ByRef hlOrgUnit, ByRef st
   'Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
   'dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
   IF IsArray(NextOrgUnit) THEN
-    IF UBound(NextOrgUnit) > = 0 THEN
+    IF UBound(NextOrgUnit) >= 0 THEN
       retval = GetPersonOrganisation(hlContext, NextOrgUnit(0), strOrgUnits)
     ELSE
       Exit Function
@@ -159,7 +159,7 @@ Public Sub SetPersonOrganization(ByRef hlContext, ByRef hlPerson, ByRef dict)
     Dim rsltOrgUnit
     rsltOrgUnit = ""
     rsltOrgUnit = hlPerson.GetItems(65536, 0, 0, "Person2Organization")
-    IF UBound(rsltOrgUnit) > = 0 THEN
+    IF UBound(rsltOrgUnit) >= 0 THEN
       Set FirstOrgUnit = rsltOrgUnit(0)
     END IF
   END IF
@@ -319,7 +319,7 @@ Public Function CheckForSoftwareSuiteFolder(ByRef hlContext, ByRef hlParentSWFol
   'Wenn sich mindestens noch ein weiterer Lizenzumschlag oberhalb der aktuellen befindet,
   'dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
   NextSWFolder = hlParentSWFolder.GetItems(65536, - 1, - 1, HLASC_SoftwareLicenseFolderView)
-  IF UBound(NextSWFolder) > = 0 THEN
+  IF UBound(NextSWFolder) >= 0 THEN
     retval = CheckForSoftwareSuiteFolder(hlContext, NextSWFolder(0), pDict, HLASC_SoftwareLicenseFolderView)
   ELSE
     Exit Function
@@ -348,7 +348,7 @@ Public Function SetLicenseCounter(ByRef hlContext, ByRef hlSWFolder, ByRef pDict
   CheckSoftwareSuite = False
   CheckSoftwareSuite = GetFlagValue(hlContext, hlSWFolder, "SoftwareLicenseFolderDetail.FlagSoftwareSuite", 0, 0)
 
-  IF UBound(pDict("SoftwareLicenses")) > = 0 THEN
+  IF UBound(pDict("SoftwareLicenses")) >= 0 THEN
     IF CBool(CheckSoftwareSuite) = False THEN
       Call CalcAllLicCounter(hlContext, pDict)
     ELSE
@@ -381,7 +381,7 @@ Public Function SetLicenseCounter(ByRef hlContext, ByRef hlSWFolder, ByRef pDict
   END IF
   'Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
   'dann wird die Funktion erneut aufgerufen. Anderfalls wird die Function beendet.
-  IF UBound(NextSWFolder) > = 0 THEN
+  IF UBound(NextSWFolder) >= 0 THEN
     retval = SetLicenseCounter(hlContext, NextSWFolder(0), pDict, assocName)
   ELSE
     Exit Function
@@ -588,7 +588,7 @@ Public Function GetAssociatedOrganizationalUnit(ByRef hlContext, ByRef lcid, ByR
   Dim rsltParent
   rsltParent = ""
   rsltParent = hlChild.GetItems(65536, - 1, - 1, pDict("AssocID"))
-  IF UBound(rsltParent) > = pDict("ParentCounter") THEN
+  IF UBound(rsltParent) >= pDict("ParentCounter") THEN
     Dim objParent
     Set objParent = Nothing
     For Each objParent In rsltParent

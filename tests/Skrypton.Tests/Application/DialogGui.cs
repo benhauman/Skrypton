@@ -683,10 +683,12 @@ WScript.Echo xmlhttp.responseText
 
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
                 .AddExternalObject("model", model)
+                .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
-            Assert.Inconclusive();
-            //ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: true);
+
+            //Assert.Inconclusive();
+            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
 
             /*
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
@@ -714,7 +716,7 @@ WScript.Echo xmlhttp.responseText
         {
             //new DialogBuilder(hostServices, "zzz").AddExternalObject("model", model)
 
-            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + tst.TestName + ".xml");
+            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + tst.TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
 
             XElement xHelpLineDialogData = XElement.Parse(dialogXml);
             XElement xProperties = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "Properties");
@@ -787,6 +789,16 @@ WScript.Echo xmlhttp.responseText
                 builder.AddScriptCode(scriptName, scriptCode);
             }
 
+            return builder;
+        }
+
+        internal static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
+        {
+            string originalCode = builder.GetScriptCode(scriptName);
+            string newCode = originalCode.Replace(originalText, newText);
+            if (newCode == originalCode)
+                throw new InvalidOperationException("Nothing has been changed.");
+            builder.FixScriptCode(scriptName, newCode);
             return builder;
         }
     }

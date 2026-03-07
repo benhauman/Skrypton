@@ -9,16 +9,16 @@ Public Function ConvertSize(ByRef Size)
   END IF
 
   Suffix = " B"
-  IF Size > = 1024 THEN
+  IF Size >= 1024 THEN
     suffix = " KB"
   END IF
-  IF Size > = 1048576 THEN
+  IF Size >= 1048576 THEN
     suffix = " MB"
   END IF
-  IF Size > = 1073741824 THEN
+  IF Size >= 1073741824 THEN
     suffix = " GB"
   END IF
-  IF Size > = 1099511627776 THEN
+  IF Size >= 1099511627776 THEN
     suffix = " TB"
   END IF
 

@@ -87,8 +87,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             var operatorSegmentsWithIndexes = segments
-                .Select((segment, index) => new { Segment = segment as OperationExpressionSegment, Index = index })
+                .Select((segment, index) => new { Segment = segment as OperationExpressionSegment, SegmentIndex = index })
                 .Where(s => s.Segment != null)
+                .Select(x => new { Segment = (OperationExpressionSegment)x.Segment!, x.SegmentIndex })
                 .ToArray();
             if (operatorSegmentsWithIndexes.Length > 1)
             {
@@ -112,18 +113,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else if (segments.Length == 2)
                 {
-                    if (operatorSegmentWithIndex.Index != 0)
+                    if (operatorSegmentWithIndex.SegmentIndex != 0)
                     {
-                        throw new ArgumentException("If there are any only two segments then the first must be a negation operator (the first here isn't an operator)");
+                        throw new ArgumentException($"If there are any only two segments then the first must be a negation operator (the first here isn't an operator). Line:{operatorSegmentWithIndex.Segment?.Token.LineIndex}");
                     }
 
-                    if ((operatorSegmentWithIndex.Segment!.Token.Content != "-")
+                    if ((operatorSegmentWithIndex.Segment.Token.Content != "-")
                         && !operatorSegmentWithIndex.Segment.Token.Content.Equals("NOT", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new ArgumentException("If there are any only two segments then the first must be a negation operator (here it has the token content \"" + operatorSegmentWithIndex.Segment.Token.Content + "\")");
                     }
                 }
-                else if (operatorSegmentWithIndex.Index != 1)
+                else if (operatorSegmentWithIndex.SegmentIndex != 1)
                 {
                     throw new ArgumentException("If there are three segments, then the middle must be an operator");
                 }
@@ -552,7 +553,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
                         "VBScriptConstants.Nothing"
-                        //_supportRefName.Name
+                    //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Reference,
                     new NonNullImmutableList<NameToken>()
@@ -563,7 +564,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
                         "true"
-                        //_supportRefName.Name
+                    //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Boolean,
                     new NonNullImmutableList<NameToken>()
@@ -574,7 +575,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return new TranslatedStatementContentDetailsWithContentType(
                     string.Format(CultureInfo.InvariantCulture,
                         "false"
-                        //_supportRefName.Name
+                    //_supportRefName.Name
                     ),
                     ExpressionReturnTypeOptions.Boolean,
                     new NonNullImmutableList<NameToken>()

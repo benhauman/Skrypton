@@ -1208,7 +1208,7 @@ SUB cb_template_load_SelectionEndOK()
         Loop
         rs_anzahl.close
 
-        If position =< anzahl_agent_templates Then
+        If position <= anzahl_agent_templates Then
         'Select für Agententemplate ausführen
         Set rs_agent = createobject("ADODB.Recordset")
         Set rs_agent = cn.Execute("Select template_id from templater where agentid = '" & cstr(agent) & "' order by agentid, cast(Templatename as varchar(500))" )

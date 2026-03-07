@@ -2787,7 +2787,7 @@ For Each PosID In OrderPosIDs
     Next
     'Anzahl der zu eliminierenden CI`s ermitteln
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeDesktopcomputer" THEN
         For Each obj In objs
@@ -2843,7 +2843,7 @@ For Each PosID In OrderPosIDs
     Next
     'Anzahl der zu eliminierenden CI`s ermitteln
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeNotebook" THEN
         For Each obj In objs
@@ -2899,7 +2899,7 @@ For Each PosID In OrderPosIDs
     Next
     'Anzahl der zu eliminierenden CI`s ermitteln
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeNetworkComponent" THEN
         For Each obj In objs
@@ -2956,7 +2956,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeMonitor" THEN
         For Each obj In objs
@@ -3013,7 +3013,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypePrinter" THEN
         For Each obj In objs
@@ -3070,7 +3070,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeScanner" THEN
         For Each obj In objs
@@ -3127,7 +3127,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeCopyDevice" THEN
         For Each obj In objs
@@ -3184,7 +3184,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeMultifunctionDevice" THEN
         For Each obj In objs
@@ -3241,7 +3241,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeDictaphone" THEN
         For Each obj In objs
@@ -3298,7 +3298,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeHeadset" THEN
         For Each obj In objs
@@ -3355,7 +3355,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeConferencePhone" THEN
         For Each obj In objs
@@ -3412,7 +3412,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeSpacemouse" THEN
         For Each obj In objs
@@ -3469,7 +3469,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeUSV" THEN
         For Each obj In objs
@@ -3526,7 +3526,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeControlCam" THEN
         For Each obj In objs
@@ -3583,7 +3583,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeBDE" THEN
         For Each obj In objs
@@ -3640,7 +3640,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeMobilePhone" THEN
         For Each obj In objs
@@ -3697,7 +3697,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeBlackberry" THEN
         For Each obj In objs
@@ -3754,7 +3754,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypePDA" THEN
         For Each obj In objs
@@ -3811,7 +3811,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeSIMCard" THEN
         For Each obj In objs
@@ -3868,7 +3868,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeUMTSCard" THEN
         For Each obj In objs
@@ -3925,7 +3925,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeVideoconferencetechnic" THEN
         For Each obj In objs
@@ -3982,7 +3982,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeBeamer" THEN
         For Each obj In objs
@@ -4039,7 +4039,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeMediaTechnic" THEN
         For Each obj In objs
@@ -4096,7 +4096,7 @@ For Each PosID In OrderPosIDs
     'Anzahl der zu eliminierenden CI`s ermitteln
     CIQuantity = hlcase.GetValue("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity", 0, PosID, 0, 0)
     stornoquantity = typecounter - CIQuantity - statuscounter
-    IF stornoquantity > = "1" THEN
+    IF stornoquantity >= "1" THEN
       'Jetzt die CIs eliminieren
       IF PosType = "CITypeServerComputer" THEN
         For Each obj In objs

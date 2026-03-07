@@ -99,6 +99,14 @@ namespace Skrypton.Tests.Application
         {
             GuiScripts.Add(scriptName, scriptCode);
         }
+        public string GetScriptCode(string scriptName)
+        {
+            return GuiScripts[scriptName];
+        }
+        public void FixScriptCode(string scriptName, string newCode)
+        {
+            GuiScripts[scriptName] = newCode;
+        }
 
         private readonly Dictionary<string, string> GuiScripts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     }

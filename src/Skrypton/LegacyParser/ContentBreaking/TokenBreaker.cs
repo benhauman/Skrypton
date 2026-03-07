@@ -117,7 +117,17 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             hasLeadingWhiteSpace = false;// last_chr0IsWhitespace ?? false;
                         }
 
-                        tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), hasLeadingWhiteSpace, lineIndex));
+                        if (chr == "=" && tokens.Count > 0 && tokens[tokens.Count - 1] is ComparisonOperatorToken cmpToken && (cmpToken.ContentUpperX().UpperText == "<" || cmpToken.ContentUpperX().UpperText == ">"))
+                        {
+                            // replace ('<' with '<=') or ('>' with '>=')
+                            tokens.RemoveRange(tokens.Count - 1, 1); // remove last
+                            string cmpText = cmpToken.Content + "=";
+                            tokens.Add(AtomToken.GetNewToken(new StringUpper(cmpText), hasLeadingWhiteSpace, cmpToken.LineIndex));
+                        }
+                        else
+                        {
+                            tokens.Add(AtomToken.GetNewToken(chr.ToUpperX(), hasLeadingWhiteSpace, lineIndex));
+                        }
                         buffer = "";
                     }
                     else
