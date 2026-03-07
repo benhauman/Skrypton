@@ -147,8 +147,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 return new BuiltInValueToken(contentUpper, lineIndex);
             if (isLogicalOperatorUpper(contentUpper))
                 return new LogicalOperatorToken(contentUpper, lineIndex);
-            if (isComparisonUpper(contentUpper))
-                return new ComparisonOperatorToken(contentUpper, lineIndex);
+            if (isComparisonUpperX(contentUpper, out OperatorKind? cmpOp))
+                return new ComparisonOperatorToken(cmpOp!.Value, contentUpper, lineIndex);
             if (isOperatorUpper(contentUpper))
                 return new OperatorToken(contentUpper, lineIndex);
             if (isMemberAccessorUpper(contentUpper))
@@ -251,6 +251,11 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         internal static bool isComparisonUpper(StringUpper atomContent)
         {
             return KnownTextResolver.isComparisonUpper(atomContent).HasValue;
+        }
+        internal static bool isComparisonUpperX(StringUpper atomContent, out OperatorKind? op)
+        {
+            op = KnownTextResolver.isComparisonUpper(atomContent);
+            return op.HasValue;
         }
 
         internal static bool isMemberAccessorUpper(StringUpper atomContent)

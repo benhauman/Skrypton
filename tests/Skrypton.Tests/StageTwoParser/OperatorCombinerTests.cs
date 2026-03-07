@@ -86,14 +86,14 @@ namespace Skrypton.Tests.StageTwoParser
             myAssert.AreEqual(
                 [
                     new NumericValueToken("2", lineIndex1),
-                    new ComparisonOperatorToken(">=", lineIndex1),
+                    new ComparisonOperatorToken(OperatorKind.GreaterThanOrEqual, ">=", lineIndex1),
                     new NumericValueToken("1", lineIndex1)
                 ],
                 OperatorCombiner.Combine(
                     [
                         new NumericValueToken("2", lineIndex1),
-                        new ComparisonOperatorToken(">", lineIndex1),
-                        new ComparisonOperatorToken("=", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.GreaterThan, ">", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                         new NumericValueToken("1", lineIndex1)
                     ]
                 ),

@@ -588,7 +588,7 @@ namespace Skrypton.Tests.StageTwoParser
                 [
                     EXP(
                         CALL(new NameToken("a", lineIndex1)),
-                        OP(new ComparisonOperatorToken("=", lineIndex1)),
+                        OP(new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1)),
                         BR(
                             CALL(new NameToken("b", lineIndex1)),
                             OP(new OperatorToken("+", lineIndex1)),
@@ -599,7 +599,7 @@ namespace Skrypton.Tests.StageTwoParser
                 ExpressionGenerator.GenerateExpressions(
                     [
                         new NameToken("a", lineIndex1),
-                        new ComparisonOperatorToken("=", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                         new NameToken("b", lineIndex1),
                         new OperatorToken("+", lineIndex1),
                         new NameToken("c", lineIndex1)
@@ -643,7 +643,7 @@ namespace Skrypton.Tests.StageTwoParser
                             OP(new OperatorToken("+", lineIndex1)),
                             CALL(new NameToken("e", lineIndex1))
                         ),
-                        OP(new ComparisonOperatorToken("=", lineIndex1)),
+                        OP(new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1)),
                         CALL(new NameToken("f", lineIndex1))
                     )
                 ],
@@ -666,7 +666,7 @@ namespace Skrypton.Tests.StageTwoParser
                         new CloseBrace(lineIndex1),
                         new OperatorToken("+", lineIndex1),
                         new NameToken("e", lineIndex1),
-                        new ComparisonOperatorToken("=", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                         new NameToken("f", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,
@@ -790,7 +790,7 @@ namespace Skrypton.Tests.StageTwoParser
                         OP(new LogicalOperatorToken("NOT", lineIndex1)),
                         BR(
                             CALL(new NameToken("a", lineIndex1)),
-                            OP(new ComparisonOperatorToken("IS", lineIndex1)),
+                            OP(new ComparisonOperatorToken(OperatorKind.IsSameObject, "IS", lineIndex1)),
                             new BuiltInValueExpressionSegment(new BuiltInValueToken("Nothing", lineIndex1))
                         )
                     )
@@ -799,7 +799,7 @@ namespace Skrypton.Tests.StageTwoParser
                     [
                         new LogicalOperatorToken("NOT", lineIndex1),
                         new NameToken("a", lineIndex1),
-                        new ComparisonOperatorToken("IS", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.IsSameObject, "IS", lineIndex1),
                         new BuiltInValueToken("Nothing", lineIndex1)
                     ],
                     directedWithReferenceIfAny: null,

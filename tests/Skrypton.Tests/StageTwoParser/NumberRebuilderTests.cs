@@ -190,7 +190,7 @@ namespace Skrypton.Tests.StageTwoParser
                 [
                     new KeyWordToken("FOR", lineIndex1),
                     new NameToken("i", lineIndex1),
-                    new ComparisonOperatorToken("=", lineIndex1),
+                    new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                     new NumericValueToken("-1", lineIndex1),
                     new KeyWordToken("TO", lineIndex1),
                     new NumericValueToken("-4", lineIndex1),
@@ -201,7 +201,7 @@ namespace Skrypton.Tests.StageTwoParser
                     [
                         new KeyWordToken("FOR", lineIndex1),
                         new NameToken("i", lineIndex1),
-                        new ComparisonOperatorToken("=", lineIndex1),
+                        new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                         new OperatorToken("-", lineIndex1),
                         new NumericValueToken("1", lineIndex1),
                         new KeyWordToken("TO", lineIndex1),

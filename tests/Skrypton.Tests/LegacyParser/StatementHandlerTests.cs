@@ -24,9 +24,9 @@ namespace Skrypton.Tests.LegacyParser
             var statement = (new StatementHandler()).Process(new List<IToken>
             {
                 new NameToken("bMatch", lineIndex1),
-                new ComparisonOperatorToken("=", lineIndex1),
+                new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                 new NumericValueToken("1", lineIndex1),
-                new ComparisonOperatorToken("=", lineIndex1),
+                new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                 new NumericValueToken("2", lineIndex1)
             });
 
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new NumericValueToken("1", lineIndex1),
-                    new ComparisonOperatorToken("=", lineIndex1),
+                    new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
                     new NumericValueToken("2", lineIndex1)
                 ],
                 valueSettingStatement.Expression.Tokens,

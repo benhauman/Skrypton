@@ -121,8 +121,8 @@ namespace Skrypton.Tests.LegacyParser
             myAssert.AreEqual(
                 [
                     new NameToken("value", lineIndex1),
-                    new ComparisonOperatorToken("<", lineIndex1),
-                    new ComparisonOperatorToken(">", lineIndex1)
+                    new ComparisonOperatorToken(OperatorKind.LessThan, "<", lineIndex1),
+                    new ComparisonOperatorToken(OperatorKind.GreaterThan, ">", lineIndex1)
                 ],
                 TokenBreaker.BreakUnprocessedToken(new UnprocessedContentToken("value<>", lineIndex1)),
                 new TokenSetComparer()
