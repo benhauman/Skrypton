@@ -304,7 +304,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
     }
 
-    internal class IReflectOnClrType : IReflect
+    public class IReflectOnClrType : IReflect
     {
         private readonly Type _type;
 
@@ -460,6 +460,20 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                             if (prms.Length > candidate.GetParameters().Length)
                             {
                                 candidate = mi;
+                            }
+                        }
+                    }
+                    else if (member is PropertyInfo pi)
+                    {
+                        if (pi.CanRead)
+                        {
+
+                        }
+                        if (pi.CanWrite)
+                        {
+                            if (invokeAttr.HasFlag(BindingFlags.SetProperty))
+                            {
+
                             }
                         }
                     }

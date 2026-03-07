@@ -674,6 +674,22 @@ WScript.Echo xmlhttp.responseText
         {
             return new TestDatabaseConnectionFactoryHostService();
         }
+
+        [TestMethod]
+        public void RunTranslatedProgram()
+        {
+            // paste the generated .cs into gen1.cs and use the code below (adjust the 'if' and the 'external references'!)
+            Type tRunner = typeof(TranslatedProgram.Runner);
+            var hostServices = CreateTestHostServices();
+            if (hostServices.ProvidersCount == 651) // adjust this to !=
+            {
+                CncIn.RunTranslatedProgram(RuntimeLogger, hostServices, TestCulture, tRunner, new Dictionary<string, object>
+                 { { "Person", new DialogGuiLabelControl()} }
+                , gr =>
+                {
+                });
+            }
+        }
         [TestMethod]
         public void CT132_Dialog_83() // select * from hlsysdialog where dbname = '_CustomerTest_Trumpf' and dialogid = 83; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Trumpf';
         {
@@ -681,16 +697,28 @@ WScript.Echo xmlhttp.responseText
             // Trumpf, 78, FlagNoLicenseEndDate_ondatachange : rs.fields(0).value
             var model = new DialogGuidModel();
 
+            var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true)
+                    .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
+                //.RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
+                //.RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
+                //.RegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
+                //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                ;
+            var hlcaller = new HLObjectInstance().InitializeObjectInstance(isNew: false)
+                    .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
+                ;
+
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
                 .AddExternalObject("model", model)
+                .AddExternalObject("hlobj", hlobj)
+                .AddExternalObject("hlcaller", hlcaller)
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
-
 
             //Assert.Inconclusive();
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
 
-            /*
+
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -702,8 +730,12 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                //Assert.Inconclusive();
-                ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
+                // 1: IncReqOnLoad
+                foreach (string scriptName in dialog.ScriptNames)
+                {
+                    Assert.Inconclusive();
+                    //ScriptControlClass.RunProcedure(gr, scriptName, []);
+                }
             });
             /*
             */
@@ -736,7 +768,26 @@ WScript.Echo xmlhttp.responseText
 
             List<DialogGuiControlBase> controls = new List<DialogGuiControlBase>();
 
-            XElement xControls = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "Controls");
+            CollectControls(controls, xHelpLineDialogData);
+
+            DialogBuilder builder = new DialogBuilder(hostServices, controls.ToArray());
+
+            var xGuiScripts = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "GuiScripts");
+
+            foreach (var xScript in xGuiScripts.Elements())
+            {
+                string scriptName = xScript.Elements().Single(x => x.Name.LocalName == "Name").Value;
+                string scriptCode = xScript.Elements().Single(x => x.Name.LocalName == "Code").Value;
+
+                builder.AddScriptCode(scriptName, scriptCode);
+            }
+
+            return builder;
+        }
+
+        private static void CollectControls(List<DialogGuiControlBase> controls, XElement xContainer)
+        {
+            XElement xControls = xContainer.Elements().SingleOrDefault(x => x.Name.LocalName == "Controls");
             foreach (var xControl in xControls.Elements())
             {
                 string ControlTypeName = xControl.Elements().Single(x => x.Name.LocalName == "ControlName").Value;
@@ -775,21 +826,9 @@ WScript.Echo xmlhttp.responseText
                 }
 
                 controls.Add(controlBase);
+
+                CollectControls(controls, xControl);
             }
-
-            DialogBuilder builder = new DialogBuilder(hostServices, controls.ToArray());
-
-            var xGuiScripts = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "GuiScripts");
-
-            foreach (var xScript in xGuiScripts.Elements())
-            {
-                string scriptName = xScript.Elements().Single(x => x.Name.LocalName == "Name").Value;
-                string scriptCode = xScript.Elements().Single(x => x.Name.LocalName == "Code").Value;
-
-                builder.AddScriptCode(scriptName, scriptCode);
-            }
-
-            return builder;
         }
 
         internal static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)

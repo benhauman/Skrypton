@@ -26,7 +26,7 @@ namespace Skrypton.Tests.Application
             if (chainName == "CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click"
              || chainName == "CT130_ClientComputer_Dialog_567_Button1_Click"
              || chainName == "CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click"
-             || (chainName.StartsWith("CT")  && chainName.Contains("_Dialog", StringComparison.Ordinal))
+             || (chainName.StartsWith("CT") && chainName.Contains("_Dialog", StringComparison.Ordinal))
              )
             {
                 // ignore for now: the undeclared external references  should be rendered as environment references and not a variables in 'Go'
@@ -268,8 +268,6 @@ namespace Skrypton.Tests.Application
 
             return text_buffer.ToString().NormalizeLineEndings();
         }
-
-
     }
     public enum ScriptUsageKind
     {

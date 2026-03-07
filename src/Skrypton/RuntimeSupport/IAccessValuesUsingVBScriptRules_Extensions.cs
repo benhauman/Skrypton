@@ -60,12 +60,12 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1)
+        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
+            return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: line);
         }
         public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {

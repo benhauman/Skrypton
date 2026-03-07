@@ -164,7 +164,7 @@ namespace Skrypton.RuntimeSupport
         object LEFTB(object value, object maxLength);
         object MID(object value, object start);
         object MID(object value, object start, object length);
-        object RGB(object value);
+        object RGB(object red, object green, object blue);
         object RIGHT(object value, object maxLength);
         object RIGHTB(object value, object maxLength);
         string REPLACE(object value, object toSearchFor, object toReplaceWith);

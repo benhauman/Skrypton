@@ -1174,7 +1174,29 @@ namespace Skrypton.RuntimeSupport.Implementations
             return valueString.Substring(0, maxLengthInt);
         }
         public object LEFTB(object value, object maxLength) { throw new NotImplementedException(); }
-        public object RGB(object value) { throw new NotImplementedException(); }
+        public object RGB(object red, object green, object blue)
+        {
+            short redComponent = red is short redShort ? redShort : Convert.ToInt16(_valueRetriever.NUM(red), CultureInfo.InvariantCulture);
+            short greenComponent = red is short greenShort ? greenShort : Convert.ToInt16(_valueRetriever.NUM(green), CultureInfo.InvariantCulture);
+            short blueComponent = blue is short blueShort ? blueShort : Convert.ToInt16(_valueRetriever.NUM(blue), CultureInfo.InvariantCulture);
+
+            // Validate input ranges
+            if (redComponent < 0 || redComponent > 255)
+            {
+                throw new ArgumentOutOfRangeException(nameof(red), "values must be between 0 and 255.");
+            }
+            if (greenComponent < 0 || greenComponent > 255)
+            {
+                throw new ArgumentOutOfRangeException(nameof(green), "values must be between 0 and 255.");
+            }
+            if (blueComponent < 0 || blueComponent > 255)
+            {
+                throw new ArgumentOutOfRangeException(nameof(blue), "values must be between 0 and 255.");
+            }
+            // packs them as: low byte = red, middle = green, high = blue
+            int result = (redComponent & 0xFF) | ((greenComponent & 0xFF) << 8) | ((blueComponent & 0xFF) << 16);
+            return result;
+        }
         public object RIGHT(object value, object maxLength)
         {
             // Validate inputs first

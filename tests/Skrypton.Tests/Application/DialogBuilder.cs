@@ -27,11 +27,14 @@ namespace Skrypton.Tests.Application
 
         public DialogBase BuildDialog(bool gui = true)
         {
+            List<string> scriptNames = new List<string>();
             StringBuilder dialogCode = new StringBuilder();
             if (gui)
             {
-                foreach (var script in GuiScripts)
+                foreach (KeyValuePair<string, string> script in GuiScripts)
                 {
+                    scriptNames.Add(script.Key);
+
                     dialogCode.Append($"SUB {script.Key}()");
                     if (script.Value.Length > 0)
                     {
@@ -45,7 +48,7 @@ namespace Skrypton.Tests.Application
                 }
             }
 
-            return new DialogBase(_hostServices, dialogCode.ToString(), _externalReferences);
+            return new DialogBase(_hostServices, dialogCode.ToString(), _externalReferences, scriptNames);
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
@@ -134,11 +137,14 @@ namespace Skrypton.Tests.Application
         public IServiceProvider HostServices { get; }
         public string DialogScriptCode { get; }
 
-        public DialogBase(IServiceProvider hostServices, string dialogScriptCode, IReadOnlyDictionary<string, object> externalReferences)
+        public IReadOnlyCollection<string> ScriptNames { get; }
+
+        public DialogBase(IServiceProvider hostServices, string dialogScriptCode, IReadOnlyDictionary<string, object> externalReferences, IReadOnlyCollection<string> scriptNames)
         {
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             DialogScriptCode = dialogScriptCode ?? throw new ArgumentNullException(nameof(dialogScriptCode));
             ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
+            ScriptNames = scriptNames ?? throw new ArgumentNullException(nameof(scriptNames));
         }
     }
 }

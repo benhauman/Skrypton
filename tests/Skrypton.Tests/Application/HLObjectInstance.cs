@@ -9,7 +9,7 @@ namespace Skrypton.Tests.Application
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     //[ComDefaultInterface(typeof(IScriptingHelplineObject))]
-    internal sealed class HLObjectInstance // see 'EblObjectWrite'
+    internal sealed class HLObjectInstance // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
     {
         private readonly Dictionary<ObjectValueKey, ObjectValueData> _values = new Dictionary<ObjectValueKey, ObjectValueData>();
 
@@ -52,7 +52,31 @@ namespace Skrypton.Tests.Application
             }
             else
             {
-                throw new InvalidOperationException($"SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+                throw new InvalidOperationException($"SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+            }
+        }
+        public object HasContent(object attributeKey, int contentid, int suidx)
+        {
+            Console.WriteLine($"SetValue('{attributeKey}', contentId:{contentid}, suidx:{suidx}");
+            if (_values.TryGetValue(new ObjectValueKey((string)attributeKey, contentid, suidx), out var ov))
+            {
+                return 1; // or count for multiples
+            }
+            else
+            {
+                throw new InvalidOperationException($"SetValue('{attributeKey}', contentId:{contentid}, suidx:{suidx}");
+            }
+        }
+        public object IsReadOnly(object key, int suidx) // 1:true, 0:false
+        {
+            Console.WriteLine($"IsReadOnly('{key}', suidx:{suidx}");
+            if (_values.TryGetValue(new ObjectValueKey((string)key, contentId:0, suidx), out var ov))
+            {
+                return false;
+            }
+            else
+            {
+                throw new InvalidOperationException($"IsReadOnly('{key}', suidx:{suidx}");
             }
         }
         internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)

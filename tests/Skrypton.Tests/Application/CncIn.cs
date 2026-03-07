@@ -90,32 +90,9 @@ namespace Skrypton.Tests.Application
             WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             {
                 Assembly asm = asmctx.LoadedAssembly;
-
-                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeLogger, culture);
-                Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
-
                 Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
-                RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
-                EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
-
-                var properties = environmentReferences.GetType().GetProperties();
-                var propertiesNameInfo = properties.ToDictionary(x => x.Name, x => x, StringComparer.OrdinalIgnoreCase);
-
-                foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
-                {
-                    string externalReferenceName = externalReferencesEntry.Key;
-                    object externalReferenceInstance = externalReferencesEntry.Value;
-                    environmentReferences.InitializeExternalReference(externalReferenceName, externalReferenceInstance);
-
-                    if (!propertiesNameInfo.TryGetValue(externalReferenceName, out PropertyInfo pi_externalReference1))
-                        throw new InvalidOperationException($"Invalid external reference '{externalReferenceName}'.");
-                    // sanity check
-                    _ = pi_externalReference1.GetValue(environmentReferences);
-                }
-
-                GlobalReferencesBase gr = runner.Run(environmentReferences);
-                dialogHandler(gr);
+                RunTranslatedProgram(runtimeLogger, hostServices, culture, tRunner, externalReferences, dialogHandler);
             }
             asmctx.UnloadContextCollectAndWait();
 
@@ -124,6 +101,35 @@ namespace Skrypton.Tests.Application
             else
                 Console.WriteLine("ALC still alive");
         }
+
+        internal static void RunTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, Type tRunner, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        {
+            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeLogger, culture);
+            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
+
+            RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
+
+            EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
+
+            var properties = environmentReferences.GetType().GetProperties();
+            var propertiesNameInfo = properties.ToDictionary(x => x.Name, x => x, StringComparer.OrdinalIgnoreCase);
+
+            foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
+            {
+                string externalReferenceName = externalReferencesEntry.Key;
+                object externalReferenceInstance = externalReferencesEntry.Value;
+                environmentReferences.InitializeExternalReference(externalReferenceName, externalReferenceInstance);
+
+                if (!propertiesNameInfo.TryGetValue(externalReferenceName, out PropertyInfo pi_externalReference1))
+                    throw new InvalidOperationException($"Invalid external reference '{externalReferenceName}'.");
+                // sanity check
+                _ = pi_externalReference1.GetValue(environmentReferences);
+            }
+
+            GlobalReferencesBase gr = runner.Run(environmentReferences);
+            dialogHandler(gr);
+        }
+
         internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
         {
             DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);

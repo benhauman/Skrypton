@@ -239,6 +239,7 @@ namespace Skrypton.Tests
         public TestHostServices()
         {
         }
+        internal int ProvidersCount => _providers.Count;
         internal TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class
         {
             _providers.Add(typeof(T).FullName, () => (object)serviceProvider());

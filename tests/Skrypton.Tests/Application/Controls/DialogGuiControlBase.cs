@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json.Bson;
+using Skrypton.Tests.RuntimeSupport.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 
 namespace Skrypton.Tests.Application.Controls
 {
-    public abstract class DialogGuiControlBase
+    [DebuggerDisplay("[{GetType().Name}]ID:{ID}")]
+    public abstract class DialogGuiControlBase// : IReflectOnClrType
     {
         protected DialogGuiControlBase()
         {
@@ -17,6 +20,8 @@ namespace Skrypton.Tests.Application.Controls
         {
             ID = id ?? throw new ArgumentNullException(nameof(id));
         }
+
+        public bool Disabled { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
 
 
         private ShowControlType _valueShowControl;
@@ -76,14 +81,19 @@ namespace Skrypton.Tests.Application.Controls
         private static readonly Dictionary<string, Func<DialogGuiControlBase>> ControlFactories = new Dictionary<string, Func<DialogGuiControlBase>>() {
             { "HelpLineDialogControl", () => new DialogGuiRoot() },
             { "HelpLineGroupBox", () => new DialogGuiGroupBox() },
-            { "HelpLineTabControl", () => new DialogGuiTabPage() }
+            { "HelpLineTabControl", () => new DialogGuiTabPage() },
+            { "HelpLineTextBox", () => new DialogGuiTextControl() },
+            { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
+            //{ "HelpLineSearchButton", () => new DialogGuiUnknownControl() },
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
         {
             return ControlFactories.TryGetValue(controlTypeName, out var factory)
                 ? factory()
-                : throw new NotImplementedException($"ControlTypeName:{controlTypeName}");
+                : new DialogGuiUnknownControl(controlTypeName)
+                //: throw new NotImplementedException($"ControlTypeName:{controlTypeName}")
+                ;
 
         }
         //protected virtual void SetPropertyValue(string propertyName, object propertyValue)
@@ -123,4 +133,24 @@ namespace Skrypton.Tests.Application.Controls
         WebOnly = 2,
         Never = 3
     }
+
+    [DebuggerDisplay("{ControlTypeName}")]
+    public sealed class DialogGuiUnknownControl : DialogGuiControlBase
+    {
+        public string ControlTypeName { get; }
+
+        public DialogGuiUnknownControl(string controlTypeName)
+        {
+            ControlTypeName = controlTypeName;
+        }
+    }
+
+    public sealed class DialogGuiComboBoxControl : DialogGuiControlBase
+    {
+        public void SelectItem(string value, bool mustEqual = true)
+        {
+            Console.WriteLine($"[ComboBox]({ID}).SelectItem({value})");
+        }
+    }
+
 }
