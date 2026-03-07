@@ -32,6 +32,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private const int MAX_VBSCRIPT_STRING_LENGTH = (int.MaxValue / 2) - 1;
 
+        private readonly IRuntimeHost _hostServices;
         private readonly IRuntimeLogger _runtimeLogger;
         private readonly IAccessValuesUsingVBScriptRules _valueRetriever;
         private readonly CultureInfo _culture;
@@ -42,8 +43,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private int _randomSeed;
         private Exception? _trappedErrorIfAny;
 
-        public DefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
+        public DefaultRuntimeFunctionalityProvider(IRuntimeHost hostServices, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
         {
+            _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             _runtimeLogger = runtimeLogger ?? throw new ArgumentNullException(nameof(runtimeLogger));
             _valueRetriever = valueRetriever ?? throw new ArgumentNullException(nameof(valueRetriever));
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
@@ -2105,6 +2107,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             try
             {
+                _ = _hostServices.TryGetRuntimeHostService(typeof(string)); // Host
                 if (classProgId.Length > 0)
                     throw new NotSupportedException($"classProgId:{classProgId}");
                 Type comType = Type.GetTypeFromProgID(classProgId, true);

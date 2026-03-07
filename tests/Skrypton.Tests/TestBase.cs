@@ -20,6 +20,7 @@ namespace Skrypton.Tests
 
         public const string CSFileExtension = ".cs"; // ".cstxt"
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
+        public IRuntimeHost CreateRuntimeHost(IServiceProvider hostServices) => new TestRuntimeHost(hostServices);
         public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
         public TestContext TestContext { get; set; }
         internal string TestName => this.TestContext!.TestName;
@@ -84,7 +85,7 @@ namespace Skrypton.Tests
             {
                 if (_defaultRuntimeSupportClassFactoryInstance == null)
                 {
-                    _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(RuntimeLogger, TestCulture);
+                    _defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture);
                 }
                 return _defaultRuntimeSupportClassFactoryInstance;
             }
@@ -230,6 +231,21 @@ namespace Skrypton.Tests
         {
             if (exception == null) throw new ArgumentNullException(nameof(exception));
             Console.WriteLine("VBS-Exception:" + exception);
+        }
+    }
+
+    internal sealed class TestRuntimeHost : IRuntimeHost
+    {
+        private readonly IServiceProvider _hostServices;
+
+        public TestRuntimeHost(IServiceProvider hostServices)
+        {
+            _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+        }
+
+        public object TryGetRuntimeHostService(Type serviceType)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -121,7 +121,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
             var dict = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
-            using (var _ = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(RuntimeLogger, TestCulture).Get())
+            using (var _ = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture).Get())
             {
                 _.SET(1, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("a"));
                 _.SET(2, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("b"));

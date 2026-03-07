@@ -11,14 +11,16 @@ namespace Skrypton.RuntimeSupport
 {
     public sealed class DefaultRuntimeSupportClassFactory
     {
+        internal IRuntimeHost RuntimeHost { get; }
         internal IRuntimeLogger RuntimeLogger { get; }
         private readonly CultureInfo _culture;
         private static readonly Regex _multipleUnderscoreCondenser = new ("_{2,}", RegexOptions.Compiled);
         internal static readonly HashSet<string> _caseInsensitiveCSharpKeywordMatcher = GetCSharpKeywords(StringComparer.OrdinalIgnoreCase);
 
-        private DefaultRuntimeSupportClassFactory(IRuntimeLogger runtimeLogger, CultureInfo culture)
+        private DefaultRuntimeSupportClassFactory(IRuntimeHost hostServices, IRuntimeLogger runtimeLogger, CultureInfo culture)
         {
             RuntimeLogger = runtimeLogger ?? throw new ArgumentNullException(nameof(runtimeLogger));
+            RuntimeHost = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _defaultNameRewriter = new DefaultVBScriptNameRewriter();
             // The VBScriptEsqueValueRetriever will cache meta data about what types do and don't have default members, which makes subsequent lookups much
@@ -32,7 +34,7 @@ namespace Skrypton.RuntimeSupport
                 _culture
             );
         }
-        public static DefaultRuntimeSupportClassFactory Create(IRuntimeLogger runtimeLogger, CultureInfo culture) => new DefaultRuntimeSupportClassFactory(runtimeLogger, culture);
+        public static DefaultRuntimeSupportClassFactory Create(IRuntimeHost hostServices, IRuntimeLogger runtimeLogger, CultureInfo culture) => new DefaultRuntimeSupportClassFactory(hostServices, runtimeLogger, culture);
 
         /// <summary>
         /// Each compat functionality provider instance should be disposed of after the request has completed to ensure that any managed resources are tidied
@@ -41,7 +43,7 @@ namespace Skrypton.RuntimeSupport
         /// </summary>
         public IProvideVBScriptCompatFunctionalityToIndividualRequests Get()
         {
-            return new DefaultRuntimeFunctionalityProvider(RuntimeLogger, DefaultVBScriptValueRetriever, _culture);
+            return new DefaultRuntimeFunctionalityProvider(RuntimeHost, RuntimeLogger, DefaultVBScriptValueRetriever, _culture);
         }
 
         /// <summary>

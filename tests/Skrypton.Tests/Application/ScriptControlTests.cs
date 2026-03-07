@@ -35,7 +35,7 @@ namespace Skrypton.Tests.Application
 
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
 
-            IScriptControl scriptengine = new ScriptControlClass(TestCulture, RuntimeLogger);
+            IScriptControl scriptengine = new ScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture);
             scriptengine.Language = "VBScript";
             scriptengine.AllowUI = false;
             scriptengine.Timeout = -1;//MSScriptControl::NoTimeout;

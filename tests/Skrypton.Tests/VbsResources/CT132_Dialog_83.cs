@@ -45,7 +45,6 @@ namespace TranslatedProgram
             object VIP = null; /* Undeclared in source */
             object hlProduct = null; /* Undeclared in source */
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object varString = null; /* Undeclared in source */
             object varAType = null; /* Undeclared in source */
@@ -119,8 +118,8 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v => { lcid = v; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v => { lcid = v; })));
 
             //Status der Anfragersuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check requester search status to set the caption of the button
@@ -281,13 +280,12 @@ namespace TranslatedProgram
             object responsibilty = null;
             object Anfrageart = null;
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object responsibility = null; /* Undeclared in source */
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v2 => { lcid = v2; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v2 => { lcid = v2; })));
 
             rewritten_ReadOnly = true;
             NoPerson = true;
@@ -407,7 +405,6 @@ namespace TranslatedProgram
             object NoProduct = null;
             object hlProduct = null; /* Undeclared in source */
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object varString = null; /* Undeclared in source */
             object varAType = null; /* Undeclared in source */
@@ -423,8 +420,8 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v3 => { lcid = v3; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v3 => { lcid = v3; })));
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
             //First of all check whether the Case is write protected
@@ -655,7 +652,6 @@ namespace TranslatedProgram
         {
             object rewritten_ReadOnly = null;
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             rewritten_ReadOnly = true;
 
@@ -675,8 +671,8 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v6 => { lcid = v6; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v6 => { lcid = v6; })));
 
         }
 
@@ -1815,7 +1811,6 @@ namespace TranslatedProgram
             object oExec = null;
             object OsType = null;
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object objType = null; /* Undeclared in source */
             object hlProduct = null; /* Undeclared in source */
@@ -1826,8 +1821,8 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v20 => { lcid = v20; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v20 => { lcid = v20; })));
 
             if (_.IF(_.EQ(_.NullableNUM(_.CALL(this, _env.hlobj, "IsReadOnly", _.ARGS.Val("CASEINFO.REACTIONTIME").Val((Int16)0))), (Int16)0)))
             {
@@ -1910,7 +1905,6 @@ namespace TranslatedProgram
         public void ButtonShowOverView_Click()
         {
             object lcid = null; /* Undeclared in source */
-            object hlSession = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object CaseOwner = null; /* Undeclared in source */
             object agent = null; /* Undeclared in source */
@@ -1933,8 +1927,8 @@ namespace TranslatedProgram
             object DiagnosisAll = null; /* Undeclared in source */
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALL(this, hlSession, "GetLocaleID"));
-            LangID = _.VAL(_.CALL(this, hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v22 => { lcid = v22; })));
+            lcid = _.VAL(_.CALL(this, _env.hlSession, "GetLocaleID"));
+            LangID = _.VAL(_.CALL(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v22 => { lcid = v22; })));
 
             CaseOwner = _.VAL(_.CALL(this, _env.hlobj, "GetValue", _.ARGS.Val("HLOBJECTINFO.OWNER").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             agent = "";
@@ -2987,6 +2981,7 @@ namespace TranslatedProgram
         public object GroupBoxNotifications { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlcaller { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlobj { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object hlSession { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object InfoArea { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object InfoReferenceNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object InfoRegistrationtime { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

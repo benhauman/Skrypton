@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -695,14 +696,27 @@ WScript.Echo xmlhttp.responseText
         {
             // Trumpf, 83, 83, cb_template_load_onfocus : rs.eof + rs.MoveFirst + rs.MoveNext + rs.fields("templatename").value
             // Trumpf, 78, FlagNoLicenseEndDate_ondatachange : rs.fields(0).value
+            _ = nameof(DialogGuiControlBase.ControlFactoryCreateDialogControl);
             var model = new DialogGuidModel();
+            var hlSession = new DialogGuiSession(TestCulture);
 
             var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true)
                     .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
-                //.RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
-                //.RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
-                //.RegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
-                //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
+                .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
+                .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
+                .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zzzzzzzzzzz")
+                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                    //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                .RegisterServiceUnitIndex(1)
+                .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
+
+
+                .RegisterServiceUnitIndex(2)
+                    .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
             var hlcaller = new HLObjectInstance().InitializeObjectInstance(isNew: false)
                     .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
@@ -710,6 +724,7 @@ WScript.Echo xmlhttp.responseText
 
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(r => { }))
                 .AddExternalObject("model", model)
+                .AddExternalObject("hlSession", hlSession)
                 .AddExternalObject("hlobj", hlobj)
                 .AddExternalObject("hlcaller", hlcaller)
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
@@ -901,6 +916,28 @@ WScript.Echo xmlhttp.responseText
         public void MsgBox(string message)
         {
             Console.WriteLine($"MsgBox('{message}')");
+        }
+    }
+
+    [ComVisible(true)]
+    internal sealed class DialogGuiSession // see public sealed class HlSession : IScriptingUserSession
+    {
+        private readonly CultureInfo _culture;
+
+        public DialogGuiSession(CultureInfo culture)
+        {
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
+        }
+
+        public int GetLocaleID()
+        {
+            Console.WriteLine($"hlSession.GetLocaleID");
+            return _culture.LCID;
+        }
+
+        public int LangIDFromLCID(int lcid)
+        {
+            return lcid & ~1024;
         }
     }
 

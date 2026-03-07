@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Skrypton.Tests.Application
@@ -38,6 +39,13 @@ namespace Skrypton.Tests.Application
                         return string.Empty;
                     return GetOutputValueText(ov, langid);
                 }
+                if (datatype == 1)
+                {
+                    if (ov.DataRaw == null)
+                        return null;
+                    if (ov.DataRaw is int)
+                        return ov.DataRaw;
+                }
                 throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             }
             throw new InvalidOperationException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
@@ -70,7 +78,7 @@ namespace Skrypton.Tests.Application
         public object IsReadOnly(object key, int suidx) // 1:true, 0:false
         {
             Console.WriteLine($"IsReadOnly('{key}', suidx:{suidx}");
-            if (_values.TryGetValue(new ObjectValueKey((string)key, contentId:0, suidx), out var ov))
+            if (_values.TryGetValue(new ObjectValueKey((string)key, contentId: 0, suidx), out var ov))
             {
                 return false;
             }
@@ -79,6 +87,18 @@ namespace Skrypton.Tests.Application
                 throw new InvalidOperationException($"IsReadOnly('{key}', suidx:{suidx}");
             }
         }
+
+        private readonly Dictionary<int, object> _sus = new Dictionary<int, object>();
+        public HLObjectInstance RegisterServiceUnitIndex(int suidx)
+        {
+            _sus.Add(suidx, null);
+            return this;
+        }
+        public int[] GetSvcUnitIndices()
+        {
+            return _sus.Keys.OrderBy(x => x).ToArray();
+        }
+
         internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)
         {
             _values.Add(new ObjectValueKey(key, contentId, suidx), new ObjectValueData(typeof(TValue)).InitializeValue(value));

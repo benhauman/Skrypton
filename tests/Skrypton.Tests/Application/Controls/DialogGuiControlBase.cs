@@ -15,14 +15,14 @@ namespace Skrypton.Tests.Application.Controls
         {
 
         }
-        public string ID { get => GetPropertyValueAsT<string>(); private set => SetPropertyValueAsT(value); }
         internal void InitializeControl(string id)
         {
             ID = id ?? throw new ArgumentNullException(nameof(id));
         }
 
+        public string ID { get => GetPropertyValueAsT<string>(); private set => SetPropertyValueAsT(value); }
         public bool Disabled { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
-
+        public bool UiActive { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
 
         private ShowControlType _valueShowControl;
         public short ShowControl // see ShowControlType
@@ -84,7 +84,7 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTabControl", () => new DialogGuiTabPage() },
             { "HelpLineTextBox", () => new DialogGuiTextControl() },
             { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
-            //{ "HelpLineSearchButton", () => new DialogGuiUnknownControl() },
+            { "HelpLineSearchButton", () => new DialogGuiSearchButtonControl() },
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -151,6 +151,36 @@ namespace Skrypton.Tests.Application.Controls
         {
             Console.WriteLine($"[ComboBox]({ID}).SelectItem({value})");
         }
+    }
+
+    public sealed class DialogGuiSearchButtonControl : DialogGuiControlBase
+    {
+        public DialogGuiSearchButtonControl()
+        {
+
+        }
+
+        public enum SearchState
+        {
+            Undefined = 0,
+            Design = 1,
+            Execute = 2,
+            Reset = 3
+        }
+
+        public int GetSearchState()
+        {
+            return (int)SearchState.Execute;
+        }
+
+        public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+
+        public object GetObject(string symbolName, bool search)
+        {
+            return null;
+            //return helpLineWebDialogControl.GetHelpLineObject(symbolName);
+        }
+
     }
 
 }

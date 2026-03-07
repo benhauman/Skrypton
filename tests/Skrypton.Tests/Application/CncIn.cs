@@ -104,8 +104,9 @@ namespace Skrypton.Tests.Application
 
         internal static void RunTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, Type tRunner, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
-            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeLogger, culture);
-            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
+            IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
+            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeHost, runtimeLogger, culture);
+            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
 
             RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
@@ -130,9 +131,9 @@ namespace Skrypton.Tests.Application
             dialogHandler(gr);
         }
 
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
+        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeHost runtimeHost, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
         {
-            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeLogger, valueRetriever, culture);
+            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, valueRetriever, culture);
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
