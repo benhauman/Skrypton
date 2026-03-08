@@ -5,6 +5,8 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation;
+using System.Text;
+using Microsoft.Testing.Extensions.VSTestBridge;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -35,25 +37,29 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public const char NewLineNormalized = '\n';
         internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
         {
-            string[] csLines = DefaultCSharpTranslation.GetTranslatedStatements(culture, vbsSource, externalDependencies);
-            string csText = string.Join(NewLineNormalized, csLines);
+            var stmts = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies);
+
+            StringBuilder tb = new StringBuilder();
+            foreach (var s in stmts)
+            {
+                if (!s.HasContent)
+                {
+                    tb.Append(s.Content); // no indention for blank lines
+                    tb.Append(NewLineNormalized);
+                }
+                else
+                {
+                    if (s.IndentationDepth > 0)
+                    {
+                        tb.Append(new string(' ', s.IndentationDepth * 4));
+                    }
+
+                    tb.Append(s.Content);
+                    tb.Append(NewLineNormalized);
+                }
+            }
+            string csText = tb.ToString();
             return csText;
-        }
-        internal static string[] GetTranslatedStatements(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
-        {
-            string[] output = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies)
-                .Select(s => RenderTranslatedStatement(s))
-                .ToArray();
-            return output; // later: string.Join(NewLineNormalized, output)
-        }
-        private static string RenderTranslatedStatement(TranslatedStatement s)
-        {
-            if (s.IndentationDepth == 0)
-                return s.Content;
-            if (!s.HasContent)
-                return s.Content; // no indention for blank lines
-            string txt = new string(' ', s.IndentationDepth * 4) + s.Content;
-            return txt;
         }
     }
 }
