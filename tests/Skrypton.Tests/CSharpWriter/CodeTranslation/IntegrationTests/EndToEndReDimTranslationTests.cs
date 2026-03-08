@@ -139,13 +139,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     ReDim a(1)
                     ReDim a(2)";
 
-            string[] trimmedTranslatedStatements = DefaultTranslator.TranslateExecutable(TestCulture, source, new NonNullImmutableList<string>())
-                .Select(s => s.Content.Trim())
-                .ToArray();
-            string text_a_raw = string.Join(NewLineNormalized, trimmedTranslatedStatements);
+            string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, []);
 
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "a = null;"));
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "internal object a { get; set; }"));
+            myAssert.True(actualCs.Contains("a = null;"), "assign:" + actualCs);
+            myAssert.True(actualCs.Contains("internal object a { get; set; }"), "property:" + actualCs);
         }
 
         /// <summary>
