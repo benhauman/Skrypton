@@ -293,14 +293,14 @@ namespace Skrypton.Tests
             }
         }
 
-        internal static void False(bool v)
+        internal static void False(bool v, string message = "")
         {
-            Assert.IsFalse(v);
+            Assert.IsFalse(v, message);
         }
 
-        internal static void True(bool v)
+        internal static void True(bool v, string message = "")
         {
-            Assert.IsTrue(v);
+            Assert.IsTrue(v, message);
         }
 
         internal static void Null(object v)

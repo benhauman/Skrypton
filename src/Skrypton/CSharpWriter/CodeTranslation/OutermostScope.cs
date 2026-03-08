@@ -16,7 +16,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     /// most scope in the source content.
     /// </summary>
     [DataContract(Namespace = "http://vbs")]
-    public class OutermostScope : IDefineScope, IOutermostScope
+    public sealed class OutermostScope : IDefineScope, IOutermostScope
     {
         public OutermostScope(CSharpName wrapperName, NonNullImmutableList<ICodeBlock> codeBlocks)
         {

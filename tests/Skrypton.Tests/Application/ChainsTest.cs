@@ -181,8 +181,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            var csLines = DefaultCSharpTranslation.GetTranslatedStatements(tst.TestCulture, scriptContent, externalDependencies);
-            string translated_cs_actual = string.Join(NewLineNormalized, csLines).NormalizeLineEndings();
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies);
 
             //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
             //

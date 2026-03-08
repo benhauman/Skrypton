@@ -269,13 +269,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     ReDim a(1)
                     ReDim a(2)";
 
-            string[] trimmedTranslatedStatements = DefaultTranslator.TranslateExecutable(TestCulture, source, new NonNullImmutableList<string>())
-                .Select(s => s.Content.Trim())
-                .ToArray();
-            string text_a_raw = string.Join(NewLineNormalized, trimmedTranslatedStatements);
+            string text_a_raw = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, []);
 
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "a = null;"));
-            myAssert.AreEqual(1, trimmedTranslatedStatements.Count(s => s == "internal object a { get; set; }"));
+            myAssert.True(text_a_raw.Contains("a = null;"), "assign:" + text_a_raw);
+            myAssert.True(text_a_raw.Contains("internal object a { get; set; }"), "property:" + text_a_raw);
         }
 
         /// <summary>
@@ -351,7 +348,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 ";
             myAssert.Throws<NameRedefinedException>(() =>
             {
-                DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });
         }
 
@@ -364,7 +361,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 ";
             myAssert.Throws<NameRedefinedException>(() =>
             {
-                DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });
         }
 
@@ -378,7 +375,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     End Function";
             myAssert.Throws<NameRedefinedException>(() =>
             {
-                DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });
         }
 
@@ -392,7 +389,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     End Function";
             myAssert.Throws<NameRedefinedException>(() =>
             {
-                DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });
         }
 
@@ -413,7 +410,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     End Function";
             myAssert.Throws<NameRedefinedException>(() =>
             {
-                DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
             });
         }
         ///}

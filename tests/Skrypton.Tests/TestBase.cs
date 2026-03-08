@@ -94,12 +94,12 @@ namespace Skrypton.Tests
 
         protected void TestCSharpCodeTranslation(string vbsSource) // TODO remove 'WithoutScaffoldingTranslator'
         {
-            string[] output = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
+            string[] actualCsLines = DefaultCSharpTranslation.GetTranslatedStatements(TestCulture, vbsSource, []);
+            string[] arr_actual = actualCsLines.ToArray();//.Select(s => s.Trim()).Where(s => s != "").ToArray();
+            string text_a_raw = string.Join(NewLineNormalized, actualCsLines);
 
             string expectedCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            string[] arr_expected = expectedCs.SplitLines().Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string[] arr_actual = output.Select(s => s.Trim()).Where(s => s != "").ToArray();
-            string text_a_raw = string.Join(NewLineNormalized, output);
+            string[] arr_expected = expectedCs.SplitLines().ToArray();//.Select(s => s.Trim()).Where(s => s != "").ToArray();
             TestCSharpCodeTranslationCore(vbsSource, text_a_raw, arr_expected, arr_actual, expectedCs);
         }
         //protected void TestCSharpCodeTranslationWithoutScaffoldingTranslator(string vbsSource, string[] arr_expected) // TODO remove 'WithoutScaffoldingTranslator'

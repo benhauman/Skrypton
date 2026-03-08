@@ -21,9 +21,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("29 5 2015"))))
-            {
-            }
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -37,10 +34,16 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
+
+        public void Test()
+        {
+            object hlContext = null;
+            _env.hlContext = (Int16)1;
+        }
     }
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
-        public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

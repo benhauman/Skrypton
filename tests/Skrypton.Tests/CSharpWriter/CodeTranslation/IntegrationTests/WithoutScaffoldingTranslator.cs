@@ -32,6 +32,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
     internal static class DefaultCSharpTranslation
     {
+        public const char NewLineNormalized = '\n';
+        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
+        {
+            string[] csLines = DefaultCSharpTranslation.GetTranslatedStatements(culture, vbsSource, externalDependencies);
+            string csText = string.Join(NewLineNormalized, csLines);
+            return csText;
+        }
         internal static string[] GetTranslatedStatements(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
         {
             string[] output = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies)
