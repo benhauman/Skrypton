@@ -43,7 +43,6 @@ namespace TranslatedProgram
             object Anfrageart = null;
             object Valid = null; /* Undeclared in source */
             object VIP = null; /* Undeclared in source */
-            object hlProduct = null; /* Undeclared in source */
             object lcid = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object varString = null; /* Undeclared in source */
@@ -111,7 +110,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Produkt Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Product object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditAssetModel, "Text")), ""))))
+            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditAssetModel, "Text")), ""))))
             {
                 NoAsset = false;
             }
@@ -154,7 +153,7 @@ namespace TranslatedProgram
                 //Setzen des Inventars
                 //Setting the asset
                 varString = "";
-                varAType = _.VAL(_.CALL(this, hlProduct, "GetType", _.ARGS.ForceBrackets()));
+                varAType = _.VAL(_.CALL(this, _env.hlProduct, "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.OR(_.OR(_.EQ(_.NullableSTR(varAType), "DesktopComputer"), _.EQ(_.NullableSTR(varAType), "ServerComputer")), _.EQ(_.NullableSTR(varAType), "NotebookComputer")), _.EQ(_.NullableSTR(varAType), "Printer"))))
                 {
                     if (_.IF(_.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditHostname, "Text")), "")))
@@ -403,7 +402,6 @@ namespace TranslatedProgram
         {
             object rewritten_ReadOnly = null;
             object NoProduct = null;
-            object hlProduct = null; /* Undeclared in source */
             object lcid = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object varString = null; /* Undeclared in source */
@@ -413,7 +411,7 @@ namespace TranslatedProgram
 
             //Wenn kein Inventar gefunden wurde, abbrechen
             //Cancel If no Asset was found
-            if (_.IF(_.EQ(_.NullableSTR(_.CALL(this, hlProduct, "GetType", _.ARGS.ForceBrackets())), "TEMPOBJECT")))
+            if (_.IF(_.EQ(_.NullableSTR(_.CALL(this, _env.hlProduct, "GetType", _.ARGS.ForceBrackets())), "TEMPOBJECT")))
             {
                 return;
             }
@@ -432,7 +430,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Anfrager Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Caller object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditHostname, "Text")), ""))))
+            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditHostname, "Text")), ""))))
             {
                 NoProduct = false;
             }
@@ -442,7 +440,7 @@ namespace TranslatedProgram
                 //Setzen des Inventars
                 //Setting the asset
                 varString = "";
-                varAType = _.VAL(_.CALL(this, hlProduct, "GetType", _.ARGS.ForceBrackets()));
+                varAType = _.VAL(_.CALL(this, _env.hlProduct, "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.OR(_.OR(_.EQ(_.NullableSTR(varAType), "DesktopComputer"), _.EQ(_.NullableSTR(varAType), "ServerComputer")), _.EQ(_.NullableSTR(varAType), "NotebookComputer")), _.EQ(_.NullableSTR(varAType), "Printer"))))
                 {
                     if (_.IF(_.NOTEQ(_.NullableSTR(_.CALL(this, _env.EditHostname, "Text")), "")))
@@ -1043,9 +1041,8 @@ namespace TranslatedProgram
             object Hostname = null;
             object wshshell = null;
             object oExec = null;
-            object hlProduct = null; /* Undeclared in source */
             object Command1 = null; /* Undeclared in source */
-            Hostname = _.VAL(_.CALL(this, hlProduct, "getvalue", _.ARGS.Val("AssetGeneral.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            Hostname = _.VAL(_.CALL(this, _env.hlProduct, "getvalue", _.ARGS.Val("AssetGeneral.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             wshshell = _.OBJ(_.CREATEOBJECT("Wscript.Shell"));
             Command1 = _.ADD(_.ADD("c:\\program files\\internet explorer\\iexplore.exe http://srv01inv1/discovery/Reports/List.aspx?q=", Hostname), "&flgDevice=1");
             oExec = _.OBJ(_.CALL(this, wshshell, "Exec", _.ARGS.Ref(Command1, v17 => { Command1 = v17; })));
@@ -1813,7 +1810,6 @@ namespace TranslatedProgram
             object lcid = null; /* Undeclared in source */
             object LangID = null; /* Undeclared in source */
             object objType = null; /* Undeclared in source */
-            object hlProduct = null; /* Undeclared in source */
             object host = null; /* Undeclared in source */
             object Command1 = null; /* Undeclared in source */
             object RemoteTool = null; /* Undeclared in source */
@@ -1827,7 +1823,7 @@ namespace TranslatedProgram
             if (_.IF(_.EQ(_.NullableNUM(_.CALL(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CASEINFO.REACTIONTIME").Val((Int16)0))), (Int16)0)))
             {
 
-                objType = _.VAL(_.CALL(this, hlProduct, "GetType"));
+                objType = _.VAL(_.CALL(this, _env.hlProduct, "GetType"));
                 if (_.IF(_.OR(_.OR(_.EQ(_.NullableSTR(objType), "DesktopComputer"), _.EQ(_.NullableSTR(objType), "ServerComputer")), _.EQ(_.NullableSTR(objType), "NotebookComputer"))))
                 {
                     //Auslesen des gewählten Computers
@@ -2981,6 +2977,7 @@ namespace TranslatedProgram
         public object GroupBoxNotifications { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlCaller { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlObj { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object hlProduct { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object hlSession { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object InfoArea { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object InfoReferenceNumber { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

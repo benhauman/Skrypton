@@ -15,10 +15,13 @@ namespace Skrypton.Tests.Application.Controls
         {
 
         }
-        internal void InitializeControl(string id)
+        internal void InitializeControl(DialogGuidModel dialogModel, string id)
         {
             ID = id ?? throw new ArgumentNullException(nameof(id));
+            _model = dialogModel ?? throw new ArgumentNullException(nameof(dialogModel));
         }
+        private DialogGuidModel _model;
+        internal DialogGuidModel model => _model ?? throw new InvalidOperationException("model not set");
 
         public string ID { get => GetPropertyValueAsT<string>(); private set => SetPropertyValueAsT(value); }
         public bool Disabled { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
@@ -177,8 +180,10 @@ namespace Skrypton.Tests.Application.Controls
 
         public object GetObject(string symbolName, bool search)
         {
-            return null;
-            //return helpLineWebDialogControl.GetHelpLineObject(symbolName);
+            if (search)
+                return model.DialogUserControl.GetHelpLineTempObject(symbolName);
+            else
+                return model.DialogUserControl.GetHelpLineObject(symbolName);
         }
 
     }

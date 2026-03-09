@@ -12,16 +12,24 @@ namespace Skrypton.Tests.Application
     //[ComDefaultInterface(typeof(IScriptingHelplineObject))]
     internal sealed class HLObjectInstance // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
     {
+        private readonly string _traceName;
         private readonly Dictionary<ObjectValueKey, ObjectValueData> _values = new Dictionary<ObjectValueKey, ObjectValueData>();
 
-        public HLObjectInstance()
+        public HLObjectInstance(string traceName = "")
         {
+            _traceName = string.IsNullOrEmpty(traceName) ? traceName : $"|{traceName}|";
         }
-
-        public HLObjectInstance InitializeObjectInstance(bool isNew)
+        private int? _objectId;
+        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null)
         {
             IsNew = isNew ? 1 : 0;
+            _objectId = objectId;
             return this;
+        }
+
+        public int objID()
+        {
+            return _objectId.HasValue ? _objectId.Value : throw new InvalidOperationException($"{_traceName}Id not set.");
         }
 
         public object IsNew { get; private set; }

@@ -24,9 +24,9 @@ namespace Skrypton.Tests.Application
     {
         [TestMethod]
         public void QUX_HLData_Contact_Dialog_2_ButtonShowWebsite_Click()// => TestDialogGui();
-        //private void TestDialogGui()
         {
-            var dialog = new DialogBuilder(CreateTestHostServices())
+            var model = new DialogGuidModel();
+            var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
@@ -36,7 +36,8 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void CT35_LogChecklist_Dialog_388_OnSave() // 35:DFSnDLNeu  id = select id, dbname from _databasestats order by dbname asc -- [hlsysdialog]
         {
-            var dialog = new DialogBuilder(CreateTestHostServices())
+            var model = new DialogGuidModel();
+            var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxChecklist1URL")
                 .AddTextControl("TextBoxChecklist2URL")
                 .AddTextControl("TextBoxChecklist3URL")
@@ -287,7 +288,7 @@ WScript.Echo xmlhttp.responseText
                 ;
             var model = new DialogGuidModel();
 
-            var dialog = new DialogBuilder(CreateTestHostServices()).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
 
@@ -611,7 +612,7 @@ WScript.Echo xmlhttp.responseText
 
             IHostProcessControlHostService processControlHostService = CreateTestProcessControlHostService();
 
-            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostProcessControlHostService>(() => processControlHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostProcessControlHostService>(() => processControlHostService)), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                 .AddButton("Button1_Click")
                 .BuildDialog();
 
@@ -645,7 +646,7 @@ WScript.Echo xmlhttp.responseText
 
             IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
 
-            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService))).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService)), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
@@ -700,12 +701,13 @@ WScript.Echo xmlhttp.responseText
             var model = new DialogGuidModel();
             var hlSession = new DialogGuiSession(TestCulture);
 
-            var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true)
+            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
                     .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
                 .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
                 .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
                 .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
-                .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zzzzzzzzzzz")
+                .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
+                .RegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
                 //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
                 //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
                 //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
@@ -718,9 +720,18 @@ WScript.Echo xmlhttp.responseText
                 .RegisterServiceUnitIndex(2)
                     .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
-            var hlcaller = new HLObjectInstance().InitializeObjectInstance(isNew: false)
+            var hlcaller = new HLObjectInstance("symbol_hlcaller").InitializeObjectInstance(isNew: false, objectId: 101301)
                     .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
                 ;
+            var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false)
+                ;
+
+            var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false)
+                    .RegisterValueKey<string>("AssetGeneral.AssetName", 0, 0, "MyAN1")
+                    .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
+                    .RegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
+                ;
+            model.RegisterSymbolObjectProvider("product", () => symbol_product);
 
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(services =>
             {
@@ -730,11 +741,12 @@ WScript.Echo xmlhttp.responseText
                     );
                 // helpline.hlcontrols.HLHelperPFA
 
-            }))
+            }), model)
                 .AddExternalObject("model", model)
                 .AddExternalObject("hlSession", hlSession)
                 .AddExternalObject("hlObj", hlobj)
                 .AddExternalObject("hlCaller", hlcaller)
+                .AddExternalObject("hlProduct", hlProduct)
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
@@ -767,7 +779,7 @@ WScript.Echo xmlhttp.responseText
 
     internal static class DialogBuilderXmlExtensions
     {
-        internal static DialogBuilder BuildDialogFromXml(this TestBase tst, IServiceProvider hostServices)
+        internal static DialogBuilder BuildDialogFromXml(this TestBase tst, IServiceProvider hostServices, DialogGuidModel dialogModel)
         {
             //new DialogBuilder(hostServices, "zzz").AddExternalObject("model", model)
 
@@ -793,7 +805,7 @@ WScript.Echo xmlhttp.responseText
 
             CollectControls(controls, xHelpLineDialogData);
 
-            DialogBuilder builder = new DialogBuilder(hostServices, controls.ToArray());
+            DialogBuilder builder = new DialogBuilder(hostServices, dialogModel, controls.ToArray());
 
             var xGuiScripts = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "GuiScripts");
 
@@ -929,6 +941,28 @@ WScript.Echo xmlhttp.responseText
         public object GetClientContext()
         {
             return null;
+        }
+
+        internal HLObjectInstance GetHelpLineTempObject(string symbolName)
+        {
+            if (_symbols.TryGetValue(symbolName, out var provider))
+                return provider();
+            return null;
+        }
+
+        internal HLObjectInstance GetHelpLineObject(string symbolName)
+        {
+            if (_symbols.TryGetValue(symbolName, out var provider))
+                return provider();
+            throw new InvalidOperationException($"symbolName:{symbolName}");
+        }
+
+        internal DialogGuidModel DialogUserControl => this;
+
+        private Dictionary<string, Func<HLObjectInstance>> _symbols = new Dictionary<string, Func<HLObjectInstance>>(StringComparer.OrdinalIgnoreCase);
+        public void RegisterSymbolObjectProvider(string symbolName, Func<HLObjectInstance> func)
+        {
+            _symbols.Add(symbolName, func);
         }
     }
 

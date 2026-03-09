@@ -12,13 +12,15 @@ namespace Skrypton.Tests.Application
     {
         private readonly IServiceProvider _hostServices;
         private readonly Dictionary<string, object> _externalReferences = new Dictionary<string, object>();
+        private readonly DialogGuidModel _dialogModel;
 
-        public DialogBuilder(IServiceProvider hostServices) : this(hostServices, [])
+        internal DialogBuilder(IServiceProvider hostServices, DialogGuidModel dialogModel) : this(hostServices, dialogModel, [])
         {
         }
-        public DialogBuilder(IServiceProvider hostServices, params DialogGuiControlBase[] controls)
+        internal DialogBuilder(IServiceProvider hostServices, DialogGuidModel dialogModel, params DialogGuiControlBase[] controls)
         {
             _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
+            _dialogModel = dialogModel ?? throw new ArgumentNullException(nameof(dialogModel));
             foreach (var control in controls)
             {
                 AddControlCore(control.ID, control);
@@ -52,7 +54,7 @@ namespace Skrypton.Tests.Application
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
-            c.InitializeControl(controlId);
+            c.InitializeControl(_dialogModel, controlId);
             if (_externalReferences.ContainsKey(controlId))
             {
                 throw new InvalidOperationException($"controlId:{controlId}");

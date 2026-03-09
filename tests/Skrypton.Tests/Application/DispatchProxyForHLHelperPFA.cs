@@ -16,13 +16,18 @@ internal sealed class DispatchProxyForHLHelperPFA : IReflectOnClrType
     {
         Console.WriteLine($"[HLHelperPFA].GetPersonForAgent(agentId:{agentId})");
         if (agentId == 710)
-            return new AgentPerson(agentId);
+        {
+            return new HLObjectInstance().InitializeObjectInstance(isNew: false)
+                .RegisterValueKey<string>("PersonGeneralTrumpf.Responsibility", 0, 0, "ResponsibilityBSZDitzingen")
+                ;
+            //return new AgentPerson(agentId);
+        }
         throw new NotImplementedException($"[HLHelperPFA].GetPersonForAgent(agentId:{agentId})");
     }
 
-    [DebuggerDisplay("PFA:{_agentId}")]
-    private sealed class AgentPerson(int agentId)
-    {
-        private readonly int _agentId = agentId;
-    }
+    //[DebuggerDisplay("PFA:{_agentId}")]
+    //private sealed class AgentPerson(int agentId)
+    //{
+    //    private readonly int _agentId = agentId;
+    //}
 }
