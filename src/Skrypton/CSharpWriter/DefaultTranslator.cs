@@ -26,11 +26,11 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static NonNullImmutableList<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+        public static IReadOnlyCollection<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
         {
             return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
-        public static NonNullImmutableList<TranslatedStatement> TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+        public static IReadOnlyCollection<TranslatedStatement> TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
         {
             return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
@@ -75,7 +75,7 @@ namespace Skrypton.CSharpWriter
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList
         /// of strings and it requires an ILogInformation implementation to deal with logging warnings
         /// </summary>
-        internal static NonNullImmutableList<TranslatedStatement> TranslateCore(
+        internal static IReadOnlyCollection<TranslatedStatement> TranslateCore(
             CultureInfo culture,
             string scriptContent,
             NonNullImmutableList<string> externalDependencies,
@@ -123,16 +123,15 @@ namespace Skrypton.CSharpWriter
                 logger
             );
 
-            return codeBlockTranslator.Translate(
-                Parse(culture, scriptContent).ToNonNullImmutableList()
-            );
+            var parsedBlocks = Parse(culture, scriptContent);
+            return codeBlockTranslator.Translate(parsedBlocks.ToNonNullImmutableList());
         }
 
         /// <summary>
         /// This will return just the parsed VBScript content, it will not attempt any translation. It will never return null nor a set containing
         /// any null references. This may be used to analyse the structure of a script, if so desired.
         /// </summary>
-        public static IEnumerable<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
+        public static IReadOnlyList<ICodeBlock> Parse(CultureInfo culture, string scriptContent)
         {
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
             return CodeBlockHandler.RootBlock.Process(

@@ -81,7 +81,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             WithoutScaffolding
         }
 
-        public NonNullImmutableList<TranslatedStatement> Translate(NonNullImmutableList<ICodeBlock> blocks)
+        public IReadOnlyCollection<TranslatedStatement> Translate(NonNullImmutableList<ICodeBlock> blocks)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));

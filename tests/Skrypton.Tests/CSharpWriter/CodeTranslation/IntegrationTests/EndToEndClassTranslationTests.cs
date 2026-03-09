@@ -44,10 +44,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						return null;
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected,
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Gone!""));
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected,//.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //sourece//WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -160,10 +160,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Here!""));
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         [TestMethod, MyFact]
@@ -206,10 +206,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						mName = ""Test"";
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -246,10 +246,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						return ""C1"";
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -291,10 +291,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						return Name_retVal;
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -331,10 +331,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_.VAL(""C1"");
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -373,10 +373,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_.OBJ(""C1"");
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -414,10 +414,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						_.SET(""C1"", this, this, ""Name"");
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         /// <summary>
@@ -455,10 +455,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					{
 					}
 				}";
-            myAssert.AreEqual(
-                expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
     }
 }

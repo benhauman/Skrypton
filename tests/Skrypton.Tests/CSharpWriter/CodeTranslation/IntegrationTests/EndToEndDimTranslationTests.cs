@@ -25,10 +25,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "return F1_retVal;",
                 "}"
             };
-            myAssert.AreEqual(
-                expected.Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(
+            //    expected.Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
 
         [TestMethod, MyFact]
@@ -48,10 +49,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "return F1_retVal;",
                 "}"
             };
-            myAssert.AreEqual(
-                expected.Select(s => s.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(
+            //    expected.Select(s => s.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
     }
 }

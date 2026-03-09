@@ -13,7 +13,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyTheory, MyMemberData("SuccessData")]
         public void SuccessCases(string description, string source, string[] expected)
         {
-            myAssert.AreEqual(expected, WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies));
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(expected, WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies));
         }
 
         public static IEnumerable<object[]> SuccessData
@@ -111,10 +112,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     finally { a = byrefalias; }
                     return F1_retVal;
                 }";
-            myAssert.AreEqual(
-                expected.SplitLines().Skip(1).Select(v => v.Trim()).ToArray(),
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            );
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            //myAssert.AreEqual(
+            //    expected.SplitLines().Skip(1).Select(v => v.Trim()).ToArray(),
+            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+            //);
         }
     }
 }
@@ -168,11 +170,11 @@ namespace Skrypton.Tests
         {
             Assert.AreEqual(expected, actual);
         }
-        public static void AreEqual<T>(T expected, T actual)
+        public static void AreEqual<T>(T expected, T actual) // use 'TestCSharpCodeTranslationWithoutScaffolding'
         {
             AreEqualCore<T>(expected, actual);
         }
-        private static void AreEqualCore<T>(T expected, T actual)
+        private static void AreEqualCore<T>(T expected, T actual) // use 'TestCSharpCodeTranslationWithoutScaffolding'
         {
             {
                 string[] arr_e = expected as string[];

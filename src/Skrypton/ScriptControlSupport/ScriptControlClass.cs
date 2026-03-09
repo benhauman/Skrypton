@@ -203,7 +203,7 @@ namespace Skrypton.ScriptControlSupport
                 scriptContent += "\r\n";
             }
             scriptContent += statementOrNull;
-            IReadOnlyCollection<ICodeBlock> parsedBlocks = Skrypton.LegacyParser.Parser.Parse(EngineCulture, scriptContent);
+            //IReadOnlyCollection<ICodeBlock> parsedBlocks = Skrypton.LegacyParser.Parser.Parse(EngineCulture, scriptContent);
 
 
             //var csLines = DefaultCSharpTranslation.GetTranslatedStatements(tst.TestCulture, scriptContent, externalDependencies);
@@ -212,7 +212,7 @@ namespace Skrypton.ScriptControlSupport
             {
                 Console.WriteLine(warningMessageText);
             }));
-            NonNullImmutableList<TranslatedStatement> translatedStatements = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
+            IReadOnlyCollection<TranslatedStatement> translatedStatements = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
 
             string[] translatedStatementLines = translatedStatements.Select(ts => ts.Content).ToArray();
 

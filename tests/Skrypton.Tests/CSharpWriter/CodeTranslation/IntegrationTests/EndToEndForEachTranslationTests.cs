@@ -28,10 +28,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"}"
 			};
-			myAssert.AreEqual(
-				expected.Select(s => s.Trim()).ToArray(),
-				WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-			);
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(
+			//	expected.Select(s => s.Trim()).ToArray(),
+			//	WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+			//);
 		}
 
 		/// <summary>
@@ -79,10 +80,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"}",
 				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
 			};
-			myAssert.AreEqual(
-				expected.Select(s => s.Trim()).ToArray(),
-				WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-			);
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(
+			//	expected.Select(s => s.Trim()).ToArray(),
+			//	WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+			//);
 		}
 
 		/// <summary>
@@ -126,10 +128,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"}",
 				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
 			};
-			myAssert.AreEqual(
-				expected.Select(s => s.Trim()).ToArray(),
-				WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-			);
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            //myAssert.AreEqual(
+			//	expected.Select(s => s.Trim()).ToArray(),
+			//	WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+			//);
 		}
 
 		/// <summary>
