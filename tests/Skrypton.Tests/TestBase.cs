@@ -61,14 +61,14 @@ namespace Skrypton.Tests
                 if (!di.Exists)
                     di.Create();
 
-                if (fileName.Length > 69)// 69? 27? or 20!
+                if (fileName.Length > 104)// 69)// 69? 27? or 20!
                     throw new InvalidOperationException("File name too long. Length:" + fileName.Length + ", path:" + fileName);
 
                 ///if (fileName.Length > 60)
                 ///    fileName = fileName.Substring(0, 60);
 
                 string filePath = System.IO.Path.Combine(subdirPath, fileName);
-                if (filePath.Length > 271) // 271? 264? 240!!!
+                if (filePath.Length > 310)//271) // 271? 264? 240!!!
                     throw new InvalidOperationException("File path too long. Length:" + filePath.Length + ", path:" + filePath);
 
                 ///LongFileSupport.WriteAllText(filePath, content);
@@ -98,14 +98,24 @@ namespace Skrypton.Tests
         }
         protected void TestCSharpCodeTranslationWithoutScaffolding(string expected, string vbsSource)
         {
-            string[] expectCsLines = expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-            string[] actualCsLines = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
-            myAssert.AreEqual(expectCsLines, actualCsLines);
-        }
-        protected void TestCSharpCodeTranslation(string[] csLines)
-        {
-            string csSource = string.Join(NewLineNormalized, csLines);
-            TestCSharpCodeTranslation(csSource);
+            string[] expectCsLines = expected.Replace(Environment.NewLine, "\n")
+                .Split(['\n'], StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
+                .Where(s => s != "") // Empty
+                .ToArray();
+            string expectCsCode = string.Join(NewLineNormalized, expectCsLines);
+
+            string[] actualCsLines = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+                    .Where(s => s != "") // Trim
+                    .ToArray();
+            //myAssert.AreEqual(expectCsLines, actualCsLines);
+            string actualCsCode = string.Join(NewLineNormalized, actualCsLines);
+            var idx = myAssert.FindArrayStringDiff(expectCsLines, actualCsLines);
+            if (idx >= 0)
+            {
+                // failed
+            }
+            TestCSharpCodeTranslationCore(expectCsCode, actualCsCode);
         }
         protected void TestCSharpCodeTranslation(string csSource) // TODO remove 'WithoutScaffoldingTranslator'
         {

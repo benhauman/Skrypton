@@ -174,16 +174,46 @@ namespace Skrypton.Tests
         {
             AreEqualCore<T>(expected, actual);
         }
+        internal static int FindArrayStringDiff(string[] arr_e, string[] arr_a)
+        {
+            if (arr_e.Length >= arr_a.Length)
+            {
+                for (int idx = 0; idx < arr_e.Length; idx++)
+                {
+                    string item_a = arr_a.Length <= idx ? null
+                        : arr_a[idx];
+                    string item_e = arr_e[idx];
+                    if (!string.Equals(item_e, item_a, StringComparison.Ordinal))
+                        return idx;
+                }
+            }
+            else
+            {
+                for (int idx = 0; idx < arr_a.Length; idx++)
+                {
+                    string item_e = arr_e.Length <= idx ? null
+                        : arr_e[idx];
+                    string item_a = arr_a[idx];
+                    if (!string.Equals(item_e, item_a, StringComparison.Ordinal))
+                        return idx;
+                }
+            }
+            return -1;
+        }
         private static void AreEqualCore<T>(T expected, T actual) // use 'TestCSharpCodeTranslationWithoutScaffolding'
         {
             {
-                string[] arr_e = expected as string[];
-                if (arr_e != null)
+                if (expected is string[] arr_e)
                 {
                     string[] arr_a = actual as string[];
-                    for (int idx = 0; idx < arr_e.Length; idx++)
+                    int idx = FindArrayStringDiff(arr_e, arr_a);
+                    if (idx >= 0)
                     {
-                        Assert.AreEqual(arr_e[idx], arr_a[idx], message:$"index:{idx}");
+                        string item_a = arr_a.Length <= idx ? null
+                            : arr_a[idx];
+                        string item_e = arr_e.Length <= idx ? null
+                            : arr_e[idx];
+                        Assert.AreEqual(item_e, item_a, message: $"index:{idx}");
                     }
                     return;
                 }
