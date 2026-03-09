@@ -760,32 +760,31 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(ByVal a)
 					End Function
 				";
-                var expected = new[]
-                {
-                    "public object F1(ref object a)",
-                    "{",
-                    "    object F1_retVal = null;",
-                    "    var errOn = _.GETERRORTRAPPINGTOKEN();",
-                    "    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
-                    "    bool ifResult;",
-                    "    object byrefalias = a;",
-                    "    try",
-                    "    {",
-                    "        ifResult = _.IF(() => _.CALL(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })), errOn);",
-                    "    }",
-                    "    finally { a = byrefalias; }",
-                    "    if (ifResult)",
-                    "    {",
-                    "    }",
-                    "    _.RELEASEERRORTRAPPINGTOKEN(errOn);",
-                    "    return F1_retVal;",
-                    "}",
-                    "public object F2(object a)",
-                    "{",
-                    "    return null;",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                string expected = @"
+                    public object F1(ref object a)
+                    {
+                        object F1_retVal = null;
+                        var errOn = _.GETERRORTRAPPINGTOKEN();
+                        _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+                        bool ifResult;
+                        object byrefalias = a;
+                        try
+                        {
+                            ifResult = _.IF(() => _.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })), errOn);
+                        }
+                        finally { a = byrefalias; }
+                        if (ifResult)
+                        {
+                        }
+                        _.RELEASEERRORTRAPPINGTOKEN(errOn);
+                        return F1_retVal;
+                    }
+                    public object F2(object a)
+                    {
+                        return null;
+                    }
+                ";
+                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)

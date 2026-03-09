@@ -61,14 +61,14 @@ namespace Skrypton.Tests
                 if (!di.Exists)
                     di.Create();
 
-                if (fileName.Length > 104)// 69)// 69? 27? or 20!
+                if (fileName.Length > 116)// 69)// 69? 27? or 20!
                     throw new InvalidOperationException("File name too long. Length:" + fileName.Length + ", path:" + fileName);
 
                 ///if (fileName.Length > 60)
                 ///    fileName = fileName.Substring(0, 60);
 
                 string filePath = System.IO.Path.Combine(subdirPath, fileName);
-                if (filePath.Length > 310)//271) // 271? 264? 240!!!
+                if (filePath.Length > 322)//271) // 271? 264? 240!!!
                     throw new InvalidOperationException("File path too long. Length:" + filePath.Length + ", path:" + filePath);
 
                 ///LongFileSupport.WriteAllText(filePath, content);
