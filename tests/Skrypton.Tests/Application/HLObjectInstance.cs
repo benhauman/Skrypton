@@ -20,16 +20,22 @@ namespace Skrypton.Tests.Application
             _traceName = string.IsNullOrEmpty(traceName) ? traceName : $"|{traceName}|";
         }
         private int? _objectId;
-        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null)
+        private string _objectDefName;
+        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null, string objectDefName = null)
         {
             IsNew = isNew ? 1 : 0;
             _objectId = objectId;
+            _objectDefName = objectDefName;
             return this;
         }
 
         public int objID()
         {
             return _objectId.HasValue ? _objectId.Value : throw new InvalidOperationException($"{_traceName}Id not set.");
+        }
+        public new object GetType() // definition name, defid, basetype
+        {
+            return _objectDefName != null ? _objectDefName : throw new InvalidOperationException($"{_traceName}Type not set.");
         }
 
         public object IsNew { get; private set; }
@@ -38,7 +44,7 @@ namespace Skrypton.Tests.Application
         [return: MarshalAs(UnmanagedType.Struct)]
         public object GetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
         {
-            Console.WriteLine($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
+            Console.WriteLine($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             if (_values.TryGetValue(new ObjectValueKey((string)key, ContentID, suidx), out var ov))
             {
                 if (datatype == 0)
@@ -56,20 +62,24 @@ namespace Skrypton.Tests.Application
                 }
                 throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             }
-            throw new InvalidOperationException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
+            throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             //return null;
         }
         public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
         {
-            Console.WriteLine($"SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name)}):{newValue})");
+            Console.WriteLine($"{_traceName}SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name)}):{newValue})");
             if (_values.TryGetValue(new ObjectValueKey((string)key, ContentID, suidx), out var ov))
             {
                 ov.UpdateValue(newValue);
             }
             else
             {
-                throw new InvalidOperationException($"SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+                throw new InvalidOperationException($"{_traceName}SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
             }
+        }
+        public int GetItemCount(int flags, object assocdef)//(0, 130)' not found
+        {
+            return 0;
         }
         public object HasContent(object attributeKey, int contentid, int suidx)
         {

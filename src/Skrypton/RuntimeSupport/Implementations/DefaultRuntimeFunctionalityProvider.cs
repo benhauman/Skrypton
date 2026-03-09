@@ -2118,7 +2118,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
 
                 //if (classProgId.Length > 0)
-                    throw new NotSupportedException($"classProgId:{classProgId}");
+                throw new NotSupportedException($"classProgId:{classProgId}");
                 //Type comType = Type.GetTypeFromProgID(classProgId, true);
                 //
                 //return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
@@ -2216,7 +2216,24 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object GETREF(object value) { throw new NotImplementedException(); }
         public object INPUTBOX(object value) { throw new NotImplementedException(); }
         public object LOADPICTURE(object value) { throw new NotImplementedException(); }
-        public object MSGBOX(object value) { throw new NotImplementedException(); }
+        public object MSGBOX(object value)
+        {
+            string prompt = _valueRetriever.STR(value);
+            return MSGBOXCore(prompt, null, null);
+        }
+        public object MSGBOX(object value, object buttons, object? title = null)
+        {
+            string prompt = _valueRetriever.STR(value);
+            short buttonsNum = Convert.ToInt16(_valueRetriever.NUM(buttons), CultureInfo.InvariantCulture);
+            return MSGBOXCore(prompt, buttonsNum, null);
+        }
+        private object MSGBOXCore(string value, short? buttons = null, string? title = null)
+        {
+            string prompt = _valueRetriever.STR(value);
+            IHostMessageBoxHostService svc = _runtimeHost.TryGetRuntimeHostService<IHostMessageBoxHostService>() ?? throw new InvalidOperationException($"Host service '{nameof(IHostMessageBoxHostService)}' not registered.");
+            MessageBoxResult result = svc.ShowMessageBox(prompt, (MessageBoxButtons)buttons.GetValueOrDefault(0), title ?? "Application");
+            return (int)result;
+        }
         public string SCRIPTENGINE(object value) { throw new NotImplementedException(); }
         public int SCRIPTENGINEBUILDVERSION(object value) { throw new NotImplementedException(); }
         public int SCRIPTENGINEMAJORVERSION(object value) { throw new NotImplementedException(); }

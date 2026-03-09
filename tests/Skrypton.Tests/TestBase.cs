@@ -297,4 +297,17 @@ namespace Skrypton.Tests
             return _factories.TryGetValue(progId, out Func<IRuntimeHost, object> factory) ? factory : null;
         }
     }
+
+    internal sealed class TestMessageBoxHostService : IHostMessageBoxHostService
+    {
+        public TestMessageBoxHostService()
+        {
+
+        }
+
+        public MessageBoxResult ShowMessageBox(string prompt, MessageBoxButtons buttons, string v2)
+        {
+            return MessageBoxResult.vbOK;
+        }
+    }
 }

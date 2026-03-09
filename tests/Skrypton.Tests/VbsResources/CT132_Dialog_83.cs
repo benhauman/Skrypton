@@ -1099,7 +1099,7 @@ namespace TranslatedProgram
                     _.CALL(this, rs_team, "close");
 
                     //Abfrage ob Speicherung als persönliches oder als Teamtemplate gewünscht wird
-                    result = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Button YES => personal template for: ", agent_displayname, _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "or", _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "Button NO => team template for: ''", teamDisplayname, "''")).Val((Int16)4).Val("personal template or team template?")));
+                    result = _.VAL(_.MSGBOX(_.CONCAT("Button YES => personal template for: ", agent_displayname, _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "or", _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "Button NO => team template for: ''", teamDisplayname, "''"), (Int16)4, "personal template or team template?"));
                     if (_.IF(_.EQ(_.NullableNUM(result), (Int16)6)))
                     {
                         //Persönliches Insert auf Datenbank starten
@@ -1141,7 +1141,7 @@ namespace TranslatedProgram
             //Prüfen ob Template in der Checkbox ausgewählt wurde
             if (_.IF(_.OR(_.EQ(_.CALL(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALL(this, _env.l_templateID, "text")), ""))))
             {
-                msg = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing.")).Val(VBScriptConstants.vbOKOnly).Val("No data record available.")));
+                msg = _.VAL(_.MSGBOX(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing."), VBScriptConstants.vbOKOnly, "No data record available."));
             }
             else
             {
@@ -1376,7 +1376,7 @@ namespace TranslatedProgram
                 //Nur wenn Agent = Editor überschreiben, sonst Abbruch
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
                 {
-                    msg2 = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("You can only overwrite self-created templates.", _.CHR((Int16)10), _.CHR((Int16)13), "template: ", templateid, " was created by: ", agent_displayname, "")).Val(VBScriptConstants.vbOKOnly).Val("Overwrite is not allowed")));
+                    msg2 = _.VAL(_.MSGBOX(_.CONCAT("You can only overwrite self-created templates.", _.CHR((Int16)10), _.CHR((Int16)13), "template: ", templateid, " was created by: ", agent_displayname, ""), VBScriptConstants.vbOKOnly, "Overwrite is not allowed"));
                 }
                 else
                 {
@@ -1388,7 +1388,7 @@ namespace TranslatedProgram
                     {
 
                         //Abfrage ob Update erwünscht
-                        result = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Möchten Sie das Template:  ''", templatename, "''  überschreiben?")).Val((Int16)4).Val("Template überschreiben?")));
+                        result = _.VAL(_.MSGBOX(_.CONCAT("Möchten Sie das Template:  ''", templatename, "''  überschreiben?"), (Int16)4, "Template überschreiben?"));
                         if (_.IF(_.EQ(_.NullableNUM(result), (Int16)6)))
                         {
 
@@ -1545,7 +1545,7 @@ namespace TranslatedProgram
             //Prüfen ob Template in der Checkbox ausgewählt wurde
             if (_.IF(_.OR(_.EQ(_.CALL(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALL(this, _env.l_templateID, "text")), ""))))
             {
-                msg = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing.")).Val(VBScriptConstants.vbOKOnly).Val("No data record available.")));
+                msg = _.VAL(_.MSGBOX(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing."), VBScriptConstants.vbOKOnly, "No data record available."));
 
             }
             else
@@ -1577,13 +1577,13 @@ namespace TranslatedProgram
 
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
                 {
-                    msg2 = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("You are only allowed to delete self-created tickets.", _.CHR((Int16)10), _.CHR((Int16)13), "Template ID: ", templateid, " was created by:", agent_displayname, "")).Val(VBScriptConstants.vbOKOnly).Val("Delete not allowed.")));
+                    msg2 = _.VAL(_.MSGBOX(_.CONCAT("You are only allowed to delete self-created tickets.", _.CHR((Int16)10), _.CHR((Int16)13), "Template ID: ", templateid, " was created by:", agent_displayname, ""), VBScriptConstants.vbOKOnly, "Delete not allowed."));
                 }
                 else
                 {
 
                     //Abfrage ob Löschen erwünscht
-                    result = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val("Do you really want to delete the template?").Val((Int16)4).Val("Delete template?")));
+                    result = _.VAL(_.MSGBOX("Do you really want to delete the template?", (Int16)4, "Delete template?"));
                     if (_.IF(_.EQ(_.NullableNUM(result), (Int16)6)))
                     {
 
@@ -1866,13 +1866,13 @@ namespace TranslatedProgram
                             if (_.IF(() => _.EQ(_.NullableNUM(LangID), (Int16)7), errOn3))
                             {
                                 _.HANDLEERROR(errOn3, () => {
-                                    _.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Auf Ihrem Computer ist das Remote Tool ", RemoteTool, " nicht installiert.", VBScriptConstants.vbLf, "Bitte wenden Sie sich an Ihren Administrator.")).Val(VBScriptConstants.vbExclamation).Val("helpLine - ClassicDesk"));
+                                    _.MSGBOX(_.CONCAT("Auf Ihrem Computer ist das Remote Tool ", RemoteTool, " nicht installiert.", VBScriptConstants.vbLf, "Bitte wenden Sie sich an Ihren Administrator."), VBScriptConstants.vbExclamation, "helpLine - ClassicDesk");
                                 });
                             }
                             else
                             {
                                 _.HANDLEERROR(errOn3, () => {
-                                    _.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("The remote tool ", RemoteTool, " is not installed on your computer.", VBScriptConstants.vbLf, "Please consult your administrator.")).Val(VBScriptConstants.vbExclamation).Val("helpLine - ClassicDesk"));
+                                    _.MSGBOX(_.CONCAT("The remote tool ", RemoteTool, " is not installed on your computer.", VBScriptConstants.vbLf, "Please consult your administrator."), VBScriptConstants.vbExclamation, "helpLine - ClassicDesk");
                                 });
                             }
                         }
@@ -1883,13 +1883,13 @@ namespace TranslatedProgram
                     if (_.IF(() => _.EQ(_.NullableNUM(LangID), (Int16)7), errOn3))
                     {
                         _.HANDLEERROR(errOn3, () => {
-                            _.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("Es wurde kein Computer als Inventar ausgewählt.", VBScriptConstants.vbLf, "Bitte wählen Sie einen Computer für den Vorgang aus.")).Val(VBScriptConstants.vbExclamation).Val("helpLine - ClassicDesk"));
+                            _.MSGBOX(_.CONCAT("Es wurde kein Computer als Inventar ausgewählt.", VBScriptConstants.vbLf, "Bitte wählen Sie einen Computer für den Vorgang aus."), VBScriptConstants.vbExclamation, "helpLine - ClassicDesk");
                         });
                     }
                     else
                     {
                         _.HANDLEERROR(errOn3, () => {
-                            _.CALL(this, _, "MSGBOX", _.ARGS.Val(_.CONCAT("No computer has been selected.", VBScriptConstants.vbLf, "Please select a computer for this Case.")).Val(VBScriptConstants.vbExclamation).Val("helpLine - ClassicDesk"));
+                            _.MSGBOX(_.CONCAT("No computer has been selected.", VBScriptConstants.vbLf, "Please select a computer for this Case."), VBScriptConstants.vbExclamation, "helpLine - ClassicDesk");
                         });
                     }
                 }
@@ -2898,7 +2898,7 @@ namespace TranslatedProgram
         public void ButtonActionItemsDel_Click()
         {
             object delete = null;
-            delete = _.VAL(_.CALL(this, _, "MSGBOX", _.ARGS.Val("Delete all action items permanently?").Val((Int16)4).Val("Delete Action Items")));
+            delete = _.VAL(_.MSGBOX("Delete all action items permanently?", (Int16)4, "Delete Action Items"));
             if (_.IF(_.EQ(_.NullableNUM(delete), (Int16)6)))
             {
                 _.CALL(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.ActionItems").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));

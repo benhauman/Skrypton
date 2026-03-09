@@ -101,7 +101,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             // If the target corresponds to the containing "WITH" reference (if any) then use that ("WITH a: .Go: END WITH" is translated
             // approximately into "var w123 = a; w123.Go();" where the "w123" is the DirectedWithReferenceIfAny and so we don't need to
             // check for other variables or functions that may apply, it's the local variable WITH construct target.
-            var rewrittenTargetName = nameRewriter.RewriteVBScriptName(target).Name;
+            var rewrittenTargetName = target is DoNotRenameNameToken doNotRename && doNotRename.ContentUpperX().UpperText == "_.ERR"
+                ? "_ERR"
+                : nameRewriter.RewriteVBScriptName(target).Name;
             if (scopeInformation.DirectedWithReferenceIfAny != null)
             {
                 // Note that WithinFunctionOrPropertyOrWith is always specified here for the scope location since the WITH target should

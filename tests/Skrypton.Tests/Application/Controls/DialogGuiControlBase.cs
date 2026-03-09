@@ -34,19 +34,10 @@ namespace Skrypton.Tests.Application.Controls
             set => _valueShowControl = (ShowControlType)value;
         }
 
-        private string _valueBackColor;
-        public string BackColor
-        {
-            get => _valueBackColor;
-            set => _valueBackColor = value;
-        }
+        public string BackColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+        public bool RequestFocus { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
+        public bool Required { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
 
-        private bool _valueRequestFocus;
-        public bool RequestFocus
-        {
-            get => _valueRequestFocus;
-            set => _valueRequestFocus = value;
-        }
 
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
 
@@ -88,6 +79,7 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTextBox", () => new DialogGuiTextControl() },
             { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
             { "HelpLineSearchButton", () => new DialogGuiSearchButtonControl() },
+            { "HelpLineLabel", () => new DialogGuiLabelControl() },
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -153,6 +145,12 @@ namespace Skrypton.Tests.Application.Controls
         public void SelectItem(string value, bool mustEqual = true)
         {
             Console.WriteLine($"[ComboBox]({ID}).SelectItem({value})");
+        }
+
+        public int GetCurSel()
+        {
+            Console.WriteLine($"[ComboBox]({ID}).GetCurSel()");
+            return 2;
         }
     }
 

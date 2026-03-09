@@ -702,14 +702,22 @@ WScript.Echo xmlhttp.responseText
             var hlSession = new DialogGuiSession(TestCulture);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
+                    .RegisterValueKey<int>("CASEINFO.RESERVEDBY", 0, 0, 0)
                     .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
                 .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
                 .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
                 .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
                 .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
                 .RegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
-                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                .RegisterValueKey<string>("EmailSUAttribute.EmailCaller", 0, 0, "")
+                .RegisterValueKey<string>("EmailSUAttribute.EmailSearchName", 0, 0, "emsn1")
+                .RegisterValueKey<string>("EmailSUAttribute.EmailSearchResult", 0, 0, "emsr1")
+                .RegisterValueKey<string>("EmailSUAttribute.EmailTo", 0, 0, "emto1")
+                .RegisterValueKey<string>("EmailSUAttribute.EmailCC", 0, 0, "emcc1")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailSubject", 0, 0, "")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.TEXTVALUE", 0, 0, "")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.RAWTEXT", 0, 0, "")
+                    .RegisterValueKey<string>("CaseGeneral.CostCenter", 0, 0, "cstcntr1")
                 //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
                 //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
                 //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
@@ -720,10 +728,15 @@ WScript.Echo xmlhttp.responseText
                 .RegisterServiceUnitIndex(2)
                     .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
-            var hlcaller = new HLObjectInstance("symbol_hlcaller").InitializeObjectInstance(isNew: false, objectId: 101301)
+            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, objectId: 101301, objectDefName: "MyPersonDef")
                     .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
+                    .RegisterValueKey<string>("PersonInformation.EmailAddress", 0, 0, "zz2@svr.com")
+                    .RegisterValueKey<string>("PersonGeneral.PersonSurname", 0, 0, "psn1")
+                    .RegisterValueKey<string>("PersonGeneral.PersonGivenName", 0, 0, "pgn1")
+                    .RegisterValueKey<string>("PersonInformation.PersonOrganisation", 0, 0, "pou1")
+                    .RegisterValueKey<string>("PersonInformation.PhoneNumber", 0, 0, "ptel1")
                 ;
-            var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false)
+            var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false, objectId: null, objectDefName: "DesktopComputer")
                 ;
 
             var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false)
@@ -732,14 +745,15 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
                 ;
             model.RegisterSymbolObjectProvider("product", () => symbol_product);
+            model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(services =>
             {
-
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
                         .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA())
                     );
-                // helpline.hlcontrols.HLHelperPFA
+
+                services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
 
             }), model)
                 .AddExternalObject("model", model)
@@ -766,10 +780,16 @@ WScript.Echo xmlhttp.responseText
                 }
 
                 // 1: IncReqOnLoad
-                foreach (string scriptName in dialog.ScriptNames)
+                string[] scriptNames = dialog.ScriptNames.OrderBy(x => x).ToArray();
+                int ixSearch = 0;
+                foreach (string scriptName in scriptNames)
                 {
+
+                    Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
                     Assert.Inconclusive(); // last issue: 'OnSUIDAdded' person local dim not generated but 'person' global object used
                     //ScriptControlClass.RunProcedure(gr, scriptName, []);
+
+                    ixSearch++;
                 }
             });
             /*

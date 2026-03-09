@@ -3,13 +3,8 @@
 namespace Skrypton.Tests.Application.Controls
 {
     [ComVisible(true)]
-    internal sealed class DialogGuiLabelControl : DialogGuiControlBase // <ControlName>HelpLineTextBox</ControlName>
+    internal sealed class DialogGuiLabelControl : DialogGuiControlBase
     {
-        private string _valueText;
-        public string Text
-        {
-            get => _valueText;
-            set => _valueText = value;
-        }
+        public string Text { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
 }

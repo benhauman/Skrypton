@@ -45,3 +45,7 @@ Error Context: 0'
 10: use nameof : [TranslatedProperty(""Name"")]
 
 11: keep HEX code: const SOME_CONSTANT = &H0001 => const int SOME_CONSTANT = 0x0001 and not (Int16)1;
+
+12: keep source name for the local variables.
+
+13: donot use VAL() fuer string, int, & etc see MSGBOX(string) in
