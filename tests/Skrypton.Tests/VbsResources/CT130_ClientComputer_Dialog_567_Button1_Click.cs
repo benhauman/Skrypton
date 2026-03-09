@@ -44,7 +44,7 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALL(this, _env.hlobj, "GetValue", _.ARGS.Val("vRealize.LansweeperURL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            URL = _.VAL(_.CALL(this, _env.hlObj, "GetValue", _.ARGS.Val("vRealize.LansweeperURL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
 
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
             _.CALL(this, wshShell, "run", _.ARGS.Ref(URL, v => { URL = v; }));
@@ -77,7 +77,7 @@ namespace TranslatedProgram
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object Button1_Click { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
-        public object hlobj { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+        public object hlObj { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
         public object model { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
 }

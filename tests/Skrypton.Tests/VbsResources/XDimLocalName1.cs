@@ -38,7 +38,7 @@ namespace TranslatedProgram
         public void Test()
         {
             object hlContext = null;
-            _env.hlContext = (Int16)1;
+            hlContext = (Int16)1;
         }
     }
 

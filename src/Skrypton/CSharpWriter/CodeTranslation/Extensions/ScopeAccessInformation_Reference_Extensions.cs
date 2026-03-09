@@ -121,11 +121,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 }
             }
 
-            var firstExternalDependencyMatch = scopeInformation.ExternalDependencies
-                .FirstOrDefault(t => nameRewriter.GetMemberAccessTokenName(t) == rewrittenTargetName);
-            if (firstExternalDependencyMatch != null)
-                return new DeclaredReferenceDetails(ReferenceTypeOptions.ExternalDependency, ScopeLocationOptions.OutermostScope);
-
             var scopedNameTokens =
                 scopeInformation.Classes.Select(t => Tuple.Create(t, ReferenceTypeOptions.Class))
                 .Concat(scopeInformation.Functions.Select(t => Tuple.Create(t, ReferenceTypeOptions.Function)))
@@ -148,6 +143,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 if (firstMatch != null)
                     return new DeclaredReferenceDetails(firstMatch.Item2, firstMatch.Item1.ScopeLocation);
             }
+
+            // last: external references. local variables have precedence over external. Test:XDimLocalName1
+            var firstExternalDependencyMatch = scopeInformation.ExternalDependencies
+                .FirstOrDefault(t => nameRewriter.GetMemberAccessTokenName(t) == rewrittenTargetName);
+            if (firstExternalDependencyMatch != null)
+                return new DeclaredReferenceDetails(ReferenceTypeOptions.ExternalDependency, ScopeLocationOptions.OutermostScope);
+
             return null;
         }
     }

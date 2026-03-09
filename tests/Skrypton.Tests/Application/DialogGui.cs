@@ -733,8 +733,8 @@ WScript.Echo xmlhttp.responseText
             }))
                 .AddExternalObject("model", model)
                 .AddExternalObject("hlSession", hlSession)
-                .AddExternalObject("hlobj", hlobj)
-                .AddExternalObject("hlcaller", hlcaller)
+                .AddExternalObject("hlObj", hlobj)
+                .AddExternalObject("hlCaller", hlcaller)
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 

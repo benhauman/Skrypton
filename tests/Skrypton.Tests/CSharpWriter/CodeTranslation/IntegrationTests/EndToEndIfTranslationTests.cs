@@ -624,33 +624,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(a)
 					End Function
 				";
-                var expected = new[]
-                {
-                    "public object F1(ref object a)",
-                    "{",
-                    "    object F1_retVal = null;",
-                    "    bool ifResult;",
-                    "    object byrefalias = a;",
-                    "    try",
-                    "    {",
-                    "        ifResult = _.IF(_.CALL(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
-                    "    }",
-                    "    finally { a = byrefalias; }",
-                    "    if (ifResult)",
-                    "    {",
-                    "    }",
-                    "    return F1_retVal;",
-                    "}",
-                    "public object F2(ref object a)",
-                    "{",
-                    "    return null;",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                string expected = @"
+                    public object F1(ref object a)
+                    {
+                        object F1_retVal = null;
+                        bool ifResult;
+                        object byrefalias = a;
+                        try
+                        {
+                            ifResult = _.IF(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));
+                        }
+                        finally { a = byrefalias; }
+                        if (ifResult)
+                        {
+                        }
+                        return F1_retVal;
+                    }
+                    public object F2(ref object a)
+                    {
+                        return null;
+                    }
+                ";
+                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             }
 
             /// <summary>
@@ -686,10 +681,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "}"
                 };
                 TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
             }
 
             /// <summary>
