@@ -152,6 +152,14 @@ namespace Skrypton.Tests.Application.Controls
             Console.WriteLine($"[ComboBox]({ID}).GetCurSel()");
             return 2;
         }
+
+        public string Text
+        {
+            get
+            {
+                return "";
+            }
+        }
     }
 
     public sealed class DialogGuiSearchButtonControl : DialogGuiControlBase

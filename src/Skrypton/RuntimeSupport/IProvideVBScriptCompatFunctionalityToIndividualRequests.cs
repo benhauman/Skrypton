@@ -238,7 +238,7 @@ namespace Skrypton.RuntimeSupport
         // - Misc
         object GETLOCALE(object value);
         object GETREF(object value);
-        object INPUTBOX(object value);
+        object INPUTBOX(object prompt, object? title = null, object? defaultValue = null);
         object LOADPICTURE(object value);
         object MSGBOX(object value);
         object MSGBOX(object value, object buttons, object? title = null);

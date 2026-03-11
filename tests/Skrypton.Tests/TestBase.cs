@@ -310,4 +310,16 @@ namespace Skrypton.Tests
             return MessageBoxResult.vbOK;
         }
     }
+
+    internal sealed class TestInputBoxHostService : IHostInputBoxHostService
+    {
+        public TestInputBoxHostService()
+        {
+        }
+        public string ShowInputBox(string prompt, string title, string defaultText)
+        {
+            Console.WriteLine($"[InputBox]('{prompt}','{title}','{defaultText}')");
+            return defaultText;
+        }
+    }
 }

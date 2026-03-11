@@ -2214,7 +2214,19 @@ namespace Skrypton.RuntimeSupport.Implementations
         // - Misc
         public object GETLOCALE(object value) { throw new NotImplementedException(); }
         public object GETREF(object value) { throw new NotImplementedException(); }
-        public object INPUTBOX(object value) { throw new NotImplementedException(); }
+        public object INPUTBOX(object prompt, object? title = null, object? defaultValue = null)
+        {
+            // If the user clicks OK or presses ENTER, the InputBox function returns whatever is in the text box.
+            // If the user clicks Cancel, it returns a zero-length string ("").
+            // he maximum length of prompt is approximately 1024 characters.
+            string promptText = _valueRetriever.TryRetrieveStringOrEmpty(prompt);
+            string? titleText = _valueRetriever.TryRetrieveStringOrEmpty(title);
+            string? defaultText = _valueRetriever.TryRetrieveStringOrEmpty(title);
+
+            IHostInputBoxHostService svc = _runtimeHost.TryGetRuntimeHostService<IHostInputBoxHostService>() ?? throw new InvalidOperationException($"Host service '{nameof(IHostMessageBoxHostService)}' not registered.");
+            string result = svc.ShowInputBox(promptText, titleText, defaultText);
+            return result;
+        }
         public object LOADPICTURE(object value) { throw new NotImplementedException(); }
         public object MSGBOX(object value)
         {
@@ -2227,9 +2239,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             short buttonsNum = Convert.ToInt16(_valueRetriever.NUM(buttons), CultureInfo.InvariantCulture);
             return MSGBOXCore(prompt, buttonsNum, null);
         }
-        private object MSGBOXCore(string value, short? buttons = null, string? title = null)
+        private object MSGBOXCore(string prompt, short? buttons = null, string? title = null)
         {
-            string prompt = _valueRetriever.STR(value);
             IHostMessageBoxHostService svc = _runtimeHost.TryGetRuntimeHostService<IHostMessageBoxHostService>() ?? throw new InvalidOperationException($"Host service '{nameof(IHostMessageBoxHostService)}' not registered.");
             MessageBoxResult result = svc.ShowMessageBox(prompt, (MessageBoxButtons)buttons.GetValueOrDefault(0), title ?? "Application");
             return (int)result;
@@ -2783,10 +2794,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.DATE(o);
         }
-        public object NullableSTR(object o)
-        {
-            return _valueRetriever.NullableSTR(o);
-        }
+        public object NullableSTR(object o) => _valueRetriever.NullableSTR(o);
+        public string TryRetrieveStringOrEmpty(object? o) => _valueRetriever.TryRetrieveStringOrEmpty(o);
+
         public string STR(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
             return _valueRetriever.STR(o);

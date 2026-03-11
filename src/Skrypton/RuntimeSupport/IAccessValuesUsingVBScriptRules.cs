@@ -108,6 +108,7 @@ namespace Skrypton.RuntimeSupport
         /// in some other cases, such as FOR loops).
         /// </summary>
         object NullableSTR(object o);
+        string TryRetrieveStringOrEmpty(object? o);
 
         /// <summary>
         /// Reduce a reference down to a string value type, applying VBScript defaults logic and then taking a string representation. Null is acceptable

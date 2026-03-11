@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -702,25 +703,38 @@ WScript.Echo xmlhttp.responseText
             var hlSession = new DialogGuiSession(TestCulture);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
+                    .RegisterValueKey<string>("CASEINFO.REFERENCENUMBER", 0, 0, "20260101-0001")
                     .RegisterValueKey<int>("CASEINFO.RESERVEDBY", 0, 0, 0)
+                    .RegisterValueKey<string>("CaseClassificationAttribute.Impact", 0, 0, "")
+                    .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
+                    .RegisterValueKey<string>("CaseDescription.DescriptionText", 0, 0, "")
+                    .RegisterValueKey<string>("CaseDiagnosis.DiagnosisText", 0, 0, "")
+                    .RegisterValueKey<string>("CaseGeneral.CostCenter", 0, 0, "cstcntr1")
+                    .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
                     .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
-                .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
-                .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
-                .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
-                .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
-                .RegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
-                .RegisterValueKey<string>("EmailSUAttribute.EmailCaller", 0, 0, "")
-                .RegisterValueKey<string>("EmailSUAttribute.EmailSearchName", 0, 0, "emsn1")
-                .RegisterValueKey<string>("EmailSUAttribute.EmailSearchResult", 0, 0, "emsr1")
-                .RegisterValueKey<string>("EmailSUAttribute.EmailTo", 0, 0, "emto1")
-                .RegisterValueKey<string>("EmailSUAttribute.EmailCC", 0, 0, "emcc1")
+                    .RegisterValueKey<string>("CaseSolution.SolutionText", 0, 0, "")
+                    .RegisterValueKey<string>("IncidentAttribute.Convenience", 0, 0, "")
+                    .RegisterValueKey<string>("IncidentAttribute.EscalationLevel", 0, 0, "")
+                    .RegisterValueKey<string>("IncidentAttribute.FunctionalRange", 0, 0, "")
+                    .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
+                    .RegisterValueKey<string>("IncidentAttribute.ProductionalRelevanz", 0, 0, "")
+                    .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
+                    .RegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailCaller", 0, 0, "")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailSearchName", 0, 0, "emsn1")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailSearchResult", 0, 0, "emsr1")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailTo", 0, 0, "emto1")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailCC", 0, 0, "emcc1")
                     .RegisterValueKey<string>("EmailSUAttribute.EmailSubject", 0, 0, "")
                     .RegisterValueKey<string>("EmailSUAttribute.EmailBody.TEXTVALUE", 0, 0, "")
                     .RegisterValueKey<string>("EmailSUAttribute.EmailBody.RAWTEXT", 0, 0, "")
-                    .RegisterValueKey<string>("CaseGeneral.CostCenter", 0, 0, "cstcntr1")
-                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.Rawtext", 0, 0, "")
+                    .RegisterValueKey<int>("Keywords.Keyword", 0, 0, 0)
+                   //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                   //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                   //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                   .RegisterValueKey<string>("Keywords.KeywordOrga", 0, 0, "")
+
                 .RegisterServiceUnitIndex(1)
                 .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
 
@@ -737,6 +751,7 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("PersonInformation.PhoneNumber", 0, 0, "ptel1")
                 ;
             var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false, objectId: null, objectDefName: "DesktopComputer")
+                    .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
                 ;
 
             var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false)
@@ -747,6 +762,8 @@ WScript.Echo xmlhttp.responseText
             model.RegisterSymbolObjectProvider("product", () => symbol_product);
             model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
+            IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
+
             var dialog = this.BuildDialogFromXml(CreateTestHostServices(services =>
             {
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
@@ -754,6 +771,8 @@ WScript.Echo xmlhttp.responseText
                     );
 
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
+                services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
+                services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
 
             }), model)
                 .AddExternalObject("model", model)
@@ -786,7 +805,7 @@ WScript.Echo xmlhttp.responseText
                 {
 
                     Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
-                    Assert.Inconclusive(); // last issue: 'OnSUIDAdded' person local dim not generated but 'person' global object used
+                    Assert.Inconclusive(); // last issue: 'ButtonEmailPreview_Click' : Scripting.FileSystemObject
                     //ScriptControlClass.RunProcedure(gr, scriptName, []);
 
                     ixSearch++;

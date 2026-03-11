@@ -77,6 +77,25 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var svc = _hostServices.GetRequiredService<IHostProcessControlHostService>();
             return svc.ProcessActivate(processId);// Process.GetProcessesByName("notepad"); SetForegroundWindow(processes[0].MainWindowHandle);
         }
+
+        public object Exec(object strCommand)
+        {
+            // The Exec method returns a WshScriptExec object, which provides status and error information about a script run with Exec along with access to the StdIn, StdOut, and StdErr channels.The Exec method allows the execution of command line applications only. The Exec method cannot be used to run remote scripts. Do not confuse the Exec method with the Execute method (of the WshRemote object).
+            return new MyWshScriptExec((string)strCommand);
+        }
+    }
+
+    [SourceClassName("WshScriptExec")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyWshScriptExec : IReflectOnClrType
+    {
+        public string CommandText { get; }
+
+        public MyWshScriptExec(string commandText)
+        {
+            CommandText = commandText;
+        }
     }
 
     internal static class IHostProcessControlHostServiceExtensions

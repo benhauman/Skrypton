@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -45,13 +46,14 @@ namespace Skrypton.Tests.Application
         public object GetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
         {
             Console.WriteLine($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
-            if (_values.TryGetValue(new ObjectValueKey((string)key, ContentID, suidx), out var ov))
+            var vk = new ObjectValueKey((string)key, ContentID, suidx);
+            if (_values.TryGetValue(vk, out var ov))
             {
                 if (datatype == 0)
                 {
                     if (ov.DataRaw == null)
                         return string.Empty;
-                    return GetOutputValueText(ov, langid);
+                    return GetOutputValueText(vk, ov, langid);
                 }
                 if (datatype == 1)
                 {
@@ -62,8 +64,9 @@ namespace Skrypton.Tests.Application
                 }
                 throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             }
+            if (datatype == 0)
+                return "";
             throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
-            //return null;
         }
         public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
         {
@@ -123,11 +126,15 @@ namespace Skrypton.Tests.Application
             return this;
         }
 
-        private string GetOutputValueText(ObjectValueData ov, int langid)
+        private string GetOutputValueText(ObjectValueKey vk, ObjectValueData ov, int langid)
         {
             if (ov.DataType == typeof(string))
                 return (string)ov.DataRaw;
-            throw new NotImplementedException($"{ov.DataType.Name}");
+            if (ov.DataType == typeof(int))
+            {
+                return ov.DataRaw == null ? "" : ((int)ov.DataRaw).ToString(CultureInfo.InvariantCulture);
+            }
+            throw new NotImplementedException($"[{vk.DebugText}]({ov.DataType.Name}):{ov.DataRaw}");
         }
 
         [DebuggerDisplay("{Key}")]
@@ -136,8 +143,11 @@ namespace Skrypton.Tests.Application
             public ObjectValueKey(string key, int contentId, int suidx)
                 : base(key, contentId, suidx)
             {
+                DebugText = $"{key}, c:{contentId}, sux:{suidx}";
             }
             public string Key => Item1;
+
+            internal readonly string DebugText;
         }
 
         [DebuggerDisplay("{DataType.Name}:{HasValue}:{DataRaw}")]

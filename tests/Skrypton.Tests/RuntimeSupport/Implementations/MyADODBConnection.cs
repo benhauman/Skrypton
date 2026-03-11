@@ -31,12 +31,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
         }
 
         [DispId(0)]
-        public string ConnectionString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ConnectionString { get; set; }
 
+        [DispId(3)]
+        public int ConnectionTimeout { get; set; }
 
         private DbConnection _currentOpenConnectionOrNull;
         [DispId(10)]
-        public void Open(string ConnectionString = "", string UserID = "", string Password = "", int Options = -1)
+        public void Open(string connectionString = "", string UserID = "", string Password = "", int Options = -1)
         {
             if (_currentOpenConnectionOrNull != null && _currentOpenConnectionOrNull.State == System.Data.ConnectionState.Open)
             {
@@ -53,7 +55,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
             //    2: adAsyncConnect
             var svc = _hostServices.GetRequiredService<IHostDatabaseConnectionFactoryHostService>();
 
-            _currentOpenConnectionOrNull = svc.CreateAndOpenDatabaseConnectionString(connectionString: ConnectionString, userName: UserID, password: Password);
+            _currentOpenConnectionOrNull = svc.CreateAndOpenDatabaseConnectionString(connectionString: string.IsNullOrEmpty(connectionString) ? ConnectionString : connectionString, userName: UserID, password: Password);
             if (_currentOpenConnectionOrNull.State == System.Data.ConnectionState.Closed)
             {
                 _currentOpenConnectionOrNull.Open(); // or later (on demand)
@@ -71,6 +73,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
             _currentOpenConnectionOrNull.Close();
             _currentOpenConnectionOrNull = null;
         }
+
+        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        [DispId(6)]
+        //[return: MarshalAs(UnmanagedType.Interface)]
+        public Recordset Execute([In][MarshalAs(UnmanagedType.BStr)] string CommandText
+            , [Optional][MarshalAs(UnmanagedType.Struct)] out object RecordsAffected
+            , [In] int Options = -1)
+        {
+            Console.WriteLine($"SQL:{CommandText}");
+            RecordsAffected = 0;
+            return new MyADODBRecordSet();
+        }
+
     }
 
     [SourceClassName("Command")] // for TYPENAME(CreateObject("ADODB.Command"))
@@ -682,16 +697,18 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
             [DispId(1006)]
             get;
         }
-
+        */
+        /*
         [DispId(0)]
-        new Fields Fields
+        Fields Fields
         {
-            [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+            //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(0)]
-            [return: MarshalAs(UnmanagedType.Interface)]
+            //[return: MarshalAs(UnmanagedType.Interface)]
             get;
         }
-
+        */
+        /*
         [DispId(1008)]
         new LockTypeEnum LockType
         {
@@ -1054,11 +1071,87 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
     [SourceClassName("Recordset")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    [DefaultMember("Fields")]
     internal sealed class MyADODBRecordSet : IReflectOnClrType, Recordset
     {
+        private readonly MyADODBFields _fields;
         public MyADODBRecordSet()
         {
+            _fields = new MyADODBFields();
         }
+
+        [DispId(0)]
+        public Fields Fields()
+        {
+            return _fields;
+        }
+
+        [DispId(0)]  // This makes it the default VBScript property
+        public Field Fields(object fieldIndexOrName)
+        {
+            return _fields.GetItem(fieldIndexOrName);
+        }
+
+        [DispId(1014)]
+        public void Close()
+        {
+
+        }
+
+    }
+    [SourceClassName("Fields")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyADODBFields : IReflectOnClrType, Fields
+    {
+        public MyADODBFields()
+        {
+        }
+
+        public int Count { get; }
+
+        [DispId(0)]  // This makes it the default VBScript property
+        public Field GetItem(object fieldIndexOrName)
+        {
+            return new MyADODBField((string)fieldIndexOrName, null);
+        }
+    }
+
+    [SourceClassName("Field")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyADODBField : IReflectOnClrType, Field
+    {
+        public MyADODBField(string name, object fieldValue)
+        {
+            Name = name;
+            Value = fieldValue;
+        }
+        [DispId(1100)]
+        public string Name { get; }
+
+        [DispId(0)]
+        public object Value { get; }
+    }
+
+    [DefaultMember("Value")]
+    internal interface Field : Field20
+    {
+    }
+    internal interface Field20
+    {
+    }
+
+    internal interface Fields : Fields20
+    {
+    }
+    internal interface Fields20 : Fields15
+    {
+    }
+    internal interface Fields15 //
+    {
+        [DispId(1)]
+        int Count { get; }
     }
 
 }

@@ -1071,7 +1071,7 @@ namespace TranslatedProgram
             {
 
                 //Templatenamen eingeben
-                name = _.VAL(_.CALL(this, _, "INPUTBOX", _.ARGS.Val("Please type in a descriptive name for the template:").Val("templatename").Val("Maximum of 100 characters.")));
+                name = _.VAL(_.INPUTBOX("Please type in a descriptive name for the template:", "templatename", "Maximum of 100 characters."));
 
                 //Bei Abbruch nichts unternehmen, sonst weiter im Script
                 if (_.IF(_.EQ(name, false)))
@@ -1380,7 +1380,7 @@ namespace TranslatedProgram
                 }
                 else
                 {
-                    name = _.VAL(_.CALL(this, _, "INPUTBOX", _.ARGS.Val("Please type in a descriptive name: ").Val("overwrite template").Val(templatename)));
+                    name = _.VAL(_.INPUTBOX("Please type in a descriptive name: ", "overwrite template", templatename));
                     if (_.IF(_.EQ(name, false)))
                     {
                     }
