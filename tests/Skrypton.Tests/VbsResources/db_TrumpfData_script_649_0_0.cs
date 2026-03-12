@@ -42,8 +42,8 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            HLASC_SoftwareLicenseFolderView = null;
-            HLASC_SoftwareLicenseGroupView = null;
+            HLASC_SoftwareLicenseFolderView = 110941;
+            HLASC_SoftwareLicenseGroupView = 110944;
         }
 
         internal object HLASC_SoftwareLicenseFolderView { get; set; }
@@ -1123,7 +1123,7 @@ namespace TranslatedProgram
         public object DBConnectionString(ref object hlContext)
         {
             object DBConnectionString_retVal = null;
-            object DBConnection = null;
+            string DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2";
             DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2";
 
             return DBConnectionString_retVal;

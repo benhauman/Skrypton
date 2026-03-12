@@ -37,9 +37,9 @@ namespace TranslatedProgram
 
         public void TestFso()
         {
-            object ForReading = null;
-            object ForWriting = null;
-            object ForAppending = null;
+            Int16 ForReading = (Int16)1;
+            Int16 ForWriting = (Int16)2;
+            Int16 ForAppending = (Int16)8;
             object fso = null;
             object BodyText = null;
             object f = null;

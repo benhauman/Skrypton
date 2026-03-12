@@ -259,7 +259,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                                 functionBlock.Name.LineIndex
                             ),
                             VariableDeclarationScopeOptions.Private,
-                            null // Not declared as an array
+                            null, // Not declared as an array
+                            isConst: null,
+                            initializationValue: null // return
                         ),
                         ScopeLocationOptions.WithinFunctionOrPropertyOrWith,
                         asUnreferencedVar: false,

@@ -2420,9 +2420,9 @@ namespace TranslatedProgram
 
         public void ButtonEmailPreview_Click()
         {
-            object ForReading = null;
-            object ForWriting = null;
-            object ForAppending = null;
+            Int16 ForReading = (Int16)1;
+            Int16 ForWriting = (Int16)2;
+            Int16 ForAppending = (Int16)8;
             object OriginDescr = null;
             object Status = null; /* Undeclared in source */
             object HLinkToCase = null; /* Undeclared in source */

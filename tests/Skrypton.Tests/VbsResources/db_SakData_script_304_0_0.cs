@@ -46,9 +46,9 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            HLASC_SoftwareLicenseFolderView = null;
-            HLASC_SoftwareLicenseGroupView = null;
-            HLASC_Software2Computer = null;
+            HLASC_SoftwareLicenseFolderView = "LicenseFolderView";
+            HLASC_SoftwareLicenseGroupView = "LicenseGroupView";
+            HLASC_Software2Computer = "Software2Computer";
         }
 
         internal object HLASC_SoftwareLicenseFolderView { get; set; }

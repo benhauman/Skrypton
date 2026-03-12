@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
@@ -189,13 +192,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .TakeWhile(b => b != block)
                 .OfType<BaseDimStatement>()
                 .SelectMany(dim => dim.Variables)
-                .Select(v => v.Name);
+                .Select(v => v.Name)
+                .ToArray();
             var constNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocks()
                 .TakeWhile(b => b != block)
                 .OfType<ConstStatement>()
                 .SelectMany(c => c.Values)
-                .Select(v => v.Name);
-            var previouslyDeclaredVariableNamesInCurrentScope = dimVariableNamesInCurrentScope.Concat(constNamesInCurrentScope);
+                .Select(v => v.Name)
+                .ToArray();
+            var previouslyDeclaredVariableNamesInCurrentScope = dimVariableNamesInCurrentScope.Concat(constNamesInCurrentScope).ToArray();
             var firstVariableAlreadyDeclaredInTheCurrentScopeIfAny = previouslyDeclaredVariableNamesInCurrentScope.FirstOrDefault(
                 previouslyDeclaredVariable => constStatement.Values.Any(v => _nameRewriter.AreNamesEquivalent(v.Name, previouslyDeclaredVariable))
             );
@@ -222,8 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             //   }
             //
             // The value "cn1" is set to 123 immediately, before any other processing (ie. the call to F2) occurs.
-            return new TranslationResult(
-                translationResult.TranslatedStatements.Insert(
+            var translatedStatements = translationResult.TranslatedStatements.Insert(
                     constStatement.Values.Select(value =>
                         new TranslatedStatement(
                             string.Format(CultureInfo.InvariantCulture,
@@ -237,17 +241,20 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         )
                     ).ToArray(),
                     0
-                ),
-                translationResult.ExplicitVariableDeclarations.AddRange(
-                    constStatement.Values.Select(v => new VariableDeclaration(
-                        v.Name,
-                        VariableDeclarationScopeOptions.Public, // There are no private CONST statements so this is public by default
-                        constantDimensionsIfAny: null // This does not apply to CONST statements, they may never be arrays
-                    ))
-                    .ToArray()
-                ),
-                translationResult.UndeclaredVariablesAccessed
+                );
+            var xx2 = translationResult.ExplicitVariableDeclarations.AddRange(
+                constStatement.Values.Select(v => new VariableDeclaration(
+                    v.Name,
+                    VariableDeclarationScopeOptions.Public, // There are no private CONST statements so this is public by default
+                    constantDimensionsIfAny: null, // This does not apply to CONST statements, they may never be arrays
+                    isConst: v,
+                    initializationValue: v.Value
+                ))
+                .ToArray()
             );
+            var xx3 = translationResult.UndeclaredVariablesAccessed;
+
+            return new TranslationResult(translatedStatements, xx2, xx3);
         }
 
         protected TranslationResult? TryToTranslateDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -302,7 +309,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     v.Name,
                     // Dim and Public keywords = Public, Private keyword = Private
                     (explicitVariableDeclarationBlock is PrivateVariableStatement) ? VariableDeclarationScopeOptions.Private : VariableDeclarationScopeOptions.Public,
-                    (v.Dimensions == null) ? null : CollectDimensionsAsNumericValueToken(v).Select(d => (uint)d.Value)
+                    (v.Dimensions == null) ? null : CollectDimensionsAsNumericValueToken(v).Select(d => (uint)d.Value),
+                    isConst: null,
+                    initializationValue: null // ConstantNonNegativeArrayDimensionDimVariable
                 ))
             );
         }
@@ -735,7 +744,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     VariableDeclaration = new VariableDeclaration(
                         v.Name,
                         VariableDeclarationScopeOptions.Private,
-                        null
+                        null,
+                        isConst: null,
+                        initializationValue: null // DimVariable
                     )
                 })
                 .Where(newVariable => !scopeAccessInformation.IsDeclaredReference(newVariable.SourceName, _nameRewriter))
@@ -1098,13 +1109,36 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             string rewrittenName = variableAccessTokenName;// _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
             if (variableDeclaration.ConstantDimensionsIfAny == null)
             {
-                return RenderBlockCS0219(variableDeclaration, scopeLocation, asUnreferencedVar, indentationDepth, () => {
-                    return string.Format(CultureInfo.InvariantCulture,
-                        "{0}{1} = null;",
-                        (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
-                        rewrittenName
-                    );
-                    });
+                return RenderBlockCS0219(variableDeclaration, scopeLocation, asUnreferencedVar, indentationDepth, () =>
+                {
+                    string initText;
+                    string typeText;
+                    if (variableDeclaration.InitializationValue != null)
+                    {
+                        if (variableDeclaration.InitializationValue is NumericValueToken numToken)
+                        {
+                            initText = numToken.AsCSharpValue(out string typeTextN);
+                            typeText = typeTextN;
+                        }
+                        else if (variableDeclaration.InitializationValue is StringToken strToken)
+                        {
+                            initText = $"\"{strToken.Content}\"";
+                            typeText = "string";
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"{rewrittenName} ({variableDeclaration.InitializationValue.GetType().Name}) = {variableDeclaration.InitializationValue.Content}");
+                        }
+                    }
+                    else
+                    {
+                        initText = "null";
+                        typeText = "object";
+                    }
+
+                    string locText = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? $"{typeText} " : "";
+                    return $"{locText}{rewrittenName} = {initText};";
+                });
             }
             else if (!variableDeclaration.ConstantDimensionsIfAny.Any())
             {
@@ -1124,9 +1158,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private static string RenderBlockCS0219(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation, bool asUnreferencedVar, int indentationDepth, Func<string> renderer)
         {
-//#pragma warning disable CS0168 // Variable is declared but never used
-//            int xxx;
-//#pragma warning restore CS0168 // Variable is declared but never used
+            //#pragma warning disable CS0168 // Variable is declared but never used
+            //            int xxx;
+            //#pragma warning restore CS0168 // Variable is declared but never used
             if (asUnreferencedVar && scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith && variableDeclaration.Scope == VariableDeclarationScopeOptions.Public && variableDeclaration.ConstantDimensionsIfAny == null)
             {
                 // test with 'TextFile2'
@@ -1228,7 +1262,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     continue;
 
                 uniqueVariables.Add(
-                    new VariableDeclaration(undeclaredVariable, VariableDeclarationScopeOptions.Private, null)
+                    new VariableDeclaration(undeclaredVariable, VariableDeclarationScopeOptions.Private, null,
+                        isConst: null,
+                        initializationValue: null // VariableDeclaration
+                        )
                 );
                 rewrittenNamesAccountedFor.Add(rewrittenName);
             }

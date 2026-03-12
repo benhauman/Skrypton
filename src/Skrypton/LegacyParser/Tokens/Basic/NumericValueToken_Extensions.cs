@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// if it's bigger but not much (Int32 / int) and after that it goes to being a Double. This method returns C# code that describes the value and ensures
         /// that it is cast to the appropriate type (in order to be consistent with VBScript).
         /// </summary>
-        public static string AsCSharpValue(this NumericValueToken token)
+        public static string AsCSharpValue(this NumericValueToken token, out string typeText)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
@@ -20,11 +20,15 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // after it (eg. "1."). This is not valid in C# ("Identifier expected") so we have to slap a zero on the end (making it "1.0", which will be
             // defined as a double). Note that there is no such issue when leading with the decimal point (".1" is valid VBScript AND C# code).
             if (token.Content.Contains("."))
+            {
+                typeText = "double";
                 return token.Content + (token.Content.EndsWith(".", StringComparison.Ordinal) ? "0" : "");
+            }
 
             // C# will default to int (Int32) for integers, we need to override this for smaller values
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
             {
+                typeText = "Int16";
                 if (token.Content.StartsWith("-", StringComparison.Ordinal))
                     return "(Int16)(-" + token.Content.Substring(1) + ")";
                 return "(Int16)" + token.Content;
@@ -32,10 +36,14 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 
             // When Int32 would overflow, C# will bump to Int64, we need to override this to use Double.
             if ((token.Value < Int32.MinValue) || (token.Value > Int32.MaxValue))
+            {
+                typeText = "double";
                 return token.Content + "d";
+            }
 
             // The only other case is when it's an integer in the range (between Int16 and Int32) where VBScript would jump to a
             // "Long", which is "int" in .net - so no funny business required
+            typeText = "int";
             return token.Content;
         }
 

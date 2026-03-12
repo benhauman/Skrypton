@@ -74,10 +74,10 @@ namespace TranslatedProgram
             Server = null;
             DMS = null;
             InterfaceVersion = null;
-            BOOKING_Local = null;
-            BOOKING_Eviivo = null;
-            BOOKING_Redirect = null;
-            BOOKING_PollingRedirect = null;
+            BOOKING_Local = (Int16)0;
+            BOOKING_Eviivo = (Int16)1;
+            BOOKING_Redirect = (Int16)2;
+            BOOKING_PollingRedirect = (Int16)3;
             IsExternalBooking = null;
             strExtBookUrl = null;
             strProductEstateID = null;

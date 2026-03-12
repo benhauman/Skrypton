@@ -99,7 +99,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1()
 				{
 					object F1_retVal = null;
-					object a = null;
+					Int16 a = (Int16)1;
 					a = (Int16)1;
 					return F1_retVal;
 				}";

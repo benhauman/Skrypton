@@ -80,7 +80,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Note: We need to use the NumericValueToken's AsCSharpValue() method here when generating the translated "loopEnd" output since its
                 // type might be important when determining what the type for "loopStart" will be - eg. the end value in "FOR i = 1 TO 20.2" results
                 // in the loop variable being a double.
-                loopEnd = numericLoopEndValueIfAny.AsCSharpValue();
+                loopEnd = numericLoopEndValueIfAny.AsCSharpValue(out var _);
             }
             else
             {
@@ -129,7 +129,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Note: We need to use the NumericValueToken's AsCSharpValue() method here when generating the translated "loopStep" output since its
                 // type might be important when determining what the type for "loopStart" will be - eg. the loop step in "FOR i = 1 TO 10 STEP 0.1"
                 // results in the loop variable being a double.
-                loopStep = numericLoopStepValueIfAny.AsCSharpValue();
+                loopStep = numericLoopStepValueIfAny.AsCSharpValue(out var _);
             }
             else
             {
@@ -179,7 +179,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // type information in the translated content (eg. "(Int16)1").
                 // - One the one hand, it seems a bit silly bothering layering on more special cases when VBScript already has a million special cases
                 //   of its own, but the exception here makes the translated output slightly less WTF-worthy for simple and common cases
-                loopStart = numericLoopStartValueIfAny.AsCSharpValue();
+                loopStart = numericLoopStartValueIfAny.AsCSharpValue(out var _);
             }
             else
             {
@@ -537,7 +537,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     loopIncrementWithLeadingSpaceIfNonBlank = string.Format(CultureInfo.InvariantCulture,
                         " {0} = {2}.SUBT({0}, {1})",
                         (loopVarAliasIfRequired != null) ? loopVarAliasIfRequired.To.Name : rewrittenLoopVariableName,
-                        numericLoopStepValueIfAny.GetNegative().AsCSharpValue(),
+                        numericLoopStepValueIfAny.GetNegative().AsCSharpValue(out var _),
                         _supportRefName.Name
                     );
                 }

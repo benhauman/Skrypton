@@ -426,7 +426,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (numericValueSegment != null)
             {
                 return new TranslatedStatementContentDetailsWithContentType(
-                    numericValueSegment.Token.AsCSharpValue(),
+                    numericValueSegment.Token.AsCSharpValue(out var _),
                     ExpressionReturnTypeOptions.Value,
                     new NonNullImmutableList<NameToken>()
                 );
