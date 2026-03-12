@@ -17,6 +17,7 @@ using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application.Controls;
 using Skrypton.Tests.RuntimeSupport.Implementations;
+using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
 namespace Skrypton.Tests.Application
 {
@@ -773,6 +774,10 @@ WScript.Echo xmlhttp.responseText
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
                 services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
                 services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
+                services.RegisterHostService<RuntimeSupport.Implementations.FileSystemSupport.IHostFileSystemHostService>(() => new TestFileSystem()
+                    .AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1")
+
+                );
 
             }), model)
                 .AddExternalObject("model", model)

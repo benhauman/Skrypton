@@ -8,7 +8,7 @@ public interface IHostFileSystemHostService
     bool FileExists(string path);
     bool DirectoryExists(string path);
     System.IO.StreamReader OpenTextFileRead(string path);
-    System.IO.FileStream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append);
+    System.IO.Stream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append);
     HostFileSystemDirectoryInfo CreateDirectory(string path);
     void DeleteFile(string path);
     void DeleteDirectory(string path, bool recursive);

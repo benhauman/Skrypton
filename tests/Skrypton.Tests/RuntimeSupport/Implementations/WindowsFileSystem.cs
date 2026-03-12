@@ -13,7 +13,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
         public bool DirectoryExists(string path) => Directory.Exists(path);
 
         public StreamReader OpenTextFileRead(string path) => File.OpenText(path);
-        public FileStream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)// => new StreamWriter(path, append, unicode ? Encoding.Unicode : null);
+        public Stream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)// => new StreamWriter(path, append, unicode ? Encoding.Unicode : null);
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
@@ -110,7 +110,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
         public bool DirectoryExists(string path) => Directory.Exists(path);
 
         public StreamReader OpenTextFileRead(string path) => File.OpenText(path);
-        public FileStream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)// => new StreamWriter(path, append, unicode ? Encoding.Unicode : null);
+        public Stream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)// => new StreamWriter(path, append, unicode ? Encoding.Unicode : null);
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
@@ -195,6 +195,107 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
                 var dest = System.IO.Path.Combine(newPath, System.IO.Path.GetFileName(file));
                 File.Copy(file, dest, overwrite);
             }
+        }
+    }
+
+    internal sealed class TestFileSystem : IHostFileSystemHostService
+    {
+        private readonly Dictionary<string, string> _allfiles = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        public TestFileSystem()
+        {
+        }
+
+        void IHostFileSystemHostService.CopyDirectory(string sourcePath, string newPath, bool overwrite)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IHostFileSystemHostService.CopyFile(string src, string dst, bool overwrite)
+        {
+            throw new NotImplementedException();
+        }
+
+        HostFileSystemDirectoryInfo IHostFileSystemHostService.CreateDirectory(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IHostFileSystemHostService.DeleteDirectory(string path, bool recursive)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IHostFileSystemHostService.DeleteFile(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IHostFileSystemHostService.DirectoryExists(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IHostFileSystemHostService.DriveExists(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IHostFileSystemHostService.FileExists(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<HostFileSystemDirectoryInfo> IHostFileSystemHostService.GetDirectories(string directory)
+        {
+            throw new NotImplementedException();
+        }
+
+        HostFileSystemDirectoryInfo IHostFileSystemHostService.GetDirectoryInfo(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        HostFileSystemFileInfo IHostFileSystemHostService.GetFileInfo(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<HostFileSystemFileInfo> IHostFileSystemHostService.GetFiles(string directory)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IHostFileSystemHostService.MoveDirectory(string src, string dst)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IHostFileSystemHostService.MoveFile(string src, string dst)
+        {
+            throw new NotImplementedException();
+        }
+
+        StreamReader IHostFileSystemHostService.OpenTextFileRead(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        Stream IHostFileSystemHostService.OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)
+        {
+            if (_allfiles.TryGetValue(path, out string content))
+            {
+                byte[] buffer = Encoding.UTF8.GetBytes(content);
+                return new MemoryStream(buffer);
+            }
+
+            throw new NotImplementedException($"[FS].OpenTextFileWrite(path:'{path}', createIfNotExists:{createIfNotExists}, overwriteIfExists:{overwriteIfExists}, append:{append})");
+        }
+
+        public TestFileSystem AddTestFile(string path, string content)
+        {
+            _allfiles.Add(path, content);
+            return this;
         }
     }
 }

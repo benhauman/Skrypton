@@ -191,7 +191,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
     {
         private System.IO.StreamReader _reader; // nullable
         private System.IO.StreamWriter _writer; // nullable
-        private System.IO.FileStream _writeStream; // nullable
+        private System.IO.Stream _writeStream; // nullable
         private readonly string _path;
         private readonly IOMode _mode;
 
@@ -201,7 +201,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
             _path = path ?? throw new ArgumentNullException(nameof(path));
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
         }
-        public MyTextStream(string path, System.IO.FileStream writeStream, IOMode mode, bool unicode)
+        public MyTextStream(string path, System.IO.Stream writeStream, IOMode mode, bool unicode)
         {
             _mode = mode;
             _path = path ?? throw new ArgumentNullException(nameof(path));
