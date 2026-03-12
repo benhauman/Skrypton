@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
 
@@ -15,177 +14,202 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
     internal sealed class MyFileSystemObject : IReflectOnClrType, IFileSystem
     {
         /* COM:"Microsoft Scripting Runtime" => 'Interop.Scripting.dll' => C:\Windows\System32\scrrun.dll */
+
+        private readonly IHostFileSystemHostService _hostFileSystem;
+        public MyFileSystemObject(IHostFileSystemHostService hostFileSystemService)
+        {
+            _hostFileSystem = hostFileSystemService ?? throw new ArgumentNullException(nameof(hostFileSystemService));
+        }
+        internal static MyFileSystemObject Create(IServiceProvider hostServices)
+        {
+            return new MyFileSystemObject(hostServices.GetRequiredService<IHostFileSystemHostService>());
+        }
+
         public bool FileExists(string path)
         {
-            return File.Exists(path);
+            return _hostFileSystem.FileExists(path);
         }
         public bool FolderExists(string path)
         {
-            return Directory.Exists(path);
+            return _hostFileSystem.DirectoryExists(path);
         }
         public bool DriveExists(string path)
         {
-            return Directory.Exists(path);
+            return _hostFileSystem.DriveExists(path);
         }
 
         public object GetDrive(string path)
         {
-            string root = Path.GetPathRoot(path);
-            if (string.IsNullOrEmpty(root))
-                return false;
+            //string root = Path.GetPathRoot(path);
+            //if (string.IsNullOrEmpty(root))
+            //    return false;
 
-            // Normalize like "C:\"
-            root = root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            //// Normalize like "C:\"
+            //root = root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
 
-            var nfo = DriveInfo.GetDrives()
-                .Any(d => string.Equals(
-                    d.Name,
-                    root,
-                    StringComparison.OrdinalIgnoreCase));
+            //var nfo = DriveInfo.GetDrives()
+            //    .Any(d => string.Equals(
+            //        d.Name,
+            //        root,
+            //        StringComparison.OrdinalIgnoreCase));
 
             throw new NotImplementedException(path);
         }
         public IFile GetFile(string path)
         {
             //throw new NotImplementedException(path);
-            if (!File.Exists(path))
-                throw new FileNotFoundException(path);
-            return new MyFile(path);
+            if (!_hostFileSystem.FileExists(path))
+                throw new System.IO.FileNotFoundException(path);
+            HostFileSystemFileInfo nfo = _hostFileSystem.GetFileInfo(path);
+            if (!nfo.Exists)
+            {
+                throw new System.IO.FileNotFoundException(path);
+            }
+
+            return new MyFile(_hostFileSystem, nfo);
         }
 
         public IFolder GetFolder(string path)
         {
-            //throw new NotImplementedException(path);
-            if (!Directory.Exists(path))
-                throw new DirectoryNotFoundException(path);
-            return new MyFolder(path);
+            if (!_hostFileSystem.DirectoryExists(path))
+                throw new System.IO.DirectoryNotFoundException(path);
+            HostFileSystemDirectoryInfo nfo = _hostFileSystem.GetDirectoryInfo(path);
+            if (!nfo.Exists)
+            {
+                throw new System.IO.DirectoryNotFoundException(path);
+            }
+
+            return new MyFolder(_hostFileSystem, nfo);
         }
 
         public IFolder CreateFolder(string path)
         {
             _ = nameof(MyFolder);
-            //throw new NotImplementedException(path);
-            Directory.CreateDirectory(path);
-            return new MyFolder(path);
+            HostFileSystemDirectoryInfo nfo = _hostFileSystem.CreateDirectory(path);
+            return new MyFolder(_hostFileSystem, nfo);
         }
 
         public ITextStream OpenTextFile(string path, IOMode mode, bool create = false, Tristate format = Tristate.UseDefault)
-        //public MyTextStream OpenTextFile(string path, IOMode mode)
         {
-            return new MyTextStream(path, mode);
+            if (mode == IOMode.ForReading)
+            {
+                return new MyTextStream(path, _hostFileSystem.OpenTextFileRead(path));
+            }
+            else
+            {
+                return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: false);
+            }
         }
 
-        public ITextStream CreateTextFile(string path, bool overwrite = false, bool unicode = false)
-        //public MyTextStream CreateTextFile(string path, bool overwrite = false)
+        public ITextStream CreateTextFile(string path, bool overwrite = true, bool unicode = false)
         {
-            //throw new NotImplementedException(path);
-            if (!overwrite && File.Exists(path))
-                throw new IOException("File exists: " + path);
-            return new MyTextStream(path, IOMode.ForWriting);
+            return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: overwrite, overwriteIfExists: true, false), IOMode.ForWriting, unicode);
         }
     }
     internal sealed class MyFolder : IFolder
     {
-        public string Path { get; }
-        public string Name => new DirectoryInfo(Path).Name;
+        private readonly IHostFileSystemHostService _hostFileSystem;
+        private readonly HostFileSystemDirectoryInfo _info;
+        public string Path => _info.Path;
+        public string Name => _info.Name;
 
-        public MyFolder(string path) => Path = path;
-
-        public long Size
+        public MyFolder(IHostFileSystemHostService hostFileSystemService, HostFileSystemDirectoryInfo info)
         {
-            get
-            {
-                long sum = 0;
-                foreach (var f in Directory.GetFiles(Path, "*", SearchOption.AllDirectories))
-                    sum += new FileInfo(f).Length;
-                return sum;
-            }
+            _hostFileSystem = hostFileSystemService ?? throw new ArgumentNullException(nameof(hostFileSystemService));
+            _info = info ?? throw new ArgumentNullException(nameof(info));
         }
 
-        public IReadOnlyCollection<IFile> Files =>
-            Directory.GetFiles(Path)
-                .Select(f => new MyFile(f))
-                .ToArray();
+        //public long Size
+        //{
+        //    get
+        //    {
+        //        long sum = 0;
+        //        foreach (var f in Directory.GetFiles(Path, "*", SearchOption.AllDirectories)) // works on Windows, Linux, and macOS when using .NET Standard or modern .NET.
+        //            sum += new FileInfo(f).Length;
+        //        return sum;
+        //    }
+        //}
 
-        public IReadOnlyCollection<IFolder> SubFolders =>
-            Directory.GetDirectories(Path)
-                .Select(d => new MyFolder(d))
-                .ToArray();
+        public IReadOnlyCollection<IFile> Files => _hostFileSystem.GetFiles(Path).Select(nfo => new MyFile(_hostFileSystem, nfo)).ToArray();
+        public IReadOnlyCollection<IFolder> SubFolders => _hostFileSystem.GetDirectories(Path).Select(nfo => new MyFolder(_hostFileSystem, nfo)).ToArray();
 
-        public void Delete(bool force)
-        {
-            Directory.Delete(Path, recursive: force);
-        }
+        public void Delete(bool force) => _hostFileSystem.DeleteDirectory(Path, force);
 
-        public void Move(string newPath)
-        {
-            Directory.Move(Path, newPath);
-        }
+        public void Move(string newPath) => _hostFileSystem.MoveDirectory(Path, newPath);
 
         public void Copy(string newPath, bool overwrite)
         {
-            Directory.CreateDirectory(newPath);
-            foreach (var file in Directory.GetFiles(Path))
-            {
-                var dest = System.IO.Path.Combine(newPath, System.IO.Path.GetFileName(file));
-                File.Copy(file, dest, overwrite);
-            }
+            _hostFileSystem.CopyDirectory(Path, newPath, overwrite);
         }
     }
 
     internal sealed class MyFile : IFile
     {
-        public string Path { get; }
-        public string Name => System.IO.Path.GetFileName(Path);
-        public long Size => new FileInfo(Path).Length;
-        public string Type => "File";
+        private readonly IHostFileSystemHostService _hostFileSystem;
+        private readonly HostFileSystemFileInfo _nfo;
+        public string Path => _nfo.Path;
+        public string Name => _nfo.Name;
+        //public long Size => new FileInfo(Path).Length;
+        //public string Type => "File";
 
-        public MyFile(string path) => Path = path;
+        public MyFile(IHostFileSystemHostService hostFileSystem, HostFileSystemFileInfo nfo)
+        {
+            _hostFileSystem = hostFileSystem ?? throw new ArgumentNullException(nameof(hostFileSystem));
+            _nfo = nfo ?? throw new ArgumentNullException(nameof(nfo));
+        }
 
         public void Delete(bool force)
         {
-            File.Delete(Path);
+            _hostFileSystem.DeleteFile(_nfo.Path);
         }
 
         public void Move(string newPath)
         {
-            File.Move(Path, newPath);
+            _hostFileSystem.MoveFile(Path, newPath);
         }
 
         public void Copy(string newPath, bool overwrite)
         {
-            File.Copy(Path, newPath, overwrite);
+            _hostFileSystem.CopyFile(Path, newPath, overwrite);
         }
 
         public ITextStream OpenAsTextStream(IOMode mode, Tristate format = Tristate.UseDefault)
         {
-            return new MyTextStream(Path, mode);
-        }
-    }
-    internal sealed class MyTextStream : ITextStream
-    {
-        private StreamReader reader;
-        private StreamWriter writer;
-        private readonly IOMode _mode;
-
-        public MyTextStream(string path, IOMode mode)
-        {
-            _mode = mode;
-            switch (mode)
+            if (mode == IOMode.ForReading)
             {
-                case IOMode.ForReading:
-                    reader = new StreamReader(path);
-                    break;
-
-                case IOMode.ForWriting:
-                    writer = new StreamWriter(path, append: false);
-                    break;
-
-                case IOMode.ForAppending:
-                    writer = new StreamWriter(path, append: true);
-                    break;
+                return new MyTextStream(Path, _hostFileSystem.OpenTextFileRead(Path));
+            }
+            else
+            {
+                return new MyTextStream(Path, _hostFileSystem.OpenTextFileWrite(Path, createIfNotExists: true, overwriteIfExists: mode == IOMode.ForAppending, append: mode == IOMode.ForAppending), mode, unicode: false);
             }
         }
+    }
+
+    [DebuggerDisplay("({_mode}) Path:{_path}")]
+    internal sealed class MyTextStream : ITextStream, IDisposable
+    {
+        private System.IO.StreamReader _reader; // nullable
+        private System.IO.StreamWriter _writer; // nullable
+        private System.IO.FileStream _writeStream; // nullable
+        private readonly string _path;
+        private readonly IOMode _mode;
+
+        public MyTextStream(string path, System.IO.StreamReader reader)
+        {
+            _mode = IOMode.ForReading;
+            _path = path ?? throw new ArgumentNullException(nameof(path));
+            _reader = reader ?? throw new ArgumentNullException(nameof(reader));
+        }
+        public MyTextStream(string path, System.IO.FileStream writeStream, IOMode mode, bool unicode)
+        {
+            _mode = mode;
+            _path = path ?? throw new ArgumentNullException(nameof(path));
+            _writeStream = writeStream ?? throw new ArgumentNullException(nameof(writeStream));
+            _writer = new System.IO.StreamWriter(_writeStream, unicode ? System.Text.Encoding.Unicode : System.Text.Encoding.ASCII);
+        }
+        private System.IO.StreamReader reader => _reader ?? throw new InvalidOperationException($"Reader not set. Path:{_path}");
+        private System.IO.StreamWriter writer => _writer ?? throw new InvalidOperationException($"Writer not set. ({_mode}) Path:{_path}");
 
         public string Read(int count)
         {
@@ -212,8 +236,12 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         public void Dispose()
         {
-            writer?.Dispose();
-            reader?.Dispose();
+            _writer?.Dispose();
+            _writer = null;
+            _writeStream?.Dispose();
+            _writeStream = null;
+            _reader?.Dispose();
+            _reader = null;
         }
 
         public void Skip(int count)
@@ -290,7 +318,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
     {
         string Path { get; }
         string Name { get; }
-        long Size { get; }
+        //long Size { get; }
 
         IReadOnlyCollection<IFile> Files { get; }
         IReadOnlyCollection<IFolder> SubFolders { get; }
@@ -307,8 +335,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
     {
         string Path { get; }
         string Name { get; }
-        long Size { get; }
-        string Type { get; }
+        //long Size { get; }
+        //string Type { get; }
 
         void Delete(bool force);
         void Move(string newPath);

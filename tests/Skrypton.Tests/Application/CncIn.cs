@@ -144,7 +144,7 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("ADODB.Connection", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
             provider.RegisterObjectCreateFactory("ADODB.Command", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBCommand());
             provider.RegisterObjectCreateFactory("ADODB.Recordset", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBRecordSet());
-            provider.RegisterObjectCreateFactory("Scripting.FileSystemObject", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport.MyFileSystemObject());
+            provider.RegisterObjectCreateFactory("Scripting.FileSystemObject", (_) => Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport.MyFileSystemObject.Create(hostServices));
             return provider;
         }
 

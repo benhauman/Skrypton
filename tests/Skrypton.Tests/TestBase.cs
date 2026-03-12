@@ -10,6 +10,7 @@ using Skrypton.RuntimeSupport;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.RuntimeSupport.Implementations;
 using Microsoft.Testing.Platform.Services;
+using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
 namespace Skrypton.Tests
 {
@@ -224,6 +225,11 @@ namespace Skrypton.Tests
             var container = new TestHostServices();
             setup?.Invoke(container);
             return container;
+        }
+
+        internal IHostFileSystemHostService CreateTestFileSystem()
+        {
+            return new WindowsFileSystem();
         }
     }
 
