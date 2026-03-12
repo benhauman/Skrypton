@@ -168,7 +168,9 @@ namespace Skrypton.Tests.Application
                 specificDiagnosticOptions: new Dictionary<string, ReportDiagnostic>
                 {
                     ["CS0219"] = ReportDiagnostic.Suppress
-                }
+                },
+                optimizationLevel: OptimizationLevel.Debug, // Keep debug info
+                allowUnsafe: false
             );
 
             CSharpCompilation compilation = CSharpCompilation.Create(

@@ -89,18 +89,21 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
             return new MyFolder(_hostFileSystem, nfo);
         }
 
-        public ITextStream OpenTextFile(string path, IOMode mode, bool create = false, Tristate format = Tristate.UseDefault)
+        public ITextStream OpenTextFile(string path, IOMode? mode, bool create = false, Tristate format = Tristate.UseDefault)
         {
-            if (!Enum.IsDefined<IOMode>(mode))
-                throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
+            if (mode == null)
+                throw new ArgumentNullException($"Argument 'mode' is required", nameof(mode));
 
-            if (mode == IOMode.ForReading)
+            if (mode != null && !Enum.IsDefined<IOMode>(mode.Value))
+                throw new ArgumentException($"Undefined mode:{mode.Value}", nameof(mode));
+
+            if (mode == null || mode == IOMode.ForReading)
             {
                 return new MyTextStream(path, _hostFileSystem.OpenTextFileRead(path));
             }
             else
             {
-                return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: false);
+                return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode.Value == IOMode.ForAppending), mode.Value, unicode: false);
             }
         }
 
@@ -310,7 +313,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         IFolder CreateFolder(string path);
         ITextStream CreateTextFile(string path, bool overwrite = false, bool unicode = false);
-        ITextStream OpenTextFile(string path, IOMode mode, bool create = false, Tristate format = Tristate.UseDefault);
+        ITextStream OpenTextFile(string path, IOMode? mode = null, bool create = false, Tristate format = Tristate.UseDefault);
 
         bool FileExists(string path);
         bool FolderExists(string path);
