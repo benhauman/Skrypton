@@ -23,10 +23,10 @@ namespace TranslatedProgram
 
             var with = _.OBJ(_outer.adoSQLCmdParam);
             _.SET(VBScriptConstants.Nothing, this, with, "ActiveConnection");
-            _.CALL(this, with, "Pr", "Ap", _.ARGS.Val(_.CALL(this, with, "CreateParameterX", _.ARGS.Val("RETURN_VALUEx").Val((Int16)3).Val((Int16)4))));
-            _.CALL(this, with, "Parameters", "Append", _.ARGS.Val(_.CALL(this, with, "CreateParameterY", _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName"))));
-            _.CALL(this, with, "Execute");
-            _outer.parmval = _.VAL(_.CALL(this, _.CALL(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
+            _.CALLm2argp(this, with, "Pr", "Ap", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameterX", _.ARGS.Val("RETURN_VALUEx").Val((Int16)3).Val((Int16)4))));
+            _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameterY", _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName"))));
+            _.CALLm1v(this, with, "Execute");
+            _outer.parmval = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

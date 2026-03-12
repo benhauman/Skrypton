@@ -22,9 +22,9 @@ namespace TranslatedProgram
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             _outer.objShell = _.OBJ(_.CREATEOBJECT("Shell.Application"));
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALL(this, _env.TextBoxWebsite, "Text"))), "")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v(this, _env.TextBoxWebsite, "Text"))), "")))
             {
-                _.CALL(this, _outer.objShell, "ShellExecute", _.ARGS.Val(_.CALL(this, _env.TextBoxWebsite, "Text")));
+                _.CALLm1argp(this, _outer.objShell, "ShellExecute", _.ARGS.Val(_.CALLm1v(this, _env.TextBoxWebsite, "Text")));
             }
         }
     }

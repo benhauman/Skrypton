@@ -8,17 +8,6 @@ namespace Skrypton.RuntimeSupport
     {
         internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
-        // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
-        // translated code)
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IEnumerable<string> members, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (argumentProviderBuilder == null)
-                throw new ArgumentNullException(nameof(argumentProviderBuilder));
-
-            return source.CALL(context, target, members, argumentProviderBuilder.GetArgs(), line: line);
-        }
         public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
@@ -53,42 +42,42 @@ namespace Skrypton.RuntimeSupport
 
         // Convenience methods for when there are no arguments (supporting up to MaxNumberOfMemberAccessorBeforeArraysRequired members accessors, just as the
         // extension methods further down do which look after the with-arguments signatures)
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target)
+        public static object? CALLm0v(this IAccessValuesUsingVBScriptRules source, object context, object target)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
+        public static object? CALLm1v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: line);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
+        public static object? CALLm2v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
+        public static object? CALLm3v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
+        public static object? CALLm4v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
+        public static object? CALLm5v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -96,12 +85,23 @@ namespace Skrypton.RuntimeSupport
             return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
 
+        // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
+        // translated code)
+        public static object? CALLarrmargp(this IAccessValuesUsingVBScriptRules source, object context, object target, string[] members, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (argumentProviderBuilder == null)
+                throw new ArgumentNullException(nameof(argumentProviderBuilder));
+
+            return source.CALL(context, target, members, argumentProviderBuilder.GetArgs(), line: line);
+        }
         // Convenience methods for when there are a known number of accessor members (including zero) and arguments - providing the argument builder means that
         // the translated code can be shorter (since there will be less "GetArgs" calls) but the trust is placed in these extension methods that the arguments
         // set will not be manipulated (extended). Since there would already trust that these won't manipulate any values if IProvideCallArguments references
         // were passed then this isn't a big deal (strictly speaking these methods express requirements greater than they really need but the shorter code is
         // worth it).
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
+        public static object? CALLm0argp(this IAccessValuesUsingVBScriptRules source, object context, object target, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -110,16 +110,16 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, [], argumentProviderBuilder.GetArgs(), line);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object? context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
+        public static object? CALLm1argp(this IAccessValuesUsingVBScriptRules source, object? context, object target, string member1, IBuildCallArgumentProviders argumentProviderBuilder)//, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilder));
 
-            return source.CALL(context, target, new[] { member1 }, argumentProviderBuilder.GetArgs(), line);
+            return source.CALL(context, target, new[] { member1 }, argumentProviderBuilder.GetArgs(), 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
+        public static object? CALLm2argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -128,7 +128,7 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1, member2 }, argumentProviderBuilder.GetArgs(), line);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static object? CALLm3argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -137,7 +137,7 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static object? CALLm4argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -146,7 +146,7 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
-        public static object? CALL(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static object? CALLm5argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

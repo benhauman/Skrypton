@@ -306,7 +306,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "   while (true)",
                 "   {",
                 "       _.HANDLEERROR(errOn, () => {",
-                "           _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
+                "           _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "       });",
                 "       if (!loopConstraintsInitialized)",
                 "           break;",
@@ -351,7 +351,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "while (true)",
                 "{",
                 "   _.HANDLEERROR(errOn, () => {",
-                "       _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
+                "       _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));",
                 "   });",
                 "   var continueLoop = false;",
                 "   _.HANDLEERROR(errOn, () => {",
@@ -460,7 +460,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    object i = null; /* Undeclared in source */",
                 "    for (i = (Int16)1; _.StrictLTE(i, 5); i = _.ADD(i, (Int16)1))",
                 "    {",
-                "        _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(j, v => { j = v; }));",
+                "        _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(j, v => { j = v; }));",
                 "    }",
                 "    return F1_retVal;",
                 "}"
@@ -500,7 +500,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					object byrefalias = x;
 					try
 					{
-						loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+						loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
 						loopStart = _.NUM((Int16)1);
 						if ((loopStart is DateTime) || (loopStart is Decimal))
 							i = loopStart;
@@ -551,7 +551,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				{
 					object F1_retVal = null;
 					object i = null;
-					var loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(x, v => { x = v; })));
+					var loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x, v => { x = v; })));
 					var loopStart = _.NUM((Int16)1, loopEnd);
 					if (_.StrictLTE(loopStart, loopEnd))
 					{
@@ -602,7 +602,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					object byrefalias = x;
 					try
 					{
-						loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+						loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
 						loopStart = _.NUM((Int16)1);
 						if ((loopStart is DateTime) || (loopStart is Decimal))
 							i = loopStart;
@@ -697,7 +697,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					try
 					{
 						_.HANDLEERROR(errOn, () => {
-							loopEnd = _.NUM(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+							loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
 							loopStart = _.NUM((Int16)1);
 							if ((loopStart is DateTime) || (loopStart is Decimal))
 								i = loopStart;

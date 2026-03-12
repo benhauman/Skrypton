@@ -69,13 +69,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
-                "_.CALL(this, _outer, \"o\")",
+                "_.CALLm1v(this, _outer, \"o\")",
                 new NonNullImmutableList<NameToken>([new NameToken("o", lineIndex1)])
             );
-            myAssert.Equal(
+            myAssert.AreEqualX(
                 expected,
                 GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
-                new TranslatedStatementContentDetailsComparer()
+                new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
 
@@ -106,16 +106,16 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
-                "_.CALL(this, _outer, \"o\", _.ARGS.Ref(_outer.a, v0 => { _outer.a = v0; }))",
+                "_.CALLm1argp(this, _outer, \"o\", _.ARGS.Ref(_outer.a, v0 => { _outer.a = v0; }))",
                 new NonNullImmutableList<NameToken>([
                     new NameToken("a", lineIndex1),
                     new NameToken("o", lineIndex1)
                 ])
             );
-            myAssert.AreEqual(
+            myAssert.AreEqualX(
                 expected,
                 GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
-                new TranslatedStatementContentDetailsComparer()
+                new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
 
@@ -152,16 +152,16 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
-                "_.CALL(this, _outer, \"o\", _.ARGS.Val(_outer.a))",
+                "_.CALLm1argp(this, _outer, \"o\", _.ARGS.Val(_outer.a))",
                 new NonNullImmutableList<NameToken>([
                     new NameToken("a", lineIndex1),
                     new NameToken("o", lineIndex1)
                 ])
             );
-            myAssert.AreEqual(
+            myAssert.AreEqualX(
                 expected,
                 GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
-                new TranslatedStatementContentDetailsComparer()
+                new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
 
@@ -196,16 +196,16 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // array or if it is an object with a default function or property whose argument is marked as ByVal, but we won't
             // know that until runtime).
             var expected = new TranslatedStatementContentDetails(
-                "_.CALL(this, _.CALL(this, _env.a, _.ARGS.Val((Int16)0)), _.ARGS.Ref(_env.b, v0 => { _env.b = v0; }))",
+                "_.CALLm0argp(this, _.CALLm0argp(this, _env.a, _.ARGS.Val((Int16)0)), _.ARGS.Ref(_env.b, v0 => { _env.b = v0; }))",
                 new NonNullImmutableList<NameToken>([
                     new NameToken("a", lineIndex1),
                     new NameToken("b", lineIndex1)
                 ])
             );
-            myAssert.AreEqual(
+            myAssert.AreEqualX(
                 expected,
                 GetDefaultStatementTranslator().Translate(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None),
-                new TranslatedStatementContentDetailsComparer()
+                new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
         [TestMethod, MyFact]
@@ -232,15 +232,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             ]);
 
             var expected = new TranslatedStatementContentDetails(
-                "_.ARGS.Val(_.CALL(this, _.CALL(this, _env.a, \"b\", _.ARGS.Val((Int16)0)), \"c\"))",
+                "_.ARGS.Val(_.CALLm1v(this, _.CALLm1argp(this, _env.a, \"b\", _.ARGS.Val((Int16)0)), \"c\"))",
                 new NonNullImmutableList<NameToken>([
                     new NameToken("a", lineIndex1)
                 ])
             );
-            myAssert.AreEqual(
+            myAssert.AreEqualX(
                 expected,
                 GetDefaultStatementTranslator().TranslateAsArgumentProvider([expression], GetEmptyScopeAccessInformation(), forceAllArgumentsToBeByVal: false),
-                new TranslatedStatementContentDetailsComparer()
+                new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
 

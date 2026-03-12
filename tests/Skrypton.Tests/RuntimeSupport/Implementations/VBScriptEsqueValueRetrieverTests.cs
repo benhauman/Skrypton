@@ -125,7 +125,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 _.SET(1, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("a"));
                 _.SET(2, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("b"));
-                myAssert.AreEqual(2, _.CALL(context: null, target: dict, member1: "Count"));
+                myAssert.AreEqual(2, _.CALLm1v(context: null, target: dict, member1: "Count"));
             }
         }
 
@@ -278,7 +278,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 new PseudoField { value = "value:F1" },
-                _.CALL(
+                _.CALLarrmargp(
                     context: null,
                     target: new PseudoRecordset(),
                     members: ["fields"],
@@ -294,7 +294,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 new PseudoField { value = "value:F1" },
-                _.CALL(
+                _.CALLarrmargp(
                     context: null,
                     target: new PseudoRecordset(),
                     members: [],
@@ -387,7 +387,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var data = new object[] { "One" };
             myAssert.AreEqual(
                 "One",
-                _.CALL(
+                _.CALLarrmargp(
                     context: null,
                     target: data,
                     members: [],
@@ -401,7 +401,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             object arg0 = 1;
-            _.CALL(context: null, target: this, member1: "ByRefArgUpdatingFunction", argumentProviderBuilder: _.ARGS.Ref(arg0, v => { arg0 = v; }).Val(false));
+            _.CALLm1argp(context: null, target: this, member1: "ByRefArgUpdatingFunction", argumentProviderBuilder: _.ARGS.Ref(arg0, v => { arg0 = v; }).Val(false));
             myAssert.AreEqual(123, arg0);
         }
 
@@ -412,7 +412,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             object arg0 = 1;
             try
             {
-                _.CALL(context: null, target: this, member1: "ByRefArgUpdatingFunction", argumentProviderBuilder: _.ARGS.Ref(arg0, v => { arg0 = v; }).Val(true));
+                _.CALLm1argp(context: null, target: this, member1: "ByRefArgUpdatingFunction", argumentProviderBuilder: _.ARGS.Ref(arg0, v => { arg0 = v; }).Val(true));
             }
             catch { }
             myAssert.AreEqual(123, arg0);
@@ -422,21 +422,21 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void SingleArgumentParamsArrayMethodMayBeCalledWithZeroValues()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            myAssert.AreEqual(0, _.CALL(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS));
+            myAssert.AreEqual(0, _.CALLm1argp(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS));
         }
 
         [TestMethod, MyFact]
         public void SingleArgumentParamsArrayMethodMayBeCalledWithSingleValue()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            myAssert.AreEqual(1, _.CALL(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS.Val(1)));
+            myAssert.AreEqual(1, _.CALLm1argp(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS.Val(1)));
         }
 
         [TestMethod, MyFact]
         public void SingleArgumentParamsArrayMethodMayBeCalledWithTwoValues()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            myAssert.AreEqual(2, _.CALL(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS.Val(1).Val(2)));
+            myAssert.AreEqual(2, _.CALLm1argp(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS.Val(1).Val(2)));
         }
 
         public void ByRefArgUpdatingFunction(ref object arg0, bool throwExceptionAfterUpdatingArgument)
@@ -463,7 +463,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 "Success!",
-                _.CALL(context: null, target: new ImpressionOfTranslatedClassWithRewrittenPropertyName(), member1: "Params")
+                _.CALLm1v(context: null, target: new ImpressionOfTranslatedClassWithRewrittenPropertyName(), member1: "Params")
             );
         }
 
@@ -553,7 +553,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 name,
-                _.CALL(context: classWithPrivateMember, target: classWithPrivateMember, member1: "GetName")
+                _.CALLm1v(context: classWithPrivateMember, target: classWithPrivateMember, member1: "GetName")
             );
         }
 
@@ -564,7 +564,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var classWithPrivateMember = new ClassWithPrivateGetNameMethod(name);
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<MissingMemberException>(() =>
-                _.CALL(context: null, target: classWithPrivateMember, member1: "GetName")
+                _.CALLm1v(context: null, target: classWithPrivateMember, member1: "GetName")
             );
         }
 
@@ -577,7 +577,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             _.SET(name, context: classWithPrivateMember, target: classWithPrivateMember, optionalMemberAccessor: "Name");
             myAssert.AreEqual(
                 name,
-                _.CALL(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Name")
+                _.CALLm1v(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Name")
             );
         }
 
@@ -629,7 +629,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             _.SET(name, context: classWithPrivateMember, target: classWithPrivateMember, optionalMemberAccessor: "Test", argumentProviderBuilder: _.ARGS.Val(i));
             myAssert.AreEqual(
                 name,
-                _.CALL(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
+                _.CALLm1argp(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
             );
         }
 
@@ -673,7 +673,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             _.SET(name, context: classWithPrivateMember, target: classWithPrivateMember, optionalMemberAccessor: "Test", argumentProviderBuilder: _.ARGS.Val(i));
             myAssert.AreEqual(
                 name,
-                _.CALL(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
+                _.CALLm1argp(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
             );
         }
 
@@ -687,7 +687,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             _.SET(name, context: classWithPrivateMember, target: classWithPrivateMember, optionalMemberAccessor: "Test", argumentProviderBuilder: _.ARGS.Val(i));
             myAssert.AreEqual(
                 name,
-                _.CALL(context: null, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
+                _.CALLm1argp(context: null, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
             );
         }
 
@@ -799,7 +799,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void NothingShouldBeReturnedForNullForPropertyOfComVisibleType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            var value = _.CALL(context: null, target: new ClassWithComVisiblePropertyThatIsAlwaysNull(), member1: "Value");
+            var value = _.CALLm1v(context: null, target: new ClassWithComVisiblePropertyThatIsAlwaysNull(), member1: "Value");
 #pragma warning disable CA1416 // Validate platform compatibility
             myAssert.IsType<DispatchWrapper>(value);
             myAssert.Null(((DispatchWrapper)value).WrappedObject);
@@ -811,7 +811,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Null(
-                _.CALL(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
+                _.CALLm1v(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }
 
@@ -824,7 +824,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Null(
-                _.CALL(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
+                _.CALLm1v(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }
 
@@ -851,7 +851,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 "YEAH!",
-                _.VAL(_.CALL(context: null, target: new ClassWithDefaultMethodWithSingleOptionalArgument()))
+                _.VAL(_.CALLm0v(context: null, target: new ClassWithDefaultMethodWithSingleOptionalArgument()))
             );
         }
 

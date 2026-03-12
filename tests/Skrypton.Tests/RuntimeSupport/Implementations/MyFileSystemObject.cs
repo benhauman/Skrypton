@@ -91,6 +91,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         public ITextStream OpenTextFile(string path, IOMode mode, bool create = false, Tristate format = Tristate.UseDefault)
         {
+            if (!Enum.IsDefined<IOMode>(mode))
+                throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
+
             if (mode == IOMode.ForReading)
             {
                 return new MyTextStream(path, _hostFileSystem.OpenTextFileRead(path));
@@ -175,6 +178,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         public ITextStream OpenAsTextStream(IOMode mode, Tristate format = Tristate.UseDefault)
         {
+            if (!Enum.IsDefined<IOMode>(mode))
+                throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
+
             if (mode == IOMode.ForReading)
             {
                 return new MyTextStream(Path, _hostFileSystem.OpenTextFileRead(Path));

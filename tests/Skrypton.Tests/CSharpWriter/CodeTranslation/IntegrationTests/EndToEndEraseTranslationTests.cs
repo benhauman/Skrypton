@@ -10,8 +10,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndEraseTranslationTests : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
-        public void SuccessCases(string description, string source, string[] expected)
+        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        public void SuccessCases(int testno, string description, string source, string[] expected)
         {
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(expected, WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies));
@@ -21,27 +21,27 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             get
             {
-                yield return new object[] { "Empty ERASE is a runtime error", "ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
-                yield return new object[] { "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
+                yield return new object[] { 1, "Empty ERASE is a runtime error", "ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
+                yield return new object[] { 2, "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
 
-                yield return new object[] { "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
-                yield return new object[] { "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
+                yield return new object[] { 3, "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
+                yield return new object[] { 4, "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
 
                 // If the target is specified with arguments, then it must be an array where the arguments are indices. The non-by-ref ERASE method signature is used and validation of the
                 // target (whether it's an array and whether the indices are valid) is handled at runtime.
-                yield return new object[] { "Target with arguments: ERASE a(0)", "ERASE a(0)", new[] { "_.ERASE(_env.a, (Int16)0);" } };
-                yield return new object[] { "Target with arguments: CALL ERASE(a(0)) (with CALL keyword)", "CALL ERASE(a(0))", new[] { "_.ERASE(_env.a, (Int16)0);" } };
+                yield return new object[] { 5, "Target with arguments: ERASE a(0)", "ERASE a(0)", new[] { "_.ERASE(_env.a, (Int16)0);" } };
+                yield return new object[] { 6, "Target with arguments: CALL ERASE(a(0)) (with CALL keyword)", "CALL ERASE(a(0))", new[] { "_.ERASE(_env.a, (Int16)0);" } };
 
                 // "ERASE a()" is either a "Subscript out of range" or a "Type mismatch", depending upon whether "a" is an array or not - this needs to be decided at runtime. It does this
                 // using the non-by-ref argument argument signature. This is the case where "a" is known to be a variable (whether explicitly declared or not, if "a" is known to be a
                 // function then it's a different error case).
-                yield return new object[] { "ERASE a()", "ERASE a()", new[] { "_.ERASE(_env.a);" } };
+                yield return new object[] { 7, "ERASE a()", "ERASE a()", new[] { "_.ERASE(_env.a);" } };
 
-                yield return new object[] {
+                yield return new object[] { 8,
                     "Error if the target is known not to be a variable",
                     "ERASE a\nFUNCTION a\nEND FUNCTION",
                     new[] {
-                        "var invalidEraseTarget = _.CALL(this, _outer, \"a\");",
+                        "var invalidEraseTarget = _.CALLm1v(this, _outer, \"a\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");",
                         "public object a()",
                         "{",
@@ -49,11 +49,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         "}"
                     }
                 };
-                yield return new object[] {
+                yield return new object[] { 9,
                     "Error if the target is known not to be a variable (takes precedence over other ERASE a() error case)",
                     "ERASE a()\nFUNCTION a\nEND FUNCTION",
                     new[] {
-                        "var invalidEraseTarget = _.CALL(this, _outer, \"a\", _.ARGS.ForceBrackets());",
+                        "var invalidEraseTarget = _.CALLm1argp(this, _outer, \"a\", _.ARGS.ForceBrackets());",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");",
                         "public object a()",
                         "{",
@@ -65,7 +65,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 // Note: When the arguments are invalid, they are still evaluated and THEN the runtime error is raised. The references are not forced into value types (if they appear valid
                 // at this point then the ERASE call must confirm at runtime that the target is an array), so the evaulation of some targets (eg. "a") will have no effect while others (eg.
                 // "a.GetName()" may have side effects).
-                yield return new object[] {
+                yield return new object[] {10,
                     "Brackets around target (would be by-val => invalid)",
                     "ERASE (a)",
                     new[] {
@@ -73,7 +73,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");"
                     }
                 };
-                yield return new object[] {
+                yield return new object[] {11,
                     "Multiple targets",
                     "ERASE a, b",
                     new[] {
@@ -82,11 +82,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");"
                     }
                 };
-                yield return new object[] {
+                yield return new object[] {12,
                     "Member access target",
                     "ERASE a.Name",
                     new[] {
-                        "var invalidEraseTarget = _.CALL(this, _env.a, \"Name\");",
+                        "var invalidEraseTarget = _.CALLm1v(this, _env.a, \"Name\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");"
                     }
                 };
@@ -222,13 +222,7 @@ namespace Skrypton.Tests
                 IEnumerable<object> arr_obj_e = expected as IEnumerable<object>;
                 if (arr_obj_e != null)
                 {
-                    myAssert.Equal<T>(expected, actual, myAssert.GetEqualityComparer<T>(null));
-                    //Xunit.Assert.Equal(expected, actual);
-                    ///IEnumerable<object> arr_obj_a = actual as IEnumerable<object>;
-                    ///for (int idx = 0; idx < arr_obj_e.Count(); idx++)
-                    ///{
-                    ///    AreEqual(arr_obj_e.ElementAt(idx), arr_obj_a.ElementAt(idx));
-                    ///}
+                    myAssert.AreEqual<T>(expected, actual, myAssert.GetEqualityComparer<T>(null));
                     return;
                 }
             }
@@ -310,14 +304,14 @@ namespace Skrypton.Tests
                 Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
             }
         }
-        public static void AreEqualCollection<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<IEnumerable<T>> comparer)
+        public static void AreEqualX<T>(T expected, T actual, IEqualityComparer<T> comparer, Func<T, string> extract)
         {
             if (!comparer.Equals(expected, actual))
             {
-                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+                Assert.Fail("Not Equal. Expected:" + extract(expected) + ", Actual:" + extract(actual));
             }
         }
-        public static void Equal<T>(T expected, T actual, IEqualityComparer<T> comparer)
+        public static void AreEqualCollection<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<IEnumerable<T>> comparer)
         {
             if (!comparer.Equals(expected, actual))
             {

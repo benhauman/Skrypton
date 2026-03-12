@@ -125,7 +125,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				_outer.a = (Int16)1;
-				_.CALL(this, _outer, ""F1"", _.ARGS.Val(_outer.a));
+				_.CALLm1argp(this, _outer, ""F1"", _.ARGS.Val(_outer.a));
 				public object F1(ref object a)
 				{
 					return null;

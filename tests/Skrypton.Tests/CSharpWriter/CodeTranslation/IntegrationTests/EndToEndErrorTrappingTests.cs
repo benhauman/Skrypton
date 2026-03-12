@@ -25,7 +25,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -51,13 +51,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				var errOn = _.GETERRORTRAPPINGTOKEN();
-				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
 				});
 				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test3""));
+				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test3""));
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             //myAssert.AreEqual(
@@ -89,7 +89,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				}
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -113,13 +113,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALL(this, _outer, ""Func1"");
+					_.CALLm1v(this, _outer, ""Func1"");
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);
 				public object Func1()
 				{
 					object Func1_retVal = null;
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 					return Func1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -141,15 +141,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				_.CALL(this, _outer, ""Func1"");
-				_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
+				_.CALLm1v(this, _outer, ""Func1"");
+				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
 				public object Func1()
 				{
 					object Func1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					_.HANDLEERROR(errOn, () => {
-						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
 					});
 					_.RELEASEERRORTRAPPINGTOKEN(errOn);
 					return Func1_retVal;
@@ -183,10 +183,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				_.RAISEERROR(VBScriptConstants.vbObjectError);
 				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"");
 				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"", ""Test"");
-				_.CALL(this, _, ""RAISEERROR"", _.ARGS.Val(VBScriptConstants.vbObjectError).Val(""Source"").Val(""Test"").Val(""Bonus Argument""));
+				_.CALLm1argp(this, _, ""RAISEERROR"", _.ARGS.Val(VBScriptConstants.vbObjectError).Val(""Source"").Val(""Test"").Val(""Bonus Argument""));
 				_.CLEARANYERROR();
 				_.CLEARANYERROR();
-				_.CALL(this, _, ""CLEARANYERROR"", _.ARGS.Val(""Bonus Argument""));";
+				_.CALLm1argp(this, _, ""CLEARANYERROR"", _.ARGS.Val(""Bonus Argument""));";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             //myAssert.AreEqual(
             //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),

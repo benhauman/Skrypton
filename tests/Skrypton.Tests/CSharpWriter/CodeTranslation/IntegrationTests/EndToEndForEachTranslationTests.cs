@@ -25,7 +25,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"    if (!enumerationContent.MoveNext())",
 				"        break;",
 				"    _env.value = enumerationContent.Current;",
-                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"}"
 			};
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
@@ -73,7 +73,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"        _env.value = enumerationContent.Current;",
 				"    }",
 				"    _.HANDLEERROR(errOn, () => {",
-                "        _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "        _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"    });",
 				"    if (enumerationContent == null)",
 				"        break;",
@@ -122,7 +122,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				"            break;",
 				"        _env.value = enumerationContent.Current;",
 				"    }",
-                "    _.CALL(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
+                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"    if (enumerationContent == null)",
 				"        break;",
 				"}",

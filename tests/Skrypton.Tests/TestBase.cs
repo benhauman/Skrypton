@@ -34,8 +34,8 @@ namespace Skrypton.Tests
             var test_case_name_tokens = this.TestContext.TestName.Split('_');
             string folderpath_tc = workItemName + "/" + test_case_name_tokens.Last();
 
-            SaveContentToFile("expected/" + folderpath_tc, fileName, expected_xml);
             SaveContentToFile("actual/" + folderpath_tc, fileName, actual_xml);
+            SaveContentToFile("expected/" + folderpath_tc, fileName, expected_xml);
 
             string expectedDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "expected");
             string actualDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "actual");
@@ -63,7 +63,11 @@ namespace Skrypton.Tests
                     di.Create();
 
                 if (fileName.Length > 116)// 69)// 69? 27? or 20!
+                {
+                    Console.WriteLine($"fileName:{fileName}");
+                    Console.WriteLine(content);
                     throw new InvalidOperationException("File name too long. Length:" + fileName.Length + ", path:" + fileName);
+                }
 
                 ///if (fileName.Length > 60)
                 ///    fileName = fileName.Substring(0, 60);

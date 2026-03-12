@@ -110,7 +110,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
 					public void Class_Terminate()
 					{
-						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Gone!""));
+						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Gone!""));
 					}
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -157,7 +157,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
 					public void Class_Initialize()
 					{
-						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Here!""));
+						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Here!""));
 					}
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -286,7 +286,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					public object Name()
 					{
 						object Name_retVal = null;
-						_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""get_Name""));
+						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""get_Name""));
 						Name_retVal = ""C1"";
 						return Name_retVal;
 					}

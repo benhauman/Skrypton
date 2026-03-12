@@ -44,12 +44,12 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALL(this, _env.hlObj, "GetValue", _.ARGS.Val("vRealize.LansweeperURL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            URL = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("vRealize.LansweeperURL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
 
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
-            _.CALL(this, wshShell, "run", _.ARGS.Ref(URL, v => { URL = v; }));
+            _.CALLm1argp(this, wshShell, "run", _.ARGS.Ref(URL, v => { URL = v; }));
 
-            Processes = _.OBJ(_.CALL(this, _.GETOBJECT("winmgmts:"), "InstancesOf", _.ARGS.Val("Win32_Process")));
+            Processes = _.OBJ(_.CALLm1argp(this, _.GETOBJECT("winmgmts:"), "InstancesOf", _.ARGS.Val("Win32_Process")));
 
             intProcessId = "";
             var enumerationContent = _.ENUMERABLE(Processes).GetEnumerator();
@@ -58,9 +58,9 @@ namespace TranslatedProgram
                 if (!enumerationContent.MoveNext())
                     break;
                 Process = enumerationContent.Current;
-                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALL(this, Process, "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
+                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v(this, Process, "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
                 {
-                    intProcessId = _.VAL(_.CALL(this, Process, "ProcessId"));
+                    intProcessId = _.VAL(_.CALLm1v(this, Process, "ProcessId"));
                     break;
                 }
             }
@@ -68,7 +68,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(_.LEN(intProcessId)), (Int16)0)))
             {
                 var with = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
-                _.CALL(this, with, "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
+                _.CALLm1argp(this, with, "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
 
             }
         }

@@ -30,15 +30,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var expected = @"
 				if (_.IF(_.EQ(_env.x, ""("")))
 				{
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Open""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Open""));
 				}
 				else if (_.IF(_.EQ(_env.x, "")"")))
 				{
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Close""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Close""));
 				}
 				else if (_.IF(_.EQ(_env.x, "","")))
 				{
-					_.CALL(this, _env.WScript, ""Echo"", _.ARGS.Val(""Split""));
+					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Split""));
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             //myAssert.AreEqual(

@@ -26,7 +26,7 @@ namespace Skrypton.RuntimeSupport
         /// invalid member accessor - if specified - argument thrown by the target setter). This must not be called with a target reference
         /// only (null optionalMemberAccessor and zero arguments) as it would need to change the caller's reference to target, which is not
         /// possible (in that case, a straight assignment should be generated - no call to SET required). Note that the valueToSetTo argument
-        /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
+        /// comes before any others since VBScript will evaluate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
         void SET(object valueToSetTo, object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);

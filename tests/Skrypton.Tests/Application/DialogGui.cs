@@ -788,9 +788,7 @@ WScript.Echo xmlhttp.responseText
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
-            //Assert.Inconclusive();
             ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
-
 
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
@@ -810,7 +808,7 @@ WScript.Echo xmlhttp.responseText
                 {
 
                     Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
-                    Assert.Inconclusive(); // last issue: 'ButtonEmailPreview_Click' : Scripting.FileSystemObject
+                    Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
                     //ScriptControlClass.RunProcedure(gr, scriptName, []);
 
                     ixSearch++;

@@ -19,7 +19,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will never return null or blank
         /// </summary>
-        public string TranslatedContent { get; private set; }
+        public string TranslatedContent { get; }
 
         /// <summary>
         /// This will never be null

@@ -793,6 +793,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         target = new ProcessedNameToken("this".ToUpperX(), target.LineIndex);
                     }
                 }
+                if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Constant)
+                {
+                    // 'CT132_Dialog_83' throw new NotImplementedException();
+                }
             }
 
             TranslatedStatementContentDetailsWithContentType result;
@@ -1063,15 +1067,71 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
 
-            StringBuilder callExpressionContent = new StringBuilder();
-            callExpressionContent.AppendFormat(CultureInfo.InvariantCulture,
-                "{0}.CALL(this, {1}{2}", // Pass "this" as the "context" argument
-                _supportRefName.Name,
-                (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name),
-                targetName
-            );
-
             bool ableToUseShorthandCallSignature = (targetMemberAccessTokensArray.Length <= IAccessValuesUsingVBScriptRulesExtensions.MaxNumberOfMemberAccessorBeforeArraysRequired);
+
+            bool callNameResolved = false;
+            string callName = $"CALLxxx_m{targetMemberAccessTokensArray.Length}_argp{argumentsArray.Length}_zabp{zeroArgumentBracketsPresence}X";
+            // nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLarrmargp);
+            //nameof(IAccessValuesUsingVBScriptRules.CALL);
+            if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0argp);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0v);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0argp);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // ?!? (this, hlObjectB, "GetType", _.ARGS.ForceBrackets());
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v); // '_.CALLxxx_m2_argp0_zabpAbsentX(this, oAssociationChange, "EndB", "GetID")'
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
+                callNameResolved = true;
+            }
+            else if (targetMemberAccessTokensArray.Length == 3 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3argp);
+                callNameResolved = true;
+            }
+            else
+            {
+                // throw
+            }
+
+            string nameOfTargetContainer = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);
+            StringBuilder callExpressionContent = new StringBuilder();
+            callExpressionContent.Append($"{_supportRefName.Name}.{callName}(this, {nameOfTargetContainer}{targetName}");// Pass "this" as the "context" argument
+
             if (targetMemberAccessTokensArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
@@ -1082,6 +1142,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 for (int index = 0; index < targetMemberAccessTokensArray.Length; index++)
                 {
+                    if (targetMemberAccessTokensArray[index].Content == "OpenTextFile")
+                    {
+                        //throw new NotImplementedException();
+                    }
+
                     callExpressionContent.Append(
                         targetMemberAccessTokensArray[index].Content.ToLiteral()
                     );
@@ -1115,6 +1180,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             callExpressionContent.Append(')');
+
+            if (!callNameResolved)
+            {
+                throw new NotImplementedException(callExpressionContent.ToString());
+            }
+
             return new TranslatedStatementContentDetailsWithContentType(
                 callExpressionContent.ToString(),
                 ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type

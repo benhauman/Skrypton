@@ -21,7 +21,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _.CALL(this, _outer, "ButtonGeneralInfo_Click");
+            _.CALLm1v(this, _outer, "ButtonGeneralInfo_Click");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -70,19 +70,19 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(Suffix, " KB")))
             {
-                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, (Int16)1024)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, (Int16)1024)).Val((Int16)2)));
             }
             else if (_.IF(_.EQ(Suffix, " MB")))
             {
-                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1048576)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1048576)).Val((Int16)2)));
             }
             else if (_.IF(_.EQ(Suffix, " GB")))
             {
-                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1073741824)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1073741824)).Val((Int16)2)));
             }
             else if (_.IF(_.EQ(Suffix, " TB")))
             {
-                Size = _.VAL(_.CALL(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1099511627776d)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1099511627776d)).Val((Int16)2)));
             }
 
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
@@ -370,17 +370,17 @@ namespace TranslatedProgram
 
             // --- GroupBoxGeneralInfo
 
-            nexthinkBaseURL = _.CONCAT(_.CALL(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
+            nexthinkBaseURL = _.CONCAT(_.CALLm1argp(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
             nexthinkQuery = "&platform=windows&query=(select (name last_ip_address group_name last_logged_on_user os_version_and_architecture device_manufacturer number_of_cpus cpu_model number_of_cores logical_cpu_number cpu_frequency total_ram number_of_graphical_cards graphical_card_ram last_system_boot last_logon_time bios_serial_number device_model ) (from device (where device (eq name (string %1))) ))&format=xml";
 
             colorWarning = "#F20012";
             colorCheck = "#1B709F";
 
-            hostname = _.VAL(_.CALL(this, _env.hlobj, "GetValue", _.ARGS.Val("ComputerDetail.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            hostname = _.VAL(_.CALLm1argp(this, _env.hlobj, "GetValue", _.ARGS.Val("ComputerDetail.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
 
             if (_.IF(_.EQ(_.NullableSTR(hostname), "")))
             {
-                _.CALL(this, _env.model, "MsgBox", _.ARGS.Val("Der Computer hat keinen Hostnamen."));
+                _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Der Computer hat keinen Hostnamen."));
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
             }
@@ -394,30 +394,30 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.NOW()).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralCallTime, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.NOW()).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralCallTime, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
                 xmlhttp = _.OBJ(_.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmlhttp, "setOption", _.ARGS.Val((Int16)2).Val((Int16)13056));
+                _.CALLm1argp(this, xmlhttp, "setOption", _.ARGS.Val((Int16)2).Val((Int16)13056));
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALL(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALL(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmlhttp, "send");
+                _.CALLm1v(this, xmlhttp, "send");
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALL(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar."));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar."));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALL(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALL(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALL(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALL(this, _.ERR, "HelpContext"))));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v(this, _.ERR, "HelpContext"))));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -435,17 +435,17 @@ namespace TranslatedProgram
                 _.SET("false", this, xmlDoc, "async");
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALL(this, xmlDoc, "load", _.ARGS.Val(_.CALL(this, xmlhttp, "responseXML")));
+                _.CALLm1argp(this, xmlDoc, "load", _.ARGS.Val(_.CALLm1v(this, xmlhttp, "responseXML")));
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALL(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten."));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten."));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALL(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALL(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALL(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALL(this, _.ERR, "HelpContext"))));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v(this, _.ERR, "HelpContext"))));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -461,7 +461,7 @@ namespace TranslatedProgram
             });
             IEnumerator enumerationContent = null;
             _.HANDLEERROR(errOn, () => {
-                enumerationContent = _.ENUMERABLE(_.CALL(this, xmlDoc, "SelectNodes", _.ARGS.Val("//table/header/*"))).GetEnumerator();
+                enumerationContent = _.ENUMERABLE(_.CALLm1argp(this, xmlDoc, "SelectNodes", _.ARGS.Val("//table/header/*"))).GetEnumerator();
             });
             while (true)
             {
@@ -472,10 +472,10 @@ namespace TranslatedProgram
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {
-                    curnode = _.OBJ(_.CALL(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
+                    curnode = _.OBJ(_.CALLm2argp(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, dict, "Add", _.ARGS.Val(_.CALL(this, n, "Text")).Val(_.CALL(this, curnode, "Text")));
+                    _.CALLm1argp(this, dict, "Add", _.ARGS.Val(_.CALLm1v(this, n, "Text")).Val(_.CALLm1v(this, curnode, "Text")));
                 });
                 _.HANDLEERROR(errOn, () => {
                     i = _.ADD(i, (Int16)1);
@@ -485,10 +485,10 @@ namespace TranslatedProgram
             }
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALL(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALL(this, _env.model, "MsgBox", _.ARGS.Val("Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten."));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten."));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -499,59 +499,59 @@ namespace TranslatedProgram
             //fill textboxes
             //LabelNName.Text = dict.key("name")
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("name"))), this, _env.TextBoxGeneralHostName, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("name"))), this, _env.TextBoxGeneralHostName, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_ip_address"))), this, _env.TextBoxGeneralLastIP, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("last_ip_address"))), this, _env.TextBoxGeneralLastIP, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_manufacturer"))), this, _env.TextBoxlGeneralDeviceManufacturer, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("device_manufacturer"))), this, _env.TextBoxlGeneralDeviceManufacturer, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("device_model"))), this, _env.TextBoxGeneralDeviceProductVersion, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("device_model"))), this, _env.TextBoxGeneralDeviceProductVersion, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("os_version_and_architecture"))), this, _env.TextBoxGeneralOS, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("os_version_and_architecture"))), this, _env.TextBoxGeneralOS, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("group_name"))), this, _env.TextBoxGeneralGroupName, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("group_name"))), this, _env.TextBoxGeneralGroupName, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_system_boot")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastBootTime, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("last_system_boot")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastBootTime, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALL(this, dict, "Item", _.ARGS.Val("last_logon_time")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastLogon, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("last_logon_time")), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastLogon, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("last_logged_on_user"))), this, _env.TextBoxGeneralDeviceType, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("last_logged_on_user"))), this, _env.TextBoxGeneralDeviceType, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("bios_serial_number"))), this, _env.TextBoxGeneralBIOSSerialNumber, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("bios_serial_number"))), this, _env.TextBoxGeneralBIOSSerialNumber, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_model"))), this, _env.TextBoxGeneralCPUModel, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("cpu_model"))), this, _env.TextBoxGeneralCPUModel, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cpus"))), this, _env.TextBoxGeneralNumberOfCPUs, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("number_of_cpus"))), this, _env.TextBoxGeneralNumberOfCPUs, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("logical_cpu_number"))), this, _env.TextBoxGeneralNumberOfLogProcs, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("logical_cpu_number"))), this, _env.TextBoxGeneralNumberOfLogProcs, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_cores"))), this, _env.TextBoxGeneralNumberOfCores, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("number_of_cores"))), this, _env.TextBoxGeneralNumberOfCores, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.CONCAT(_.CALL(this, dict, "Item", _.ARGS.Val("cpu_frequency")), " MHz"), this, _env.TextBoxGeneralCPUFreq, "Text");
+                _.SET(_.CONCAT(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("cpu_frequency")), " MHz"), this, _env.TextBoxGeneralCPUFreq, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.TextBoxGeneralTotalRAM, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, _outer, "ConvertSize", _.ARGS.Val(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("total_ram"))))), this, _env.TextBoxGeneralTotalRAM, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, dict, "Item", _.ARGS.Val("number_of_graphical_cards"))), this, _env.TextBoxGeneralNumberOfGraphCards, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("number_of_graphical_cards"))), this, _env.TextBoxGeneralNumberOfGraphCards, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALL(this, _outer, "ConvertSize", _.ARGS.Val(_.CALL(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.TextBoxGeneralGraphCardRAM, "Text");
+                _.SET(_.VAL(_.CALLm1argp(this, _outer, "ConvertSize", _.ARGS.Val(_.CALLm1argp(this, dict, "Item", _.ARGS.Val("graphical_card_ram"))))), this, _env.TextBoxGeneralGraphCardRAM, "Text");
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

@@ -72,7 +72,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "if (_.IF(true))",
                 "{",
-                "_.CALL(this, _env.WScript, \"Echo\", _.ARGS.Val(true)); //Comment",
+                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(true)); //Comment",
                 "}",
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
@@ -140,7 +140,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    object byrefalias = x;",
                 "    try",
                 "    {",
-                "        ifResult = _.IF(_.CALL(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
+                "        ifResult = _.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
                 "    }",
                 "    finally { x = byrefalias; }",
                 "    if (ifResult)",
@@ -632,7 +632,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         object byrefalias = a;
                         try
                         {
-                            ifResult = _.IF(_.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));
+                            ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));
                         }
                         finally { a = byrefalias; }
                         if (ifResult)
@@ -670,7 +670,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
-                    "    if (_.IF(_.CALL(this, _outer, \"F2\", _.ARGS.Val(_.CALL(this, a, \"Name\")))))",
+                    "    if (_.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CALLm1v(this, a, \"Name\")))))",
                     "    {",
                     "    }",
                     "    return F1_retVal;",
@@ -712,7 +712,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "    object byrefalias = a;",
                     "    try",
                     "    {",
-                    "        ifResult = _.IF(_.CALL(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
+                    "        ifResult = _.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
                     "    }",
                     "    finally { a = byrefalias; }",
                     "    if (ifResult)",
@@ -761,7 +761,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         object byrefalias = a;
                         try
                         {
-                            ifResult = _.IF(() => _.CALL(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })), errOn);
+                            ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })), errOn);
                         }
                         finally { a = byrefalias; }
                         if (ifResult)
@@ -811,7 +811,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                         bool ifResult;
                         object byrefalias = a;
-                        ifResult = _.IF(() => _.CALL(this, _outer, ""F2"", _.ARGS.Val(_.CALL(this, byrefalias, ""Name""))), errOn);
+                        ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Val(_.CALLm1v(this, byrefalias, ""Name""))), errOn);
                         if (ifResult)
                         {
                         }

@@ -280,7 +280,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new CloseBrace(lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_env.a = _.VAL(_.CALL(this, _, \"CDATE\", _.ARGS.Val(_env.a).Val(_env.b)))",
+                "_env.a = _.VAL(_.CALLm1argp(this, _, \"CDATE\", _.ARGS.Val(_env.a).Val(_env.b)))",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
@@ -360,10 +360,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new OpenBrace(lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expressionToSetTo = new CodeExpression(
-            [
-                new NumericValueToken("1", lineIndex1)
-            ]);
+            var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
             var expected = new TranslatedStatementContentDetails(
                 "_.SET((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])

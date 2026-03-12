@@ -21,19 +21,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            object target = _.CALLm1argp(this, _outer.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0));
-            if (_.IF(_.EQ(target, "Priority1")))
-            {
-                _.SET("RGB(107,105,248)", this, _outer.CaseAttributes, "BackColor");
-            }
-            else if (_.IF(_.EQ(target, "Priority2")))
-            {
-                _.SET("RGB(119,170,251)", this, _outer.CaseAttributes, "BackColor");
-            }
-            else
-            {
-                _.SET("RGB(248,245,240)", this, _outer.CaseAttributes, "BackColor");
-            }
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -46,14 +33,24 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            hlObj = null;
-            CaseAttributes = null;
-            backColor = null;
         }
 
-        internal object hlObj { get; set; }
-        internal object CaseAttributes { get; set; }
-        internal object backColor { get; set; }
+        public void TestFso()
+        {
+            object ForReading = null;
+            object ForWriting = null;
+            object ForAppending = null;
+            object fso = null;
+            object BodyText = null;
+            object f = null;
+            ForReading = (Int16)1;
+            ForWriting = (Int16)2;
+            ForAppending = (Int16)8;
+
+            fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
+            f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpLine\\IntermediateReply.html").Val(ForReading)));
+            BodyText = _.VAL(_.CALLm1v(this, f, "ReadAll"));
+        }
     }
 
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
