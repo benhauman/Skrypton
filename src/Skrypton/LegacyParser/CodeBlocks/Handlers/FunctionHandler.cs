@@ -30,6 +30,35 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             PrivatePropertyLet
         }
 
+
+        // Look for start of function declaration
+        private static readonly Dictionary<string[], BlockType> MatchPatterns = new Dictionary<string[], BlockType>
+        {
+            // - Sub
+            { ["SUB"], BlockType.PublicSub },
+            { ["PUBLIC", "SUB"], BlockType.PublicSub },
+            { ["PRIVATE", "SUB"], BlockType.PrivateSub },
+
+            // - Function
+            { ["FUNCTION"], BlockType.PublicFunction },
+            { ["PUBLIC", "FUNCTION"], BlockType.PublicFunction },
+            { ["PUBLIC", "DEFAULT", "FUNCTION"], BlockType.PublicDefaultFunction },
+            { ["PRIVATE", "FUNCTION"], BlockType.PrivateFunction },
+
+            // - Property Get
+            { ["PROPERTY", "GET"], BlockType.PublicPropertyGet },
+            { ["PUBLIC", "PROPERTY", "GET"], BlockType.PublicPropertyGet },
+            { ["PUBLIC", "DEFAULT", "PROPERTY", "GET"], BlockType.PublicDefaultPropertyGet },
+            { ["PRIVATE", "PROPERTY", "GET"], BlockType.PrivatePropertyGet },
+
+            // - Property Let / Set
+            { ["PROPERTY", "LET"], BlockType.PublicPropertyLet },
+            { ["PROPERTY", "SET"], BlockType.PublicPropertySet },
+            { ["PUBLIC", "PROPERTY", "LET"], BlockType.PublicPropertyLet },
+            { ["PUBLIC", "PROPERTY", "SET"], BlockType.PublicPropertySet },
+            { ["PRIVATE", "PROPERTY", "LET"], BlockType.PrivatePropertyLet },
+            { ["PRIVATE", "PROPERTY", "SET"], BlockType.PrivatePropertySet }
+        };
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// Note: This handles both FUNCTION and SUB blocks, since they are essentially the same
@@ -41,44 +70,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            // Look for start of function declaration
-            Dictionary<string[], BlockType> matchPatterns = new Dictionary<string[], BlockType>();
-
-            // - Sub
-            matchPatterns.Add(["SUB"], BlockType.PublicSub);
-            matchPatterns.Add(["PUBLIC", "SUB"], BlockType.PublicSub);
-            matchPatterns.Add(["PRIVATE", "SUB"], BlockType.PrivateSub);
-
-            // - Function
-            matchPatterns.Add(["FUNCTION"], BlockType.PublicFunction);
-            matchPatterns.Add(["PUBLIC", "FUNCTION"], BlockType.PublicFunction);
-            matchPatterns.Add(["PUBLIC", "DEFAULT", "FUNCTION"], BlockType.PublicDefaultFunction);
-            matchPatterns.Add(["PRIVATE", "FUNCTION"], BlockType.PrivateFunction);
-
-            // - Property Get
-            matchPatterns.Add(["PROPERTY", "GET"], BlockType.PublicPropertyGet);
-            matchPatterns.Add(["PUBLIC", "PROPERTY", "GET"], BlockType.PublicPropertyGet);
-            matchPatterns.Add(["PUBLIC", "DEFAULT", "PROPERTY", "GET"], BlockType.PublicDefaultPropertyGet);
-            matchPatterns.Add(["PRIVATE", "PROPERTY", "GET"], BlockType.PrivatePropertyGet);
-
-            // - Property Let / Set
-            matchPatterns.Add(["PROPERTY", "LET"], BlockType.PublicPropertyLet);
-            matchPatterns.Add(["PROPERTY", "SET"], BlockType.PublicPropertySet);
-            matchPatterns.Add(["PUBLIC", "PROPERTY", "LET"], BlockType.PublicPropertyLet);
-            matchPatterns.Add(["PUBLIC", "PROPERTY", "SET"], BlockType.PublicPropertySet);
-            matchPatterns.Add(["PRIVATE", "PROPERTY", "LET"], BlockType.PrivatePropertyLet);
-            matchPatterns.Add(["PRIVATE", "PROPERTY", "SET"], BlockType.PrivatePropertySet);
-
             bool match = false;
             int matchPatternLength = 0;
             BlockType blockType = BlockType.Unknown;
-            foreach (string[] matchPattern in matchPatterns.Keys)
+            foreach (string[] matchPattern in MatchPatterns.Keys)
             {
                 if (checkAtomTokenPattern(tokens, matchPattern, false))
                 {
                     match = true;
                     matchPatternLength = matchPattern.Length;
-                    blockType = matchPatterns[matchPattern];
+                    blockType = MatchPatterns[matchPattern];
                     break;
                 }
             }

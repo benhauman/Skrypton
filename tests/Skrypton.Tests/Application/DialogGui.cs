@@ -792,10 +792,14 @@ WScript.Echo xmlhttp.responseText
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
+            for (int ixx = 1; ixx <= 7; ixx++)
+            {
+                ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
+            }
 
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
+
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
                 foreach (var mi in mis)
                 {
@@ -807,15 +811,20 @@ WScript.Echo xmlhttp.responseText
 
                 // 1: IncReqOnLoad
                 string[] scriptNames = dialog.ScriptNames.OrderBy(x => x).ToArray();
-                int ixSearch = 0;
-                foreach (string scriptName in scriptNames)
+
+                for (int ixx = 1; ixx <= 7; ixx++)
                 {
 
-                    Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
-                    //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
-                    ScriptControlClass.RunProcedure(gr, scriptName, []);
+                    int ixSearch = 0;
+                    foreach (string scriptName in scriptNames)
+                    {
 
-                    ixSearch++;
+                        Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
+                        //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
+                        ScriptControlClass.RunProcedure(gr, scriptName, []);
+
+                        ixSearch++;
+                    }
                 }
             });
             /*

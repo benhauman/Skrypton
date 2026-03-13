@@ -8,6 +8,18 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
     public sealed class ExitHandler : AbstractBlockHandler // public due to tests
     {
+        private static readonly (ExitStatement.ExitableStatementType ExitType, string Name)[] s_exitTypes = InitializeExitTypes(); // ToString() called once here
+        private static (ExitStatement.ExitableStatementType, string)[] InitializeExitTypes()
+        {
+            var values = (ExitStatement.ExitableStatementType[])Enum.GetValues(typeof(ExitStatement.ExitableStatementType));
+            var arr = new (ExitStatement.ExitableStatementType, string)[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                arr[i] = (values[i], values[i].ToString());
+            }
+
+            return arr;
+        }
         /// <summary>
         /// The token list will be edited in-place as handlers are able to deal with the content, so the input list should expect to be mutated
         /// </summary>
@@ -18,9 +30,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == 0)
                 return null;
 
-            foreach (ExitStatement.ExitableStatementType exitType in Enum.GetValues(typeof(ExitStatement.ExitableStatementType)))
+            for (var ixPair = 0; ixPair < s_exitTypes.Length; ixPair++)
             {
-                string[] matchPattern = new string[] { "EXIT", exitType.ToString() };
+                var exitPair = s_exitTypes[ixPair];
+                string[] matchPattern = new string[] { "EXIT", exitPair.Name };
                 if (checkAtomTokenPattern(tokens, matchPattern, false))
                 {
                     var lineIndexOfExit = tokens[0].LineIndex;
@@ -30,12 +43,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         if (!(tokens[matchPattern.Length] is AbstractEndOfStatementToken))
                             throw new InvalidOperationException("EXIT statement wasn't followed by end-of-statement token");
                     }
+
                     tokens.RemoveRange(0, matchPattern.Length);
                     if (requireAnEndOfStatementToken)
                         tokens.RemoveRange(0, 1);
-                    return new ExitStatement(exitType, lineIndexOfExit);
+                    return new ExitStatement(exitPair.ExitType, lineIndexOfExit);
                 }
             }
+
             return null;
         }
     }

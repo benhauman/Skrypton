@@ -229,7 +229,7 @@ namespace Skrypton.CSharpWriter
 
     public sealed class DefaultVBScriptNameRewriter : VBScriptNameRewriter
     {
-        private readonly Dictionary<string, RewriteEntry> _entries = new Dictionary<string, RewriteEntry>();
+        private readonly Dictionary<string, (RewriteEntry, CSharpName)> _entries = new Dictionary<string, (RewriteEntry, CSharpName)>();
         private sealed class RewriteEntry
         {
             public string OriginalName { get; }
@@ -248,27 +248,32 @@ namespace Skrypton.CSharpWriter
         }
         internal string RewriteName(string value, int line)
         {
+            return RewriteNameX(value, line).Item1.RewrittenName;
+        }
+        private (RewriteEntry, CSharpName) RewriteNameX(string value, int line)
+        {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
 #pragma warning disable CA1308 // Specify CultureInfo
             string key = value.ToLower(CultureInfo.InvariantCulture);
 #pragma warning restore CA1308 // Specify CultureInfo
-            if (_entries.TryGetValue(key, out RewriteEntry entry))
+            if (_entries.TryGetValue(key, out (RewriteEntry, CSharpName) entry))
             {
                 // already registered.
             }
             else
             {
                 string rewrittenName = DefaultRuntimeSupportClassFactory.RewriteName(value);
-                entry = new RewriteEntry(originalName: value, rewrittenName: rewrittenName, 0);
+                var entryR = new RewriteEntry(originalName: value, rewrittenName: rewrittenName, 0);
+                entry = (entryR, new CSharpName(entryR.RewrittenName));
                 _entries.Add(key, entry);
             }
-            return entry.RewrittenName;
+            return entry;
         }
         public override CSharpName RewriteVBScriptName(NameToken name)
         {
-            return new CSharpName(RewriteName(name.Content, name.LineIndex));
+            return RewriteNameX(name.Content, name.LineIndex).Item2;
         }
     }
 }
