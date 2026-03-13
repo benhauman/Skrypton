@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
@@ -9,22 +8,20 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     {
         public CSharpName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Null/blank name specified");
-            if (name.Any(c => char.IsWhiteSpace(c)))
-                throw new ArgumentException("Specified name contains whitespace - invalid");
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (name.Length == 0) throw new ArgumentException("Blank name specified", nameof(name));
+            for (int ix = 0; ix < name.Length; ix++)// PERFORMANCE:(no linq) if (name.Any(c => char.IsWhiteSpace(c)))
+            {
+                if (char.IsWhiteSpace(name, ix))
+                    throw new ArgumentException("Specified name contains Whitespace - invalid", nameof(name));
+            }
 
             Name = name;
         }
 
         /// <summary>
-        /// This will never be null, blank or contain any whitespace
+        /// This will never be null, blank or contain any Whitespace
         /// </summary>
         public string Name { get; private set; }
-
-        public override string ToString()
-        {
-            return base.ToString() + ":" + Name;
-        }
     }
 }

@@ -78,7 +78,7 @@ ok:64bit! CreateObject("VBScript.RegExp") - not on linux! C:\Windows\SysWOW64\vb
 !!! CreateObject("Outlook.Application") _CustomerTest_PmcsHl2	1185
 !!! CreateObject("Profile") _CustomerTest_SwissGrid	1694
 !!! CreateObject("Scripting.FileSystemObject")  _CustomerTest_Gazprom	3
-!!! CreateObject("Scriptlet.TypeLib") _CustomerTest_SwarovskiNeu	1425
+!!! CreateObject("Scriptlet.TypeLib") _CustomerTest_SwarovskiNeu	1425  => C:\Windows\System32\scriptlet.dll, ProgID: Scriptlet.TypeLib CLSID: {06290BD5-48AA-11D2-8432-006008C3FBFC} =>  Left(TypeLib.Guid, 38)
 !!! CreateObject("System.Collections.ArrayList") _CustomerTest_BerlinerFw20211004AL	1316
 !!! CreateObject("WbemScripting.SWbemDateTime")		_CustomerTest_DFSnDL	428
 !!! CreateObject("WinHttp.WinHttpRequest.5.1")	_CustomerTest_HDM	448
