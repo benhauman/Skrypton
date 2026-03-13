@@ -41,7 +41,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 {
                     var builtInValueToken = value as BuiltInValueToken;
                     if ((builtInValueToken == null) || !builtInValueToken.IsAcceptableAsConstValue)
-                        throw new ArgumentException("Invalid CONST value - must be a literal or supported builtin value");
+                        throw new ArgumentException($"Invalid CONST value - must be a literal or supported builtin value type and not '{value.GetType().Name}'. Line:{value.LineIndex}:{value.Content}", nameof(value));
                 }
 
                 Name = name ?? throw new ArgumentNullException(nameof(name));

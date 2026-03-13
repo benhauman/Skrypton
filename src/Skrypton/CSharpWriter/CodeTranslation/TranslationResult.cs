@@ -4,7 +4,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    public class TranslationResult
+    public sealed class TranslationResult
     {
         public TranslationResult(
             NonNullImmutableList<TranslatedStatement> translatedStatements,
@@ -15,6 +15,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             ExplicitVariableDeclarations = explicitVariableDeclarations ?? throw new ArgumentNullException(nameof(explicitVariableDeclarations));
             UndeclaredVariablesAccessed = undeclaredVariablesAccessed ?? throw new ArgumentNullException(nameof(undeclaredVariablesAccessed));
         }
+
 
         public static TranslationResult Empty
         {

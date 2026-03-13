@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.Lists
 {
@@ -9,6 +10,8 @@ namespace Skrypton.CSharpWriter.Lists
     {
         private readonly static Validator _defaultValidator = new Validator(null);
         private readonly IValueValidator<T>? _optionalValueValidator;
+
+        internal T[] DebugArray => this.ToArray();
 
         public NonNullImmutableList() : this((IValueValidator<T>?)null) { }
         public NonNullImmutableList(IEnumerable<T> values) : this(values, null) { }

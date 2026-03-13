@@ -2420,9 +2420,9 @@ namespace TranslatedProgram
 
         public void ButtonEmailPreview_Click()
         {
-            Int16 ForReading = (Int16)1;
-            Int16 ForWriting = (Int16)2;
-            Int16 ForAppending = (Int16)8;
+            const Int16 ForReading = (Int16)1;
+            const Int16 ForWriting = (Int16)2;
+            const Int16 ForAppending = (Int16)8;
             object OriginDescr = null;
             object Status = null; /* Undeclared in source */
             object HLinkToCase = null; /* Undeclared in source */
@@ -2503,9 +2503,6 @@ namespace TranslatedProgram
             //M.Rettig, 14.05.2012 - SU-Email als HTML-Vorschau
             if (_.IF(_.EQ(_.NullableSTR(Status), "IncidentStatusClosed")))
             {
-                ForReading = (Int16)1;
-                ForWriting = (Int16)2;
-                ForAppending = (Int16)8;
 
                 OriginDescr = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 MailBody = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));

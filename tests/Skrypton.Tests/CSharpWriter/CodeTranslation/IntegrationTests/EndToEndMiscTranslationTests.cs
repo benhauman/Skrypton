@@ -487,16 +487,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             var source = @"
 				const SOME_CONSTANT = &H0001
+                Dim vv: vv = SOME_CONSTANT
 			";
-            var expected = new[]
-            {
-                "_outer.SOME_CONSTANT = (Int16)1;"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                _outer.vv = _.VAL(_outer.SOME_CONSTANT);
+            ";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>

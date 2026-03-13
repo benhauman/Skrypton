@@ -21,9 +21,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _outer.HLASC_Software2Computer = "Software2Computer";
-            _outer.HLASC_SoftwareLicenseGroupView = "LicenseGroupView";
-            _outer.HLASC_SoftwareLicenseFolderView = "LicenseFolderView";
             //---------------------------------------------------------------
 
             //---------------------------------------------------------------

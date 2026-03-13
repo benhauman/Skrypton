@@ -37,15 +37,12 @@ namespace TranslatedProgram
 
         public void TestFso()
         {
-            Int16 ForReading = (Int16)1;
-            Int16 ForWriting = (Int16)2;
-            Int16 ForAppending = (Int16)8;
+            const Int16 ForReading = (Int16)1;
+            const Int16 ForWriting = (Int16)2;
+            const Int16 ForAppending = (Int16)8;
             object fso = null;
             object BodyText = null;
             object f = null;
-            ForReading = (Int16)1;
-            ForWriting = (Int16)2;
-            ForAppending = (Int16)8;
 
             fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
             f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpLine\\IntermediateReply.html").Val(ForReading)));

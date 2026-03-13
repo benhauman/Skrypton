@@ -227,8 +227,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             //   }
             //
             // The value "cn1" is set to 123 immediately, before any other processing (ie. the call to F2) occurs.
-            var translatedStatements = translationResult.TranslatedStatements.Insert(
-                    constStatement.Values.Select(value =>
+            var translatedStatements = translationResult.TranslatedStatements;/*.Insert(
+                    constStatement.Values
+                        .Select(value =>
                         new TranslatedStatement(
                             string.Format(CultureInfo.InvariantCulture,
                                 "{0}{1} = {2};",
@@ -241,7 +242,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         )
                     ).ToArray(),
                     0
-                );
+                );*/
             var xx2 = translationResult.ExplicitVariableDeclarations.AddRange(
                 constStatement.Values.Select(v => new VariableDeclaration(
                     v.Name,
@@ -1136,7 +1137,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         typeText = "object";
                     }
 
-                    string locText = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? $"{typeText} " : "";
+                    string constText = variableDeclaration.IsConstant ? "const " : "";
+                    string locText = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? $"{constText}{typeText} " : "";
                     return $"{locText}{rewrittenName} = {initText};";
                 });
             }

@@ -70,18 +70,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void ReDimAfterConstForSameNameInSameScopeResultsInIllegalAssignmentRuntimeError()
         {
             var source = @"
-				CONST a = 1
-				ReDim a(1)
+sub test
+    CONST a = 1
+    ReDim a(1)
+end sub
 			";
             var expected = @"
-				_outer.a = (Int16)1;
-				_.NEWARRAY(new object[] { (Int16)1 });
-				_.RAISEERROR(new IllegalAssignmentException(""'a'""));";
+public void test()
+{
+    const Int16 a = (Int16)1;
+    _.NEWARRAY(new object[] { (Int16)1 });
+    _.RAISEERROR(new IllegalAssignmentException(""'a'""));
+}
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -89,25 +91,22 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         {
             var source = @"
 				Const a = 1
+                Dim obj: obj = a
 				Function F1()
 					Const a = 1
+                    F1 = a
 				End Function
 			";
             var expected = @"
-				_outer.a = (Int16)1;
-
-				public object F1()
-				{
-					object F1_retVal = null;
-					Int16 a = (Int16)1;
-					a = (Int16)1;
-					return F1_retVal;
-				}";
+_outer.obj = _.VAL(_outer.a);
+public object F1()
+{
+    object F1_retVal = null;
+    const Int16 a = (Int16)1;
+    F1_retVal = _.VAL(a);
+    return F1_retVal;
+}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -118,18 +117,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void ConstValuesShouldAlwaysBePassedToFunctionsByVal()
         {
             var source = @"
-				Const a = 1
-				F1 a
-				Function F1(a)
-				End Function
+                Const a = 1
+                F1 a
+                Function F1(a)
+                End Function
 			";
             var expected = @"
-				_outer.a = (Int16)1;
-				_.CALLm1argp(this, _outer, ""F1"", _.ARGS.Val(_outer.a));
-				public object F1(ref object a)
-				{
-					return null;
-				}";
+_.CALLm1argp(this, _outer, ""F1"", _.ARGS.Val(_outer.a));
+public object F1(ref object a)
+{
+return null;
+}
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             //myAssert.AreEqual(
             //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
@@ -144,13 +143,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyFact]
         public void StringValuesAreCorrectlyEscaped()
         {
-            var source = "const name = \"test\"";
-            var expected = "_outer.name = \"test\";";
+            var source = @"
+sub func
+    const name = ""test""
+    msgbox name
+end sub
+                ";
+            var expected = @"
+public void func()
+{
+    const string name = ""test"";
+    _.MSGBOX(name);
+}
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
     }
 }

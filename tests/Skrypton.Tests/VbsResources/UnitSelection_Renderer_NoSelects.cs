@@ -21,11 +21,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _outer.BOOKING_PollingRedirect = (Int16)3;
-            _outer.BOOKING_Redirect = (Int16)2;
-            _outer.BOOKING_Eviivo = (Int16)1;
-            _outer.BOOKING_Local = (Int16)0;
-
             _outer.InterfaceVersion = (Int16)1;
 
             //nasty globals

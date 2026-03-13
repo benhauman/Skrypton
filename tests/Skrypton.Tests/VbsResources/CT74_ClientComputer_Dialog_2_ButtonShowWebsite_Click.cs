@@ -43,12 +43,12 @@ namespace TranslatedProgram
             object sDatabaseName = null;
             object sUser = null;
             object sPassword = null;
-            Int16 adCmdStoredProc = (Int16)4;
-            Int16 adInteger = (Int16)3;
-            Int16 adVarWChar = (Int16)202;
-            Int16 adParamInput = (Int16)1;
-            Int16 adParamOutput = (Int16)2;
-            Int16 adParamReturnValue = (Int16)4;
+            const Int16 adCmdStoredProc = (Int16)4;
+            const Int16 adInteger = (Int16)3;
+            const Int16 adVarWChar = (Int16)202;
+            const Int16 adParamInput = (Int16)1;
+            const Int16 adParamOutput = (Int16)2;
+            const Int16 adParamReturnValue = (Int16)4;
             object parmname = null;
             object parmval = null;
             object FirstCharName = null;
@@ -64,12 +64,6 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.hlObj, "IsNew")), (Int16)1)))
             {
-                adParamReturnValue = (Int16)4;
-                adParamOutput = (Int16)2;
-                adParamInput = (Int16)1;
-                adVarWChar = (Int16)202;
-                adInteger = (Int16)3;
-                adCmdStoredProc = (Int16)4;
 
                 sDatabaseName = "HLData";
                 sServer = "MSSQLB";

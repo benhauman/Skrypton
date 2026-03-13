@@ -21,8 +21,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _outer.HLASC_SoftwareLicenseGroupView = 110944;
-            _outer.HLASC_SoftwareLicenseFolderView = 110941;
             //----------------------------------------------------------------------------------------------------------
             //Globale Konstanten fuer freie Assoziationsdefinitionen
 
@@ -1123,8 +1121,7 @@ namespace TranslatedProgram
         public object DBConnectionString(ref object hlContext)
         {
             object DBConnectionString_retVal = null;
-            string DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2";
-            DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2";
+            const string DBConnection = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2";
 
             return DBConnectionString_retVal;
         }
