@@ -735,12 +735,15 @@ WScript.Echo xmlhttp.responseText
                    //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
                    //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
                    .RegisterValueKey<string>("Keywords.KeywordOrga", 0, 0, "")
+                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 0, 2) // last su
 
                 .RegisterServiceUnitIndex(1)
-                .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
+                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 1, 1)
+                    .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
 
 
                 .RegisterServiceUnitIndex(2)
+                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 2, 2)
                     .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
             var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, objectId: 101301, objectDefName: "MyPersonDef")
@@ -760,6 +763,7 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
                     .RegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
                 ;
+            model.RegisterSymbolObjectProvider("Default", () => hlobj);
             model.RegisterSymbolObjectProvider("product", () => symbol_product);
             model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
@@ -808,8 +812,8 @@ WScript.Echo xmlhttp.responseText
                 {
 
                     Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
-                    Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
-                    //ScriptControlClass.RunProcedure(gr, scriptName, []);
+                    //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
+                    ScriptControlClass.RunProcedure(gr, scriptName, []);
 
                     ixSearch++;
                 }
@@ -881,7 +885,11 @@ WScript.Echo xmlhttp.responseText
                     //Console.WriteLine($"{ControlTypeName} | {controlPropertyName}");
 
                     var setter = controlBase.ShouldInitValueForProperty(controlPropertyName);
-                    if (setter != null)
+                    if (setter == null)
+                    {
+                        Console.WriteLine($"IGNORE: {ControlTypeName} | {controlPropertyName} = ...");
+                    }
+                    else
                     {
                         // xsi:type
 
@@ -920,7 +928,7 @@ WScript.Echo xmlhttp.responseText
     }
 
     [DebuggerDisplay("{Name}")]
-    internal sealed class SymbolName
+    public sealed class SymbolName
     {
         public string Name { get; }
 

@@ -689,15 +689,15 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
             [param: In]
             set;
         }
-
+        */
         [DispId(1006)]
-        new bool EOF
+        bool EOF
         {
-            [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+            //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(1006)]
             get;
         }
-        */
+
         /*
         [DispId(0)]
         Fields Fields
@@ -784,19 +784,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1017)]
         new void Move([In] int NumRecords, [Optional][In][MarshalAs(UnmanagedType.Struct)] object Start);
-
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        */
+        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1018)]
-        new void MoveNext();
-
+        void MoveNext();
+        /*
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1019)]
         new void MovePrevious();
-
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        */
+        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1020)]
-        new void MoveFirst();
-
+        void MoveFirst();
+        /*
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(1021)]
         new void MoveLast();
@@ -1094,6 +1094,27 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
 
         [DispId(1014)]
         public void Close()
+        {
+
+        }
+
+        [DispId(1020)]
+        public void MoveFirst()
+        {
+
+        }
+
+        [DispId(1006)]
+        public bool EOF
+        {
+            [DispId(1006)]
+            get
+            {
+                return true;
+            }
+        }
+        [DispId(1018)]
+        public void MoveNext()
         {
 
         }

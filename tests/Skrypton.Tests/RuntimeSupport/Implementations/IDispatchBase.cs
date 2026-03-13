@@ -435,11 +435,30 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             catch (System.MissingMemberException ex)
             {
                 if (ex.Message.Length > 0)
-                    DebugInspectMember(name, invokeAttr, args);
+                {
+                    MemberInfo candidate = DebugInspectMember(name, invokeAttr, args);
+                    if (candidate != null &&  candidate is MethodInfo mtd)
+                    {
+                        return mtd.Invoke(target ?? this, args);
+                    }
+                    else if (candidate != null && candidate is PropertyInfo prp)
+                    {
+                        if (invokeAttr.HasFlag(BindingFlags.SetProperty))
+                        {
+                            prp.SetValue(target ?? this, args);
+                            return null;
+                        }
+                        else
+                        {
+                            return prp.GetValue(target ?? this, args);
+
+                        }
+                    }
+                }
                 throw;
             }
         }
-        private void DebugInspectMember(string name, BindingFlags invokeAttr, object[] args)
+        private MemberInfo DebugInspectMember(string name, BindingFlags invokeAttr, object[] args)
         {
 
             MemberInfo[] members = _type.GetMembers(invokeAttr | BindingFlagsVBScript);
@@ -543,10 +562,12 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             if (candidate == null)
             {
                 // NOT FOUND: put a breakpoint here
+                return null;
             }
             else
             {
                 // FOUND: put a breakpoint here
+                return candidate;
             }
         }
     }

@@ -200,7 +200,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
     internal sealed class TestFileSystem : IHostFileSystemHostService
     {
-        private readonly Dictionary<string, string> _allfiles = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, StringBuilder> _allfiles = new Dictionary<string, StringBuilder>(StringComparer.OrdinalIgnoreCase);
 
         public TestFileSystem()
         {
@@ -278,15 +278,20 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         StreamReader IHostFileSystemHostService.OpenTextFileRead(string path)
         {
-            throw new NotImplementedException();
+            if (_allfiles.TryGetValue(path, out StringBuilder content))
+            {
+                byte[] buffer = Encoding.UTF8.GetBytes(content.ToString());
+                return new StreamReader(new MemoryStream(buffer));
+            }
+
+            throw new NotImplementedException($"[FS].OpenTextFileWrite(path:'{path}'");
         }
 
         Stream IHostFileSystemHostService.OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)
         {
-            if (_allfiles.TryGetValue(path, out string content))
+            if (_allfiles.TryGetValue(path, out StringBuilder content))
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(content);
-                return new MemoryStream(buffer);
+                return new StringStream(content);
             }
 
             throw new NotImplementedException($"[FS].OpenTextFileWrite(path:'{path}', createIfNotExists:{createIfNotExists}, overwriteIfExists:{overwriteIfExists}, append:{append})");
@@ -294,8 +299,42 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
 
         public TestFileSystem AddTestFile(string path, string content)
         {
-            _allfiles.Add(path, content);
+            _allfiles.Add(path, new StringBuilder(content));
             return this;
+        }
+        private sealed class StringStream : Stream
+        {
+            // Usage:
+            //var s = new StringStream(buffer);
+            //s.Write(Encoding.UTF8.GetBytes("Hello Custom Stream!"));
+            //Console.WriteLine(s.Result);
+
+            private readonly StringBuilder _builder;
+
+            public StringStream(StringBuilder builder)
+            {
+                _builder = builder;
+            }
+
+            //public string Result => _builder.ToString();
+
+            public override bool CanWrite => true;
+            public override bool CanRead => false;
+            public override bool CanSeek => false;
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                var text = Encoding.UTF8.GetString(buffer, offset, count);
+                _builder.Append(text);
+            }
+
+            public override void Flush() { }
+
+            public override long Length => throw new NotSupportedException();
+            public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
         }
     }
 }

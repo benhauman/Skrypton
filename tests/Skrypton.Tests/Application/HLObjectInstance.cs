@@ -71,13 +71,15 @@ namespace Skrypton.Tests.Application
         public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
         {
             Console.WriteLine($"{_traceName}SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name)}):{newValue})");
-            if (_values.TryGetValue(new ObjectValueKey((string)key, ContentID, suidx), out var ov))
+            var vk = new ObjectValueKey((string)key, ContentID, suidx);
+            if (_values.TryGetValue(vk, out var ov))
             {
                 ov.UpdateValue(newValue);
             }
             else
             {
-                throw new InvalidOperationException($"{_traceName}SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+                _values.Add(vk, new ObjectValueData(newValue?.GetType() ?? typeof(string)).NewValue(newValue));
+//                throw new InvalidOperationException($"{_traceName}SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
             }
         }
         public int GetItemCount(int flags, object assocdef)//(0, 130)' not found
@@ -99,12 +101,15 @@ namespace Skrypton.Tests.Application
         public object IsReadOnly(object key, int suidx) // 1:true, 0:false
         {
             Console.WriteLine($"IsReadOnly('{key}', suidx:{suidx}");
-            if (_values.TryGetValue(new ObjectValueKey((string)key, contentId: 0, suidx), out var ov))
+            var vk = new ObjectValueKey((string)key, contentId: 0, suidx);
+            if (_values.TryGetValue(vk, out var ov))
             {
                 return false;
             }
             else
             {
+                if (vk.AttributePath == "CASEINFO.REACTIONTIME")
+                    return false;
                 throw new InvalidOperationException($"IsReadOnly('{key}', suidx:{suidx}");
             }
         }
@@ -137,7 +142,7 @@ namespace Skrypton.Tests.Application
             throw new NotImplementedException($"[{vk.DebugText}]({ov.DataType.Name}):{ov.DataRaw}");
         }
 
-        [DebuggerDisplay("{Key}")]
+        [DebuggerDisplay("{AttributePath}")]
         private sealed class ObjectValueKey : Tuple<string, int, int>
         {
             public ObjectValueKey(string key, int contentId, int suidx)
@@ -145,7 +150,7 @@ namespace Skrypton.Tests.Application
             {
                 DebugText = $"{key}, c:{contentId}, sux:{suidx}";
             }
-            public string Key => Item1;
+            public string AttributePath => Item1;
 
             internal readonly string DebugText;
         }
@@ -188,6 +193,11 @@ namespace Skrypton.Tests.Application
             public void UpdateValue(object newValue)
             {
                 SetData(newValue);
+            }
+            public ObjectValueData NewValue(object newValue)
+            {
+                SetData(newValue);
+                return this;
             }
         }
     }

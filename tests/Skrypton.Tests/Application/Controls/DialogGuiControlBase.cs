@@ -27,6 +27,9 @@ namespace Skrypton.Tests.Application.Controls
         public bool Disabled { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
         public bool UiActive { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
 
+        public SymbolName SymbolName { get => GetPropertyValueAsT<SymbolName>(); set => SetPropertyValueAsT(value); }
+        public string AttributeKey { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+
         private ShowControlType _valueShowControl;
         public short ShowControl // see ShowControlType
         {
@@ -34,6 +37,7 @@ namespace Skrypton.Tests.Application.Controls
             set => _valueShowControl = (ShowControlType)value;
         }
 
+        public string TextColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
         public string BackColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
         public bool RequestFocus { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
         public bool Required { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
@@ -79,7 +83,9 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTextBox", () => new DialogGuiTextControl() },
             { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
             { "HelpLineSearchButton", () => new DialogGuiSearchButtonControl() },
+            { "HelpLineTreeSelControl", () => new HelpLineTreeSelControl()},
             { "HelpLineLabel", () => new DialogGuiLabelControl() },
+            { "HelpLineDateTimeControl", () => new DialogGuiDateTimeControl() },
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -138,6 +144,37 @@ namespace Skrypton.Tests.Application.Controls
         {
             ControlTypeName = controlTypeName;
         }
+
+        //public void SelectTreeItem(object treeItem)
+        //{
+        //    Console.WriteLine($"[UnknownControl]({ID}).SelectTreeItem({treeItem})");
+        //    throw new NotSupportedException($"[UnknownControl:{ControlTypeName}]({ID}).SelectTreeItem({treeItem})");
+
+        //}
+        //public void ExpandTreeItem(object treeItem)
+        //{
+        //    Console.WriteLine($"[UnknownControl]({ID}).SelectTreeItem({treeItem})");
+        //    throw new NotSupportedException($"[UnknownControl{ControlTypeName}]({ID}).SelectTreeItem({treeItem})");
+        //}
+    }
+    public sealed class HelpLineTreeSelControl : DialogGuiControlBase
+    {
+        public void SelectTreeItem(object treeItem)
+        {
+            Console.WriteLine($"[TreeSel]({ID}).SelectTreeItem({treeItem})");
+        }
+        public void ExpandTreeItem(object treeItem)
+        {
+            Console.WriteLine($"[TreeSel]({ID}).SelectTreeItem({treeItem})");
+        }
+    }
+
+    public sealed class DialogGuiDateTimeControl : DialogGuiControlBase
+    {
+        public void DeleteContent()
+        {
+            Console.WriteLine($"[DateTimeControl]({ID}).DeleteContent");
+        }
     }
 
     public sealed class DialogGuiComboBoxControl : DialogGuiControlBase
@@ -157,8 +194,25 @@ namespace Skrypton.Tests.Application.Controls
         {
             get
             {
-                return "";
+                var hlobj = model.GetHelpLineObject(SymbolName.Name);
+                return (string)hlobj.GetValue(AttributeKey, 0, 0, 0, 0);
+                //return "";
             }
+            set
+            {
+                var hlobj = model.GetHelpLineObject(SymbolName.Name);
+                hlobj.SetValue(AttributeKey, 0, 0, 0, value);
+            }
+        }
+
+        public void ResetContent()
+        {
+            Console.WriteLine($"[ComboBox]({ID}).ResetContent");
+        }
+
+        public void AddItem(string item)
+        {
+            Console.WriteLine($"[ComboBox]({ID}).AddItem('{item}')");
         }
     }
 
