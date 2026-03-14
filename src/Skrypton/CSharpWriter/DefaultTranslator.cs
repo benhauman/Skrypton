@@ -26,7 +26,7 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static IReadOnlyCollection<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+        public static IReadOnlyCollection<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies)
         {
             return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
@@ -78,7 +78,7 @@ namespace Skrypton.CSharpWriter
         internal static IReadOnlyCollection<TranslatedStatement> TranslateCore(
             CultureInfo culture,
             string scriptContent,
-            NonNullImmutableList<string> externalDependencies,
+            IReadOnlyCollection<string> externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
             ILogInformation logger
             )

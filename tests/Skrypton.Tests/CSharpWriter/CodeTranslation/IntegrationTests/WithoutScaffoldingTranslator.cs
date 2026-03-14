@@ -7,6 +7,7 @@ using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation;
 using System.Text;
 using Microsoft.Testing.Extensions.VSTestBridge;
+using System.Collections.Generic;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -35,7 +36,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     internal static class DefaultCSharpTranslation
     {
         public const char NewLineNormalized = '\n';
-        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, NonNullImmutableList<string> externalDependencies)
+        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, IReadOnlyCollection<string> externalDependencies)
         {
             var stmts = Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies);
 

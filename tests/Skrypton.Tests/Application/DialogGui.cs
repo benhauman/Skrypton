@@ -16,6 +16,7 @@ using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application.Controls;
+using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.Tests.RuntimeSupport.Implementations;
 using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
@@ -531,7 +532,15 @@ WScript.Echo xmlhttp.responseText
 
         private void DoDialogGui(DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
         {
-            CncIn.ExecuteTranslatedProgram(RuntimeLogger, dialog.HostServices, TestCulture, TestName, dialog.ExternalReferences, dialogHandler);
+            string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
+            if (translated_cs == null)
+            {
+                Console.WriteLine("translating...");
+                string scriptContent = dialog.CompleteScriptCode();
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray());
+            }
+
+            CncIn.ExecuteTranslatedProgram(this, RuntimeLogger, translated_cs, dialog.HostServices, TestCulture, TestName, dialog.ExternalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
@@ -793,7 +802,7 @@ WScript.Echo xmlhttp.responseText
                 .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
-            for (int ixx = 1; ixx <= 7; ixx++)
+            //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
             {
                 ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
             }
@@ -813,7 +822,7 @@ WScript.Echo xmlhttp.responseText
                 // 1: IncReqOnLoad
                 string[] scriptNames = dialog.ScriptNames.OrderBy(x => x).ToArray();
 
-                for (int ixx = 1; ixx <= 7; ixx++)
+                //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
                 {
 
                     int ixSearch = 0;
@@ -828,9 +837,56 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
             });
-            /*
-            */
         }
+
+        [TestMethod]
+        public void CT127_Dialog_1305()
+        {
+            string customerAlias = TestName.Split('_')[0];
+            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
+            string customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
+
+            var model = new DialogGuidModel();
+            var hlSession = new DialogGuiSession(TestCulture);
+
+            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
+                ;
+            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, objectId: 101301, objectDefName: "MyPersonDef")
+                ;
+
+            var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>
+                {
+                    //services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
+                    //    .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA())
+                    //);
+
+                    //services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
+                    //services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
+                    //services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
+                    //services.RegisterHostService<RuntimeSupport.Implementations.FileSystemSupport.IHostFileSystemHostService>(() => new TestFileSystem()
+                    //    .AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1")
+
+                    //);
+
+                }), model)
+                .AddExternalObject("model", model)
+                .AddExternalObject("hlSession", hlSession)
+                .AddExternalObject("hlObj", hlobj)
+                .AddExternalObject("hlCaller", hlcaller)
+                //.AddExternalObject("hlProduct", hlProduct)
+                //.AddExternalObject("hlProduct", hlOrgunit)
+                .SetGlobalScriptCode(customerDialogGlobalScript)
+                .BuildDialog();
+            model.RegisterSymbolObjectProvider("Default", () => hlobj);
+            //model.RegisterSymbolObjectProvider("product", () => symbol_product);
+            model.RegisterSymbolObjectProvider("caller", () => hlcaller);
+
+            Assert.Inconclusive(); // Compilation failed.(505,319): error CS0131: The left-hand side of an assignment must be a variable, property or indexer
+            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            {
+            });
+        }
+
     }
 
     public static class DialogBuilderXmlExtensions
@@ -881,7 +937,7 @@ WScript.Echo xmlhttp.responseText
             {
                 string ControlTypeName = xControl.Elements().Single(x => x.Name.LocalName == "ControlName").Value;
 
-                Console.WriteLine($"{ControlTypeName}");
+                //Console.WriteLine($"Read '{ControlTypeName}'");
                 DialogGuiControlBase controlBase = DialogGuiControlBase.ControlFactoryCreateDialogControl(ControlTypeName); // DialogGuiGroupBox
 
                 var xControlProperties = xControl.Elements().Single(x => x.Name.LocalName == "Properties");
@@ -895,7 +951,7 @@ WScript.Echo xmlhttp.responseText
                     var setter = controlBase.ShouldInitValueForProperty(controlPropertyName);
                     if (setter == null)
                     {
-                        Console.WriteLine($"IGNORE: {ControlTypeName} | {controlPropertyName} = ...");
+                        //Console.WriteLine($"IGNORE: {ControlTypeName} | {controlPropertyName} = ...");
                     }
                     else
                     {
@@ -913,7 +969,7 @@ WScript.Echo xmlhttp.responseText
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
 
-                        Console.WriteLine($"{ControlTypeName} | {controlPropertyName} = {controlPropertyValue}");
+                        //Console.WriteLine($"{ControlTypeName} | {controlPropertyName} = {controlPropertyValue}");
                         setter(controlPropertyValue);
                     }
                 }

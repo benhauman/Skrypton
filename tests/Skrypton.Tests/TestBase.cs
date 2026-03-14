@@ -87,6 +87,7 @@ namespace Skrypton.Tests
 
                 ///LongFileSupport.WriteAllText(filePath, content);
                 System.IO.File.WriteAllText(filePath, content);
+                Console.WriteLine($"fileName:{fileName}");
 
                 this.AddResultFile(filePath);
                 return filePath;

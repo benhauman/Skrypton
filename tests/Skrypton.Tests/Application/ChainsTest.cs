@@ -240,6 +240,16 @@ namespace Skrypton.Tests.Application
                     failed_text = $"C# translation failed. See 'Output' for more information. {NewLineNormalized}Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) {NewLineNormalized}E:'{snippetE}' {NewLineNormalized}A:'{snippetA}'. storedFile:" + storedFile;
                 }
             }
+            else
+            {
+                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected ?? "", translated_cs_actual);
+            }
+
+            if (generated_vbs_expected == null)
+            {
+                //storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected ?? "", generated_vbs_actual);
+                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".vbs", "", scriptContent);
+            }
 
             if (!string.IsNullOrEmpty(failed_text))
             {
@@ -247,7 +257,7 @@ namespace Skrypton.Tests.Application
             }
 
             //string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
-            _ = CncIn.CompileCSharpProgram(translated_cs_actual);
+            _ = CncIn.CompileCSharpProgram(tst, translated_cs_actual);
         }
 
         private static IOutermostScope FromXml(string xmlA)

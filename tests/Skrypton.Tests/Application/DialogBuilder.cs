@@ -27,30 +27,41 @@ namespace Skrypton.Tests.Application
             }
         }
 
+        private string _globalScriptCode { get; set; } = "";
+        public DialogBuilder SetGlobalScriptCode(string dialogGlobalScriptCode)
+        {
+            _globalScriptCode = dialogGlobalScriptCode ?? throw new ArgumentNullException(nameof(dialogGlobalScriptCode));
+            return this;
+        }
+
         public DialogBase BuildDialog(bool gui = true)
         {
             List<string> scriptNames = new List<string>();
-            StringBuilder dialogCode = new StringBuilder();
+            StringBuilder dialogHandlerScriptCodeBuilder = new StringBuilder();
             if (gui)
             {
                 foreach (KeyValuePair<string, string> script in GuiScripts)
                 {
                     scriptNames.Add(script.Key);
 
-                    dialogCode.Append($"SUB {script.Key}()");
+                    dialogHandlerScriptCodeBuilder.Append($"SUB {script.Key}()");
                     if (script.Value.Length > 0)
                     {
                         if (script.Value[0] != '\n')
-                            dialogCode.AppendLine();
-                        dialogCode.Append(script.Value);
+                            dialogHandlerScriptCodeBuilder.AppendLine();
+                        dialogHandlerScriptCodeBuilder.Append(script.Value);
                         if (script.Value[script.Value.Length - 1] != '\n')
-                            dialogCode.AppendLine();
+                            dialogHandlerScriptCodeBuilder.AppendLine();
                     }
-                    dialogCode.AppendLine($"END SUB");
+                    else
+                    {
+                        dialogHandlerScriptCodeBuilder.AppendLine();
+                    }
+                    dialogHandlerScriptCodeBuilder.AppendLine($"END SUB");
                 }
             }
 
-            return new DialogBase(_hostServices, dialogCode.ToString(), _externalReferences, scriptNames);
+            return new DialogBase(_hostServices, _globalScriptCode, dialogHandlerScriptCodeBuilder.ToString(), _externalReferences, scriptNames);
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
@@ -137,16 +148,25 @@ namespace Skrypton.Tests.Application
     {
         public IReadOnlyDictionary<string, object> ExternalReferences { get; }
         public IServiceProvider HostServices { get; }
-        public string DialogScriptCode { get; }
+        public string DialogHandlerScriptCode { get; }
+        public string DialogGlobalScriptCode { get; }
 
         public IReadOnlyCollection<string> ScriptNames { get; }
 
-        public DialogBase(IServiceProvider hostServices, string dialogScriptCode, IReadOnlyDictionary<string, object> externalReferences, IReadOnlyCollection<string> scriptNames)
+        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode,  string dialogHandlerScriptCode, IReadOnlyDictionary<string, object> externalReferences, IReadOnlyCollection<string> scriptNames)
         {
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
-            DialogScriptCode = dialogScriptCode ?? throw new ArgumentNullException(nameof(dialogScriptCode));
+            DialogGlobalScriptCode = dialogGlobalScriptCode ?? throw new ArgumentNullException(nameof(dialogGlobalScriptCode));
+            DialogHandlerScriptCode = dialogHandlerScriptCode ?? throw new ArgumentNullException(nameof(dialogHandlerScriptCode));
             ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
             ScriptNames = scriptNames ?? throw new ArgumentNullException(nameof(scriptNames));
+        }
+
+        internal string CompleteScriptCode()
+        {
+            if (string.IsNullOrEmpty(DialogGlobalScriptCode))
+                return DialogHandlerScriptCode;
+            return new StringBuilder().AppendLine(DialogGlobalScriptCode).AppendLine(DialogHandlerScriptCode).ToString();
         }
     }
 }

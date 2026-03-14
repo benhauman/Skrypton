@@ -76,17 +76,18 @@ namespace Skrypton.Tests.Application
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
             var hostServices = CreateTestHostServices();
-            ExecuteTranslatedProgram(RuntimeLogger, hostServices, TestCulture, TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
+            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
+            ExecuteTranslatedProgram(this, RuntimeLogger, translated_cs_expected, hostServices, TestCulture, TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        internal static void ExecuteTranslatedProgram(TestBase tst, IRuntimeLogger runtimeLogger, string translated_cs, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
-            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
-            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(translated_cs_expected);
+
+            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(tst, translated_cs);
             WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             {
                 Assembly asm = asmctx.LoadedAssembly;
@@ -148,7 +149,7 @@ namespace Skrypton.Tests.Application
             return provider;
         }
 
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(TestBaseX tst, string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
             PortableExecutableReference[] references =
@@ -204,6 +205,11 @@ namespace Skrypton.Tests.Application
                 }
 
                 Console.WriteLine(errorsBuffer.ToString());
+
+
+                string chainName = tst.TestName.Split("_")[0];
+                string workItemName = "Script";
+                string storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", "", translated_cs);
 
                 // In unit tests, you can fail like this:
                 throw new Exception("Compilation failed.");
