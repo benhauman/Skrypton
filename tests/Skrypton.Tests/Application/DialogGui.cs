@@ -531,7 +531,7 @@ WScript.Echo xmlhttp.responseText
 
         private void DoDialogGui(DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
         {
-            CncIn.ExecuteTranslatedProgram(RuntimeLogger, dialog.HostServices, TestCulture, TestContext.TestName, dialog.ExternalReferences, dialogHandler);
+            CncIn.ExecuteTranslatedProgram(RuntimeLogger, dialog.HostServices, TestCulture, TestName, dialog.ExternalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
@@ -769,7 +769,8 @@ WScript.Echo xmlhttp.responseText
 
             IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
 
-            var dialog = this.BuildDialogFromXml(CreateTestHostServices(services =>
+            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
+            var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>
             {
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
                         .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA())
@@ -832,13 +833,11 @@ WScript.Echo xmlhttp.responseText
         }
     }
 
-    internal static class DialogBuilderXmlExtensions
+    public static class DialogBuilderXmlExtensions
     {
-        internal static DialogBuilder BuildDialogFromXml(this TestBase tst, IServiceProvider hostServices, DialogGuidModel dialogModel)
+        public static DialogBuilder BuildDialogFromXml(this TestBaseX tst, string dialogXml, IServiceProvider hostServices, DialogGuidModel dialogModel)
         {
             //new DialogBuilder(hostServices, "zzz").AddExternalObject("model", model)
-
-            string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + tst.TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
 
             XElement xHelpLineDialogData = XElement.Parse(dialogXml);
             XElement xProperties = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "Properties");
@@ -986,7 +985,7 @@ WScript.Echo xmlhttp.responseText
     }
 
     [ComVisible(true)]
-    internal sealed class DialogGuidModel
+    public sealed class DialogGuidModel
     {
         public DialogGuidModel()
         {
@@ -1026,7 +1025,7 @@ WScript.Echo xmlhttp.responseText
     }
 
     [ComVisible(true)]
-    internal sealed class DialogGuiSession // see public sealed class HlSession : IScriptingUserSession
+    public sealed class DialogGuiSession // see public sealed class HlSession : IScriptingUserSession
     {
         private readonly CultureInfo _culture;
 

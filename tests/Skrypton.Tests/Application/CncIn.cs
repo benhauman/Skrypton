@@ -76,7 +76,7 @@ namespace Skrypton.Tests.Application
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
             var hostServices = CreateTestHostServices();
-            ExecuteTranslatedProgram(RuntimeLogger, hostServices, TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
+            ExecuteTranslatedProgram(RuntimeLogger, hostServices, TestCulture, TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");

@@ -14,7 +14,14 @@ using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
 namespace Skrypton.Tests
 {
-    public abstract class TestBase
+    public abstract class TestBase : TestBaseX
+    {
+        public TestContext TestContext { get; set; }
+        public override string TestName => this.TestContext!.TestName;
+        public override string TestRunResultsDirectory => this.TestContext!.TestRunResultsDirectory;
+        public override void AddResultFile(string filePath) => this.TestContext!.AddResultFile(filePath);
+    }
+    public abstract class TestBaseX
     {
         protected const int lineIndex1 = 1;
         protected const int lineIndex2 = 2;
@@ -24,21 +31,23 @@ namespace Skrypton.Tests
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
         public IRuntimeHost CreateRuntimeHost(IServiceProvider hostServices) => new TestRuntimeHost(hostServices);
         public IRuntimeLogger RuntimeLogger => new TestRuntimeLogger(this);
-        public TestContext TestContext { get; set; }
-        internal string TestName => this.TestContext!.TestName;
-        internal string SaveExpectedActualFiles(string testName, string workItemName
+        //internal string TestName => this.TestContext!.TestName;
+        public abstract string TestName { get; }
+        public abstract string TestRunResultsDirectory { get; }
+        public abstract void AddResultFile(string filePath);
+        internal string SaveExpectedActualFiles(string testNameX, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml
             )
         {
-            var test_case_name_tokens = this.TestContext.TestName.Split('_');
+            var test_case_name_tokens = TestName.Split('_');
             string folderpath_tc = workItemName + "/" + test_case_name_tokens.Last();
 
             SaveContentToFile("actual/" + folderpath_tc, fileName, actual_xml);
             SaveContentToFile("expected/" + folderpath_tc, fileName, expected_xml);
 
-            string expectedDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "expected");
-            string actualDirPath = System.IO.Path.Combine(this.TestContext.TestRunResultsDirectory, "actual");
+            string expectedDirPath = System.IO.Path.Combine(this.TestRunResultsDirectory, "expected");
+            string actualDirPath = System.IO.Path.Combine(this.TestRunResultsDirectory, "actual");
             string startCommand = "\"C:\\Program Files\\WinMerge\\WinMergeU.exe\" \"" + expectedDirPath + "\" \"" + actualDirPath + "\"";
 
             return SaveContentToFile(null, "winMergeStarter.bat", startCommand);
@@ -51,7 +60,7 @@ namespace Skrypton.Tests
         {
             //if (this.TestContext != null)
             {
-                string subdirPath = this.TestContext.TestRunResultsDirectory;
+                string subdirPath = this.TestRunResultsDirectory;
                 if (subdir != null)
                 {
                     subdirPath = System.IO.Path.Combine(subdirPath, subdir);
@@ -79,7 +88,7 @@ namespace Skrypton.Tests
                 ///LongFileSupport.WriteAllText(filePath, content);
                 System.IO.File.WriteAllText(filePath, content);
 
-                this.TestContext.AddResultFile(filePath);
+                this.AddResultFile(filePath);
                 return filePath;
             }
         }
@@ -211,7 +220,7 @@ namespace Skrypton.Tests
                 return minLength;
             return -1; // no mismatch
         }
-        internal static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
+        public static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
         {
             if (startIndex > s.Length)
                 return "";
@@ -224,14 +233,14 @@ namespace Skrypton.Tests
             return s.Substring(startIndex, take);
         }
 
-        internal TestHostServices CreateTestHostServices(Action<TestHostServices> setup = null)
+        public TestHostServices CreateTestHostServices(Action<TestHostServices> setup = null)
         {
             var container = new TestHostServices();
             setup?.Invoke(container);
             return container;
         }
 
-        internal IHostFileSystemHostService CreateTestFileSystem()
+        public IHostFileSystemHostService CreateTestFileSystem()
         {
             return new WindowsFileSystem();
         }
@@ -239,7 +248,7 @@ namespace Skrypton.Tests
 
     internal sealed class TestRuntimeLogger : IRuntimeLogger
     {
-        public TestRuntimeLogger(TestBase tst)
+        public TestRuntimeLogger(TestBaseX tst)
         {
         }
 
@@ -250,7 +259,7 @@ namespace Skrypton.Tests
         }
     }
 
-    internal sealed class TestRuntimeHost : IRuntimeHost
+    public sealed class TestRuntimeHost : IRuntimeHost
     {
         private readonly IServiceProvider _hostServices;
 
@@ -266,7 +275,7 @@ namespace Skrypton.Tests
         }
     }
 
-    internal sealed class TestHostServices : IServiceProvider
+    public sealed class TestHostServices : IServiceProvider
     {
         private readonly Dictionary<string, Func<object>> _providers = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
         public TestHostServices()

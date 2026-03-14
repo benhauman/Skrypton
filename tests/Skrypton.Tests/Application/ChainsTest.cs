@@ -88,15 +88,45 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        internal static void TestScriptChain(TestBase tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+        public static void TestScriptChain(TestBaseX tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
         {
-            string x_ressource_name = chainName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
-
             string generated_vbs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".generated.vbs", isOptionalAssert);
             string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension, isOptionalAssert);
             string xml_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".xml", isOptionalAssert);
 
+            string customerDialogGlobalScript;
+            if (scrUsage == ScriptUsageKind.DialogGui || scrUsage == ScriptUsageKind.DialogWeb)
+            {
+                string[] chainTokens = chainName.Split('_');
+                string customerAlias = chainTokens[0];
+                if (!customerAlias.StartsWith("CT", StringComparison.OrdinalIgnoreCase)) // 'QUX_HLData_Contact_Dialog_2_ButtonShowWebsite_Click' => QUX_HLData
+                {
+                    customerAlias = $"{chainTokens[0]}_{chainTokens[1]}";
+                }
+                customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
+            }
+            else
+            {
+                customerDialogGlobalScript = null;
+            }
+
+            TestScriptChainX(tst, chainName,
+                customerDialogGlobalScript,
+                scriptContent,
+                generated_vbs_expected,
+                translated_cs_expected,
+                xml_expected,
+                scrUsage, externalRefs, isOptionalAssert);
+        }
+        public static void TestScriptChainX(TestBaseX tst, string chainName,
+                string customerDialogGlobalScript,
+                string scriptContent,
+                string generated_vbs_expected,
+                string translated_cs_expected,
+                string xml_expected,
+                ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+        {
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
             if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
                 externalDependencies = externalDependencies.Add("hlContext"); // EBL
@@ -120,7 +150,6 @@ namespace Skrypton.Tests.Application
                 }
 
                 StringBuilder completeDialogScript = new StringBuilder();
-                string customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
                 if (!string.IsNullOrEmpty(customerDialogGlobalScript))
                 {
                     if (completeDialogScript.Length > 0)

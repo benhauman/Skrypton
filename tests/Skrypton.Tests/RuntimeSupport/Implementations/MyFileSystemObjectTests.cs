@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             // Path.GetTempPath()
             const string DT_FMT_ID = "yyyyMMdd_hhmmss_fff";
-            string rootDir = Path.Combine(this.TestContext.TestResultsDirectory, "FS_" + DateTime.UtcNow.ToString(DT_FMT_ID), TestName);
+            string rootDir = Path.Combine(this.TestRunResultsDirectory, "FS_" + DateTime.UtcNow.ToString(DT_FMT_ID), TestName);
             Console.WriteLine($"rootDir:{rootDir}");
             var di = Directory.CreateDirectory(rootDir);
             return new RootPathInfo(rootDir, di.Name);

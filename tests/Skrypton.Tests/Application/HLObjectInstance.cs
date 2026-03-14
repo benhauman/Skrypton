@@ -11,7 +11,7 @@ namespace Skrypton.Tests.Application
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     //[ComDefaultInterface(typeof(IScriptingHelplineObject))]
-    internal sealed class HLObjectInstance // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
+    public sealed class HLObjectInstance // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
     {
         private readonly string _traceName;
         private readonly Dictionary<ObjectValueKey, ObjectValueData> _values = new Dictionary<ObjectValueKey, ObjectValueData>();
