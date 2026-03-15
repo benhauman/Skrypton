@@ -8,7 +8,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null parsingExpression reference)
         /// </summary>
-        TranslatedStatementContentDetails Translate(ParsingExpression parsingExpression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements);
+        TranslatedStatementContentDetails TranslateParsingExpression(ParsingExpression parsingExpression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements);
 
         /// <summary>
         /// This generates the content that initialises a new IProvideCallArguments instance, based upon the specified argument values. This will throw

@@ -69,7 +69,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            return statementTranslator.Translate(
+            return statementTranslator.TranslateParsingExpression(
                 statement.ToStageTwoParserExpression(scopeAccessInformation, returnRequirements, warningLogger),
                 scopeAccessInformation,
                 returnRequirements

@@ -41,7 +41,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// This will never return null, it will raise an exception if unable to satisfy the request (this includes the case of a null parsingExpression reference)
         /// </summary>
-        public TranslatedStatementContentDetails Translate(ParsingExpression parsingExpression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements)
+        public TranslatedStatementContentDetails TranslateParsingExpression(ParsingExpression parsingExpression, ScopeAccessInformation scopeAccessInformation, ExpressionReturnTypeOptions returnRequirements)
         {
             if (parsingExpression == null)
             {
@@ -143,8 +143,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     result.VariablesAccessed
                 );
             }
-
-            if (segments.Length == 2)
+            else if (segments.Length == 2)
             {
                 TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
                 return new TranslatedStatementContentDetails(
@@ -464,43 +463,43 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             BuiltInValueExpressionSegment? builtInValueExpressionSegment = segment as BuiltInValueExpressionSegment;
             if (builtInValueExpressionSegment != null)
             {
-                return Translate(builtInValueExpressionSegment);
+                return TranslateBuiltInValueExpressionSegment(builtInValueExpressionSegment);
             }
 
             CallExpressionSegment? callExpressionSegment = segment as CallExpressionSegment;
             if (callExpressionSegment != null)
             {
-                return Translate(callExpressionSegment, scopeAccessInformation);
+                return TranslateCallExpressionSegment(callExpressionSegment, scopeAccessInformation);
             }
 
             CallSetExpressionSegment? callSetExpressionSegment = segment as CallSetExpressionSegment;
             if (callSetExpressionSegment != null)
             {
-                return Translate(callSetExpressionSegment, scopeAccessInformation);
+                return TranslateCallSetExpressionSegment(callSetExpressionSegment, scopeAccessInformation);
             }
 
             BracketedExpressionSegment? bracketedExpressionSegment = segment as BracketedExpressionSegment;
             if (bracketedExpressionSegment != null)
             {
-                return Translate(bracketedExpressionSegment, scopeAccessInformation);
+                return TranslateBracketedExpressionSegment(bracketedExpressionSegment, scopeAccessInformation);
             }
 
             NewInstanceExpressionSegment? newInstanceExpressionSegment = segment as NewInstanceExpressionSegment;
             if (newInstanceExpressionSegment != null)
             {
-                return Translate(newInstanceExpressionSegment, scopeAccessInformation.ScopeDefiningParent.Scope);
+                return TranslateNewInstanceExpressionSegment(newInstanceExpressionSegment, scopeAccessInformation.ScopeDefiningParent.Scope);
             }
 
             RuntimeErrorExpressionSegment? runtimeErrorExpressionSegment = segment as RuntimeErrorExpressionSegment;
             if (runtimeErrorExpressionSegment != null)
             {
-                return Translate(runtimeErrorExpressionSegment);
+                return TranslateRuntimeErrorExpressionSegment(runtimeErrorExpressionSegment);
             }
 
             throw new NotSupportedException("Unsupported segment type: " + segment.GetType());
         }
 
-        private TranslatedStatementContentDetailsWithContentType Translate(BracketedExpressionSegment bracketedExpressionSegment, ScopeAccessInformation scopeAccessInformation)
+        private TranslatedStatementContentDetailsWithContentType TranslateBracketedExpressionSegment(BracketedExpressionSegment bracketedExpressionSegment, ScopeAccessInformation scopeAccessInformation)
         {
             if (bracketedExpressionSegment == null)
             {
@@ -515,7 +514,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // 2014-12-08 DWR: This previously wrapped the returned content in brackets - largely only because the source is a bracketed codeExpression. But
             // since they're always broken down to respect VBScript's operator precedence and then passed through functions for every operation, there
             // is no benefit to adding further bracketing, so it's been removed.
-            TranslatedStatementContentDetails translatedInnerContentDetails = Translate(
+            TranslatedStatementContentDetails translatedInnerContentDetails = TranslateParsingExpression(
                 new ParsingExpression(bracketedExpressionSegment.Segments),
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified
@@ -527,7 +526,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private TranslatedStatementContentDetailsWithContentType Translate(BuiltInValueExpressionSegment builtInValueExpressionSegment)
+        private TranslatedStatementContentDetailsWithContentType TranslateBuiltInValueExpressionSegment(BuiltInValueExpressionSegment builtInValueExpressionSegment)
         {
             if (builtInValueExpressionSegment == null)
             {
@@ -608,7 +607,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// or if it is the first segment in a CallSetExpressionSegment, subsequent segments in a CallSetExpressionSegment should be passed direct into the
         /// TranslateCallExpressionSegment method)
         /// </summary>
-        private TranslatedStatementContentDetailsWithContentType Translate(CallExpressionSegment callExpressionSegment, ScopeAccessInformation scopeAccessInformation)
+        private TranslatedStatementContentDetailsWithContentType TranslateCallExpressionSegment(CallExpressionSegment callExpressionSegment, ScopeAccessInformation scopeAccessInformation)
         {
             if (callExpressionSegment == null)
             {
@@ -1106,7 +1105,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
             {
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // => CALLm1v1
+                if (argumentsArray.Length == 9876)
+                {
+                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v1); // => CALLm1v1
+                }
                 callNameResolved = true;
+                ParsingExpression arg1 = argumentsArray[0];
                 //throw new NotImplementedException();
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 1 && zeroArgumentBracketsPresence == null)
@@ -1171,11 +1175,42 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (argumentsArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
-                TranslatedStatementContentDetails argumentProviderContent = TranslateAsArgumentProvider(argumentsArray, scopeAccessInformation, forceAllArgumentsToBeByVal: targetIsKnownToBeBuiltInFunction);
-                callExpressionContent.Append(argumentProviderContent.TranslatedContent);
-                callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(
-                    argumentProviderContent.VariablesAccessed
-                );
+
+                if (argumentsArray.Length == 9876)
+                {
+                    // test: 'ConstValuesShouldAlwaysBePassedToFunctionsByVal'
+
+                        ParsingExpression argumentValue = argumentsArray[0];
+
+                    bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
+                    bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+                    if (isConfirmedToBeByVal)
+                    {
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(); // use 'byref' syntax
+                    }
+
+                    //TranslatedStatementContentDetails argumentContent = TranslateAsArgumentContent(argumentValue, scopeAccessInformation, forceAllArgumentsToBeByVal);
+                    //callExpressionContent.Append(argumentContent.TranslatedContent);
+                    //callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(argumentContent.VariablesAccessed);
+                    TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = TranslateParsingExpression(
+                        argumentValue,
+                        scopeAccessInformation,
+                        ExpressionReturnTypeOptions.NotSpecified
+                    );
+                    callExpressionContent.Append(translatedCallExpressionByValArgumentContent.TranslatedContent);
+                    callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(translatedCallExpressionByValArgumentContent.VariablesAccessed);
+                }
+                else
+                {
+                    TranslatedStatementContentDetails argumentProviderContent = TranslateAsArgumentProvider(argumentsArray, scopeAccessInformation, forceAllArgumentsToBeByVal: targetIsKnownToBeBuiltInFunction);
+                    callExpressionContent.Append(argumentProviderContent.TranslatedContent);
+                    callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(
+                        argumentProviderContent.VariablesAccessed
+                    );
+                }
             }
             else if (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
@@ -1223,7 +1258,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             StringBuilder argumentProviderContent = new StringBuilder();
             argumentProviderContent.Append(_supportRefName.Name);
             argumentProviderContent.Append(".ARGS");
-            foreach (ParsingExpression? argumentValue in argumentValues)
+            foreach (ParsingExpression argumentValue in argumentValues)
             {
                 if (argumentValue == null)
                 {
@@ -1298,7 +1333,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     continue;
                 }
 
-                TranslatedStatementContentDetails argumentContent = Translate(
+                TranslatedStatementContentDetails argumentContent = TranslateParsingExpression(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1381,7 +1416,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
             if (isConfirmedToBeByVal)
             {
-                TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = Translate(
+                TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = TranslateParsingExpression(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1404,7 +1439,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // will be ByVal) or array indices (in which case it will be ByRef).
             if ((argumentValue.Segments.Single() is CallExpressionSegment) && ((CallExpressionSegment)argumentValue.Segments.Single()).Arguments.Count == 0)
             {
-                TranslatedStatementContentDetails translatedCallExpressionByRefArgumentContent = Translate(
+                TranslatedStatementContentDetails translatedCallExpressionByRefArgumentContent = TranslateParsingExpression(
                     argumentValue,
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
@@ -1442,7 +1477,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallExpressionSegment without any arguments at this point");
                 }
 
-                possibleByRefTarget = Translate(
+                possibleByRefTarget = TranslateCallExpressionSegment(
                     new CallExpressionSegment(
                         possibleByRefCallExpressionSegment.MemberAccessTokens,
                         [],
@@ -1468,7 +1503,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
 
                     // Note: Specify CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent for the same reason as explain in the logic above
-                    possibleByRefTarget = Translate(
+                    possibleByRefTarget = TranslateCallExpressionSegment(
                         new CallExpressionSegment(
                             possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens,
                             [],
@@ -1631,7 +1666,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             return isConfirmedToBeByVal;
         }
 
-        private TranslatedStatementContentDetailsWithContentType Translate(CallSetExpressionSegment callSetExpressionSegment, ScopeAccessInformation scopeAccessInformation)
+        private TranslatedStatementContentDetailsWithContentType TranslateCallSetExpressionSegment(CallSetExpressionSegment callSetExpressionSegment, ScopeAccessInformation scopeAccessInformation)
         {
             if (callSetExpressionSegment == null)
             {
@@ -1656,7 +1691,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // (the only difference in the types is that a CallSetItemExpressionSegment may have zero Member Access Tokens whereas the
                     // CallExpressionSegment must always have at least one - however, the first segment in a CallSetExpressionSegment will
                     // always have at least one as well)
-                    translatedContent = Translate(
+                    translatedContent = TranslateCallExpressionSegment(
                         new CallExpressionSegment(
                             callSetItemExpression.MemberAccessTokens,
                             callSetItemExpression.Arguments,
@@ -1689,7 +1724,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private TranslatedStatementContentDetailsWithContentType Translate(
+        private TranslatedStatementContentDetailsWithContentType TranslateNewInstanceExpressionSegment(
             NewInstanceExpressionSegment newInstanceExpressionSegment,
             ScopeLocationOptions scopeLocation)
         {
@@ -1731,7 +1766,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
         }
 
-        private TranslatedStatementContentDetailsWithContentType Translate(RuntimeErrorExpressionSegment runtimeErrorExpressionSegment)
+        private TranslatedStatementContentDetailsWithContentType TranslateRuntimeErrorExpressionSegment(RuntimeErrorExpressionSegment runtimeErrorExpressionSegment)
         {
             if (runtimeErrorExpressionSegment == null)
             {

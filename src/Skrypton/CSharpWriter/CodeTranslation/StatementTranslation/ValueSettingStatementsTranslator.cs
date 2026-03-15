@@ -349,7 +349,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                                 )
                             };
                             targetAccessorName =
-                                _statementTranslator.Translate(
+                                _statementTranslator.TranslateParsingExpression(
                                     new ParsingExpression(targetAccessCallExpressionSegments),
                                     scopeAccessInformation,
                                     ExpressionReturnTypeOptions.NotSpecified
@@ -375,7 +375,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     ? new IExpressionSegment[] { new CallSetExpressionSegment(targetAccessCallExpressionSegments) }
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };
                 targetAccessorName =
-                    _statementTranslator.Translate(
+                    _statementTranslator.TranslateParsingExpression(
                         new ParsingExpression(targetAccessExpressionSegments),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified
@@ -419,7 +419,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                     expressionToAnalyseForVariablesAccessed = new CallSetExpressionSegment(callExpressionSegments);
-                variablesAccessed = _statementTranslator.Translate(
+                variablesAccessed = _statementTranslator.TranslateParsingExpression(
                         new ParsingExpression(new[] { expressionToAnalyseForVariablesAccessed }),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified

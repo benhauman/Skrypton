@@ -45,7 +45,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             myAssert.AreEqual(
                 expected,
-                GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
+                GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
                 new TranslatedStatementContentDetailsComparer()
             );
         }
@@ -74,7 +74,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             );
             myAssert.AreEqualX(
                 expected,
-                GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
+                GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
                 new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
@@ -114,7 +114,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             );
             myAssert.AreEqualX(
                 expected,
-                GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
+                GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
                 new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
@@ -160,7 +160,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             );
             myAssert.AreEqualX(
                 expected,
-                GetDefaultStatementTranslator().Translate(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
+                GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None),
                 new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }
@@ -204,7 +204,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             );
             myAssert.AreEqualX(
                 expected,
-                GetDefaultStatementTranslator().Translate(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None),
+                GetDefaultStatementTranslator().TranslateParsingExpression(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None),
                 new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent
             );
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Skrypton.RuntimeSupport.Implementations
 {
@@ -118,6 +119,13 @@ namespace Skrypton.RuntimeSupport.Implementations
         public IProvideCallArguments GetArgs()
         {
             return new ArgumentProvider(_valuesWithUpdatesWhereRequired, _useBracketsWhereZeroArguments);
+        }
+
+        internal static IProvideCallArguments CreateArgumentProviderForValues(bool useBracketsWhereZeroArguments, object value)
+        {
+            List<Tuple<object, Action<object>?>> valuesWithUpdatesWhereRequired = new List<Tuple<object, Action<object>?>>();
+            valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, (Action<object>?)null));
+            return new ArgumentProvider(valuesWithUpdatesWhereRequired, useBracketsWhereZeroArguments);
         }
 
         private sealed class ArgumentProvider : IProvideCallArguments
