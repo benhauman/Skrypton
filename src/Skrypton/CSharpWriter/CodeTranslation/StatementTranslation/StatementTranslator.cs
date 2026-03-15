@@ -1103,16 +1103,35 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
                 callNameResolved = true;
             }
-            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
+            else if (targetMemberAccessTokensArray.Length == 1 && (argumentsArray.Length >= 1 && argumentsArray.Length <= 2) && zeroArgumentBracketsPresence == null)
             {
-
-                ParsingExpression argumentValue = argumentsArray[0];
+                bool allArgsConfirmedToBeByVal = false;
                 bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
-                bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
-                if (isConfirmedToBeByVal)
+                for (int ixArg = 0; ixArg < argumentsArray.Length; ixArg++)
+                {
+                    ParsingExpression argumentValue0 = argumentsArray[0];
+                    bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue0, scopeAccessInformation);
+                    if (isConfirmedToBeByVal)
+                    {
+                        allArgsConfirmedToBeByVal = true;
+                    }
+                    else
+                    {
+                        allArgsConfirmedToBeByVal = false;
+                        break;
+                    }
+                }
+                if (allArgsConfirmedToBeByVal)
                 {
                     //todoLength = 9876;
-                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v1); // => CALLm1v1
+                    if (argumentsArray.Length == 1)
+                    {
+                        callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v1);
+                    }
+                    else
+                    {
+                        callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v2);
+                    }
                 }
                 else
                 {
@@ -1122,7 +1141,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callNameResolved = true;
                 //throw new NotImplementedException();
             }
-            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 1 && zeroArgumentBracketsPresence == null)
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 2 && zeroArgumentBracketsPresence == null)
             {
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp);
                 callNameResolved = true;
@@ -1181,25 +1200,53 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 callExpressionContent.Append(", ");
 
-                ParsingExpression argumentValue = argumentsArray[0];
+                //ParsingExpression argumentValue0 = argumentsArray[0];
 
                 bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
-                bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
-
+                //bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue0, scopeAccessInformation);
+                bool allArgsConfirmedToBeByVal = false;
+                //bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
+                for (int ixArg = 0; ixArg < argumentsArray.Length; ixArg++)
+                {
+                    ParsingExpression argumentValue0 = argumentsArray[0];
+                    bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue0, scopeAccessInformation);
+                    if (isConfirmedToBeByVal)
+                    {
+                        allArgsConfirmedToBeByVal = true;
+                    }
+                    else
+                    {
+                        allArgsConfirmedToBeByVal = false;
+                        break;
+                    }
+                }
                 //if (isConfirmedToBeByVal && todoLength == 9876)
-                if (isConfirmedToBeByVal && zeroArgumentBracketsPresence == null && argumentsArray.Length == 1
+                if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null && (argumentsArray.Length >= 1 && argumentsArray.Length <= 2)
                     && targetMemberAccessTokensArray.Length == 1 // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                         )
                 {
                     // test: 'ConstValuesShouldAlwaysBePassedToFunctionsByVal'
+                    for (int ixArg = 0; ixArg < argumentsArray.Length; ixArg++)
+                    {
+                        if (ixArg > 0)
+                        {
+                            callExpressionContent.Append(", ");
+                        }
 
-                    TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = TranslateParsingExpression(
-                        argumentValue,
-                        scopeAccessInformation,
-                        ExpressionReturnTypeOptions.NotSpecified
-                    );
-                    callExpressionContent.Append(translatedCallExpressionByValArgumentContent.TranslatedContent);
-                    callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(translatedCallExpressionByValArgumentContent.VariablesAccessed);
+                        ParsingExpression argumentValue = argumentsArray[ixArg];
+                        TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent1 = TranslateParsingExpression(
+                            argumentValue,
+                            scopeAccessInformation,
+                            ExpressionReturnTypeOptions.NotSpecified
+                        );
+                        callExpressionContent.Append(translatedCallExpressionByValArgumentContent1.TranslatedContent);
+                        callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(translatedCallExpressionByValArgumentContent1.VariablesAccessed);
+                        if (argumentsArray.Length == 2)
+                        {
+                            // test: 'SelectCaseWithStringTokens'
+                            //throw new NotImplementedException();
+                        }
+                    }
                 }
                 else
                 {

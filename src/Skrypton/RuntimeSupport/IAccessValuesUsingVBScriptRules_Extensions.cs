@@ -62,7 +62,15 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, value1);
+            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]);
+            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+        }
+        public static object? CALLm1v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]);
             return source.CALL(context, target, new[] { member1 }, argp, line: 0);
         }
         public static object? CALLm2v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)

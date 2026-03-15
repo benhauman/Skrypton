@@ -72,7 +72,7 @@ namespace TranslatedProgram
             object byrefalias = text;
             try
             {
-                _.CALLm1argp(this, hlContext, "trace", _.ARGS.Val((Int16)1).Ref(byrefalias, v2 => { byrefalias = v2; }));
+                _.CALLm1v2(this, hlContext, "trace", (Int16)1, byrefalias);
             }
             finally { text = byrefalias; }
         }
@@ -94,14 +94,14 @@ namespace TranslatedProgram
             if (_.IF(_.EQ(_.CBOOL(SendAttachments), true)))
             {
                 Attachment = VBScriptConstants.Nothing;
-                AttachIDs = _.VAL(_.CALLm1argp(this, hlCase, "GetAttachmentKeys", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Val((Int16)0)));
+                AttachIDs = _.VAL(_.CALLm1v2(this, hlCase, "GetAttachmentKeys", "HLOBJECTINFO.ATTACHMENT", (Int16)0));
                 var enumerationContent = _.ENUMERABLE(AttachIDs).GetEnumerator();
                 while (true)
                 {
                     if (!enumerationContent.MoveNext())
                         break;
                     AttachID = enumerationContent.Current;
-                    Attachment = _.OBJ(_.CALLm1argp(this, hlCase, "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v3 => { AttachID = v3; }).Val((Int16)0)));
+                    Attachment = _.OBJ(_.CALLm1argp(this, hlCase, "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v2 => { AttachID = v2; }).Val((Int16)0)));
                     if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, Attachment, "Size")), (Int16)0)))
                     {
                         MailAttachment = VBScriptConstants.Nothing;
@@ -123,7 +123,7 @@ namespace TranslatedProgram
             {
                 _.SET(_.VAL(CC), this, Email, "CC");
             }
-            _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
+            _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v3 => { Email = v3; }));
         }
 
         //----------------------------------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ namespace TranslatedProgram
             object byrefalias2 = hlCase, byrefalias3 = hlContext;
             try
             {
-                SUIDx = _.VAL(_.CALLm2argp(this, _outer, "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(byrefalias2, v5 => { byrefalias2 = v5; }).Ref(byrefalias3, v6 => { byrefalias3 = v6; })));
+                SUIDx = _.VAL(_.CALLm2argp(this, _outer, "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(byrefalias2, v4 => { byrefalias2 = v4; }).Ref(byrefalias3, v5 => { byrefalias3 = v5; })));
             }
             finally { hlCase = byrefalias2; hlContext = byrefalias3; }
             MailRequest = _.VAL(_.CALLm1argp(this, hlCase, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -275,7 +275,7 @@ namespace TranslatedProgram
                 _.SET(_.VAL(Emailadress), this, Email, "To");
                 _.SET(_.VAL(Subject), this, Email, "Subject");
                 _.SET(_.VAL(body), this, Email, "Body");
-                _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
+                _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v6 => { Email = v6; }));
             }
         }
 
@@ -311,7 +311,7 @@ namespace TranslatedProgram
             lcid = (Int16)0;
             lcid = _.VAL(_.CALLm1v0(this, hlContext, "GetLocaleID"));
             LangID = (Int16)0;
-            LangID = _.VAL(_.CALLm1argp(this, hlContext, "LangIDFromLCID", _.ARGS.Ref(lcid, v8 => { lcid = v8; })));
+            LangID = _.VAL(_.CALLm1argp(this, hlContext, "LangIDFromLCID", _.ARGS.Ref(lcid, v7 => { lcid = v7; })));
 
             //Gesetzte Daten aus dem aktuellen Task auslesen, diese werden dem zu erzeugenden Systemtask mitgegeben.
             //Read setted data of current task and take them into the created Systemtask.
@@ -325,17 +325,17 @@ namespace TranslatedProgram
             Team = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             newTask = _.OBJ(_.CALLm1v1(this, hlContext, "createobject", "Task"));
 
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Priority, v9 => { Priority = v9; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.TaskType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(TaskType, v10 => { TaskType = v10; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Subject, v11 => { Subject = v11; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v12 => { Team = v12; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Priority, v8 => { Priority = v8; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.TaskType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(TaskType, v9 => { TaskType = v9; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Subject, v10 => { Subject = v10; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v11 => { Team = v11; }));
 
             hasContent = _.VAL(_.CALLm1argp(this, hlObj, "HasContent", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA").Val((Int16)0).Val((Int16)0)));
             if (_.IF(_.NOTEQ(_.NullableNUM(hasContent), (Int16)0)))
             {
                 subjectWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.FlagWorkflowSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.FlagWorkflowSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(subjectWF, v13 => { subjectWF = v13; }));
-                contentIDs = _.VAL(_.CALLm1argp(this, hlObj, "GetContentIDs", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA").Val((Int16)0)));
+                _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.FlagWorkflowSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(subjectWF, v12 => { subjectWF = v12; }));
+                contentIDs = _.VAL(_.CALLm1v2(this, hlObj, "GetContentIDs", "TaskDesignWorkflow.TaskWorkflow_CA", (Int16)0));
                 _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskWorkflowAttribute.WorkflowStep").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1));
                 var enumerationContent2 = _.ENUMERABLE(contentIDs).GetEnumerator();
                 while (true)
@@ -343,13 +343,13 @@ namespace TranslatedProgram
                     if (!enumerationContent2.MoveNext())
                         break;
                     contentID = enumerationContent2.Current;
-                    assignedGroupWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
-                    assignedPersonWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
-                    descriptionWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(contentID, v16 => { contentID = v16; }).Val((Int16)0).Val((Int16)0)));
+                    assignedGroupWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v13 => { contentID = v13; }).Val((Int16)0).Val((Int16)0)));
+                    assignedPersonWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
+                    descriptionWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
                     newContentID = _.VAL(_.CALLm1v0(this, hlObj, "GenerateContentID"));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(newContentID, v17 => { newContentID = v17; }).Val((Int16)0).Ref(assignedGroupWF, v18 => { assignedGroupWF = v18; }));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(newContentID, v19 => { newContentID = v19; }).Val((Int16)0).Ref(assignedPersonWF, v20 => { assignedPersonWF = v20; }));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(newContentID, v21 => { newContentID = v21; }).Val((Int16)0).Ref(descriptionWF, v22 => { descriptionWF = v22; }));
+                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(newContentID, v16 => { newContentID = v16; }).Val((Int16)0).Ref(assignedGroupWF, v17 => { assignedGroupWF = v17; }));
+                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(newContentID, v18 => { newContentID = v18; }).Val((Int16)0).Ref(assignedPersonWF, v19 => { assignedPersonWF = v19; }));
+                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(newContentID, v20 => { newContentID = v20; }).Val((Int16)0).Ref(descriptionWF, v21 => { descriptionWF = v21; }));
                 }
             }
 
@@ -360,7 +360,7 @@ namespace TranslatedProgram
                 if (!enumerationContent3.MoveNext())
                     break;
                 Asset = enumerationContent3.Current;
-                _.CALLm1argp(this, newTask, "AddItemEx", _.ARGS.Val((Int16)0).Ref(Asset, v23 => { Asset = v23; }).Val((Int16)0).Val((Int16)131));
+                _.CALLm1argp(this, newTask, "AddItemEx", _.ARGS.Val((Int16)0).Ref(Asset, v22 => { Asset = v22; }).Val((Int16)0).Val((Int16)131));
             }
             refnumber = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("CASEINFO.REFERENCENUMBER").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             if (_.IF(_.EQ(_.NullableNUM(LangID), (Int16)7)))
@@ -371,11 +371,11 @@ namespace TranslatedProgram
             {
                 Description = _.CONCAT(Description, VBScriptConstants.vbNewLine, VBScriptConstants.vbNewLine, "[This Task was created automatically by Systemtask with the Reference Number '", refnumber, "'.]");
             }
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Description, v24 => { Description = v24; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(ExOperation, v25 => { ExOperation = v25; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedGroup, v26 => { AssignedGroup = v26; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedPerson, v27 => { AssignedPerson = v27; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v28 => { Team = v28; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Description, v23 => { Description = v23; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(ExOperation, v24 => { ExOperation = v24; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedGroup, v25 => { AssignedGroup = v25; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedPerson, v26 => { AssignedPerson = v26; }));
+            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v27 => { Team = v27; }));
             _.CALLm1v1(this, hlContext, "SaveObject", newTask);
             _.CALLm1argp(this, newTask, "Unreserve", _.ARGS.ForceBrackets());
         }
@@ -395,7 +395,7 @@ namespace TranslatedProgram
             object byrefalias4 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias4, v29 => { byrefalias4 = v29; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias4, v28 => { byrefalias4 = v28; }));
             }
             finally { taskDefname = byrefalias4; }
             systemTaskDefinitionName = _.VAL(_.CALLm1argp(this, hlSystemTask, "GetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -403,7 +403,7 @@ namespace TranslatedProgram
             object byrefalias5 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias5, v30 => { byrefalias5 = v30; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias5, v29 => { byrefalias5 = v29; }));
             }
             finally { SysTaskBeginnDate = byrefalias5; }
             //Prueft welche Option zu Duration des SystemTasks ausgewaehlt wurde.
@@ -425,7 +425,7 @@ namespace TranslatedProgram
                 object byrefalias6 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias6, v31 => { byrefalias6 = v31; }));
+                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias6, v30 => { byrefalias6 = v30; }));
                 }
                 finally { SysTaskBeginnDate = byrefalias6; }
                 recurrenceEndType = "1";
@@ -437,7 +437,7 @@ namespace TranslatedProgram
                     object byrefalias7 = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias7, v32 => { byrefalias7 = v32; }));
+                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias7, v31 => { byrefalias7 = v31; }));
                     }
                     finally { SysTaskEndDate = byrefalias7; }
                     recurrenceEndType = "1";
@@ -448,25 +448,25 @@ namespace TranslatedProgram
             object byrefalias8 = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDTYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias8, v33 => { byrefalias8 = v33; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDTYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias8, v32 => { byrefalias8 = v32; }));
             }
             finally { recurrenceEndType = byrefalias8; }
             object byrefalias9 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias9, v34 => { byrefalias9 = v34; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias9, v33 => { byrefalias9 = v33; }));
             }
             finally { taskDefname = byrefalias9; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v35 => { scriptCode = v35; }));
+            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v34 => { scriptCode = v34; }));
             object byrefalias10 = NumberOfDays;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias10, v36 => { byrefalias10 = v36; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias10, v35 => { byrefalias10 = v35; }));
             }
             finally { NumberOfDays = byrefalias10; }
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v37 => { hlSystemTask = v37; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v39 => { hlSystemTaskDefinitionObj = v39; }));
+            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v36 => { hlSystemTask = v36; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v37 => { systemTaskDefinitionName = v37; })));
+            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v38 => { hlSystemTaskDefinitionObj = v38; }));
         }
 
         //Entfernt einen vorhandenen SystemTask.
@@ -476,7 +476,7 @@ namespace TranslatedProgram
             object byrefalias11 = hlSystemTask;
             try
             {
-                _.CALLm1argp(this, hlContext, "RemoveSystemTask", _.ARGS.Ref(byrefalias11, v40 => { byrefalias11 = v40; }));
+                _.CALLm1argp(this, hlContext, "RemoveSystemTask", _.ARGS.Ref(byrefalias11, v39 => { byrefalias11 = v39; }));
             }
             finally { hlSystemTask = byrefalias11; }
         }
@@ -495,7 +495,7 @@ namespace TranslatedProgram
             object byrefalias12 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias12, v41 => { byrefalias12 = v41; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias12, v40 => { byrefalias12 = v40; }));
             }
             finally { taskDefname = byrefalias12; }
             systemTaskDefinitionName = _.VAL(_.CALLm1argp(this, hlSystemTask, "GetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -519,7 +519,7 @@ namespace TranslatedProgram
                 object byrefalias13 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias13, v42 => { byrefalias13 = v42; }));
+                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias13, v41 => { byrefalias13 = v41; }));
                 }
                 finally { SysTaskBeginnDate = byrefalias13; }
                 recurrenceEndType = "1";
@@ -531,7 +531,7 @@ namespace TranslatedProgram
                     object byrefalias14 = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias14, v43 => { byrefalias14 = v43; }));
+                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias14, v42 => { byrefalias14 = v42; }));
                     }
                     finally { SysTaskEndDate = byrefalias14; }
                     recurrenceEndType = "1";
@@ -541,38 +541,38 @@ namespace TranslatedProgram
             object byrefalias15 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias15, v44 => { byrefalias15 = v44; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias15, v43 => { byrefalias15 = v43; }));
             }
             finally { taskDefname = byrefalias15; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v45 => { scriptCode = v45; }));
+            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v44 => { scriptCode = v44; }));
             object byrefalias16 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias16, v46 => { byrefalias16 = v46; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias16, v45 => { byrefalias16 = v45; }));
             }
             finally { SysTaskBeginnDate = byrefalias16; }
             object byrefalias17 = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias17, v47 => { byrefalias17 = v47; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias17, v46 => { byrefalias17 = v46; }));
             }
             finally { recurrenceEndType = byrefalias17; }
             object byrefalias18 = NumberOfWeeks;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias18, v48 => { byrefalias18 = v48; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias18, v47 => { byrefalias18 = v47; }));
             }
             finally { NumberOfWeeks = byrefalias18; }
             object byrefalias19 = recurrencedaymask;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYMASK").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias19, v49 => { byrefalias19 = v49; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYMASK").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias19, v48 => { byrefalias19 = v48; }));
             }
             finally { recurrencedaymask = byrefalias19; }
 
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v50 => { hlSystemTask = v50; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v52 => { hlSystemTaskDefinitionObj = v52; }));
+            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v49 => { hlSystemTask = v49; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v50 => { systemTaskDefinitionName = v50; })));
+            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v51 => { hlSystemTaskDefinitionObj = v51; }));
         }
 
         //Festlegung der Definitionen eines SystemTasks pro Monat.
@@ -589,7 +589,7 @@ namespace TranslatedProgram
             object byrefalias20 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias20, v53 => { byrefalias20 = v53; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias20, v52 => { byrefalias20 = v52; }));
             }
             finally { taskDefname = byrefalias20; }
             systemTaskDefinitionName = _.VAL(_.CALLm1argp(this, hlSystemTask, "GetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -612,7 +612,7 @@ namespace TranslatedProgram
                 object byrefalias21 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias21, v54 => { byrefalias21 = v54; }));
+                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias21, v53 => { byrefalias21 = v53; }));
                 }
                 finally { SysTaskBeginnDate = byrefalias21; }
                 recurrenceEndType = "1";
@@ -624,7 +624,7 @@ namespace TranslatedProgram
                     object byrefalias22 = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias22, v55 => { byrefalias22 = v55; }));
+                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias22, v54 => { byrefalias22 = v54; }));
                     }
                     finally { SysTaskEndDate = byrefalias22; }
                     recurrenceEndType = "1";
@@ -634,38 +634,38 @@ namespace TranslatedProgram
             object byrefalias23 = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias23, v56 => { byrefalias23 = v56; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias23, v55 => { byrefalias23 = v55; }));
             }
             finally { recurrenceEndType = byrefalias23; }
             object byrefalias24 = DayOfMonth;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYOFMONTH").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias24, v57 => { byrefalias24 = v57; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYOFMONTH").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias24, v56 => { byrefalias24 = v56; }));
             }
             finally { DayOfMonth = byrefalias24; }
             _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INSTANCE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("0"));
             object byrefalias25 = NumberOfMonths;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias25, v58 => { byrefalias25 = v58; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias25, v57 => { byrefalias25 = v57; }));
             }
             finally { NumberOfMonths = byrefalias25; }
             object byrefalias26 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias26, v59 => { byrefalias26 = v59; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias26, v58 => { byrefalias26 = v58; }));
             }
             finally { SysTaskBeginnDate = byrefalias26; }
             object byrefalias27 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias27, v60 => { byrefalias27 = v60; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias27, v59 => { byrefalias27 = v59; }));
             }
             finally { taskDefname = byrefalias27; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v61 => { scriptCode = v61; }));
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v62 => { hlSystemTask = v62; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v64 => { hlSystemTaskDefinitionObj = v64; }));
+            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v60 => { scriptCode = v60; }));
+            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v61 => { hlSystemTask = v61; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v62 => { systemTaskDefinitionName = v62; })));
+            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v63 => { hlSystemTaskDefinitionObj = v63; }));
         }
 
         //Sub fuehrt den SystemTask einmalig aus.
@@ -683,7 +683,7 @@ namespace TranslatedProgram
             object byrefalias28 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias28, v65 => { byrefalias28 = v65; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias28, v64 => { byrefalias28 = v64; }));
             }
             finally { taskDefname = byrefalias28; }
             scriptCode = "MyTask1";
@@ -694,13 +694,13 @@ namespace TranslatedProgram
             object byrefalias29 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias29, v66 => { byrefalias29 = v66; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias29, v65 => { byrefalias29 = v65; }));
             }
             finally { taskDefname = byrefalias29; }
             object byrefalias30 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias30, v67 => { byrefalias30 = v67; }));
+                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(byrefalias30, v66 => { byrefalias30 = v66; }));
             }
             finally { SysTaskBeginnDate = byrefalias30; }
             _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("09.09.2099 09:09:09"));
@@ -708,7 +708,7 @@ namespace TranslatedProgram
             _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDCOUNT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1));
             _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0));
             _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1));
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v68 => { scriptCode = v68; }));
+            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v67 => { scriptCode = v67; }));
 
             //Wenn kein Datum angegebene wurde, muss eine Fehlermeldung angezeigt werden.
             //If no date was entered, show an error message.
@@ -716,10 +716,10 @@ namespace TranslatedProgram
             {
                 errCode = "#ERR_TSKMNT_002";
             }
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v69 => { hlSystemTask = v69; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v70 => { systemTaskDefinitionName = v70; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v71 => { hlSystemTaskDefinitionObj = v71; }));
-            _.CALLm1argp(this, hlObj, "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v72 => { systemTaskDefinitionName = v72; }));
+            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v68 => { hlSystemTask = v68; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v69 => { systemTaskDefinitionName = v69; })));
+            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v70 => { hlSystemTaskDefinitionObj = v70; }));
+            _.CALLm1argp(this, hlObj, "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v71 => { systemTaskDefinitionName = v71; }));
         }
 
         //----------------------------------------------------------------------------------------------------------
@@ -759,10 +759,10 @@ namespace TranslatedProgram
             //create root element
             nodeData = _.OBJ(_.CALLm1v1(this, xmldoc, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Data")));
             nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
-            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v72 => { objDefname = v72; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname), this, attAliasName, "Text");
-            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
+            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v73 => { attAliasName = v73; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
             /////////////////////////////////////////////////////////////
@@ -772,79 +772,79 @@ namespace TranslatedProgram
             object byrefalias31 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias31, v75 => { byrefalias31 = v75; }).Ref(xmldoc, v76 => { xmldoc = v76; }).Ref(nodeAttributes, v77 => { nodeAttributes = v77; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias31, v74 => { byrefalias31 = v74; }).Ref(xmldoc, v75 => { xmldoc = v75; }).Ref(nodeAttributes, v76 => { nodeAttributes = v76; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias31; } // hlObj.GetValue("AssetGeneral.AssetName", 0,0,0,0)
             object byrefalias32 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias32, v78 => { byrefalias32 = v78; }).Ref(xmldoc, v79 => { xmldoc = v79; }).Ref(nodeAttributes, v80 => { nodeAttributes = v80; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias32, v77 => { byrefalias32 = v77; }).Ref(xmldoc, v78 => { xmldoc = v78; }).Ref(nodeAttributes, v79 => { nodeAttributes = v79; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias32; }
             object byrefalias33 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias33, v81 => { byrefalias33 = v81; }).Ref(xmldoc, v82 => { xmldoc = v82; }).Ref(nodeAttributes, v83 => { nodeAttributes = v83; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AssetGeneral.Serialnumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias33, v80 => { byrefalias33 = v80; }).Ref(xmldoc, v81 => { xmldoc = v81; }).Ref(nodeAttributes, v82 => { nodeAttributes = v82; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("AssetGeneral.Serialnumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias33; }
             object byrefalias34 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias34, v84 => { byrefalias34 = v84; }).Ref(xmldoc, v85 => { xmldoc = v85; }).Ref(nodeAttributes, v86 => { nodeAttributes = v86; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias34, v83 => { byrefalias34 = v83; }).Ref(xmldoc, v84 => { xmldoc = v84; }).Ref(nodeAttributes, v85 => { nodeAttributes = v85; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias34; }
             object byrefalias35 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias35, v87 => { byrefalias35 = v87; }).Ref(xmldoc, v88 => { xmldoc = v88; }).Ref(nodeAttributes, v89 => { nodeAttributes = v89; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias35, v86 => { byrefalias35 = v86; }).Ref(xmldoc, v87 => { xmldoc = v87; }).Ref(nodeAttributes, v88 => { nodeAttributes = v88; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias35; }
             object byrefalias36 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias36, v90 => { byrefalias36 = v90; }).Ref(xmldoc, v91 => { xmldoc = v91; }).Ref(nodeAttributes, v92 => { nodeAttributes = v92; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias36, v89 => { byrefalias36 = v89; }).Ref(xmldoc, v90 => { xmldoc = v90; }).Ref(nodeAttributes, v91 => { nodeAttributes = v91; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias36; }
             object byrefalias37 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias37, v93 => { byrefalias37 = v93; }).Ref(xmldoc, v94 => { xmldoc = v94; }).Ref(nodeAttributes, v95 => { nodeAttributes = v95; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias37, v92 => { byrefalias37 = v92; }).Ref(xmldoc, v93 => { xmldoc = v93; }).Ref(nodeAttributes, v94 => { nodeAttributes = v94; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias37; }
             object byrefalias38 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias38, v96 => { byrefalias38 = v96; }).Ref(xmldoc, v97 => { xmldoc = v97; }).Ref(nodeAttributes, v98 => { nodeAttributes = v98; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias38, v95 => { byrefalias38 = v95; }).Ref(xmldoc, v96 => { xmldoc = v96; }).Ref(nodeAttributes, v97 => { nodeAttributes = v97; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias38; }
             object byrefalias39 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias39, v99 => { byrefalias39 = v99; }).Ref(xmldoc, v100 => { xmldoc = v100; }).Ref(nodeAttributes, v101 => { nodeAttributes = v101; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias39, v98 => { byrefalias39 = v98; }).Ref(xmldoc, v99 => { xmldoc = v99; }).Ref(nodeAttributes, v100 => { nodeAttributes = v100; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias39; }
             object byrefalias40 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias40, v102 => { byrefalias40 = v102; }).Ref(xmldoc, v103 => { xmldoc = v103; }).Ref(nodeAttributes, v104 => { nodeAttributes = v104; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias40, v101 => { byrefalias40 = v101; }).Ref(xmldoc, v102 => { xmldoc = v102; }).Ref(nodeAttributes, v103 => { nodeAttributes = v103; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias40; }
             object byrefalias41 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias41, v105 => { byrefalias41 = v105; }).Ref(xmldoc, v106 => { xmldoc = v106; }).Ref(nodeAttributes, v107 => { nodeAttributes = v107; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias41, v104 => { byrefalias41 = v104; }).Ref(xmldoc, v105 => { xmldoc = v105; }).Ref(nodeAttributes, v106 => { nodeAttributes = v106; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias41; }
             object byrefalias42 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias42, v108 => { byrefalias42 = v108; }).Ref(xmldoc, v109 => { xmldoc = v109; }).Ref(nodeAttributes, v110 => { nodeAttributes = v110; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.Manufacturer").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias42, v107 => { byrefalias42 = v107; }).Ref(xmldoc, v108 => { xmldoc = v108; }).Ref(nodeAttributes, v109 => { nodeAttributes = v109; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.Manufacturer").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias42; }
             object byrefalias43 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias43, v111 => { byrefalias43 = v111; }).Ref(xmldoc, v112 => { xmldoc = v112; }).Ref(nodeAttributes, v113 => { nodeAttributes = v113; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.SAPCostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias43, v110 => { byrefalias43 = v110; }).Ref(xmldoc, v111 => { xmldoc = v111; }).Ref(nodeAttributes, v112 => { nodeAttributes = v112; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.SAPCostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))));
             }
             finally { hlContext = byrefalias43; }
 
@@ -973,64 +973,64 @@ namespace TranslatedProgram
 
             ////// obj1: IncidentRequest///////////////////////////////////////////////////////
 
-            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v113 => { objDefname = v113; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname1), this, attAliasName, "Text");
-            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
+            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v114 => { attAliasName = v114; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             nodeServiceUnits = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnits")));
             nodeServiceUnit = _.OBJ(_.CALLm1v1(this, nodeServiceUnits, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnit")));
             attAliasNameSU = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasnameSU), this, attAliasNameSU, "Text");
-            _.CALLm2argp(this, nodeServiceUnit, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
+            _.CALLm2argp(this, nodeServiceUnit, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v115 => { attAliasNameSU = v115; }));
             ////////////////// HLOBJECT.ID
             //Call AppendNode(hlContext,xmldoc, nodeAttributes, True, "HLOBJECTINFO.ID", hlObj.GetValue("HLOBJECTINFO.ID", 0,0,0,0)) '
             object byrefalias44 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias44, v117 => { byrefalias44 = v117; }).Ref(xmldoc, v118 => { xmldoc = v118; }).Ref(nodeAttributes, v119 => { nodeAttributes = v119; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v120 => { increqsubject = v120; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias44, v116 => { byrefalias44 = v116; }).Ref(xmldoc, v117 => { xmldoc = v117; }).Ref(nodeAttributes, v118 => { nodeAttributes = v118; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v119 => { increqsubject = v119; }));
             }
             finally { hlContext = byrefalias44; }
             object byrefalias45 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias45, v121 => { byrefalias45 = v121; }).Ref(xmldoc, v122 => { xmldoc = v122; }).Ref(nodeAttributes, v123 => { nodeAttributes = v123; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v124 => { Beschreibung = v124; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias45, v120 => { byrefalias45 = v120; }).Ref(xmldoc, v121 => { xmldoc = v121; }).Ref(nodeAttributes, v122 => { nodeAttributes = v122; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v123 => { Beschreibung = v123; }));
             }
             finally { hlContext = byrefalias45; }
             object byrefalias46 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias46, v125 => { byrefalias46 = v125; }).Ref(xmldoc, v126 => { xmldoc = v126; }).Ref(nodeAttributes, v127 => { nodeAttributes = v127; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v128 => { TeamKeyword = v128; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias46, v124 => { byrefalias46 = v124; }).Ref(xmldoc, v125 => { xmldoc = v125; }).Ref(nodeAttributes, v126 => { nodeAttributes = v126; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v127 => { TeamKeyword = v127; }));
             }
             finally { hlContext = byrefalias46; }
             object byrefalias47 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias47, v129 => { byrefalias47 = v129; }).Ref(xmldoc, v130 => { xmldoc = v130; }).Ref(nodeAttributes, v131 => { nodeAttributes = v131; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v132 => { Buchungskreis1 = v132; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias47, v128 => { byrefalias47 = v128; }).Ref(xmldoc, v129 => { xmldoc = v129; }).Ref(nodeAttributes, v130 => { nodeAttributes = v130; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v131 => { Buchungskreis1 = v131; }));
             }
             finally { hlContext = byrefalias47; }
             object byrefalias48 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias48, v133 => { byrefalias48 = v133; }).Ref(xmldoc, v134 => { xmldoc = v134; }).Ref(nodeAttributes, v135 => { nodeAttributes = v135; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias48, v132 => { byrefalias48 = v132; }).Ref(xmldoc, v133 => { xmldoc = v133; }).Ref(nodeAttributes, v134 => { nodeAttributes = v134; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
             }
             finally { hlContext = byrefalias48; }
             object byrefalias49 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias49, v136 => { byrefalias49 = v136; }).Ref(xmldoc, v137 => { xmldoc = v137; }).Ref(nodeAttributes, v138 => { nodeAttributes = v138; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias49, v135 => { byrefalias49 = v135; }).Ref(xmldoc, v136 => { xmldoc = v136; }).Ref(nodeAttributes, v137 => { nodeAttributes = v137; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
             }
             finally { hlContext = byrefalias49; }
             object byrefalias50 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias50, v139 => { byrefalias50 = v139; }).Ref(xmldoc, v140 => { xmldoc = v140; }).Ref(nodeAttributes, v141 => { nodeAttributes = v141; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias50, v138 => { byrefalias50 = v138; }).Ref(xmldoc, v139 => { xmldoc = v139; }).Ref(nodeAttributes, v140 => { nodeAttributes = v140; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
             }
             finally { hlContext = byrefalias50; }
             object byrefalias51 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias51, v142 => { byrefalias51 = v142; }).Ref(xmldoc, v143 => { xmldoc = v143; }).Ref(nodeServiceUnit, v144 => { nodeServiceUnit = v144; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias51, v141 => { byrefalias51 = v141; }).Ref(xmldoc, v142 => { xmldoc = v142; }).Ref(nodeServiceUnit, v143 => { nodeServiceUnit = v143; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
             }
             finally { hlContext = byrefalias51; }
 
@@ -1038,12 +1038,12 @@ namespace TranslatedProgram
             nodeObject2 = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", _.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()))));
             attAliasName2 = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname2), this, attAliasName2, "Text");
-            _.CALLm2argp(this, nodeObject2, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
+            _.CALLm2argp(this, nodeObject2, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v144 => { attAliasName2 = v144; }));
             nodeAttributes2 = _.OBJ(_.CALLm1v1(this, nodeObject2, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             object byrefalias52 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias52, v146 => { byrefalias52 = v146; }).Ref(xmldoc, v147 => { xmldoc = v147; }).Ref(nodeAttributes2, v148 => { nodeAttributes2 = v148; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v149 => { cinummer = v149; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(byrefalias52, v145 => { byrefalias52 = v145; }).Ref(xmldoc, v146 => { xmldoc = v146; }).Ref(nodeAttributes2, v147 => { nodeAttributes2 = v147; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v148 => { cinummer = v148; }));
             }
             finally { hlContext = byrefalias52; }
 
@@ -1054,13 +1054,13 @@ namespace TranslatedProgram
             object byrefalias53 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(byrefalias53, v150 => { byrefalias53 = v150; }).Ref(xmldoc, v151 => { xmldoc = v151; }).Ref(nodeProduct2Case, v152 => { nodeProduct2Case = v152; }).Val("Parent").Ref(aliasnameSU, v153 => { aliasnameSU = v153; }));
+                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(byrefalias53, v149 => { byrefalias53 = v149; }).Ref(xmldoc, v150 => { xmldoc = v150; }).Ref(nodeProduct2Case, v151 => { nodeProduct2Case = v151; }).Val("Parent").Ref(aliasnameSU, v152 => { aliasnameSU = v152; }));
             }
             finally { hlContext = byrefalias53; }
             object byrefalias54 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(byrefalias54, v154 => { byrefalias54 = v154; }).Ref(xmldoc, v155 => { xmldoc = v155; }).Ref(nodeProduct2Case, v156 => { nodeProduct2Case = v156; }).Val("Child").Ref(aliasname2, v157 => { aliasname2 = v157; }));
+                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(byrefalias54, v153 => { byrefalias54 = v153; }).Ref(xmldoc, v154 => { xmldoc = v154; }).Ref(nodeProduct2Case, v155 => { nodeProduct2Case = v155; }).Val("Child").Ref(aliasname2, v156 => { aliasname2 = v156; }));
             }
             finally { hlContext = byrefalias54; }
 
@@ -1079,13 +1079,13 @@ namespace TranslatedProgram
             object byrefalias55 = key;
             try
             {
-                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(byrefalias55, v158 => { byrefalias55 = v158; })));
+                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(byrefalias55, v157 => { byrefalias55 = v157; })));
             }
             finally { key = byrefalias55; }
             object byrefalias56 = value;
             try
             {
-                cdata = _.OBJ(_.CALLm1argp(this, xmldoc, "createCDATASection", _.ARGS.Ref(byrefalias56, v159 => { byrefalias56 = v159; })));
+                cdata = _.OBJ(_.CALLm1argp(this, xmldoc, "createCDATASection", _.ARGS.Ref(byrefalias56, v158 => { byrefalias56 = v158; })));
             }
             finally { value = byrefalias56; }
             _.CALLm1v1(this, valueNode, "appendChild", cdata);
@@ -1100,7 +1100,7 @@ namespace TranslatedProgram
             {
                 _.SET("false", this, attIsKey, "Text");
             }
-            _.CALLm2argp(this, valueNode, "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
+            _.CALLm2argp(this, valueNode, "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v159 => { attIsKey = v159; }));
 
         }
 
@@ -1110,7 +1110,7 @@ namespace TranslatedProgram
             object byrefalias57 = key;
             try
             {
-                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(byrefalias57, v161 => { byrefalias57 = v161; })));
+                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(byrefalias57, v160 => { byrefalias57 = v160; })));
             }
             finally { key = byrefalias57; }
             _.CALLm1v1(this, nodeObject, "appendChild", valueNode);

@@ -133,7 +133,7 @@ namespace TranslatedProgram
             object byrefalias6 = text;
             try
             {
-                _.CALLm1argp(this, hlContext, "trace", _.ARGS.Val((Int16)1).Ref(byrefalias6, v5 => { byrefalias6 = v5; }));
+                _.CALLm1v2(this, hlContext, "trace", (Int16)1, byrefalias6);
             }
             finally { text = byrefalias6; }
         }
@@ -155,7 +155,7 @@ namespace TranslatedProgram
             {
                 strAttrValue = "-";
             }
-            _.CALLm1argp(this, hlObject, "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
+            _.CALLm1argp(this, hlObject, "SetValue", _.ARGS.Ref(AttrDef, v5 => { AttrDef = v5; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v6 => { strAttrValue = v6; }));
         }
 
         //---------------------------------------------------------------
@@ -170,7 +170,7 @@ namespace TranslatedProgram
             object byrefalias7 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "Trace", _.ARGS.Ref(byrefalias7, v8 => { byrefalias7 = v8; }).Val(_.CONCAT("Type ", _.VARTYPE(hlObject))));
+                _.CALLm1argp(this, _outer, "Trace", _.ARGS.Ref(byrefalias7, v7 => { byrefalias7 = v7; }).Val(_.CONCAT("Type ", _.VARTYPE(hlObject))));
             }
             finally { hlContext = byrefalias7; }
             IsHLObject_retVal = _.VAL(_.AND(_.EQ(_.ISOBJECT(hlObject), true), _.EQ(_.IS(hlObject, VBScriptConstants.Nothing), false)));
@@ -233,7 +233,7 @@ namespace TranslatedProgram
                     object byrefalias8 = hlContext, byrefalias9 = strOrgUnits;
                     try
                     {
-                        retval = _.VAL(_.CALLm1argp(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias8, v9 => { byrefalias8 = v9; }).RefIfArray(NextOrgUnit, _.ARGS.Val((Int16)0)).Ref(byrefalias9, v10 => { byrefalias9 = v10; })));
+                        retval = _.VAL(_.CALLm1argp(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias8, v8 => { byrefalias8 = v8; }).RefIfArray(NextOrgUnit, _.ARGS.Val((Int16)0)).Ref(byrefalias9, v9 => { byrefalias9 = v9; })));
                     }
                     finally { hlContext = byrefalias8; strOrgUnits = byrefalias9; }
                 }
@@ -254,7 +254,7 @@ namespace TranslatedProgram
             object byrefalias10 = hlattribute, byrefalias11 = hlcontentid, byrefalias12 = hlsuid;
             try
             {
-                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, hlObject, "GetValue", _.ARGS.Ref(byrefalias10, v11 => { byrefalias10 = v11; }).Val((Int16)0).Ref(byrefalias11, v12 => { byrefalias11 = v12; }).Ref(byrefalias12, v13 => { byrefalias12 = v13; }).Val((Int16)0)));
+                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, hlObject, "GetValue", _.ARGS.Ref(byrefalias10, v10 => { byrefalias10 = v10; }).Val((Int16)0).Ref(byrefalias11, v11 => { byrefalias11 = v11; }).Ref(byrefalias12, v12 => { byrefalias12 = v12; }).Val((Int16)0)));
             }
             finally { hlattribute = byrefalias10; hlcontentid = byrefalias11; hlsuid = byrefalias12; }
             if (_.IF(_.EQ(_.NullableSTR(GetFlagValue_retVal), "")))
@@ -277,7 +277,7 @@ namespace TranslatedProgram
             object byrefalias13 = ErrCode, byrefalias14 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias13, v14 => { byrefalias13 = v14; }).Ref(byrefalias14, v15 => { byrefalias14 = v15; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias13, v13 => { byrefalias13 = v13; }).Ref(byrefalias14, v14 => { byrefalias14 = v14; })));
             }
             finally { ErrCode = byrefalias13; LocaleID = byrefalias14; }
             strErrMsg = _.CONCAT(strErrMsg, VBScriptConstants.vbNewLine, "(Code: ", ErrCode, ")");
@@ -305,7 +305,7 @@ namespace TranslatedProgram
             object byrefalias15 = hlContext;
             try
             {
-                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias15, v18 => { byrefalias15 = v18; }).Ref(FirstOrgUnit, v19 => { FirstOrgUnit = v19; })), true));
+                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias15, v17 => { byrefalias15 = v17; }).Ref(FirstOrgUnit, v18 => { FirstOrgUnit = v18; })), true));
             }
             finally { hlContext = byrefalias15; }
             if (ifResult)
@@ -320,7 +320,7 @@ namespace TranslatedProgram
             object byrefalias16 = hlContext;
             try
             {
-                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias16, v22 => { byrefalias16 = v22; }).Ref(FirstOrgUnit, v23 => { FirstOrgUnit = v23; })), false));
+                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias16, v21 => { byrefalias16 = v21; }).Ref(FirstOrgUnit, v22 => { FirstOrgUnit = v22; })), false));
             }
             finally { hlContext = byrefalias16; }
             if (ifResult2)
@@ -337,7 +337,7 @@ namespace TranslatedProgram
             object byrefalias17 = hlContext;
             try
             {
-                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias17, v26 => { byrefalias17 = v26; }).Ref(FirstOrgUnit, v27 => { FirstOrgUnit = v27; })), true));
+                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias17, v25 => { byrefalias17 = v25; }).Ref(FirstOrgUnit, v26 => { FirstOrgUnit = v26; })), true));
             }
             finally { hlContext = byrefalias17; }
             if (ifResult3)
@@ -346,7 +346,7 @@ namespace TranslatedProgram
                 object byrefalias18 = hlContext;
                 try
                 {
-                    ifResult4 = _.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer, "GetBaseType", _.ARGS.Ref(byrefalias18, v30 => { byrefalias18 = v30; }).Ref(FirstOrgUnit, v31 => { FirstOrgUnit = v31; }))), "ORGANISATION"));
+                    ifResult4 = _.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer, "GetBaseType", _.ARGS.Ref(byrefalias18, v29 => { byrefalias18 = v29; }).Ref(FirstOrgUnit, v30 => { FirstOrgUnit = v30; }))), "ORGANISATION"));
                 }
                 finally { hlContext = byrefalias18; }
                 if (ifResult4)
@@ -356,7 +356,7 @@ namespace TranslatedProgram
                     object byrefalias19 = hlContext;
                     try
                     {
-                        retval = _.VAL(_.CALLm1argp(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias19, v32 => { byrefalias19 = v32; }).Ref(FirstOrgUnit, v33 => { FirstOrgUnit = v33; }).Ref(strOrgUnits, v34 => { strOrgUnits = v34; })));
+                        retval = _.VAL(_.CALLm1argp(this, _outer, "GetPersonOrganisation", _.ARGS.Ref(byrefalias19, v31 => { byrefalias19 = v31; }).Ref(FirstOrgUnit, v32 => { FirstOrgUnit = v32; }).Ref(strOrgUnits, v33 => { strOrgUnits = v33; })));
                     }
                     finally { hlContext = byrefalias19; }
 
@@ -365,7 +365,7 @@ namespace TranslatedProgram
                     object byrefalias20 = hlContext, byrefalias21 = hlPerson, byrefalias22 = dict;
                     try
                     {
-                        _.CALLm1argp(this, _outer, "SetPersonInformation", _.ARGS.Ref(byrefalias20, v35 => { byrefalias20 = v35; }).Ref(byrefalias21, v36 => { byrefalias21 = v36; }).Ref(byrefalias22, v37 => { byrefalias22 = v37; }));
+                        _.CALLm1argp(this, _outer, "SetPersonInformation", _.ARGS.Ref(byrefalias20, v34 => { byrefalias20 = v34; }).Ref(byrefalias21, v35 => { byrefalias21 = v35; }).Ref(byrefalias22, v36 => { byrefalias22 = v36; }));
                     }
                     finally { hlContext = byrefalias20; hlPerson = byrefalias21; dict = byrefalias22; }
                 }
@@ -391,19 +391,19 @@ namespace TranslatedProgram
                 contentID = _.VAL(_.CALLm1argp(this, hlObjectB, "GenerateContentID", _.ARGS.ForceBrackets()));
                 agentID = _.VAL(_.CALLm1argp(this, hlContext, "GetAgentID", _.ARGS.ForceBrackets()));
                 orgUnitName = _.VAL(_.CALLm1argp(this, hlObjectA, "GetValue", _.ARGS.Val("OrganizationGeneral.Name").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-                personOfAgent = _.OBJ(_.CALLm1argp(this, hlContext, "GetPersonOfAgent", _.ARGS.Ref(agentID, v38 => { agentID = v38; })));
+                personOfAgent = _.OBJ(_.CALLm1argp(this, hlContext, "GetPersonOfAgent", _.ARGS.Ref(agentID, v37 => { agentID = v37; })));
                 if (_.IF(_.IS(personOfAgent, VBScriptConstants.Nothing)))
                 {
                     object byrefalias23 = hlContext;
                     try
                     {
-                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias23, v39 => { byrefalias23 = v39; }).Val(_.CALLm1v0(this, byrefalias23, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
+                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias23, v38 => { byrefalias23 = v38; }).Val(_.CALLm1v0(this, byrefalias23, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
                     }
                     finally { hlContext = byrefalias23; }
                     object byrefalias24 = hlContext;
                     try
                     {
-                        _.CALLm1argp(this, _outer, "Trace", _.ARGS.Ref(byrefalias24, v40 => { byrefalias24 = v40; }).Ref(strErrMsg, v41 => { strErrMsg = v41; }));
+                        _.CALLm1argp(this, _outer, "Trace", _.ARGS.Ref(byrefalias24, v39 => { byrefalias24 = v39; }).Ref(strErrMsg, v40 => { strErrMsg = v40; }));
                     }
                     finally { hlContext = byrefalias24; }
                     //hlContext.abortcommand strErrMsg
@@ -414,19 +414,19 @@ namespace TranslatedProgram
                     personName = _.CONCAT(personName, ", ");
                     personName = _.CONCAT(personName, _.CALLm1argp(this, personOfAgent, "GetValue", _.ARGS.Val("PersonGeneral.GivenName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 }
-                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v42 => { contentID = v42; }).Val((Int16)0).Ref(personName, v43 => { personName = v43; }));
-                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v44 => { contentID = v44; }).Val((Int16)0).Ref(agentID, v45 => { agentID = v45; }));
-                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Val(_.NOW()));
-                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v47 => { contentID = v47; }).Val((Int16)0).Ref(orgUnitName, v48 => { orgUnitName = v48; }));
-                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val(_.CALLm1argp(this, hlObjectA, "GetID", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v41 => { contentID = v41; }).Val((Int16)0).Ref(personName, v42 => { personName = v42; }));
+                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v43 => { contentID = v43; }).Val((Int16)0).Ref(agentID, v44 => { agentID = v44; }));
+                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v45 => { contentID = v45; }).Val((Int16)0).Val(_.NOW()));
+                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Ref(orgUnitName, v47 => { orgUnitName = v47; }));
+                _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v48 => { contentID = v48; }).Val((Int16)0).Val(_.CALLm1argp(this, hlObjectA, "GetID", _.ARGS.ForceBrackets())));
 
                 if (_.IF(_.EQ(created, true)))
                 {
-                    _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionCreated"));
+                    _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val("HistoryActionCreated"));
                 }
                 else
                 {
-                    _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v51 => { contentID = v51; }).Val((Int16)0).Val("HistoryActionDeleted"));
+                    _.CALLm1argp(this, hlObjectB, "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionDeleted"));
                 }
             }
         }
@@ -444,7 +444,7 @@ namespace TranslatedProgram
             object byrefalias25 = ErrCode, byrefalias26 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias25, v52 => { byrefalias25 = v52; }).Ref(byrefalias26, v53 => { byrefalias26 = v53; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias25, v51 => { byrefalias25 = v51; }).Ref(byrefalias26, v52 => { byrefalias26 = v52; })));
             }
             finally { ErrCode = byrefalias25; LocaleID = byrefalias26; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -466,7 +466,7 @@ namespace TranslatedProgram
             object byrefalias27 = ErrCode, byrefalias28 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias27, v54 => { byrefalias27 = v54; }).Ref(byrefalias28, v55 => { byrefalias28 = v55; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext, "GetTranslation", _.ARGS.Ref(byrefalias27, v53 => { byrefalias27 = v53; }).Ref(byrefalias28, v54 => { byrefalias28 = v54; })));
             }
             finally { ErrCode = byrefalias27; LocaleID = byrefalias28; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -498,7 +498,7 @@ namespace TranslatedProgram
             object byrefalias29 = HLASC_SoftwareLicenseFolderView;
             try
             {
-                rsltSWFolders = _.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias29, v56 => { byrefalias29 = v56; })));
+                rsltSWFolders = _.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias29, v55 => { byrefalias29 = v55; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = byrefalias29; }
 
@@ -514,7 +514,7 @@ namespace TranslatedProgram
                     object byrefalias30 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias30, v57 => { byrefalias30 = v57; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias30, v56 => { byrefalias30 = v56; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                     }
                     finally { hlContext = byrefalias30; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -527,7 +527,7 @@ namespace TranslatedProgram
                     object byrefalias31 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias31, v58 => { byrefalias31 = v58; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias31, v57 => { byrefalias31 = v57; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                     }
                     finally { hlContext = byrefalias31; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -571,7 +571,7 @@ namespace TranslatedProgram
             object byrefalias32 = hlContext, byrefalias33 = hlParentSWFolder;
             try
             {
-                CheckSoftwareSuite = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias32, v59 => { byrefalias32 = v59; }).Ref(byrefalias33, v60 => { byrefalias33 = v60; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
+                CheckSoftwareSuite = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias32, v58 => { byrefalias32 = v58; }).Ref(byrefalias33, v59 => { byrefalias33 = v59; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
             }
             finally { hlContext = byrefalias32; hlParentSWFolder = byrefalias33; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
@@ -585,7 +585,7 @@ namespace TranslatedProgram
             object byrefalias34 = HLASC_SoftwareLicenseFolderView;
             try
             {
-                NextSWFolder = _.VAL(_.CALLm1argp(this, hlParentSWFolder, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias34, v61 => { byrefalias34 = v61; })));
+                NextSWFolder = _.VAL(_.CALLm1argp(this, hlParentSWFolder, "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias34, v60 => { byrefalias34 = v60; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = byrefalias34; }
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(NextSWFolder)), (Int16)0)))
@@ -593,7 +593,7 @@ namespace TranslatedProgram
                 object byrefalias35 = hlContext, byrefalias36 = pDict, byrefalias37 = HLASC_SoftwareLicenseFolderView;
                 try
                 {
-                    retval = _.VAL(_.CALLm1argp(this, _outer, "CheckForSoftwareSuiteFolder", _.ARGS.Ref(byrefalias35, v62 => { byrefalias35 = v62; }).RefIfArray(NextSWFolder, _.ARGS.Val((Int16)0)).Ref(byrefalias36, v63 => { byrefalias36 = v63; }).Ref(byrefalias37, v64 => { byrefalias37 = v64; })));
+                    retval = _.VAL(_.CALLm1argp(this, _outer, "CheckForSoftwareSuiteFolder", _.ARGS.Ref(byrefalias35, v61 => { byrefalias35 = v61; }).RefIfArray(NextSWFolder, _.ARGS.Val((Int16)0)).Ref(byrefalias36, v62 => { byrefalias36 = v62; }).Ref(byrefalias37, v63 => { byrefalias37 = v63; })));
                 }
                 finally { hlContext = byrefalias35; pDict = byrefalias36; HLASC_SoftwareLicenseFolderView = byrefalias37; }
             }
@@ -628,7 +628,7 @@ namespace TranslatedProgram
             object byrefalias38 = assocName;
             try
             {
-                _.SET(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v65 => { byrefalias38 = v65; }))), this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
+                _.SET(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v64 => { byrefalias38 = v64; }))), this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
             }
             finally { assocName = byrefalias38; }
 
@@ -638,7 +638,7 @@ namespace TranslatedProgram
             object byrefalias39 = hlContext, byrefalias40 = hlSWFolder;
             try
             {
-                CheckSoftwareSuite = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias39, v66 => { byrefalias39 = v66; }).Ref(byrefalias40, v67 => { byrefalias40 = v67; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
+                CheckSoftwareSuite = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias39, v65 => { byrefalias39 = v65; }).Ref(byrefalias40, v66 => { byrefalias40 = v66; }).Val("SoftwareLicenseFolderDetail.FlagSoftwareSuite").Val((Int16)0).Val((Int16)0)));
             }
             finally { hlContext = byrefalias39; hlSWFolder = byrefalias40; }
 
@@ -656,7 +656,7 @@ namespace TranslatedProgram
                     object byrefalias42 = hlContext, byrefalias43 = pDict;
                     try
                     {
-                        _.CALLm1argp(this, _outer, "CalcAllLicCounter", _.ARGS.Ref(byrefalias42, v68 => { byrefalias42 = v68; }).Ref(byrefalias43, v69 => { byrefalias43 = v69; }));
+                        _.CALLm1argp(this, _outer, "CalcAllLicCounter", _.ARGS.Ref(byrefalias42, v67 => { byrefalias42 = v67; }).Ref(byrefalias43, v68 => { byrefalias43 = v68; }));
                     }
                     finally { hlContext = byrefalias42; pDict = byrefalias43; }
                 }
@@ -665,7 +665,7 @@ namespace TranslatedProgram
                     object byrefalias44 = hlContext, byrefalias45 = pDict;
                     try
                     {
-                        _.CALLm1argp(this, _outer, "CalcFolderLicCounter", _.ARGS.Ref(byrefalias44, v70 => { byrefalias44 = v70; }).Ref(byrefalias45, v71 => { byrefalias45 = v71; }));
+                        _.CALLm1argp(this, _outer, "CalcFolderLicCounter", _.ARGS.Ref(byrefalias44, v69 => { byrefalias44 = v69; }).Ref(byrefalias45, v70 => { byrefalias45 = v70; }));
                     }
                     finally { hlContext = byrefalias44; pDict = byrefalias45; }
                 }
@@ -690,7 +690,7 @@ namespace TranslatedProgram
             object byrefalias48 = hlContext, byrefalias49 = hlSWFolder;
             try
             {
-                CheckLicContrByServer = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias48, v72 => { byrefalias48 = v72; }).Ref(byrefalias49, v73 => { byrefalias49 = v73; }).Val("SoftwareLicenseFolderDetail.FlagLicenseControlledByServer").Val((Int16)0).Val((Int16)0)));
+                CheckLicContrByServer = _.VAL(_.CALLm1argp(this, _outer, "GetFlagValue", _.ARGS.Ref(byrefalias48, v71 => { byrefalias48 = v71; }).Ref(byrefalias49, v72 => { byrefalias49 = v72; }).Val("SoftwareLicenseFolderDetail.FlagLicenseControlledByServer").Val((Int16)0).Val((Int16)0)));
             }
             finally { hlContext = byrefalias48; hlSWFolder = byrefalias49; }
             if (_.IF(_.EQ(_.CBOOL(CheckLicContrByServer), true)))
@@ -714,7 +714,7 @@ namespace TranslatedProgram
                 object byrefalias51 = assocName;
                 try
                 {
-                    NextSWFolder = _.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(byrefalias51, v74 => { byrefalias51 = v74; })));
+                    NextSWFolder = _.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(byrefalias51, v73 => { byrefalias51 = v73; })));
                 }
                 finally { assocName = byrefalias51; }
             }
@@ -725,7 +725,7 @@ namespace TranslatedProgram
                 object byrefalias52 = hlContext, byrefalias53 = pDict, byrefalias54 = assocName;
                 try
                 {
-                    retval = _.VAL(_.CALLm1argp(this, _outer, "SetLicenseCounter", _.ARGS.Ref(byrefalias52, v75 => { byrefalias52 = v75; }).RefIfArray(NextSWFolder, _.ARGS.Val((Int16)0)).Ref(byrefalias53, v76 => { byrefalias53 = v76; }).Ref(byrefalias54, v77 => { byrefalias54 = v77; })));
+                    retval = _.VAL(_.CALLm1argp(this, _outer, "SetLicenseCounter", _.ARGS.Ref(byrefalias52, v74 => { byrefalias52 = v74; }).RefIfArray(NextSWFolder, _.ARGS.Val((Int16)0)).Ref(byrefalias53, v75 => { byrefalias53 = v75; }).Ref(byrefalias54, v76 => { byrefalias54 = v76; })));
                 }
                 finally { hlContext = byrefalias52; pDict = byrefalias53; assocName = byrefalias54; }
             }
@@ -771,7 +771,7 @@ namespace TranslatedProgram
                         object byrefalias55 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias55, v78 => { byrefalias55 = v78; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias55, v77 => { byrefalias55 = v77; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
                         finally { hlContext = byrefalias55; }
                         _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
@@ -784,14 +784,14 @@ namespace TranslatedProgram
                         object byrefalias56 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias56, v79 => { byrefalias56 = v79; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias56, v78 => { byrefalias56 = v78; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
                         finally { hlContext = byrefalias56; }
                         _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
                         object byrefalias57 = hlContext;
                         try
                         {
-                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias57, v80 => { byrefalias57 = v80; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias57, v79 => { byrefalias57 = v79; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
                         finally { hlContext = byrefalias57; }
                         _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")), SWInstCounter), this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
@@ -830,7 +830,7 @@ namespace TranslatedProgram
                     object byrefalias58 = hlContext;
                     try
                     {
-                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias58, v81 => { byrefalias58 = v81; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias58, v80 => { byrefalias58 = v80; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                     }
                     finally { hlContext = byrefalias58; }
                     _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
@@ -838,7 +838,7 @@ namespace TranslatedProgram
                     object byrefalias59 = hlContext;
                     try
                     {
-                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias59, v82 => { byrefalias59 = v82; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias59, v81 => { byrefalias59 = v81; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                     }
                     finally { hlContext = byrefalias59; }
                     if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")))))
@@ -854,7 +854,7 @@ namespace TranslatedProgram
                         object byrefalias60 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias60, v83 => { byrefalias60 = v83; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias60, v82 => { byrefalias60 = v82; }).Val(_.CALLm1argp(this, SoftwareLicense, "GetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)))));
                         }
                         finally { hlContext = byrefalias60; }
                         _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
@@ -904,7 +904,7 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart; _.StrictLTE(ixAC, loopEnd); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v83 => { ixAC = v83; })));
 
                     AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
@@ -948,7 +948,7 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart2; _.StrictLTE(ixAC, loopEnd2); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
 
                     AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
@@ -996,7 +996,7 @@ namespace TranslatedProgram
                 {
 
                     //Für jede Assoziations Änderung wird das entsprechende Infos (Objekt    ) ausgelsen.
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
                     //Def Name der Assoc ermitteln, die angelegt werden soll
                     AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
@@ -1052,7 +1052,7 @@ namespace TranslatedProgram
                     object byrefalias63 = lcid;
                     try
                     {
-                        outParentDefName = _.VAL(_.CALLm1argp(this, hlContext, "GetDisplayName", _.ARGS.Val(_.CALLm1argp(this, objParent, "GetValue", _.ARGS.Val("HLOBJECTINFO.DEFID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))).Ref(byrefalias63, v87 => { byrefalias63 = v87; })));
+                        outParentDefName = _.VAL(_.CALLm1v2(this, hlContext, "GetDisplayName", _.CALLm1argp(this, objParent, "GetValue", _.ARGS.Val("HLOBJECTINFO.DEFID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), byrefalias63));
                     }
                     finally { lcid = byrefalias63; }
                     break;
@@ -1077,25 +1077,25 @@ namespace TranslatedProgram
 
             //XML-Processing Instruction hinzufügen
             xmlProInc = VBScriptConstants.Nothing;
-            xmlProInc = _.OBJ(_.CALLm1argp(this, objXMLDoc, "createProcessingInstruction", _.ARGS.Val("xml").Val("version='1.0' encoding='UTF-8'")));
-            _.CALLm1argp(this, objXMLDoc, "insertBefore", _.ARGS.Ref(xmlProInc, v88 => { xmlProInc = v88; }).Val(_.CALLm1v0(this, objXMLDoc, "firstChild")));
+            xmlProInc = _.OBJ(_.CALLm1v2(this, objXMLDoc, "createProcessingInstruction", "xml", "version='1.0' encoding='UTF-8'"));
+            _.CALLm1argp(this, objXMLDoc, "insertBefore", _.ARGS.Ref(xmlProInc, v86 => { xmlProInc = v86; }).Val(_.CALLm1v0(this, objXMLDoc, "firstChild")));
 
             //Root-Element erstellen
             xmlRoot = _.OBJ(_.CALLm1v1(this, objXMLDoc, "CreateElement", "ASAPBatch"));
             _.CALLm1v1(this, objXMLDoc, "AppendChild", xmlRoot);
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1"));
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns:dt").Val("http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1"));
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns:xsi").Val("http://www.w3.org/2001/XMLSchema-instance"));
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xsi:schemaLocation").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd"));
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("version").Val("1.1"));
-            _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("responseRequired").Val("Yes"));
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "xmlns", "http://www.brainware.ch/operationsmanager/asap-batch/1.1");
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "xmlns:dt", "http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1");
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "xsi:schemaLocation", "http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd");
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "version", "1.1");
+            _.CALLm1v2(this, xmlRoot, "SetAttribute", "responseRequired", "Yes");
 
             //Das Node Session hinzufügen
             nodeSession = _.OBJ(_.CALLm1v1(this, objXMLDoc, "CreateElement", "Session"));
             _.CALLm1v1(this, xmlRoot, "AppendChild", nodeSession);
-            _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("id").Val("s1"));
-            _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("loginname").Val("foreignSystems\\assetcolumbus"));
-            _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("password").Val(""));
+            _.CALLm1v2(this, nodeSession, "SetAttribute", "id", "s1");
+            _.CALLm1v2(this, nodeSession, "SetAttribute", "loginname", "foreignSystems\\assetcolumbus");
+            _.CALLm1v2(this, nodeSession, "SetAttribute", "password", "");
 
             //XML Dokument inkl. Header an das Dictionary übergeben
             _.SET(_.OBJ(objXMLDoc), this, pDict, null, _.ARGS.Val("XMLDocument"));
@@ -1128,10 +1128,10 @@ namespace TranslatedProgram
             //Das Node CreateInstanceReq hinzufügen
             nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_adddevice"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_adddevice");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
@@ -1224,10 +1224,10 @@ namespace TranslatedProgram
             //Das Node CreateInstanceReq hinzufügen
             nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_chgdevice"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_chgdevice");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
@@ -1313,10 +1313,10 @@ namespace TranslatedProgram
             //Das Node CreateInstanceReq hinzufügen
             nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_removedevice"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_removedevice");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, nodeCreateInstanceRq, "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
@@ -1361,9 +1361,9 @@ namespace TranslatedProgram
             object MigCheckDatePeriod_retVal = null;
             MigCheckDatePeriod_retVal = false;
 
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(StartDate)))), "0")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(StartDate))), "0")))
             {
-                if (_.IF(_.LT(_.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(StartDate))), _.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("d").Val(_.CDATE(EndDate))))))
+                if (_.IF(_.LT(_.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(EndDate)))))
                 {
                     MigCheckDatePeriod_retVal = false;
                 }
@@ -1372,15 +1372,15 @@ namespace TranslatedProgram
                     MigCheckDatePeriod_retVal = true;
                 }
 
-                if (_.IF(_.GT(_.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(StartDate))), _.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(EndDate))))))
+                if (_.IF(_.GT(_.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(EndDate)))))
                 {
                     MigCheckDatePeriod_retVal = false;
                 }
                 else
                 {
-                    if (_.IF(_.GT(_.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(StartDate))), _.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("y").Val(_.CDATE(EndDate))))))
+                    if (_.IF(_.GT(_.CALLm1v2(this, _, "DATEPART", "y", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "y", _.CDATE(EndDate)))))
                     {
-                        if (_.IF(_.LT(_.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(StartDate))), _.CALLm1argp(this, _, "DATEPART", _.ARGS.Val("yyyy").Val(_.CDATE(EndDate))))))
+                        if (_.IF(_.LT(_.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(EndDate)))))
                         {
                             MigCheckDatePeriod_retVal = true;
                         }
@@ -1411,7 +1411,7 @@ namespace TranslatedProgram
             srchQuery = _.CONCAT("SEARCH Division WHERE OrganizationBilling.CostCenter_CA.CostCenter = \"", strCostCenter, "\"");
             Qry = VBScriptConstants.Nothing;
             rsltQuery = "";
-            Qry = _.OBJ(_.CALLm1argp(this, hlSrvContext, "OpenSearch", _.ARGS.Ref(srchQuery, v89 => { srchQuery = v89; })));
+            Qry = _.OBJ(_.CALLm1argp(this, hlSrvContext, "OpenSearch", _.ARGS.Ref(srchQuery, v87 => { srchQuery = v87; })));
             rsltQuery = _.VAL(_.CALLm1argp(this, Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltQuery)), (Int16)0)))
             {
@@ -1434,13 +1434,13 @@ namespace TranslatedProgram
             intAgentID = _.VAL(_.CALLm1argp(this, hlContext, "GetAgentID", _.ARGS.ForceBrackets()));
             objPerson = VBScriptConstants.Nothing;
 
-            objPerson = _.OBJ(_.CALLm1argp(this, hlContext, "GetPersonOfAgent", _.ARGS.Ref(intAgentID, v90 => { intAgentID = v90; })));
+            objPerson = _.OBJ(_.CALLm1argp(this, hlContext, "GetPersonOfAgent", _.ARGS.Ref(intAgentID, v88 => { intAgentID = v88; })));
 
             bool ifResult6;
             object byrefalias64 = hlContext;
             try
             {
-                ifResult6 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias64, v93 => { byrefalias64 = v93; }).Ref(objPerson, v94 => { objPerson = v94; })), true));
+                ifResult6 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsHLObject", _.ARGS.Ref(byrefalias64, v91 => { byrefalias64 = v91; }).Ref(objPerson, v92 => { objPerson = v92; })), true));
             }
             finally { hlContext = byrefalias64; }
             if (ifResult6)

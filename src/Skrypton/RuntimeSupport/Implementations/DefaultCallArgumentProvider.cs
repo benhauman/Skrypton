@@ -121,10 +121,13 @@ namespace Skrypton.RuntimeSupport.Implementations
             return new ArgumentProvider(_valuesWithUpdatesWhereRequired, _useBracketsWhereZeroArguments);
         }
 
-        internal static IProvideCallArguments CreateArgumentProviderForValues(bool useBracketsWhereZeroArguments, object value)
+        internal static IProvideCallArguments CreateArgumentProviderForValues(bool useBracketsWhereZeroArguments, IReadOnlyCollection<object> values)
         {
             List<Tuple<object, Action<object>?>> valuesWithUpdatesWhereRequired = new List<Tuple<object, Action<object>?>>();
-            valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, (Action<object>?)null));
+            foreach (var value in values)
+            {
+                valuesWithUpdatesWhereRequired.Add(Tuple.Create(value, (Action<object>?)null));
+            }
             return new ArgumentProvider(valuesWithUpdatesWhereRequired, useBracketsWhereZeroArguments);
         }
 

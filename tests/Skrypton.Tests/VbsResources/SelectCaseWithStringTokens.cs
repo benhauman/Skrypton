@@ -25,11 +25,11 @@ namespace TranslatedProgram
             _env.Suffix = " B";
             if (_.IF(_.EQ(_env.Suffix, " KB")))
             {
-                _outer.Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.Size, (Int16)1024)).Val((Int16)2)));
+                _outer.Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(_outer.Size, (Int16)1024), (Int16)2));
             }
             else if (_.IF(_.EQ(_env.Suffix, " MB")))
             {
-                _outer.Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(_outer.Size, 1048576)).Val((Int16)2)));
+                _outer.Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(_outer.Size, 1048576), (Int16)2));
             }
         }
     }

@@ -70,19 +70,19 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(Suffix, " KB")))
             {
-                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, (Int16)1024)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " MB")))
             {
-                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1048576)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1048576), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " GB")))
             {
-                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1073741824)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1073741824), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " TB")))
             {
-                Size = _.VAL(_.CALLm1argp(this, _, "ROUND", _.ARGS.Val(_.DIV(Size, 1099511627776d)).Val((Int16)2)));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
             }
 
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
@@ -394,14 +394,14 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.NOW()).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralCallTime, "Text");
+                _.SET(_.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)), this, _env.TextBoxGeneralCallTime, "Text");
             });
 
             _.HANDLEERROR(errOn, () => {
                 xmlhttp = _.OBJ(_.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1argp(this, xmlhttp, "setOption", _.ARGS.Val((Int16)2).Val((Int16)13056));
+                _.CALLm1v2(this, xmlhttp, "setOption", (Int16)2, (Int16)13056);
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
                 _.CALLm1argp(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
@@ -475,7 +475,7 @@ namespace TranslatedProgram
                     curnode = _.OBJ(_.CALLm2argp(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, dict, "Add", _.ARGS.Val(_.CALLm1v0(this, n, "Text")).Val(_.CALLm1v0(this, curnode, "Text")));
+                    _.CALLm1v2(this, dict, "Add", _.CALLm1v0(this, n, "Text"), _.CALLm1v0(this, curnode, "Text"));
                 });
                 _.HANDLEERROR(errOn, () => {
                     i = _.ADD(i, (Int16)1);
@@ -517,10 +517,10 @@ namespace TranslatedProgram
                 _.SET(_.VAL(_.CALLm1v1(this, dict, "Item", "group_name")), this, _env.TextBoxGeneralGroupName, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALLm1v1(this, dict, "Item", "last_system_boot"), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastBootTime, "Text");
+                _.SET(_.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict, "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)), this, _env.TextBoxGeneralLastBootTime, "Text");
             });
             _.HANDLEERROR(errOn, () => {
-                _.SET(_.VAL(_.CALLm1argp(this, _, "FORMATDATETIME", _.ARGS.Val(_.REPLACE(_.CALLm1v1(this, dict, "Item", "last_logon_time"), "T", " ")).Val(VBScriptConstants.vbGeneralDate))), this, _env.TextBoxGeneralLastLogon, "Text");
+                _.SET(_.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict, "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)), this, _env.TextBoxGeneralLastLogon, "Text");
             });
             _.HANDLEERROR(errOn, () => {
                 _.SET(_.VAL(_.CALLm1v1(this, dict, "Item", "last_logged_on_user")), this, _env.TextBoxGeneralDeviceType, "Text");

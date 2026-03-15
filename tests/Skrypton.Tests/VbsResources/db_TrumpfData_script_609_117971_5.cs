@@ -125,7 +125,7 @@ namespace TranslatedProgram
             _outer.CIComment = "";
             _outer.DeliveryDate = "";
 
-            _outer.OrderPosIDs = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetContentIDs", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA").Val((Int16)0)));
+            _outer.OrderPosIDs = _.VAL(_.CALLm1v2(this, _outer.hlCase, "GetContentIDs", "OrderRequestAttribute.OrderedCIs_CA", (Int16)0));
 
             //Allgemeingueltige Werte fuer alle CI's auslesen
             _outer.OrderNumber = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -159,7 +159,7 @@ namespace TranslatedProgram
                     //Preiseinheit abfragen
                     _outer.CIPriceUnit = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PriceUnit").Val((Int16)0).Ref(_outer.PosID, v15 => { _outer.PosID = v15; }).Val((Int16)0).Val((Int16)0)));
                     //Bestellmengenaenderung abfragen
-                    _outer.ChangedOrderQuantity = _.VAL(_.CALLm1argp(this, _env.hlITIL2, "CheckIntegerValue", _.ARGS.Val(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v16 => { _outer.PosID = v16; }).Val((Int16)0).Val((Int16)0))).Ref(_env.hlContext, v17 => { _env.hlContext = v17; })));
+                    _outer.ChangedOrderQuantity = _.VAL(_.CALLm1v2(this, _env.hlITIL2, "CheckIntegerValue", _.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v16 => { _outer.PosID = v16; }).Val((Int16)0).Val((Int16)0)), _env.hlContext));
                     //hlContext. Trace 1, ChangedOrderQuantity
                     if (_.IF(_.GT(_.NullableNUM(_outer.ChangedOrderQuantity), (Int16)0)))
                     {
@@ -170,37 +170,37 @@ namespace TranslatedProgram
                         _outer.CIQuantity = _.VAL(_outer.CIQuantity);
                     }
                     //Bestellposition
-                    _outer.OrderPosNr = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.OrderPosition").Val((Int16)0).Ref(_outer.PosID, v18 => { _outer.PosID = v18; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.OrderPosNr = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.OrderPosition").Val((Int16)0).Ref(_outer.PosID, v17 => { _outer.PosID = v17; }).Val((Int16)0).Val((Int16)0)));
                     //Abladestelle
-                    _outer.PlaceOfUnloading = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PlaceOfUnloading").Val((Int16)0).Ref(_outer.PosID, v19 => { _outer.PosID = v19; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.PlaceOfUnloading = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PlaceOfUnloading").Val((Int16)0).Ref(_outer.PosID, v18 => { _outer.PosID = v18; }).Val((Int16)0).Val((Int16)0)));
                     //Warenempfaenger
-                    _outer.Reciever = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.Reciever").Val((Int16)0).Ref(_outer.PosID, v20 => { _outer.PosID = v20; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.Reciever = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.Reciever").Val((Int16)0).Ref(_outer.PosID, v19 => { _outer.PosID = v19; }).Val((Int16)0).Val((Int16)0)));
                     //Kontierungsnummer
-                    _outer.AllocationNumber = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.AllocationNumber").Val((Int16)0).Ref(_outer.PosID, v21 => { _outer.PosID = v21; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.AllocationNumber = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.AllocationNumber").Val((Int16)0).Ref(_outer.PosID, v20 => { _outer.PosID = v20; }).Val((Int16)0).Val((Int16)0)));
                     //LieferDatum
-                    _outer.DeliveryDate = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.DeliveryDate").Val((Int16)0).Ref(_outer.PosID, v22 => { _outer.PosID = v22; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.DeliveryDate = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.DeliveryDate").Val((Int16)0).Ref(_outer.PosID, v21 => { _outer.PosID = v21; }).Val((Int16)0).Val((Int16)0)));
                     //Kontierungstyp
-                    _outer.AllocationType = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.AllocationType").Val((Int16)0).Ref(_outer.PosID, v23 => { _outer.PosID = v23; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.AllocationType = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.AllocationType").Val((Int16)0).Ref(_outer.PosID, v22 => { _outer.PosID = v22; }).Val((Int16)0).Val((Int16)0)));
                     //Positionsbestelltext
-                    _outer.PosOrderText = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PositionOrderText").Val((Int16)0).Ref(_outer.PosID, v24 => { _outer.PosID = v24; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.PosOrderText = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PositionOrderText").Val((Int16)0).Ref(_outer.PosID, v23 => { _outer.PosID = v23; }).Val((Int16)0).Val((Int16)0)));
                     if (_.IF(_.EQ(_.NullableSTR(_outer.PosOrderText), "")))
                     {
                         _outer.PosOrderText = " ";
                     }
                     //Positionsinfotext
-                    _outer.PosOrderInfoText = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PositionInfoNotice").Val((Int16)0).Ref(_outer.PosID, v25 => { _outer.PosID = v25; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.PosOrderInfoText = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PositionInfoNotice").Val((Int16)0).Ref(_outer.PosID, v24 => { _outer.PosID = v24; }).Val((Int16)0).Val((Int16)0)));
                     if (_.IF(_.EQ(_.NullableSTR(_outer.PosOrderInfoText), "")))
                     {
                         _outer.PosOrderInfoText = " ";
                     }
                     //Werk/Standort
-                    _outer.Incorporation = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.Incorporation").Val((Int16)0).Ref(_outer.PosID, v26 => { _outer.PosID = v26; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.Incorporation = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.Incorporation").Val((Int16)0).Ref(_outer.PosID, v25 => { _outer.PosID = v25; }).Val((Int16)0).Val((Int16)0)));
                     //Artikelbeschreibung
-                    _outer.ArticleDescription = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ArticleDescription").Val((Int16)0).Ref(_outer.PosID, v27 => { _outer.PosID = v27; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.ArticleDescription = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ArticleDescription").Val((Int16)0).Ref(_outer.PosID, v26 => { _outer.PosID = v26; }).Val((Int16)0).Val((Int16)0)));
                     //Preis
-                    _outer.CIPrice = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Ref(_outer.PosID, v28 => { _outer.PosID = v28; }).Val((Int16)0).Val((Int16)1)));
+                    _outer.CIPrice = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Ref(_outer.PosID, v27 => { _outer.PosID = v27; }).Val((Int16)0).Val((Int16)1)));
                     //Preiseinheit
-                    _outer.CIPriceCurrency = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Ref(_outer.PosID, v29 => { _outer.PosID = v29; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIPriceCurrency = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Ref(_outer.PosID, v28 => { _outer.PosID = v28; }).Val((Int16)0).Val((Int16)0)));
                     if (_.IF(_.GT(_.NullableNUM(_outer.CIPriceUnit), (Int16)1)))
                     {
                         _outer.CIPrice = _.DIV(_.CLNG(_outer.CIPrice), _.CLNG(_outer.CIPriceUnit));
@@ -223,33 +223,33 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Computer anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "DesktopComputer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v30 => { _outer.OrderNumber = v30; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v31 => { _outer.VendorName = v31; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v32 => { _outer.OrderDate = v32; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v33 => { _outer.CompanyCode = v33; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v34 => { _outer.VendorNumber = v34; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v35 => { _outer.OrderPosNr = v35; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v36 => { _outer.AllocationNumber = v36; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v37 => { _outer.AllocationType = v37; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v38 => { _outer.Reciever = v38; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v39 => { _outer.PosID = v39; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v40 => { _outer.PlaceOfUnloading = v40; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v41 => { _outer.CIComment = v41; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v29 => { _outer.OrderNumber = v29; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v30 => { _outer.VendorName = v30; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v31 => { _outer.OrderDate = v31; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v32 => { _outer.CompanyCode = v32; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v33 => { _outer.VendorNumber = v33; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v34 => { _outer.OrderPosNr = v34; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v35 => { _outer.AllocationNumber = v35; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v36 => { _outer.AllocationType = v36; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v37 => { _outer.Reciever = v37; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v38 => { _outer.PosID = v38; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v39 => { _outer.PlaceOfUnloading = v39; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v40 => { _outer.CIComment = v40; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v42 => { _outer.ActDate = v42; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v43 => { _outer.DeliveryDate = v43; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v44 => { _outer.ArticleDescription = v44; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v45 => { _outer.CIPrice = v45; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v46 => { _outer.CIPriceCurrency = v46; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v41 => { _outer.ActDate = v41; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v42 => { _outer.DeliveryDate = v42; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v43 => { _outer.ArticleDescription = v43; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v44 => { _outer.CIPrice = v44; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v45 => { _outer.CIPriceCurrency = v45; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v47 => { _outer.AllocationNumber = v47; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v46 => { _outer.AllocationNumber = v46; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v48 => { _outer.AllocationNumber = v48; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v47 => { _outer.AllocationNumber = v47; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -299,16 +299,16 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v49 => { _outer.CINumber = v49; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v50 => { _outer.NewCI = v50; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v48 => { _outer.CINumber = v48; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v49 => { _outer.NewCI = v49; }));
                                 //Neues CI dem Vorgang assoziieren
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v51 => { _outer.hlCase = v51; }).Ref(_outer.NewCI, v52 => { _outer.NewCI = v52; }).Val(119155));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v50 => { _outer.hlCase = v50; }).Ref(_outer.NewCI, v51 => { _outer.NewCI = v51; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v53 => { _outer.QryString = v53; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v52 => { _outer.QryString = v52; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent2 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -319,7 +319,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent2.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v54 => { _outer.AssetGroup = v54; }).Ref(_outer.NewCI, v55 => { _outer.NewCI = v55; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v53 => { _outer.AssetGroup = v53; }).Ref(_outer.NewCI, v54 => { _outer.NewCI = v54; }).Val(100706));
                                 }
                             }
                         }
@@ -328,7 +328,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v56 => { _outer.PosID = v56; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v55 => { _outer.PosID = v55; }).Val((Int16)0).Val("0"));
                         //Notebook
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeNotebook")))
@@ -341,33 +341,33 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NotebookComputer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v57 => { _outer.OrderNumber = v57; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v58 => { _outer.VendorName = v58; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v59 => { _outer.OrderDate = v59; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v60 => { _outer.CompanyCode = v60; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v61 => { _outer.VendorNumber = v61; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v62 => { _outer.OrderPosNr = v62; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v63 => { _outer.AllocationNumber = v63; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v64 => { _outer.AllocationType = v64; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v65 => { _outer.Reciever = v65; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v66 => { _outer.PosID = v66; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v67 => { _outer.PlaceOfUnloading = v67; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v68 => { _outer.CIComment = v68; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v56 => { _outer.OrderNumber = v56; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v57 => { _outer.VendorName = v57; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v58 => { _outer.OrderDate = v58; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v59 => { _outer.CompanyCode = v59; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v60 => { _outer.VendorNumber = v60; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v61 => { _outer.OrderPosNr = v61; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v62 => { _outer.AllocationNumber = v62; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v63 => { _outer.AllocationType = v63; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v64 => { _outer.Reciever = v64; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v65 => { _outer.PosID = v65; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v66 => { _outer.PlaceOfUnloading = v66; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v67 => { _outer.CIComment = v67; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v69 => { _outer.ActDate = v69; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v70 => { _outer.DeliveryDate = v70; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v71 => { _outer.ArticleDescription = v71; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v72 => { _outer.CIPrice = v72; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v73 => { _outer.CIPriceCurrency = v73; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v68 => { _outer.ActDate = v68; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v69 => { _outer.DeliveryDate = v69; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v70 => { _outer.ArticleDescription = v70; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v71 => { _outer.CIPrice = v71; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v72 => { _outer.CIPriceCurrency = v72; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v74 => { _outer.AllocationNumber = v74; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v73 => { _outer.AllocationNumber = v73; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v75 => { _outer.AllocationNumber = v75; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v74 => { _outer.AllocationNumber = v74; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -417,15 +417,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v76 => { _outer.CINumber = v76; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v77 => { _outer.NewCI = v77; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v78 => { _outer.hlCase = v78; }).Ref(_outer.NewCI, v79 => { _outer.NewCI = v79; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v75 => { _outer.CINumber = v75; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v76 => { _outer.NewCI = v76; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v77 => { _outer.hlCase = v77; }).Ref(_outer.NewCI, v78 => { _outer.NewCI = v78; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v80 => { _outer.QryString = v80; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v79 => { _outer.QryString = v79; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent3 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -436,7 +436,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent3.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v81 => { _outer.AssetGroup = v81; }).Ref(_outer.NewCI, v82 => { _outer.NewCI = v82; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v80 => { _outer.AssetGroup = v80; }).Ref(_outer.NewCI, v81 => { _outer.NewCI = v81; }).Val(100706));
                                 }
                             }
                         }
@@ -445,7 +445,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v83 => { _outer.PosID = v83; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v82 => { _outer.PosID = v82; }).Val((Int16)0).Val("0"));
                         //Software-Lizenz
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeSoftware")))
@@ -456,33 +456,33 @@ namespace TranslatedProgram
                             _outer.CIPrice = _.MULT(_.CLNG(_outer.CIPrice), _.CLNG(_outer.CIQuantity));
                         }
                         _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "SoftwareLicense"));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v84 => { _outer.OrderNumber = v84; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v85 => { _outer.OrderDate = v85; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v86 => { _outer.VendorNumber = v86; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v87 => { _outer.OrderPosNr = v87; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v88 => { _outer.AllocationNumber = v88; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v89 => { _outer.AllocationType = v89; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v83 => { _outer.OrderNumber = v83; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v84 => { _outer.OrderDate = v84; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v85 => { _outer.VendorNumber = v85; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v86 => { _outer.OrderPosNr = v86; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v87 => { _outer.AllocationNumber = v87; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v88 => { _outer.AllocationType = v88; }));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("SoftwareLicenseStatus.DocumentOrdered").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfSoftwareStatus.SWPlannedAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfSoftwareStatus.SWPlannedDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v90 => { _outer.ActDate = v90; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v91 => { _outer.DeliveryDate = v91; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v92 => { _outer.CIPrice = v92; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v93 => { _outer.CIPriceCurrency = v93; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfSoftwareStatus.SWPlannedDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v89 => { _outer.ActDate = v89; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v90 => { _outer.DeliveryDate = v90; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v91 => { _outer.CIPrice = v91; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v92 => { _outer.CIPriceCurrency = v92; }));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfSoftwareStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("SoftwareLicenseGeneral.SoftwareLicenseName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v94 => { _outer.ArticleDescription = v94; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIQuantity, v95 => { _outer.CIQuantity = v95; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v96 => { _outer.VendorName = v96; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v97 => { _outer.CompanyCode = v97; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v98 => { _outer.Reciever = v98; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v99 => { _outer.PosID = v99; }));
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v100 => { _outer.PlaceOfUnloading = v100; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("SoftwareLicenseGeneral.SoftwareLicenseName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v93 => { _outer.ArticleDescription = v93; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIQuantity, v94 => { _outer.CIQuantity = v94; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v95 => { _outer.VendorName = v95; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v96 => { _outer.CompanyCode = v96; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v97 => { _outer.Reciever = v97; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v98 => { _outer.PosID = v98; }));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v99 => { _outer.PlaceOfUnloading = v99; }));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                         {
-                            _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v101 => { _outer.AllocationNumber = v101; }));
+                            _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v100 => { _outer.AllocationNumber = v100; }));
                         }
                         if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                         {
-                            _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v102 => { _outer.AllocationNumber = v102; }));
+                            _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v101 => { _outer.AllocationNumber = v101; }));
                         }
                         //------------------------------------------------------------------------------------------------
                         //Generiert eine neue CI-Nummer
@@ -532,15 +532,15 @@ namespace TranslatedProgram
                         }
 
                         //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v103 => { _outer.CINumber = v103; }));
-                        _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v104 => { _outer.NewCI = v104; }));
-                        _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v105 => { _outer.hlCase = v105; }).Ref(_outer.NewCI, v106 => { _outer.NewCI = v106; }).Val(119155));
+                        _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v102 => { _outer.CINumber = v102; }));
+                        _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v103 => { _outer.NewCI = v103; }));
+                        _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v104 => { _outer.hlCase = v104; }).Ref(_outer.NewCI, v105 => { _outer.NewCI = v105; }).Val(119155));
                         //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                         //Zunaechst ID der Inventargruppe ermitteln
                         _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                         //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                        _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v107 => { _outer.QryString = v107; })));
-                        if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                        _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v106 => { _outer.QryString = v106; })));
+                        if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                         {
                             _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                             var enumerationContent4 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -551,7 +551,7 @@ namespace TranslatedProgram
                                 _outer.rewritten_Group = enumerationContent4.Current;
                                 _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                             }
-                            _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v108 => { _outer.AssetGroup = v108; }).Ref(_outer.NewCI, v109 => { _outer.NewCI = v109; }).Val(100706));
+                            _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v107 => { _outer.AssetGroup = v107; }).Ref(_outer.NewCI, v108 => { _outer.NewCI = v108; }).Val(100706));
                         }
                         //Next
                         //Geaenderte Bestellmenge der alten Bestellmenge dazu addieren und anschliessend die geaenderte Bestellmenge auf 0 setzen
@@ -559,7 +559,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v110 => { _outer.PosID = v110; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v109 => { _outer.PosID = v109; }).Val((Int16)0).Val("0"));
                         //Drucker
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypePrinter")))
@@ -572,34 +572,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v111 => { _outer.OrderNumber = v111; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v112 => { _outer.VendorName = v112; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v113 => { _outer.OrderDate = v113; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v114 => { _outer.CompanyCode = v114; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v115 => { _outer.VendorNumber = v115; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v116 => { _outer.OrderPosNr = v116; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v117 => { _outer.AllocationNumber = v117; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v118 => { _outer.AllocationType = v118; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v119 => { _outer.Reciever = v119; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v120 => { _outer.PosID = v120; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v121 => { _outer.PlaceOfUnloading = v121; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v122 => { _outer.CIComment = v122; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v110 => { _outer.OrderNumber = v110; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v111 => { _outer.VendorName = v111; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v112 => { _outer.OrderDate = v112; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v113 => { _outer.CompanyCode = v113; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v114 => { _outer.VendorNumber = v114; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v115 => { _outer.OrderPosNr = v115; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v116 => { _outer.AllocationNumber = v116; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v117 => { _outer.AllocationType = v117; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v118 => { _outer.Reciever = v118; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v119 => { _outer.PosID = v119; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v120 => { _outer.PlaceOfUnloading = v120; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v121 => { _outer.CIComment = v121; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("PrintSanDeviceDetail.PrintScanDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("PSDTypePrinter"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v123 => { _outer.ActDate = v123; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v124 => { _outer.DeliveryDate = v124; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v125 => { _outer.ArticleDescription = v125; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v126 => { _outer.CIPrice = v126; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v127 => { _outer.CIPriceCurrency = v127; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v122 => { _outer.ActDate = v122; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v123 => { _outer.DeliveryDate = v123; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v124 => { _outer.ArticleDescription = v124; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v125 => { _outer.CIPrice = v125; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v126 => { _outer.CIPriceCurrency = v126; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v128 => { _outer.AllocationNumber = v128; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v127 => { _outer.AllocationNumber = v127; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v129 => { _outer.AllocationNumber = v129; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v128 => { _outer.AllocationNumber = v128; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -649,15 +649,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v130 => { _outer.CINumber = v130; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v131 => { _outer.NewCI = v131; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v132 => { _outer.hlCase = v132; }).Ref(_outer.NewCI, v133 => { _outer.NewCI = v133; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v129 => { _outer.CINumber = v129; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v130 => { _outer.NewCI = v130; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v131 => { _outer.hlCase = v131; }).Ref(_outer.NewCI, v132 => { _outer.NewCI = v132; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v134 => { _outer.QryString = v134; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v133 => { _outer.QryString = v133; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent5 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -668,7 +668,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent5.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v135 => { _outer.AssetGroup = v135; }).Ref(_outer.NewCI, v136 => { _outer.NewCI = v136; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v134 => { _outer.AssetGroup = v134; }).Ref(_outer.NewCI, v135 => { _outer.NewCI = v135; }).Val(100706));
                                 }
                             }
                         }
@@ -677,7 +677,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v137 => { _outer.PosID = v137; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v136 => { _outer.PosID = v136; }).Val((Int16)0).Val("0"));
                         //Kopierer
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeCopyDevice")))
@@ -690,34 +690,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v138 => { _outer.OrderNumber = v138; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v139 => { _outer.VendorName = v139; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v140 => { _outer.OrderDate = v140; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v141 => { _outer.CompanyCode = v141; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v142 => { _outer.VendorNumber = v142; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v143 => { _outer.OrderPosNr = v143; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v144 => { _outer.AllocationNumber = v144; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v145 => { _outer.AllocationType = v145; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v146 => { _outer.Reciever = v146; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v147 => { _outer.PosID = v147; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v148 => { _outer.PlaceOfUnloading = v148; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v149 => { _outer.CIComment = v149; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v137 => { _outer.OrderNumber = v137; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v138 => { _outer.VendorName = v138; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v139 => { _outer.OrderDate = v139; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v140 => { _outer.CompanyCode = v140; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v141 => { _outer.VendorNumber = v141; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v142 => { _outer.OrderPosNr = v142; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v143 => { _outer.AllocationNumber = v143; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v144 => { _outer.AllocationType = v144; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v145 => { _outer.Reciever = v145; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v146 => { _outer.PosID = v146; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v147 => { _outer.PlaceOfUnloading = v147; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v148 => { _outer.CIComment = v148; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("PrintSanDeviceDetail.PrintScanDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("PSDTypeCopyDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v150 => { _outer.ActDate = v150; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v151 => { _outer.DeliveryDate = v151; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v152 => { _outer.ArticleDescription = v152; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v153 => { _outer.CIPrice = v153; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v154 => { _outer.CIPriceCurrency = v154; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v149 => { _outer.ActDate = v149; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v150 => { _outer.DeliveryDate = v150; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v151 => { _outer.ArticleDescription = v151; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v152 => { _outer.CIPrice = v152; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v153 => { _outer.CIPriceCurrency = v153; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v155 => { _outer.AllocationNumber = v155; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v154 => { _outer.AllocationNumber = v154; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v156 => { _outer.AllocationNumber = v156; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v155 => { _outer.AllocationNumber = v155; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -767,15 +767,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v157 => { _outer.CINumber = v157; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v158 => { _outer.NewCI = v158; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v159 => { _outer.hlCase = v159; }).Ref(_outer.NewCI, v160 => { _outer.NewCI = v160; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v156 => { _outer.CINumber = v156; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v157 => { _outer.NewCI = v157; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v158 => { _outer.hlCase = v158; }).Ref(_outer.NewCI, v159 => { _outer.NewCI = v159; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v161 => { _outer.QryString = v161; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v160 => { _outer.QryString = v160; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent6 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -786,7 +786,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent6.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v162 => { _outer.AssetGroup = v162; }).Ref(_outer.NewCI, v163 => { _outer.NewCI = v163; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v161 => { _outer.AssetGroup = v161; }).Ref(_outer.NewCI, v162 => { _outer.NewCI = v162; }).Val(100706));
                                 }
                             }
                         }
@@ -795,7 +795,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v164 => { _outer.PosID = v164; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v163 => { _outer.PosID = v163; }).Val((Int16)0).Val("0"));
                         //Multifunktionsgeraet
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeMultifunctionDevice")))
@@ -808,34 +808,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v165 => { _outer.OrderNumber = v165; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v166 => { _outer.VendorName = v166; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v167 => { _outer.OrderDate = v167; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v168 => { _outer.CompanyCode = v168; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v169 => { _outer.VendorNumber = v169; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v170 => { _outer.OrderPosNr = v170; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v171 => { _outer.AllocationNumber = v171; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v172 => { _outer.AllocationType = v172; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v173 => { _outer.Reciever = v173; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v174 => { _outer.PosID = v174; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v175 => { _outer.PlaceOfUnloading = v175; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v176 => { _outer.CIComment = v176; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v164 => { _outer.OrderNumber = v164; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v165 => { _outer.VendorName = v165; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v166 => { _outer.OrderDate = v166; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v167 => { _outer.CompanyCode = v167; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v168 => { _outer.VendorNumber = v168; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v169 => { _outer.OrderPosNr = v169; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v170 => { _outer.AllocationNumber = v170; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v171 => { _outer.AllocationType = v171; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v172 => { _outer.Reciever = v172; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v173 => { _outer.PosID = v173; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v174 => { _outer.PlaceOfUnloading = v174; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v175 => { _outer.CIComment = v175; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("PrintSanDeviceDetail.PrintScanDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("PSDTypeMultiFunctionDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v177 => { _outer.ActDate = v177; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v178 => { _outer.DeliveryDate = v178; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v179 => { _outer.ArticleDescription = v179; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v180 => { _outer.CIPrice = v180; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v181 => { _outer.CIPriceCurrency = v181; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v176 => { _outer.ActDate = v176; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v177 => { _outer.DeliveryDate = v177; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v178 => { _outer.ArticleDescription = v178; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v179 => { _outer.CIPrice = v179; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v180 => { _outer.CIPriceCurrency = v180; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v182 => { _outer.AllocationNumber = v182; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v181 => { _outer.AllocationNumber = v181; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v183 => { _outer.AllocationNumber = v183; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v182 => { _outer.AllocationNumber = v182; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -885,15 +885,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v184 => { _outer.CINumber = v184; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v185 => { _outer.NewCI = v185; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v186 => { _outer.hlCase = v186; }).Ref(_outer.NewCI, v187 => { _outer.NewCI = v187; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v183 => { _outer.CINumber = v183; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v184 => { _outer.NewCI = v184; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v185 => { _outer.hlCase = v185; }).Ref(_outer.NewCI, v186 => { _outer.NewCI = v186; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v188 => { _outer.QryString = v188; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v187 => { _outer.QryString = v187; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent7 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -904,7 +904,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent7.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v189 => { _outer.AssetGroup = v189; }).Ref(_outer.NewCI, v190 => { _outer.NewCI = v190; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v188 => { _outer.AssetGroup = v188; }).Ref(_outer.NewCI, v189 => { _outer.NewCI = v189; }).Val(100706));
                                 }
                             }
                         }
@@ -913,7 +913,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v191 => { _outer.PosID = v191; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v190 => { _outer.PosID = v190; }).Val((Int16)0).Val("0"));
                         //Scanner
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeScanner")))
@@ -926,34 +926,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v192 => { _outer.OrderNumber = v192; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v193 => { _outer.VendorName = v193; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v194 => { _outer.OrderDate = v194; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v195 => { _outer.CompanyCode = v195; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v196 => { _outer.VendorNumber = v196; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v197 => { _outer.OrderPosNr = v197; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v198 => { _outer.AllocationNumber = v198; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v199 => { _outer.AllocationType = v199; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v200 => { _outer.Reciever = v200; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v201 => { _outer.PosID = v201; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v202 => { _outer.PlaceOfUnloading = v202; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v203 => { _outer.CIComment = v203; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v191 => { _outer.OrderNumber = v191; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v192 => { _outer.VendorName = v192; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v193 => { _outer.OrderDate = v193; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v194 => { _outer.CompanyCode = v194; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v195 => { _outer.VendorNumber = v195; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v196 => { _outer.OrderPosNr = v196; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v197 => { _outer.AllocationNumber = v197; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v198 => { _outer.AllocationType = v198; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v199 => { _outer.Reciever = v199; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v200 => { _outer.PosID = v200; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v201 => { _outer.PlaceOfUnloading = v201; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v202 => { _outer.CIComment = v202; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("PrintSanDeviceDetail.PrintScanDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("PSDTypeScanner"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v204 => { _outer.ActDate = v204; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v205 => { _outer.DeliveryDate = v205; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v206 => { _outer.ArticleDescription = v206; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v207 => { _outer.CIPrice = v207; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v208 => { _outer.CIPriceCurrency = v208; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v203 => { _outer.ActDate = v203; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v204 => { _outer.DeliveryDate = v204; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v205 => { _outer.ArticleDescription = v205; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v206 => { _outer.CIPrice = v206; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v207 => { _outer.CIPriceCurrency = v207; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v209 => { _outer.AllocationNumber = v209; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v208 => { _outer.AllocationNumber = v208; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v210 => { _outer.AllocationNumber = v210; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v209 => { _outer.AllocationNumber = v209; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1003,15 +1003,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v211 => { _outer.CINumber = v211; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v212 => { _outer.NewCI = v212; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v213 => { _outer.hlCase = v213; }).Ref(_outer.NewCI, v214 => { _outer.NewCI = v214; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v210 => { _outer.CINumber = v210; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v211 => { _outer.NewCI = v211; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v212 => { _outer.hlCase = v212; }).Ref(_outer.NewCI, v213 => { _outer.NewCI = v213; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v215 => { _outer.QryString = v215; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v214 => { _outer.QryString = v214; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent8 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1022,7 +1022,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent8.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v216 => { _outer.AssetGroup = v216; }).Ref(_outer.NewCI, v217 => { _outer.NewCI = v217; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v215 => { _outer.AssetGroup = v215; }).Ref(_outer.NewCI, v216 => { _outer.NewCI = v216; }).Val(100706));
                                 }
                             }
                         }
@@ -1031,7 +1031,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v218 => { _outer.PosID = v218; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v217 => { _outer.PosID = v217; }).Val((Int16)0).Val("0"));
                         //Handy
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeMobilePhone")))
@@ -1044,34 +1044,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v219 => { _outer.OrderNumber = v219; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v220 => { _outer.VendorName = v220; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v221 => { _outer.OrderDate = v221; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v222 => { _outer.CompanyCode = v222; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v223 => { _outer.VendorNumber = v223; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v224 => { _outer.OrderPosNr = v224; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v225 => { _outer.AllocationNumber = v225; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v226 => { _outer.AllocationType = v226; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v227 => { _outer.Reciever = v227; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v228 => { _outer.PosID = v228; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v229 => { _outer.PlaceOfUnloading = v229; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v230 => { _outer.CIComment = v230; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v218 => { _outer.OrderNumber = v218; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v219 => { _outer.VendorName = v219; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v220 => { _outer.OrderDate = v220; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v221 => { _outer.CompanyCode = v221; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v222 => { _outer.VendorNumber = v222; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v223 => { _outer.OrderPosNr = v223; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v224 => { _outer.AllocationNumber = v224; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v225 => { _outer.AllocationType = v225; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v226 => { _outer.Reciever = v226; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v227 => { _outer.PosID = v227; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v228 => { _outer.PlaceOfUnloading = v228; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v229 => { _outer.CIComment = v229; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MobileDeviceDetail.MobileDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MobileDeviceTypeMobilePhone"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v231 => { _outer.ActDate = v231; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v232 => { _outer.DeliveryDate = v232; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v233 => { _outer.ArticleDescription = v233; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v234 => { _outer.CIPrice = v234; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v235 => { _outer.CIPriceCurrency = v235; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v230 => { _outer.ActDate = v230; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v231 => { _outer.DeliveryDate = v231; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v232 => { _outer.ArticleDescription = v232; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v233 => { _outer.CIPrice = v233; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v234 => { _outer.CIPriceCurrency = v234; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v236 => { _outer.AllocationNumber = v236; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v235 => { _outer.AllocationNumber = v235; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v237 => { _outer.AllocationNumber = v237; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v236 => { _outer.AllocationNumber = v236; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1121,15 +1121,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v238 => { _outer.CINumber = v238; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v239 => { _outer.NewCI = v239; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v240 => { _outer.hlCase = v240; }).Ref(_outer.NewCI, v241 => { _outer.NewCI = v241; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v237 => { _outer.CINumber = v237; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v238 => { _outer.NewCI = v238; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v239 => { _outer.hlCase = v239; }).Ref(_outer.NewCI, v240 => { _outer.NewCI = v240; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v242 => { _outer.QryString = v242; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v241 => { _outer.QryString = v241; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent9 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1140,7 +1140,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent9.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v243 => { _outer.AssetGroup = v243; }).Ref(_outer.NewCI, v244 => { _outer.NewCI = v244; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v242 => { _outer.AssetGroup = v242; }).Ref(_outer.NewCI, v243 => { _outer.NewCI = v243; }).Val(100706));
                                 }
                             }
                         }
@@ -1149,7 +1149,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v245 => { _outer.PosID = v245; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v244 => { _outer.PosID = v244; }).Val((Int16)0).Val("0"));
                         //SIM-Karte
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeSIMCard")))
@@ -1162,34 +1162,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v246 => { _outer.OrderNumber = v246; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v247 => { _outer.VendorName = v247; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v248 => { _outer.OrderDate = v248; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v249 => { _outer.CompanyCode = v249; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v250 => { _outer.VendorNumber = v250; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v251 => { _outer.OrderPosNr = v251; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v252 => { _outer.AllocationNumber = v252; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v253 => { _outer.AllocationType = v253; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v254 => { _outer.Reciever = v254; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v255 => { _outer.PosID = v255; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v256 => { _outer.PlaceOfUnloading = v256; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v257 => { _outer.CIComment = v257; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v245 => { _outer.OrderNumber = v245; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v246 => { _outer.VendorName = v246; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v247 => { _outer.OrderDate = v247; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v248 => { _outer.CompanyCode = v248; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v249 => { _outer.VendorNumber = v249; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v250 => { _outer.OrderPosNr = v250; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v251 => { _outer.AllocationNumber = v251; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v252 => { _outer.AllocationType = v252; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v253 => { _outer.Reciever = v253; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v254 => { _outer.PosID = v254; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v255 => { _outer.PlaceOfUnloading = v255; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v256 => { _outer.CIComment = v256; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MobileDeviceDetail.MobileDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MobileDeviceTypeSIMCard"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v258 => { _outer.ActDate = v258; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v259 => { _outer.DeliveryDate = v259; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v260 => { _outer.ArticleDescription = v260; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v261 => { _outer.CIPrice = v261; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v262 => { _outer.CIPriceCurrency = v262; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v257 => { _outer.ActDate = v257; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v258 => { _outer.DeliveryDate = v258; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v259 => { _outer.ArticleDescription = v259; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v260 => { _outer.CIPrice = v260; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v261 => { _outer.CIPriceCurrency = v261; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v263 => { _outer.AllocationNumber = v263; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v262 => { _outer.AllocationNumber = v262; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v264 => { _outer.AllocationNumber = v264; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v263 => { _outer.AllocationNumber = v263; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1239,15 +1239,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v265 => { _outer.CINumber = v265; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v266 => { _outer.NewCI = v266; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v267 => { _outer.hlCase = v267; }).Ref(_outer.NewCI, v268 => { _outer.NewCI = v268; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v264 => { _outer.CINumber = v264; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v265 => { _outer.NewCI = v265; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v266 => { _outer.hlCase = v266; }).Ref(_outer.NewCI, v267 => { _outer.NewCI = v267; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v269 => { _outer.QryString = v269; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v268 => { _outer.QryString = v268; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent10 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1258,7 +1258,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent10.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v270 => { _outer.AssetGroup = v270; }).Ref(_outer.NewCI, v271 => { _outer.NewCI = v271; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v269 => { _outer.AssetGroup = v269; }).Ref(_outer.NewCI, v270 => { _outer.NewCI = v270; }).Val(100706));
                                 }
                             }
                         }
@@ -1267,7 +1267,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v272 => { _outer.PosID = v272; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v271 => { _outer.PosID = v271; }).Val((Int16)0).Val("0"));
                         //UMTS-Karte
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeUMTSCard")))
@@ -1280,34 +1280,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v273 => { _outer.OrderNumber = v273; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v274 => { _outer.VendorName = v274; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v275 => { _outer.OrderDate = v275; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v276 => { _outer.CompanyCode = v276; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v277 => { _outer.VendorNumber = v277; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v278 => { _outer.OrderPosNr = v278; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v279 => { _outer.AllocationNumber = v279; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v280 => { _outer.AllocationType = v280; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v281 => { _outer.Reciever = v281; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v282 => { _outer.PosID = v282; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v283 => { _outer.PlaceOfUnloading = v283; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v284 => { _outer.CIComment = v284; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v272 => { _outer.OrderNumber = v272; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v273 => { _outer.VendorName = v273; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v274 => { _outer.OrderDate = v274; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v275 => { _outer.CompanyCode = v275; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v276 => { _outer.VendorNumber = v276; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v277 => { _outer.OrderPosNr = v277; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v278 => { _outer.AllocationNumber = v278; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v279 => { _outer.AllocationType = v279; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v280 => { _outer.Reciever = v280; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v281 => { _outer.PosID = v281; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v282 => { _outer.PlaceOfUnloading = v282; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v283 => { _outer.CIComment = v283; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MobileDeviceDetail.MobileDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MobileDeviceTypeUMTSCard"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v285 => { _outer.ActDate = v285; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v286 => { _outer.DeliveryDate = v286; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v287 => { _outer.ArticleDescription = v287; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v288 => { _outer.CIPrice = v288; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v289 => { _outer.CIPriceCurrency = v289; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v284 => { _outer.ActDate = v284; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v285 => { _outer.DeliveryDate = v285; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v286 => { _outer.ArticleDescription = v286; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v287 => { _outer.CIPrice = v287; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v288 => { _outer.CIPriceCurrency = v288; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v290 => { _outer.AllocationNumber = v290; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v289 => { _outer.AllocationNumber = v289; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v291 => { _outer.AllocationNumber = v291; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v290 => { _outer.AllocationNumber = v290; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1357,15 +1357,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v292 => { _outer.CINumber = v292; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v293 => { _outer.NewCI = v293; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v294 => { _outer.hlCase = v294; }).Ref(_outer.NewCI, v295 => { _outer.NewCI = v295; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v291 => { _outer.CINumber = v291; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v292 => { _outer.NewCI = v292; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v293 => { _outer.hlCase = v293; }).Ref(_outer.NewCI, v294 => { _outer.NewCI = v294; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v296 => { _outer.QryString = v296; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v295 => { _outer.QryString = v295; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent11 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1376,7 +1376,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent11.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v297 => { _outer.AssetGroup = v297; }).Ref(_outer.NewCI, v298 => { _outer.NewCI = v298; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v296 => { _outer.AssetGroup = v296; }).Ref(_outer.NewCI, v297 => { _outer.NewCI = v297; }).Val(100706));
                                 }
                             }
                         }
@@ -1385,7 +1385,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v299 => { _outer.PosID = v299; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v298 => { _outer.PosID = v298; }).Val((Int16)0).Val("0"));
                         //PDA
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypePDA")))
@@ -1398,34 +1398,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v300 => { _outer.OrderNumber = v300; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v301 => { _outer.VendorName = v301; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v302 => { _outer.OrderDate = v302; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v303 => { _outer.CompanyCode = v303; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v304 => { _outer.VendorNumber = v304; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v305 => { _outer.OrderPosNr = v305; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v306 => { _outer.AllocationNumber = v306; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v307 => { _outer.AllocationType = v307; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v308 => { _outer.Reciever = v308; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v309 => { _outer.PosID = v309; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v310 => { _outer.PlaceOfUnloading = v310; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v311 => { _outer.CIComment = v311; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v299 => { _outer.OrderNumber = v299; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v300 => { _outer.VendorName = v300; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v301 => { _outer.OrderDate = v301; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v302 => { _outer.CompanyCode = v302; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v303 => { _outer.VendorNumber = v303; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v304 => { _outer.OrderPosNr = v304; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v305 => { _outer.AllocationNumber = v305; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v306 => { _outer.AllocationType = v306; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v307 => { _outer.Reciever = v307; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v308 => { _outer.PosID = v308; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v309 => { _outer.PlaceOfUnloading = v309; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v310 => { _outer.CIComment = v310; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MobileDeviceDetail.MobileDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MobileDeviceTypePDA"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v312 => { _outer.ActDate = v312; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v313 => { _outer.DeliveryDate = v313; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v314 => { _outer.ArticleDescription = v314; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v315 => { _outer.CIPrice = v315; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v316 => { _outer.CIPriceCurrency = v316; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v311 => { _outer.ActDate = v311; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v312 => { _outer.DeliveryDate = v312; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v313 => { _outer.ArticleDescription = v313; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v314 => { _outer.CIPrice = v314; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v315 => { _outer.CIPriceCurrency = v315; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v317 => { _outer.AllocationNumber = v317; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v316 => { _outer.AllocationNumber = v316; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v318 => { _outer.AllocationNumber = v318; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v317 => { _outer.AllocationNumber = v317; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1475,15 +1475,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v319 => { _outer.CINumber = v319; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v320 => { _outer.NewCI = v320; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v321 => { _outer.hlCase = v321; }).Ref(_outer.NewCI, v322 => { _outer.NewCI = v322; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v318 => { _outer.CINumber = v318; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v319 => { _outer.NewCI = v319; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v320 => { _outer.hlCase = v320; }).Ref(_outer.NewCI, v321 => { _outer.NewCI = v321; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v323 => { _outer.QryString = v323; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v322 => { _outer.QryString = v322; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent12 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1494,7 +1494,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent12.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v324 => { _outer.AssetGroup = v324; }).Ref(_outer.NewCI, v325 => { _outer.NewCI = v325; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v323 => { _outer.AssetGroup = v323; }).Ref(_outer.NewCI, v324 => { _outer.NewCI = v324; }).Val(100706));
                                 }
                             }
                         }
@@ -1503,7 +1503,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v326 => { _outer.PosID = v326; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v325 => { _outer.PosID = v325; }).Val((Int16)0).Val("0"));
                         //BlackBerry
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeBlackberry")))
@@ -1516,34 +1516,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v327 => { _outer.OrderNumber = v327; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v328 => { _outer.VendorName = v328; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v329 => { _outer.OrderDate = v329; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v330 => { _outer.CompanyCode = v330; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v331 => { _outer.VendorNumber = v331; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v332 => { _outer.OrderPosNr = v332; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v333 => { _outer.AllocationNumber = v333; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v334 => { _outer.AllocationType = v334; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v335 => { _outer.Reciever = v335; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v336 => { _outer.PosID = v336; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v337 => { _outer.PlaceOfUnloading = v337; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v338 => { _outer.CIComment = v338; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v326 => { _outer.OrderNumber = v326; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v327 => { _outer.VendorName = v327; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v328 => { _outer.OrderDate = v328; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v329 => { _outer.CompanyCode = v329; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v330 => { _outer.VendorNumber = v330; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v331 => { _outer.OrderPosNr = v331; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v332 => { _outer.AllocationNumber = v332; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v333 => { _outer.AllocationType = v333; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v334 => { _outer.Reciever = v334; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v335 => { _outer.PosID = v335; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v336 => { _outer.PlaceOfUnloading = v336; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v337 => { _outer.CIComment = v337; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MobileDeviceDetail.MobileDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MobileDeviceTypeBlackBerry"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v339 => { _outer.ActDate = v339; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v340 => { _outer.DeliveryDate = v340; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v341 => { _outer.ArticleDescription = v341; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v342 => { _outer.CIPrice = v342; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v343 => { _outer.CIPriceCurrency = v343; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v338 => { _outer.ActDate = v338; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v339 => { _outer.DeliveryDate = v339; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v340 => { _outer.ArticleDescription = v340; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v341 => { _outer.CIPrice = v341; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v342 => { _outer.CIPriceCurrency = v342; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v344 => { _outer.AllocationNumber = v344; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v343 => { _outer.AllocationNumber = v343; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v345 => { _outer.AllocationNumber = v345; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v344 => { _outer.AllocationNumber = v344; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1593,15 +1593,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v346 => { _outer.CINumber = v346; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v347 => { _outer.NewCI = v347; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v348 => { _outer.hlCase = v348; }).Ref(_outer.NewCI, v349 => { _outer.NewCI = v349; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v345 => { _outer.CINumber = v345; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v346 => { _outer.NewCI = v346; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v347 => { _outer.hlCase = v347; }).Ref(_outer.NewCI, v348 => { _outer.NewCI = v348; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v350 => { _outer.QryString = v350; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v349 => { _outer.QryString = v349; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent13 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1612,7 +1612,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent13.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v351 => { _outer.AssetGroup = v351; }).Ref(_outer.NewCI, v352 => { _outer.NewCI = v352; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v350 => { _outer.AssetGroup = v350; }).Ref(_outer.NewCI, v351 => { _outer.NewCI = v351; }).Val(100706));
                                 }
                             }
                         }
@@ -1621,7 +1621,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v353 => { _outer.PosID = v353; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v352 => { _outer.PosID = v352; }).Val((Int16)0).Val("0"));
                         //Monitor
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeMonitor")))
@@ -1634,33 +1634,33 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Monitor"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v354 => { _outer.OrderNumber = v354; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v355 => { _outer.VendorName = v355; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v356 => { _outer.OrderDate = v356; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v357 => { _outer.CompanyCode = v357; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v358 => { _outer.VendorNumber = v358; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v359 => { _outer.OrderPosNr = v359; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v360 => { _outer.AllocationNumber = v360; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v361 => { _outer.AllocationType = v361; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v362 => { _outer.Reciever = v362; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v363 => { _outer.PosID = v363; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v364 => { _outer.PlaceOfUnloading = v364; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v365 => { _outer.CIComment = v365; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v353 => { _outer.OrderNumber = v353; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v354 => { _outer.VendorName = v354; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v355 => { _outer.OrderDate = v355; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v356 => { _outer.CompanyCode = v356; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v357 => { _outer.VendorNumber = v357; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v358 => { _outer.OrderPosNr = v358; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v359 => { _outer.AllocationNumber = v359; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v360 => { _outer.AllocationType = v360; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v361 => { _outer.Reciever = v361; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v362 => { _outer.PosID = v362; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v363 => { _outer.PlaceOfUnloading = v363; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v364 => { _outer.CIComment = v364; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v366 => { _outer.ActDate = v366; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v367 => { _outer.DeliveryDate = v367; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v368 => { _outer.ArticleDescription = v368; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v369 => { _outer.CIPrice = v369; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v370 => { _outer.CIPriceCurrency = v370; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v365 => { _outer.ActDate = v365; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v366 => { _outer.DeliveryDate = v366; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v367 => { _outer.ArticleDescription = v367; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v368 => { _outer.CIPrice = v368; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v369 => { _outer.CIPriceCurrency = v369; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v371 => { _outer.AllocationNumber = v371; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v370 => { _outer.AllocationNumber = v370; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v372 => { _outer.AllocationNumber = v372; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v371 => { _outer.AllocationNumber = v371; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1710,15 +1710,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v373 => { _outer.CINumber = v373; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v374 => { _outer.NewCI = v374; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v375 => { _outer.hlCase = v375; }).Ref(_outer.NewCI, v376 => { _outer.NewCI = v376; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v372 => { _outer.CINumber = v372; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v373 => { _outer.NewCI = v373; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v374 => { _outer.hlCase = v374; }).Ref(_outer.NewCI, v375 => { _outer.NewCI = v375; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v377 => { _outer.QryString = v377; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v376 => { _outer.QryString = v376; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent14 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1729,7 +1729,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent14.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v378 => { _outer.AssetGroup = v378; }).Ref(_outer.NewCI, v379 => { _outer.NewCI = v379; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v377 => { _outer.AssetGroup = v377; }).Ref(_outer.NewCI, v378 => { _outer.NewCI = v378; }).Val(100706));
                                 }
                             }
                         }
@@ -1738,7 +1738,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v380 => { _outer.PosID = v380; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v379 => { _outer.PosID = v379; }).Val((Int16)0).Val("0"));
                         //Beamer
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeBeamer")))
@@ -1751,34 +1751,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v381 => { _outer.OrderNumber = v381; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v382 => { _outer.VendorName = v382; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v383 => { _outer.OrderDate = v383; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v384 => { _outer.CompanyCode = v384; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v385 => { _outer.VendorNumber = v385; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v386 => { _outer.OrderPosNr = v386; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v387 => { _outer.AllocationNumber = v387; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v388 => { _outer.AllocationType = v388; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v389 => { _outer.Reciever = v389; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v390 => { _outer.PosID = v390; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v391 => { _outer.PlaceOfUnloading = v391; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v392 => { _outer.CIComment = v392; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v380 => { _outer.OrderNumber = v380; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v381 => { _outer.VendorName = v381; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v382 => { _outer.OrderDate = v382; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v383 => { _outer.CompanyCode = v383; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v384 => { _outer.VendorNumber = v384; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v385 => { _outer.OrderPosNr = v385; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v386 => { _outer.AllocationNumber = v386; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v387 => { _outer.AllocationType = v387; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v388 => { _outer.Reciever = v388; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v389 => { _outer.PosID = v389; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v390 => { _outer.PlaceOfUnloading = v390; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v391 => { _outer.CIComment = v391; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v393 => { _outer.ActDate = v393; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v394 => { _outer.DeliveryDate = v394; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v392 => { _outer.ActDate = v392; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v393 => { _outer.DeliveryDate = v393; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MultiMediaDeviceDetail.MultiMediaDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MultiMediaDeviceTypeBeamer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v395 => { _outer.ArticleDescription = v395; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v396 => { _outer.CIPrice = v396; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v397 => { _outer.CIPriceCurrency = v397; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v394 => { _outer.ArticleDescription = v394; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v395 => { _outer.CIPrice = v395; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v396 => { _outer.CIPriceCurrency = v396; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v398 => { _outer.AllocationNumber = v398; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v397 => { _outer.AllocationNumber = v397; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v399 => { _outer.AllocationNumber = v399; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v398 => { _outer.AllocationNumber = v398; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1828,15 +1828,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v400 => { _outer.CINumber = v400; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v401 => { _outer.NewCI = v401; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v402 => { _outer.hlCase = v402; }).Ref(_outer.NewCI, v403 => { _outer.NewCI = v403; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v399 => { _outer.CINumber = v399; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v400 => { _outer.NewCI = v400; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v401 => { _outer.hlCase = v401; }).Ref(_outer.NewCI, v402 => { _outer.NewCI = v402; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v404 => { _outer.QryString = v404; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v403 => { _outer.QryString = v403; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent15 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1847,7 +1847,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent15.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v405 => { _outer.AssetGroup = v405; }).Ref(_outer.NewCI, v406 => { _outer.NewCI = v406; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v404 => { _outer.AssetGroup = v404; }).Ref(_outer.NewCI, v405 => { _outer.NewCI = v405; }).Val(100706));
                                 }
                             }
                         }
@@ -1856,7 +1856,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v407 => { _outer.PosID = v407; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v406 => { _outer.PosID = v406; }).Val((Int16)0).Val("0"));
                         //Videokonferenztechnik
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeVideoconferencetechnic")))
@@ -1869,34 +1869,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v408 => { _outer.OrderNumber = v408; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v409 => { _outer.VendorName = v409; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v410 => { _outer.OrderDate = v410; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v411 => { _outer.CompanyCode = v411; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v412 => { _outer.VendorNumber = v412; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v413 => { _outer.OrderPosNr = v413; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v414 => { _outer.AllocationNumber = v414; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v415 => { _outer.AllocationType = v415; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v416 => { _outer.Reciever = v416; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v417 => { _outer.PosID = v417; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v418 => { _outer.PlaceOfUnloading = v418; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v419 => { _outer.CIComment = v419; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v407 => { _outer.OrderNumber = v407; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v408 => { _outer.VendorName = v408; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v409 => { _outer.OrderDate = v409; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v410 => { _outer.CompanyCode = v410; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v411 => { _outer.VendorNumber = v411; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v412 => { _outer.OrderPosNr = v412; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v413 => { _outer.AllocationNumber = v413; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v414 => { _outer.AllocationType = v414; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v415 => { _outer.Reciever = v415; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v416 => { _outer.PosID = v416; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v417 => { _outer.PlaceOfUnloading = v417; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v418 => { _outer.CIComment = v418; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v420 => { _outer.ActDate = v420; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v421 => { _outer.DeliveryDate = v421; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v419 => { _outer.ActDate = v419; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v420 => { _outer.DeliveryDate = v420; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MultiMediaDeviceDetail.MultiMediaDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MultiMediaDeviceTypeVideoConferenceTechnic"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v422 => { _outer.ArticleDescription = v422; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v423 => { _outer.CIPrice = v423; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v424 => { _outer.CIPriceCurrency = v424; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v421 => { _outer.ArticleDescription = v421; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v422 => { _outer.CIPrice = v422; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v423 => { _outer.CIPriceCurrency = v423; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v425 => { _outer.AllocationNumber = v425; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v424 => { _outer.AllocationNumber = v424; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v426 => { _outer.AllocationNumber = v426; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v425 => { _outer.AllocationNumber = v425; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -1946,15 +1946,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v427 => { _outer.CINumber = v427; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v428 => { _outer.NewCI = v428; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v429 => { _outer.hlCase = v429; }).Ref(_outer.NewCI, v430 => { _outer.NewCI = v430; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v426 => { _outer.CINumber = v426; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v427 => { _outer.NewCI = v427; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v428 => { _outer.hlCase = v428; }).Ref(_outer.NewCI, v429 => { _outer.NewCI = v429; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v431 => { _outer.QryString = v431; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v430 => { _outer.QryString = v430; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent16 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -1965,7 +1965,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent16.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v432 => { _outer.AssetGroup = v432; }).Ref(_outer.NewCI, v433 => { _outer.NewCI = v433; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v431 => { _outer.AssetGroup = v431; }).Ref(_outer.NewCI, v432 => { _outer.NewCI = v432; }).Val(100706));
                                 }
                             }
                         }
@@ -1974,7 +1974,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v434 => { _outer.PosID = v434; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v433 => { _outer.PosID = v433; }).Val((Int16)0).Val("0"));
                         //Medientechnik
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeMediaTechnic")))
@@ -1987,34 +1987,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v435 => { _outer.OrderNumber = v435; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v436 => { _outer.VendorName = v436; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v437 => { _outer.OrderDate = v437; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v438 => { _outer.CompanyCode = v438; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v439 => { _outer.VendorNumber = v439; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v440 => { _outer.OrderPosNr = v440; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v441 => { _outer.AllocationNumber = v441; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v442 => { _outer.AllocationType = v442; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v443 => { _outer.Reciever = v443; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v444 => { _outer.PosID = v444; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v445 => { _outer.PlaceOfUnloading = v445; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v446 => { _outer.CIComment = v446; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v434 => { _outer.OrderNumber = v434; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v435 => { _outer.VendorName = v435; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v436 => { _outer.OrderDate = v436; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v437 => { _outer.CompanyCode = v437; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v438 => { _outer.VendorNumber = v438; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v439 => { _outer.OrderPosNr = v439; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v440 => { _outer.AllocationNumber = v440; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v441 => { _outer.AllocationType = v441; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v442 => { _outer.Reciever = v442; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v443 => { _outer.PosID = v443; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v444 => { _outer.PlaceOfUnloading = v444; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v445 => { _outer.CIComment = v445; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v447 => { _outer.ActDate = v447; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v448 => { _outer.DeliveryDate = v448; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v446 => { _outer.ActDate = v446; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v447 => { _outer.DeliveryDate = v447; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("MultiMediaDeviceDetail.MultiMediaDeviceType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("MultiMediaDeviceTypeMediaTechnic"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v449 => { _outer.ArticleDescription = v449; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v450 => { _outer.CIPrice = v450; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v451 => { _outer.CIPriceCurrency = v451; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v448 => { _outer.ArticleDescription = v448; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v449 => { _outer.CIPrice = v449; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v450 => { _outer.CIPriceCurrency = v450; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v452 => { _outer.AllocationNumber = v452; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v451 => { _outer.AllocationNumber = v451; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v453 => { _outer.AllocationNumber = v453; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v452 => { _outer.AllocationNumber = v452; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2064,15 +2064,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v454 => { _outer.CINumber = v454; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v455 => { _outer.NewCI = v455; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v456 => { _outer.hlCase = v456; }).Ref(_outer.NewCI, v457 => { _outer.NewCI = v457; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v453 => { _outer.CINumber = v453; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v454 => { _outer.NewCI = v454; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v455 => { _outer.hlCase = v455; }).Ref(_outer.NewCI, v456 => { _outer.NewCI = v456; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v458 => { _outer.QryString = v458; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v457 => { _outer.QryString = v457; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent17 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2083,7 +2083,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent17.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v459 => { _outer.AssetGroup = v459; }).Ref(_outer.NewCI, v460 => { _outer.NewCI = v460; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v458 => { _outer.AssetGroup = v458; }).Ref(_outer.NewCI, v459 => { _outer.NewCI = v459; }).Val(100706));
                                 }
                             }
                         }
@@ -2092,7 +2092,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v461 => { _outer.PosID = v461; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v460 => { _outer.PosID = v460; }).Val((Int16)0).Val("0"));
                         //Diktiergeraet
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeDictaphone")))
@@ -2105,34 +2105,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v462 => { _outer.OrderNumber = v462; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v463 => { _outer.VendorName = v463; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v464 => { _outer.OrderDate = v464; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v465 => { _outer.CompanyCode = v465; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v466 => { _outer.VendorNumber = v466; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v467 => { _outer.OrderPosNr = v467; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v468 => { _outer.AllocationNumber = v468; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v469 => { _outer.AllocationType = v469; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v470 => { _outer.Reciever = v470; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v471 => { _outer.PosID = v471; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v472 => { _outer.PlaceOfUnloading = v472; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v473 => { _outer.CIComment = v473; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v461 => { _outer.OrderNumber = v461; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v462 => { _outer.VendorName = v462; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v463 => { _outer.OrderDate = v463; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v464 => { _outer.CompanyCode = v464; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v465 => { _outer.VendorNumber = v465; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v466 => { _outer.OrderPosNr = v466; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v467 => { _outer.AllocationNumber = v467; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v468 => { _outer.AllocationType = v468; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v469 => { _outer.Reciever = v469; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v470 => { _outer.PosID = v470; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v471 => { _outer.PlaceOfUnloading = v471; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v472 => { _outer.CIComment = v472; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v474 => { _outer.ActDate = v474; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v475 => { _outer.DeliveryDate = v475; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v473 => { _outer.ActDate = v473; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v474 => { _outer.DeliveryDate = v474; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeDictationDevice"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v476 => { _outer.ArticleDescription = v476; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v477 => { _outer.CIPrice = v477; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v478 => { _outer.CIPriceCurrency = v478; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v475 => { _outer.ArticleDescription = v475; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v476 => { _outer.CIPrice = v476; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v477 => { _outer.CIPriceCurrency = v477; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v479 => { _outer.AllocationNumber = v479; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v478 => { _outer.AllocationNumber = v478; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v480 => { _outer.AllocationNumber = v480; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v479 => { _outer.AllocationNumber = v479; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2182,15 +2182,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v481 => { _outer.CINumber = v481; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v482 => { _outer.NewCI = v482; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v483 => { _outer.hlCase = v483; }).Ref(_outer.NewCI, v484 => { _outer.NewCI = v484; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v480 => { _outer.CINumber = v480; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v481 => { _outer.NewCI = v481; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v482 => { _outer.hlCase = v482; }).Ref(_outer.NewCI, v483 => { _outer.NewCI = v483; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v485 => { _outer.QryString = v485; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v484 => { _outer.QryString = v484; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent18 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2201,7 +2201,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent18.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v486 => { _outer.AssetGroup = v486; }).Ref(_outer.NewCI, v487 => { _outer.NewCI = v487; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v485 => { _outer.AssetGroup = v485; }).Ref(_outer.NewCI, v486 => { _outer.NewCI = v486; }).Val(100706));
                                 }
                             }
                         }
@@ -2210,7 +2210,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v488 => { _outer.PosID = v488; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v487 => { _outer.PosID = v487; }).Val((Int16)0).Val("0"));
                         //USV
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeUSV")))
@@ -2223,34 +2223,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v489 => { _outer.OrderNumber = v489; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v490 => { _outer.VendorName = v490; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v491 => { _outer.OrderDate = v491; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v492 => { _outer.CompanyCode = v492; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v493 => { _outer.VendorNumber = v493; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v494 => { _outer.OrderPosNr = v494; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v495 => { _outer.AllocationNumber = v495; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v496 => { _outer.AllocationType = v496; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v497 => { _outer.Reciever = v497; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v498 => { _outer.PosID = v498; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v499 => { _outer.PlaceOfUnloading = v499; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v500 => { _outer.CIComment = v500; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v488 => { _outer.OrderNumber = v488; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v489 => { _outer.VendorName = v489; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v490 => { _outer.OrderDate = v490; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v491 => { _outer.CompanyCode = v491; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v492 => { _outer.VendorNumber = v492; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v493 => { _outer.OrderPosNr = v493; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v494 => { _outer.AllocationNumber = v494; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v495 => { _outer.AllocationType = v495; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v496 => { _outer.Reciever = v496; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v497 => { _outer.PosID = v497; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v498 => { _outer.PlaceOfUnloading = v498; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v499 => { _outer.CIComment = v499; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v501 => { _outer.ActDate = v501; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v502 => { _outer.DeliveryDate = v502; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v500 => { _outer.ActDate = v500; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v501 => { _outer.DeliveryDate = v501; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeUSV"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v503 => { _outer.ArticleDescription = v503; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v504 => { _outer.CIPrice = v504; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v505 => { _outer.CIPriceCurrency = v505; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v502 => { _outer.ArticleDescription = v502; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v503 => { _outer.CIPrice = v503; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v504 => { _outer.CIPriceCurrency = v504; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v506 => { _outer.AllocationNumber = v506; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v505 => { _outer.AllocationNumber = v505; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v507 => { _outer.AllocationNumber = v507; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v506 => { _outer.AllocationNumber = v506; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2300,15 +2300,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v508 => { _outer.CINumber = v508; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v509 => { _outer.NewCI = v509; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v510 => { _outer.hlCase = v510; }).Ref(_outer.NewCI, v511 => { _outer.NewCI = v511; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v507 => { _outer.CINumber = v507; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v508 => { _outer.NewCI = v508; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v509 => { _outer.hlCase = v509; }).Ref(_outer.NewCI, v510 => { _outer.NewCI = v510; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v512 => { _outer.QryString = v512; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v511 => { _outer.QryString = v511; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent19 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2319,7 +2319,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent19.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v513 => { _outer.AssetGroup = v513; }).Ref(_outer.NewCI, v514 => { _outer.NewCI = v514; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v512 => { _outer.AssetGroup = v512; }).Ref(_outer.NewCI, v513 => { _outer.NewCI = v513; }).Val(100706));
                                 }
                             }
                         }
@@ -2328,7 +2328,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v515 => { _outer.PosID = v515; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v514 => { _outer.PosID = v514; }).Val((Int16)0).Val("0"));
                         //ueberwachungskamera
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeControlCam")))
@@ -2341,34 +2341,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v516 => { _outer.OrderNumber = v516; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v517 => { _outer.VendorName = v517; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v518 => { _outer.OrderDate = v518; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v519 => { _outer.CompanyCode = v519; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v520 => { _outer.VendorNumber = v520; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v521 => { _outer.OrderPosNr = v521; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v522 => { _outer.AllocationNumber = v522; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v523 => { _outer.AllocationType = v523; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v524 => { _outer.Reciever = v524; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v525 => { _outer.PosID = v525; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v526 => { _outer.PlaceOfUnloading = v526; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v527 => { _outer.CIComment = v527; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v515 => { _outer.OrderNumber = v515; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v516 => { _outer.VendorName = v516; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v517 => { _outer.OrderDate = v517; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v518 => { _outer.CompanyCode = v518; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v519 => { _outer.VendorNumber = v519; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v520 => { _outer.OrderPosNr = v520; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v521 => { _outer.AllocationNumber = v521; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v522 => { _outer.AllocationType = v522; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v523 => { _outer.Reciever = v523; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v524 => { _outer.PosID = v524; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v525 => { _outer.PlaceOfUnloading = v525; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v526 => { _outer.CIComment = v526; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v528 => { _outer.ActDate = v528; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v529 => { _outer.DeliveryDate = v529; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v527 => { _outer.ActDate = v527; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v528 => { _outer.DeliveryDate = v528; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeControlCam"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v530 => { _outer.ArticleDescription = v530; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v531 => { _outer.CIPrice = v531; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v532 => { _outer.CIPriceCurrency = v532; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v529 => { _outer.ArticleDescription = v529; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v530 => { _outer.CIPrice = v530; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v531 => { _outer.CIPriceCurrency = v531; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v533 => { _outer.AllocationNumber = v533; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v532 => { _outer.AllocationNumber = v532; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v534 => { _outer.AllocationNumber = v534; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v533 => { _outer.AllocationNumber = v533; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2418,15 +2418,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v535 => { _outer.CINumber = v535; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v536 => { _outer.NewCI = v536; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v537 => { _outer.hlCase = v537; }).Ref(_outer.NewCI, v538 => { _outer.NewCI = v538; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v534 => { _outer.CINumber = v534; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v535 => { _outer.NewCI = v535; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v536 => { _outer.hlCase = v536; }).Ref(_outer.NewCI, v537 => { _outer.NewCI = v537; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v539 => { _outer.QryString = v539; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v538 => { _outer.QryString = v538; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent20 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2437,7 +2437,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent20.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v540 => { _outer.AssetGroup = v540; }).Ref(_outer.NewCI, v541 => { _outer.NewCI = v541; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v539 => { _outer.AssetGroup = v539; }).Ref(_outer.NewCI, v540 => { _outer.NewCI = v540; }).Val(100706));
                                 }
                             }
                         }
@@ -2446,7 +2446,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v542 => { _outer.PosID = v542; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v541 => { _outer.PosID = v541; }).Val((Int16)0).Val("0"));
                         //BDE
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeBDE")))
@@ -2459,34 +2459,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v543 => { _outer.OrderNumber = v543; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v544 => { _outer.VendorName = v544; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v545 => { _outer.OrderDate = v545; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v546 => { _outer.CompanyCode = v546; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v547 => { _outer.VendorNumber = v547; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v548 => { _outer.OrderPosNr = v548; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v549 => { _outer.AllocationNumber = v549; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v550 => { _outer.AllocationType = v550; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v551 => { _outer.Reciever = v551; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v552 => { _outer.PosID = v552; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v553 => { _outer.PlaceOfUnloading = v553; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v554 => { _outer.CIComment = v554; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v542 => { _outer.OrderNumber = v542; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v543 => { _outer.VendorName = v543; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v544 => { _outer.OrderDate = v544; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v545 => { _outer.CompanyCode = v545; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v546 => { _outer.VendorNumber = v546; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v547 => { _outer.OrderPosNr = v547; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v548 => { _outer.AllocationNumber = v548; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v549 => { _outer.AllocationType = v549; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v550 => { _outer.Reciever = v550; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v551 => { _outer.PosID = v551; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v552 => { _outer.PlaceOfUnloading = v552; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v553 => { _outer.CIComment = v553; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v555 => { _outer.ActDate = v555; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v556 => { _outer.DeliveryDate = v556; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v554 => { _outer.ActDate = v554; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v555 => { _outer.DeliveryDate = v555; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeBDE"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v557 => { _outer.ArticleDescription = v557; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v558 => { _outer.CIPrice = v558; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v559 => { _outer.CIPriceCurrency = v559; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v556 => { _outer.ArticleDescription = v556; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v557 => { _outer.CIPrice = v557; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v558 => { _outer.CIPriceCurrency = v558; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v560 => { _outer.AllocationNumber = v560; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v559 => { _outer.AllocationNumber = v559; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v561 => { _outer.AllocationNumber = v561; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v560 => { _outer.AllocationNumber = v560; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2536,15 +2536,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v562 => { _outer.CINumber = v562; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v563 => { _outer.NewCI = v563; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v564 => { _outer.hlCase = v564; }).Ref(_outer.NewCI, v565 => { _outer.NewCI = v565; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v561 => { _outer.CINumber = v561; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v562 => { _outer.NewCI = v562; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v563 => { _outer.hlCase = v563; }).Ref(_outer.NewCI, v564 => { _outer.NewCI = v564; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v566 => { _outer.QryString = v566; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v565 => { _outer.QryString = v565; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent21 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2555,7 +2555,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent21.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v567 => { _outer.AssetGroup = v567; }).Ref(_outer.NewCI, v568 => { _outer.NewCI = v568; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v566 => { _outer.AssetGroup = v566; }).Ref(_outer.NewCI, v567 => { _outer.NewCI = v567; }).Val(100706));
                                 }
                             }
                         }
@@ -2564,7 +2564,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v569 => { _outer.PosID = v569; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v568 => { _outer.PosID = v568; }).Val((Int16)0).Val("0"));
                         //Spacemaus
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeSpacemouse")))
@@ -2577,34 +2577,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v570 => { _outer.OrderNumber = v570; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v571 => { _outer.VendorName = v571; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v572 => { _outer.OrderDate = v572; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v573 => { _outer.CompanyCode = v573; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v574 => { _outer.VendorNumber = v574; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v575 => { _outer.OrderPosNr = v575; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v576 => { _outer.AllocationNumber = v576; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v577 => { _outer.AllocationType = v577; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v578 => { _outer.Reciever = v578; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v579 => { _outer.PosID = v579; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v580 => { _outer.PlaceOfUnloading = v580; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v581 => { _outer.CIComment = v581; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v569 => { _outer.OrderNumber = v569; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v570 => { _outer.VendorName = v570; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v571 => { _outer.OrderDate = v571; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v572 => { _outer.CompanyCode = v572; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v573 => { _outer.VendorNumber = v573; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v574 => { _outer.OrderPosNr = v574; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v575 => { _outer.AllocationNumber = v575; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v576 => { _outer.AllocationType = v576; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v577 => { _outer.Reciever = v577; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v578 => { _outer.PosID = v578; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v579 => { _outer.PlaceOfUnloading = v579; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v580 => { _outer.CIComment = v580; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v582 => { _outer.ActDate = v582; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v583 => { _outer.DeliveryDate = v583; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v581 => { _outer.ActDate = v581; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v582 => { _outer.DeliveryDate = v582; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeSpaceMouse"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v584 => { _outer.ArticleDescription = v584; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v585 => { _outer.CIPrice = v585; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v586 => { _outer.CIPriceCurrency = v586; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v583 => { _outer.ArticleDescription = v583; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v584 => { _outer.CIPrice = v584; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v585 => { _outer.CIPriceCurrency = v585; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v587 => { _outer.AllocationNumber = v587; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v586 => { _outer.AllocationNumber = v586; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v588 => { _outer.AllocationNumber = v588; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v587 => { _outer.AllocationNumber = v587; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2654,15 +2654,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v589 => { _outer.CINumber = v589; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v590 => { _outer.NewCI = v590; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v591 => { _outer.hlCase = v591; }).Ref(_outer.NewCI, v592 => { _outer.NewCI = v592; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v588 => { _outer.CINumber = v588; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v589 => { _outer.NewCI = v589; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v590 => { _outer.hlCase = v590; }).Ref(_outer.NewCI, v591 => { _outer.NewCI = v591; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v593 => { _outer.QryString = v593; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v592 => { _outer.QryString = v592; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent22 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2673,7 +2673,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent22.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v594 => { _outer.AssetGroup = v594; }).Ref(_outer.NewCI, v595 => { _outer.NewCI = v595; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v593 => { _outer.AssetGroup = v593; }).Ref(_outer.NewCI, v594 => { _outer.NewCI = v594; }).Val(100706));
                                 }
                             }
                         }
@@ -2682,7 +2682,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v596 => { _outer.PosID = v596; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v595 => { _outer.PosID = v595; }).Val((Int16)0).Val("0"));
                         //Aktive Netzwerkkomponente
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeNetworkComponent")))
@@ -2695,34 +2695,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NetworkComponent"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v597 => { _outer.OrderNumber = v597; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v598 => { _outer.VendorName = v598; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v599 => { _outer.OrderDate = v599; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v600 => { _outer.CompanyCode = v600; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v601 => { _outer.VendorNumber = v601; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v602 => { _outer.OrderPosNr = v602; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v603 => { _outer.AllocationNumber = v603; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v604 => { _outer.AllocationType = v604; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v605 => { _outer.Reciever = v605; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v606 => { _outer.PosID = v606; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v607 => { _outer.PlaceOfUnloading = v607; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v608 => { _outer.CIComment = v608; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v596 => { _outer.OrderNumber = v596; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v597 => { _outer.VendorName = v597; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v598 => { _outer.OrderDate = v598; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v599 => { _outer.CompanyCode = v599; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v600 => { _outer.VendorNumber = v600; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v601 => { _outer.OrderPosNr = v601; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v602 => { _outer.AllocationNumber = v602; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v603 => { _outer.AllocationType = v603; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v604 => { _outer.Reciever = v604; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v605 => { _outer.PosID = v605; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v606 => { _outer.PlaceOfUnloading = v606; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v607 => { _outer.CIComment = v607; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v609 => { _outer.ActDate = v609; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v610 => { _outer.DeliveryDate = v610; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v608 => { _outer.ActDate = v608; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v609 => { _outer.DeliveryDate = v609; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("NetworkComponentDetail.NetworkComponentType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("TypeActiveNetworkComponet"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v611 => { _outer.ArticleDescription = v611; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v612 => { _outer.CIPrice = v612; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v613 => { _outer.CIPriceCurrency = v613; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v610 => { _outer.ArticleDescription = v610; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v611 => { _outer.CIPrice = v611; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v612 => { _outer.CIPriceCurrency = v612; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v614 => { _outer.AllocationNumber = v614; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v613 => { _outer.AllocationNumber = v613; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v615 => { _outer.AllocationNumber = v615; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v614 => { _outer.AllocationNumber = v614; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2772,15 +2772,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v616 => { _outer.CINumber = v616; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v617 => { _outer.NewCI = v617; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v618 => { _outer.hlCase = v618; }).Ref(_outer.NewCI, v619 => { _outer.NewCI = v619; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v615 => { _outer.CINumber = v615; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v616 => { _outer.NewCI = v616; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v617 => { _outer.hlCase = v617; }).Ref(_outer.NewCI, v618 => { _outer.NewCI = v618; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v620 => { _outer.QryString = v620; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v619 => { _outer.QryString = v619; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent23 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2791,7 +2791,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent23.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v621 => { _outer.AssetGroup = v621; }).Ref(_outer.NewCI, v622 => { _outer.NewCI = v622; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v620 => { _outer.AssetGroup = v620; }).Ref(_outer.NewCI, v621 => { _outer.NewCI = v621; }).Val(100706));
                                 }
                             }
                         }
@@ -2800,7 +2800,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v623 => { _outer.PosID = v623; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v622 => { _outer.PosID = v622; }).Val((Int16)0).Val("0"));
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeHomeOfficeRouter")))
                     {
@@ -2812,34 +2812,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NetworkComponent"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v624 => { _outer.OrderNumber = v624; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v625 => { _outer.VendorName = v625; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v626 => { _outer.OrderDate = v626; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v627 => { _outer.CompanyCode = v627; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v628 => { _outer.VendorNumber = v628; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v629 => { _outer.OrderPosNr = v629; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v630 => { _outer.AllocationNumber = v630; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v631 => { _outer.AllocationType = v631; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v632 => { _outer.Reciever = v632; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v633 => { _outer.PosID = v633; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v634 => { _outer.PlaceOfUnloading = v634; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v635 => { _outer.CIComment = v635; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v623 => { _outer.OrderNumber = v623; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v624 => { _outer.VendorName = v624; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v625 => { _outer.OrderDate = v625; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v626 => { _outer.CompanyCode = v626; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v627 => { _outer.VendorNumber = v627; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v628 => { _outer.OrderPosNr = v628; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v629 => { _outer.AllocationNumber = v629; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v630 => { _outer.AllocationType = v630; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v631 => { _outer.Reciever = v631; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v632 => { _outer.PosID = v632; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v633 => { _outer.PlaceOfUnloading = v633; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v634 => { _outer.CIComment = v634; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v636 => { _outer.ActDate = v636; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v637 => { _outer.DeliveryDate = v637; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v635 => { _outer.ActDate = v635; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v636 => { _outer.DeliveryDate = v636; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("NetworkComponentDetail.NetworkComponentType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("TypeHomeOfficeRouter"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v638 => { _outer.ArticleDescription = v638; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v639 => { _outer.CIPrice = v639; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v640 => { _outer.CIPriceCurrency = v640; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v637 => { _outer.ArticleDescription = v637; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v638 => { _outer.CIPrice = v638; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v639 => { _outer.CIPriceCurrency = v639; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v641 => { _outer.AllocationNumber = v641; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v640 => { _outer.AllocationNumber = v640; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v642 => { _outer.AllocationNumber = v642; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v641 => { _outer.AllocationNumber = v641; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -2889,15 +2889,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v643 => { _outer.CINumber = v643; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v644 => { _outer.NewCI = v644; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v645 => { _outer.hlCase = v645; }).Ref(_outer.NewCI, v646 => { _outer.NewCI = v646; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v642 => { _outer.CINumber = v642; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v643 => { _outer.NewCI = v643; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v644 => { _outer.hlCase = v644; }).Ref(_outer.NewCI, v645 => { _outer.NewCI = v645; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v647 => { _outer.QryString = v647; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v646 => { _outer.QryString = v646; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent24 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -2908,7 +2908,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent24.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v648 => { _outer.AssetGroup = v648; }).Ref(_outer.NewCI, v649 => { _outer.NewCI = v649; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v647 => { _outer.AssetGroup = v647; }).Ref(_outer.NewCI, v648 => { _outer.NewCI = v648; }).Val(100706));
                                 }
                             }
                         }
@@ -2917,7 +2917,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v650 => { _outer.PosID = v650; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v649 => { _outer.PosID = v649; }).Val((Int16)0).Val("0"));
                         //Headset
                     }
                     else if (_.IF(_.EQ(_outer.CIType, "CITypeHeadset")))
@@ -2930,34 +2930,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v651 => { _outer.OrderNumber = v651; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v652 => { _outer.VendorName = v652; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v653 => { _outer.OrderDate = v653; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v654 => { _outer.CompanyCode = v654; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v655 => { _outer.VendorNumber = v655; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v656 => { _outer.OrderPosNr = v656; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v657 => { _outer.AllocationNumber = v657; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v658 => { _outer.AllocationType = v658; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v659 => { _outer.Reciever = v659; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v660 => { _outer.PosID = v660; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v661 => { _outer.PlaceOfUnloading = v661; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v662 => { _outer.CIComment = v662; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v650 => { _outer.OrderNumber = v650; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v651 => { _outer.VendorName = v651; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v652 => { _outer.OrderDate = v652; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v653 => { _outer.CompanyCode = v653; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v654 => { _outer.VendorNumber = v654; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v655 => { _outer.OrderPosNr = v655; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v656 => { _outer.AllocationNumber = v656; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v657 => { _outer.AllocationType = v657; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v658 => { _outer.Reciever = v658; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v659 => { _outer.PosID = v659; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v660 => { _outer.PlaceOfUnloading = v660; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v661 => { _outer.CIComment = v661; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v663 => { _outer.ActDate = v663; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v664 => { _outer.DeliveryDate = v664; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v662 => { _outer.ActDate = v662; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v663 => { _outer.DeliveryDate = v663; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeHeadset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v665 => { _outer.ArticleDescription = v665; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v666 => { _outer.CIPrice = v666; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v667 => { _outer.CIPriceCurrency = v667; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v664 => { _outer.ArticleDescription = v664; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v665 => { _outer.CIPrice = v665; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v666 => { _outer.CIPriceCurrency = v666; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v668 => { _outer.AllocationNumber = v668; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v667 => { _outer.AllocationNumber = v667; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v669 => { _outer.AllocationNumber = v669; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v668 => { _outer.AllocationNumber = v668; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -3007,15 +3007,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v670 => { _outer.CINumber = v670; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v671 => { _outer.NewCI = v671; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v672 => { _outer.hlCase = v672; }).Ref(_outer.NewCI, v673 => { _outer.NewCI = v673; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v669 => { _outer.CINumber = v669; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v670 => { _outer.NewCI = v670; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v671 => { _outer.hlCase = v671; }).Ref(_outer.NewCI, v672 => { _outer.NewCI = v672; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v674 => { _outer.QryString = v674; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v673 => { _outer.QryString = v673; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent25 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -3026,7 +3026,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent25.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v675 => { _outer.AssetGroup = v675; }).Ref(_outer.NewCI, v676 => { _outer.NewCI = v676; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v674 => { _outer.AssetGroup = v674; }).Ref(_outer.NewCI, v675 => { _outer.NewCI = v675; }).Val(100706));
                                 }
                             }
                         }
@@ -3035,7 +3035,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v677 => { _outer.PosID = v677; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v676 => { _outer.PosID = v676; }).Val((Int16)0).Val("0"));
 
                         //ConferencePhone
                     }
@@ -3049,34 +3049,34 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v678 => { _outer.OrderNumber = v678; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v679 => { _outer.VendorName = v679; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v680 => { _outer.OrderDate = v680; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v681 => { _outer.CompanyCode = v681; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v682 => { _outer.VendorNumber = v682; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v683 => { _outer.OrderPosNr = v683; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v684 => { _outer.AllocationNumber = v684; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v685 => { _outer.AllocationType = v685; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v686 => { _outer.Reciever = v686; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v687 => { _outer.PosID = v687; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v688 => { _outer.PlaceOfUnloading = v688; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v689 => { _outer.CIComment = v689; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v677 => { _outer.OrderNumber = v677; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v678 => { _outer.VendorName = v678; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v679 => { _outer.OrderDate = v679; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v680 => { _outer.CompanyCode = v680; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v681 => { _outer.VendorNumber = v681; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v682 => { _outer.OrderPosNr = v682; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v683 => { _outer.AllocationNumber = v683; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v684 => { _outer.AllocationType = v684; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v685 => { _outer.Reciever = v685; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v686 => { _outer.PosID = v686; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v687 => { _outer.PlaceOfUnloading = v687; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v688 => { _outer.CIComment = v688; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v690 => { _outer.ActDate = v690; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v691 => { _outer.DeliveryDate = v691; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v689 => { _outer.ActDate = v689; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v690 => { _outer.DeliveryDate = v690; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("GenericAssetDetail.GenericAssetType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("GenericAssetTypeConferencePhone"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v692 => { _outer.ArticleDescription = v692; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v693 => { _outer.CIPrice = v693; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v694 => { _outer.CIPriceCurrency = v694; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v691 => { _outer.ArticleDescription = v691; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v692 => { _outer.CIPrice = v692; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v693 => { _outer.CIPriceCurrency = v693; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v695 => { _outer.AllocationNumber = v695; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v694 => { _outer.AllocationNumber = v694; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v696 => { _outer.AllocationNumber = v696; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v695 => { _outer.AllocationNumber = v695; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -3126,15 +3126,15 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v697 => { _outer.CINumber = v697; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v698 => { _outer.NewCI = v698; }));
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v699 => { _outer.hlCase = v699; }).Ref(_outer.NewCI, v700 => { _outer.NewCI = v700; }).Val(119155));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v696 => { _outer.CINumber = v696; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v697 => { _outer.NewCI = v697; }));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v698 => { _outer.hlCase = v698; }).Ref(_outer.NewCI, v699 => { _outer.NewCI = v699; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
                                 //hlContext.Trace 1, "Suche Inv-Gruppe: " & QryString
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v701 => { _outer.QryString = v701; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v700 => { _outer.QryString = v700; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent26 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -3145,7 +3145,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent26.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v702 => { _outer.AssetGroup = v702; }).Ref(_outer.NewCI, v703 => { _outer.NewCI = v703; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v701 => { _outer.AssetGroup = v701; }).Ref(_outer.NewCI, v702 => { _outer.NewCI = v702; }).Val(100706));
                                 }
                             }
                         }
@@ -3154,7 +3154,7 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v704 => { _outer.PosID = v704; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v703 => { _outer.PosID = v703; }).Val((Int16)0).Val("0"));
 
                         //Server
                     }
@@ -3168,33 +3168,33 @@ namespace TranslatedProgram
                             {
                                 //hlContext.Trace 1, "Computer anlegen Nummer: " & i
                                 _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "ServerComputer"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v705 => { _outer.OrderNumber = v705; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v706 => { _outer.VendorName = v706; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v707 => { _outer.OrderDate = v707; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v708 => { _outer.CompanyCode = v708; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v709 => { _outer.VendorNumber = v709; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v710 => { _outer.OrderPosNr = v710; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v711 => { _outer.AllocationNumber = v711; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v712 => { _outer.AllocationType = v712; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v713 => { _outer.Reciever = v713; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v714 => { _outer.PosID = v714; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v715 => { _outer.PlaceOfUnloading = v715; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v716 => { _outer.CIComment = v716; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v704 => { _outer.OrderNumber = v704; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v705 => { _outer.VendorName = v705; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v706 => { _outer.OrderDate = v706; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CompanyCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CompanyCode, v707 => { _outer.CompanyCode = v707; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v708 => { _outer.VendorNumber = v708; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderPosition").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderPosNr, v709 => { _outer.OrderPosNr = v709; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v710 => { _outer.AllocationNumber = v710; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.AllocationType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationType, v711 => { _outer.AllocationType = v711; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.GoodsRecipient").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.Reciever, v712 => { _outer.Reciever = v712; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.OrderPosID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PosID, v713 => { _outer.PosID = v713; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.PlaceOfUnloading").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.PlaceOfUnloading, v714 => { _outer.PlaceOfUnloading = v714; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.LongComment").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIComment, v715 => { _outer.CIComment = v715; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrder").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v717 => { _outer.ActDate = v717; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v718 => { _outer.DeliveryDate = v718; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v719 => { _outer.ArticleDescription = v719; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v720 => { _outer.CIPrice = v720; }));
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v721 => { _outer.CIPriceCurrency = v721; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIOrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v716 => { _outer.ActDate = v716; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.DeliveryDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DeliveryDate, v717 => { _outer.DeliveryDate = v717; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ArticleDescription, v718 => { _outer.ArticleDescription = v718; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_VALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPrice, v719 => { _outer.CIPrice = v719; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.PurchasePrice.CURRENCY_SYMBOL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CIPriceCurrency, v720 => { _outer.CIPriceCurrency = v720; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CONCAT(_.ADD(_.ADD("Beschaffung/Order am/at: ", _outer.ActDate), " von/by: System"), VBScriptConstants.vbNewLine)));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "K")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v722 => { _outer.AllocationNumber = v722; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("AccountingDetail.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v721 => { _outer.AllocationNumber = v721; }));
                                 }
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.AllocationType), "A")))
                                 {
-                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v723 => { _outer.AllocationNumber = v723; }));
+                                    _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.InvestmentNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.AllocationNumber, v722 => { _outer.AllocationNumber = v722; }));
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
@@ -3244,16 +3244,16 @@ namespace TranslatedProgram
                                 }
 
                                 //hlContext.Trace 1, "Ticket-ID = " & NextTicketID
-                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v724 => { _outer.CINumber = v724; }));
-                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v725 => { _outer.NewCI = v725; }));
+                                _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.CINumber, v723 => { _outer.CINumber = v723; }));
+                                _.CALLm1argp(this, _env.hlContext, "saveobject", _.ARGS.Ref(_outer.NewCI, v724 => { _outer.NewCI = v724; }));
                                 //Neues CI dem Vorgang assoziieren
-                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v726 => { _outer.hlCase = v726; }).Ref(_outer.NewCI, v727 => { _outer.NewCI = v727; }).Val(119155));
+                                _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.hlCase, v725 => { _outer.hlCase = v725; }).Ref(_outer.NewCI, v726 => { _outer.NewCI = v726; }).Val(119155));
                                 //Neues CI der Abladestelle (namensgleiche Inventargruppe) assoziieren
                                 //Zunaechst ID der Inventargruppe ermitteln
                                 _outer.QryString = _.CONCAT("SEARCH AssetGroup WHERE AssetGroupGeneral.AssetGroupName = ", _outer.Incorporation);
-                                _.CALLm1argp(this, _env.hlContext, "Trace", _.ARGS.Val((Int16)1).Val(_.CONCAT("Suche Inv-Gruppe: ", _outer.QryString)));
-                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v728 => { _outer.QryString = v728; })));
-                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _outer.Qry, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)0))), "1")))
+                                _.CALLm1v2(this, _env.hlContext, "Trace", (Int16)1, _.CONCAT("Suche Inv-Gruppe: ", _outer.QryString));
+                                _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v727 => { _outer.QryString = v727; })));
+                                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
                                     _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
                                     var enumerationContent27 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
@@ -3264,7 +3264,7 @@ namespace TranslatedProgram
                                         _outer.rewritten_Group = enumerationContent27.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
-                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v729 => { _outer.AssetGroup = v729; }).Ref(_outer.NewCI, v730 => { _outer.NewCI = v730; }).Val(100706));
+                                    _.CALLm1argp(this, _env.hlContext, "CreateAssociation", _.ARGS.Ref(_outer.AssetGroup, v728 => { _outer.AssetGroup = v728; }).Ref(_outer.NewCI, v729 => { _outer.NewCI = v729; }).Val(100706));
                                 }
                             }
                         }
@@ -3273,10 +3273,10 @@ namespace TranslatedProgram
                         //hlContext.Trace 1, "Interne Bestellmenge: " & CIQuantityInternal
                         //hlcase.SetValue "OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity",0,PosID,0,CIQuantityInternal
                         //Geaenderte Bestellmenge auf 0 setzen
-                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v731 => { _outer.PosID = v731; }).Val((Int16)0).Val("0"));
+                        _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.ChangedOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v730 => { _outer.PosID = v730; }).Val((Int16)0).Val("0"));
                     }
                     //Kennzeichnen, dass CI erzeugt wurde
-                    _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIisCreated").Val((Int16)0).Ref(_outer.PosID, v732 => { _outer.PosID = v732; }).Val((Int16)0).Val("1"));
+                    _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIisCreated").Val((Int16)0).Ref(_outer.PosID, v731 => { _outer.PosID = v731; }).Val((Int16)0).Val("1"));
                 }
                 _outer.CreateCI = (Int16)0;
             }
@@ -3304,13 +3304,13 @@ namespace TranslatedProgram
                     break;
                 _outer.PosID = enumerationContent28.Current;
                 //Pruefen ob CI erzeugt werden soll
-                _outer.CreateCI = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CreateCI").Val((Int16)0).Ref(_outer.PosID, v733 => { _outer.PosID = v733; }).Val((Int16)0).Val((Int16)0)));
+                _outer.CreateCI = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CreateCI").Val((Int16)0).Ref(_outer.PosID, v732 => { _outer.PosID = v732; }).Val((Int16)0).Val((Int16)0)));
                 //Pruefen ob CI bereits erzeugt wurde
-                _outer.CIisCreated = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIisCreated").Val((Int16)0).Ref(_outer.PosID, v734 => { _outer.PosID = v734; }).Val((Int16)0).Val((Int16)0)));
+                _outer.CIisCreated = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIisCreated").Val((Int16)0).Ref(_outer.PosID, v733 => { _outer.PosID = v733; }).Val((Int16)0).Val((Int16)0)));
                 //Geraetetyp validieren
-                _outer.PosType = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIType").Val((Int16)0).Ref(_outer.PosID, v735 => { _outer.PosID = v735; }).Val((Int16)0).Val((Int16)0)));
+                _outer.PosType = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIType").Val((Int16)0).Ref(_outer.PosID, v734 => { _outer.PosID = v734; }).Val((Int16)0).Val((Int16)0)));
                 //Bestellmenge abfragen
-                _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v736 => { _outer.PosID = v736; }).Val((Int16)0).Val((Int16)0)));
+                _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v735 => { _outer.PosID = v735; }).Val((Int16)0).Val((Int16)0)));
                 //Auf Eliminierung pruefen
                 if (_.IF(_.AND(_.AND(_.EQ(_.NullableSTR(_outer.CreateCI), "1"), _.EQ(_.NullableSTR(_outer.CIisCreated), "1")), _.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusChangedStorno"))))
                 {
@@ -3366,18 +3366,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v737 => { _outer.ActDate = v737; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v736 => { _outer.ActDate = v736; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v738 => { _outer.statusoverview = v738; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v737 => { _outer.statusoverview = v737; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v739 => { _env.hlContext = v739; }).Ref(_outer.obj, v740 => { _outer.obj = v740; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v738 => { _env.hlContext = v738; }).Ref(_outer.obj, v739 => { _outer.obj = v739; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v741 => { _outer.obj = v741; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v740 => { _outer.obj = v740; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3442,18 +3442,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v742 => { _outer.ActDate = v742; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v741 => { _outer.ActDate = v741; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v743 => { _outer.statusoverview = v743; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v742 => { _outer.statusoverview = v742; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v744 => { _env.hlContext = v744; }).Ref(_outer.obj, v745 => { _outer.obj = v745; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v743 => { _env.hlContext = v743; }).Ref(_outer.obj, v744 => { _outer.obj = v744; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v746 => { _outer.obj = v746; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v745 => { _outer.obj = v745; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3518,18 +3518,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v747 => { _outer.ActDate = v747; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v746 => { _outer.ActDate = v746; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v748 => { _outer.statusoverview = v748; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v747 => { _outer.statusoverview = v747; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v749 => { _env.hlContext = v749; }).Ref(_outer.obj, v750 => { _outer.obj = v750; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v748 => { _env.hlContext = v748; }).Ref(_outer.obj, v749 => { _outer.obj = v749; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v751 => { _outer.obj = v751; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v750 => { _outer.obj = v750; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3568,7 +3568,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v752 => { _outer.PosID = v752; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v751 => { _outer.PosID = v751; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3595,18 +3595,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v753 => { _outer.ActDate = v753; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v752 => { _outer.ActDate = v752; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v754 => { _outer.statusoverview = v754; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v753 => { _outer.statusoverview = v753; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v755 => { _env.hlContext = v755; }).Ref(_outer.obj, v756 => { _outer.obj = v756; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v754 => { _env.hlContext = v754; }).Ref(_outer.obj, v755 => { _outer.obj = v755; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v757 => { _outer.obj = v757; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v756 => { _outer.obj = v756; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3645,7 +3645,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v758 => { _outer.PosID = v758; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v757 => { _outer.PosID = v757; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3672,18 +3672,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v759 => { _outer.ActDate = v759; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v758 => { _outer.ActDate = v758; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v760 => { _outer.statusoverview = v760; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v759 => { _outer.statusoverview = v759; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v761 => { _env.hlContext = v761; }).Ref(_outer.obj, v762 => { _outer.obj = v762; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v760 => { _env.hlContext = v760; }).Ref(_outer.obj, v761 => { _outer.obj = v761; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v763 => { _outer.obj = v763; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v762 => { _outer.obj = v762; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3722,7 +3722,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v764 => { _outer.PosID = v764; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v763 => { _outer.PosID = v763; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3749,18 +3749,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v765 => { _outer.ActDate = v765; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v764 => { _outer.ActDate = v764; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v766 => { _outer.statusoverview = v766; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v765 => { _outer.statusoverview = v765; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v767 => { _env.hlContext = v767; }).Ref(_outer.obj, v768 => { _outer.obj = v768; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v766 => { _env.hlContext = v766; }).Ref(_outer.obj, v767 => { _outer.obj = v767; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v769 => { _outer.obj = v769; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v768 => { _outer.obj = v768; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3799,7 +3799,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v770 => { _outer.PosID = v770; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v769 => { _outer.PosID = v769; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3826,18 +3826,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v771 => { _outer.ActDate = v771; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v770 => { _outer.ActDate = v770; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v772 => { _outer.statusoverview = v772; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v771 => { _outer.statusoverview = v771; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v773 => { _env.hlContext = v773; }).Ref(_outer.obj, v774 => { _outer.obj = v774; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v772 => { _env.hlContext = v772; }).Ref(_outer.obj, v773 => { _outer.obj = v773; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v775 => { _outer.obj = v775; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v774 => { _outer.obj = v774; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3876,7 +3876,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v776 => { _outer.PosID = v776; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v775 => { _outer.PosID = v775; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3903,18 +3903,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v777 => { _outer.ActDate = v777; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v776 => { _outer.ActDate = v776; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v778 => { _outer.statusoverview = v778; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v777 => { _outer.statusoverview = v777; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v779 => { _env.hlContext = v779; }).Ref(_outer.obj, v780 => { _outer.obj = v780; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v778 => { _env.hlContext = v778; }).Ref(_outer.obj, v779 => { _outer.obj = v779; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v781 => { _outer.obj = v781; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v780 => { _outer.obj = v780; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -3953,7 +3953,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v782 => { _outer.PosID = v782; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v781 => { _outer.PosID = v781; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -3980,18 +3980,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v783 => { _outer.ActDate = v783; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v782 => { _outer.ActDate = v782; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v784 => { _outer.statusoverview = v784; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v783 => { _outer.statusoverview = v783; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v785 => { _env.hlContext = v785; }).Ref(_outer.obj, v786 => { _outer.obj = v786; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v784 => { _env.hlContext = v784; }).Ref(_outer.obj, v785 => { _outer.obj = v785; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v787 => { _outer.obj = v787; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v786 => { _outer.obj = v786; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4030,7 +4030,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v788 => { _outer.PosID = v788; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v787 => { _outer.PosID = v787; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4057,18 +4057,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v789 => { _outer.ActDate = v789; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v788 => { _outer.ActDate = v788; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v790 => { _outer.statusoverview = v790; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v789 => { _outer.statusoverview = v789; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v791 => { _env.hlContext = v791; }).Ref(_outer.obj, v792 => { _outer.obj = v792; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v790 => { _env.hlContext = v790; }).Ref(_outer.obj, v791 => { _outer.obj = v791; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v793 => { _outer.obj = v793; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v792 => { _outer.obj = v792; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4107,7 +4107,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v794 => { _outer.PosID = v794; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v793 => { _outer.PosID = v793; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4134,18 +4134,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v795 => { _outer.ActDate = v795; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v794 => { _outer.ActDate = v794; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v796 => { _outer.statusoverview = v796; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v795 => { _outer.statusoverview = v795; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v797 => { _env.hlContext = v797; }).Ref(_outer.obj, v798 => { _outer.obj = v798; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v796 => { _env.hlContext = v796; }).Ref(_outer.obj, v797 => { _outer.obj = v797; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v799 => { _outer.obj = v799; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v798 => { _outer.obj = v798; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4184,7 +4184,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v800 => { _outer.PosID = v800; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v799 => { _outer.PosID = v799; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4211,18 +4211,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v801 => { _outer.ActDate = v801; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v800 => { _outer.ActDate = v800; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v802 => { _outer.statusoverview = v802; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v801 => { _outer.statusoverview = v801; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v803 => { _env.hlContext = v803; }).Ref(_outer.obj, v804 => { _outer.obj = v804; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v802 => { _env.hlContext = v802; }).Ref(_outer.obj, v803 => { _outer.obj = v803; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v805 => { _outer.obj = v805; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v804 => { _outer.obj = v804; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4261,7 +4261,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v806 => { _outer.PosID = v806; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v805 => { _outer.PosID = v805; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4288,18 +4288,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v807 => { _outer.ActDate = v807; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v806 => { _outer.ActDate = v806; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v808 => { _outer.statusoverview = v808; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v807 => { _outer.statusoverview = v807; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v809 => { _env.hlContext = v809; }).Ref(_outer.obj, v810 => { _outer.obj = v810; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v808 => { _env.hlContext = v808; }).Ref(_outer.obj, v809 => { _outer.obj = v809; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v811 => { _outer.obj = v811; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v810 => { _outer.obj = v810; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4338,7 +4338,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v812 => { _outer.PosID = v812; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v811 => { _outer.PosID = v811; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4365,18 +4365,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v813 => { _outer.ActDate = v813; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v812 => { _outer.ActDate = v812; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v814 => { _outer.statusoverview = v814; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v813 => { _outer.statusoverview = v813; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v815 => { _env.hlContext = v815; }).Ref(_outer.obj, v816 => { _outer.obj = v816; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v814 => { _env.hlContext = v814; }).Ref(_outer.obj, v815 => { _outer.obj = v815; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v817 => { _outer.obj = v817; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v816 => { _outer.obj = v816; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4415,7 +4415,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v818 => { _outer.PosID = v818; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v817 => { _outer.PosID = v817; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4442,18 +4442,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v819 => { _outer.ActDate = v819; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v818 => { _outer.ActDate = v818; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v820 => { _outer.statusoverview = v820; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v819 => { _outer.statusoverview = v819; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v821 => { _env.hlContext = v821; }).Ref(_outer.obj, v822 => { _outer.obj = v822; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v820 => { _env.hlContext = v820; }).Ref(_outer.obj, v821 => { _outer.obj = v821; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v823 => { _outer.obj = v823; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v822 => { _outer.obj = v822; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4492,7 +4492,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v824 => { _outer.PosID = v824; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v823 => { _outer.PosID = v823; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4519,18 +4519,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v825 => { _outer.ActDate = v825; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v824 => { _outer.ActDate = v824; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v826 => { _outer.statusoverview = v826; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v825 => { _outer.statusoverview = v825; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v827 => { _env.hlContext = v827; }).Ref(_outer.obj, v828 => { _outer.obj = v828; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v826 => { _env.hlContext = v826; }).Ref(_outer.obj, v827 => { _outer.obj = v827; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v829 => { _outer.obj = v829; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v828 => { _outer.obj = v828; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4569,7 +4569,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v830 => { _outer.PosID = v830; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v829 => { _outer.PosID = v829; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4596,18 +4596,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v831 => { _outer.ActDate = v831; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v830 => { _outer.ActDate = v830; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v832 => { _outer.statusoverview = v832; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v831 => { _outer.statusoverview = v831; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v833 => { _env.hlContext = v833; }).Ref(_outer.obj, v834 => { _outer.obj = v834; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v832 => { _env.hlContext = v832; }).Ref(_outer.obj, v833 => { _outer.obj = v833; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v835 => { _outer.obj = v835; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v834 => { _outer.obj = v834; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4646,7 +4646,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v836 => { _outer.PosID = v836; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v835 => { _outer.PosID = v835; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4673,18 +4673,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v837 => { _outer.ActDate = v837; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v836 => { _outer.ActDate = v836; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v838 => { _outer.statusoverview = v838; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v837 => { _outer.statusoverview = v837; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v839 => { _env.hlContext = v839; }).Ref(_outer.obj, v840 => { _outer.obj = v840; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v838 => { _env.hlContext = v838; }).Ref(_outer.obj, v839 => { _outer.obj = v839; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v841 => { _outer.obj = v841; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v840 => { _outer.obj = v840; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4723,7 +4723,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v842 => { _outer.PosID = v842; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v841 => { _outer.PosID = v841; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4750,18 +4750,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v843 => { _outer.ActDate = v843; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v842 => { _outer.ActDate = v842; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v844 => { _outer.statusoverview = v844; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v843 => { _outer.statusoverview = v843; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v845 => { _env.hlContext = v845; }).Ref(_outer.obj, v846 => { _outer.obj = v846; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v844 => { _env.hlContext = v844; }).Ref(_outer.obj, v845 => { _outer.obj = v845; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v847 => { _outer.obj = v847; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v846 => { _outer.obj = v846; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4800,7 +4800,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v848 => { _outer.PosID = v848; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v847 => { _outer.PosID = v847; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4827,18 +4827,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v849 => { _outer.ActDate = v849; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v848 => { _outer.ActDate = v848; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v850 => { _outer.statusoverview = v850; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v849 => { _outer.statusoverview = v849; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v851 => { _env.hlContext = v851; }).Ref(_outer.obj, v852 => { _outer.obj = v852; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v850 => { _env.hlContext = v850; }).Ref(_outer.obj, v851 => { _outer.obj = v851; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v853 => { _outer.obj = v853; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v852 => { _outer.obj = v852; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4877,7 +4877,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v854 => { _outer.PosID = v854; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v853 => { _outer.PosID = v853; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4904,18 +4904,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v855 => { _outer.ActDate = v855; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v854 => { _outer.ActDate = v854; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v856 => { _outer.statusoverview = v856; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v855 => { _outer.statusoverview = v855; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v857 => { _env.hlContext = v857; }).Ref(_outer.obj, v858 => { _outer.obj = v858; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v856 => { _env.hlContext = v856; }).Ref(_outer.obj, v857 => { _outer.obj = v857; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v859 => { _outer.obj = v859; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v858 => { _outer.obj = v858; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -4954,7 +4954,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v860 => { _outer.PosID = v860; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v859 => { _outer.PosID = v859; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -4981,18 +4981,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v861 => { _outer.ActDate = v861; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v860 => { _outer.ActDate = v860; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v862 => { _outer.statusoverview = v862; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v861 => { _outer.statusoverview = v861; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v863 => { _env.hlContext = v863; }).Ref(_outer.obj, v864 => { _outer.obj = v864; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v862 => { _env.hlContext = v862; }).Ref(_outer.obj, v863 => { _outer.obj = v863; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v865 => { _outer.obj = v865; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v864 => { _outer.obj = v864; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -5031,7 +5031,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v866 => { _outer.PosID = v866; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v865 => { _outer.PosID = v865; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -5058,18 +5058,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v867 => { _outer.ActDate = v867; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v866 => { _outer.ActDate = v866; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v868 => { _outer.statusoverview = v868; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v867 => { _outer.statusoverview = v867; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v869 => { _env.hlContext = v869; }).Ref(_outer.obj, v870 => { _outer.obj = v870; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v868 => { _env.hlContext = v868; }).Ref(_outer.obj, v869 => { _outer.obj = v869; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v871 => { _outer.obj = v871; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v870 => { _outer.obj = v870; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -5108,7 +5108,7 @@ namespace TranslatedProgram
                         }
                     }
                     //Anzahl der zu eliminierenden CI`s ermitteln
-                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v872 => { _outer.PosID = v872; }).Val((Int16)0).Val((Int16)0)));
+                    _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v871 => { _outer.PosID = v871; }).Val((Int16)0).Val((Int16)0)));
                     _outer.stornoquantity = _.SUBT(_.SUBT(_outer.typecounter, _outer.CIQuantity), _outer.statuscounter);
                     if (_.IF(_.GTE(_.NullableSTR(_outer.stornoquantity), "1")))
                     {
@@ -5135,18 +5135,18 @@ namespace TranslatedProgram
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CISubStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("CISubStatusStorno"));
                                             _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationAgent").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("System"));
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v873 => { _outer.ActDate = v873; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIEliminationDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.ActDate, v872 => { _outer.ActDate = v872; }));
                                             _outer.statusoverview = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             _outer.statusoverview = _.CONCAT(_outer.statusoverview, _.ADD(_.ADD(_.ADD(VBScriptConstants.vbNewLine, "Eliminierung/Elimination am/at: "), _outer.ActDate), " durch/by: System"), VBScriptConstants.vbNewLine);
-                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v874 => { _outer.statusoverview = v874; }));
+                                            _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.CIStatusOverview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.statusoverview, v873 => { _outer.statusoverview = v873; }));
                                             //Incident erzeugen, wenn CI bereits in SAP AM angelegt wurde
                                             _outer.CIExistingAtSAPAM = _.VAL(_.CALLm1argp(this, _outer.obj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CIExistingAtSAPAM").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                                             if (_.IF(_.EQ(_.NullableSTR(_outer.CIExistingAtSAPAM), "1")))
                                             {
-                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v875 => { _env.hlContext = v875; }).Ref(_outer.obj, v876 => { _outer.obj = v876; }));
+                                                _.CALLm0argp(this, _env.ExportObjectIncident, _.ARGS.Ref(_env.hlContext, v874 => { _env.hlContext = v874; }).Ref(_outer.obj, v875 => { _outer.obj = v875; }));
                                                 _.CALLm1argp(this, _outer.obj, "SetValue", _.ARGS.Val("TrumpfAssetStatus.IncidentBecauseOfCIElimination").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val("1"));
                                             }
-                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v877 => { _outer.obj = v877; }));
+                                            _.CALLm1argp(this, _env.hlContext, "SaveObject", _.ARGS.Ref(_outer.obj, v876 => { _outer.obj = v876; }));
                                             _outer.stornocounter = _.ADD(_outer.stornocounter, (Int16)1);
                                         }
                                     }
@@ -5173,26 +5173,26 @@ namespace TranslatedProgram
             _outer.Last1SUIdx = (Int16)0;
             _outer.LastSU = "";
             //Index letzte SU
-            _outer.Last1SUIdx = _.VAL(_.CALLm1argp(this, _env.hlITIL2, "GetLastSUIdx", _.ARGS.Ref(_outer.hlCase, v878 => { _outer.hlCase = v878; }).Ref(_env.hlContext, v879 => { _env.hlContext = v879; })));
+            _outer.Last1SUIdx = _.VAL(_.CALLm1argp(this, _env.hlITIL2, "GetLastSUIdx", _.ARGS.Ref(_outer.hlCase, v877 => { _outer.hlCase = v877; }).Ref(_env.hlContext, v878 => { _env.hlContext = v878; })));
             //Index vorletzte SU
             _outer.LastSU = _.SUBT(_outer.Last1SUIdx, (Int16)1);
             _outer.DescrText = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             //Urspruenlichen Beschreibungstext ermitteln
-            _outer.sumindescr = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestSUAttribute.CaseDescriptionSU").Val((Int16)0).Val((Int16)0).Ref(_outer.sumin, v880 => { _outer.sumin = v880; }).Val((Int16)0)));
-            _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v881 => { _outer.Last1SUIdx = v881; }).Val((Int16)0)));
-            _outer.Agent1 = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.sumin, v882 => { _outer.sumin = v882; }).Val((Int16)0)));
+            _outer.sumindescr = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestSUAttribute.CaseDescriptionSU").Val((Int16)0).Val((Int16)0).Ref(_outer.sumin, v879 => { _outer.sumin = v879; }).Val((Int16)0)));
+            _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v880 => { _outer.Last1SUIdx = v880; }).Val((Int16)0)));
+            _outer.Agent1 = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.sumin, v881 => { _outer.sumin = v881; }).Val((Int16)0)));
 
             //----------------------------------------------------------------------------------------------------------
             //Kumuliert die Texte der Bearbeitungsschritte und schreibt sie in das
             //Overview-Textfeld. Die Texte werden durch Trennzeichen voneinander abgegrenzt.
             //Pruefen ob mehr als 1 SU
-            _outer.DescrTextalt = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestSUAttribute.CaseDescriptionSU").Val((Int16)0).Val((Int16)0).Ref(_outer.LastSU, v883 => { _outer.LastSU = v883; }).Val((Int16)0)));
+            _outer.DescrTextalt = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("OrderRequestSUAttribute.CaseDescriptionSU").Val((Int16)0).Val((Int16)0).Ref(_outer.LastSU, v882 => { _outer.LastSU = v882; }).Val((Int16)0)));
             if (_.IF(_.GT(_.NullableNUM(_outer.LastSU), (Int16)0)))
             {
                 //Pruefen, ob Beschreibungstext sich geaendert hat
                 if (_.IF(_.NOTEQ(_outer.DescrText, _outer.sumindescr)))
                 {
-                    _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v884 => { _outer.Last1SUIdx = v884; }).Val((Int16)0)));
+                    _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v883 => { _outer.Last1SUIdx = v883; }).Val((Int16)0)));
                     _outer.DescriptionAll = "";
                     _outer.ProblemAll = "";
                     _outer.ProblemAll1 = "";
@@ -5230,10 +5230,10 @@ namespace TranslatedProgram
                         if (!enumerationContent77.MoveNext())
                             break;
                         _outer.SUIdx = enumerationContent77.Current;
-                        _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v885 => { _outer.SUIdx = v885; }).Val((Int16)0)));
+                        _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v884 => { _outer.SUIdx = v884; }).Val((Int16)0)));
                         //SUActivity = hlcase.GetValue("IncidentSUAttribute.IncidentOperation", LangID, 0, SUIdx, 0)
-                        _outer.SURegTime = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.REGISTRATIONTIME").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v886 => { _outer.SUIdx = v886; }).Val((Int16)0)));
-                        _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v887 => { _outer.SUIdx = v887; }).Val((Int16)0)));
+                        _outer.SURegTime = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.REGISTRATIONTIME").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v885 => { _outer.SUIdx = v885; }).Val((Int16)0)));
+                        _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v886 => { _outer.SUIdx = v886; }).Val((Int16)0)));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.SUDiagnosis), "")))
                         {
                             if (_.IF(_.EQ(_.NullableNUM(_outer.LangID), (Int16)7)))
@@ -5255,12 +5255,12 @@ namespace TranslatedProgram
                     }
                     //Gesammelte Texte in das uebersicht-Textfeld schreiben
                     _outer.DescriptionAll = _.CONCAT(_outer.ProblemAll, _outer.ProblemAll1, _outer.Diagnosistitle, _outer.DiagnosisAll, _outer.SolutionAll);
-                    _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("CaseGeneral.Overview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DescriptionAll, v888 => { _outer.DescriptionAll = v888; }));
+                    _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("CaseGeneral.Overview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DescriptionAll, v887 => { _outer.DescriptionAll = v887; }));
                 }
             }
             if (_.IF(_.EQ(_outer.sumindescr, _outer.DescrText)))
             {
-                _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v889 => { _outer.Last1SUIdx = v889; }).Val((Int16)0)));
+                _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.Last1SUIdx, v888 => { _outer.Last1SUIdx = v888; }).Val((Int16)0)));
 
                 if (_.IF(_.EQ(_.NullableNUM(_outer.LangID), (Int16)7)))
                 {
@@ -5289,10 +5289,10 @@ namespace TranslatedProgram
                     if (!enumerationContent78.MoveNext())
                         break;
                     _outer.SUIdx = enumerationContent78.Current;
-                    _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v890 => { _outer.SUIdx = v890; }).Val((Int16)0)));
+                    _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v889 => { _outer.SUIdx = v889; }).Val((Int16)0)));
                     //SUActivity = hlcase.GetValue("IncidentSUAttribute.IncidentOperation", LangID, 0, SUIdx, 0)
-                    _outer.SURegTime = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.REGISTRATIONTIME").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v891 => { _outer.SUIdx = v891; }).Val((Int16)0)));
-                    _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v892 => { _outer.SUIdx = v892; }).Val((Int16)0)));
+                    _outer.SURegTime = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.REGISTRATIONTIME").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v890 => { _outer.SUIdx = v890; }).Val((Int16)0)));
+                    _outer.Agent = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v891 => { _outer.SUIdx = v891; }).Val((Int16)0)));
                     if (_.IF(_.EQ(_.NullableSTR(_outer.SUDiagnosis), "")))
                     {
                         if (_.IF(_.EQ(_.NullableNUM(_outer.LangID), (Int16)7)))
@@ -5314,7 +5314,7 @@ namespace TranslatedProgram
                 }
                 //Gesammelte Texte in das uebersicht-Textfeld schreiben
                 _outer.DescriptionAll = _.CONCAT(_outer.ProblemAll, _outer.Diagnosistitle, _outer.DiagnosisAll, _outer.SolutionAll);
-                _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("CaseGeneral.Overview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DescriptionAll, v893 => { _outer.DescriptionAll = v893; }));
+                _.CALLm1argp(this, _outer.hlCase, "SetValue", _.ARGS.Val("CaseGeneral.Overview").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.DescriptionAll, v892 => { _outer.DescriptionAll = v892; }));
             }
 
         }

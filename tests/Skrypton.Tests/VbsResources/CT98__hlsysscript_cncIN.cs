@@ -84,7 +84,7 @@ namespace TranslatedProgram
             object item = null;
             object retVal = null;
             retVal = false;
-            autoReplyList = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("Out of Office:").Val("Abwesend:")));
+            autoReplyList = _.VAL(_.CALLm1v2(this, _, "ARRAY", "Out of Office:", "Abwesend:"));
 
             var enumerationContent = _.ENUMERABLE(autoReplyList).GetEnumerator();
             while (true)
@@ -146,7 +146,7 @@ namespace TranslatedProgram
             imKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[Incident]").Val("Incident").Val("Störung").Val("Hilfe").Val("help")));
             cmKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[RFC]").Val("Änderung").Val("Change")));
             fmKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[Facility]").Val("Haustechnik").Val("FM")));
-            hrKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[HR]").Val("Personal")));
+            hrKeywords = _.VAL(_.CALLm1v2(this, _, "ARRAY", "[HR]", "Personal"));
 
             bool ifResult;
             object byrefalias2 = mailSubject;

@@ -1038,7 +1038,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        private class PseudoField
+        internal sealed class PseudoField
         {
             [IsDefault]
             public object value { get; set; }

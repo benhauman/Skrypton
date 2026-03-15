@@ -27,16 +27,16 @@ namespace TranslatedProgram
             _.SET(true, this, _env.objRegEx, "Global");
             _.SET("[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]", this, _env.objRegEx, "Pattern");
 
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 1 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist1URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 2 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist2URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 3 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist3URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 4 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist4URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 5 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist5URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 6 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist6URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 7 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist7URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 8 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist8URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 9 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist9URL, "Text")));
-            _.CALLm1argp(this, _env.dict, "Add", _.ARGS.Val("Checkliste 10 URL").Val(_.CALLm1v0(this, _env.TextBoxChecklist10URL, "Text")));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 1 URL", _.CALLm1v0(this, _env.TextBoxChecklist1URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 2 URL", _.CALLm1v0(this, _env.TextBoxChecklist2URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 3 URL", _.CALLm1v0(this, _env.TextBoxChecklist3URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 4 URL", _.CALLm1v0(this, _env.TextBoxChecklist4URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 5 URL", _.CALLm1v0(this, _env.TextBoxChecklist5URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 6 URL", _.CALLm1v0(this, _env.TextBoxChecklist6URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 7 URL", _.CALLm1v0(this, _env.TextBoxChecklist7URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 8 URL", _.CALLm1v0(this, _env.TextBoxChecklist8URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 9 URL", _.CALLm1v0(this, _env.TextBoxChecklist9URL, "Text"));
+            _.CALLm1v2(this, _env.dict, "Add", "Checkliste 10 URL", _.CALLm1v0(this, _env.TextBoxChecklist10URL, "Text"));
 
             var enumerationContent = _.ENUMERABLE(_env.dict).GetEnumerator();
             while (true)

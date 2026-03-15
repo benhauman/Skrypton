@@ -4,6 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.LegacyParser.Tokens;
+using Skrypton.LegacyParser.CodeBlocks;
+using Skrypton.StageTwoParser.ExpressionParsing;
+using Skrypton.Tests.RuntimeSupport.Implementations;
+using static Skrypton.Tests.RuntimeSupport.Implementations.VBScriptEsqueValueRetrieverTests;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -222,7 +227,7 @@ namespace Skrypton.Tests
                 IEnumerable<object> arr_obj_e = expected as IEnumerable<object>;
                 if (arr_obj_e != null)
                 {
-                    myAssert.AreEqual<T>(expected, actual, myAssert.GetEqualityComparer<T>(null));
+                    myAssert.AreEqualU<T>(expected, actual, myAssert.GetEqualityComparer<T>(null));
                     return;
                 }
             }
@@ -297,7 +302,35 @@ namespace Skrypton.Tests
         {
             return new AssertEqualityComparer<T>(innerComparer);
         }
-        public static void AreEqual<T>(T expected, T actual, IEqualityComparer<T> comparer)
+        public static void AreEqualU<T>(T expected, T actual, IEqualityComparer<T> comparer)
+        {
+            if (!comparer.Equals(expected, actual))
+            {
+                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+            }
+        }
+        public static void AreEqual(PseudoField expected, object actual, IEqualityComparer<object> comparer)
+        {
+            if (!comparer.Equals(expected, actual))
+            {
+                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+            }
+        }
+        public static void AreEqual(IEnumerable<ParsingExpression> expected, IEnumerable<ParsingExpression> actual, IEqualityComparer<IEnumerable<ParsingExpression>> comparer)
+        {
+            if (!comparer.Equals(expected, actual))
+            {
+                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+            }
+        }
+        public static void AreEqual(IEnumerable<ICodeBlock> expected, IEnumerable<ICodeBlock> actual, IEqualityComparer<IEnumerable<ICodeBlock>> comparer)
+        {
+            if (!comparer.Equals(expected, actual))
+            {
+                Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
+            }
+        }
+        public static void AreEqual(IEnumerable<IToken> expected, IEnumerable<IToken> actual, IEqualityComparer<IEnumerable<IToken>> comparer)
         {
             if (!comparer.Equals(expected, actual))
             {

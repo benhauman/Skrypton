@@ -32,7 +32,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         [TestMethod, MyFact]
@@ -85,7 +85,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         [TestMethod, MyFact]
@@ -116,7 +116,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         [TestMethod, MyFact]
@@ -256,7 +256,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         [TestMethod, MyFact]
@@ -280,7 +280,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new CloseBrace(lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_env.a = _.VAL(_.CALLm1argp(this, _, \"CDATE\", _.ARGS.Val(_env.a).Val(_env.b)))",
+                @"_env.a = _.VAL(_.CALLm1v2(this, _, ""CDATE"", _env.a, _env.b))",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
@@ -292,7 +292,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         [TestMethod, MyFact]
@@ -344,7 +344,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.StructureExitPoints
             );
             var actual = GetDefaultValueSettingStatementTranslator().Translate(valueSettingStatement, scopeAccessInformation);
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqual(expected, actual, new TranslatedStatementContentDetailsComparer());
+            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
         }
 
         // TODO:

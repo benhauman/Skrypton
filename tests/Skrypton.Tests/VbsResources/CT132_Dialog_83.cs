@@ -53,7 +53,7 @@ namespace TranslatedProgram
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
             //First of all check whether the Case is write protected
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0))), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v2(this, _env.hlObj, "IsReadOnly", "CaseGeneral.Subject", (Int16)0)), (Int16)0)))
             {
                 rewritten_ReadOnly = false;
             }
@@ -74,35 +74,35 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)1));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)1);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)2));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)2);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)3));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)3);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)4));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)4);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)0));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET("", this, _env.Person, "BackColor");
                 }
@@ -292,7 +292,7 @@ namespace TranslatedProgram
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
             //First of all check whether the Case is write protected
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0))), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v2(this, _env.hlObj, "IsReadOnly", "CaseGeneral.Subject", (Int16)0)), (Int16)0)))
             {
                 rewritten_ReadOnly = false;
             }
@@ -308,7 +308,7 @@ namespace TranslatedProgram
             {
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Val(_.ADD(GetLastSUIdx, (Int16)1)).Val((Int16)1)));
                 helper = _.OBJ(_.CREATEOBJECT("helpline.hlcontrols.HLHelperPFA"));
-                Person = _.OBJ(_.CALLm1argp(this, helper, "GetPersonForAgent", _.ARGS.Val(_.CALLm1v0(this, _env.model, "GetClientContext")).Val(_.CLNG(agent))));
+                Person = _.OBJ(_.CALLm1v2(this, helper, "GetPersonForAgent", _.CALLm1v0(this, _env.model, "GetClientContext"), _.CLNG(agent)));
                 if (_.IF(_.EQ(_.ISOBJECT(Person), true)))
                 {
                     responsibility = _.VAL(_.CALLm1argp(this, Person, "GetValue", _.ARGS.Val("PersonGeneralTrumpf.Responsibility").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -371,8 +371,8 @@ namespace TranslatedProgram
         {
             object objO = null; /* Undeclared in source */
             object objT = null; /* Undeclared in source */
-            objO = _.OBJ(_.CALLm1argp(this, _env.SearchAsset, "GetObject", _.ARGS.Val("product").Val(false)));
-            objT = _.OBJ(_.CALLm1argp(this, _env.SearchAsset, "GetObject", _.ARGS.Val("product").Val(true)));
+            objO = _.OBJ(_.CALLm1v2(this, _env.SearchAsset, "GetObject", "product", false));
+            objT = _.OBJ(_.CALLm1v2(this, _env.SearchAsset, "GetObject", "product", true));
 
             _.CALLm1argp(this, objT, "SetValue", _.ARGS.Val("AssetGeneral.AssetName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));
             _.CALLm1argp(this, objT, "SetValue", _.ARGS.Val("AssetGeneral.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));
@@ -423,7 +423,7 @@ namespace TranslatedProgram
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
             //First of all check whether the Case is write protected
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0))), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v2(this, _env.hlObj, "IsReadOnly", "CaseGeneral.Subject", (Int16)0)), (Int16)0)))
             {
                 rewritten_ReadOnly = false;
             }
@@ -502,35 +502,35 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)1));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)1);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)2));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)2);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)3));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)3);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)4));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)4);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
                     _.SET(false, this, _env.ComboVIPStatus, "Disabled");
-                    _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)0));
+                    _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
                     _.SET(true, this, _env.ComboVIPStatus, "Disabled");
                     _.SET("", this, _env.Person, "BackColor");
                 }
@@ -545,7 +545,7 @@ namespace TranslatedProgram
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strEmail = "";
             CallerCount = (Int16)0;
-            CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
+            CallerCount = _.VAL(_.CALLm1v2(this, _env.hlObj, "GetItemCount", (Int16)0, (Int16)130));
 
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
@@ -619,8 +619,8 @@ namespace TranslatedProgram
         {
             object objO = null; /* Undeclared in source */
             object objT = null; /* Undeclared in source */
-            objO = _.OBJ(_.CALLm1argp(this, _env.SearchCaller, "GetObject", _.ARGS.Val("caller").Val(false)));
-            objT = _.OBJ(_.CALLm1argp(this, _env.SearchCaller, "GetObject", _.ARGS.Val("caller").Val(true)));
+            objO = _.OBJ(_.CALLm1v2(this, _env.SearchCaller, "GetObject", "caller", false));
+            objT = _.OBJ(_.CALLm1v2(this, _env.SearchCaller, "GetObject", "caller", true));
 
             _.CALLm1argp(this, objT, "SetValue", _.ARGS.Val("PersonGeneral.PersonSurname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));
             _.CALLm1argp(this, objT, "SetValue", _.ARGS.Val("PersonGeneral.PersonGivenName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));
@@ -641,7 +641,7 @@ namespace TranslatedProgram
             }
 
             //VIP-Status zurücksetzen
-            _.CALLm1argp(this, _env.ComboVIPStatus, "SelectItem", _.ARGS.Val((Int16)0).Val((Int16)0));
+            _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
             _.SET(_.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)), this, _env.Person, "BackColor");
 
         }
@@ -662,7 +662,7 @@ namespace TranslatedProgram
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
             //First of all check whether the Case is write protected
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0))), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v2(this, _env.hlObj, "IsReadOnly", "CaseGeneral.Subject", (Int16)0)), (Int16)0)))
             {
                 rewritten_ReadOnly = false;
             }
@@ -701,7 +701,7 @@ namespace TranslatedProgram
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strEmail = "";
             CallerCount = (Int16)0;
-            CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
+            CallerCount = _.VAL(_.CALLm1v2(this, _env.hlObj, "GetItemCount", (Int16)0, (Int16)130));
 
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
@@ -1204,7 +1204,7 @@ namespace TranslatedProgram
                 tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
                 strEmail = "";
                 CallerCount = (Int16)0;
-                CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
+                CallerCount = _.VAL(_.CALLm1v2(this, _env.hlObj, "GetItemCount", (Int16)0, (Int16)130));
 
                 if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
                 {
@@ -1820,7 +1820,7 @@ namespace TranslatedProgram
             lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v20 => { lcid = v20; })));
 
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CASEINFO.REACTIONTIME").Val((Int16)0))), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v2(this, _env.hlObj, "IsReadOnly", "CASEINFO.REACTIONTIME", (Int16)0)), (Int16)0)))
             {
 
                 objType = _.VAL(_.CALLm1v0(this, _env.hlProduct, "GetType"));
@@ -2041,7 +2041,7 @@ namespace TranslatedProgram
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strEmail = "";
             CallerCount = (Int16)0;
-            CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
+            CallerCount = _.VAL(_.CALLm1v2(this, _env.hlObj, "GetItemCount", (Int16)0, (Int16)130));
 
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
@@ -2377,7 +2377,7 @@ namespace TranslatedProgram
             object mailadr = null; /* Undeclared in source */
             object strEmail = null; /* Undeclared in source */
             CallerCount = (Int16)0;
-            CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
+            CallerCount = _.VAL(_.CALLm1v2(this, _env.hlObj, "GetItemCount", (Int16)0, (Int16)130));
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
                 CaseCallers = VBScriptConstants.Nothing;
@@ -2577,7 +2577,7 @@ namespace TranslatedProgram
                 OriginDescr = _.REPLACE(OriginDescr, VBScriptConstants.vbCrLf, "<br>");
                 fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
                 //Öffnet das File zum lesen
-                f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpline\\Emailtemplate.html").Val(ForReading)));
+                f = _.OBJ(_.CALLm1v2(this, fso, "OpenTextFile", "C:\\TRUMPF\\helpline\\Emailtemplate.html", ForReading));
                 //Liest alle Daten in die Variable BodyText
                 BodyText = _.VAL(_.CALLm1v0(this, f, "ReadAll"));
                 BodyText = _.REPLACE(BodyText, "[$NoticeTop$]", TNoticeTop);
@@ -2713,7 +2713,7 @@ namespace TranslatedProgram
                 //Const ForReading = 1, ForWriting = 2, ForAppending = 8
                 fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
                 //Öffnet das File zum lesen
-                f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpLine\\IntermediateReply.html").Val(ForReading)));
+                f = _.OBJ(_.CALLm1v2(this, fso, "OpenTextFile", "C:\\TRUMPF\\helpLine\\IntermediateReply.html", ForReading));
                 //Liest alle Daten in die Variable BodyText
                 BodyText = _.VAL(_.CALLm1v0(this, f, "ReadAll"));
                 BodyText = _.REPLACE(BodyText, "[$NoticeTop$]", TNoticeTop);
