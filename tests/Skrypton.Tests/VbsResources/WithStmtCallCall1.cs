@@ -25,8 +25,8 @@ namespace TranslatedProgram
             _.SET(VBScriptConstants.Nothing, this, with, "ActiveConnection");
             _.CALLm2argp(this, with, "Pr", "Ap", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameterX", _.ARGS.Val("RETURN_VALUEx").Val((Int16)3).Val((Int16)4))));
             _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameterY", _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName"))));
-            _.CALLm1v(this, with, "Execute");
-            _outer.parmval = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
+            _.CALLm1v0(this, with, "Execute");
+            _outer.parmval = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

@@ -51,7 +51,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1v(this, _outer, \"Test1\");",
+                "_.CALLm1v0(this, _outer, \"Test1\");",
                 "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
@@ -83,7 +83,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1v(this, _outer, \"Test1\");",
+                "_.CALLm1v0(this, _outer, \"Test1\");",
                 "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1v(this, _outer, \"Test1\");",
+                "_.CALLm1v0(this, _outer, \"Test1\");",
                 "public object Test1()",
                 "{",
                 "    object Test1_retVal = null;",
@@ -248,7 +248,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v(this, _env.a, \"Params\")));"
+                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v0(this, _env.a, \"Params\")));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(
@@ -269,7 +269,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.SET((Int16)1, this, _.CALLm1v(this, _env.a, \"Name\"), \"Length\");"
+                "_.SET((Int16)1, this, _.CALLm1v0(this, _env.a, \"Name\"), \"Length\");"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(
@@ -290,7 +290,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v(this, this, \"Name\")));"
+                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v0(this, this, \"Name\")));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(
@@ -313,7 +313,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_env.a = _.OBJ(_.CALLm2v(this, _outer, \"GetSomething\", \"Name\"));",
+                "_env.a = _.OBJ(_.CALLm2v0(this, _outer, \"GetSomething\", \"Name\"));",
                 "public object GetSomething()",
                 "{",
                 "    return null;",
@@ -360,7 +360,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					{
 						object Go_retVal = null;
 						object a = null; /* Undeclared in source */
-						a = _.OBJ(_.CALLm2v(this, this, ""GetSomething"", ""Name""));
+						a = _.OBJ(_.CALLm2v0(this, this, ""GetSomething"", ""Name""));
 						return Go_retVal;
 					}
 					public object GetSomething()
@@ -564,7 +564,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 yield return new object[] { 2, "a = b()", "_env.a = _.VAL(_.CALLm0argp(this, _env.b, _.ARGS.ForceBrackets()));" };
                 yield return new object[] { 3, "a = b(1)", "_env.a = _.VAL(_.CALLm0argp(this, _env.b, _.ARGS.Val((Int16)1)));" };
 
-                yield return new object[] { 4, "a = b.Name", "_env.a = _.VAL(_.CALLm1v(this, _env.b, \"Name\"));" };
+                yield return new object[] { 4, "a = b.Name", "_env.a = _.VAL(_.CALLm1v0(this, _env.b, \"Name\"));" };
                 yield return new object[] { 5, "a = b.Name()", "_env.a = _.VAL(_.CALLm1argp(this, _env.b, \"Name\", _.ARGS.ForceBrackets()));" };
                 yield return new object[] { 6, "a = b.Name(1)", "_env.a = _.VAL(_.CALLm1argp(this, _env.b, \"Name\", _.ARGS.Val((Int16)1)));" };
             }

@@ -42,42 +42,42 @@ namespace Skrypton.RuntimeSupport
 
         // Convenience methods for when there are no arguments (supporting up to MaxNumberOfMemberAccessorBeforeArraysRequired members accessors, just as the
         // extension methods further down do which look after the with-arguments signatures)
-        public static object? CALLm0v(this IAccessValuesUsingVBScriptRules source, object context, object target)
+        public static object? CALLm0v0(this IAccessValuesUsingVBScriptRules source, object context, object target)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALLm1v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
+        public static object? CALLm1v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: line);
         }
-        public static object? CALLm2v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
+        public static object? CALLm2v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALLm3v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
+        public static object? CALLm3v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALLm4v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
+        public static object? CALLm4v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
         }
-        public static object? CALLm5v(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
+        public static object? CALLm5v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -169,7 +169,7 @@ namespace Skrypton.RuntimeSupport
 
             public bool UseBracketsWhereZeroArguments { get; private set; }
 
-            public IEnumerable<object> GetInitialValues()
+            public object[] GetInitialValues()
             {
                 return [];
             }

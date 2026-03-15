@@ -22,7 +22,7 @@ namespace TranslatedProgram
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             //---------------------------------------------------------------------------------------- main ---
-            _.CALLm1v(this, _outer, "ProcessIn");
+            _.CALLm1v0(this, _outer, "ProcessIn");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -46,30 +46,30 @@ namespace TranslatedProgram
 
             mailRequest = _.OBJ(_.CALLm0argp(this, _env.session, _.ARGS.Val("mailrequest")));
 
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail subject: ", _.CALLm1v(this, mailRequest, "subject"))));
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail To: ", _.CALLm1v(this, mailRequest, "To"))));
+            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail subject: ", _.CALLm1v0(this, mailRequest, "subject"))));
+            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail To: ", _.CALLm1v0(this, mailRequest, "To"))));
 
-            if (_.IF(_.CALLm1argp(this, _outer, "IsAutoReplyMail", _.ARGS.Val(_.CALLm1v(this, mailRequest, "Subject")))))
+            if (_.IF(_.CALLm1argp(this, _outer, "IsAutoReplyMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")))))
             {
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("Out of Office AutoReply"));
                 return;
             }
 
-            extendCaseSuccess = _.VAL(_.CALLm1argp(this, _outer, "TryExtendCase", _.ARGS.Val(_.CALLm1v(this, mailRequest, "Subject"))));
+            extendCaseSuccess = _.VAL(_.CALLm1argp(this, _outer, "TryExtendCase", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject"))));
             if (_.IF(_.EQ(extendCaseSuccess, false)))
             {
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("Extend case failed. Start new process"));
-                if (_.IF(_.CALLm1argp(this, _outer, "IsFMMail", _.ARGS.Val(_.CALLm1v(this, mailRequest, "To")))))
+                if (_.IF(_.CALLm1argp(this, _outer, "IsFMMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "To")))))
                 {
-                    _.CALLm1argp(this, _outer, "StartNewFMWorkflow", _.ARGS.Val(_.CALLm1v(this, mailRequest, "Subject")));
+                    _.CALLm1argp(this, _outer, "StartNewFMWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
                 }
-                else if (_.IF(_.CALLm1argp(this, _outer, "IsHRMail", _.ARGS.Val(_.CALLm1v(this, mailRequest, "To")))))
+                else if (_.IF(_.CALLm1argp(this, _outer, "IsHRMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "To")))))
                 {
-                    _.CALLm1argp(this, _outer, "StartNewHRWorkflow", _.ARGS.Val(_.CALLm1v(this, mailRequest, "Subject")));
+                    _.CALLm1argp(this, _outer, "StartNewHRWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
                 }
                 else
                 {
-                    _.CALLm1argp(this, _outer, "StartNewWorkflow", _.ARGS.Val(_.CALLm1v(this, mailRequest, "Subject")));
+                    _.CALLm1argp(this, _outer, "StartNewWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
                 }
             }
 

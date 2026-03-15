@@ -1080,7 +1080,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0v);
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0v0);
                 callNameResolved = true;
             }
             else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
@@ -1100,17 +1100,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v);
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
                 callNameResolved = true;
             }
-            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // => CALLm1v1
+                callNameResolved = true;
+                //throw new NotImplementedException();
+            }
+            else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 1 && zeroArgumentBracketsPresence == null)
             {
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp);
                 callNameResolved = true;
             }
             else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v); // '_.CALLxxx_m2_argp0_zabpAbsentX(this, oAssociationChange, "EndB", "GetID")'
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v0); // '_.CALLxxx_m2_argp0_zabpAbsentX(this, oAssociationChange, "EndB", "GetID")'
                 callNameResolved = true;
             }
             else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)

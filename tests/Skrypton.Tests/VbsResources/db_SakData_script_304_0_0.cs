@@ -201,7 +201,7 @@ namespace TranslatedProgram
             //Erst pruefen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
             //fuer die naechste Abfrage gewaehlt werden kann.
             orgaType = "";
-            orgaType = _.VAL(_.CALLm1v(this, hlOrgUnit, "GetType"));
+            orgaType = _.VAL(_.CALLm1v0(this, hlOrgUnit, "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Division")))
             {
                 NextOrgUnit = _.VAL(_.CALLm1argp(this, hlOrgUnit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("CompanyView")));
@@ -290,7 +290,7 @@ namespace TranslatedProgram
             object retval = null;
             object strOrgUnits = null;
             FirstOrgUnit = VBScriptConstants.Nothing;
-            FirstOrgUnit = _.OBJ(_.CALLm1v(this, hlContext, "GetRelatedObject"));
+            FirstOrgUnit = _.OBJ(_.CALLm1v0(this, hlContext, "GetRelatedObject"));
 
             bool ifResult;
             object byrefalias15 = hlContext;
@@ -301,7 +301,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias15; }
             if (ifResult)
             {
-                if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, FirstOrgUnit, "GetType")), "Company"), _.NOTEQ(_.NullableSTR(_.CALLm1v(this, FirstOrgUnit, "GetType")), "Division"))))
+                if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit, "GetType")), "Company"), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit, "GetType")), "Division"))))
                 {
                     FirstOrgUnit = VBScriptConstants.Nothing;
                 }
@@ -388,7 +388,7 @@ namespace TranslatedProgram
                     object byrefalias23 = hlContext;
                     try
                     {
-                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias23, v39 => { byrefalias23 = v39; }).Val(_.CALLm1v(this, byrefalias23, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
+                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(byrefalias23, v39 => { byrefalias23 = v39; }).Val(_.CALLm1v0(this, byrefalias23, "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
                     }
                     finally { hlContext = byrefalias23; }
                     object byrefalias24 = hlContext;
@@ -699,7 +699,7 @@ namespace TranslatedProgram
             //fuer die naechste Abfrage gewaehlt werden kann.
             NextSWFolder = "";
             a = "";
-            a = _.VAL(_.CALLm1v(this, hlSWFolder, "GetType"));
+            a = _.VAL(_.CALLm1v0(this, hlSWFolder, "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(a), "LicenseFolder")))
             {
                 object byrefalias51 = assocName;
@@ -883,7 +883,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v(this, hlContext, "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext, "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -897,13 +897,13 @@ namespace TranslatedProgram
                 {
                     oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v(this, oAssociationChange, "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
-                    if (_.IF(_.CALLm1v(this, oAssociationChange, "IsToDelete")))
+                    if (_.IF(_.CALLm1v0(this, oAssociationChange, "IsToDelete")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v(this, hlObjB, "GetID"), _.CALLm2v(this, oAssociationChange, "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB, "GetID"), _.CALLm2v0(this, oAssociationChange, "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -927,7 +927,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v(this, hlContext, "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext, "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -941,13 +941,13 @@ namespace TranslatedProgram
                 {
                     oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v(this, oAssociationChange, "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
-                    if (_.IF(_.CALLm1v(this, oAssociationChange, "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, oAssociationChange, "IsToCreate")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v(this, hlObjB, "GetID"), _.CALLm2v(this, oAssociationChange, "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB, "GetID"), _.CALLm2v0(this, oAssociationChange, "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -973,7 +973,7 @@ namespace TranslatedProgram
 
             //Anzahl der zu erstellenden oder loeschenden Assoziationen
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v(this, hlContext, "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext, "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -989,14 +989,14 @@ namespace TranslatedProgram
                     //Fuer jede Assoziations aenderung wird das entsprechende Infos (Objekt    ) ausgelsen.
                     oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext, "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
                     //Def Name der Assoc ermitteln, die angelegt werden soll
-                    AscDefNameChange = _.VAL(_.CALLm1v(this, oAssociationChange, "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange, "AssociationType"));
 
-                    if (_.IF(_.CALLm1v(this, oAssociationChange, "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, oAssociationChange, "IsToCreate")))
                     {
                         //ueberpruefen ob die gewuenschte Assoc auch angelegt werden soll.
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v(this, hlObjB, "GetID"), _.CALLm2v(this, oAssociationChange, "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB, "GetID"), _.CALLm2v0(this, oAssociationChange, "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;

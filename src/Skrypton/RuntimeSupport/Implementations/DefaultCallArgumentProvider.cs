@@ -143,9 +143,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             /// <summary>
             /// This will always return a set with NumberOfArguments items in it
             /// </summary>
-            public IEnumerable<object> GetInitialValues()
+            public object[] GetInitialValues()
             {
-                return _valuesWithUpdatesWhereRequired.Select(entry => entry.Item1);
+                return _valuesWithUpdatesWhereRequired.Select(entry => entry.Item1).ToArray();
             }
 
             /// <summary>

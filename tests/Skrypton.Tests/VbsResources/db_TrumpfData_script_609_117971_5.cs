@@ -21,19 +21,19 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _.CALLm1v(this, _env.hlContext, "EnableTrace");
+            _.CALLm1v0(this, _env.hlContext, "EnableTrace");
             //Deaktiviern bzw. aktivieren aller Traces fuer ein Skript, Text = Logtext im App.Log
             //Ermitteln der Locale ID fuer die Sprachauswahl.
             //Selecting the Locale ID for the desired language.
             _outer.lcid = (Int16)0;
-            _outer.lcid = _.VAL(_.CALLm1v(this, _env.hlContext, "GetLocaleID"));
+            _outer.lcid = _.VAL(_.CALLm1v0(this, _env.hlContext, "GetLocaleID"));
             _outer.LangID = (Int16)0;
             _outer.LangID = _.VAL(_.CALLm1argp(this, _env.hlContext, "LangIDFromLCID", _.ARGS.Ref(_outer.lcid, v => { _outer.lcid = v; })));
 
             //Aktuelles Objekt ermitteln.
             //Detect the current object.
             _outer.hlCase = VBScriptConstants.Nothing;
-            _outer.hlCase = _.OBJ(_.CALLm1v(this, _env.hlContext, "GetCurrentObject"));
+            _outer.hlCase = _.OBJ(_.CALLm1v0(this, _env.hlContext, "GetCurrentObject"));
 
             _outer.Editor = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             _outer.ActDate = _.CSTR(_.NOW());
@@ -260,19 +260,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT desktop FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET desktop = desktop+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("DT00000", _.CSTR(_outer.CINumber));
@@ -378,19 +378,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT notebook FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET notebook = notebook+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("NB00000", _.CSTR(_outer.CINumber));
@@ -493,19 +493,19 @@ namespace TranslatedProgram
                         //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                         _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
                         _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                        _.CALLm1v(this, _outer.cn, "Open");
+                        _.CALLm1v0(this, _outer.cn, "Open");
 
                         //CI-Nummer auslesen
                         _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                         _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT softwarelic FROM _cinumbers")));
                         //In Variable schreiben
-                        _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                        _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                         //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                         _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET softwarelic = softwarelic+1"));
 
                         //Verbindung schliessen
-                        _.CALLm1v(this, _outer.rs, "close");
-                        _.CALLm1v(this, _outer.cn, "close");
+                        _.CALLm1v0(this, _outer.rs, "close");
+                        _.CALLm1v0(this, _outer.cn, "close");
                         if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                         {
                             _outer.CINumber = _.ADD("LI00000", _.CSTR(_outer.CINumber));
@@ -610,19 +610,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT printer FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET printer = printer+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("PR00000", _.CSTR(_outer.CINumber));
@@ -728,19 +728,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT copydevice FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET copydevice = copydevice+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("CR00000", _.CSTR(_outer.CINumber));
@@ -846,19 +846,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT multifunctiondevice FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET multifunctiondevice = multifunctiondevice+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("MF00000", _.CSTR(_outer.CINumber));
@@ -964,19 +964,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT scanner FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET scanner = scanner+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("SC00000", _.CSTR(_outer.CINumber));
@@ -1082,19 +1082,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT handys FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET handys = handys+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("MP00000", _.CSTR(_outer.CINumber));
@@ -1200,19 +1200,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT simcard FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET simcard = simcard+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("SI00000", _.CSTR(_outer.CINumber));
@@ -1318,19 +1318,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT umtscard FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET umtscard = umtscard+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("UM00000", _.CSTR(_outer.CINumber));
@@ -1436,19 +1436,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT pda FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET pda = pda+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("PD00000", _.CSTR(_outer.CINumber));
@@ -1554,19 +1554,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT blackberry FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET blackberry = blackberry+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("BB00000", _.CSTR(_outer.CINumber));
@@ -1671,19 +1671,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT monitor FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET monitor = monitor+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("MO00000", _.CSTR(_outer.CINumber));
@@ -1789,19 +1789,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT beamer FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET beamer = beamer+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("VP00000", _.CSTR(_outer.CINumber));
@@ -1907,19 +1907,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT videoconference FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET videoconference = videoconference+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("VC00000", _.CSTR(_outer.CINumber));
@@ -2025,19 +2025,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT mediatechnic FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET mediatechnic = mediatechnic+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("MU00000", _.CSTR(_outer.CINumber));
@@ -2143,19 +2143,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT diktiersystem FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET diktiersystem = diktiersystem+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("DS00000", _.CSTR(_outer.CINumber));
@@ -2261,19 +2261,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT usv FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET usv = usv+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("UP00000", _.CSTR(_outer.CINumber));
@@ -2379,19 +2379,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT controlcam FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET controlcam = controlcam+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("MC00000", _.CSTR(_outer.CINumber));
@@ -2497,19 +2497,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT bde FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET bde = bde+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("DA00000", _.CSTR(_outer.CINumber));
@@ -2615,19 +2615,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT spacemouse FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET spacemouse = spacemouse+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("SP00000", _.CSTR(_outer.CINumber));
@@ -2733,19 +2733,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT networkcomponent FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET networkcomponent = networkcomponent+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("AN00000", _.CSTR(_outer.CINumber));
@@ -2850,19 +2850,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT homeofficerouter FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET homeofficerouter = homeofficerouter+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("HO00000", _.CSTR(_outer.CINumber));
@@ -2968,19 +2968,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT headset FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET headset = headset+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("HS00000", _.CSTR(_outer.CINumber));
@@ -3087,19 +3087,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT conferencephone FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET conferencephone = conferencephone+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("CP00000", _.CSTR(_outer.CINumber));
@@ -3205,19 +3205,19 @@ namespace TranslatedProgram
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
                                 _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
                                 _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
-                                _.CALLm1v(this, _outer.cn, "Open");
+                                _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT server FROM _cinumbers")));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET server = server+1"));
 
                                 //Verbindung schliessen
-                                _.CALLm1v(this, _outer.rs, "close");
-                                _.CALLm1v(this, _outer.cn, "close");
+                                _.CALLm1v0(this, _outer.rs, "close");
+                                _.CALLm1v0(this, _outer.cn, "close");
                                 if (_.IF(_.EQ(_.NullableNUM(_.LEN(_.CSTR(_outer.CINumber))), (Int16)1)))
                                 {
                                     _outer.CINumber = _.ADD("SR00000", _.CSTR(_outer.CINumber));

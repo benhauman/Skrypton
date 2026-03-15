@@ -60,7 +60,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Anfrager Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Caller object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlCaller), true), _.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditSurname, "Text")), ""))))
+            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlCaller), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSurname, "Text")), ""))))
             {
                 NoPerson = false;
             }
@@ -110,21 +110,21 @@ namespace TranslatedProgram
 
             //Prüft ob ein Produkt Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Product object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditAssetModel, "Text")), ""))))
+            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel, "Text")), ""))))
             {
                 NoAsset = false;
             }
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v => { lcid = v; })));
 
             //Status der Anfragersuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check requester search status to set the caption of the button
             if (_.IF(_.EQ(NoPerson, false)))
             {
-                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
+                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
                 {
                     _.SET("Reset", this, _env.SearchCaller, "Caption");
                 }
@@ -138,7 +138,7 @@ namespace TranslatedProgram
             //Check Asset search status to set the caption of the button
             if (_.IF(_.EQ(NoAsset, false)))
             {
-                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
+                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
                 {
                     _.SET("Reset", this, _env.SearchAsset, "Caption");
                 }
@@ -156,20 +156,20 @@ namespace TranslatedProgram
                 varAType = _.VAL(_.CALLm1argp(this, _env.hlProduct, "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.OR(_.OR(_.EQ(_.NullableSTR(varAType), "DesktopComputer"), _.EQ(_.NullableSTR(varAType), "ServerComputer")), _.EQ(_.NullableSTR(varAType), "NotebookComputer")), _.EQ(_.NullableSTR(varAType), "Printer"))))
                 {
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditHostname, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditHostname, "Text")), "")))
                     {
-                        varString = _.VAL(_.CALLm1v(this, _env.EditHostname, "Text"));
+                        varString = _.VAL(_.CALLm1v0(this, _env.EditHostname, "Text"));
                     }
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditAssetModel, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel, "Text")), "")))
                     {
-                        varString = _.CONCAT(varString, " ", _.CALLm1v(this, _env.EditAssetModel, "Text"));
+                        varString = _.CONCAT(varString, " ", _.CALLm1v0(this, _env.EditAssetModel, "Text"));
                     }
                 }
                 else
                 {
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditAssetModel, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel, "Text")), "")))
                     {
-                        varString = _.VAL(_.CALLm1v(this, _env.EditAssetModel, "Text"));
+                        varString = _.VAL(_.CALLm1v0(this, _env.EditAssetModel, "Text"));
                     }
                     else
                     {
@@ -283,7 +283,7 @@ namespace TranslatedProgram
             object responsibility = null; /* Undeclared in source */
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v2 => { lcid = v2; })));
 
             rewritten_ReadOnly = true;
@@ -308,7 +308,7 @@ namespace TranslatedProgram
             {
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("SUINFO.EDITOR").Val((Int16)0).Val((Int16)0).Val(_.ADD(GetLastSUIdx, (Int16)1)).Val((Int16)1)));
                 helper = _.OBJ(_.CREATEOBJECT("helpline.hlcontrols.HLHelperPFA"));
-                Person = _.OBJ(_.CALLm1argp(this, helper, "GetPersonForAgent", _.ARGS.Val(_.CALLm1v(this, _env.model, "GetClientContext")).Val(_.CLNG(agent))));
+                Person = _.OBJ(_.CALLm1argp(this, helper, "GetPersonForAgent", _.ARGS.Val(_.CALLm1v0(this, _env.model, "GetClientContext")).Val(_.CLNG(agent))));
                 if (_.IF(_.EQ(_.ISOBJECT(Person), true)))
                 {
                     responsibility = _.VAL(_.CALLm1argp(this, Person, "GetValue", _.ARGS.Val("PersonGeneralTrumpf.Responsibility").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -356,7 +356,7 @@ namespace TranslatedProgram
         {
             //Status der Inventarsuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check Asset search status to set the caption of the button
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
             {
                 _.SET("Reset", this, _env.SearchAsset, "Caption");
             }
@@ -380,14 +380,14 @@ namespace TranslatedProgram
 
             //Prüft ob Anfrager Objekt nicht vorhanden ist
             //Check wether the Caller object exist
-            if (_.IF(_.OR(_.EQ(_.ISOBJECT(_env.hlCaller), false), _.EQ(_.NullableNUM(_.CALLm1v(this, _env.hlCaller, "objID")), (Int16)0))))
+            if (_.IF(_.OR(_.EQ(_.ISOBJECT(_env.hlCaller), false), _.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlCaller, "objID")), (Int16)0))))
             {
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.CostCenter").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(""));
             }
 
             //Status der Inventarsuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check Asset search status to set the caption of the button
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
             {
                 _.SET("Reset", this, _env.SearchAsset, "Caption");
             }
@@ -418,7 +418,7 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v3 => { lcid = v3; })));
 
             //Zunächst überprüfen ob der Vorgang schreibgeschützt ist
@@ -430,7 +430,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Anfrager Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Caller object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditHostname, "Text")), ""))))
+            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditHostname, "Text")), ""))))
             {
                 NoProduct = false;
             }
@@ -443,20 +443,20 @@ namespace TranslatedProgram
                 varAType = _.VAL(_.CALLm1argp(this, _env.hlProduct, "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.OR(_.OR(_.EQ(_.NullableSTR(varAType), "DesktopComputer"), _.EQ(_.NullableSTR(varAType), "ServerComputer")), _.EQ(_.NullableSTR(varAType), "NotebookComputer")), _.EQ(_.NullableSTR(varAType), "Printer"))))
                 {
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditHostname, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditHostname, "Text")), "")))
                     {
-                        varString = _.VAL(_.CALLm1v(this, _env.EditHostname, "Text"));
+                        varString = _.VAL(_.CALLm1v0(this, _env.EditHostname, "Text"));
                     }
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditAssetModel, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel, "Text")), "")))
                     {
-                        varString = _.CONCAT(varString, " ", _.CALLm1v(this, _env.EditAssetModel, "Text"));
+                        varString = _.CONCAT(varString, " ", _.CALLm1v0(this, _env.EditAssetModel, "Text"));
                     }
                 }
                 else
                 {
-                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v(this, _env.EditAssetModel, "Text")), "")))
+                    if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel, "Text")), "")))
                     {
-                        varString = _.VAL(_.CALLm1v(this, _env.EditAssetModel, "Text"));
+                        varString = _.VAL(_.CALLm1v0(this, _env.EditAssetModel, "Text"));
                     }
                     else
                     {
@@ -484,7 +484,7 @@ namespace TranslatedProgram
             object mailadr = null; /* Undeclared in source */
             //Status der Anfragersuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check requester search status to set the caption of the button
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
             {
                 _.SET("Reset", this, _env.SearchCaller, "Caption");
             }
@@ -538,7 +538,7 @@ namespace TranslatedProgram
 
             sendmail = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-            tempmail = _.VAL(_.CALLm1v(this, _env.EditEmailAddress, "text"));
+            tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
             //Rote Titel-Beschriftung des Lösungstextfeldes bei Inc.-Status Gelöst/Geschlosssen.
             //Redcoloured title of the solutiontext-frame if Inc.-status Solved or Closed.
             strIncStatus = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -557,7 +557,7 @@ namespace TranslatedProgram
                     if (!enumerationContent.MoveNext())
                         break;
                     Caller = enumerationContent.Current;
-                    CallerType = _.VAL(_.CALLm1v(this, Caller, "GetType"));
+                    CallerType = _.VAL(_.CALLm1v0(this, Caller, "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
                     {
                         mailadr = "";
@@ -630,7 +630,7 @@ namespace TranslatedProgram
 
             //Status der Anfragersuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
             //Check requester search status to set the caption of the button
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
             {
                 _.SET("Reset", this, _env.SearchCaller, "Caption");
             }
@@ -669,7 +669,7 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v6 => { lcid = v6; })));
 
         }
@@ -677,8 +677,8 @@ namespace TranslatedProgram
         public void SetProblemText2Subject()
         {
             object varSubject = null; /* Undeclared in source */
-            varSubject = _.VAL(_.LEFT(_.CALLm1v(this, _env.EditProblem, "Text"), (Int16)100));
-            if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v(this, _env.EditSubjectCase, "Text")), "")))
+            varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _env.EditProblem, "Text"), (Int16)100));
+            if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSubjectCase, "Text")), "")))
             {
                 _.SET(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
             }
@@ -696,7 +696,7 @@ namespace TranslatedProgram
             object Caller = null; /* Undeclared in source */
             object CallerType = null; /* Undeclared in source */
             object mailadr = null; /* Undeclared in source */
-            tempmail = _.VAL(_.CALLm1v(this, _env.EditEmailAddress, "text"));
+            tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
             strIncStatus = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strEmail = "";
@@ -713,7 +713,7 @@ namespace TranslatedProgram
                     if (!enumerationContent2.MoveNext())
                         break;
                     Caller = enumerationContent2.Current;
-                    CallerType = _.VAL(_.CALLm1v(this, Caller, "GetType"));
+                    CallerType = _.VAL(_.CALLm1v0(this, Caller, "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
                     {
                         mailadr = "";
@@ -758,7 +758,7 @@ namespace TranslatedProgram
                 _.SET(true, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusClosed")))
@@ -781,7 +781,7 @@ namespace TranslatedProgram
                 }
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusTimephased")))
@@ -810,7 +810,7 @@ namespace TranslatedProgram
                 _.SET(true, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusWaitingforExtern")))
@@ -820,7 +820,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusToProof")))
@@ -830,7 +830,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusRouted")))
@@ -841,7 +841,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusNew")))
@@ -851,7 +851,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusInProgress")))
@@ -862,7 +862,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.TextBoxEmailTo, "Required");
                 _.SET(false, this, _env.EditResubmissionTime, "Required");
                 _.SET(true, this, _env.EditResubmissionTime, "Disabled");
-                _.CALLm1v(this, _env.EditResubmissionTime, "DeleteContent");
+                _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
                 _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
 
@@ -976,13 +976,13 @@ namespace TranslatedProgram
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Ditzingen oder TG auslesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_resp = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent)))));
-                responsibility = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
-                _.CALLm1v(this, rs_resp, "close");
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
+                _.CALLm1v0(this, rs_resp, "close");
 
                 //Keyword einlesen
                 kw = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
@@ -991,17 +991,17 @@ namespace TranslatedProgram
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
                     rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_kwkwo = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw)))));
-                    while (_.IF(_.NOT(_.CALLm1v(this, rs_kwkwo, "EOF"))))
+                    while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo, "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
-                        _.CALLm1v(this, rs_kwkwo, "MoveNext");
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
+                        _.CALLm1v0(this, rs_kwkwo, "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
                     {
                         _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(kwo, v15 => { kwo = v15; }));
                         _.CALLm1argp(this, _env.TreeKeywordOrga, "SelectTreeItem", _.ARGS.Ref(kwo, v16 => { kwo = v16; }));
                     }
-                    _.CALLm1v(this, rs_kwkwo, "close");
+                    _.CALLm1v0(this, rs_kwkwo, "close");
                 }
                 else
                 {
@@ -1013,7 +1013,7 @@ namespace TranslatedProgram
                 }
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, cn, "close");
                 cn = VBScriptConstants.Nothing;
             }
 
@@ -1088,15 +1088,15 @@ namespace TranslatedProgram
                     //DB Verbindung öffnen
                     _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                     _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                    _.CALLm1v(this, cn, "Open");
+                    _.CALLm1v0(this, cn, "Open");
 
                     //Teamname auslesen
                     rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname,Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-                    teamDisplayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-                    teamID = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
-                    agent_displayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
-                    _.CALLm1v(this, rs_team, "close");
+                    teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
+                    teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
+                    agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                    _.CALLm1v0(this, rs_team, "close");
 
                     //Abfrage ob Speicherung als persönliches oder als Teamtemplate gewünscht wird
                     result = _.VAL(_.MSGBOX(_.CONCAT("Button YES => personal template for: ", agent_displayname, _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "or", _.CHR((Int16)10), _.CHR((Int16)13), _.CHR((Int16)13), "Button NO => team template for: ''", teamDisplayname, "''"), (Int16)4, "personal template or team template?"));
@@ -1112,7 +1112,7 @@ namespace TranslatedProgram
 
                     }
                     //Verbindung schließen
-                    _.CALLm1v(this, cn, "close");
+                    _.CALLm1v0(this, cn, "close");
 
                 }
             }
@@ -1139,7 +1139,7 @@ namespace TranslatedProgram
             object sendmail = null; /* Undeclared in source */
             object Anfrageart = null; /* Undeclared in source */
             //Prüfen ob Template in der Checkbox ausgewählt wurde
-            if (_.IF(_.OR(_.EQ(_.CALLm1v(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v(this, _env.l_templateID, "text")), ""))))
+            if (_.IF(_.OR(_.EQ(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v0(this, _env.l_templateID, "text")), ""))))
             {
                 msg = _.VAL(_.MSGBOX(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing."), VBScriptConstants.vbOKOnly, "No data record available."));
             }
@@ -1150,58 +1150,58 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CASEINFO.RESERVEDBY").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
 
                 //Angewählte ID aus Label auslesen
-                templateid = _.VAL(_.CALLm1v(this, _env.l_templateID, "Text"));
+                templateid = _.VAL(_.CALLm1v0(this, _env.l_templateID, "Text"));
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Inhalte von agent_templates in das Recordset einlesen
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select * from templater where template_id = ", templateid))));
 
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Requesttype")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Requesttype")), "value")));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), "")))
                 {
-                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("descriptiontext")), "value")));
+                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("descriptiontext")), "value")));
                 }
                 else
                 {
                 }
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("diagnosistext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("solutiontext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keyword")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keywordorga")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EscalationLevel")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Impact")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("FunctionalRange")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("ProductionalRelevance")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCaller")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("IncidentStatus")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("DefaultNotification")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("PCAssoziated")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodytext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodyRawtext")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("diagnosistext")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("solutiontext")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keyword")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keywordorga")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EscalationLevel")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Impact")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("FunctionalRange")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("ProductionalRelevance")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCaller")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("IncidentStatus")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("DefaultNotification")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("PCAssoziated")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodytext")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodyRawtext")), "value")));
                 //hlObj.SetValue "EmailSUAttribute.EmailTo",0,0,0,rs.fields("EmailTo").value
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCC")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCC")), "value")));
                 strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v18 => { strSubject = v18; }));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), "")))
                 {
-                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailSubject")), "value")));
+                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailSubject")), "value")));
                 }
 
                 //Subject Setzen
-                varSubject = _.VAL(_.LEFT(_.CALLm1v(this, _env.EditProblem, "Text"), (Int16)100));
-                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v(this, _env.EditSubjectCase, "Text")), "")))
+                varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _env.EditProblem, "Text"), (Int16)100));
+                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSubjectCase, "Text")), "")))
                 {
                     _.SET(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
                 }
 
                 //Übertrag der Caller in das An-Feld
-                tempmail = _.VAL(_.CALLm1v(this, _env.EditEmailAddress, "text"));
+                tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
                 strEmail = "";
                 CallerCount = (Int16)0;
                 CallerCount = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItemCount", _.ARGS.Val((Int16)0).Val((Int16)130)));
@@ -1216,7 +1216,7 @@ namespace TranslatedProgram
                         if (!enumerationContent3.MoveNext())
                             break;
                         Caller = enumerationContent3.Current;
-                        CallerType = _.VAL(_.CALLm1v(this, Caller, "GetType"));
+                        CallerType = _.VAL(_.CALLm1v0(this, Caller, "GetType"));
                         if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
                         {
                             mailadr = "";
@@ -1317,11 +1317,11 @@ namespace TranslatedProgram
                 }
 
                 //Recordset schließen
-                _.CALLm1v(this, rs, "close");
+                _.CALLm1v0(this, rs, "close");
                 rs = VBScriptConstants.Nothing;
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, cn, "close");
                 cn = VBScriptConstants.Nothing;
 
             }
@@ -1341,7 +1341,7 @@ namespace TranslatedProgram
             object cn = null; /* Undeclared in source */
             object rs = null; /* Undeclared in source */
             object rs_team = null; /* Undeclared in source */
-            if (_.IF(_.OR(_.EQ(_.CALLm1v(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v(this, _env.l_templateID, "text")), ""))))
+            if (_.IF(_.OR(_.EQ(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v0(this, _env.l_templateID, "text")), ""))))
             {
                 _.MSGBOX("Please select template from list first.");
             }
@@ -1352,26 +1352,26 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CASEINFO.RESERVEDBY").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
 
                 //Angewählte ID aus Label auslesen
-                templateid = _.VAL(_.CALLm1v(this, _env.l_templateID, "Text"));
+                templateid = _.VAL(_.CALLm1v0(this, _env.l_templateID, "Text"));
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 //DB Verbindung öffnen
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Recordset anlegen und templatenamen auslesen
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select templatename,editor from templater where template_id = ", _.CSTR(templateid)))));
-                templatename = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value"));
-                editor = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("editor")), "value"));
+                templatename = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value"));
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("editor")), "value"));
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor)))));
-                agent_displayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
-                _.CALLm1v(this, rs_team, "close");
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                _.CALLm1v0(this, rs_team, "close");
 
                 //Nur wenn Agent = Editor überschreiben, sonst Abbruch
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
@@ -1407,7 +1407,7 @@ namespace TranslatedProgram
                 }
 
                 //Verbindung schließen
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, cn, "close");
 
                 //EndIf Wurde ein Checkbox-Wert zuvor angewählt
             }
@@ -1437,7 +1437,7 @@ namespace TranslatedProgram
             {
 
                 //Vorhandene Checkbox Werte entfernen
-                _.CALLm1v(this, _env.cb_template_load, "ResetContent");
+                _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
 
                 //Agentid auslesen anhand des aktuellen Agenten
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CASEINFO.RESERVEDBY").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
@@ -1446,14 +1446,14 @@ namespace TranslatedProgram
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Teamname auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-                teamDisplayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-                teamID = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
-                _.CALLm1v(this, rs_team, "close");
+                teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
+                teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
+                _.CALLm1v0(this, rs_team, "close");
 
                 //Für Agent Templates ID bestimmen und selektierten Wert in Label schreiben
                 anzahl_agent_templates = (Int16)0;
@@ -1461,18 +1461,18 @@ namespace TranslatedProgram
                 rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent), " order by agentid, cast(Templatename as varchar(500))"))));
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v(this, rs, "MoveFirst");
+                    _.CALLm1v0(this, rs, "MoveFirst");
                 });
-                while (_.IF(() => _.IF(_.NOT(_.CALLm1v(this, rs, "eof"))), errOn))
+                while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs, "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value")));
+                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value")));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_agent_templates = _.ADD(anzahl_agent_templates, (Int16)1);
                     });
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1v(this, rs, "MoveNext");
+                        _.CALLm1v0(this, rs, "MoveNext");
                     });
                 }
 
@@ -1493,32 +1493,32 @@ namespace TranslatedProgram
                 });
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v(this, rs2, "MoveFirst");
+                    _.CALLm1v0(this, rs2, "MoveFirst");
                 });
-                while (_.IF(() => _.IF(_.NOT(_.CALLm1v(this, rs2, "eof"))), errOn))
+                while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs2, "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val("templatename")), "value")));
+                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val("templatename")), "value")));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_team_templates = _.ADD(anzahl_team_templates, (Int16)1);
                     });
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1v(this, rs2, "MoveNext");
+                        _.CALLm1v0(this, rs2, "MoveNext");
                     });
                 }
 
                 //Recordset schließen
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v(this, rs, "close");
+                    _.CALLm1v0(this, rs, "close");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v(this, rs2, "close");
+                    _.CALLm1v0(this, rs2, "close");
                 });
 
                 //Datenbankverbindung zu helpline_replication schließen
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v(this, cn, "close");
+                    _.CALLm1v0(this, cn, "close");
                 });
                 _.HANDLEERROR(errOn, () => {
                     cn = VBScriptConstants.Nothing;
@@ -1543,7 +1543,7 @@ namespace TranslatedProgram
             object rs_team = null; /* Undeclared in source */
             object rs = null; /* Undeclared in source */
             //Prüfen ob Template in der Checkbox ausgewählt wurde
-            if (_.IF(_.OR(_.EQ(_.CALLm1v(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v(this, _env.l_templateID, "text")), ""))))
+            if (_.IF(_.OR(_.EQ(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), (Int16)(-1)), _.EQ(_.NullableSTR(_.CALLm1v0(this, _env.l_templateID, "text")), ""))))
             {
                 msg = _.VAL(_.MSGBOX(_.CONCAT("Please select a template from the list.", _.CHR((Int16)13), _.CHR((Int16)10), "If the list is empty, there is no template existing."), VBScriptConstants.vbOKOnly, "No data record available."));
 
@@ -1555,25 +1555,25 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CASEINFO.RESERVEDBY").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
 
                 //Angewählte ID aus Label auslesen
-                templateid = _.VAL(_.CALLm1v(this, _env.l_templateID, "Text"));
+                templateid = _.VAL(_.CALLm1v0(this, _env.l_templateID, "Text"));
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Editor bestimmen
                 rs_editor = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_editor = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select editor from templater where template_id = ", _.CSTR(templateid)))));
-                editor = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_editor, "fields", _.ARGS.Val("editor")), "value"));
-                _.CALLm1v(this, rs_editor, "close");
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_editor, "fields", _.ARGS.Val("editor")), "value"));
+                _.CALLm1v0(this, rs_editor, "close");
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor)))));
-                agent_displayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
-                _.CALLm1v(this, rs_team, "close");
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                _.CALLm1v0(this, rs_team, "close");
 
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
                 {
@@ -1592,7 +1592,7 @@ namespace TranslatedProgram
                         rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Delete from templater where template_id = ", _.CSTR(templateid)))));
 
                         //Auswahl der Checkbox zurücksetzen und ID auf Null
-                        _.CALLm1v(this, _env.cb_template_load, "ResetContent");
+                        _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
                         _.SET("", this, _env.l_templateID, "text");
 
                         //Recordset schließen
@@ -1606,11 +1606,11 @@ namespace TranslatedProgram
                 }
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, cn, "close");
                 cn = VBScriptConstants.Nothing;
 
                 //Vorhandene Checkbox Werte entfernen
-                _.CALLm1v(this, _env.cb_template_load, "ResetContent");
+                _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
                 _.SET("", this, _env.l_templateID, "Text");
 
             }
@@ -1636,20 +1636,20 @@ namespace TranslatedProgram
             agent = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CASEINFO.RESERVEDBY").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
 
             //Angewählte Position bestimmen
-            position = _.ADD(_.CALLm1v(this, _env.cb_template_load, "GetCurSel"), (Int16)1);
+            position = _.ADD(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), (Int16)1);
 
             //Datenbankverbindung zu helpline_replication
             cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
             _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
             _.SET((Int16)10, this, cn, "ConnectionTimeout");
-            _.CALLm1v(this, cn, "Open");
+            _.CALLm1v0(this, cn, "Open");
 
             //Teamname auslesen
             rs_teamid = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
             rs_teamid = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-            teamDisplayname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-            teamID = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
-            _.CALLm1v(this, rs_teamid, "close");
+            teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
+            teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
+            _.CALLm1v0(this, rs_teamid, "close");
 
             //Anzahl der Agenten-Templates bestimmen
             anzahl_agent_templates = (Int16)0;
@@ -1657,19 +1657,19 @@ namespace TranslatedProgram
             rs_anzahl = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent)))));
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
             _.HANDLEERROR(errOn2, () => {
-                _.CALLm1v(this, rs_anzahl, "MoveFirst");
+                _.CALLm1v0(this, rs_anzahl, "MoveFirst");
             });
-            while (_.IF(() => _.IF(_.NOT(_.CALLm1v(this, rs_anzahl, "eof"))), errOn2))
+            while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs_anzahl, "eof"))), errOn2))
             {
                 _.HANDLEERROR(errOn2, () => {
                     anzahl_agent_templates = _.ADD(anzahl_agent_templates, (Int16)1);
                 });
                 _.HANDLEERROR(errOn2, () => {
-                    _.CALLm1v(this, rs_anzahl, "MoveNext");
+                    _.CALLm1v0(this, rs_anzahl, "MoveNext");
                 });
             }
             _.HANDLEERROR(errOn2, () => {
-                _.CALLm1v(this, rs_anzahl, "close");
+                _.CALLm1v0(this, rs_anzahl, "close");
             });
 
             if (_.IF(() => _.LTE(position, anzahl_agent_templates), errOn2))
@@ -1683,7 +1683,7 @@ namespace TranslatedProgram
                 });
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
                 _.HANDLEERROR(errOn2, () => {
-                    _.CALLm1v(this, rs_agent, "MoveFirst");
+                    _.CALLm1v0(this, rs_agent, "MoveFirst");
                 });
                 object loopEnd = 0, loopStart = 0;
                 var loopConstraintsInitialized = false;
@@ -1702,10 +1702,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         _.HANDLEERROR(errOn2, () => {
-                            _.SET(_.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_agent, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
+                            _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_agent, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
                         });
                         _.HANDLEERROR(errOn2, () => {
-                            _.CALLm1v(this, rs_agent, "MoveNext");
+                            _.CALLm1v0(this, rs_agent, "MoveNext");
                         });
                         if (!loopConstraintsInitialized)
                             break;
@@ -1720,7 +1720,7 @@ namespace TranslatedProgram
                 }
                 //Dataset schließen
                 _.HANDLEERROR(errOn2, () => {
-                    _.CALLm1v(this, rs_agent, "close");
+                    _.CALLm1v0(this, rs_agent, "close");
                 });
 
             }
@@ -1728,7 +1728,7 @@ namespace TranslatedProgram
             {
 
                 //Prüfung, ob Trennlinie ausgewählt wurde.
-                if (_.IF(() => _.EQ(_.CALLm1v(this, _env.cb_template_load, "GetCurSel"), anzahl_agent_templates), errOn2))
+                if (_.IF(() => _.EQ(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), anzahl_agent_templates), errOn2))
                 {
                     _.HANDLEERROR(errOn2, () => {
                         _.SET("", this, _env.l_templateID, "Text");
@@ -1750,7 +1750,7 @@ namespace TranslatedProgram
                     });
                     _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
                     _.HANDLEERROR(errOn2, () => {
-                        _.CALLm1v(this, rs_team, "MoveFirst");
+                        _.CALLm1v0(this, rs_team, "MoveFirst");
                     });
                     object loopEnd2 = 0, loopStart2 = 0;
                     var loopConstraintsInitialized2 = false;
@@ -1769,10 +1769,10 @@ namespace TranslatedProgram
                         while (true)
                         {
                             _.HANDLEERROR(errOn2, () => {
-                                _.SET(_.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
+                                _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
                             });
                             _.HANDLEERROR(errOn2, () => {
-                                _.CALLm1v(this, rs_team, "MoveNext");
+                                _.CALLm1v0(this, rs_team, "MoveNext");
                             });
                             if (!loopConstraintsInitialized2)
                                 break;
@@ -1787,7 +1787,7 @@ namespace TranslatedProgram
                     }
                     //Dataset schließen
                     _.HANDLEERROR(errOn2, () => {
-                        _.CALLm1v(this, rs_team, "close");
+                        _.CALLm1v0(this, rs_team, "close");
                     });
 
                 }
@@ -1795,7 +1795,7 @@ namespace TranslatedProgram
 
             //DB schließen
             _.HANDLEERROR(errOn2, () => {
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, cn, "close");
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn2);
@@ -1817,18 +1817,18 @@ namespace TranslatedProgram
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v20 => { lcid = v20; })));
 
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1argp(this, _env.hlObj, "IsReadOnly", _.ARGS.Val("CASEINFO.REACTIONTIME").Val((Int16)0))), (Int16)0)))
             {
 
-                objType = _.VAL(_.CALLm1v(this, _env.hlProduct, "GetType"));
+                objType = _.VAL(_.CALLm1v0(this, _env.hlProduct, "GetType"));
                 if (_.IF(_.OR(_.OR(_.EQ(_.NullableSTR(objType), "DesktopComputer"), _.EQ(_.NullableSTR(objType), "ServerComputer")), _.EQ(_.NullableSTR(objType), "NotebookComputer"))))
                 {
                     //Auslesen des gewählten Computers
                     //Reading the selected computer
-                    host = _.VAL(_.CALLm1v(this, _env.EditHostname, "Text"));
+                    host = _.VAL(_.CALLm1v0(this, _env.EditHostname, "Text"));
 
                     if (_.IF(_.NOTEQ(_.NullableSTR(host), "")))
                     {
@@ -1837,7 +1837,7 @@ namespace TranslatedProgram
                         //Command lin for calling On Command Remote Master
                         //Command1="""%programfiles%"\smsadmin\bin\i386\remote.exe 2 "" & host
                         _.HANDLEERROR(errOn3, () => {
-                            OsType = _.VAL(_.CALLm1v(this, _.GETOBJECT("winmgmts:root\\cimv2:Win32_Processor='cpu0'"), "AddressWidth"));
+                            OsType = _.VAL(_.CALLm1v0(this, _.GETOBJECT("winmgmts:root\\cimv2:Win32_Processor='cpu0'"), "AddressWidth"));
                         });
                         if (_.IF(() => _.EQ(_.NullableNUM(OsType), (Int16)32), errOn3))
                         {
@@ -1861,7 +1861,7 @@ namespace TranslatedProgram
                         _.HANDLEERROR(errOn3, () => {
                             oExec = _.OBJ(_.CALLm1argp(this, wshshell, "Exec", _.ARGS.Ref(Command1, v21 => { Command1 = v21; })));
                         });
-                        if (_.IF(() => _.EQ(_.CALLm1v(this, _.ERR, "Number"), -2147024893), errOn3))
+                        if (_.IF(() => _.EQ(_.CALLm1v0(this, _.ERR, "Number"), -2147024893), errOn3))
                         {
                             if (_.IF(() => _.EQ(_.NullableNUM(LangID), (Int16)7), errOn3))
                             {
@@ -1923,7 +1923,7 @@ namespace TranslatedProgram
             object DiagnosisAll = null; /* Undeclared in source */
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
-            lcid = _.VAL(_.CALLm1v(this, _env.hlSession, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, _env.hlSession, "GetLocaleID"));
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v22 => { lcid = v22; })));
 
             CaseOwner = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("HLOBJECTINFO.OWNER").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -2034,7 +2034,7 @@ namespace TranslatedProgram
             object mailadr = null; /* Undeclared in source */
             sendmail = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-            tempmail = _.VAL(_.CALLm1v(this, _env.EditEmailAddress, "text"));
+            tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
             //Rote Titel-Beschriftung des Lösungstextfeldes bei Inc.-Status Gelöst/Geschlosssen.
             //Redcoloured title of the solutiontext-frame if Inc.-status Solved or Closed.
             strIncStatus = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -2053,7 +2053,7 @@ namespace TranslatedProgram
                     if (!enumerationContent4.MoveNext())
                         break;
                     Caller = enumerationContent4.Current;
-                    CallerType = _.VAL(_.CALLm1v(this, Caller, "GetType"));
+                    CallerType = _.VAL(_.CALLm1v0(this, Caller, "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
                     {
                         mailadr = "";
@@ -2121,9 +2121,9 @@ namespace TranslatedProgram
             object i = null; /* Undeclared in source */
             //EMail-Adressen leeren
             _.SET("", this, _env.ComboBoxEmailSearchResult, "Text");
-            _.CALLm1v(this, _env.ComboBoxEmailSearchResult, "ResetContent");
+            _.CALLm1v0(this, _env.ComboBoxEmailSearchResult, "ResetContent");
             //Name als Suchparameter für Email-Adressen abfragen
-            name = _.VAL(_.CALLm1v(this, _env.TextBoxEmailSearchName, "Text"));
+            name = _.VAL(_.CALLm1v0(this, _env.TextBoxEmailSearchName, "Text"));
 
             //ConString = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm4t"
             ConString = "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm1";
@@ -2140,7 +2140,7 @@ namespace TranslatedProgram
                 //Verbindung öffnen
                 _.SET(_.VAL(ConString), this, cn2, "ConnectionString");
                 _.SET((Int16)10, this, cn2, "ConnectionTimeout");
-                _.CALLm1v(this, cn2, "Open");
+                _.CALLm1v0(this, cn2, "Open");
 
                 //SELECT absetzen
                 rs2 = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
@@ -2148,20 +2148,20 @@ namespace TranslatedProgram
 
                 //Daten einlesen
                 Data = "";
-                while (_.IF(_.NOT(_.CALLm1v(this, rs2, "eof"))))
+                while (_.IF(_.NOT(_.CALLm1v0(this, rs2, "eof"))))
                 {
                     //In Variable schreiben
                     i = _.ADD(i, (Int16)1);
-                    _.CALLm1argp(this, _env.ComboBoxEmailSearchResult, "AddItem", _.ARGS.Val(_.CALLm1v(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")));
+                    _.CALLm1argp(this, _env.ComboBoxEmailSearchResult, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")));
                     if (_.IF(_.EQ(_.NullableNUM(i), (Int16)1)))
                     {
-                        _.SET(_.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
+                        _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
                     }
-                    _.CALLm1v(this, rs2, "movenext");
+                    _.CALLm1v0(this, rs2, "movenext");
                 }
                 //Verbindung schließen
-                _.CALLm1v(this, rs2, "close");
-                _.CALLm1v(this, cn2, "close");
+                _.CALLm1v0(this, rs2, "close");
+                _.CALLm1v0(this, cn2, "close");
 
             }
 
@@ -2174,8 +2174,8 @@ namespace TranslatedProgram
             object fullemailstring = null; /* Undeclared in source */
             object pos = null; /* Undeclared in source */
             object emailstring = null; /* Undeclared in source */
-            email = _.VAL(_.CALLm1v(this, _env.ComboBoxEmailSearchResult, "Text"));
-            Recipient = _.VAL(_.CALLm1v(this, _env.TextBoxEmailTo, "Text"));
+            email = _.VAL(_.CALLm1v0(this, _env.ComboBoxEmailSearchResult, "Text"));
+            Recipient = _.VAL(_.CALLm1v0(this, _env.TextBoxEmailTo, "Text"));
             if (_.IF(_.EQ(_.NullableSTR(email), "")))
             {
                 _.MSGBOX("Bitte eine Email-Adresse auswählen!");
@@ -2213,8 +2213,8 @@ namespace TranslatedProgram
             object fullemailstring = null; /* Undeclared in source */
             object pos = null; /* Undeclared in source */
             object emailstring = null; /* Undeclared in source */
-            email = _.VAL(_.CALLm1v(this, _env.ComboBoxEmailSearchResult, "Text"));
-            RecipientCC = _.VAL(_.CALLm1v(this, _env.TextBoxEmailCC, "Text"));
+            email = _.VAL(_.CALLm1v0(this, _env.ComboBoxEmailSearchResult, "Text"));
+            RecipientCC = _.VAL(_.CALLm1v0(this, _env.TextBoxEmailCC, "Text"));
             if (_.IF(_.EQ(_.NullableSTR(email), "")))
             {
                 _.MSGBOX("Bitte eine Email-Adresse auswählen!");
@@ -2267,20 +2267,20 @@ namespace TranslatedProgram
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
                 _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                _.CALLm1v(this, cn, "Open");
+                _.CALLm1v0(this, cn, "Open");
 
                 //Teamname auslesen
                 rs_kwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_kwo = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select name,internalname from vw_agent_to_first_keywordorga where agentid = ", _.CSTR(agent)))));
-                internalname = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_kwo, "fields", _.ARGS.Val("internalname")), "value"));
+                internalname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwo, "fields", _.ARGS.Val("internalname")), "value"));
 
                 //Wert in Schlagwort schreiben
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(internalname, v36 => { internalname = v36; }));
                 _.CALLm1argp(this, _env.TreeKeywordOrga, "SelectTreeItem", _.ARGS.Ref(internalname, v37 => { internalname = v37; }));
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, rs_kwo, "close");
-                _.CALLm1v(this, cn, "close");
+                _.CALLm1v0(this, rs_kwo, "close");
+                _.CALLm1v0(this, cn, "close");
                 cn = VBScriptConstants.Nothing;
 
             }
@@ -2313,13 +2313,13 @@ namespace TranslatedProgram
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
                 _.SET((Int16)10, this, cn1, "ConnectionTimeout");
-                _.CALLm1v(this, cn1, "Open");
+                _.CALLm1v0(this, cn1, "Open");
 
                 //Teamname auslesen
                 rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_kw = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select keywordid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent)))));
-                keywordid = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_kw, "fields", _.ARGS.Val("keywordid")), "value"));
-                _.CALLm1v(this, rs_kw, "close");
+                keywordid = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kw, "fields", _.ARGS.Val("keywordid")), "value"));
+                _.CALLm1v0(this, rs_kw, "close");
 
                 //Wert in Schlagwort schreiben
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(keywordid, v38 => { keywordid = v38; }));
@@ -2329,8 +2329,8 @@ namespace TranslatedProgram
                 //Responsibility - Ditzingen oder TG - einlesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_resp = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent)))));
-                responsibility = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
-                _.CALLm1v(this, rs_resp, "close");
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
+                _.CALLm1v0(this, rs_resp, "close");
 
                 //Keyword einlesen
                 kw = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
@@ -2339,17 +2339,17 @@ namespace TranslatedProgram
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
                     rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_kwkwo = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw)))));
-                    while (_.IF(_.NOT(_.CALLm1v(this, rs_kwkwo, "EOF"))))
+                    while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo, "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
-                        _.CALLm1v(this, rs_kwkwo, "MoveNext");
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
+                        _.CALLm1v0(this, rs_kwkwo, "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
                     {
                         _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(kwo, v41 => { kwo = v41; }));
                         _.CALLm1argp(this, _env.TreeKeywordOrga, "SelectTreeItem", _.ARGS.Ref(kwo, v42 => { kwo = v42; }));
                     }
-                    _.CALLm1v(this, rs_kwkwo, "close");
+                    _.CALLm1v0(this, rs_kwkwo, "close");
                 }
                 else
                 {
@@ -2361,7 +2361,7 @@ namespace TranslatedProgram
                 }
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, cn1, "close");
+                _.CALLm1v0(this, cn1, "close");
                 cn1 = VBScriptConstants.Nothing;
             }
 
@@ -2388,7 +2388,7 @@ namespace TranslatedProgram
                     if (!enumerationContent5.MoveNext())
                         break;
                     Caller = enumerationContent5.Current;
-                    CallerType = _.VAL(_.CALLm1v(this, Caller, "GetType"));
+                    CallerType = _.VAL(_.CALLm1v0(this, Caller, "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
                     {
                         mailadr = "";
@@ -2405,7 +2405,7 @@ namespace TranslatedProgram
                 strEmail = _.VAL(_.CALLm1argp(this, _env.hlCaller, "GetValue", _.ARGS.Val("PersonInformation.EmailAddress").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             }
 
-            tempmail = _.VAL(_.CALLm1v(this, _env.EditEmailAddress, "text"));
+            tempmail = _.VAL(_.CALLm1v0(this, _env.EditEmailAddress, "text"));
             if (_.IF(_.GT(_.NullableNUM(_.INSTR(strEmail, tempmail)), (Int16)0)))
             {
             }
@@ -2579,7 +2579,7 @@ namespace TranslatedProgram
                 //Öffnet das File zum lesen
                 f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpline\\Emailtemplate.html").Val(ForReading)));
                 //Liest alle Daten in die Variable BodyText
-                BodyText = _.VAL(_.CALLm1v(this, f, "ReadAll"));
+                BodyText = _.VAL(_.CALLm1v0(this, f, "ReadAll"));
                 BodyText = _.REPLACE(BodyText, "[$NoticeTop$]", TNoticeTop);
                 BodyText = _.REPLACE(BodyText, "[$Ticket-ID_Titel$]", TTicketID);
                 BodyText = _.REPLACE(BodyText, "[$TicketID$]", HTicketID);
@@ -2601,7 +2601,7 @@ namespace TranslatedProgram
                 BodyText = _.REPLACE(BodyText, "[$Signature$]", TSignature);
                 BodyText = _.REPLACE(BodyText, "[$NoticeBottom$]", TNoticeBottom);
                 //Schließt das File
-                _.CALLm1v(this, f, "Close");
+                _.CALLm1v0(this, f, "Close");
                 f = VBScriptConstants.Nothing;
                 fso = VBScriptConstants.Nothing;
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.SummaryHTML.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(BodyText, v46 => { BodyText = v46; }));
@@ -2715,7 +2715,7 @@ namespace TranslatedProgram
                 //Öffnet das File zum lesen
                 f = _.OBJ(_.CALLm1argp(this, fso, "OpenTextFile", _.ARGS.Val("C:\\TRUMPF\\helpLine\\IntermediateReply.html").Val(ForReading)));
                 //Liest alle Daten in die Variable BodyText
-                BodyText = _.VAL(_.CALLm1v(this, f, "ReadAll"));
+                BodyText = _.VAL(_.CALLm1v0(this, f, "ReadAll"));
                 BodyText = _.REPLACE(BodyText, "[$NoticeTop$]", TNoticeTop);
                 BodyText = _.REPLACE(BodyText, "[$Ticket-ID_Titel$]", TTicketID);
                 BodyText = _.REPLACE(BodyText, "[$TicketID$]", HTicketID);
@@ -2744,7 +2744,7 @@ namespace TranslatedProgram
                 BodyText = _.REPLACE(BodyText, "[$ComplimentaryClose$]", TComplimentary);
                 BodyText = _.REPLACE(BodyText, "[$Signature$]", TSignature);
                 //Schließt das File
-                _.CALLm1v(this, f, "Close");
+                _.CALLm1v0(this, f, "Close");
                 f = VBScriptConstants.Nothing;
                 fso = VBScriptConstants.Nothing;
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.SummaryHTML.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(BodyText, v50 => { BodyText = v50; }));
@@ -2777,7 +2777,7 @@ namespace TranslatedProgram
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
                 _.SET((Int16)10, this, cn1, "ConnectionTimeout");
-                _.CALLm1v(this, cn1, "Open");
+                _.CALLm1v0(this, cn1, "Open");
 
                 //Keyword einlesen und in Datenbank ablegen
                 keywordid = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1)));
@@ -2786,20 +2786,20 @@ namespace TranslatedProgram
                     //Personid über AgentID ermitteln
                     rs_person = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_person = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select personid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent)))));
-                    personid = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, rs_person, "fields", _.ARGS.Val("personid")), "value"));
-                    _.CALLm1v(this, rs_person, "close");
+                    personid = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_person, "fields", _.ARGS.Val("personid")), "value"));
+                    _.CALLm1v0(this, rs_person, "close");
 
                     //Datenbankverbindung zu helpline_data
                     cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                     _.SET("Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, cn, "ConnectionString");
                     _.SET((Int16)10, this, cn, "ConnectionTimeout");
-                    _.CALLm1v(this, cn, "Open");
+                    _.CALLm1v0(this, cn, "Open");
                     //Keyword schreiben
                     rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_kw = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Update dbo.emplkeywords set keyword = ", _.CDBL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1))), " where personid = ", _.CSTR(personid)))));
                     //Datenbank schließen
                     //rs_kw.close
-                    _.CALLm1v(this, cn, "close");
+                    _.CALLm1v0(this, cn, "close");
                     cn = VBScriptConstants.Nothing;
                 }
                 else
@@ -2808,7 +2808,7 @@ namespace TranslatedProgram
                 }
 
                 //Datenbankverbindung zu helpline_replication schließen
-                _.CALLm1v(this, cn1, "close");
+                _.CALLm1v0(this, cn1, "close");
                 cn1 = VBScriptConstants.Nothing;
 
             }
@@ -2818,7 +2818,7 @@ namespace TranslatedProgram
         public void EditSubjectCase_ondatachange()
         {
             object Text = null;
-            if (_.IF(_.INSTR((Int16)1, _.CALLm1v(this, _env.EditSubjectCase, "Text"), "Notfalltransport_SAP", VBScriptConstants.vbTextCompare)))
+            if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Notfalltransport_SAP", VBScriptConstants.vbTextCompare)))
             {
                 _.SET(false, this, _env.CaseProblem, "Disabled");
                 _.SET(false, this, _env.CaseProblem, "Disabled");
@@ -2830,7 +2830,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
             }
 
-            if (_.IF(_.INSTR((Int16)1, _.CALLm1v(this, _env.EditSubjectCase, "Text"), "Systemänderbarkeit_SAP", VBScriptConstants.vbTextCompare)))
+            if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Systemänderbarkeit_SAP", VBScriptConstants.vbTextCompare)))
             {
                 _.SET(false, this, _env.CaseProblem, "Disabled");
                 _.SET(false, this, _env.CaseProblem, "Disabled");
@@ -2842,7 +2842,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
             }
 
-            if (_.IF(_.INSTR((Int16)1, _.CALLm1v(this, _env.EditSubjectCase, "Text"), "#Prio 1 Incident# ", VBScriptConstants.vbTextCompare)))
+            if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "#Prio 1 Incident# ", VBScriptConstants.vbTextCompare)))
             {
                 _.SET(false, this, _env.CaseProblem, "Disabled");
                 _.SET(false, this, _env.CaseProblem, "Disabled");
@@ -2853,7 +2853,7 @@ namespace TranslatedProgram
                 _.SET(false, this, _env.CaseAttributes, "Disabled");
                 _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
             }
-            if (_.IF(_.INSTR((Int16)1, _.CALLm1v(this, _env.EditSubjectCase, "Text"), "Debugg_Modus_SAP", VBScriptConstants.vbTextCompare)))
+            if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Debugg_Modus_SAP", VBScriptConstants.vbTextCompare)))
             {
                 _.SET(false, this, _env.CaseProblem, "Disabled");
                 _.SET(false, this, _env.CaseProblem, "Disabled");
@@ -2871,13 +2871,13 @@ namespace TranslatedProgram
         {
             object textdata = null;
             object texttemp = null;
-            if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v(this, _env.TextBoxActionItemsInput, "Text")), "")))
+            if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _env.TextBoxActionItemsInput, "Text")), "")))
             {
                 _.MSGBOX("Input value is missing.");
             }
             else
             {
-                texttemp = _.VAL(_.CALLm1v(this, _env.TextBoxActionItemsInput, "Text"));
+                texttemp = _.VAL(_.CALLm1v0(this, _env.TextBoxActionItemsInput, "Text"));
                 textdata = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ActionItems").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(textdata), ""))))
                 {

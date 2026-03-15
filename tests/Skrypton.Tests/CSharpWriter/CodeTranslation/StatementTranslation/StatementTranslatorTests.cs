@@ -69,7 +69,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 lineIndex1
             );
             var expected = new TranslatedStatementContentDetails(
-                "_.CALLm1v(this, _outer, \"o\")",
+                "_.CALLm1v0(this, _outer, \"o\")",
                 new NonNullImmutableList<NameToken>([new NameToken("o", lineIndex1)])
             );
             myAssert.AreEqualX(
@@ -232,7 +232,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             ]);
 
             var expected = new TranslatedStatementContentDetails(
-                "_.ARGS.Val(_.CALLm1v(this, _.CALLm1argp(this, _env.a, \"b\", _.ARGS.Val((Int16)0)), \"c\"))",
+                "_.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, _env.a, \"b\", _.ARGS.Val((Int16)0)), \"c\"))",
                 new NonNullImmutableList<NameToken>([
                     new NameToken("a", lineIndex1)
                 ])

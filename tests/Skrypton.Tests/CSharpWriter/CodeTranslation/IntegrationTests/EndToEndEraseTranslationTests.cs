@@ -41,7 +41,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Error if the target is known not to be a variable",
                     "ERASE a\nFUNCTION a\nEND FUNCTION",
                     new[] {
-                        "var invalidEraseTarget = _.CALLm1v(this, _outer, \"a\");",
+                        "var invalidEraseTarget = _.CALLm1v0(this, _outer, \"a\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");",
                         "public object a()",
                         "{",
@@ -86,7 +86,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "Member access target",
                     "ERASE a.Name",
                     new[] {
-                        "var invalidEraseTarget = _.CALLm1v(this, _env.a, \"Name\");",
+                        "var invalidEraseTarget = _.CALLm1v0(this, _env.a, \"Name\");",
                         "throw new TypeMismatchException(\"'Erase' (line 1)\");"
                     }
                 };

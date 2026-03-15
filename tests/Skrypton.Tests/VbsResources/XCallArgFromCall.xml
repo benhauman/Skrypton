@@ -1,0 +1,141 @@
+<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://vbs" i:type="d1p1:OutermostScope" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+  <d1p1:AllExecutableBlocks xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Skrypton.LegacyParser.CodeBlocks.Basic" i:type="d3p1:SubBlock">
+      <d1p1:HasReturnValue>false</d1p1:HasReturnValue>
+      <d1p1:IsDefault>false</d1p1:IsDefault>
+      <d1p1:IsPublic>true</d1p1:IsPublic>
+      <d1p1:Name>
+        <d1p1:Content>TestFso</d1p1:Content>
+        <d1p1:LineIndex>1</d1p1:LineIndex>
+      </d1p1:Name>
+      <d1p1:Parameters />
+      <d1p1:Statements>
+        <d2p1:anyType i:type="d1p1:Statement">
+          <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+          <d1p1:Tokens>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>task</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+              <d1p1:Content>.</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>SetValue</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>RoutingHelper.AgentID</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>Person</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+              <d1p1:Content>.</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>GetValue</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OpenBrace">
+              <d1p1:Content>(</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:StringToken">
+              <d1p1:Content>HLOBJECTINFO.ID</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>task</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+              <d1p1:Content>.</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NameToken">
+              <d1p1:Content>GetSvcUnitCount</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:OpenBrace">
+              <d1p1:Content>(</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:CloseBrace">
+              <d1p1:Content>)</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:ArgumentSeparatorToken">
+              <d1p1:Content>,</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:NumericValueToken">
+              <d1p1:Content>0</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+            <d2p1:anyType i:type="d1p1:CloseBrace">
+              <d1p1:Content>)</d1p1:Content>
+              <d1p1:LineIndex>2</d1p1:LineIndex>
+            </d2p1:anyType>
+          </d1p1:Tokens>
+        </d2p1:anyType>
+      </d1p1:Statements>
+    </d2p1:anyType>
+  </d1p1:AllExecutableBlocks>
+  <d1p1:Name i:type="d1p1:DoNotRenameNameToken">
+    <d1p1:Content>Root</d1p1:Content>
+    <d1p1:LineIndex>1</d1p1:LineIndex>
+  </d1p1:Name>
+</z:anyType>

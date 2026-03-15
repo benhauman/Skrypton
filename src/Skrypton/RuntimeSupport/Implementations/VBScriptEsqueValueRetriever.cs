@@ -816,7 +816,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Note: The arguments are evaluated here before the CALL is attempted - so if the target or members are invalid then this is only
             // determined AFTER processing the arguments. This is correct behaviour (consistent with VBScript).
-            object[] arguments = argumentProvider.GetInitialValues().ToArray();
+            object[] arguments = argumentProvider.GetInitialValues();
             try
             {
                 return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
@@ -943,7 +943,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
 
-            object[] arguments = argumentProvider.GetInitialValues().ToArray();
+            object[] arguments = argumentProvider.GetInitialValues();
             if ((optionalMemberAccessor == null) && arguments.Length == 0)
                 throw new ArgumentException("This must be called with a non-null optionalMemberAccessor and/or one or more arguments, null optionalMemberAccessor and zero arguments is not supported");
 

@@ -88,7 +88,7 @@ namespace TranslatedProgram
             object Attachment = null;
             object MailAttachment = null;
 
-            Email = _.OBJ(_.CALLm1v(this, hlContext, "CreateMail"));
+            Email = _.OBJ(_.CALLm1v0(this, hlContext, "CreateMail"));
 
             //Falls der Parameter <SendAttachmnets> beim Aufruf "1" ist, werden Anhaenge mitversandt
             if (_.IF(_.EQ(_.CBOOL(SendAttachments), true)))
@@ -102,12 +102,12 @@ namespace TranslatedProgram
                         break;
                     AttachID = enumerationContent.Current;
                     Attachment = _.OBJ(_.CALLm1argp(this, hlCase, "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v3 => { AttachID = v3; }).Val((Int16)0)));
-                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v(this, Attachment, "Size")), (Int16)0)))
+                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, Attachment, "Size")), (Int16)0)))
                     {
                         MailAttachment = VBScriptConstants.Nothing;
-                        MailAttachment = _.OBJ(_.CALLm1v(this, Email, "AddAttachment"));
-                        _.SET(_.VAL(_.CALLm1v(this, Attachment, "name")), this, MailAttachment, "name");
-                        _.SET(_.VAL(_.CALLm1v(this, Attachment, "data")), this, MailAttachment, "data");
+                        MailAttachment = _.OBJ(_.CALLm1v0(this, Email, "AddAttachment"));
+                        _.SET(_.VAL(_.CALLm1v0(this, Attachment, "name")), this, MailAttachment, "name");
+                        _.SET(_.VAL(_.CALLm1v0(this, Attachment, "data")), this, MailAttachment, "data");
                     }
                 }
             }
@@ -259,7 +259,7 @@ namespace TranslatedProgram
                     body = _.CONCAT(body, "Yours Support Team");
                 }
 
-                Email = _.OBJ(_.CALLm1v(this, hlContext, "CreateMail"));
+                Email = _.OBJ(_.CALLm1v0(this, hlContext, "CreateMail"));
 
                 //Ermittle die Emailadresse des Anfragers
                 //Detect email adress of requester
@@ -309,7 +309,7 @@ namespace TranslatedProgram
             object refnumber = null;
             hlObj = _.OBJ(_.CALLm1argp(this, hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
             lcid = (Int16)0;
-            lcid = _.VAL(_.CALLm1v(this, hlContext, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, hlContext, "GetLocaleID"));
             LangID = (Int16)0;
             LangID = _.VAL(_.CALLm1argp(this, hlContext, "LangIDFromLCID", _.ARGS.Ref(lcid, v8 => { lcid = v8; })));
 
@@ -346,7 +346,7 @@ namespace TranslatedProgram
                     assignedGroupWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
                     assignedPersonWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
                     descriptionWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(contentID, v16 => { contentID = v16; }).Val((Int16)0).Val((Int16)0)));
-                    newContentID = _.VAL(_.CALLm1v(this, hlObj, "GenerateContentID"));
+                    newContentID = _.VAL(_.CALLm1v0(this, hlObj, "GenerateContentID"));
                     _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(newContentID, v17 => { newContentID = v17; }).Val((Int16)0).Ref(assignedGroupWF, v18 => { assignedGroupWF = v18; }));
                     _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(newContentID, v19 => { newContentID = v19; }).Val((Int16)0).Ref(assignedPersonWF, v20 => { assignedPersonWF = v20; }));
                     _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(newContentID, v21 => { newContentID = v21; }).Val((Int16)0).Ref(descriptionWF, v22 => { descriptionWF = v22; }));
@@ -851,11 +851,11 @@ namespace TranslatedProgram
             // Save to File
             if (_.IF(_.OR(_.EQ(_.NullableSTR(NewChangeObj), "0"), _.EQ(_.NullableSTR(NewChangeObj), ""))))
             {
-                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlnew", objDefname, "_", _.CALLm1v(this, hlObj, "GetID"), ".xml");
+                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlnew", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
             }
             else
             {
-                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlchange", objDefname, "_", _.CALLm1v(this, hlObj, "GetID"), ".xml");
+                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlchange", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
             }
             _.CALLm1argp(this, xmldoc, "Save", _.ARGS.Val(Filename));
 
@@ -962,7 +962,7 @@ namespace TranslatedProgram
 
             /////////////////////////////////////////////////////////////
             cinummer = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TrumpfAssetGeneral.CINumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-            increqsubject = _.CONCAT("Eliminierung/Elimination: ", cinummer, " Internal helpLine-ID: ", _.CALLm1v(this, hlObj, "GetID"));
+            increqsubject = _.CONCAT("Eliminierung/Elimination: ", cinummer, " Internal helpLine-ID: ", _.CALLm1v0(this, hlObj, "GetID"));
 
             // VBScript source code
             xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
@@ -1065,7 +1065,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias54; }
 
             // Save to File
-            Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\helpline_in\\c11\\", objDefname, "_", _.CALLm1v(this, hlObj, "GetID"), ".xml");
+            Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\helpline_in\\c11\\", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
 
             _.CALLm1argp(this, xmldoc, "Save", _.ARGS.Val(Filename));
 

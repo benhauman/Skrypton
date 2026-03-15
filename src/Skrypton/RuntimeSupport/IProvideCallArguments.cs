@@ -47,7 +47,7 @@ namespace Skrypton.RuntimeSupport
         /// <summary>
         /// This will always return a set with NumberOfArguments items in it
         /// </summary>
-        IEnumerable<object> GetInitialValues();
+        object[] GetInitialValues();
 
         /// <summary>
         /// The index must be zero or greater and less than NumberOfArguments. If the argument at that index may not be overrwritten then the

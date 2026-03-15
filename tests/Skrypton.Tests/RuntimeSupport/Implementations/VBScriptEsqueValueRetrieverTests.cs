@@ -125,7 +125,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 _.SET(1, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("a"));
                 _.SET(2, context: dict, target: dict, optionalMemberAccessor: null, argumentProviderBuilder: _.ARGS.Val("b"));
-                myAssert.AreEqual(2, _.CALLm1v(context: null, target: dict, member1: "Count"));
+                myAssert.AreEqual(2, _.CALLm1v0(context: null, target: dict, member1: "Count"));
             }
         }
 
@@ -463,7 +463,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 "Success!",
-                _.CALLm1v(context: null, target: new ImpressionOfTranslatedClassWithRewrittenPropertyName(), member1: "Params")
+                _.CALLm1v0(context: null, target: new ImpressionOfTranslatedClassWithRewrittenPropertyName(), member1: "Params")
             );
         }
 
@@ -553,7 +553,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 name,
-                _.CALLm1v(context: classWithPrivateMember, target: classWithPrivateMember, member1: "GetName")
+                _.CALLm1v0(context: classWithPrivateMember, target: classWithPrivateMember, member1: "GetName")
             );
         }
 
@@ -564,7 +564,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var classWithPrivateMember = new ClassWithPrivateGetNameMethod(name);
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<MissingMemberException>(() =>
-                _.CALLm1v(context: null, target: classWithPrivateMember, member1: "GetName")
+                _.CALLm1v0(context: null, target: classWithPrivateMember, member1: "GetName")
             );
         }
 
@@ -577,7 +577,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             _.SET(name, context: classWithPrivateMember, target: classWithPrivateMember, optionalMemberAccessor: "Name");
             myAssert.AreEqual(
                 name,
-                _.CALLm1v(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Name")
+                _.CALLm1v0(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Name")
             );
         }
 
@@ -799,7 +799,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void NothingShouldBeReturnedForNullForPropertyOfComVisibleType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            var value = _.CALLm1v(context: null, target: new ClassWithComVisiblePropertyThatIsAlwaysNull(), member1: "Value");
+            var value = _.CALLm1v0(context: null, target: new ClassWithComVisiblePropertyThatIsAlwaysNull(), member1: "Value");
 #pragma warning disable CA1416 // Validate platform compatibility
             myAssert.IsType<DispatchWrapper>(value);
             myAssert.Null(((DispatchWrapper)value).WrappedObject);
@@ -811,7 +811,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Null(
-                _.CALLm1v(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
+                _.CALLm1v0(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }
 
@@ -824,7 +824,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Null(
-                _.CALLm1v(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
+                _.CALLm1v0(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }
 
@@ -851,7 +851,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(
                 "YEAH!",
-                _.VAL(_.CALLm0v(context: null, target: new ClassWithDefaultMethodWithSingleOptionalArgument()))
+                _.VAL(_.CALLm0v0(context: null, target: new ClassWithDefaultMethodWithSingleOptionalArgument()))
             );
         }
 

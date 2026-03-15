@@ -670,7 +670,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "public object F1(ref object a)",
                     "{",
                     "    object F1_retVal = null;",
-                    "    if (_.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CALLm1v(this, a, \"Name\")))))",
+                    "    if (_.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CALLm1v0(this, a, \"Name\")))))",
                     "    {",
                     "    }",
                     "    return F1_retVal;",
@@ -811,7 +811,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                         bool ifResult;
                         object byrefalias = a;
-                        ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Val(_.CALLm1v(this, byrefalias, ""Name""))), errOn);
+                        ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Val(_.CALLm1v0(this, byrefalias, ""Name""))), errOn);
                         if (ifResult)
                         {
                         }

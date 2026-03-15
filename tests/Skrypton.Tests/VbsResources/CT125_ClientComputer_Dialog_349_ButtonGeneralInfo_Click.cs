@@ -21,7 +21,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _.CALLm1v(this, _outer, "ButtonGeneralInfo_Click");
+            _.CALLm1v0(this, _outer, "ButtonGeneralInfo_Click");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -407,17 +407,17 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v(this, xmlhttp, "send");
+                _.CALLm1v0(this, xmlhttp, "send");
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
                     _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar."));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v(this, _.ERR, "HelpContext"))));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR, "HelpContext"))));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -435,17 +435,17 @@ namespace TranslatedProgram
                 _.SET("false", this, xmlDoc, "async");
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1argp(this, xmlDoc, "load", _.ARGS.Val(_.CALLm1v(this, xmlhttp, "responseXML")));
+                _.CALLm1argp(this, xmlDoc, "load", _.ARGS.Val(_.CALLm1v0(this, xmlhttp, "responseXML")));
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
                     _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten."));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v(this, _.ERR, "HelpContext"))));
+                    _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val(_.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR, "HelpContext"))));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -475,7 +475,7 @@ namespace TranslatedProgram
                     curnode = _.OBJ(_.CALLm2argp(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, dict, "Add", _.ARGS.Val(_.CALLm1v(this, n, "Text")).Val(_.CALLm1v(this, curnode, "Text")));
+                    _.CALLm1argp(this, dict, "Add", _.ARGS.Val(_.CALLm1v0(this, n, "Text")).Val(_.CALLm1v0(this, curnode, "Text")));
                 });
                 _.HANDLEERROR(errOn, () => {
                     i = _.ADD(i, (Int16)1);
@@ -485,7 +485,7 @@ namespace TranslatedProgram
             }
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
                     _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Val("Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten."));

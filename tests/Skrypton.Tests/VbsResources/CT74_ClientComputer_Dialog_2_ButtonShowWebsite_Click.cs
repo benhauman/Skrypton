@@ -62,7 +62,7 @@ namespace TranslatedProgram
             //	model.CurrentCommand.abort"OnSave"
             //End if
 
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v(this, _env.hlObj, "IsNew")), (Int16)1)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlObj, "IsNew")), (Int16)1)))
             {
 
                 sDatabaseName = "HLData";
@@ -85,8 +85,8 @@ namespace TranslatedProgram
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue))));
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; }))));
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@NewSBCode").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
-                _.CALLm1v(this, with, "Execute");
-                parmval = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
+                _.CALLm1v0(this, with, "Execute");
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, with, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
 
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
 
@@ -110,12 +110,12 @@ namespace TranslatedProgram
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue))));
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; }))));
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@NewPersonalID").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
-                _.CALLm1v(this, with2, "Execute");
-                parmval = _.VAL(_.CALLm1v(this, _.CALLm1argp(this, with2, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
+                _.CALLm1v0(this, with2, "Execute");
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, with2, "Parameters", _.ARGS.Val((Int16)2)), "Value"));
 
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
 
-                _.CALLm1v(this, oConn, "Close");
+                _.CALLm1v0(this, oConn, "Close");
                 oConn = VBScriptConstants.Nothing;
 
             }

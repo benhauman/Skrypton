@@ -58,9 +58,9 @@ namespace TranslatedProgram
                 if (!enumerationContent.MoveNext())
                     break;
                 Process = enumerationContent.Current;
-                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v(this, Process, "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
+                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v0(this, Process, "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
                 {
-                    intProcessId = _.VAL(_.CALLm1v(this, Process, "ProcessId"));
+                    intProcessId = _.VAL(_.CALLm1v0(this, Process, "ProcessId"));
                     break;
                 }
             }

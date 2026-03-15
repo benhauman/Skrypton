@@ -113,7 +113,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALLm1v(this, _outer, ""Func1"");
+					_.CALLm1v0(this, _outer, ""Func1"");
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);
 				public object Func1()
@@ -141,7 +141,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				_.CALLm1v(this, _outer, ""Func1"");
+				_.CALLm1v0(this, _outer, ""Func1"");
 				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
 				public object Func1()
 				{
