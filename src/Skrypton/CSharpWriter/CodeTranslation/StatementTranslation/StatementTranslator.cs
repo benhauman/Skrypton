@@ -1072,6 +1072,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string callName = $"CALLxxx_m{targetMemberAccessTokensArray.Length}_argp{argumentsArray.Length}_zabp{zeroArgumentBracketsPresence}X";
             // nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLarrmargp);
             //nameof(IAccessValuesUsingVBScriptRules.CALL);
+            //int todoLength = 0;
             if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0argp);
@@ -1104,13 +1105,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // => CALLm1v1
-                if (argumentsArray.Length == 9876)
+
+                ParsingExpression argumentValue = argumentsArray[0];
+                bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
+                bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+                if (isConfirmedToBeByVal)
                 {
+                    //todoLength = 9876;
                     callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v1); // => CALLm1v1
                 }
+                else
+                {
+                    //use 'byref' syntax
+                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // => CALLm1v1
+                }
                 callNameResolved = true;
-                ParsingExpression arg1 = argumentsArray[0];
                 //throw new NotImplementedException();
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 1 && zeroArgumentBracketsPresence == null)
@@ -1136,6 +1145,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else
             {
                 // throw
+                throw new NotImplementedException($"m:{targetMemberAccessTokensArray.Length}, a:{argumentsArray.Length}, z:'{zeroArgumentBracketsPresence}'");
             }
 
             string nameOfTargetContainer = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);
@@ -1152,11 +1162,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 for (int index = 0; index < targetMemberAccessTokensArray.Length; index++)
                 {
-                    if (targetMemberAccessTokensArray[index].Content == "OpenTextFile")
-                    {
-                        //throw new NotImplementedException();
-                    }
-
                     callExpressionContent.Append(
                         targetMemberAccessTokensArray[index].Content.ToLiteral()
                     );
@@ -1176,25 +1181,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 callExpressionContent.Append(", ");
 
-                if (argumentsArray.Length == 9876)
+                ParsingExpression argumentValue = argumentsArray[0];
+
+                bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
+                bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+
+                //if (isConfirmedToBeByVal && todoLength == 9876)
+                if (isConfirmedToBeByVal && zeroArgumentBracketsPresence == null && argumentsArray.Length == 1
+                    && targetMemberAccessTokensArray.Length == 1 // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
+                        )
                 {
                     // test: 'ConstValuesShouldAlwaysBePassedToFunctionsByVal'
 
-                        ParsingExpression argumentValue = argumentsArray[0];
-
-                    bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
-                    bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
-                    if (isConfirmedToBeByVal)
-                    {
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(); // use 'byref' syntax
-                    }
-
-                    //TranslatedStatementContentDetails argumentContent = TranslateAsArgumentContent(argumentValue, scopeAccessInformation, forceAllArgumentsToBeByVal);
-                    //callExpressionContent.Append(argumentContent.TranslatedContent);
-                    //callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(argumentContent.VariablesAccessed);
                     TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = TranslateParsingExpression(
                         argumentValue,
                         scopeAccessInformation,

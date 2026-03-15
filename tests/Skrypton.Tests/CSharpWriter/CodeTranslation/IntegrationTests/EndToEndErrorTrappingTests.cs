@@ -25,14 +25,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				var errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -51,19 +47,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				var errOn = _.GETERRORTRAPPINGTOKEN();
-				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
-					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
+					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test2"");
 				});
 				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test3""));
+				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test3"");
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -89,14 +81,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				}
 				_.HANDLEERROR(errOn, () => {
-					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 				});
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -119,14 +107,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object Func1()
 				{
 					object Func1_retVal = null;
-					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 					return Func1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -142,23 +126,19 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = @"
 				_.CALLm1v0(this, _outer, ""Func1"");
-				_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test2""));
+				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test2"");
 				public object Func1()
 				{
 					object Func1_retVal = null;
 					var errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					_.HANDLEERROR(errOn, () => {
-						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(""Test1""));
+						_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 					});
 					_.RELEASEERRORTRAPPINGTOKEN(errOn);
 					return Func1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -186,12 +166,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				_.CALLm1argp(this, _, ""RAISEERROR"", _.ARGS.Val(VBScriptConstants.vbObjectError).Val(""Source"").Val(""Test"").Val(""Bonus Argument""));
 				_.CLEARANYERROR();
 				_.CLEARANYERROR();
-				_.CALLm1argp(this, _, ""CLEARANYERROR"", _.ARGS.Val(""Bonus Argument""));";
+				_.CALLm1v1(this, _, ""CLEARANYERROR"", ""Bonus Argument"");";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>

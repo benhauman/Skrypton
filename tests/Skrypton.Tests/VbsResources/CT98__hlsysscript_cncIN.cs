@@ -42,38 +42,38 @@ namespace TranslatedProgram
         {
             object mailRequest = null;
             object extendCaseSuccess = null;
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("ProcessRequestMail start."));
+            _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail start.");
 
             mailRequest = _.OBJ(_.CALLm0argp(this, _env.session, _.ARGS.Val("mailrequest")));
 
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail subject: ", _.CALLm1v0(this, mailRequest, "subject"))));
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("mail To: ", _.CALLm1v0(this, mailRequest, "To"))));
+            _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail subject: ", _.CALLm1v0(this, mailRequest, "subject")));
+            _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail To: ", _.CALLm1v0(this, mailRequest, "To")));
 
-            if (_.IF(_.CALLm1argp(this, _outer, "IsAutoReplyMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")))))
+            if (_.IF(_.CALLm1v1(this, _outer, "IsAutoReplyMail", _.CALLm1v0(this, mailRequest, "Subject"))))
             {
-                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("Out of Office AutoReply"));
+                _.CALLm1v1(this, _outer, "LogText", "Out of Office AutoReply");
                 return;
             }
 
-            extendCaseSuccess = _.VAL(_.CALLm1argp(this, _outer, "TryExtendCase", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject"))));
+            extendCaseSuccess = _.VAL(_.CALLm1v1(this, _outer, "TryExtendCase", _.CALLm1v0(this, mailRequest, "Subject")));
             if (_.IF(_.EQ(extendCaseSuccess, false)))
             {
-                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("Extend case failed. Start new process"));
-                if (_.IF(_.CALLm1argp(this, _outer, "IsFMMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "To")))))
+                _.CALLm1v1(this, _outer, "LogText", "Extend case failed. Start new process");
+                if (_.IF(_.CALLm1v1(this, _outer, "IsFMMail", _.CALLm1v0(this, mailRequest, "To"))))
                 {
-                    _.CALLm1argp(this, _outer, "StartNewFMWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
+                    _.CALLm1v1(this, _outer, "StartNewFMWorkflow", _.CALLm1v0(this, mailRequest, "Subject"));
                 }
-                else if (_.IF(_.CALLm1argp(this, _outer, "IsHRMail", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "To")))))
+                else if (_.IF(_.CALLm1v1(this, _outer, "IsHRMail", _.CALLm1v0(this, mailRequest, "To"))))
                 {
-                    _.CALLm1argp(this, _outer, "StartNewHRWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
+                    _.CALLm1v1(this, _outer, "StartNewHRWorkflow", _.CALLm1v0(this, mailRequest, "Subject"));
                 }
                 else
                 {
-                    _.CALLm1argp(this, _outer, "StartNewWorkflow", _.ARGS.Val(_.CALLm1v0(this, mailRequest, "Subject")));
+                    _.CALLm1v1(this, _outer, "StartNewWorkflow", _.CALLm1v0(this, mailRequest, "Subject"));
                 }
             }
 
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("ProcessRequestMail end."));
+            _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail end.");
         }
 
         //--------------------------------------------------------------------------------------- IsAutoReplyMail ---
@@ -119,11 +119,11 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias; }
             if (_.IF(_.GT(_.NullableNUM(_.LEN(refNumber)), (Int16)0)))
             {
-                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("RefNumber > 0"));
+                _.CALLm1v1(this, _outer, "LogText", "RefNumber > 0");
                 caseToExtend = _.OBJ(_.CALLm1argp(this, _env.session, "GetCaseByReferenceNumber", _.ARGS.Ref(refNumber, v2 => { refNumber = v2; })));
                 if (_.IF(_.CALLm1argp(this, _env.session, "CanExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v3 => { caseToExtend = v3; }))))
                 {
-                    _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("CanExtend"));
+                    _.CALLm1v1(this, _outer, "LogText", "CanExtend");
                     reportText = _.VAL(_.CALLm1argp(this, _env.session, "DoExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v4 => { caseToExtend = v4; })));
                     _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v5 => { reportText = v5; }));
                     retVal = true;
@@ -157,7 +157,7 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias2; }
             if (ifResult)
             {
-                reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("RequestFulfillment")));
+                reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "RequestFulfillment"));
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v10 => { reportText = v10; }));
                 return;
             }
@@ -170,7 +170,7 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias3; }
             if (ifResult2)
             {
-                reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("IncidentManagement")));
+                reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "IncidentManagement"));
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v15 => { reportText = v15; }));
                 return;
             }
@@ -183,7 +183,7 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias4; }
             if (ifResult3)
             {
-                reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("ChangeManagement")));
+                reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "ChangeManagement"));
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v20 => { reportText = v20; }));
                 return;
             }
@@ -196,7 +196,7 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias5; }
             if (ifResult4)
             {
-                reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
+                reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "FacilityIncidentManagement"));
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v25 => { reportText = v25; }));
                 return;
             }
@@ -209,11 +209,11 @@ namespace TranslatedProgram
             finally { mailSubject = byrefalias6; }
             if (ifResult5)
             {
-                reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
+                reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "HRRequestManagement"));
                 _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v30 => { reportText = v30; }));
                 return;
             }
-            reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("Request")));
+            reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "Request"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v31 => { reportText = v31; }));
         }
 
@@ -222,7 +222,7 @@ namespace TranslatedProgram
         {
             object reportText = null;
 
-            reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("FacilityIncidentManagement")));
+            reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "FacilityIncidentManagement"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v32 => { reportText = v32; }));
         }
 
@@ -231,7 +231,7 @@ namespace TranslatedProgram
         {
             object reportText = null;
 
-            reportText = _.VAL(_.CALLm1argp(this, _env.session, "NewWorkflowFromMail", _.ARGS.Val("HRRequestManagement")));
+            reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "HRRequestManagement"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v33 => { reportText = v33; }));
         }
 
@@ -270,7 +270,7 @@ namespace TranslatedProgram
         {
             object IsFMMail_retVal = null;
             object retVal = null;
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("IsFMMail called"));
+            _.CALLm1v1(this, _outer, "LogText", "IsFMMail called");
             retVal = false;
             if (_.IF(_.EQ(_.NullableSTR(mailTo), "haustechnik@helplinedemo.de")))
             {
@@ -286,7 +286,7 @@ namespace TranslatedProgram
         {
             object IsHRMail_retVal = null;
             object retVal = null;
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("IsHRMail called"));
+            _.CALLm1v1(this, _outer, "LogText", "IsHRMail called");
             retVal = false;
             if (_.IF(_.EQ(_.NullableSTR(mailTo), "personal@helplinedemo.de")))
             {
@@ -303,7 +303,7 @@ namespace TranslatedProgram
             object IsWFEmail_retVal = null;
             object item = null;
             object retVal = null;
-            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val("IsWFEmail called"));
+            _.CALLm1v1(this, _outer, "LogText", "IsWFEmail called");
             retVal = false;
 
             var enumerationContent2 = _.ENUMERABLE(keywordList).GetEnumerator();
@@ -314,7 +314,7 @@ namespace TranslatedProgram
                 item = enumerationContent2.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {
-                    _.CALLm1argp(this, _outer, "LogText", _.ARGS.Val(_.CONCAT("IsWFEmail - ", item)));
+                    _.CALLm1v1(this, _outer, "LogText", _.CONCAT("IsWFEmail - ", item));
                     retVal = true;
                     break;
                 }

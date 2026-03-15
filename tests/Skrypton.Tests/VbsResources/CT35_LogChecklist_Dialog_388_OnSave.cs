@@ -49,7 +49,7 @@ namespace TranslatedProgram
                     _env.match = _.OBJ(_.CALLm1argp(this, _env.objRegEx, "execute", _.ARGS.RefIfArray(_env.dict, _.ARGS.Ref(_outer.element, v2 => { _outer.element = v2; }))));
                     if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _env.match, "Count")), (Int16)0)))
                     {
-                        _outer.errMsg = _.VAL(_.CALLm1argp(this, _env.model, "Translate", _.ARGS.Val("#ERR_Checklists_InvalidChars")));
+                        _outer.errMsg = _.VAL(_.CALLm1v1(this, _env.model, "Translate", "#ERR_Checklists_InvalidChars"));
                         _outer.errMsg = _.REPLACE(_outer.errMsg, "{0}", _outer.element);
                         _.CALLm1argp(this, _env.model, "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
                         _.CALLm2argp(this, _env.model, "CurrentCommand", "Abort", _.ARGS.Val("OnSave"));

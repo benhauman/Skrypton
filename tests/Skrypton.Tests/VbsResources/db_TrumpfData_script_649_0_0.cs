@@ -323,7 +323,7 @@ namespace TranslatedProgram
             AssignedGroup = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             AssignedPerson = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
             Team = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
-            newTask = _.OBJ(_.CALLm1argp(this, hlContext, "createobject", _.ARGS.Val("Task")));
+            newTask = _.OBJ(_.CALLm1v1(this, hlContext, "createobject", "Task"));
 
             _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Priority, v9 => { Priority = v9; }));
             _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.TaskType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(TaskType, v10 => { TaskType = v10; }));
@@ -376,7 +376,7 @@ namespace TranslatedProgram
             _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedGroup, v26 => { AssignedGroup = v26; }));
             _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedPerson, v27 => { AssignedPerson = v27; }));
             _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v28 => { Team = v28; }));
-            _.CALLm1argp(this, hlContext, "SaveObject", _.ARGS.Val(newTask));
+            _.CALLm1v1(this, hlContext, "SaveObject", newTask);
             _.CALLm1argp(this, newTask, "Unreserve", _.ARGS.ForceBrackets());
         }
 
@@ -391,7 +391,7 @@ namespace TranslatedProgram
             object newTaskEndTime = null;
             object hlSystemTaskDefinitionObj = null;
             hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1argp(this, _env.hlContext, "CreateSystemTask", _.ARGS.Val((Int16)0)));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
             object byrefalias4 = taskDefname;
             try
             {
@@ -491,7 +491,7 @@ namespace TranslatedProgram
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
             hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1argp(this, _env.hlContext, "CreateSystemTask", _.ARGS.Val((Int16)0)));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
             object byrefalias12 = taskDefname;
             try
             {
@@ -585,7 +585,7 @@ namespace TranslatedProgram
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
             hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1argp(this, _env.hlContext, "CreateSystemTask", _.ARGS.Val((Int16)0)));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
             object byrefalias20 = taskDefname;
             try
             {
@@ -679,7 +679,7 @@ namespace TranslatedProgram
             object hlSystemTaskDefinitionObj = null;
             object errCode = null; /* Undeclared in source */
             hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1argp(this, _env.hlContext, "CreateSystemTask", _.ARGS.Val("0")));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", "0"));
             object byrefalias28 = taskDefname;
             try
             {
@@ -757,14 +757,14 @@ namespace TranslatedProgram
             xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
 
             //create root element
-            nodeData = _.OBJ(_.CALLm1argp(this, xmldoc, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Data")))));
-            nodeObjects = _.OBJ(_.CALLm1argp(this, nodeData, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Objects")))));
-            nodeObject = _.OBJ(_.CALLm1argp(this, nodeObjects, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; })))));
-            attAliasName = _.OBJ(_.CALLm1argp(this, xmldoc, "createAttribute", _.ARGS.Val("aliasname")));
+            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Data")));
+            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
+            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname), this, attAliasName, "Text");
             _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
-            nodeAttributes = _.OBJ(_.CALLm1argp(this, nodeObject, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Attributes")))));
-            nodeRelations = _.OBJ(_.CALLm1argp(this, nodeData, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Relations")))));
+            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
+            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
             /////////////////////////////////////////////////////////////
 
             ////////////////// HLOBJECT.ID
@@ -857,7 +857,7 @@ namespace TranslatedProgram
             {
                 Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlchange", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
             }
-            _.CALLm1argp(this, xmldoc, "Save", _.ARGS.Val(Filename));
+            _.CALLm1v1(this, xmldoc, "Save", Filename);
 
         }
 
@@ -968,19 +968,19 @@ namespace TranslatedProgram
             xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
 
             //create root element
-            nodeData = _.OBJ(_.CALLm1argp(this, xmldoc, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Data")))));
-            nodeObjects = _.OBJ(_.CALLm1argp(this, nodeData, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Objects")))));
+            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Data")));
+            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
 
             ////// obj1: IncidentRequest///////////////////////////////////////////////////////
 
-            nodeObject = _.OBJ(_.CALLm1argp(this, nodeObjects, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; })))));
-            attAliasName = _.OBJ(_.CALLm1argp(this, xmldoc, "createAttribute", _.ARGS.Val("aliasname")));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
+            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname1), this, attAliasName, "Text");
             _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
-            nodeAttributes = _.OBJ(_.CALLm1argp(this, nodeObject, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Attributes")))));
-            nodeServiceUnits = _.OBJ(_.CALLm1argp(this, nodeObject, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("ServiceUnits")))));
-            nodeServiceUnit = _.OBJ(_.CALLm1argp(this, nodeServiceUnits, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("ServiceUnit")))));
-            attAliasNameSU = _.OBJ(_.CALLm1argp(this, xmldoc, "createAttribute", _.ARGS.Val("aliasname")));
+            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
+            nodeServiceUnits = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnits")));
+            nodeServiceUnit = _.OBJ(_.CALLm1v1(this, nodeServiceUnits, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnit")));
+            attAliasNameSU = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasnameSU), this, attAliasNameSU, "Text");
             _.CALLm2argp(this, nodeServiceUnit, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
             ////////////////// HLOBJECT.ID
@@ -1035,11 +1035,11 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias51; }
 
             ////// obj2: Product///////////////////////////////////////////////////////
-            nodeObject2 = _.OBJ(_.CALLm1argp(this, nodeObjects, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val(_.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()))))));
-            attAliasName2 = _.OBJ(_.CALLm1argp(this, xmldoc, "createAttribute", _.ARGS.Val("aliasname")));
+            nodeObject2 = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", _.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()))));
+            attAliasName2 = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
             _.SET(_.VAL(aliasname2), this, attAliasName2, "Text");
             _.CALLm2argp(this, nodeObject2, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
-            nodeAttributes2 = _.OBJ(_.CALLm1argp(this, nodeObject2, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Attributes")))));
+            nodeAttributes2 = _.OBJ(_.CALLm1v1(this, nodeObject2, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             object byrefalias52 = hlContext;
             try
             {
@@ -1048,8 +1048,8 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias52; }
 
             ////// Relations///////////////////////////////////////////////////////
-            nodeRelations = _.OBJ(_.CALLm1argp(this, nodeData, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Relations")))));
-            nodeProduct2Case = _.OBJ(_.CALLm1argp(this, nodeRelations, "appendChild", _.ARGS.Val(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Val("Product2Case")))));
+            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
+            nodeProduct2Case = _.OBJ(_.CALLm1v1(this, nodeRelations, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Product2Case")));
 
             object byrefalias53 = hlContext;
             try
@@ -1067,7 +1067,7 @@ namespace TranslatedProgram
             // Save to File
             Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\helpline_in\\c11\\", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
 
-            _.CALLm1argp(this, xmldoc, "Save", _.ARGS.Val(Filename));
+            _.CALLm1v1(this, xmldoc, "Save", Filename);
 
         }
 
@@ -1088,10 +1088,10 @@ namespace TranslatedProgram
                 cdata = _.OBJ(_.CALLm1argp(this, xmldoc, "createCDATASection", _.ARGS.Ref(byrefalias56, v159 => { byrefalias56 = v159; })));
             }
             finally { value = byrefalias56; }
-            _.CALLm1argp(this, valueNode, "appendChild", _.ARGS.Val(cdata));
-            _.CALLm1argp(this, nodeObject, "appendChild", _.ARGS.Val(valueNode));
+            _.CALLm1v1(this, valueNode, "appendChild", cdata);
+            _.CALLm1v1(this, nodeObject, "appendChild", valueNode);
 
-            attIsKey = _.OBJ(_.CALLm1argp(this, xmldoc, "createAttribute", _.ARGS.Val("iskey")));
+            attIsKey = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "iskey"));
             if (_.IF(iskey))
             {
                 _.SET("true", this, attIsKey, "Text");
@@ -1113,7 +1113,7 @@ namespace TranslatedProgram
                 valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(byrefalias57, v161 => { byrefalias57 = v161; })));
             }
             finally { key = byrefalias57; }
-            _.CALLm1argp(this, nodeObject, "appendChild", _.ARGS.Val(valueNode));
+            _.CALLm1v1(this, nodeObject, "appendChild", valueNode);
 
             _.SET(_.VAL(value), this, valueNode, "Text");
         }

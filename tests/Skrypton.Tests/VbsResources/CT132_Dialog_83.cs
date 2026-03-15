@@ -980,8 +980,8 @@ namespace TranslatedProgram
 
                 //Ditzingen oder TG auslesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_resp = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent)))));
-                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
+                rs_resp = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp, "fields", "responsibility"), "value"));
                 _.CALLm1v0(this, rs_resp, "close");
 
                 //Keyword einlesen
@@ -990,10 +990,10 @@ namespace TranslatedProgram
                 {
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
                     rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                    rs_kwkwo = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw)))));
+                    rs_kwkwo = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo, "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo, "fields", "keywordorga"), "value"));
                         _.CALLm1v0(this, rs_kwkwo, "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
@@ -1092,10 +1092,10 @@ namespace TranslatedProgram
 
                     //Teamname auslesen
                     rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                    rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname,Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-                    teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-                    teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
-                    agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                    rs_team = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname,Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
+                    teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "AgentTeam_Displayname"), "value"));
+                    teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "AgentTeam_ID"), "value"));
+                    agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "Agent_Displayname"), "value"));
                     _.CALLm1v0(this, rs_team, "close");
 
                     //Abfrage ob Speicherung als persönliches oder als Teamtemplate gewünscht wird
@@ -1103,12 +1103,12 @@ namespace TranslatedProgram
                     if (_.IF(_.EQ(_.NullableNUM(result), (Int16)6)))
                     {
                         //Persönliches Insert auf Datenbank starten
-                        rs = _.OBJ(_.CALLm1argp(this, cn, "execute", _.ARGS.Val(_.CONCAT("INSERT INTO templater (agentid, templatename,requesttype,descriptiontext,diagnosistext,solutiontext,keyword,keywordorga,escalationlevel,impact,functionalrange,productionalrelevance,emailcaller,incidentstatus,defaultnotification,editor,PCAssoziated,EmailBodyRawtext,EmailBodytext,EmailTo,EmailCC,EmailSubject) Values ('", _.CSTR(agent), "','", name, "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CSTR(agent), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "')"))));
+                        rs = _.OBJ(_.CALLm1v1(this, cn, "execute", _.CONCAT("INSERT INTO templater (agentid, templatename,requesttype,descriptiontext,diagnosistext,solutiontext,keyword,keywordorga,escalationlevel,impact,functionalrange,productionalrelevance,emailcaller,incidentstatus,defaultnotification,editor,PCAssoziated,EmailBodyRawtext,EmailBodytext,EmailTo,EmailCC,EmailSubject) Values ('", _.CSTR(agent), "','", name, "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CSTR(agent), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "')")));
                     }
                     else
                     {
                         //Team Insert auf Datenbank starten
-                        rs = _.OBJ(_.CALLm1argp(this, cn, "execute", _.ARGS.Val(_.CONCAT("INSERT INTO templater (agentid, templatename,requesttype,descriptiontext,diagnosistext,solutiontext,keyword,keywordorga,escalationlevel,impact,functionalrange,productionalrelevance,emailcaller,incidentstatus,defaultnotification,editor,PCAssoziated,EmailBodyRawtext,EmailBodytext,EmailTo,EmailCC,EmailSubject) Values ('", _.CSTR(teamID), "','", name, "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CSTR(agent), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "')"))));
+                        rs = _.OBJ(_.CALLm1v1(this, cn, "execute", _.CONCAT("INSERT INTO templater (agentid, templatename,requesttype,descriptiontext,diagnosistext,solutiontext,keyword,keywordorga,escalationlevel,impact,functionalrange,productionalrelevance,emailcaller,incidentstatus,defaultnotification,editor,PCAssoziated,EmailBodyRawtext,EmailBodytext,EmailTo,EmailCC,EmailSubject) Values ('", _.CSTR(teamID), "','", name, "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CSTR(agent), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "','", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "')")));
 
                     }
                     //Verbindung schließen
@@ -1160,37 +1160,37 @@ namespace TranslatedProgram
 
                 //Inhalte von agent_templates in das Recordset einlesen
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select * from templater where template_id = ", templateid))));
+                rs = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select * from templater where template_id = ", templateid)));
 
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Requesttype")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "Requesttype"), "value")));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), "")))
                 {
-                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("descriptiontext")), "value")));
+                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "descriptiontext"), "value")));
                 }
                 else
                 {
                 }
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("diagnosistext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("solutiontext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keyword")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("keywordorga")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EscalationLevel")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("Impact")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("FunctionalRange")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("ProductionalRelevance")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCaller")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("IncidentStatus")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("DefaultNotification")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("PCAssoziated")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodytext")), "value")));
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailBodyRawtext")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "diagnosistext"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "solutiontext"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "keyword"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "keywordorga"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EscalationLevel"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "Impact"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "FunctionalRange"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "ProductionalRelevance"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EmailCaller"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "IncidentStatus"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "DefaultNotification"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "PCAssoziated"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EmailBodytext"), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.RAWTEXT").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EmailBodyRawtext"), "value")));
                 //hlObj.SetValue "EmailSUAttribute.EmailTo",0,0,0,rs.fields("EmailTo").value
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailCC")), "value")));
+                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EmailCC"), "value")));
                 strSubject = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v18 => { strSubject = v18; }));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0))), "")))
                 {
-                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("EmailSubject")), "value")));
+                    _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "EmailSubject"), "value")));
                 }
 
                 //Subject Setzen
@@ -1363,14 +1363,14 @@ namespace TranslatedProgram
 
                 //Recordset anlegen und templatenamen auslesen
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select templatename,editor from templater where template_id = ", _.CSTR(templateid)))));
-                templatename = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value"));
-                editor = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("editor")), "value"));
+                rs = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select templatename,editor from templater where template_id = ", _.CSTR(templateid))));
+                templatename = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "templatename"), "value"));
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "editor"), "value"));
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor)))));
-                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                rs_team = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "Agent_Displayname"), "value"));
                 _.CALLm1v0(this, rs_team, "close");
 
                 //Nur wenn Agent = Editor überschreiben, sonst Abbruch
@@ -1393,7 +1393,7 @@ namespace TranslatedProgram
                         {
 
                             //Update auf Datenbank wird ausgeführt
-                            rs = _.OBJ(_.CALLm1argp(this, cn, "execute", _.ARGS.Val(_.CONCAT("Update templater set templatename = '", name, "', Requesttype = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',descriptiontext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', diagnosistext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', solutiontext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', keyword = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "', keywordorga = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "', EscalationLevel = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',Impact = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',FunctionalRange = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',ProductionalRelevance = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailCaller = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',IncidentStatus = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',DefaultNotification = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',editor = '", _.CSTR(agent), "',PCAssoziated = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailBodyRawtext = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailBodytext = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailTo = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailCC = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailSubject = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "' where template_id = ", _.CSTR(templateid)))));
+                            rs = _.OBJ(_.CALLm1v1(this, cn, "execute", _.CONCAT("Update templater set templatename = '", name, "', Requesttype = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.RequestType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',descriptiontext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', diagnosistext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', solutiontext = '", _.REPLACE(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseSolution.SolutionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "'", "''"), "', keyword = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "', keywordorga = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "', EscalationLevel = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.EscalationLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',Impact = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseClassificationAttribute.Impact").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',FunctionalRange = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.FunctionalRange").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',ProductionalRelevance = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.ProductionalRelevanz").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailCaller = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCaller").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',IncidentStatus = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.IncidentStatus").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',DefaultNotification = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("CaseGeneral.DefaultNotification").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',editor = '", _.CSTR(agent), "',PCAssoziated = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("IncidentAttribute.Convenience").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailBodyRawtext = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.Rawtext").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailBodytext = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailBody.TEXTVALUE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailTo = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailCC = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailCC").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "',EmailSubject = '", _.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)), "' where template_id = ", _.CSTR(templateid))));
                             rs = VBScriptConstants.Nothing;
                         }
                         else
@@ -1450,15 +1450,15 @@ namespace TranslatedProgram
 
                 //Teamname auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-                teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-                teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
+                rs_team = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
+                teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "AgentTeam_Displayname"), "value"));
+                teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "AgentTeam_ID"), "value"));
                 _.CALLm1v0(this, rs_team, "close");
 
                 //Für Agent Templates ID bestimmen und selektierten Wert in Label schreiben
                 anzahl_agent_templates = (Int16)0;
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent), " order by agentid, cast(Templatename as varchar(500))"))));
+                rs = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent), " order by agentid, cast(Templatename as varchar(500))")));
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _.HANDLEERROR(errOn, () => {
                     _.CALLm1v0(this, rs, "MoveFirst");
@@ -1466,7 +1466,7 @@ namespace TranslatedProgram
                 while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs, "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs, "fields", _.ARGS.Val("templatename")), "value")));
+                        _.CALLm1v1(this, _env.cb_template_load, "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs, "fields", "templatename"), "value"));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_agent_templates = _.ADD(anzahl_agent_templates, (Int16)1);
@@ -1478,7 +1478,7 @@ namespace TranslatedProgram
 
                 //Trennlinie zwischen Agent-Templates einfügen
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val("---------------------------------Team templates below---------------------------------"));
+                    _.CALLm1v1(this, _env.cb_template_load, "AddItem", "---------------------------------Team templates below---------------------------------");
                 });
 
                 //Für Team Templates ID bestimmen und selektierten Wert in Label schreiben
@@ -1489,7 +1489,7 @@ namespace TranslatedProgram
                     rs2 = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    rs2 = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(teamID), " order by agentid, cast(Templatename as varchar(500))"))));
+                    rs2 = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(teamID), " order by agentid, cast(Templatename as varchar(500))")));
                 });
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _.HANDLEERROR(errOn, () => {
@@ -1498,7 +1498,7 @@ namespace TranslatedProgram
                 while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs2, "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1argp(this, _env.cb_template_load, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val("templatename")), "value")));
+                        _.CALLm1v1(this, _env.cb_template_load, "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", "templatename"), "value"));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_team_templates = _.ADD(anzahl_team_templates, (Int16)1);
@@ -1565,14 +1565,14 @@ namespace TranslatedProgram
 
                 //Editor bestimmen
                 rs_editor = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_editor = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select editor from templater where template_id = ", _.CSTR(templateid)))));
-                editor = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_editor, "fields", _.ARGS.Val("editor")), "value"));
+                rs_editor = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select editor from templater where template_id = ", _.CSTR(templateid))));
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_editor, "fields", "editor"), "value"));
                 _.CALLm1v0(this, rs_editor, "close");
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor)))));
-                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("Agent_Displayname")), "value"));
+                rs_team = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "Agent_Displayname"), "value"));
                 _.CALLm1v0(this, rs_team, "close");
 
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
@@ -1589,7 +1589,7 @@ namespace TranslatedProgram
 
                         //Zeile von agent_templates löschen
                         rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                        rs = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Delete from templater where template_id = ", _.CSTR(templateid)))));
+                        rs = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Delete from templater where template_id = ", _.CSTR(templateid))));
 
                         //Auswahl der Checkbox zurücksetzen und ID auf Null
                         _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
@@ -1646,15 +1646,15 @@ namespace TranslatedProgram
 
             //Teamname auslesen
             rs_teamid = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-            rs_teamid = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent)))));
-            teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_Displayname")), "value"));
-            teamID = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_teamid, "fields", _.ARGS.Val("AgentTeam_ID")), "value"));
+            rs_teamid = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
+            teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid, "fields", "AgentTeam_Displayname"), "value"));
+            teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid, "fields", "AgentTeam_ID"), "value"));
             _.CALLm1v0(this, rs_teamid, "close");
 
             //Anzahl der Agenten-Templates bestimmen
             anzahl_agent_templates = (Int16)0;
             rs_anzahl = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-            rs_anzahl = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent)))));
+            rs_anzahl = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent))));
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
             _.HANDLEERROR(errOn2, () => {
                 _.CALLm1v0(this, rs_anzahl, "MoveFirst");
@@ -1679,7 +1679,7 @@ namespace TranslatedProgram
                     rs_agent = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 });
                 _.HANDLEERROR(errOn2, () => {
-                    rs_agent = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id from templater where agentid = '", _.CSTR(agent), "' order by agentid, cast(Templatename as varchar(500))"))));
+                    rs_agent = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select template_id from templater where agentid = '", _.CSTR(agent), "' order by agentid, cast(Templatename as varchar(500))")));
                 });
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
                 _.HANDLEERROR(errOn2, () => {
@@ -1702,7 +1702,7 @@ namespace TranslatedProgram
                     while (true)
                     {
                         _.HANDLEERROR(errOn2, () => {
-                            _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_agent, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
+                            _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_agent, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
                         });
                         _.HANDLEERROR(errOn2, () => {
                             _.CALLm1v0(this, rs_agent, "MoveNext");
@@ -1746,7 +1746,7 @@ namespace TranslatedProgram
                         rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     });
                     _.HANDLEERROR(errOn2, () => {
-                        rs_team = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select template_id from templater where agentid = '", _.CSTR(teamID), "' order by agentid, cast(Templatename as varchar(500))"))));
+                        rs_team = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select template_id from templater where agentid = '", _.CSTR(teamID), "' order by agentid, cast(Templatename as varchar(500))")));
                     });
                     _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
                     _.HANDLEERROR(errOn2, () => {
@@ -1769,7 +1769,7 @@ namespace TranslatedProgram
                         while (true)
                         {
                             _.HANDLEERROR(errOn2, () => {
-                                _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_team, "fields", _.ARGS.Val("template_id")), "value")), this, _env.l_templateID, "Text");
+                                _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
                             });
                             _.HANDLEERROR(errOn2, () => {
                                 _.CALLm1v0(this, rs_team, "MoveNext");
@@ -2144,7 +2144,7 @@ namespace TranslatedProgram
 
                 //SELECT absetzen
                 rs2 = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs2 = _.OBJ(_.CALLm1argp(this, cn2, "Execute", _.ARGS.Val(_.CONCAT("select email from _EMails where email LIKE '%", name, "%' ORDER BY email"))));
+                rs2 = _.OBJ(_.CALLm1v1(this, cn2, "Execute", _.CONCAT("select email from _EMails where email LIKE '%", name, "%' ORDER BY email")));
 
                 //Daten einlesen
                 Data = "";
@@ -2152,10 +2152,10 @@ namespace TranslatedProgram
                 {
                     //In Variable schreiben
                     i = _.ADD(i, (Int16)1);
-                    _.CALLm1argp(this, _env.ComboBoxEmailSearchResult, "AddItem", _.ARGS.Val(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")));
+                    _.CALLm1v1(this, _env.ComboBoxEmailSearchResult, "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", (Int16)0), "value"));
                     if (_.IF(_.EQ(_.NullableNUM(i), (Int16)1)))
                     {
-                        _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs2, "fields", _.ARGS.Val((Int16)0)), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
+                        _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", (Int16)0), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
                     }
                     _.CALLm1v0(this, rs2, "movenext");
                 }
@@ -2271,8 +2271,8 @@ namespace TranslatedProgram
 
                 //Teamname auslesen
                 rs_kwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_kwo = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Select name,internalname from vw_agent_to_first_keywordorga where agentid = ", _.CSTR(agent)))));
-                internalname = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwo, "fields", _.ARGS.Val("internalname")), "value"));
+                rs_kwo = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Select name,internalname from vw_agent_to_first_keywordorga where agentid = ", _.CSTR(agent))));
+                internalname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwo, "fields", "internalname"), "value"));
 
                 //Wert in Schlagwort schreiben
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(internalname, v36 => { internalname = v36; }));
@@ -2317,8 +2317,8 @@ namespace TranslatedProgram
 
                 //Teamname auslesen
                 rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_kw = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select keywordid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent)))));
-                keywordid = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kw, "fields", _.ARGS.Val("keywordid")), "value"));
+                rs_kw = _.OBJ(_.CALLm1v1(this, cn1, "Execute", _.CONCAT("Select keywordid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
+                keywordid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kw, "fields", "keywordid"), "value"));
                 _.CALLm1v0(this, rs_kw, "close");
 
                 //Wert in Schlagwort schreiben
@@ -2328,8 +2328,8 @@ namespace TranslatedProgram
 
                 //Responsibility - Ditzingen oder TG - einlesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                rs_resp = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent)))));
-                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_resp, "fields", _.ARGS.Val("responsibility")), "value"));
+                rs_resp = _.OBJ(_.CALLm1v1(this, cn1, "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp, "fields", "responsibility"), "value"));
                 _.CALLm1v0(this, rs_resp, "close");
 
                 //Keyword einlesen
@@ -2338,10 +2338,10 @@ namespace TranslatedProgram
                 {
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
                     rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                    rs_kwkwo = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw)))));
+                    rs_kwkwo = _.OBJ(_.CALLm1v1(this, cn1, "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo, "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_kwkwo, "fields", _.ARGS.Val("keywordorga")), "value"));
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo, "fields", "keywordorga"), "value"));
                         _.CALLm1v0(this, rs_kwkwo, "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
@@ -2785,8 +2785,8 @@ namespace TranslatedProgram
                 {
                     //Personid über AgentID ermitteln
                     rs_person = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                    rs_person = _.OBJ(_.CALLm1argp(this, cn1, "Execute", _.ARGS.Val(_.CONCAT("Select personid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent)))));
-                    personid = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, rs_person, "fields", _.ARGS.Val("personid")), "value"));
+                    rs_person = _.OBJ(_.CALLm1v1(this, cn1, "Execute", _.CONCAT("Select personid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
+                    personid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_person, "fields", "personid"), "value"));
                     _.CALLm1v0(this, rs_person, "close");
 
                     //Datenbankverbindung zu helpline_data
@@ -2796,7 +2796,7 @@ namespace TranslatedProgram
                     _.CALLm1v0(this, cn, "Open");
                     //Keyword schreiben
                     rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                    rs_kw = _.OBJ(_.CALLm1argp(this, cn, "Execute", _.ARGS.Val(_.CONCAT("Update dbo.emplkeywords set keyword = ", _.CDBL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1))), " where personid = ", _.CSTR(personid)))));
+                    rs_kw = _.OBJ(_.CALLm1v1(this, cn, "Execute", _.CONCAT("Update dbo.emplkeywords set keyword = ", _.CDBL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("Keywords.Keyword").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)1))), " where personid = ", _.CSTR(personid))));
                     //Datenbank schließen
                     //rs_kw.close
                     _.CALLm1v0(this, cn, "close");

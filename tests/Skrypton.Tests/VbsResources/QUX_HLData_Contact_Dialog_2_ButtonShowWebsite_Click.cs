@@ -24,7 +24,7 @@ namespace TranslatedProgram
             _outer.objShell = _.OBJ(_.CREATEOBJECT("Shell.Application"));
             if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _env.TextBoxWebsite, "Text"))), "")))
             {
-                _.CALLm1argp(this, _outer.objShell, "ShellExecute", _.ARGS.Val(_.CALLm1v0(this, _env.TextBoxWebsite, "Text")));
+                _.CALLm1v1(this, _outer.objShell, "ShellExecute", _.CALLm1v0(this, _env.TextBoxWebsite, "Text"));
             }
         }
     }

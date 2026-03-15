@@ -222,7 +222,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart; _.StrictLTE(_outer.i, loopEnd); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Computer anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("DesktopComputer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "DesktopComputer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v30 => { _outer.OrderNumber = v30; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v31 => { _outer.VendorName = v31; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v32 => { _outer.OrderDate = v32; }));
@@ -264,11 +264,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT desktop FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT desktop FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET desktop = desktop+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET desktop = desktop+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -340,7 +340,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart2; _.StrictLTE(_outer.i, loopEnd2); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("NotebookComputer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NotebookComputer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v57 => { _outer.OrderNumber = v57; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v58 => { _outer.VendorName = v58; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v59 => { _outer.OrderDate = v59; }));
@@ -382,11 +382,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT notebook FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT notebook FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET notebook = notebook+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET notebook = notebook+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -455,7 +455,7 @@ namespace TranslatedProgram
                         {
                             _outer.CIPrice = _.MULT(_.CLNG(_outer.CIPrice), _.CLNG(_outer.CIQuantity));
                         }
-                        _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("SoftwareLicense")));
+                        _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "SoftwareLicense"));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v84 => { _outer.OrderNumber = v84; }));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v85 => { _outer.OrderDate = v85; }));
                         _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.VendorNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorNumber, v86 => { _outer.VendorNumber = v86; }));
@@ -497,11 +497,11 @@ namespace TranslatedProgram
 
                         //CI-Nummer auslesen
                         _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                        _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT softwarelic FROM _cinumbers")));
+                        _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT softwarelic FROM _cinumbers"));
                         //In Variable schreiben
-                        _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                        _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                         //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                        _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET softwarelic = softwarelic+1"));
+                        _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET softwarelic = softwarelic+1");
 
                         //Verbindung schliessen
                         _.CALLm1v0(this, _outer.rs, "close");
@@ -571,7 +571,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart3; _.StrictLTE(_outer.i, loopEnd3); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("Printer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v111 => { _outer.OrderNumber = v111; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v112 => { _outer.VendorName = v112; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v113 => { _outer.OrderDate = v113; }));
@@ -614,11 +614,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT printer FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT printer FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET printer = printer+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET printer = printer+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -689,7 +689,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart4; _.StrictLTE(_outer.i, loopEnd4); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("Printer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v138 => { _outer.OrderNumber = v138; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v139 => { _outer.VendorName = v139; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v140 => { _outer.OrderDate = v140; }));
@@ -732,11 +732,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT copydevice FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT copydevice FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET copydevice = copydevice+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET copydevice = copydevice+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -807,7 +807,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart5; _.StrictLTE(_outer.i, loopEnd5); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("Printer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v165 => { _outer.OrderNumber = v165; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v166 => { _outer.VendorName = v166; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v167 => { _outer.OrderDate = v167; }));
@@ -850,11 +850,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT multifunctiondevice FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT multifunctiondevice FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET multifunctiondevice = multifunctiondevice+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET multifunctiondevice = multifunctiondevice+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -925,7 +925,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart6; _.StrictLTE(_outer.i, loopEnd6); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("Printer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Printer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v192 => { _outer.OrderNumber = v192; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v193 => { _outer.VendorName = v193; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v194 => { _outer.OrderDate = v194; }));
@@ -968,11 +968,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT scanner FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT scanner FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET scanner = scanner+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET scanner = scanner+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1043,7 +1043,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart7; _.StrictLTE(_outer.i, loopEnd7); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MobileDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v219 => { _outer.OrderNumber = v219; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v220 => { _outer.VendorName = v220; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v221 => { _outer.OrderDate = v221; }));
@@ -1086,11 +1086,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT handys FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT handys FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET handys = handys+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET handys = handys+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1161,7 +1161,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart8; _.StrictLTE(_outer.i, loopEnd8); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MobileDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v246 => { _outer.OrderNumber = v246; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v247 => { _outer.VendorName = v247; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v248 => { _outer.OrderDate = v248; }));
@@ -1204,11 +1204,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT simcard FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT simcard FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET simcard = simcard+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET simcard = simcard+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1279,7 +1279,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart9; _.StrictLTE(_outer.i, loopEnd9); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MobileDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v273 => { _outer.OrderNumber = v273; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v274 => { _outer.VendorName = v274; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v275 => { _outer.OrderDate = v275; }));
@@ -1322,11 +1322,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT umtscard FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT umtscard FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET umtscard = umtscard+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET umtscard = umtscard+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1397,7 +1397,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart10; _.StrictLTE(_outer.i, loopEnd10); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MobileDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v300 => { _outer.OrderNumber = v300; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v301 => { _outer.VendorName = v301; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v302 => { _outer.OrderDate = v302; }));
@@ -1440,11 +1440,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT pda FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT pda FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET pda = pda+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET pda = pda+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1515,7 +1515,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart11; _.StrictLTE(_outer.i, loopEnd11); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MobileDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MobileDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v327 => { _outer.OrderNumber = v327; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v328 => { _outer.VendorName = v328; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v329 => { _outer.OrderDate = v329; }));
@@ -1558,11 +1558,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT blackberry FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT blackberry FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET blackberry = blackberry+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET blackberry = blackberry+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1633,7 +1633,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart12; _.StrictLTE(_outer.i, loopEnd12); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("Monitor")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "Monitor"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v354 => { _outer.OrderNumber = v354; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v355 => { _outer.VendorName = v355; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v356 => { _outer.OrderDate = v356; }));
@@ -1675,11 +1675,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT monitor FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT monitor FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET monitor = monitor+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET monitor = monitor+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1750,7 +1750,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart13; _.StrictLTE(_outer.i, loopEnd13); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MultiMediaDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v381 => { _outer.OrderNumber = v381; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v382 => { _outer.VendorName = v382; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v383 => { _outer.OrderDate = v383; }));
@@ -1793,11 +1793,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT beamer FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT beamer FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET beamer = beamer+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET beamer = beamer+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1868,7 +1868,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart14; _.StrictLTE(_outer.i, loopEnd14); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MultiMediaDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v408 => { _outer.OrderNumber = v408; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v409 => { _outer.VendorName = v409; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v410 => { _outer.OrderDate = v410; }));
@@ -1911,11 +1911,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT videoconference FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT videoconference FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET videoconference = videoconference+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET videoconference = videoconference+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -1986,7 +1986,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart15; _.StrictLTE(_outer.i, loopEnd15); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("MultiMediaDevice")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "MultiMediaDevice"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v435 => { _outer.OrderNumber = v435; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v436 => { _outer.VendorName = v436; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v437 => { _outer.OrderDate = v437; }));
@@ -2029,11 +2029,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT mediatechnic FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT mediatechnic FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET mediatechnic = mediatechnic+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET mediatechnic = mediatechnic+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2104,7 +2104,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart16; _.StrictLTE(_outer.i, loopEnd16); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v462 => { _outer.OrderNumber = v462; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v463 => { _outer.VendorName = v463; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v464 => { _outer.OrderDate = v464; }));
@@ -2147,11 +2147,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT diktiersystem FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT diktiersystem FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET diktiersystem = diktiersystem+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET diktiersystem = diktiersystem+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2222,7 +2222,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart17; _.StrictLTE(_outer.i, loopEnd17); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v489 => { _outer.OrderNumber = v489; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v490 => { _outer.VendorName = v490; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v491 => { _outer.OrderDate = v491; }));
@@ -2265,11 +2265,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT usv FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT usv FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET usv = usv+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET usv = usv+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2340,7 +2340,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart18; _.StrictLTE(_outer.i, loopEnd18); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v516 => { _outer.OrderNumber = v516; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v517 => { _outer.VendorName = v517; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v518 => { _outer.OrderDate = v518; }));
@@ -2383,11 +2383,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT controlcam FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT controlcam FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET controlcam = controlcam+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET controlcam = controlcam+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2458,7 +2458,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart19; _.StrictLTE(_outer.i, loopEnd19); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v543 => { _outer.OrderNumber = v543; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v544 => { _outer.VendorName = v544; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v545 => { _outer.OrderDate = v545; }));
@@ -2501,11 +2501,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT bde FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT bde FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET bde = bde+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET bde = bde+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2576,7 +2576,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart20; _.StrictLTE(_outer.i, loopEnd20); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v570 => { _outer.OrderNumber = v570; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v571 => { _outer.VendorName = v571; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v572 => { _outer.OrderDate = v572; }));
@@ -2619,11 +2619,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT spacemouse FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT spacemouse FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET spacemouse = spacemouse+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET spacemouse = spacemouse+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2694,7 +2694,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart21; _.StrictLTE(_outer.i, loopEnd21); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("NetworkComponent")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NetworkComponent"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v597 => { _outer.OrderNumber = v597; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v598 => { _outer.VendorName = v598; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v599 => { _outer.OrderDate = v599; }));
@@ -2737,11 +2737,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT networkcomponent FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT networkcomponent FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET networkcomponent = networkcomponent+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET networkcomponent = networkcomponent+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2811,7 +2811,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart22; _.StrictLTE(_outer.i, loopEnd22); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("NetworkComponent")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "NetworkComponent"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v624 => { _outer.OrderNumber = v624; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v625 => { _outer.VendorName = v625; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v626 => { _outer.OrderDate = v626; }));
@@ -2854,11 +2854,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT homeofficerouter FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT homeofficerouter FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET homeofficerouter = homeofficerouter+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET homeofficerouter = homeofficerouter+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -2929,7 +2929,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart23; _.StrictLTE(_outer.i, loopEnd23); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v651 => { _outer.OrderNumber = v651; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v652 => { _outer.VendorName = v652; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v653 => { _outer.OrderDate = v653; }));
@@ -2972,11 +2972,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT headset FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT headset FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET headset = headset+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET headset = headset+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -3048,7 +3048,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart24; _.StrictLTE(_outer.i, loopEnd24); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Notebook anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("GenericAsset")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "GenericAsset"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v678 => { _outer.OrderNumber = v678; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v679 => { _outer.VendorName = v679; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v680 => { _outer.OrderDate = v680; }));
@@ -3091,11 +3091,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT conferencephone FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT conferencephone FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET conferencephone = conferencephone+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET conferencephone = conferencephone+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");
@@ -3167,7 +3167,7 @@ namespace TranslatedProgram
                             for (_outer.i = loopStart25; _.StrictLTE(_outer.i, loopEnd25); _outer.i = _.ADD(_outer.i, (Int16)1))
                             {
                                 //hlContext.Trace 1, "Computer anlegen Nummer: " & i
-                                _outer.NewCI = _.OBJ(_.CALLm1argp(this, _env.hlContext, "createobject", _.ARGS.Val("ServerComputer")));
+                                _outer.NewCI = _.OBJ(_.CALLm1v1(this, _env.hlContext, "createobject", "ServerComputer"));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderNumber").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderNumber, v705 => { _outer.OrderNumber = v705; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("TrumpfAssetGeneral.VendorName").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.VendorName, v706 => { _outer.VendorName = v706; }));
                                 _.CALLm1argp(this, _outer.NewCI, "SetValue", _.ARGS.Val("ProcurementDetail.OrderDate").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(_outer.OrderDate, v707 => { _outer.OrderDate = v707; }));
@@ -3209,11 +3209,11 @@ namespace TranslatedProgram
 
                                 //CI-Nummer auslesen
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
-                                _outer.rs = _.OBJ(_.CALLm1argp(this, _outer.cn, "Execute", _.ARGS.Val("SELECT server FROM _cinumbers")));
+                                _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn, "Execute", "SELECT server FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1argp(this, _outer.rs, "fields", _.ARGS.Val((Int16)0)), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs, "fields", (Int16)0), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
-                                _.CALLm1argp(this, _outer.cn, "execute", _.ARGS.Val("UPDATE _cinumbers SET server = server+1"));
+                                _.CALLm1v1(this, _outer.cn, "execute", "UPDATE _cinumbers SET server = server+1");
 
                                 //Verbindung schliessen
                                 _.CALLm1v0(this, _outer.rs, "close");

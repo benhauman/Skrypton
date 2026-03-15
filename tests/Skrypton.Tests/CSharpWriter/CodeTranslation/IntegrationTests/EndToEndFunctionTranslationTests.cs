@@ -100,10 +100,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -126,10 +122,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -170,10 +162,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -192,24 +180,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    _.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CALLm1v0(this, a, \"Name\")));",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected =
+                @"public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    _.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, a, ""Name""));
+                    return F1_retVal;
+                }
+                public object F2(ref object a)
+                {
+                    return null;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -248,10 +230,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -272,24 +250,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    _.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CALLm0argp(this, a, _.ARGS.ForceBrackets())));",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected =
+                @"public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    _.CALLm1v1(this, _outer, ""F2"", _.CALLm0argp(this, a, _.ARGS.ForceBrackets()));
+                    return F1_retVal;
+                }
+                public object F2(ref object a)
+                {
+                    return null;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -308,24 +280,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    _.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(_.CONCAT(\"\", a)));",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected =
+                @"public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    _.CALLm1v1(this, _outer, ""F2"", _.CONCAT("""", a));
+                    return F1_retVal;
+                }
+                public object F2(ref object a)
+                {
+                    return null;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -344,24 +310,18 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    _.CALLm1argp(this, _outer, \"F2\", _.ARGS.Val(a));",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    _.CALLm1v1(this, _outer, ""F2"", a);
+                    return F1_retVal;
+                }
+                public object F2(ref object a)
+                {
+                    return null;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -424,24 +384,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    var errOn = _.GETERRORTRAPPINGTOKEN();",
-                "    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
-                "    object byrefalias = a;",
-                "    _.HANDLEERROR(errOn, () => {",
-                "        _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v0(this, byrefalias, \"Name\")));",
-                "    });",
-                "    _.RELEASEERRORTRAPPINGTOKEN(errOn);",
-                "    return F1_retVal;",
-                "}"
+                @"public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    var errOn = _.GETERRORTRAPPINGTOKEN();
+                    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+                    object byrefalias = a;
+                    _.HANDLEERROR(errOn, () => {
+                        _.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, byrefalias, ""Name""));
+                    });
+                    _.RELEASEERRORTRAPPINGTOKEN(errOn);
+                    return F1_retVal;
+                }"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -454,7 +410,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void ParentFunctionNameMustBeMappedOnToReturnValueNameWhenPassedAsArgumentToOtherFunction()
         {
             var source = @"
-				Function F1(x)
+
+                Function F1(x)
 					If IsEmpty(F1) Then
 						F1 = True
 					End If

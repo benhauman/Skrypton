@@ -1081,8 +1081,8 @@ namespace TranslatedProgram
             _.CALLm1argp(this, objXMLDoc, "insertBefore", _.ARGS.Ref(xmlProInc, v88 => { xmlProInc = v88; }).Val(_.CALLm1v0(this, objXMLDoc, "firstChild")));
 
             //Root-Element erstellen
-            xmlRoot = _.OBJ(_.CALLm1argp(this, objXMLDoc, "CreateElement", _.ARGS.Val("ASAPBatch")));
-            _.CALLm1argp(this, objXMLDoc, "AppendChild", _.ARGS.Val(xmlRoot));
+            xmlRoot = _.OBJ(_.CALLm1v1(this, objXMLDoc, "CreateElement", "ASAPBatch"));
+            _.CALLm1v1(this, objXMLDoc, "AppendChild", xmlRoot);
             _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns").Val("http://www.brainware.ch/operationsmanager/asap-batch/1.1"));
             _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns:dt").Val("http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1"));
             _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("xmlns:xsi").Val("http://www.w3.org/2001/XMLSchema-instance"));
@@ -1091,8 +1091,8 @@ namespace TranslatedProgram
             _.CALLm1argp(this, xmlRoot, "SetAttribute", _.ARGS.Val("responseRequired").Val("Yes"));
 
             //Das Node Session hinzufügen
-            nodeSession = _.OBJ(_.CALLm1argp(this, objXMLDoc, "CreateElement", _.ARGS.Val("Session")));
-            _.CALLm1argp(this, xmlRoot, "AppendChild", _.ARGS.Val(nodeSession));
+            nodeSession = _.OBJ(_.CALLm1v1(this, objXMLDoc, "CreateElement", "Session"));
+            _.CALLm1v1(this, xmlRoot, "AppendChild", nodeSession);
             _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("id").Val("s1"));
             _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("loginname").Val("foreignSystems\\assetcolumbus"));
             _.CALLm1argp(this, nodeSession, "SetAttribute", _.ARGS.Val("password").Val(""));
@@ -1126,73 +1126,73 @@ namespace TranslatedProgram
             xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-            _.CALLm1argp(this, xmlRoot, "AppendChild", _.ARGS.Val(nodeCreateInstanceRq));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_adddevice"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeObserverKey));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeContextData));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeAddDeviceActualParams = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:AddDeviceActualParams")));
-            _.CALLm1argp(this, nodeContextData, "AppendChild", _.ARGS.Val(nodeAddDeviceActualParams));
+            nodeAddDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:AddDeviceActualParams"));
+            _.CALLm1v1(this, nodeContextData, "AppendChild", nodeAddDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeDeviceIdentification));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDeviceName));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeCmpyName));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CompanyName"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeCmpyName);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDomain));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeCostCenter));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CostCenter"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeCostCenter);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeMACAddress));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:MACAddress"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeMACAddress);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeSubnetMask));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:SubnetMask"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeSubnetMask);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeHWType));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:HwTypeId"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeHWType);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeOSType));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:OsTypeId"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeOSType);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
-            _.CALLm1argp(this, nodeAddDeviceActualParams, "AppendChild", _.ARGS.Val(nodeActState));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:ActivationState"));
+            _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeActState);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
 
             return MIG_CreateADDXML2Columbus_retVal;
@@ -1222,73 +1222,73 @@ namespace TranslatedProgram
             xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-            _.CALLm1argp(this, xmlRoot, "AppendChild", _.ARGS.Val(nodeCreateInstanceRq));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_chgdevice"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeObserverKey));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeContextData));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeChgDeviceActualParams = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ChangeDeviceActualParams")));
-            _.CALLm1argp(this, nodeContextData, "AppendChild", _.ARGS.Val(nodeChgDeviceActualParams));
+            nodeChgDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:ChangeDeviceActualParams"));
+            _.CALLm1v1(this, nodeContextData, "AppendChild", nodeChgDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeDeviceIdentification));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDeviceName));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDomain));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CompanyName")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeCmpyName));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CompanyName"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeCmpyName);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:CostCenter")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeCostCenter));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CostCenter"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeCostCenter);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:MACAddress")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeMACAddress));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:MACAddress"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeMACAddress);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:SubnetMask")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeSubnetMask));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:SubnetMask"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeSubnetMask);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:HwTypeId")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeHWType));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:HwTypeId"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeHWType);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:OsTypeId")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeOSType));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:OsTypeId"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeOSType);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:ActivationState")));
-            _.CALLm1argp(this, nodeChgDeviceActualParams, "AppendChild", _.ARGS.Val(nodeActState));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:ActivationState"));
+            _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeActState);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
 
             return MIG_CreateCHGXML2Columbus_retVal;
@@ -1311,33 +1311,33 @@ namespace TranslatedProgram
             xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("CreateInstanceRq")));
-            _.CALLm1argp(this, xmlRoot, "AppendChild", _.ARGS.Val(nodeCreateInstanceRq));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, xmlRoot, "AppendChild", nodeCreateInstanceRq);
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("id").Val("e7"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfpNs").Val("ch.bw.wf.changemgmt.columbus_removedevice"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("wfmNs").Val("Columbus Changemanagement"));
             _.CALLm1argp(this, nodeCreateInstanceRq, "SetAttribute", _.ARGS.Val("sessionId").Val("s1"));
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ObserverKey")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeObserverKey));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("ContextData")));
-            _.CALLm1argp(this, nodeCreateInstanceRq, "AppendChild", _.ARGS.Val(nodeContextData));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:RemoveDeviceActualParams")));
-            _.CALLm1argp(this, nodeContextData, "AppendChild", _.ARGS.Val(nodeRemoveDeviceActualParams));
+            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:RemoveDeviceActualParams"));
+            _.CALLm1v1(this, nodeContextData, "AppendChild", nodeRemoveDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceIdentification")));
-            _.CALLm1argp(this, nodeRemoveDeviceActualParams, "AppendChild", _.ARGS.Val(nodeDeviceIdentification));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, nodeRemoveDeviceActualParams, "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:DeviceName")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDeviceName));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node CompanyName hinzufügen
@@ -1346,8 +1346,8 @@ namespace TranslatedProgram
             //nodeCmpyName.Text = pDict("CompanyName")
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1argp(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", _.ARGS.Val("dt:Domain")));
-            _.CALLm1argp(this, nodeDeviceIdentification, "AppendChild", _.ARGS.Val(nodeDomain));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
             _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             return MIG_CreateDELXML2Columbus_retVal;

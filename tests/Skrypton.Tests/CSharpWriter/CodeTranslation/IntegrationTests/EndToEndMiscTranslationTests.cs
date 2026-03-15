@@ -197,7 +197,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _env.b, _env.c, _env.d)));"
+               @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _env.b, _env.c, _env.d));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(
@@ -219,13 +219,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d)));"
+                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -248,13 +244,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v0(this, _env.a, \"Params\")));"
+                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, _env.a, ""Params"")); "
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -290,13 +282,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Val(_.CALLm1v0(this, this, \"Name\")));"
+                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, this, ""Name"")); "
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -393,7 +381,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(x)));
+					_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(x));
 					return F1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -425,7 +413,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					object byrefalias = x;
 					try
 					{
-						_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })))));
+						_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }))));
 					}
 					finally { x = byrefalias; }
 					return F1_retVal;
@@ -464,7 +452,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					try
 					{
 						_.HANDLEERROR(errOn, () => {
-							_.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Val(_.TYPENAME(byrefalias)));
+							_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(byrefalias));
 						});
 					}
 					finally { x = byrefalias; }
@@ -513,7 +501,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				{
 					object Render_retVal = null;
 					var with = _.OBJ(x);
-					_.CALLm1argp(this, with, ""Draw"", _.ARGS.Val(""Test""));
+					_.CALLm1v1(this, with, ""Draw"", ""Test"");
 					return Render_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
@@ -552,10 +540,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessary(int testidx, string source, string expectedResult)
         {
             TestCSharpCodeTranslationWithoutScaffolding(expectedResult, source);
-            //var translatedContent = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
-            //myAssert.AreEqual(expectedResult, translatedContent.Select(c => c.Trim()).Single(c => c != ""));
         }
-
         public static IEnumerable<object[]> ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessaryData
         {
             get
@@ -566,7 +551,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 
                 yield return new object[] { 4, "a = b.Name", "_env.a = _.VAL(_.CALLm1v0(this, _env.b, \"Name\"));" };
                 yield return new object[] { 5, "a = b.Name()", "_env.a = _.VAL(_.CALLm1argp(this, _env.b, \"Name\", _.ARGS.ForceBrackets()));" };
-                yield return new object[] { 6, "a = b.Name(1)", "_env.a = _.VAL(_.CALLm1argp(this, _env.b, \"Name\", _.ARGS.Val((Int16)1)));" };
+                yield return new object[] { 6, "a = b.Name(1)", @"_env.a = _.VAL(_.CALLm1v1(this, _env.b, ""Name"", (Int16)1));" };
             }
         }
     }
