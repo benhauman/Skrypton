@@ -1093,13 +1093,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 1 && zeroArgumentBracketsPresence == null)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp);
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // TODO: CALLm1r
                 callNameResolved = true;
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
+                // _.ARGS.ForceBrackets() => NumberOfArguments:0, UseBracketsWhereZeroArguments:true
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // ?!? (this, hlObjectB, "GetType", _.ARGS.ForceBrackets());
                 callNameResolved = true;
+                _ = nameof(IProvideCallArguments);//.UseBracketsWhereZeroArguments
+                //callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
+                //throw new NotImplementedException($"m:{targetMemberAccessTokensArray.Length}, a:{argumentsArray.Length}, z:'{zeroArgumentBracketsPresence}'. Line:{target.LineIndex}");
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
             {
@@ -1125,7 +1129,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 else
                 {
                     //use 'byref' syntax
-                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // => CALLm1v1
+                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp); // TODO: CALLm1r
                 }
                 callNameResolved = true;
             }
@@ -1183,8 +1187,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                // throw
-                throw new NotImplementedException($"m:{targetMemberAccessTokensArray.Length}, a:{argumentsArray.Length}, z:'{zeroArgumentBracketsPresence}'");
+                throw new NotImplementedException($"m:{targetMemberAccessTokensArray.Length}, a:{argumentsArray.Length}, z:'{zeroArgumentBracketsPresence}'. Line:{target.LineIndex}");
             }
 
             string nameOfTargetContainer = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);

@@ -866,7 +866,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         [TestMethod, MyTheory, MyMemberData(nameof(ZeroArgumentBracketSuccessData))]
-        public void ZeroArgumentBracketSuccessCases(string description, object target, string[] memberAccessors, bool useBracketsWhereZeroArguments, object expectedResult)
+        public void ZeroArgumentBracketSuccessCases(int testNo, string description, object target, string[] memberAccessors, bool useBracketsWhereZeroArguments, object expectedResult)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             var args = _.ARGS;
@@ -890,19 +890,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             get
             {
                 var array = new object[] { 123 };
-                yield return new object[] { "Array with no member accessors, properties or zero-argument brackets", array, new string[0], false, array };
-                yield return new object[] { "String with no member accessors, properties or zero-argument brackets", "123", new string[0], false, "123" };
+                yield return new object[] { 1,  "Array with no member accessors, properties or zero-argument brackets", array, new string[0], false, array };
+                yield return new object[] { 2, "String with no member accessors, properties or zero-argument brackets", "123", new string[0], false, "123" };
 
                 var parameterLessDelegate = (Func<object>)(() => "delegate result");
-                yield return new object[] { "Delegate with no member accessors, properties or zero-argument brackets", parameterLessDelegate, new string[0], false, parameterLessDelegate };
-                yield return new object[] { "Delegate with no member accessors, properties WITH zero-argument brackets", parameterLessDelegate, new string[0], true, "delegate result" };
+                yield return new object[] { 3, "Delegate with no member accessors, properties or zero-argument brackets", parameterLessDelegate, new string[0], false, "delegate result" };// parameterLessDelegate }; // lubo: changed that parameters delegate is always invoked!!! do NOT invoke the delegate
+                yield return new object[] { 4, "Delegate with no member accessors, properties WITH zero-argument brackets", parameterLessDelegate, new string[0], true, "delegate result" }; // do INVOKE the delegate
 
-                yield return new object[] { "VBScript class property without brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "Name" }, false, "test" };
-                yield return new object[] { "VBScript class property WITH brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "Name" }, true, "test" };
-                yield return new object[] { "VBScript class function without brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, false, "test" };
-                yield return new object[] { "VBScript class function WITH brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, true, "test" };
+                yield return new object[] { 5, "VBScript class property without brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "Name" }, false, "test" };
+                yield return new object[] { 6, "VBScript class property WITH brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "Name" }, true, "test" };
+                yield return new object[] { 7, "VBScript class function without brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, false, "test" };
+                yield return new object[] { 8, "VBScript class function WITH brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, true, "test" };
 
-                yield return new object[] { "COM component property without brackets", Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny)), new[] { "Count" }, false, 0 };
+                yield return new object[] { 9, "COM component property without brackets", Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny)), new[] { "Count" }, false, 0 };
             }
         }
 

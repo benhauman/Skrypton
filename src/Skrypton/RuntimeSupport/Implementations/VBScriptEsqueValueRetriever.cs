@@ -819,7 +819,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             object[] arguments = argumentProvider.GetInitialValues();
             try
             {
-                return CALLCore(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
+                return CALLCore(context, target, members, arguments, argumentProvider, line);
             }
             finally
             {
@@ -832,7 +832,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object? CALLCore(object? context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
+        private object? CALLCore(object? context, object target, IEnumerable<string> members, object[] arguments, IProvideCallArguments argumentProvider, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -860,7 +860,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     targetDescription = STR(target);
                 if (memberAccessorsArray.Length != 0)
                     throw new ObjectRequiredException($"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
-                if (arguments.Length != 0 || useBracketsWhereZeroArguments)
+                if (arguments.Length != 0)// lubo || argumentProvider.UseBracketsWhereZeroArguments)
                     throw new TypeMismatchException($"'{targetDescription}'. Procedure or object not registered? CallerLineNo:{callerLineNum}");
             }
 
@@ -869,16 +869,20 @@ namespace Skrypton.RuntimeSupport.Implementations
             // must either be a direct reference, meaning its being passed around as a function pointer or sorts, or it must be an execution
             // of the delegate (indicated by the presence of arguments or by there being brackets following the reference, even when there
             // are zero arguments).
-            Delegate? delegateTarget = target as Delegate;
-            if (delegateTarget != null)
+            if (target is Delegate delegateTarget)
             {
                 if (memberAccessorsArray.Length != 0)
                     throw new ArgumentException("May not specify any member accessors when target is a delegate");
-                if (arguments.Length != 0 || useBracketsWhereZeroArguments)
+                if (arguments.Length != 0)
+                    return delegateTarget.DynamicInvoke(arguments);
+
+                if (delegateTarget.Method.GetParameters().Length == 0)
+                    //lubo if (argumentProvider.UseBracketsWhereZeroArguments)
                     return delegateTarget.DynamicInvoke(arguments);
                 return delegateTarget;
             }
-
+            if (target == null)
+                throw new TypeMismatchException("The target reference may only be null if there are no member accessors or arguments specified (and no brackets in the zero-argument case)");
             // If there are no member accessor, no arguments and no zero-argument brackets then just return the object directly (if the caller
             // wants this to be a value type then they'll have to use VAL to try to apply that requirement). This is the only case in which
             // it's acceptable for target to be null.
@@ -886,19 +890,19 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   are currently no tests illustrating why at this time and the code here explicitly allows for a null target (in this case),
             //   so I'm going to leave this be for now (May 2015).
             bool noMemberAccessorsOrArguments = memberAccessorsArray.Length == 0 && arguments.Length == 0;
-            if (noMemberAccessorsOrArguments && !useBracketsWhereZeroArguments)
+            if (noMemberAccessorsOrArguments)//lubo && !argumentProvider.argumentProvider.UseBracketsWhereZeroArguments)
             {
                 return target;
             }
-            else if (noMemberAccessorsOrArguments && useBracketsWhereZeroArguments && (target != null))
+            else if (noMemberAccessorsOrArguments)// lubo && argumentProvider.UseBracketsWhereZeroArguments && (target != null))
             {
                 // If "a" is an array then "a()" will always throw a "Subscript out of range" exception
                 if (isArray)
                     throw new SubscriptOutOfRangeException("isArray");
                 throw new TypeMismatchException("not an array and not a function."); // It's not an array and it's not a function, must be a type mismatch
             }
-            else if (target == null)
-                throw new TypeMismatchException("The target reference may only be null if there are no member accessors or arguments specified (and no brackets in the zero-argument case)");
+            //lubo else if (target == null)
+            //lubo     throw new TypeMismatchException("The target reference may only be null if there are no member accessors or arguments specified (and no brackets in the zero-argument case)");
 
             // If there are no member accessors but there are arguments then
             // 1. Attempt array access (this is the only time that array access is acceptable (o.Names(0) is not allowed by VBScript if the
@@ -918,7 +922,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             //   "onlyConsiderMethods" option since it is only when there are zero arguments and the absence or presence of brackets that different
             //   logic is required (so other calls to WalkMemberAccessors / InvokeGetter leave that option as false).
             if (arguments.Length == 0)
-                return WalkMemberAccessors(target, memberAccessorsArray, allowPrivateAccess, onlyConsiderMethods: useBracketsWhereZeroArguments);
+                return WalkMemberAccessors(target, memberAccessorsArray, allowPrivateAccess, onlyConsiderMethods: false);// lubo argumentProvider.UseBracketsWhereZeroArguments);
 
             // If there member accessors AND arguments then all-but-the-last member accessors should be walked through as argument-less lookups
             // and the final member accessor should be a method or property call whose name matches the member accessor. Note that the arguments

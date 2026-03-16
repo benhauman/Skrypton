@@ -42,7 +42,7 @@ namespace Skrypton.RuntimeSupport
         /// The presence of brackets in the source following a member access with zero arguments may affect the available calling mechanisms on
         /// the target, so this is important information to record and expose
         /// </summary>
-        bool UseBracketsWhereZeroArguments { get; }
+        ///bool UseBracketsWhereZeroArguments { get; }
 
         /// <summary>
         /// This will always return a set with NumberOfArguments items in it
