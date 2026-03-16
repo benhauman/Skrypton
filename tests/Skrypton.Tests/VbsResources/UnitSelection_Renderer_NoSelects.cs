@@ -447,7 +447,7 @@ namespace TranslatedProgram
             }
 
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"product\" value=\"", intProdKey, "\" />"));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"isostartdate\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate"))), "\" />"));
+            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"isostartdate\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "ISODate", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), "\" />"));
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"nights\" value=\"", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights"), "\" />"));
 
             // We need all this when using VB Polling, even it it is an external booking, as we aren't
@@ -476,7 +476,7 @@ namespace TranslatedProgram
                 // Pass in the current convert-to-currency value (this will have been held in the session
                 // up to this point, but we may be about to leave the site when this form is posted, so
                 // will need to send the value as a hidden input instead of relying on session)
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"CurrencyConvertTo\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "GetCurrencyCodeOverride", _.ARGS.Val(_.CALLm2v0(this, _outer.Page, "Site", "LCCurrencyKey"))), "\" />"));
+                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"CurrencyConvertTo\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "GetCurrencyCodeOverride", _.CALLm2v0(this, _outer.Page, "Site", "LCCurrencyKey")), "\" />"));
             }
 
             // If we're dealing with a VB Polling External Supplier, write out the Supplier id, name and
@@ -868,7 +868,7 @@ namespace TranslatedProgram
 
             dCalStart = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v44 => { dFirstDayOfMonth = v44; })));
             dCalEnd = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v45 => { dFirstDayOfMonth = v45; })));
-            strThisMonthYear = _.CONCAT(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetMonthNameAbbr", _.ARGS.Val(_.MONTH(dCalStart))), " ", _.YEAR(dCalStart));
+            strThisMonthYear = _.CONCAT(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetMonthNameAbbr", _.MONTH(dCalStart)), " ", _.YEAR(dCalStart));
             strTableSummary = _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/availabilitycalendarfor", "Availability calendar for"), " ", strThisMonthYear);
 
             _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<div id=\"Cal_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v46 => { dCalStart = v46; })), "\" class=\"", strWrapperClass, "\">"));
@@ -889,7 +889,7 @@ namespace TranslatedProgram
                     {
                         strHeaderCellClass = " class=\"we\"";
                     }
-                    _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<th", strHeaderCellClass, ">", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetDayNameAbbr", _.ARGS.Val(_.WEEKDAY(_.MOD(_.ADD(i, (Int16)1), (Int16)7)))), "</th>"));
+                    _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<th", strHeaderCellClass, ">", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetDayNameAbbr", _.WEEKDAY(_.MOD(_.ADD(i, (Int16)1), (Int16)7))), "</th>"));
                 }
             }
 
@@ -1068,10 +1068,10 @@ namespace TranslatedProgram
                 iNegativeMonthAdjustment = (Int16)(-1);
             }
 
-            dCalStartPrev = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Val(_.DATEADD("m", iNegativeMonthAdjustment, dStart))));
+            dCalStartPrev = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iNegativeMonthAdjustment, dStart)));
             strTitlePrev = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/previousmonth", "&lt;&lt; Previous Month"));
 
-            dCalStartNext = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Val(_.DATEADD("m", iPositiveMonthAdjustment, dStart))));
+            dCalStartNext = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iPositiveMonthAdjustment, dStart)));
             strTitleNext = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/nextmonth", "Next Month &gt;&gt;"));
 
             _.CALLm1v1(this, sb, "AppendLine", "<div class=\"CalNavLinks\">");
@@ -1684,7 +1684,7 @@ namespace TranslatedProgram
                 //
                 _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v113 => { pO = v113; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CONCAT(strClassMonth, " currentmonth")));
                 //					' last day + 1 to get the first day of the next month for the calendar
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v114 => { pO = v114; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate"))), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v114 => { pO = v114; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
 
                 // global count used to track how many calendars have been added to the output for the prev/next buttons
                 _outer.g_iNumberOfCalendarsRendered = (Int16)2;
@@ -2759,7 +2759,7 @@ namespace TranslatedProgram
                 return BookingUI_StayTtl_retVal;
             }
 
-            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v198 => { adtFirstNight = v198; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.ARGS.Val(_.DATEADD("d", aiNights, adtFirstNight))));
+            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v198 => { adtFirstNight = v198; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
             return BookingUI_StayTtl_retVal;
         }
 
@@ -3246,8 +3246,8 @@ namespace TranslatedProgram
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<tr id=\"row_", _.CALLm1v0(this, objUnit, "UnitKey"), "\">"));
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"unit\">", _.CALLm1v0(this, objUnit, "UnitName"), "</td>"));
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"select\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALLm1v0(this, objUnit, "UnitCount")).Ref(iSelectedQty, v223 => { iSelectedQty = v223; })), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"price\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Val(_.CALLm1v0(this, objUnit, "StayTotalPayable")))), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" id=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" value=\"", _.CALLm1v0(this, objUnit, "UnitCount"), ",", _.CALLm1v0(this, objUnit, "MinOcc"), ",", _.CALLm1v0(this, objUnit, "UnitSize"), ",", strPriceBasis, ",", _.CALLm1v0(this, objUnit, "StayTotalPayable"), "\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Val(_.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty)))), "</td>"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"price\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.CALLm1v0(this, objUnit, "StayTotalPayable"))), "</td>"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" id=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" value=\"", _.CALLm1v0(this, objUnit, "UnitCount"), ",", _.CALLm1v0(this, objUnit, "MinOcc"), ",", _.CALLm1v0(this, objUnit, "UnitSize"), ",", strPriceBasis, ",", _.CALLm1v0(this, objUnit, "StayTotalPayable"), "\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty))), "</td>"));
                         _.CALLm1v1(this, pO, "Write", "</tr>");
                         iTotal = _.ADD(iTotal, _.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty));
 

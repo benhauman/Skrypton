@@ -1224,7 +1224,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 //if (isConfirmedToBeByVal && todoLength == 9876)
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
-                                              && (targetMemberAccessTokensArray.Length >= 1 && targetMemberAccessTokensArray.Length <= 2) // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
+                                              && (targetMemberAccessTokensArray.Length >= 1 && targetMemberAccessTokensArray.Length <= 3) // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                     && (argumentsArray.Length >= 1)// && argumentsArray.Length <= 5)
                         )
                 {
