@@ -110,19 +110,19 @@ namespace TranslatedProgram
             }
             else
             {
-                if (_.IF(_.EQ(_.CALLm1v2(this, _outer, "IsWFEmail", _.CALLm1v0(this, oMailRequest, "Subject"), rfKeywords), true)))
+                if (_.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Val(_.CALLm1v0(this, oMailRequest, "Subject")).Ref(rfKeywords, v10 => { rfKeywords = v10; })), true)))
                 {
                     sReportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "RequestFulfillment"));
                 }
                 else
                 {
-                    if (_.IF(_.EQ(_.CALLm1v2(this, _outer, "IsWFEmail", _.CALLm1v0(this, oMailRequest, "Subject"), imKeywords), true)))
+                    if (_.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Val(_.CALLm1v0(this, oMailRequest, "Subject")).Ref(imKeywords, v11 => { imKeywords = v11; })), true)))
                     {
                         sReportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "IncidentManagement"));
                     }
                     else
                     {
-                        if (_.IF(_.EQ(_.CALLm1v2(this, _outer, "IsWFEmail", _.CALLm1v0(this, oMailRequest, "Subject"), cmKeywords), true)))
+                        if (_.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Val(_.CALLm1v0(this, oMailRequest, "Subject")).Ref(cmKeywords, v12 => { cmKeywords = v12; })), true)))
                         {
                             sReportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "ChangeManagement"));
                         }
@@ -130,7 +130,7 @@ namespace TranslatedProgram
                         {
                             if (_.IF(_.EQ(adhocMail, true)))
                             {
-                                _.CALLm1argp(this, _outer, "CreateAdhocCase", _.ARGS.Ref(oMailRequest, v10 => { oMailRequest = v10; }));
+                                _.CALLm1argp(this, _outer, "CreateAdhocCase", _.ARGS.Ref(oMailRequest, v13 => { oMailRequest = v13; }));
                             }
                             else
                             {
@@ -163,17 +163,17 @@ namespace TranslatedProgram
             object byrefalias = hlcase;
             try
             {
-                _.CALLm1v2(this, oScripter, "AddObject", "hlcase", byrefalias);
+                _.CALLm1argp(this, oScripter, "AddObject", _.ARGS.Val("hlcase").Ref(byrefalias, v14 => { byrefalias = v14; }));
             }
             finally { hlcase = byrefalias; }
             object byrefalias2 = mail;
             try
             {
-                _.CALLm1v2(this, oScripter, "AddObject", "mail", byrefalias2);
+                _.CALLm1argp(this, oScripter, "AddObject", _.ARGS.Val("mail").Ref(byrefalias2, v15 => { byrefalias2 = v15; }));
             }
             finally { mail = byrefalias2; }
 
-            _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v11 => { oScripter = v11; }).Ref(_env.session, v12 => { _env.session = v12; }).Val("receive"));
+            _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v16 => { oScripter = v16; }).Ref(_env.session, v17 => { _env.session = v17; }).Val("receive"));
 
         }
 
@@ -274,7 +274,7 @@ namespace TranslatedProgram
             object byrefalias3 = oMailRequest;
             try
             {
-                sReportText = _.VAL(_.CALLm1argp(this, _outer, "createCaseFromMail", _.ARGS.Ref(byrefalias3, v13 => { byrefalias3 = v13; }).Ref(oCaseCfg, v14 => { oCaseCfg = v14; }).Ref(oHLServer, v15 => { oHLServer = v15; })));
+                sReportText = _.VAL(_.CALLm1argp(this, _outer, "createCaseFromMail", _.ARGS.Ref(byrefalias3, v18 => { byrefalias3 = v18; }).Ref(oCaseCfg, v19 => { oCaseCfg = v19; }).Ref(oHLServer, v20 => { oHLServer = v20; })));
             }
             finally { oMailRequest = byrefalias3; }
         }
@@ -290,17 +290,17 @@ namespace TranslatedProgram
             object byrefalias4 = hlcase;
             try
             {
-                _.CALLm1v2(this, oScripter, "AddObject", "hlcase", byrefalias4);
+                _.CALLm1argp(this, oScripter, "AddObject", _.ARGS.Val("hlcase").Ref(byrefalias4, v21 => { byrefalias4 = v21; }));
             }
             finally { hlcase = byrefalias4; }
             object byrefalias5 = mail;
             try
             {
-                _.CALLm1v2(this, oScripter, "AddObject", "mail", byrefalias5);
+                _.CALLm1argp(this, oScripter, "AddObject", _.ARGS.Val("mail").Ref(byrefalias5, v22 => { byrefalias5 = v22; }));
             }
             finally { mail = byrefalias5; }
 
-            _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v16 => { oScripter = v16; }).Ref(_env.session, v17 => { _env.session = v17; }).Val("extend"));
+            _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v23 => { oScripter = v23; }).Ref(_env.session, v24 => { _env.session = v24; }).Val("extend"));
 
         }
 
@@ -314,7 +314,7 @@ namespace TranslatedProgram
             object byrefalias6 = oMailRequestX;
             try
             {
-                oCaseCfgZ = _.OBJ(_.CALLm1argp(this, _outer, "AdhocMailCfg", _.ARGS.Ref(byrefalias6, v18 => { byrefalias6 = v18; })));
+                oCaseCfgZ = _.OBJ(_.CALLm1argp(this, _outer, "AdhocMailCfg", _.ARGS.Ref(byrefalias6, v25 => { byrefalias6 = v25; })));
             }
             finally { oMailRequestX = byrefalias6; }
             //
@@ -324,7 +324,7 @@ namespace TranslatedProgram
             sSearchConditionPersons = _.CONCAT(sMailAttributeKey, "= \"", _.CALLm1v0(this, oMailRequestX, "SenderMail"), "\"");
 
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("SearchCondition = ", sSearchConditionPersons));
-            oPersons = _.OBJ(_.CALLm1argp(this, oHLServerX, "Find_Persons", _.ARGS.Ref(sSearchConditionPersons, v19 => { sSearchConditionPersons = v19; }).Val((Int16)0)));
+            oPersons = _.OBJ(_.CALLm1argp(this, oHLServerX, "Find_Persons", _.ARGS.Ref(sSearchConditionPersons, v26 => { sSearchConditionPersons = v26; }).Val((Int16)0)));
 
             //
             // Baue eine Assoziation zwischen Vorgang und Anfrager
@@ -340,15 +340,15 @@ namespace TranslatedProgram
                 //
                 sSearchConditionPersons = "PersonGeneral.Name = \"email adresse unbekannt\"";
                 _.CALLm1v1(this, _outer, "LogText", _.CONCAT("SearchCondition2 = ", sSearchConditionPersons));
-                oPersons = _.OBJ(_.CALLm1argp(this, oHLServerX, "Find_Persons", _.ARGS.Ref(sSearchConditionPersons, v20 => { sSearchConditionPersons = v20; }).Val((Int16)0)));
+                oPersons = _.OBJ(_.CALLm1argp(this, oHLServerX, "Find_Persons", _.ARGS.Ref(sSearchConditionPersons, v27 => { sSearchConditionPersons = v27; }).Val((Int16)0)));
                 if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, oPersons, "Count")), (Int16)0)))
                 {
-                    _.CALLm1argp(this, oCaseX, "AssociatePersons", _.ARGS.Ref(oPersons, v21 => { oPersons = v21; }));
+                    _.CALLm1argp(this, oCaseX, "AssociatePersons", _.ARGS.Ref(oPersons, v28 => { oPersons = v28; }));
                 }
             }
             else
             {
-                _.CALLm1argp(this, oCaseX, "AssociatePersons", _.ARGS.Ref(oPersons, v22 => { oPersons = v22; }));
+                _.CALLm1argp(this, oCaseX, "AssociatePersons", _.ARGS.Ref(oPersons, v29 => { oPersons = v29; }));
             }
 
         }
@@ -370,7 +370,7 @@ namespace TranslatedProgram
             //
 
             sCaseType = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg, "GetValue", "CaseType"), "data"));
-            oCase = _.OBJ(_.CALLm1argp(this, oHLServer, "CreateCase", _.ARGS.Ref(sCaseType, v23 => { sCaseType = v23; })));
+            oCase = _.OBJ(_.CALLm1argp(this, oHLServer, "CreateCase", _.ARGS.Ref(sCaseType, v30 => { sCaseType = v30; })));
             oHLCase = _.OBJ(_.CALLm1v0(this, oCase, "GetHLObject"));
 
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("case-id:", _.CSTR(_.CALLm1v0(this, oHLCase, "GetID"))));
@@ -378,7 +378,7 @@ namespace TranslatedProgram
             object byrefalias7 = oMailRequest, byrefalias8 = oCaseCfg, byrefalias9 = oHLServer;
             try
             {
-                _.CALLm1argp(this, _outer, "AssociateSenderToCase", _.ARGS.Ref(byrefalias7, v24 => { byrefalias7 = v24; }).Ref(byrefalias8, v25 => { byrefalias8 = v25; }).Ref(byrefalias9, v26 => { byrefalias9 = v26; }).Ref(oCase, v27 => { oCase = v27; }));
+                _.CALLm1argp(this, _outer, "AssociateSenderToCase", _.ARGS.Ref(byrefalias7, v31 => { byrefalias7 = v31; }).Ref(byrefalias8, v32 => { byrefalias8 = v32; }).Ref(byrefalias9, v33 => { byrefalias9 = v33; }).Ref(oCase, v34 => { oCase = v34; }));
             }
             finally { oMailRequest = byrefalias7; oCaseCfg = byrefalias8; oHLServer = byrefalias9; }
 
@@ -387,7 +387,7 @@ namespace TranslatedProgram
             object byrefalias10 = oMailRequest;
             try
             {
-                _.CALLm1argp(this, _outer, "SetCaseAttributes", _.ARGS.Ref(oHLCase, v28 => { oHLCase = v28; }).Ref(byrefalias10, v29 => { byrefalias10 = v29; }));
+                _.CALLm1argp(this, _outer, "SetCaseAttributes", _.ARGS.Ref(oHLCase, v35 => { oHLCase = v35; }).Ref(byrefalias10, v36 => { byrefalias10 = v36; }));
             }
             finally { oMailRequest = byrefalias10; }
 
@@ -450,7 +450,7 @@ namespace TranslatedProgram
 
             SearchCondition = _.CONCAT("CASEINFO.REFERENCENUMBER= ", refNumber);
 
-            cases = _.OBJ(_.CALLm1argp(this, oHLServer, "find_Cases", _.ARGS.Ref(SearchCondition, v30 => { SearchCondition = v30; }).Val((Int16)0)));
+            cases = _.OBJ(_.CALLm1argp(this, oHLServer, "find_Cases", _.ARGS.Ref(SearchCondition, v37 => { SearchCondition = v37; }).Val((Int16)0)));
 
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("cases:", _.CALLm1v0(this, cases, "count")));
 
@@ -463,7 +463,7 @@ namespace TranslatedProgram
                 object byrefalias11 = oMailRequest, byrefalias12 = oCaseCfg, byrefalias13 = oHLServer;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "ExtendCase", _.ARGS.Ref(oCase, v31 => { oCase = v31; }).Ref(byrefalias11, v32 => { byrefalias11 = v32; }).Ref(byrefalias12, v33 => { byrefalias12 = v33; }).Ref(byrefalias13, v34 => { byrefalias13 = v34; }));
+                    _.CALLm1argp(this, _outer, "ExtendCase", _.ARGS.Ref(oCase, v38 => { oCase = v38; }).Ref(byrefalias11, v39 => { byrefalias11 = v39; }).Ref(byrefalias12, v40 => { byrefalias12 = v40; }).Ref(byrefalias13, v41 => { byrefalias13 = v41; }));
                 }
                 finally { oMailRequest = byrefalias11; oCaseCfg = byrefalias12; oHLServer = byrefalias13; }
 
@@ -486,14 +486,14 @@ namespace TranslatedProgram
             object byrefalias14 = oMailRequestZeC, byrefalias15 = oHLServerZeC, byrefalias16 = ocaseZeC;
             try
             {
-                _.CALLm1argp(this, _outer, "AssociateSenderToCase", _.ARGS.Ref(byrefalias14, v35 => { byrefalias14 = v35; }).Ref(oCaseCfgZeC, v36 => { oCaseCfgZeC = v36; }).Ref(byrefalias15, v37 => { byrefalias15 = v37; }).Ref(byrefalias16, v38 => { byrefalias16 = v38; }));
+                _.CALLm1argp(this, _outer, "AssociateSenderToCase", _.ARGS.Ref(byrefalias14, v42 => { byrefalias14 = v42; }).Ref(oCaseCfgZeC, v43 => { oCaseCfgZeC = v43; }).Ref(byrefalias15, v44 => { byrefalias15 = v44; }).Ref(byrefalias16, v45 => { byrefalias16 = v45; }));
             }
             finally { oMailRequestZeC = byrefalias14; oHLServerZeC = byrefalias15; ocaseZeC = byrefalias16; }
 
             object byrefalias17 = oMailRequestZeC;
             try
             {
-                _.CALLm1v2(this, _outer, "SetSUAttributes", _.CALLm1v0(this, ocaseZeC, "getHLObject"), byrefalias17);
+                _.CALLm1argp(this, _outer, "SetSUAttributes", _.ARGS.Val(_.CALLm1v0(this, ocaseZeC, "getHLObject")).Ref(byrefalias17, v46 => { byrefalias17 = v46; }));
             }
             finally { oMailRequestZeC = byrefalias17; }
 

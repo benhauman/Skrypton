@@ -66,7 +66,7 @@ namespace TranslatedProgram
             }
 
             //VIP-Status des Anfragers abfragen und im Vorgang setzen
-            Valid = _.VAL(_.CALLm1argp(this, _env.hlCaller, "HasContent", _.ARGS.Val("PersonGeneral.VIPLevel").Val((Int16)0).Val((Int16)0)));
+            Valid = _.VAL(_.CALLm1v3(this, _env.hlCaller, "HasContent", "PersonGeneral.VIPLevel", (Int16)0, (Int16)0));
             if (_.IF(_.EQ(_.NullableNUM(Valid), (Int16)1)))
             {
                 VIP = _.VAL(_.CALLm1argp(this, _env.hlCaller, "GetValue", _.ARGS.Val("PersonGeneral.VIPLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
@@ -494,7 +494,7 @@ namespace TranslatedProgram
             }
 
             //VIP-Status des Anfragers abfragen und Imp Vorgang setzen
-            Valid = _.VAL(_.CALLm1argp(this, _env.hlCaller, "HasContent", _.ARGS.Val("PersonGeneral.VIPLevel").Val((Int16)0).Val((Int16)0)));
+            Valid = _.VAL(_.CALLm1v3(this, _env.hlCaller, "HasContent", "PersonGeneral.VIPLevel", (Int16)0, (Int16)0));
             if (_.IF(_.EQ(_.NullableNUM(Valid), (Int16)1)))
             {
                 VIP = _.VAL(_.CALLm1argp(this, _env.hlCaller, "GetValue", _.ARGS.Val("PersonGeneral.VIPLevel").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));

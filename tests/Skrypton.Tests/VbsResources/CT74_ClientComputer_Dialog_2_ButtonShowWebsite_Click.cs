@@ -82,7 +82,7 @@ namespace TranslatedProgram
                 _.SET(_.OBJ(oConn), this, with, "ActiveConnection");
                 _.SET("CreateNewSBCode", this, with, "CommandText");
                 _.SET(_.VAL(adCmdStoredProc), this, with, "CommandType");
-                _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue))));
+                _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1v3(this, with, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue)));
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; }))));
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@NewSBCode").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
                 _.CALLm1v0(this, with, "Execute");
@@ -107,7 +107,7 @@ namespace TranslatedProgram
                 _.SET(_.OBJ(oConn), this, with2, "ActiveConnection");
                 _.SET("CreateNewPersonalID", this, with2, "CommandText");
                 _.SET(_.VAL(adCmdStoredProc), this, with2, "CommandType");
-                _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("RETURN_VALUE").Val(adInteger).Val(adParamReturnValue))));
+                _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1v3(this, with2, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue)));
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; }))));
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@NewPersonalID").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
                 _.CALLm1v0(this, with2, "Execute");
