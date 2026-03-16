@@ -472,7 +472,7 @@ namespace TranslatedProgram
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {
-                    curnode = _.OBJ(_.CALLm2argp(this, xmlDoc, "documentElement", "selectSingleNode", _.ARGS.Val(_.CONCAT("//table/body/r/c", i))));
+                    curnode = _.OBJ(_.CALLm2v1(this, xmlDoc, "documentElement", "selectSingleNode", _.CONCAT("//table/body/r/c", i)));
                 });
                 _.HANDLEERROR(errOn, () => {
                     _.CALLm1v2(this, dict, "Add", _.CALLm1v0(this, n, "Text"), _.CALLm1v0(this, curnode, "Text"));

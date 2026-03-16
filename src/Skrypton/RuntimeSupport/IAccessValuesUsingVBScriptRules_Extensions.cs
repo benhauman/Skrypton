@@ -27,7 +27,7 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets);
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
         // This one allows for no arguments OR member accessors to be mentioned - this should only be used for errors cases (since, otherwise, a simple assignment
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
@@ -38,7 +38,7 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets);
+            source.SET(valueToSetTo, context, target, null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
 
         // Convenience methods for when there are no arguments (supporting up to MaxNumberOfMemberAccessorBeforeArraysRequired members accessors, just as the
@@ -48,83 +48,113 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
+            return source.CALL(context, target, [], ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
         }
         public static object? CALLm1v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, [CallerLineNumber] int line = 0)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: line);
+            return source.CALL(context, target, new[] { member1 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: line);
         }
         public static object? CALLm1v1(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]);
-            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
         }
         public static object? CALLm1v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]);
-            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]), line: 0);
         }
         public static object? CALLm1v3(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3]);
-            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3]), line: 0);
         }
         public static object? CALLm1v4(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4]);
-            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4]), line: 0);
         }
         public static object? CALLm1v5(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5]);
-            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5]), line: 0);
         }
         public static object? CALLm2v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new[] { member1, member2 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
+            return source.CALL(context, target, new[] { member1, member2 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
         }
-        public static object? CALLm3v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
+        public static object? CALLm2v1(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
+            return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
         }
-        public static object? CALLm4v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-
-            return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
-        }
-        public static object? CALLm5v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-
-            return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBrackets, line: 0);
-        }
+        //public static object? CALLm2v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]), line: 0);
+        //}
+        //public static object? CALLm2v3(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2, object value3)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3]), line: 0);
+        //}
+        //public static object? CALLm2v4(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2, object value3, object value4)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4]), line: 0);
+        //}
+        //public static object? CALLm2v5(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2, object value3, object value4, object value5)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5]), line: 0);
+        //}
+        //public static object? CALLm3v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
+        //}
+        //public static object? CALLm4v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
+        //}
+        //public static object? CALLm5v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
+        //}
 
         // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
         // translated code)
@@ -199,8 +229,8 @@ namespace Skrypton.RuntimeSupport
 
         private sealed class ZeroArgumentArgumentProvider : IProvideCallArguments
         {
-            internal static IProvideCallArguments WithEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(true);
-            internal static IProvideCallArguments WithoutEnforcedArgumentBrackets = new ZeroArgumentArgumentProvider(false);
+            //internal static IProvideCallArguments WithEnforcedArgumentBracketsEmpty = new ZeroArgumentArgumentProvider(true);
+            internal static IProvideCallArguments WithoutEnforcedArgumentBracketsEmpty = new ZeroArgumentArgumentProvider(false);
             private ZeroArgumentArgumentProvider(bool useBracketsWhereZeroArguments)
             {
                 UseBracketsWhereZeroArguments = useBracketsWhereZeroArguments;

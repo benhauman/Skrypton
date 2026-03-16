@@ -2750,7 +2750,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             get { return _valueRetriever.ARGS; }
         }
-        public object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object? context, object target, IReadOnlyCollection<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             return _valueRetriever.CALL(context, target, members, argumentProvider, line);
         }

@@ -140,7 +140,7 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Get populated read-only Booking Requirement data From GetSharedObject, then translate into a local copy we can edit
             // (since some methods in here try to mess about with properties on it)
-            objBookingRequirement = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetSharedObject", _.ARGS.Val("BookingRequirement")));
+            objBookingRequirement = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetSharedObject", "BookingRequirement"));
             objBookingRequirement = _.OBJ(_.CALLm1argp(this, _outer, "GetEditableBookingRequirement", _.ARGS.Ref(objBookingRequirement, v => { objBookingRequirement = v; })));
 
             dStart = _.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate"));
@@ -236,7 +236,7 @@ namespace TranslatedProgram
             // Close "staySelection" div and form
             _.CALLm1v1(this, pO, "Write", "</div>");
             _.CALLm1v1(this, pO, "Write", "</form>");
-            if (_.IF(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ChildPricing"))))
+            if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing")))
             {
                 _.CALLm1v1(this, pO, "Write", "<script type=\"text/javascript\">");
                 _.CALLm1v1(this, pO, "Write", "NewMind.ETWP.Booking.UnitSelectionChildPricingGuests.Init();");
@@ -352,7 +352,7 @@ namespace TranslatedProgram
                 //strNextStage = "redirect"
                 strNextStage = "checkout";
                 //This should stay as "checkout" until 1.4 is updated to recognise "redirect" stage
-                strPostUrl = _.VAL(_.CALLm2argp(this, _outer.Page, "PageInfo", "GetUrlFromPageID", _.ARGS.Val("EXTBOOKPROMPT")));
+                strPostUrl = _.VAL(_.CALLm2v1(this, _outer.Page, "PageInfo", "GetUrlFromPageID", "EXTBOOKPROMPT"));
                 if (_.IF(_.ISNULL(strPostUrl)))
                 {
                     _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "RenderBookingInfoForm: Unable to locate page EXTBOOKPROMPT, default to current page - is this correct behaviour??");
@@ -430,16 +430,16 @@ namespace TranslatedProgram
                 if (_.IF(_.NOT(_.CALLm1v0(this, _outer.Page, "WidgetView"))))
                 {
                     //Neeed to set market source override if redirecting to external site unless set above due to widgetview
-                    if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer")), (Int16)0), _.EQ(_.NullableSTR(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("ConfBookingMarketSourceID"))), ""))))
+                    if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer")), (Int16)0), _.EQ(_.NullableSTR(_.CALLm2v1(this, _outer.Page, "Site", "Params", "ConfBookingMarketSourceID")), ""))))
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("MarketSourceID")), "\" />"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "MarketSourceID"), "\" />"));
                     }
                     else
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("ConfBookingMarketSourceID")), "\" />"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "ConfBookingMarketSourceID"), "\" />"));
                     }
                 }
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"bookchannel\" value=\"", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ChannelID")), "\" />"));
+                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"bookchannel\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChannelID"), "\" />"));
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"reposturl\" value=\"", _outer.strExtBookUrl, "\" />"));
                 // 2009-09-21 DWR: New field to pass in so that the receiving site recognises booking as having
                 // come from another site (so it can update appropriate Provider Stats)
@@ -584,7 +584,7 @@ namespace TranslatedProgram
                 strPostUrl = _.VAL(_.LEFT(strPostUrl, _.SUBT(_.LEN(strPostUrl), (Int16)1)));
             }
 
-            strUrl = _.VAL(_.CALLm2argp(this, _outer.Page, "PageInfo", "GetUrlFromPageID", _.ARGS.Val("BOOKONLINE")));
+            strUrl = _.VAL(_.CALLm2v1(this, _outer.Page, "PageInfo", "GetUrlFromPageID", "BOOKONLINE"));
             if (_.IF(_.ISNULL(strUrl)))
             {
                 _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "GetPostUrl: Unable to locate page BOOKONLINE, default to current page - is this correct behaviour??");
@@ -654,7 +654,7 @@ namespace TranslatedProgram
             {
                 strGuestsFor = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/for", "for"));
                 //alas child pricing is different
-                if (_.IF(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ChildPricing"))))
+                if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing")))
                 {
 
                     strAdultsTitle = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/adults/selecttitle", "Please specify the number of adults in this room."));
@@ -1372,7 +1372,7 @@ namespace TranslatedProgram
             if (_.IF(_outer.bRenderAsCalendar))
             {
 
-                ReqDictTemp = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("RequestDict")));
+                ReqDictTemp = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "RequestDict"));
                 _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "AsyncAction", "unitselection");
                 _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "PartialRenderControlList", _.CALLm1v0(this, _outer.Context, "PageControlKey"));
                 _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "Silent", "1");
@@ -1386,7 +1386,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO, "Write", "<script type=\"text/javascript\">");
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("NewMind.ETWP.ControlData[", _.CALLm1v0(this, _outer.Context, "PageControlKey"), "] = { "));
                 _.CALLm1v1(this, pO, "Write", "UnitSelPartialRenderLink: '");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsJSON")), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp, "Querystring"))));
+                _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsJSON"), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp, "Querystring"))));
                 _.CALLm1v1(this, pO, "Write", "'");
                 _.CALLm1v1(this, pO, "Write", " };");
                 _.CALLm1v1(this, pO, "Write", "NewMind.ETWP.Booking.InitUnitSel();");
@@ -1474,10 +1474,10 @@ namespace TranslatedProgram
                     {
                         bStayHasLocalAvail = true;
                     }
-                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier, "IsExternal"), _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ForceExternal")))));
+                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier, "IsExternal"), _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal"))));
 
                     // Don't render FrontDesk if got local avail for this stay and not enabled ForceExternal
-                    bSkipSupplier = _.VAL(_.AND(bStayHasLocalAvail, _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.NOT(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ForceExternal"))))));
+                    bSkipSupplier = _.VAL(_.AND(bStayHasLocalAvail, _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.NOT(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal")))));
                     if (_.IF(_.NOT(bSkipSupplier)))
                     {
 
@@ -1634,7 +1634,7 @@ namespace TranslatedProgram
                         object byrefalias19 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v91 => { pO = v91; }).Ref(intProdKey, v92 => { intProdKey = v92; }).Ref(byrefalias19, v93 => { byrefalias19 = v93; }).Ref(intBookingType, v94 => { intBookingType = v94; }).Ref(strSupplierId, v95 => { strSupplierId = v95; }).Ref(strSupplierName, v96 => { strSupplierName = v96; }).Ref(strSupplierEviivoName, v97 => { strSupplierEviivoName = v97; }).Ref(strSupplierQuality, v98 => { strSupplierQuality = v98; }).Ref(strSupplierLogo, v99 => { strSupplierLogo = v99; }).Val(_.CALLm1v0(this, _.CALLm2argp(this, objSupplier, "Units", "GetItem", _.ARGS.Val((Int16)0)), "IndustryClassification")));
+                            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v91 => { pO = v91; }).Ref(intProdKey, v92 => { intProdKey = v92; }).Ref(byrefalias19, v93 => { byrefalias19 = v93; }).Ref(intBookingType, v94 => { intBookingType = v94; }).Ref(strSupplierId, v95 => { strSupplierId = v95; }).Ref(strSupplierName, v96 => { strSupplierName = v96; }).Ref(strSupplierEviivoName, v97 => { strSupplierEviivoName = v97; }).Ref(strSupplierQuality, v98 => { strSupplierQuality = v98; }).Ref(strSupplierLogo, v99 => { strSupplierLogo = v99; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier, "Units", "GetItem", (Int16)0), "IndustryClassification")));
                         }
                         finally { objRenderSettings = byrefalias19; }
 
@@ -1837,7 +1837,7 @@ namespace TranslatedProgram
             //    > Units (list of integers)
             // - We're going to loop through the availability recordset, so must remember
             //   to return it back to the beginning when we're done
-            arrReqUnitOptions = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+            arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             var loopEnd15 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry, "Units", "Count"), (Int16)1));
             var loopStart15 = _.NUM((Int16)0, loopEnd15, (Int16)1);
             if (_.StrictLTE(loopStart15, loopEnd15))
@@ -1858,7 +1858,7 @@ namespace TranslatedProgram
             //       = list of ReqNo values that this may be
             //         a user selection for
             intUnitSel = (Int16)0;
-            arrReqUnitSelections = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+            arrReqUnitSelections = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             while (true)
             {
                 intUnitSel = _.ADD(intUnitSel, (Int16)1);
@@ -1895,7 +1895,7 @@ namespace TranslatedProgram
             // Input list SHOULD be initialised as an empty list, but just in case..
             if (_.IF(_.OR(_.ISEMPTY(arrReqUnitOptions), _.ISNULL(arrReqUnitOptions))))
             {
-                arrReqUnitOptions = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+                arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             }
 
             // If we've already got list items, check whether we're still working on the same
@@ -1916,10 +1916,10 @@ namespace TranslatedProgram
             }
 
             // Need to create a new entry
-            objEntry = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsValueBag")));
+            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
             _.SET(_.VAL(intReqNo), this, objEntry, null, _.ARGS.Val("ReqNo"));
             _.SET(_.VAL(intNumPeople), this, objEntry, null, _.ARGS.Val("NumPeople"));
-            _.SET(_.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList"))), this, objEntry, null, _.ARGS.Val("Units"));
+            _.SET(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("Units"));
             object byrefalias25 = intUnitKey;
             try
             {
@@ -1956,7 +1956,7 @@ namespace TranslatedProgram
                 object byrefalias27 = arrReqUnitSelections;
                 try
                 {
-                    byrefalias27 = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+                    byrefalias27 = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
                 }
                 finally { arrReqUnitSelections = byrefalias27; }
             }
@@ -2011,10 +2011,10 @@ namespace TranslatedProgram
             }
 
             // Preparer new entry
-            objEntry = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsValueBag")));
+            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
             _.SET(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, _.ARGS.Val("NumPeople"));
             _.SET(_.VAL(intUnitKey), this, objEntry, null, _.ARGS.Val("UnitKey"));
-            _.SET(_.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList"))), this, objEntry, null, _.ARGS.Val("PossReqNos"));
+            _.SET(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("PossReqNos"));
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
@@ -2116,7 +2116,7 @@ namespace TranslatedProgram
             //      maps Selection 1 -> Option 2
             //           Selection 2 -> Option 3
             //           Selection 3 -> Option 1
-            lsPermutations = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+            lsPermutations = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             var loopEnd17 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitSelections, "Count"), (Int16)1));
             var loopStart17 = _.NUM((Int16)0, loopEnd17, (Int16)1);
             if (_.StrictLTE(loopStart17, loopEnd17))
@@ -2143,7 +2143,7 @@ namespace TranslatedProgram
                         // We want to take our whatever permutation strings we have so far and expand
                         // them to include the possibilities for this ReqUnitSelection
                         // - Make a copy of lsPermutations thus far
-                        lsTemp = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+                        lsTemp = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
                         var loopEnd19 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPermutations, "Count"), (Int16)1));
                         var loopStart19 = _.NUM((Int16)0, loopEnd19, (Int16)1);
                         if (_.StrictLTE(loopStart19, loopEnd19))
@@ -2198,7 +2198,7 @@ namespace TranslatedProgram
             // option which don't have a selection matched to them)
             // - Start off with a full-size list (matching size of arrReqUnitOptions) with
             //   with all zero values
-            lsUnitKeys = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+            lsUnitKeys = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             var loopEnd23 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions, "Count"), (Int16)1));
             var loopStart23 = _.NUM((Int16)0, loopEnd23, (Int16)1);
             if (_.StrictLTE(loopStart23, loopEnd23))
@@ -2246,7 +2246,7 @@ namespace TranslatedProgram
             // Determine a score for the Unit Selection / Option permutations calculated above.
             // Basically, give a score of one for each non-duplicated match.
 
-            lsReqNos = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("clsList")));
+            lsReqNos = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
             arrValues = _.SPLIT(strPermutation, ",");
             intScore = (Int16)0;
             var loopEnd25 = _.UBOUND(arrValues);
@@ -2458,7 +2458,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"IsEviivoBooking\" value=\"yes\" />");
                 if (_.IF(_outer.IsExternalBooking))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"eviivoconf\" value=\"", _.CLNG(_.CONCAT("0", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Integration_Eviivo_ConfigSet")))), "\" />"));
+                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"eviivoconf\" value=\"", _.CLNG(_.CONCAT("0", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Integration_Eviivo_ConfigSet"))), "\" />"));
                 }
             }
             _.CALLm1v1(this, pO, "Write", "</div>");
@@ -2471,7 +2471,7 @@ namespace TranslatedProgram
             // Product List or Detail Control, which would be better avoided. A much better solution is to enable VB Polling and avoid this legacy mechanism entirely.
             // Note: We could potentially render the button for Local Avail and not for Eviivo but I think that that's more confusing than helpful, particularly since
             // it's inconsistent with the Product List / Detail implementation (which bases its decision upon whether the Product has an Eviivo Id).
-            if (_.IF(_.AND(_.AND(_.NOT(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_EnablePolling"))), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")), _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Integration_Eviivo_ExtBooking_Enable")))))
+            if (_.IF(_.AND(_.AND(_.NOT(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnablePolling")), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Integration_Eviivo_ExtBooking_Enable"))))
             {
                 _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "Not rendering any Book buttons for Unit Selection since the legacy Eviivo External Booking configuration is enabled (the recommended alternative is to use the deep-link-supporting Eviivo External Booking configuration, this may be done by enabling VB Polling)");
                 return BookingUI_StayDetails_retVal;
@@ -2483,7 +2483,7 @@ namespace TranslatedProgram
             // website, but that is understood and how it works - see FogBugz 10367). I've tried to make the markup for this button reminiscent of
             // that in Product List and Detail to try to make any additional styling requirements as low as possible.
             strProductBookingWebIfAny = _.VAL(_.TRIM(_.CONCAT("", strProductBookingWebIfAny)));
-            if (_.IF(_.AND(_.AND(_.AND(bTeleBooking, _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_EnableByPhone"))), _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_AllowOffSiteTelephoneBookings"))), _.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), ""))))
+            if (_.IF(_.AND(_.AND(_.AND(bTeleBooking, _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnableByPhone")), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_AllowOffSiteTelephoneBookings")), _.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), ""))))
             {
                 _.CALLm1v1(this, _outer.Page, "PrintTrace", "Since this is a Telephone Booking Product with a Booking Website and the 'Allow Offsite Booking Web Booking for Telephone Bookings' parameter is enabled, a button to the Booking Website is being rendered");
                 _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayButtons\">");
@@ -2552,13 +2552,13 @@ namespace TranslatedProgram
 
                 // Render relevant offline booking message
                 _.CALLm1v1(this, pO, "Write", "<div id=\"pnTeleBook_PromptCall\">");
-                if (_.IF(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_EnableByPhone"))))
+                if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnableByPhone")))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/telebook/prompt", "One or more of the units you have selected must be booked via telephone. Please ring #bookingtelephone# to continue this booking."), "#bookingtelephone#", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_TelephoneNumber"))), "</p>"));
+                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/telebook/prompt", "One or more of the units you have selected must be booked via telephone. Please ring #bookingtelephone# to continue this booking."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/indtelebook/prompt", "Although available, some of the units you have selected cannot be booked online. Alternatively, select different units with online booking only."), "#bookingtelephone#", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_TelephoneNumber"))), "</p>"));
+                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/indtelebook/prompt", "Although available, some of the units you have selected cannot be booked online. Alternatively, select different units with online booking only."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
                 }
                 _.CALLm1v1(this, pO, "Write", "</div>");
             }
@@ -2818,7 +2818,7 @@ namespace TranslatedProgram
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iSz, "\" />"));
 
             //#MJ - need to check with Rich if we want to indicate who's going into what room
-            if (_.IF(_.AND(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ChildPricing")), _.GT(_.NullableNUM(_.CALLm1v0(this, objUnit, "ChildrenRequirement")), (Int16)0))))
+            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing"), _.GT(_.NullableNUM(_.CALLm1v0(this, objUnit, "ChildrenRequirement")), (Int16)0))))
             {
                 _.CALLm1v1(this, pO, "Write", " - (");
                 _.CALLm1v1(this, pO, "Write", "<span class=\"ReqmntDetails\">");
@@ -3288,7 +3288,7 @@ namespace TranslatedProgram
             object i = null;
             // 2009-02-13 DWR: Can't remove spaces from content here because estate ids can have
             // spaces in (eg. "Arun DC" in TSE)
-            aryExtBookEstate = _.SPLIT(_.REPLACE(_.TRIM(_.CONCAT("", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ExtBookEstateMapping")))), VBScriptConstants.vbCrLf, ""), ",");
+            aryExtBookEstate = _.SPLIT(_.REPLACE(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ExtBookEstateMapping"))), VBScriptConstants.vbCrLf, ""), ",");
             var loopEnd30 = _.NUM(_.SUBT(_.UBOUND(aryExtBookEstate), (Int16)1));
             var loopStart30 = _.NUM((Int16)0, loopEnd30, (Int16)2);
             if (_.StrictLTE(loopStart30, loopEnd30))
@@ -3328,7 +3328,7 @@ namespace TranslatedProgram
         public object InitExternalBookingSettings()
         {
             object InitExternalBookingSettings_retVal = null;
-            if (_.IF(_.AND(_.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ForceExternal")), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2argp(this, _outer.Page, "Site", "Params", _.ARGS.Val("Booking_ExtBookEstateMapping"))))), ""))))
+            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal"), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ExtBookEstateMapping")))), ""))))
             {
                 _outer.IsExternalBooking = true;
             }
@@ -3349,7 +3349,7 @@ namespace TranslatedProgram
             object GetEditableBookingRequirement_retVal = null;
             object objBookingRequirementNew = null;
 
-            objBookingRequirementNew = _.OBJ(_.CALLm2argp(this, _outer.Page, "Functions", "GetNewObject", _.ARGS.Val("BookingRequirement")));
+            objBookingRequirementNew = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "BookingRequirement"));
             var with = _.OBJ(objBookingRequirementNew);
             _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate")), this, with, "VisitDate");
             _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Nights")), this, with, "Nights");

@@ -807,7 +807,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// require nested CALL executions, one with target "Test" and a single argument "0" and a second with target "a" and a single
         /// argument which was the result of the first call.
         /// </summary>
-        public object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public object? CALL(object? context, object target, IReadOnlyCollection<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -819,7 +819,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             object[] arguments = argumentProvider.GetInitialValues();
             try
             {
-                return CALL(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
+                return CALLCore(context, target, members, arguments, argumentProvider.UseBracketsWhereZeroArguments, line);
             }
             finally
             {
@@ -832,7 +832,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object? CALL(object? context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
+        private object? CALLCore(object? context, object target, IEnumerable<string> members, object[] arguments, bool useBracketsWhereZeroArguments, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));

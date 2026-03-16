@@ -19,7 +19,7 @@ namespace Skrypton.RuntimeSupport
         /// argument which was the result of the first call.
         /// </summary>
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        object? CALL(object? context, object target, IEnumerable<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
+        object? CALL(object? context, object target, IReadOnlyCollection<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0);
 
         /// <summary>
         /// This will throw an exception for null target or arguments references or if the setting fails (eg. invalid number of arguments,

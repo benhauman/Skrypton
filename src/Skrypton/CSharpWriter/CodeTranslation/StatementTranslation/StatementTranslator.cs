@@ -1136,7 +1136,26 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
+                //callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                if (allArgsConfirmedToBeByVal)
+                {
+                    //todoLength = 9876;
+                    callName = argumentsArray.Length switch
+                    {
+                        1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v1), // test: CT74_
+                        //2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v2),
+                        //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3),
+                        //4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4),
+                        //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
+                        _ => throw new NotSupportedException($"Overload 'CALLm2v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
+                    };
+                }
+                else
+                {
+                    //use 'byref' syntax
+                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
+                }
                 callNameResolved = true;
             }
             else if (targetMemberAccessTokensArray.Length == 3 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
@@ -1187,7 +1206,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 //if (isConfirmedToBeByVal && todoLength == 9876)
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
-                                              && targetMemberAccessTokensArray.Length == 1 // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
+                                              && (targetMemberAccessTokensArray.Length >= 1 && targetMemberAccessTokensArray.Length <= 2) // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                     && (argumentsArray.Length >= 1)// && argumentsArray.Length <= 5)
                         )
                 {
