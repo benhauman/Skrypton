@@ -550,7 +550,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
                 CaseCallers = VBScriptConstants.Nothing;
-                CaseCallers = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)130)));
+                CaseCallers = _.VAL(_.CALLm1v4(this, _env.hlObj, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)130));
                 var enumerationContent = _.ENUMERABLE(CaseCallers).GetEnumerator();
                 while (true)
                 {
@@ -706,7 +706,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
                 CaseCallers = VBScriptConstants.Nothing;
-                CaseCallers = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)130)));
+                CaseCallers = _.VAL(_.CALLm1v4(this, _env.hlObj, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)130));
                 var enumerationContent2 = _.ENUMERABLE(CaseCallers).GetEnumerator();
                 while (true)
                 {
@@ -1209,7 +1209,7 @@ namespace TranslatedProgram
                 if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
                 {
                     CaseCallers = VBScriptConstants.Nothing;
-                    CaseCallers = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)130)));
+                    CaseCallers = _.VAL(_.CALLm1v4(this, _env.hlObj, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)130));
                     var enumerationContent3 = _.ENUMERABLE(CaseCallers).GetEnumerator();
                     while (true)
                     {
@@ -2046,7 +2046,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
                 CaseCallers = VBScriptConstants.Nothing;
-                CaseCallers = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)130)));
+                CaseCallers = _.VAL(_.CALLm1v4(this, _env.hlObj, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)130));
                 var enumerationContent4 = _.ENUMERABLE(CaseCallers).GetEnumerator();
                 while (true)
                 {
@@ -2381,7 +2381,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(CallerCount), (Int16)0)))
             {
                 CaseCallers = VBScriptConstants.Nothing;
-                CaseCallers = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)130)));
+                CaseCallers = _.VAL(_.CALLm1v4(this, _env.hlObj, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)130));
                 var enumerationContent5 = _.ENUMERABLE(CaseCallers).GetEnumerator();
                 while (true)
                 {

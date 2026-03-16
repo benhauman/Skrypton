@@ -310,7 +310,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v53 => { _outer.QryString = v53; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent2 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -427,7 +427,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v80 => { _outer.QryString = v80; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent3 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -542,7 +542,7 @@ namespace TranslatedProgram
                         _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v107 => { _outer.QryString = v107; })));
                         if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                         {
-                            _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                            _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                             var enumerationContent4 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                             while (true)
                             {
@@ -659,7 +659,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v134 => { _outer.QryString = v134; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent5 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -777,7 +777,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v161 => { _outer.QryString = v161; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent6 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -895,7 +895,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v188 => { _outer.QryString = v188; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent7 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1013,7 +1013,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v215 => { _outer.QryString = v215; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent8 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1131,7 +1131,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v242 => { _outer.QryString = v242; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent9 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1249,7 +1249,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v269 => { _outer.QryString = v269; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent10 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1367,7 +1367,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v296 => { _outer.QryString = v296; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent11 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1485,7 +1485,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v323 => { _outer.QryString = v323; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent12 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1603,7 +1603,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v350 => { _outer.QryString = v350; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent13 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1720,7 +1720,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v377 => { _outer.QryString = v377; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent14 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1838,7 +1838,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v404 => { _outer.QryString = v404; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent15 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -1956,7 +1956,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v431 => { _outer.QryString = v431; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent16 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2074,7 +2074,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v458 => { _outer.QryString = v458; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent17 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2192,7 +2192,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v485 => { _outer.QryString = v485; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent18 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2310,7 +2310,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v512 => { _outer.QryString = v512; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent19 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2428,7 +2428,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v539 => { _outer.QryString = v539; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent20 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2546,7 +2546,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v566 => { _outer.QryString = v566; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent21 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2664,7 +2664,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v593 => { _outer.QryString = v593; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent22 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2782,7 +2782,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v620 => { _outer.QryString = v620; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent23 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -2899,7 +2899,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v647 => { _outer.QryString = v647; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent24 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -3017,7 +3017,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v674 => { _outer.QryString = v674; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent25 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -3136,7 +3136,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v701 => { _outer.QryString = v701; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent26 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -3255,7 +3255,7 @@ namespace TranslatedProgram
                                 _outer.Qry = _.OBJ(_.CALLm1argp(this, _env.hlContext, "OpenSearch", _.ARGS.Ref(_outer.QryString, v728 => { _outer.QryString = v728; })));
                                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v2(this, _outer.Qry, "GetItemCount", (Int16)0, (Int16)0)), "1")))
                                 {
-                                    _outer.AssetGroups = _.VAL(_.CALLm1argp(this, _outer.Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+                                    _outer.AssetGroups = _.VAL(_.CALLm1v4(this, _outer.Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
                                     var enumerationContent27 = _.ENUMERABLE(_outer.AssetGroups).GetEnumerator();
                                     while (true)
                                     {
@@ -3315,7 +3315,7 @@ namespace TranslatedProgram
                 if (_.IF(_.AND(_.AND(_.EQ(_.NullableSTR(_outer.CreateCI), "1"), _.EQ(_.NullableSTR(_outer.CIisCreated), "1")), _.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusChangedStorno"))))
                 {
                     //Anzahl assoziierte CIs ermitteln
-                    _outer.objs = _.VAL(_.CALLm1argp(this, _outer.hlCase, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val(119155)));
+                    _outer.objs = _.VAL(_.CALLm1v4(this, _outer.hlCase, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), 119155));
                     //DesktopComputer
                     var enumerationContent29 = _.ENUMERABLE(_outer.objs).GetEnumerator();
                     while (true)

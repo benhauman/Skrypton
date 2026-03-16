@@ -84,7 +84,7 @@ namespace TranslatedProgram
                 _.SET(_.VAL(adCmdStoredProc), this, with, "CommandType");
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1v3(this, with, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue)));
                 _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; }))));
-                _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@NewSBCode").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
+                _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1v4(this, with, "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10)));
                 _.CALLm1v0(this, with, "Execute");
                 parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with, "Parameters", (Int16)2), "Value"));
 
@@ -109,7 +109,7 @@ namespace TranslatedProgram
                 _.SET(_.VAL(adCmdStoredProc), this, with2, "CommandType");
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1v3(this, with2, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue)));
                 _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; }))));
-                _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@NewPersonalID").Val(adVarWChar).Val(adParamOutput).Val((Int16)10))));
+                _.CALLm2argp(this, with2, "Parameters", "Append", _.ARGS.Val(_.CALLm1v4(this, with2, "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10)));
                 _.CALLm1v0(this, with2, "Execute");
                 parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2, "Parameters", (Int16)2), "Value"));
 

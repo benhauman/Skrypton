@@ -213,15 +213,15 @@ namespace TranslatedProgram
             orgaType = _.VAL(_.CALLm1v0(this, hlOrgUnit, "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Division")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1argp(this, hlOrgUnit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("CompanyView")));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit, "GetItems", 65536, (Int16)0, (Int16)0, "CompanyView"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Site")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1argp(this, hlOrgUnit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Site2Company")));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit, "GetItems", 65536, (Int16)0, (Int16)0, "Site2Company"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Company")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1argp(this, hlOrgUnit, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Company2Company")));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit, "GetItems", 65536, (Int16)0, (Int16)0, "Company2Company"));
             }
 
             //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
@@ -326,7 +326,7 @@ namespace TranslatedProgram
             if (ifResult2)
             {
                 rsltOrgUnit = "";
-                rsltOrgUnit = _.VAL(_.CALLm1argp(this, hlPerson, "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Val("Person2Organization")));
+                rsltOrgUnit = _.VAL(_.CALLm1v4(this, hlPerson, "GetItems", 65536, (Int16)0, (Int16)0, "Person2Organization"));
                 if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltOrgUnit)), (Int16)0)))
                 {
                     FirstOrgUnit = _.OBJ(_.CALLm0argp(this, rsltOrgUnit, _.ARGS.Val((Int16)0)));
@@ -1412,7 +1412,7 @@ namespace TranslatedProgram
             Qry = VBScriptConstants.Nothing;
             rsltQuery = "";
             Qry = _.OBJ(_.CALLm1argp(this, hlSrvContext, "OpenSearch", _.ARGS.Ref(srchQuery, v89 => { srchQuery = v89; })));
-            rsltQuery = _.VAL(_.CALLm1argp(this, Qry, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Val((Int16)0)));
+            rsltQuery = _.VAL(_.CALLm1v4(this, Qry, "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltQuery)), (Int16)0)))
             {
                 MIG_CheckCostCenter_retVal = true;

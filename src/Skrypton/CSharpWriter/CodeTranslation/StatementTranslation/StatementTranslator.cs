@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
@@ -1103,7 +1104,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
                 callNameResolved = true;
             }
-            else if (targetMemberAccessTokensArray.Length == 1 && (argumentsArray.Length >= 1 && argumentsArray.Length <= 3) && zeroArgumentBracketsPresence == null)
+            else if (targetMemberAccessTokensArray.Length == 1 && (argumentsArray.Length >= 1 && argumentsArray.Length <= 4) && zeroArgumentBracketsPresence == null)
             {
                 bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
                 bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
@@ -1118,9 +1119,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v2);
                     }
-                    else
+                    else if (argumentsArray.Length == 3)
                     {
                         callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v3);
+                    }
+                    else if (argumentsArray.Length == 4)
+                    {
+                        // test: 'TextFile1'
+                        callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v4);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
                     }
                 }
                 else
@@ -1195,7 +1205,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 //if (isConfirmedToBeByVal && todoLength == 9876)
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
-                    && (argumentsArray.Length >= 1 && argumentsArray.Length <= 3)
+                    && (argumentsArray.Length >= 1 && argumentsArray.Length <= 4)
                     && targetMemberAccessTokensArray.Length == 1 // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                         )
                 {

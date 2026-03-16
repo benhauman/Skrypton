@@ -163,7 +163,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				_.RAISEERROR(VBScriptConstants.vbObjectError);
 				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"");
 				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"", ""Test"");
-				_.CALLm1argp(this, _, ""RAISEERROR"", _.ARGS.Val(VBScriptConstants.vbObjectError).Val(""Source"").Val(""Test"").Val(""Bonus Argument""));
+				_.CALLm1v4(this, _, ""RAISEERROR"", VBScriptConstants.vbObjectError, ""Source"", ""Test"", ""Bonus Argument"");
 				_.CLEARANYERROR();
 				_.CLEARANYERROR();
 				_.CALLm1v1(this, _, ""CLEARANYERROR"", ""Bonus Argument"");";

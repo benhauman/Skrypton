@@ -81,6 +81,14 @@ namespace Skrypton.RuntimeSupport
             var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3]);
             return source.CALL(context, target, new[] { member1 }, argp, line: 0);
         }
+        public static object? CALLm1v4(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var argp = DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4]);
+            return source.CALL(context, target, new[] { member1 }, argp, line: 0);
+        }
         public static object? CALLm2v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
