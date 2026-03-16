@@ -156,6 +156,14 @@ namespace Skrypton.RuntimeSupport
         //    return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
         //}
 
+        public static object? CALLm3v1(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, object value1)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1, member2, member3 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
+        }
+
         // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
         // translated code)
         public static object? CALLarrmargp(this IAccessValuesUsingVBScriptRules source, object context, object target, string[] members, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)
@@ -208,24 +216,24 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1, member2, member3 }, argumentProviderBuilder.GetArgs(), line: 0);
         }
-        public static object? CALLm4argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, IBuildCallArgumentProviders argumentProviderBuilder)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (argumentProviderBuilder == null)
-                throw new ArgumentNullException(nameof(argumentProviderBuilder));
-
-            return source.CALL(context, target, new[] { member1, member2, member3, member4 }, argumentProviderBuilder.GetArgs(), line: 0);
-        }
-        public static object? CALLm5argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5, IBuildCallArgumentProviders argumentProviderBuilder)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (argumentProviderBuilder == null)
-                throw new ArgumentNullException(nameof(argumentProviderBuilder));
-
-            return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, argumentProviderBuilder.GetArgs(), line: 0);
-        }
+        //public static object? CALLm4argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, IBuildCallArgumentProviders argumentProviderBuilder)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //    if (argumentProviderBuilder == null)
+        //        throw new ArgumentNullException(nameof(argumentProviderBuilder));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2, member3, member4 }, argumentProviderBuilder.GetArgs(), line: 0);
+        //}
+        //public static object? CALLm5argp(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5, IBuildCallArgumentProviders argumentProviderBuilder)
+        //{
+        //    if (source == null)
+        //        throw new ArgumentNullException(nameof(source));
+        //    if (argumentProviderBuilder == null)
+        //        throw new ArgumentNullException(nameof(argumentProviderBuilder));
+        //
+        //    return source.CALL(context, target, new[] { member1, member2, member3, member4, member5 }, argumentProviderBuilder.GetArgs(), line: 0);
+        //}
 
         private sealed class ZeroArgumentArgumentProvider : IProvideCallArguments
         {

@@ -1160,7 +1160,25 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 3 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
-                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3argp);
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                if (allArgsConfirmedToBeByVal)
+                {
+                    //todoLength = 9876;
+                    callName = argumentsArray.Length switch
+                    {
+                        1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v1), // test: UnitSelection_Renderer_NoSelects
+                        //2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v2),
+                        //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v3),
+                        //4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v4),
+                        //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v5),
+                        _ => throw new NotSupportedException($"Overload 'CALLm3v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
+                    };
+                }
+                else
+                {
+                    //use 'byref' syntax
+                    callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3argp);
+                }
                 callNameResolved = true;
             }
             else
