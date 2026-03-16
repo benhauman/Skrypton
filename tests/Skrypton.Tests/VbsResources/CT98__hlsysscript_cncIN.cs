@@ -142,8 +142,8 @@ namespace TranslatedProgram
             object fmKeywords = null;
             object hrKeywords = null;
             object reportText = null;
-            rfKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[ServiceRequest]").Val("Anfrage").Val("request").Val("Frage").Val("question")));
-            imKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.Val("[Incident]").Val("Incident").Val("Störung").Val("Hilfe").Val("help")));
+            rfKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[ServiceRequest]", "Anfrage", "request", "Frage", "question"));
+            imKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[Incident]", "Incident", "Störung", "Hilfe", "help"));
             cmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[RFC]", "Änderung", "Change"));
             fmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[Facility]", "Haustechnik", "FM"));
             hrKeywords = _.VAL(_.CALLm1v2(this, _, "ARRAY", "[HR]", "Personal"));

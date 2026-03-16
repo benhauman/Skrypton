@@ -1104,7 +1104,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
                 callNameResolved = true;
             }
-            else if (targetMemberAccessTokensArray.Length == 1 && (argumentsArray.Length >= 1 && argumentsArray.Length <= 4) && zeroArgumentBracketsPresence == null)
+            else if (targetMemberAccessTokensArray.Length == 1 && (argumentsArray.Length >= 1 && argumentsArray.Length <= 5) && zeroArgumentBracketsPresence == null)
             {
                 bool forceAllArgumentsToBeByVal = targetIsKnownToBeBuiltInFunction;
                 bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
@@ -1127,6 +1127,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         // test: 'TextFile1'
                         callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v4);
+                    }
+                    else if (argumentsArray.Length == 5)
+                    {
+                        // test: 'CT98__hlsysscript_cncIN'
+                        callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v5);
                     }
                     else
                     {
@@ -1205,7 +1210,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 //if (isConfirmedToBeByVal && todoLength == 9876)
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
-                    && (argumentsArray.Length >= 1 && argumentsArray.Length <= 4)
+                    && (argumentsArray.Length >= 1 && argumentsArray.Length <= 5)
                     && targetMemberAccessTokensArray.Length == 1 // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                         )
                 {

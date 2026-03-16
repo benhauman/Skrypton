@@ -24,7 +24,7 @@ namespace TranslatedProgram
             var with = _.OBJ(_outer.adoSQLCmdParam);
             _.SET(VBScriptConstants.Nothing, this, with, "ActiveConnection");
             _.CALLm2argp(this, with, "Pr", "Ap", _.ARGS.Val(_.CALLm1v3(this, with, "CreateParameterX", "RETURN_VALUEx", (Int16)3, (Int16)4)));
-            _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1argp(this, with, "CreateParameterY", _.ARGS.Val("@FirstCharName").Val((Int16)202).Val((Int16)1).Val((Int16)1).Val("FirstCharName"))));
+            _.CALLm2argp(this, with, "Parameters", "Append", _.ARGS.Val(_.CALLm1v5(this, with, "CreateParameterY", "@FirstCharName", (Int16)202, (Int16)1, (Int16)1, "FirstCharName")));
             _.CALLm1v0(this, with, "Execute");
             _outer.parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with, "Parameters", (Int16)2), "Value"));
         }

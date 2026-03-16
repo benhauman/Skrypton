@@ -142,9 +142,16 @@ namespace Skrypton.ScriptControlSupport
                 {
                     if (diagnostic.Severity == DiagnosticSeverity.Error)
                     {
-                        errorsBuffer.AppendLine(diagnostic.ToString());
+                        errorsBuffer.AppendLine($"c# {diagnostic.Severity}:" + diagnostic.ToString());
+                    }
+                    else
+                    {
+                        errorsBuffer.AppendLine($"c# {diagnostic.Severity}::" + diagnostic.ToString());
                     }
                 }
+
+                foreach (Diagnostic diagnostic in emitResult.Diagnostics)
+                    Console.WriteLine(diagnostic);
 
                 Console.WriteLine(errorsBuffer.ToString());
 
@@ -152,14 +159,6 @@ namespace Skrypton.ScriptControlSupport
                 throw new InvalidOperationException("Compilation failed.");
                 // Or if using NUnit/xUnit:
                 // Assert.Fail("Compilation failed.");
-            }
-
-
-            if (!emitResult.Success)
-            {
-                foreach (Diagnostic diagnostic in emitResult.Diagnostics)
-                    Console.WriteLine(diagnostic);
-                return null;
             }
 
             // Load assembly from memory

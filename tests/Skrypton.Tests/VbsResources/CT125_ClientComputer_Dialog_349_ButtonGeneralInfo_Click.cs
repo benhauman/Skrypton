@@ -376,7 +376,7 @@ namespace TranslatedProgram
             colorWarning = "#F20012";
             colorCheck = "#1B709F";
 
-            hostname = _.VAL(_.CALLm1argp(this, _env.hlobj, "GetValue", _.ARGS.Val("ComputerDetail.Hostname").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            hostname = _.VAL(_.CALLm1v5(this, _env.hlobj, "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             if (_.IF(_.EQ(_.NullableSTR(hostname), "")))
             {

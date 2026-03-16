@@ -39,7 +39,7 @@ namespace TranslatedProgram
         {
             object task = null; /* Undeclared in source */
             object Person = null; /* Undeclared in source */
-            _.CALLm1argp(this, task, "SetValue", _.ARGS.Val("RoutingHelper.AgentID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val(_.CALLm1argp(this, Person, "GetValue", _.ARGS.Val("HLOBJECTINFO.ID").Val((Int16)0).Val((Int16)0).Val(_.CALLm1argp(this, task, "GetSvcUnitCount", _.ARGS.ForceBrackets())).Val((Int16)0))));
+            _.CALLm1v5(this, task, "SetValue", "RoutingHelper.AgentID", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v5(this, Person, "GetValue", "HLOBJECTINFO.ID", (Int16)0, (Int16)0, _.CALLm1argp(this, task, "GetSvcUnitCount", _.ARGS.ForceBrackets()), (Int16)0));
         }
     }
 

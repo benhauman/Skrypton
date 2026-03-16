@@ -44,7 +44,7 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALLm1argp(this, _env.hlObj, "GetValue", _.ARGS.Val("vRealize.LansweeperURL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+            URL = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
             _.CALLm1argp(this, wshShell, "run", _.ARGS.Ref(URL, v => { URL = v; }));
