@@ -88,7 +88,7 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        public static void TestScriptChain(TestBaseX tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+        public static TestScriptResponse TestScriptChain(TestBaseX tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
         {
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
             string generated_vbs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".generated.vbs", isOptionalAssert);
@@ -111,7 +111,7 @@ namespace Skrypton.Tests.Application
                 customerDialogGlobalScript = null;
             }
 
-            TestScriptChainX(tst, chainName,
+            return TestScriptChainX(tst, chainName,
                 customerDialogGlobalScript,
                 scriptContent,
                 generated_vbs_expected,
@@ -119,7 +119,7 @@ namespace Skrypton.Tests.Application
                 xml_expected,
                 scrUsage, externalRefs, isOptionalAssert);
         }
-        public static void TestScriptChainX(TestBaseX tst, string chainName,
+        public static TestScriptResponse TestScriptChainX(TestBaseX tst, string chainName,
                 string customerDialogGlobalScript,
                 string scriptContent,
                 string generated_vbs_expected,
@@ -258,6 +258,7 @@ namespace Skrypton.Tests.Application
 
             //string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
             _ = CncIn.CompileCSharpProgram(tst, translated_cs_actual);
+            return new TestScriptResponse(translated_cs_actual);
         }
 
         private static IOutermostScope FromXml(string xmlA)
@@ -314,5 +315,15 @@ namespace Skrypton.Tests.Application
         EBL,
         DialogGui, // model, named symboles, controls
         DialogWeb
+    }
+
+    public sealed class TestScriptResponse
+    {
+        public string TranslatedCsCode { get; }
+
+        public TestScriptResponse(string translatedCsCode)
+        {
+            TranslatedCsCode = translatedCsCode ?? throw new ArgumentNullException(nameof(translatedCsCode));
+        }
     }
 }

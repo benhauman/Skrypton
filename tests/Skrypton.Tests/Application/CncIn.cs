@@ -84,7 +84,7 @@ namespace Skrypton.Tests.Application
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(TestBase tst, IRuntimeLogger runtimeLogger, string translated_cs, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        internal static void ExecuteTranslatedProgram(TestBaseX tst, IRuntimeLogger runtimeLogger, string translated_cs, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
 
             UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(tst, translated_cs);

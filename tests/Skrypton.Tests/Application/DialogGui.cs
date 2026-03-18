@@ -540,7 +540,11 @@ WScript.Echo xmlhttp.responseText
                 translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray());
             }
 
-            CncIn.ExecuteTranslatedProgram(this, RuntimeLogger, translated_cs, dialog.HostServices, TestCulture, TestName, dialog.ExternalReferences, dialogHandler);
+            DoDialogGui(this, translated_cs, dialog, dialogHandler);
+        }
+        private static void DoDialogGui(TestBaseX tst, string translated_cs, DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
+        {
+            CncIn.ExecuteTranslatedProgram(tst, tst.RuntimeLogger, translated_cs, dialog.HostServices, tst.TestCulture, tst.TestName, dialog.ExternalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)
@@ -803,11 +807,24 @@ WScript.Echo xmlhttp.responseText
                 .BuildDialog();
 
             //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
-            {
-                ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
-            }
+            //{
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
+            //}
 
-            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            TestDialogHandlers(this, rsp, dialog);
+        }
+
+        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog)
+        {
+            //string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
+            //if (translated_cs == null)
+            //{
+            //    Console.WriteLine("translating...");
+            //    string scriptContent = dialog.CompleteScriptCode();
+            //    translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray());
+            //}
+
+            DoDialogGui(tst, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
 
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -968,6 +985,8 @@ WScript.Echo xmlhttp.responseText
                             "xsd:boolean" => XmlConvert.ToBoolean(xValue.Value),
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
+                        if (controlPropertyName == "SymbolName" && controlPropertyValue is string sv)
+                            controlPropertyValue = new SymbolName(xValue.Value);
 
                         //Console.WriteLine($"{ControlTypeName} | {controlPropertyName} = {controlPropertyValue}");
                         setter(controlPropertyValue);
