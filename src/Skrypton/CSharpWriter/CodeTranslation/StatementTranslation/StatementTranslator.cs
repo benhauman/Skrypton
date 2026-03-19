@@ -343,7 +343,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     returnRequirements,
                     segments[0].AllTokens.First().LineIndex
                 ),
-                resultLeft.VariablesAccessed.AddRange(resultRight.VariablesAccessed.ToArray())
+                resultLeft.VariablesAccessed.Concat(resultRight.VariablesAccessed.ToArray()).ToArray()
             );
         }
 
@@ -822,7 +822,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 result = new TranslatedStatementContentDetailsWithContentType(
                     result.TranslatedContent,
                     result.ContentType,
-                    result.VariablesAccessed.Add(targetNameToken)
+                    result.VariablesAccessed.Concat([targetNameToken]).ToArray()
                 );
             }
             return result;
@@ -1577,12 +1577,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // - Note: This RefIfArray call relies upon the extension method that takes a param array instead of an IEnumerable
             TranslatedStatementContentDetails[] translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
                 .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false)).ToArray();
+
             return new TranslatedStatementContentDetails(
                     FormattableString.Invariant($".{nameof(IBuildCallArgumentProvidersExtensions.RefIfArray)}({possibleByRefTarget.TranslatedContent}, {string.Join(", ", translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent))})"
                 ),
-                possibleByRefTarget.VariablesAccessed.AddRange(
-                    translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray()
-                )
+                possibleByRefTarget.VariablesAccessed.Concat(translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray()).ToArray() //AddRange
             );
         }
         internal static bool ArgumentsWouldBePassedByValBasedUponItsContent(ParsingExpression[] argumentValues, ScopeAccessInformation scopeAccessInformation, VBScriptNameRewriter nameRewriter)
@@ -2141,7 +2140,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             public TranslatedStatementContentDetailsWithContentType(
                 string content,
                 ExpressionReturnTypeOptions contentType,
-                NonNullImmutableList<NameToken> variablesAccessed) : base(content, variablesAccessed)
+                IReadOnlyCollection<NameToken> variablesAccessed) : base(content, variablesAccessed)
             {
                 if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), contentType))
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.Tokens.Basic;
@@ -8,7 +9,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     [DebuggerDisplay("({VariablesAccessed.Count}){TranslatedContent}")]
     public class TranslatedStatementContentDetails // base class of 'TranslatedStatementContentDetailsWithContentType'
     {
-        public TranslatedStatementContentDetails(string translatedContent, NonNullImmutableList<NameToken> variablesAccessed)
+        public TranslatedStatementContentDetails(string translatedContent, IReadOnlyCollection<NameToken> variablesAccessed)
         {
             if (string.IsNullOrWhiteSpace(translatedContent))
                 throw new ArgumentException("Null/blank translatedContent specified");
@@ -24,6 +25,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will never be null
         /// </summary>
-        public NonNullImmutableList<NameToken> VariablesAccessed { get; private set; }
+        public IReadOnlyCollection<NameToken> VariablesAccessed { get; private set; }
     }
 }
