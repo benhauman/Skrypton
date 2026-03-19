@@ -1218,7 +1218,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
             }
 
-            NonNullImmutableList<NameToken> callExpressionVariablesAccessed = new NonNullImmutableList<NameToken>();
+            IReadOnlyCollection<NameToken> callExpressionVariablesAccessed = [];
             if (argumentsArray.Length > 0)
             {
                 callExpressionContent.Append(", ");
@@ -1246,7 +1246,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             ExpressionReturnTypeOptions.NotSpecified
                         );
                         callExpressionContent.Append(translatedCallExpressionByValArgumentContent.TranslatedContent);
-                        callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(translatedCallExpressionByValArgumentContent.VariablesAccessed);
+                        callExpressionVariablesAccessed = callExpressionVariablesAccessed.ConcatCollection(translatedCallExpressionByValArgumentContent.VariablesAccessed);
                         if (argumentsArray.Length == 3)
                         {
                             // test: 'CT98__hlsysscript_cncIN', 'CT74_'
@@ -1257,9 +1257,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     TranslatedStatementContentDetails argumentProviderContent = TranslateAsArgumentProvider(argumentsArray, scopeAccessInformation, forceAllArgumentsToBeByVal);
                     callExpressionContent.Append(argumentProviderContent.TranslatedContent);
-                    callExpressionVariablesAccessed = callExpressionVariablesAccessed.AddRange(
-                        argumentProviderContent.VariablesAccessed
-                    );
+                    callExpressionVariablesAccessed = callExpressionVariablesAccessed.ConcatCollection(argumentProviderContent.VariablesAccessed);
                 }
             }
             else if (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
@@ -1317,9 +1315,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 TranslatedStatementContentDetails argumentContent = TranslateAsArgumentContent(argumentValue, scopeAccessInformation, forceAllArgumentsToBeByVal);
                 argumentProviderContent.Append(argumentContent.TranslatedContent);
-                variablesAccessed = variablesAccessed.AddRange(
-                    argumentContent.VariablesAccessed
-                );
+                variablesAccessed = variablesAccessed.AddRange(argumentContent.VariablesAccessed);
             }
             return new TranslatedStatementContentDetails(
                 argumentProviderContent.ToString(),
@@ -1389,9 +1385,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     ExpressionReturnTypeOptions.NotSpecified
                 );
                 supportFunctionCallContent.Append(argumentContent.TranslatedContent);
-                variablesAccessed = variablesAccessed.AddRange(
-                    argumentContent.VariablesAccessed
-                );
+                variablesAccessed = variablesAccessed.AddRange(argumentContent.VariablesAccessed);
             }
             supportFunctionCallContent.Append(')');
             ExpressionReturnTypeOptions supportFunctionReturnType;
@@ -1581,7 +1575,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             return new TranslatedStatementContentDetails(
                     FormattableString.Invariant($".{nameof(IBuildCallArgumentProvidersExtensions.RefIfArray)}({possibleByRefTarget.TranslatedContent}, {string.Join(", ", translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent))})"
                 ),
-                possibleByRefTarget.VariablesAccessed.Concat(translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray()).ToArray() //AddRange
+                possibleByRefTarget.VariablesAccessed.ConcatCollection(translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray())
             );
         }
         internal static bool ArgumentsWouldBePassedByValBasedUponItsContent(ParsingExpression[] argumentValues, ScopeAccessInformation scopeAccessInformation, VBScriptNameRewriter nameRewriter)
@@ -2131,7 +2125,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     returnRequirements,
                     expressionSegmentsArray[0].AllTokens.First().LineIndex
                 ),
-                translatedNonOperatorSegments.SelectMany(c => c.VariablesAccessed).ToNonNullImmutableList()
+                translatedNonOperatorSegments.SelectMany(c => c.VariablesAccessed).ToArray()
             );
         }
 

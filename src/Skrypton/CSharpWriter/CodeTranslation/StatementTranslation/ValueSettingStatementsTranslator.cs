@@ -434,7 +434,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // set of all variables that are accessed so that later on we can identify any undeclared variable access attempts
             // - TODO: If manipulated segments to include function return value, it shouldn't affect the variablesAccessed retrieval but
             //   need to make a note explaining how/why
-            IEnumerable<NameToken> variablesAccessed;
+            IReadOnlyCollection<NameToken> variablesAccessed;
             if (callExpressionSegments.Count == 0)
             {
                 variablesAccessed = [];
@@ -491,7 +491,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         ParsingExpression argumentExpr = arguments[ixArg];
                         TranslatedStatementContentDetails argumentContent = _statementTranslator.TranslateParsingExpression(argumentExpr, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified);
-                        variablesAccessed = variablesAccessed.Concat(argumentContent.VariablesAccessed);
+                        variablesAccessed = variablesAccessed.ConcatCollection(argumentContent.VariablesAccessed);
                         if (ixArg > 0)
                         {
                             argumentsInitialization += ", ";
@@ -508,7 +508,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         throw new NotImplementedException($"a:{arguments.Length}");
                     }
                     TranslatedStatementContentDetails argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
-                    variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
+                    variablesAccessed = variablesAccessed.ConcatCollection(argumentsContent.VariablesAccessed);
                     argumentsInitialization = argumentsContent.TranslatedContent ?? "";
                 }
 #pragma warning restore CA1508 // Avoid dead conditional code
@@ -527,7 +527,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 return new ValueSettingStatementAssignmentFormatDetails(
                     translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName})", // Pass "this" as the "context" argument
-                    variablesAccessed.ToNonNullImmutableList()
+                    variablesAccessed
                 );
             }
 
@@ -589,7 +589,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
             return new ValueSettingStatementAssignmentFormatDetails(
                 translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName}, {memberAccessorText}{argsInitText})", // Pass "this" as the "context" argument
-                variablesAccessed.ToNonNullImmutableList()
+                variablesAccessed
             );
         }
 
