@@ -96,10 +96,9 @@ namespace Skrypton.ScriptControlSupport
         //    return expando;
         //}
         //
-
-        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, int codeNumber, string csCode)
         {
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
             PortableExecutableReference[] references = new[]
             {
                 MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
@@ -116,8 +115,20 @@ namespace Skrypton.ScriptControlSupport
                 generalDiagnosticOption: ReportDiagnostic.Error
             );
 
+            string codeName = $"InMemDynAsmKey{codeNumber}";
+            string tempFolderName = $"InMemDyn{codeNumber}";
+            string fileNameCsc = $"{codeName}.cs";
+            string fileNameDll = $"{codeName}.dll";
+            string fileNamePdb = $"{codeName}.pdb";
+            string fileNameErr = $"errors.log";
+
+            if (config.TempEnabled)
+            {
+                config.TempFileWriteAllText(tempFolderName, fileNameCsc, csCode);
+            }
+
             CSharpCompilation compilation = CSharpCompilation.Create(
-                "InMemDynAsmKey1",
+                $"InMemDynAsmKey{codeNumber}",
                 new[] { syntaxTree },
                 references,
                 options
@@ -130,9 +141,15 @@ namespace Skrypton.ScriptControlSupport
             EmitResult emitResult = compilation.Emit(
                 peStream,
                 pdbStream,
-                options: new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb)
+                options: new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb,
+                            pdbFilePath: fileNamePdb
+                    )
             );
 
+            if (!string.IsNullOrEmpty(fileNameErr))
+            {
+                config.TempFileWriteAllLines(tempFolderName, fileNameErr!, emitResult.Diagnostics.Select(d => d.ToString()));
+            }
             // Equivalent to results.Errors
             if (!emitResult.Success)
             {
@@ -156,16 +173,30 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(errorsBuffer.ToString());
 
                 // In unit tests, you can fail like this:
-                throw new InvalidOperationException("Compilation failed.");
+                throw new CompilationFailedException("Compilation failed.");
                 // Or if using NUnit/xUnit:
                 // Assert.Fail("Compilation failed.");
             }
+            peStream.Seek(0, SeekOrigin.Begin);
+            pdbStream.Seek(0, SeekOrigin.Begin);
 
             // Load assembly from memory
-            peStream.Seek(0, SeekOrigin.Begin);
+            byte[] assemblyBytes = peStream.ToArray();
+            byte[] pdbBytes = peStream.ToArray();
+
+            // write the .dll
+            if (!string.IsNullOrEmpty(fileNameDll))
+            {
+                config.TempFileWriteAllBytes(tempFolderName, fileNameDll!, assemblyBytes);
+            }
+            // write the .pdb
+            if (!string.IsNullOrEmpty(fileNamePdb))
+            {
+                File.WriteAllBytes(fileNamePdb, pdbBytes);
+            }
+
             // return Assembly.Load(peStream.ToArray());
-            var assemblyBytes = peStream.ToArray();
-            var context = new UnloadableAssemblyLoadContextContext(Assembly.Load(assemblyBytes));
+            UnloadableAssemblyLoadContextContext context = new UnloadableAssemblyLoadContextContext(Assembly.Load(assemblyBytes));
             //context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
             //context.LoadFromAssemblyPath
             //return context;

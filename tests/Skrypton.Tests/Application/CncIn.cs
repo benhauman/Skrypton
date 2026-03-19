@@ -44,22 +44,23 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
         {
-            DoCncInTest();
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            DoCncInTest(rsp);
         }
         [TestMethod]
         public void LUNA12_quxDATA__hlsysscript_cncIN()
         {
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
-            DoCncInTest();
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            DoCncInTest(rsp);
         }
         [TestMethod]
         public void CT98__hlsysscript_cncIN()
         {
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
-            DoCncInTest();
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            DoCncInTest(rsp);
         }
 
-        private void DoCncInTest()
+        private void DoCncInTest(TestScriptResponse rsp)
         {
             bool mergeSU_called = false;
             Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext = Helpline.Application.ScriptingModel.ApplicationTestContext.Create(ctx =>
@@ -76,7 +77,7 @@ namespace Skrypton.Tests.Application
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
             var hostServices = CreateTestHostServices();
-            string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
+            string translated_cs_expected = rsp.TranslatedCsCode;// TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
             ExecuteTranslatedProgram(this, RuntimeLogger, translated_cs_expected, hostServices, TestCulture, TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
@@ -211,7 +212,7 @@ namespace Skrypton.Tests.Application
 
                 string chainName = tst.TestName.Split("_")[0];
                 string workItemName = "Script";
-                string storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", "", translated_cs);
+                string storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".translated.cs", translated_cs);
 
                 // In unit tests, you can fail like this:
                 throw new Exception("Compilation failed.");

@@ -8,6 +8,7 @@ using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
+using Skrypton.RuntimeSupport;
 using Skrypton.StageTwoParser.ExpressionParsing;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
@@ -439,7 +440,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 argumentsInitialisation = argumentsContent.TranslatedContent;
             }
             else
+            {
                 argumentsInitialisation = "";
+            }
+            string methodNameSet;
 #pragma warning disable CA1820 // Test for empty strings using string length
             if ((argumentsInitialisation == "") && (optionalMemberAccessor == null))
 #pragma warning restore CA1820 // Test for empty strings using string length
@@ -447,27 +451,47 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // If there are are no member accessors and no arguments on the target then use the abbreviated SET method signature (this
                 // should only be the case where the assignment is invalid and a runtime exception is going to be raised, otherwise this
                 // could have been a simple assignment that didn't even need a SET call)
+                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 return new ValueSettingStatementAssigmentFormatDetails(
-                    translatedExpression => string.Format(CultureInfo.InvariantCulture,
-                        "{0}.SET({1}, this, {2})", // Pass "this" as the "context" argument
-                        _supportRefName.Name,
-                        translatedExpression,
-                        targetAccessorName
-                    ),
+                    translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName})", // Pass "this" as the "context" argument
                     variablesAccessed.ToNonNullImmutableList()
                 );
             }
-            return new ValueSettingStatementAssigmentFormatDetails(
-                translatedExpression => string.Format(CultureInfo.InvariantCulture,
-                    "{0}.SET({1}, this, {2}, {3}{4})", // Pass "this" as the "context" argument
-                    _supportRefName.Name,
-                    translatedExpression,
-                    targetAccessorName,
-                    (optionalMemberAccessor == null) ? "null" : optionalMemberAccessor.ToLiteral(),
+            string memberAccessorText = (optionalMemberAccessor == null) ? "null" : optionalMemberAccessor.ToLiteral();
 #pragma warning disable CA1820 // Test for empty strings using string length
-                    (argumentsInitialisation == "") ? "" : (", " + argumentsInitialisation)
+            string argsInitText = (argumentsInitialisation == "") ? "" : (", " + argumentsInitialisation);
 #pragma warning restore CA1820 // Test for empty strings using string length
-                ),
+            if (optionalMemberAccessor == null)
+            {
+                if (argumentsInitialisation != null && argumentsInitialisation.Length == 0)
+                {
+                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETnm);
+                }
+                else
+                {
+                    if (arguments.Any())
+                    {
+                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                    }
+                    else
+                    {
+                        methodNameSet = nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.SET);
+                    }
+                }
+            }
+            else
+            {
+                if (arguments.Any())
+                {
+                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                }
+                else
+                {
+                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
+                }
+            }
+            return new ValueSettingStatementAssigmentFormatDetails(
+                translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName}, {memberAccessorText}{argsInitText})", // Pass "this" as the "context" argument
                 variablesAccessed.ToNonNullImmutableList()
             );
         }

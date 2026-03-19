@@ -79,9 +79,9 @@ namespace TranslatedProgram
                 parmname = "runScript";
                 adoSQLCmdParam = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with = _.OBJ(adoSQLCmdParam);
-                _.SET(_.OBJ(oConn), this, with, "ActiveConnection");
-                _.SET("CreateNewSBCode", this, with, "CommandText");
-                _.SET(_.VAL(adCmdStoredProc), this, with, "CommandType");
+                _.SETm1a0(_.OBJ(oConn), this, with, "ActiveConnection");
+                _.SETm1a0("CreateNewSBCode", this, with, "CommandText");
+                _.SETm1a0(_.VAL(adCmdStoredProc), this, with, "CommandType");
                 _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1v3(this, with, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
                 _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
                 _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1v4(this, with, "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
@@ -104,9 +104,9 @@ namespace TranslatedProgram
                 //X/V Personalnummer ermitteln
                 adoSQLCmdParam2 = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with2 = _.OBJ(adoSQLCmdParam2);
-                _.SET(_.OBJ(oConn), this, with2, "ActiveConnection");
-                _.SET("CreateNewPersonalID", this, with2, "CommandText");
-                _.SET(_.VAL(adCmdStoredProc), this, with2, "CommandType");
+                _.SETm1a0(_.OBJ(oConn), this, with2, "ActiveConnection");
+                _.SETm1a0("CreateNewPersonalID", this, with2, "CommandText");
+                _.SETm1a0(_.VAL(adCmdStoredProc), this, with2, "CommandType");
                 _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1v3(this, with2, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
                 _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
                 _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1v4(this, with2, "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));

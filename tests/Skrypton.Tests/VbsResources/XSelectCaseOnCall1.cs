@@ -24,15 +24,15 @@ namespace TranslatedProgram
             object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
-                _.SET("RGB(107,105,248)", this, _outer.CaseAttributes, "BackColor");
+                _.SETm1a0("RGB(107,105,248)", this, _outer.CaseAttributes, "BackColor");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
-                _.SET("RGB(119,170,251)", this, _outer.CaseAttributes, "BackColor");
+                _.SETm1a0("RGB(119,170,251)", this, _outer.CaseAttributes, "BackColor");
             }
             else
             {
-                _.SET("RGB(248,245,240)", this, _outer.CaseAttributes, "BackColor");
+                _.SETm1a0("RGB(248,245,240)", this, _outer.CaseAttributes, "BackColor");
             }
         }
     }

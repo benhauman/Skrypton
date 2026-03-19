@@ -23,7 +23,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "public void F1()",
                 "{",
-				"    _.SET(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(\"'F1'\")));",
+                "    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(\"'F1'\")));",
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "public void F1()",
                 "{",
-				"    _.SET(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")));",
+                "    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")));",
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);

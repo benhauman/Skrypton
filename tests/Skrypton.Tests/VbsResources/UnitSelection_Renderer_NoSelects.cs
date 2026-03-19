@@ -261,7 +261,7 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SET(_.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))), this, objRenderSettings, "BookingRequirement");
+            _.SETm1a0(_.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))), this, objRenderSettings, "BookingRequirement");
 
             _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, objRenderSettings, "IsVBPollingEnabled"));
             _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, objRenderSettings, "RenderAsCalendar"));
@@ -556,7 +556,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SET(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v27 => { key = v27; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, null, _.ARGS.Ref(i, v26 => { i = v26; }));
+                    _.SETm1argp(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v27 => { key = v27; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, null, _.ARGS.Ref(i, v26 => { i = v26; }));
                 }
                 i = _.ADD(i, (Int16)1);
             }
@@ -1291,7 +1291,7 @@ namespace TranslatedProgram
                             {
                                 bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay, "Indicative"));
                             }
-                            _.SET(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, null, _.ARGS.Ref(strAvailStayKey, v72 => { strAvailStayKey = v72; }));
+                            _.SETm1argp(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, null, _.ARGS.Ref(strAvailStayKey, v72 => { strAvailStayKey = v72; }));
                             _.ERASE(aryStay, v73 => { aryStay = v73; });
                         }
                         else
@@ -1435,7 +1435,7 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SET(_.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))), this, objRenderSettings, "BookingRequirement");
+            _.SETm1a0(_.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))), this, objRenderSettings, "BookingRequirement");
 
             objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail, "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay, "StartDate"), _.CALLm1v0(this, objFuzzyStay, "Nights")));
 
@@ -1621,8 +1621,8 @@ namespace TranslatedProgram
                         // 2013-02-05 TB: objRenderSettings is used by RenderBookingInfoForm to populate some hidden stay information
                         // For fuzzy stays, both nights and startdate may differ from the original requirements.
                         // For FogBugz case 7594 I added the second line below which wasn't present.
-                        _.SET(_.VAL(_.CALLm1v0(this, objFuzzyStay, "StartDate")), this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "VisitDate");
-                        _.SET(_.VAL(_.CALLm1v0(this, objFuzzyStay, "Nights")), this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "Nights");
+                        _.SETm1a0(_.VAL(_.CALLm1v0(this, objFuzzyStay, "StartDate")), this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "VisitDate");
+                        _.SETm1a0(_.VAL(_.CALLm1v0(this, objFuzzyStay, "Nights")), this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "Nights");
 
                         // 2014-03-12 DWR: We need to pass the Search Industry Classification into the form rendering code for VB Polling Products so that the
                         // Polling Exist can generate the deep link correctly. An Eviivo Configset can be set up with zero, meaning support either 1 OR 9. The
@@ -1917,9 +1917,9 @@ namespace TranslatedProgram
 
             // Need to create a new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SET(_.VAL(intReqNo), this, objEntry, null, _.ARGS.Val("ReqNo"));
-            _.SET(_.VAL(intNumPeople), this, objEntry, null, _.ARGS.Val("NumPeople"));
-            _.SET(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("Units"));
+            _.SETm1argp(_.VAL(intReqNo), this, objEntry, null, _.ARGS.Val("ReqNo"));
+            _.SETm1argp(_.VAL(intNumPeople), this, objEntry, null, _.ARGS.Val("NumPeople"));
+            _.SETm1argp(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("Units"));
             object byrefalias25 = intUnitKey;
             try
             {
@@ -2012,9 +2012,9 @@ namespace TranslatedProgram
 
             // Preparer new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SET(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, _.ARGS.Val("NumPeople"));
-            _.SET(_.VAL(intUnitKey), this, objEntry, null, _.ARGS.Val("UnitKey"));
-            _.SET(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("PossReqNos"));
+            _.SETm1argp(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, _.ARGS.Val("NumPeople"));
+            _.SETm1argp(_.VAL(intUnitKey), this, objEntry, null, _.ARGS.Val("UnitKey"));
+            _.SETm1argp(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("PossReqNos"));
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
@@ -2224,7 +2224,7 @@ namespace TranslatedProgram
                 {
                     intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches, _.ARGS.Ref(intIndexSel, v154 => { intIndexSel = v154; })), (Int16)1);
                     intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v155 => { intIndexSel = v155; })), _.ARGS.Val("UnitKey")));
-                    _.SET(_.VAL(intUnitKey), this, lsUnitKeys, null, _.ARGS.Ref(intIndexOption, v157 => { intIndexOption = v157; }));
+                    _.SETm1argp(_.VAL(intUnitKey), this, lsUnitKeys, null, _.ARGS.Ref(intIndexOption, v157 => { intIndexOption = v157; }));
                 }
             }
 
@@ -3351,26 +3351,26 @@ namespace TranslatedProgram
 
             objBookingRequirementNew = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "BookingRequirement"));
             var with = _.OBJ(objBookingRequirementNew);
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate")), this, with, "VisitDate");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Nights")), this, with, "Nights");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "FlexibleRange")), this, with, "FlexibleRange");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Adults")), this, with, "Adults");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Children")), this, with, "Children");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "ChildAges")), this, with, "ChildAges");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "IsEviivoBooking")), this, with, "IsEviivoBooking");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Consumer")), this, with, "Consumer");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Offer")), this, with, "Offer");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "BookingPassword")), this, with, "BookingPassword");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Product")), this, with, "Product");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Requirement")), this, with, "Requirement");
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "RequirementRef")), this, with, "RequirementRef");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate")), this, with, "VisitDate");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Nights")), this, with, "Nights");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "FlexibleRange")), this, with, "FlexibleRange");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Adults")), this, with, "Adults");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Children")), this, with, "Children");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "ChildAges")), this, with, "ChildAges");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "IsEviivoBooking")), this, with, "IsEviivoBooking");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Consumer")), this, with, "Consumer");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Offer")), this, with, "Offer");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "BookingPassword")), this, with, "BookingPassword");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Product")), this, with, "Product");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "Requirement")), this, with, "Requirement");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "RequirementRef")), this, with, "RequirementRef");
             // NP 2012-03-12: RoomRequirements are needed
             // See GenerateRequirementFormData and Page.Functions.Booking.GenerateRequirementKeyValueData
             // the "NumRoomReq" value is part of the RoomRequirement, if it is not available then GenerateRequirementKeyValueData
             // sets default values for the adult and number of room requirements both to 1.
             // Requirements are not being passed to the RequirementSummary control correctly because the BookingRequestDictionary
             // is being overwritten with these incorrect default values.
-            _.SET(_.VAL(_.CALLm1v0(this, objBookingRequirement, "RoomRequirements")), this, with, "RoomRequirements");
+            _.SETm1a0(_.VAL(_.CALLm1v0(this, objBookingRequirement, "RoomRequirements")), this, with, "RoomRequirements");
             GetEditableBookingRequirement_retVal = _.OBJ(objBookingRequirementNew);
             return GetEditableBookingRequirement_retVal;
         }

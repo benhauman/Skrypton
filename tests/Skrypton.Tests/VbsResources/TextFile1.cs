@@ -121,7 +121,7 @@ namespace TranslatedProgram
             else
             {
                 GetCommunicationDefault_retVal = true;
-                _.SET(_.VAL(strValue), this, dict, null, _.ARGS.Val("DefValue"));
+                _.SETm1argp(_.VAL(strValue), this, dict, null, _.ARGS.Val("DefValue"));
             }
             return GetCommunicationDefault_retVal;
         }
@@ -360,8 +360,8 @@ namespace TranslatedProgram
                     }
                     finally { hlContext = byrefalias19; }
 
-                    _.SET(_.VAL(strOrgUnits), this, dict, null, _.ARGS.Val("DefValue"));
-                    _.SET("PersonOrganization", this, dict, null, _.ARGS.Val("PersInfoAttr"));
+                    _.SETm1argp(_.VAL(strOrgUnits), this, dict, null, _.ARGS.Val("DefValue"));
+                    _.SETm1argp("PersonOrganization", this, dict, null, _.ARGS.Val("PersInfoAttr"));
                     object byrefalias20 = hlContext, byrefalias21 = hlPerson, byrefalias22 = dict;
                     try
                     {
@@ -558,11 +558,11 @@ namespace TranslatedProgram
             //initialisiert werden.
             if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
             {
-                _.SET((Int16)1, this, pDict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+                _.SETm1argp((Int16)1, this, pDict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
             }
             else
             {
-                _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pDict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
+                _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pDict, null, _.ARGS.Val("SoftwareSuiteFolderLevel"));
             }
 
             //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
@@ -576,7 +576,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias32; hlParentSWFolder = byrefalias33; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
             {
-                _.SET(_.VAL(_.CALLm1v5(this, hlParentSWFolder, "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), this, pDict, null, _.ARGS.Val("SoftwareSuiteFolder"));
+                _.SETm1argp(_.VAL(_.CALLm1v5(this, hlParentSWFolder, "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), this, pDict, null, _.ARGS.Val("SoftwareSuiteFolder"));
                 return CheckForSoftwareSuiteFolder_retVal;
             }
 
@@ -619,16 +619,16 @@ namespace TranslatedProgram
             retval = (Int16)0;
 
             //Dictionary Einträge initalisieren
-            _.SET("", this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
-            _.SET((Int16)0, this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
-            _.SET((Int16)0, this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
-            _.SET((Int16)0, this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
+            _.SETm1argp("", this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
+            _.SETm1argp((Int16)0, this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
+            _.SETm1argp((Int16)0, this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
+            _.SETm1argp((Int16)0, this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
 
             //Prüfen ob es Software Lizenzobjekte unterhalb des Folders gibt.
             object byrefalias38 = assocName;
             try
             {
-                _.SET(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v65 => { byrefalias38 = v65; }))), this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
+                _.SETm1argp(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v65 => { byrefalias38 = v65; }))), this, pDict, null, _.ARGS.Val("SoftwareLicenses"));
             }
             finally { assocName = byrefalias38; }
 
@@ -695,7 +695,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias48; hlSWFolder = byrefalias49; }
             if (_.IF(_.EQ(_.CBOOL(CheckLicContrByServer), true)))
             {
-                _.SET((Int16)0, this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
+                _.SETm1argp((Int16)0, this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
             }
             object byrefalias50 = pDict;
             try
@@ -774,7 +774,7 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias55, v78 => { byrefalias55 = v78; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias55; }
-                        _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
+                        _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
                     }
                 }
                 else
@@ -787,19 +787,19 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias56, v79 => { byrefalias56 = v79; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias56; }
-                        _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
+                        _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
                         object byrefalias57 = hlContext;
                         try
                         {
                             SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias57, v80 => { byrefalias57 = v80; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias57; }
-                        _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")), SWInstCounter), this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
+                        _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")), SWInstCounter), this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SET(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
+            _.SETm1argp(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
 
         }
 
@@ -833,7 +833,7 @@ namespace TranslatedProgram
                         SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias58, v81 => { byrefalias58 = v81; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = byrefalias58; }
-                    _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
+                    _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
 
                     object byrefalias59 = hlContext;
                     try
@@ -843,7 +843,7 @@ namespace TranslatedProgram
                     finally { hlContext = byrefalias59; }
                     if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")))))
                     {
-                        _.SET(_.VAL(SWInstCounter), this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
+                        _.SETm1argp(_.VAL(SWInstCounter), this, pDict, null, _.ARGS.Val("SumInstLicCounter"));
                     }
                 }
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
@@ -857,12 +857,12 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias60, v83 => { byrefalias60 = v83; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias60; }
-                        _.SET(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
+                        _.SETm1argp(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, _.ARGS.Val("SumRefLicCounter"));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SET(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
+            _.SETm1argp(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, _.ARGS.Val("SumFreeLicCounter"));
         }
 
         //----------------------------------------------------------------------------------------------------------
@@ -1098,7 +1098,7 @@ namespace TranslatedProgram
             _.CALLm1v2(this, nodeSession, "SetAttribute", "password", "");
 
             //XML Dokument inkl. Header an das Dictionary übergeben
-            _.SET(_.OBJ(objXMLDoc), this, pDict, null, _.ARGS.Val("XMLDocument"));
+            _.SETm1argp(_.OBJ(objXMLDoc), this, pDict, null, _.ARGS.Val("XMLDocument"));
             return MIG_CreateXMLDocument_retVal;
         }
 
@@ -1136,7 +1136,7 @@ namespace TranslatedProgram
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
             nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
@@ -1153,47 +1153,47 @@ namespace TranslatedProgram
             //Das Node DeviceName hinzufügen
             nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node CompanyName hinzufügen
             nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CompanyName"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeCmpyName);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
 
             //Das Node Domain hinzufügen
             nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             //Das Node CostCenter hinzufügen
             nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CostCenter"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeCostCenter);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
 
             //Das Node MACAdess hinzufügen
             nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:MACAddress"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeMACAddress);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
 
             //Das Node SubnetMask hinzufügen
             nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:SubnetMask"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeSubnetMask);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
 
             //Das Node HwTypeId hinzufügen
             nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:HwTypeId"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeHWType);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
 
             //Das Node OsTypeId hinzufügen
             nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:OsTypeId"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeOSType);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
 
             //Das Node ActivationState hinzufügen
             nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:ActivationState"));
             _.CALLm1v1(this, nodeAddDeviceActualParams, "AppendChild", nodeActState);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
 
             return MIG_CreateADDXML2Columbus_retVal;
         }
@@ -1232,7 +1232,7 @@ namespace TranslatedProgram
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
             nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
@@ -1249,47 +1249,47 @@ namespace TranslatedProgram
             //Das Node DeviceName hinzufügen
             nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node Domain hinzufügen
             nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             //Das Node CompanyName hinzufügen
             nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CompanyName"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeCmpyName);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CompanyName"))), this, nodeCmpyName, "Text");
 
             //Das Node CostCenter hinzufügen
             nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:CostCenter"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeCostCenter);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("CostCenter"))), this, nodeCostCenter, "Text");
 
             //Das Node MACAdess hinzufügen
             nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:MACAddress"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeMACAddress);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("MACAddress"))), this, nodeMACAddress, "Text");
 
             //Das Node SubnetMask hinzufügen
             nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:SubnetMask"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeSubnetMask);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("SubnetMask"))), this, nodeSubnetMask, "Text");
 
             //Das Node HwTypeId hinzufügen
             nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:HwTypeId"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeHWType);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("HwTypeId"))), this, nodeHWType, "Text");
 
             //Das Node OsTypeId hinzufügen
             nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:OsTypeId"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeOSType);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("OsTypeId"))), this, nodeOSType, "Text");
 
             //Das Node ActivationState hinzufügen
             nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:ActivationState"));
             _.CALLm1v1(this, nodeChgDeviceActualParams, "AppendChild", nodeActState);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ActivationState"))), this, nodeActState, "Text");
 
             return MIG_CreateCHGXML2Columbus_retVal;
         }
@@ -1321,7 +1321,7 @@ namespace TranslatedProgram
             //Das Node ObserverKey hinzufügen
             nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq, "AppendChild", nodeObserverKey);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("ObserverKey"))), this, nodeObserverKey, "Text");
 
             //Das Container Node ContextData hinzufügen
             nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "ContextData"));
@@ -1338,7 +1338,7 @@ namespace TranslatedProgram
             //Das Node DeviceName hinzufügen
             nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDeviceName);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("DeviceName"))), this, nodeDeviceName, "Text");
 
             //Das Node CompanyName hinzufügen
             //Dim nodeCmpyName : Set nodeCmpyName = pDict("XMLDocument").CreateElement("dt:CompanyName")
@@ -1348,7 +1348,7 @@ namespace TranslatedProgram
             //Das Node Domain hinzufügen
             nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict, _.ARGS.Val("XMLDocument")), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification, "AppendChild", nodeDomain);
-            _.SET(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
+            _.SETm1a0(_.VAL(_.CALLm0argp(this, pDict, _.ARGS.Val("Domain"))), this, nodeDomain, "Text");
 
             return MIG_CreateDELXML2Columbus_retVal;
         }

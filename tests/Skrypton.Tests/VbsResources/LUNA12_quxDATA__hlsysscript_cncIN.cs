@@ -73,12 +73,12 @@ namespace TranslatedProgram
                 item = enumerationContent.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, oMailRequest, "Subject"), item, (Int16)1)), (Int16)0)))
                 {
-                    _.SET("Out of Office AutoReply", this, _env.session, null, _.ARGS.Val("processtext"));
+                    _.SETm1argp("Out of Office AutoReply", this, _env.session, null, _.ARGS.Val("processtext"));
                     return;
                 }
             }
 
-            _.SET((Int16)(-2), this, oMailRequest, "mailtype");
+            _.SETm1a0((Int16)(-2), this, oMailRequest, "mailtype");
             adhocMail = false;
             adhocMail = _.VAL(_.CALLm1argp(this, _outer, "IsAdhocMail", _.ARGS.Ref(oMailRequest, v => { oMailRequest = v; })));
 
@@ -135,7 +135,7 @@ namespace TranslatedProgram
         public void LogText(ref object sText)
         {
             //session("worker").trace sText
-            _.SET(_.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf), this, _env.session, null, _.ARGS.Val("processtext"));
+            _.SETm1argp(_.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf), this, _env.session, null, _.ARGS.Val("processtext"));
         }
 
         //--------------------------------------------------------------------------------------- sub 3 ---
@@ -190,7 +190,7 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1v1(this, oCaseType, "GetValue", "type"), "data"), _.CALLm1v0(this, oMailRequest, "mailtype"))))
                 {
                     oCaseCfg = _.OBJ(oCaseType);
-                    _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg, "GetValue", "type"), "data")), this, oMailRequest, "mailtype");
+                    _.SETm1a0(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg, "GetValue", "type"), "data")), this, oMailRequest, "mailtype");
                     bRegisteredMailType = true;
                     break;
                 }
@@ -217,13 +217,13 @@ namespace TranslatedProgram
                 oSubjectValue = enumerationContent3.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, oMailRequest, "Subject"), _.CALLm1v0(this, oSubjectValue, "data"), (Int16)1)), (Int16)0)))
                 {
-                    _.SET(_.CLNG(_.CALLm1v0(this, oSubjectValue, "Name")), this, oMailRequest, "mailtype");
+                    _.SETm1a0(_.CLNG(_.CALLm1v0(this, oSubjectValue, "Name")), this, oMailRequest, "mailtype");
                     break;
                 }
             }
             if (_.IF(_.LT(_.NullableNUM(_.CALLm1v0(this, oMailRequest, "mailtype")), (Int16)0)))
             {
-                _.SET("unregistered mail subject", this, _env.session, null, _.ARGS.Val("processtext"));
+                _.SETm1argp("unregistered mail subject", this, _env.session, null, _.ARGS.Val("processtext"));
                 return;
             }
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("MailRequestType:", _.CALLm1v0(this, oMailRequest, "mailtype")));

@@ -73,38 +73,38 @@ namespace TranslatedProgram
                 //If VIP = VIPLevelNone Then hlObj.SetValue "IncidentAttribute.VIPStatus",0,0,0,"VIPStatusNone"
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)1);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)2);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)3);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)4);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET("", this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0("", this, _env.Person, "BackColor");
                 }
             }
 
@@ -126,11 +126,11 @@ namespace TranslatedProgram
             {
                 if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
                 {
-                    _.SET("Reset", this, _env.SearchCaller, "Caption");
+                    _.SETm1a0("Reset", this, _env.SearchCaller, "Caption");
                 }
                 else
                 {
-                    _.SET("Betroffener", this, _env.SearchCaller, "Caption");
+                    _.SETm1a0("Betroffener", this, _env.SearchCaller, "Caption");
                 }
             }
 
@@ -140,11 +140,11 @@ namespace TranslatedProgram
             {
                 if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
                 {
-                    _.SET("Reset", this, _env.SearchAsset, "Caption");
+                    _.SETm1a0("Reset", this, _env.SearchAsset, "Caption");
                 }
                 else
                 {
-                    _.SET("Inventar", this, _env.SearchAsset, "Caption");
+                    _.SETm1a0("Inventar", this, _env.SearchAsset, "Caption");
                 }
             }
 
@@ -173,10 +173,10 @@ namespace TranslatedProgram
                     }
                     else
                     {
-                        _.SET(" ", this, _env.EditAssetModel, "Text");
+                        _.SETm1a0(" ", this, _env.EditAssetModel, "Text");
                     }
                 }
-                _.SET(_.VAL(varString), this, _env.EditAssetModel, "Text");
+                _.SETm1a0(_.VAL(varString), this, _env.EditAssetModel, "Text");
             }
 
             //Abhängig von der Anfrageart werden Teile des Dialogs aktiviert oder deaktiviert
@@ -184,81 +184,81 @@ namespace TranslatedProgram
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
             {
-                _.SET(true, this, _env.ComboImpact, "Disabled");
-                _.SET(true, this, _env.ComboFunctionalRange, "Disabled");
+                _.SETm1a0(true, this, _env.ComboImpact, "Disabled");
+                _.SETm1a0(true, this, _env.ComboFunctionalRange, "Disabled");
             }
             else
             {
-                _.SET(false, this, _env.ComboImpact, "Disabled");
-                _.SET(false, this, _env.ComboFunctionalRange, "Disabled");
+                _.SETm1a0(false, this, _env.ComboImpact, "Disabled");
+                _.SETm1a0(false, this, _env.ComboFunctionalRange, "Disabled");
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
 
             }
             else
             {
-                _.SET(true, this, _env.CaseProblem, "Disabled");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(true, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(true, this, _env.KeywordTree, "Disabled");
-                _.SET(true, this, _env.Attachment, "Disabled");
-                _.SET(true, this, _env.ComboProductionalRelevanz, "Disabled");
-                _.SET(true, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(true, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(true, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(true, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(true, this, _env.Attachment, "Disabled");
+                _.SETm1a0(true, this, _env.ComboProductionalRelevanz, "Disabled");
+                _.SETm1a0(true, this, _env.ComboIncidentStatus, "Disabled");
             }
 
             //Zugriff auf Übersichts-Buttons regeln
             if (_.IF(_.EQ(rewritten_ReadOnly, false)))
             {
-                _.SET(false, this, _env.ButtonShowOverView, "Disabled");
-                _.SET(false, this, _env.ButtonEmailPreview, "Disabled");
-                _.SET(false, this, _env.EditSubjectCase, "Disabled");
+                _.SETm1a0(false, this, _env.ButtonShowOverView, "Disabled");
+                _.SETm1a0(false, this, _env.ButtonEmailPreview, "Disabled");
+                _.SETm1a0(false, this, _env.EditSubjectCase, "Disabled");
             }
             else
             {
-                _.SET(true, this, _env.ButtonShowOverView, "Disabled");
-                _.SET(true, this, _env.ButtonEmailPreview, "Disabled");
-                _.SET(true, this, _env.EditSubjectCase, "Disabled");
+                _.SETm1a0(true, this, _env.ButtonShowOverView, "Disabled");
+                _.SETm1a0(true, this, _env.ButtonEmailPreview, "Disabled");
+                _.SETm1a0(true, this, _env.EditSubjectCase, "Disabled");
             }
 
             //Einfärben der GrupBox CaseAttributes je nach Priorität
             object targetCaseExpr = _.CALLm1v5(this, _env.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
-                _.SET(_.VAL(_.RGB((Int16)107, (Int16)105, (Int16)248)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)107, (Int16)105, (Int16)248)), this, _env.CaseAttributes, "BackColor");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
-                _.SET(_.VAL(_.RGB((Int16)119, (Int16)170, (Int16)251)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)119, (Int16)170, (Int16)251)), this, _env.CaseAttributes, "BackColor");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority3")))
             {
-                _.SET(_.VAL(_.RGB((Int16)132, (Int16)235, (Int16)255)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)132, (Int16)235, (Int16)255)), this, _env.CaseAttributes, "BackColor");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority4")))
             {
-                _.SET(_.VAL(_.RGB((Int16)128, (Int16)213, (Int16)177)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)128, (Int16)213, (Int16)177)), this, _env.CaseAttributes, "BackColor");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority5")))
             {
-                _.SET(_.VAL(_.RGB((Int16)123, (Int16)190, (Int16)99)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)123, (Int16)190, (Int16)99)), this, _env.CaseAttributes, "BackColor");
             }
             else
             {
-                _.SET(_.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)), this, _env.CaseAttributes, "BackColor");
+                _.SETm1a0(_.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)), this, _env.CaseAttributes, "BackColor");
             }
 
             //Bei Status ToProof wird die Email-Tab angewählt
             if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v5(this, _env.hlObj, "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), "IncidentStatusToProof")))
             {
-                _.SET(true, this, _env.TabPageEmail, "UiActive");
+                _.SETm1a0(true, this, _env.TabPageEmail, "UiActive");
             }
             else
             {
@@ -326,25 +326,25 @@ namespace TranslatedProgram
             //Zugriff auf Übersichts-Buttons regeln
             if (_.IF(_.EQ(rewritten_ReadOnly, false)))
             {
-                _.SET(false, this, _env.ButtonShowOverView, "Disabled");
-                _.SET(false, this, _env.ButtonEmailPreview, "Disabled");
-                _.SET(false, this, _env.EditSubjectCase, "Disabled");
+                _.SETm1a0(false, this, _env.ButtonShowOverView, "Disabled");
+                _.SETm1a0(false, this, _env.ButtonEmailPreview, "Disabled");
+                _.SETm1a0(false, this, _env.EditSubjectCase, "Disabled");
             }
             else
             {
-                _.SET(true, this, _env.ButtonShowOverView, "Disabled");
-                _.SET(true, this, _env.ButtonEmailPreview, "Disabled");
-                _.SET(true, this, _env.EditSubjectCase, "Disabled");
+                _.SETm1a0(true, this, _env.ButtonShowOverView, "Disabled");
+                _.SETm1a0(true, this, _env.ButtonEmailPreview, "Disabled");
+                _.SETm1a0(true, this, _env.EditSubjectCase, "Disabled");
             }
             //Abhängig von der Anfrageart werden Teile des Dialogs aktiviert oder deaktiviert
             Anfrageart = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
             else
             {
-                _.SET(true, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(true, this, _env.ComboIncidentStatus, "Disabled");
             }
 
             //Bei 2nd Level Dialog setzen der Benachrichtigung auf Email
@@ -358,11 +358,11 @@ namespace TranslatedProgram
             //Check Asset search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
             {
-                _.SET("Reset", this, _env.SearchAsset, "Caption");
+                _.SETm1a0("Reset", this, _env.SearchAsset, "Caption");
             }
             else
             {
-                _.SET("Inventar", this, _env.SearchAsset, "Caption");
+                _.SETm1a0("Inventar", this, _env.SearchAsset, "Caption");
             }
 
         }
@@ -389,11 +389,11 @@ namespace TranslatedProgram
             //Check Asset search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchAsset, "GetSearchState")), (Int16)3)))
             {
-                _.SET("Reset", this, _env.SearchAsset, "Caption");
+                _.SETm1a0("Reset", this, _env.SearchAsset, "Caption");
             }
             else
             {
-                _.SET("Inventar", this, _env.SearchAsset, "Caption");
+                _.SETm1a0("Inventar", this, _env.SearchAsset, "Caption");
             }
 
         }
@@ -460,10 +460,10 @@ namespace TranslatedProgram
                     }
                     else
                     {
-                        _.SET(" ", this, _env.EditAssetModel, "Text");
+                        _.SETm1a0(" ", this, _env.EditAssetModel, "Text");
                     }
                 }
-                _.SET(_.VAL(varString), this, _env.EditAssetModel, "Text");
+                _.SETm1a0(_.VAL(varString), this, _env.EditAssetModel, "Text");
             }
 
         }
@@ -486,11 +486,11 @@ namespace TranslatedProgram
             //Check requester search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
             {
-                _.SET("Reset", this, _env.SearchCaller, "Caption");
+                _.SETm1a0("Reset", this, _env.SearchCaller, "Caption");
             }
             else
             {
-                _.SET("Search", this, _env.SearchCaller, "Caption");
+                _.SETm1a0("Search", this, _env.SearchCaller, "Caption");
             }
 
             //VIP-Status des Anfragers abfragen und Imp Vorgang setzen
@@ -501,38 +501,38 @@ namespace TranslatedProgram
                 //If VIP = VIPLevelNone Then hlObj.SetValue "IncidentAttribute.VIPStatus",0,0,0,"VIPStatusNone"
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)1);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)2);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)3);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)4);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(_.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)), this, _env.Person, "BackColor");
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
-                    _.SET(false, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboVIPStatus, "Disabled");
                     _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
-                    _.SET(true, this, _env.ComboVIPStatus, "Disabled");
-                    _.SET("", this, _env.Person, "BackColor");
+                    _.SETm1a0(true, this, _env.ComboVIPStatus, "Disabled");
+                    _.SETm1a0("", this, _env.Person, "BackColor");
                 }
             }
 
@@ -595,9 +595,9 @@ namespace TranslatedProgram
             {
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v4 => { strEmail = v4; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v5 => { strSubject = v5; }));
-                _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                _.SET(true, this, _env.TextBoxEmailSubject, "Required");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(true, this, _env.TextBoxEmailSubject, "Required");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
             }
             else
             {
@@ -608,9 +608,9 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
-                _.SET(true, this, _env.GroupBoxEmail, "Disabled");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.TextBoxEmailSubject, "Required");
+                _.SETm1a0(true, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailSubject, "Required");
             }
 
         }
@@ -632,17 +632,17 @@ namespace TranslatedProgram
             //Check requester search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.SearchCaller, "GetSearchState")), (Int16)3)))
             {
-                _.SET("Reset", this, _env.SearchCaller, "Caption");
+                _.SETm1a0("Reset", this, _env.SearchCaller, "Caption");
             }
             else
             {
-                _.SET("", this, _env.EditSurname, "Text");
-                _.SET("Search", this, _env.SearchCaller, "Caption");
+                _.SETm1a0("", this, _env.EditSurname, "Text");
+                _.SETm1a0("Search", this, _env.SearchCaller, "Caption");
             }
 
             //VIP-Status zurücksetzen
             _.CALLm1v2(this, _env.ComboVIPStatus, "SelectItem", (Int16)0, (Int16)0);
-            _.SET(_.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)), this, _env.Person, "BackColor");
+            _.SETm1a0(_.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)), this, _env.Person, "BackColor");
 
         }
 
@@ -680,7 +680,7 @@ namespace TranslatedProgram
             varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _env.EditProblem, "Text"), (Int16)100));
             if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSubjectCase, "Text")), "")))
             {
-                _.SET(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
+                _.SETm1a0(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
             }
 
         }
@@ -752,37 +752,37 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v7 => { strEmail = v7; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v8 => { strSubject = v8; }));
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
-                _.SET("Red", this, _env.LabelEmailBody, "TextColor");
-                _.SET(true, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0("Red", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(true, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusClosed")))
             {
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v9 => { strEmail = v9; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v10 => { strSubject = v10; }));
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
-                _.SET("Red", this, _env.LabelEmailBody, "TextColor");
-                _.SET(true, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0("Red", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(true, this, _env.ComplexTextEmailBody, "Required");
                 if (_.IF(_.EQ(_.NullableSTR(strEmail), "")))
                 {
-                    _.SET(false, this, _env.TextBoxEmailTo, "Required");
+                    _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
                 }
                 else
                 {
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerYes");
-                    _.SET(true, this, _env.TextBoxEmailTo, "Required");
+                    _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
                 }
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusTimephased")))
             {
@@ -790,13 +790,13 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v11 => { strEmail = v11; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v12 => { strSubject = v12; }));
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
-                _.SET("Red", this, _env.LabelEmailBody, "TextColor");
-                _.SET(true, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Disabled");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0("Red", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(true, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusWaitingforCustomer")))
             {
@@ -804,66 +804,66 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v13 => { strEmail = v13; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v14 => { strSubject = v14; }));
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
-                _.SET("Red", this, _env.LabelEmailBody, "TextColor");
-                _.SET(true, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0("Red", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(true, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusWaitingforExtern")))
             {
-                _.SET("Black", this, _env.LabelEmailBody, "TextColor");
-                _.SET(false, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0("Black", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(false, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusToProof")))
             {
-                _.SET("Black", this, _env.LabelEmailBody, "TextColor");
-                _.SET(false, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0("Black", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(false, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusRouted")))
             {
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
-                _.SET("Black", this, _env.LabelEmailBody, "TextColor");
-                _.SET(false, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0("Black", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(false, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusNew")))
             {
-                _.SET("Black", this, _env.LabelEmailBody, "TextColor");
-                _.SET(false, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0("Black", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(false, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusInProgress")))
             {
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
-                _.SET("Black", this, _env.LabelEmailBody, "TextColor");
-                _.SET(false, this, _env.ComplexTextEmailBody, "Required");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.EditResubmissionTime, "Required");
-                _.SET(true, this, _env.EditResubmissionTime, "Disabled");
+                _.SETm1a0("Black", this, _env.LabelEmailBody, "TextColor");
+                _.SETm1a0(false, this, _env.ComplexTextEmailBody, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.EditResubmissionTime, "Required");
+                _.SETm1a0(true, this, _env.EditResubmissionTime, "Disabled");
                 _.CALLm1v0(this, _env.EditResubmissionTime, "DeleteContent");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
             }
 
         }
@@ -875,53 +875,53 @@ namespace TranslatedProgram
             Anfrageart = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             Status = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
-            _.SET(false, this, _env.ComboProductionalRelevanz, "Disabled");
+            _.SETm1a0(false, this, _env.ComboProductionalRelevanz, "Disabled");
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
             {
-                _.SET(true, this, _env.ComboImpact, "Disabled");
-                _.SET(true, this, _env.ComboFunctionalRange, "Disabled");
+                _.SETm1a0(true, this, _env.ComboImpact, "Disabled");
+                _.SETm1a0(true, this, _env.ComboFunctionalRange, "Disabled");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, "ImpactOne");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, "FunctionalRangePartFailure");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzAdministrativeProcess");
             }
             else
             {
-                _.SET(false, this, _env.ComboImpact, "Disabled");
-                _.SET(false, this, _env.ComboFunctionalRange, "Disabled");
+                _.SETm1a0(false, this, _env.ComboImpact, "Disabled");
+                _.SETm1a0(false, this, _env.ComboFunctionalRange, "Disabled");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzSupportProcess");
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
                 if (_.IF(_.NOTEQ(_.NullableSTR(Status), "IncidentStatusClosed")))
                 {
-                    _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
                 }
                 else
                 {
-                    _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
                 }
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
             else
             {
-                _.SET("", this, _env.EditProblem, "Text");
-                _.SET(true, this, _env.CaseProblem, "Disabled");
-                _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET("", this, _env.EditDiagnosis, "Text");
-                _.SET(true, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(true, this, _env.KeywordTree, "Disabled");
-                _.SET(true, this, _env.Attachment, "Disabled");
-                _.SET(true, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboRequestType, "Disabled");
-                _.SET(true, this, _env.ComboProductionalRelevanz, "Disabled");
-                _.SET(true, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0("", this, _env.EditProblem, "Text");
+                _.SETm1a0(true, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0("", this, _env.EditDiagnosis, "Text");
+                _.SETm1a0(true, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(true, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(true, this, _env.Attachment, "Disabled");
+                _.SETm1a0(true, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboRequestType, "Disabled");
+                _.SETm1a0(true, this, _env.ComboProductionalRelevanz, "Disabled");
+                _.SETm1a0(true, this, _env.ComboIncidentStatus, "Disabled");
             }
 
         }
@@ -946,7 +946,7 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.SummaryHTML.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.SummaryHTML.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
                 //Button "Übersicht" entsperren
-                _.SET(false, this, _env.ButtonShowOverView, "Disabled");
+                _.SETm1a0(false, this, _env.ButtonShowOverView, "Disabled");
             }
 
         }
@@ -974,8 +974,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Ditzingen oder TG auslesen
@@ -1086,8 +1086,8 @@ namespace TranslatedProgram
                     //Datenbankverbindung zu helpline_replication
                     cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                     //DB Verbindung öffnen
-                    _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                    _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                    _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                    _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                     _.CALLm1v0(this, cn, "Open");
 
                     //Teamname auslesen
@@ -1154,8 +1154,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Inhalte von agent_templates in das Recordset einlesen
@@ -1197,7 +1197,7 @@ namespace TranslatedProgram
                 varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _env.EditProblem, "Text"), (Int16)100));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSubjectCase, "Text")), "")))
                 {
-                    _.SET(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
+                    _.SETm1a0(_.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "), this, _env.EditSubjectCase, "Text");
                 }
 
                 //Übertrag der Caller in das An-Feld
@@ -1254,66 +1254,66 @@ namespace TranslatedProgram
                 sendmail = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 if (_.IF(_.EQ(_.NullableSTR(sendmail), "EmailCallerYes")))
                 {
-                    _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                    _.SET(true, this, _env.TextBoxEmailSubject, "Required");
-                    _.SET(false, this, _env.GroupBoxEmail, "Disabled");
+                    _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                    _.SETm1a0(true, this, _env.TextBoxEmailSubject, "Required");
+                    _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
                     _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v19 => { strEmail = v19; }));
                 }
                 else
                 {
-                    _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                    _.SET(false, this, _env.TextBoxEmailSubject, "Required");
-                    _.SET(true, this, _env.GroupBoxEmail, "Disabled");
+                    _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                    _.SETm1a0(false, this, _env.TextBoxEmailSubject, "Required");
+                    _.SETm1a0(true, this, _env.GroupBoxEmail, "Disabled");
                 }
 
                 //Aktivieren/Deaktivieren der Felder je nach gesetzter Anfrageart
-                _.SET(false, this, _env.ComboProductionalRelevanz, "Disabled");
+                _.SETm1a0(false, this, _env.ComboProductionalRelevanz, "Disabled");
                 if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
                 {
-                    _.SET(true, this, _env.ComboImpact, "Disabled");
-                    _.SET(true, this, _env.ComboFunctionalRange, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboImpact, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboFunctionalRange, "Disabled");
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, "ImpactOne");
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, "FunctionalRangePartFailure");
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzAdministrativeProcess");
                 }
                 else
                 {
-                    _.SET(false, this, _env.ComboImpact, "Disabled");
-                    _.SET(false, this, _env.ComboFunctionalRange, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboImpact, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboFunctionalRange, "Disabled");
                     _.CALLm1v5(this, _env.hlObj, "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzSupportProcess");
                 }
 
                 if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
                 {
-                    _.SET(false, this, _env.CaseProblem, "Disabled");
+                    _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
                     Status = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.NOTEQ(_.NullableSTR(Status), "IncidentStatusClosed")))
                     {
-                        _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                        _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
                     }
                     else
                     {
-                        _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                        _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
                     }
-                    _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                    _.SET(false, this, _env.KeywordTree, "Disabled");
-                    _.SET(false, this, _env.Attachment, "Disabled");
-                    _.SET(false, this, _env.CaseAttributes, "Disabled");
-                    _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                    _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                    _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                    _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                    _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
                 }
                 else
                 {
-                    _.SET("", this, _env.EditProblem, "Text");
-                    _.SET(true, this, _env.CaseProblem, "Disabled");
-                    _.SET(true, this, _env.ComboBoxEmailCaller, "Disabled");
-                    _.SET("", this, _env.EditDiagnosis, "Text");
-                    _.SET(true, this, _env.CaseDiagnosis, "Disabled");
-                    _.SET(true, this, _env.KeywordTree, "Disabled");
-                    _.SET(true, this, _env.Attachment, "Disabled");
-                    _.SET(true, this, _env.CaseAttributes, "Disabled");
-                    _.SET(false, this, _env.ComboRequestType, "Disabled");
-                    _.SET(true, this, _env.ComboProductionalRelevanz, "Disabled");
-                    _.SET(true, this, _env.ComboIncidentStatus, "Disabled");
+                    _.SETm1a0("", this, _env.EditProblem, "Text");
+                    _.SETm1a0(true, this, _env.CaseProblem, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboBoxEmailCaller, "Disabled");
+                    _.SETm1a0("", this, _env.EditDiagnosis, "Text");
+                    _.SETm1a0(true, this, _env.CaseDiagnosis, "Disabled");
+                    _.SETm1a0(true, this, _env.KeywordTree, "Disabled");
+                    _.SETm1a0(true, this, _env.Attachment, "Disabled");
+                    _.SETm1a0(true, this, _env.CaseAttributes, "Disabled");
+                    _.SETm1a0(false, this, _env.ComboRequestType, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboProductionalRelevanz, "Disabled");
+                    _.SETm1a0(true, this, _env.ComboIncidentStatus, "Disabled");
                 }
 
                 //Recordset schließen
@@ -1357,8 +1357,8 @@ namespace TranslatedProgram
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 //DB Verbindung öffnen
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Recordset anlegen und templatenamen auslesen
@@ -1431,7 +1431,7 @@ namespace TranslatedProgram
             if (_.IF(_.EQ(_.NullableSTR(isreserved), "")))
             {
                 _.MSGBOX("Please reserve the ticket first.");
-                _.SET(true, this, _env.EditSurname, "RequestFocus");
+                _.SETm1a0(true, this, _env.EditSurname, "RequestFocus");
             }
             else
             {
@@ -1444,8 +1444,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Teamname auslesen
@@ -1559,8 +1559,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Editor bestimmen
@@ -1593,7 +1593,7 @@ namespace TranslatedProgram
 
                         //Auswahl der Checkbox zurücksetzen und ID auf Null
                         _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
-                        _.SET("", this, _env.l_templateID, "text");
+                        _.SETm1a0("", this, _env.l_templateID, "text");
 
                         //Recordset schließen
                         rs = VBScriptConstants.Nothing;
@@ -1611,7 +1611,7 @@ namespace TranslatedProgram
 
                 //Vorhandene Checkbox Werte entfernen
                 _.CALLm1v0(this, _env.cb_template_load, "ResetContent");
-                _.SET("", this, _env.l_templateID, "Text");
+                _.SETm1a0("", this, _env.l_templateID, "Text");
 
             }
 
@@ -1640,8 +1640,8 @@ namespace TranslatedProgram
 
             //Datenbankverbindung zu helpline_replication
             cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-            _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-            _.SET((Int16)10, this, cn, "ConnectionTimeout");
+            _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+            _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
             _.CALLm1v0(this, cn, "Open");
 
             //Teamname auslesen
@@ -1702,7 +1702,7 @@ namespace TranslatedProgram
                     while (true)
                     {
                         _.HANDLEERROR(errOn2, () => {
-                            _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_agent, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
+                            _.SETm1a0(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_agent, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
                         });
                         _.HANDLEERROR(errOn2, () => {
                             _.CALLm1v0(this, rs_agent, "MoveNext");
@@ -1731,7 +1731,7 @@ namespace TranslatedProgram
                 if (_.IF(() => _.EQ(_.CALLm1v0(this, _env.cb_template_load, "GetCurSel"), anzahl_agent_templates), errOn2))
                 {
                     _.HANDLEERROR(errOn2, () => {
-                        _.SET("", this, _env.l_templateID, "Text");
+                        _.SETm1a0("", this, _env.l_templateID, "Text");
                     });
                     //cb_template_load.ResetContent
 
@@ -1769,7 +1769,7 @@ namespace TranslatedProgram
                         while (true)
                         {
                             _.HANDLEERROR(errOn2, () => {
-                                _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
+                                _.SETm1a0(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team, "fields", "template_id"), "value")), this, _env.l_templateID, "Text");
                             });
                             _.HANDLEERROR(errOn2, () => {
                                 _.CALLm1v0(this, rs_team, "MoveNext");
@@ -2091,9 +2091,9 @@ namespace TranslatedProgram
             {
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v34 => { strEmail = v34; }));
                 _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v35 => { strSubject = v35; }));
-                _.SET(true, this, _env.TextBoxEmailTo, "Required");
-                _.SET(true, this, _env.TextBoxEmailSubject, "Required");
-                _.SET(false, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0(true, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(true, this, _env.TextBoxEmailSubject, "Required");
+                _.SETm1a0(false, this, _env.GroupBoxEmail, "Disabled");
             }
             else
             {
@@ -2104,9 +2104,9 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _env.hlObj, "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
-                _.SET(true, this, _env.GroupBoxEmail, "Disabled");
-                _.SET(false, this, _env.TextBoxEmailTo, "Required");
-                _.SET(false, this, _env.TextBoxEmailSubject, "Required");
+                _.SETm1a0(true, this, _env.GroupBoxEmail, "Disabled");
+                _.SETm1a0(false, this, _env.TextBoxEmailTo, "Required");
+                _.SETm1a0(false, this, _env.TextBoxEmailSubject, "Required");
             }
 
         }
@@ -2120,7 +2120,7 @@ namespace TranslatedProgram
             object Data = null; /* Undeclared in source */
             object i = null; /* Undeclared in source */
             //EMail-Adressen leeren
-            _.SET("", this, _env.ComboBoxEmailSearchResult, "Text");
+            _.SETm1a0("", this, _env.ComboBoxEmailSearchResult, "Text");
             _.CALLm1v0(this, _env.ComboBoxEmailSearchResult, "ResetContent");
             //Name als Suchparameter für Email-Adressen abfragen
             name = _.VAL(_.CALLm1v0(this, _env.TextBoxEmailSearchName, "Text"));
@@ -2138,8 +2138,8 @@ namespace TranslatedProgram
                 cn2 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
 
                 //Verbindung öffnen
-                _.SET(_.VAL(ConString), this, cn2, "ConnectionString");
-                _.SET((Int16)10, this, cn2, "ConnectionTimeout");
+                _.SETm1a0(_.VAL(ConString), this, cn2, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn2, "ConnectionTimeout");
                 _.CALLm1v0(this, cn2, "Open");
 
                 //SELECT absetzen
@@ -2155,7 +2155,7 @@ namespace TranslatedProgram
                     _.CALLm1v1(this, _env.ComboBoxEmailSearchResult, "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", (Int16)0), "value"));
                     if (_.IF(_.EQ(_.NullableNUM(i), (Int16)1)))
                     {
-                        _.SET(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", (Int16)0), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
+                        _.SETm1a0(_.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs2, "fields", (Int16)0), "value")), this, _env.ComboBoxEmailSearchResult, "Text");
                     }
                     _.CALLm1v0(this, rs2, "movenext");
                 }
@@ -2201,7 +2201,7 @@ namespace TranslatedProgram
                         Recipient = _.ADD(_.ADD(Recipient, ";"), email);
                     }
                 }
-                _.SET(_.VAL(Recipient), this, _env.TextBoxEmailTo, "Text");
+                _.SETm1a0(_.VAL(Recipient), this, _env.TextBoxEmailTo, "Text");
             }
 
         }
@@ -2240,7 +2240,7 @@ namespace TranslatedProgram
                         RecipientCC = _.ADD(_.ADD(RecipientCC, ";"), email);
                     }
                 }
-                _.SET(_.VAL(RecipientCC), this, _env.TextBoxEmailCC, "Text");
+                _.SETm1a0(_.VAL(RecipientCC), this, _env.TextBoxEmailCC, "Text");
             }
 
         }
@@ -2265,8 +2265,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_data
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                 _.CALLm1v0(this, cn, "Open");
 
                 //Teamname auslesen
@@ -2311,8 +2311,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
-                _.SET((Int16)10, this, cn1, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn1, "ConnectionTimeout");
                 _.CALLm1v0(this, cn1, "Open");
 
                 //Teamname auslesen
@@ -2775,8 +2775,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SET("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
-                _.SET((Int16)10, this, cn1, "ConnectionTimeout");
+                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2", this, cn1, "ConnectionString");
+                _.SETm1a0((Int16)10, this, cn1, "ConnectionTimeout");
                 _.CALLm1v0(this, cn1, "Open");
 
                 //Keyword einlesen und in Datenbank ablegen
@@ -2791,8 +2791,8 @@ namespace TranslatedProgram
 
                     //Datenbankverbindung zu helpline_data
                     cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                    _.SET("Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, cn, "ConnectionString");
-                    _.SET((Int16)10, this, cn, "ConnectionTimeout");
+                    _.SETm1a0("Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, cn, "ConnectionString");
+                    _.SETm1a0((Int16)10, this, cn, "ConnectionTimeout");
                     _.CALLm1v0(this, cn, "Open");
                     //Keyword schreiben
                     rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
@@ -2820,49 +2820,49 @@ namespace TranslatedProgram
             object Text = null;
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Notfalltransport_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
 
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Systemänderbarkeit_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
 
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "#Prio 1 Incident# ", VBScriptConstants.vbTextCompare)))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _env.EditSubjectCase, "Text"), "Debugg_Modus_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.CaseProblem, "Disabled");
-                _.SET(false, this, _env.ComboBoxEmailCaller, "Disabled");
-                _.SET(false, this, _env.CaseDiagnosis, "Disabled");
-                _.SET(false, this, _env.KeywordTree, "Disabled");
-                _.SET(false, this, _env.Attachment, "Disabled");
-                _.SET(false, this, _env.CaseAttributes, "Disabled");
-                _.SET(false, this, _env.ComboIncidentStatus, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.CaseProblem, "Disabled");
+                _.SETm1a0(false, this, _env.ComboBoxEmailCaller, "Disabled");
+                _.SETm1a0(false, this, _env.CaseDiagnosis, "Disabled");
+                _.SETm1a0(false, this, _env.KeywordTree, "Disabled");
+                _.SETm1a0(false, this, _env.Attachment, "Disabled");
+                _.SETm1a0(false, this, _env.CaseAttributes, "Disabled");
+                _.SETm1a0(false, this, _env.ComboIncidentStatus, "Disabled");
             }
 
         }

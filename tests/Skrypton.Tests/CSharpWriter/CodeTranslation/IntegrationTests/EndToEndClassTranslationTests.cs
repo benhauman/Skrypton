@@ -408,7 +408,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					[TranslatedProperty(""Name"")]
 					public void Name(ref object value)
 					{
-						_.SET(""C1"", this, this, ""Name"");
+						_.SETm1a0(""C1"", this, this, ""Name"");
 					}
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);

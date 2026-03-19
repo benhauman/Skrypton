@@ -9,7 +9,7 @@ namespace Skrypton.RuntimeSupport
     {
         internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
-        public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
+        public static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -22,7 +22,7 @@ namespace Skrypton.RuntimeSupport
         // This one allows for the arguments to not be mentioned at all if they're not required for a SET (unlike CALL, there is no concept of "forced brackets"
         // when there are zero arguments since a SET is always part of a value-setting statement, which means that the brackets are an essential part of the
         // statement and not optional tokens that may or may not be present)
-        public static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target, string optionalMemberAccessor)
+        public static void SETm1a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -33,7 +33,7 @@ namespace Skrypton.RuntimeSupport
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
         // constant, the translated output would be call to this function where the target to would actually be a call to RAISEERROR so that the valueToSet
         // may be evaluated and then a can-not-set-this error raised (consistent with how VBScript would handle it).
-        internal static void SET(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object context, object target)
+        internal static void SETnm(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

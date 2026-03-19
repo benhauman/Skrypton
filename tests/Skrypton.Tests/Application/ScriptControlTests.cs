@@ -1,4 +1,8 @@
-﻿using Helpline.Application.ScriptingModel;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Helpline.Application.ScriptingModel;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.ScriptControlSupport;
 
@@ -35,7 +39,9 @@ namespace Skrypton.Tests.Application
 
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
 
-            IScriptControl scriptengine = new ScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture);
+            ScriptControlConfiguration controlConfig = new TestScriptControlConfiguration(this);
+
+            IScriptControl scriptengine = new ScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture, controlConfig);
             scriptengine.Language = "VBScript";
             scriptengine.AllowUI = false;
             scriptengine.Timeout = -1;//MSScriptControl::NoTimeout;
@@ -43,7 +49,15 @@ namespace Skrypton.Tests.Application
             //scriptengine.AddObject(it.Key, objIDispatch, false); // https://jeffpar.github.io/kbarchive/kb/185/Q185697/
             scriptengine.AddObject("session", session);
 
-            scriptengine.ExecuteStatement(scriptContent);
+            try
+            {
+                scriptengine.ExecuteStatement(scriptContent);
+            }
+            catch (CompilationFailedException ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
 
             /*
 object[] args = new object[0];
@@ -52,6 +66,21 @@ scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName
              */
 
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
+        }
+    }
+
+    internal sealed class TestScriptControlConfiguration : ScriptControlConfiguration
+    {
+        private readonly TestBaseX _tst;
+
+        public TestScriptControlConfiguration(TestBaseX tst) : base(true, tst.TestRunResultsDirectory)
+        {
+            _tst = tst ?? throw new ArgumentNullException(nameof(tst));
+        }
+
+        protected override void OnTempFileAdd(string filePath)
+        {
+            _tst.AddResultFile(filePath);
         }
     }
 

@@ -261,7 +261,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			";
             var expected = new[]
             {
-                "_.SET((Int16)1, this, _.CALLm1v0(this, _env.a, \"Name\"), \"Length\");"
+                "_.SETm1a0((Int16)1, this, _.CALLm1v0(this, _env.a, \"Name\"), \"Length\");"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
             //myAssert.AreEqual(

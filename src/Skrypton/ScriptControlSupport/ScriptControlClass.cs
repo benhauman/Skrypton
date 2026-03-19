@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -22,16 +24,19 @@ namespace Skrypton.ScriptControlSupport
         private ScriptControlStates _state = ScriptControlStates.Initialized;
         private int _sitehWnd; // required (Must be a valid HWND (window handle)) if allowUI is true otherwise ignored. No host window is associated by default => 0
         private bool _useSafeSubset = true; // 'true': Script runs in safe modeUse safe subset of the scripting language (if supported). 'false': Use full language features. Safe subset is used by default. Potentially dangerous objects and operations are blocked
-        //private Error _error; // Default value: null (or Nothing in VBScript) — no error has occurred yet.
-//#pragma warning disable CS0414 // The field is assigned but its value is never used
-//        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
-//#pragma warning restore CS0414 // The field is assigned but its value is never used
 
-        public ScriptControlClass(IRuntimeHost engineRuntimeHost, IRuntimeLogger engineRuntimeLogger, CultureInfo engineCulture)
+        //private Error _error; // Default value: null (or Nothing in VBScript) — no error has occurred yet.
+        //#pragma warning disable CS0414 // The field is assigned but its value is never used
+        //        private object _codeObject = null; // Default value: null (or Nothing in VBScript) — no code object has been set yet. This allows you to interact with script members directly, instead of using Run or ExecuteStatement.
+        //#pragma warning restore CS0414 // The field is assigned but its value is never used
+        private readonly ScriptControlConfiguration _config;
+
+        public ScriptControlClass(IRuntimeHost engineRuntimeHost, IRuntimeLogger engineRuntimeLogger, CultureInfo engineCulture, ScriptControlConfiguration config)
         {
             EngineRuntimeHost = engineRuntimeHost ?? throw new ArgumentNullException(nameof(engineRuntimeHost));
             EngineCulture = engineCulture ?? throw new ArgumentNullException(nameof(engineCulture));
             EngineRuntimeLogger = engineRuntimeLogger ?? throw new ArgumentNullException(nameof(engineRuntimeLogger));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         string IScriptControl.Language { get => _language; set => _language = value; }
@@ -124,6 +129,7 @@ namespace Skrypton.ScriptControlSupport
             throw new NotImplementedException();
         }
 
+        private static int _lastExecNumber;
         void IScriptControl.ExecuteStatement(string statement)
         {
             if (string.IsNullOrEmpty(statement))
@@ -133,7 +139,8 @@ namespace Skrypton.ScriptControlSupport
             string csCode = GenerateCSharpCode(statement);
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(csCode);
+            Interlocked.Increment(ref _lastExecNumber); // threadsafe
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode);
             try
             {
                 DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
@@ -235,5 +242,47 @@ namespace Skrypton.ScriptControlSupport
         {
             Factory = factory;
         }
+    }
+
+    public class ScriptControlConfiguration
+    {
+        public bool TempEnabled { get; }
+        protected string TempDirectoryPath { get; }
+
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath)
+        {
+            TempEnabled = tempEnabled;
+            TempDirectoryPath = tempDirectoryPath ?? "";
+        }
+        private string EnsureFilePath(string folderName, string fileName)
+        {
+            string folderPath = Path.Combine(TempDirectoryPath, folderName);
+            if (!Directory.Exists(folderName))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            string filePath = Path.Combine(folderPath, fileName);
+            OnTempFileAdd(filePath);
+            return filePath;
+        }
+        protected virtual void OnTempFileAdd(string filePath)
+        {
+        }
+#pragma warning disable CA1822 // Mark members as static
+        protected internal virtual void TempFileWriteAllBytes(string folderName, string fileName, byte[] bytes)
+        {
+            File.WriteAllBytes(EnsureFilePath(folderName, fileName), bytes);
+        }
+
+        protected internal virtual void TempFileWriteAllLines(string folderName, string fileName, IEnumerable<string> contents)
+        {
+            File.WriteAllLines(EnsureFilePath(folderName, fileName), contents);
+        }
+
+        protected internal virtual void TempFileWriteAllText(string folderName, string fileName, string contents)
+        {
+            File.WriteAllText(EnsureFilePath(folderName, fileName), contents);
+        }
+#pragma warning restore CA1822 // Mark members as static
     }
 }

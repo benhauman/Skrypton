@@ -24,8 +24,8 @@ namespace TranslatedProgram
             //Check if invalid characters are in any of the url textboxes
             _env.dict = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
             _env.objRegEx = _.OBJ(_.CREATEOBJECT("VBScript.RegExp"));
-            _.SET(true, this, _env.objRegEx, "Global");
-            _.SET("[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]", this, _env.objRegEx, "Pattern");
+            _.SETm1a0(true, this, _env.objRegEx, "Global");
+            _.SETm1a0("[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]", this, _env.objRegEx, "Pattern");
 
             _.CALLm1v2(this, _env.dict, "Add", "Checkliste 1 URL", _.CALLm1v0(this, _env.TextBoxChecklist1URL, "Text"));
             _.CALLm1v2(this, _env.dict, "Add", "Checkliste 2 URL", _.CALLm1v0(this, _env.TextBoxChecklist2URL, "Text"));

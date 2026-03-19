@@ -42,11 +42,11 @@ namespace TranslatedProgram
             //Create VB-Dictionary.
             _outer.pCase = VBScriptConstants.Nothing;
             _outer.pCase = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
-            _.SET(VBScriptConstants.vbTextCompare, this, _outer.pCase, "CompareMode");
-            _.SET(false, this, _outer.pCase, null, _.ARGS.Val("BillCase"));
-            _.SET("IncidentSUAttribute.IncidentOperation", this, _outer.pCase, null, _.ARGS.Val("attrOperation"));
-            _.SET("IncidentAttribute.RequestType", this, _outer.pCase, null, _.ARGS.Val("attrDistinguishMixed"));
-            _.SET(false, this, _outer.pCase, null, _.ARGS.Val("Delegated"));
+            _.SETm1a0(VBScriptConstants.vbTextCompare, this, _outer.pCase, "CompareMode");
+            _.SETm1argp(false, this, _outer.pCase, null, _.ARGS.Val("BillCase"));
+            _.SETm1argp("IncidentSUAttribute.IncidentOperation", this, _outer.pCase, null, _.ARGS.Val("attrOperation"));
+            _.SETm1argp("IncidentAttribute.RequestType", this, _outer.pCase, null, _.ARGS.Val("attrDistinguishMixed"));
+            _.SETm1argp(false, this, _outer.pCase, null, _.ARGS.Val("Delegated"));
 
             //Vorgangsstatus auslesen.
             //Retrieve Case status.
@@ -258,8 +258,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -376,8 +376,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -491,8 +491,8 @@ namespace TranslatedProgram
                         //Verbindung oeffnen
                         //Hier muss Server- und Datenbankname fest eingetragen werden!
                         //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                        _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
-                        _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                        _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
+                        _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                         _.CALLm1v0(this, _outer.cn, "Open");
 
                         //CI-Nummer auslesen
@@ -608,8 +608,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -726,8 +726,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -844,8 +844,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -962,8 +962,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1080,8 +1080,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1198,8 +1198,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1316,8 +1316,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1434,8 +1434,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1552,8 +1552,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1669,8 +1669,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1787,8 +1787,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -1905,8 +1905,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2023,8 +2023,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2141,8 +2141,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2259,8 +2259,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2377,8 +2377,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2495,8 +2495,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2613,8 +2613,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2731,8 +2731,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2848,8 +2848,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -2966,8 +2966,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -3085,8 +3085,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
@@ -3203,8 +3203,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SET("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
-                                _.SET((Int16)10, this, _outer.cn, "ConnectionTimeout");
+                                _.SETm1a0("Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2", this, _outer.cn, "ConnectionString");
+                                _.SETm1a0((Int16)10, this, _outer.cn, "ConnectionTimeout");
                                 _.CALLm1v0(this, _outer.cn, "Open");
 
                                 //CI-Nummer auslesen
