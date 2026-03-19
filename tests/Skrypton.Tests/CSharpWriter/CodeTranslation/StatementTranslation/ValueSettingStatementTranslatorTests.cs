@@ -73,7 +73,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm1a0((Int16)1, this, _env.a, \"b\")",
+                "_.SETm1a0(this, _env.a, \"b\", (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
@@ -137,7 +137,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm0a1((Int16)1, this, _outer.a, (Int16)1)",
+                "_.SETm0a1(this, _outer.a, (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeVariable(
@@ -174,7 +174,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm0a1((Int16)1, this, _env.a, (Int16)1)",
+                "_.SETm0a1(this, _env.a, (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
@@ -207,7 +207,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm0a1((Int16)1, this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), (Int16)1)",
+                "_.SETm0a1(this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeFunction(
@@ -427,7 +427,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm1a0((Int16)1, this, this, \"Name\")",
+                @"_.SETm1a0(this, this, ""Name"", (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("Name", lineIndex1)])
             );
             var scopeAccessInformation = AddPropertyToScope(GetEmptyScopeAccessInformation(), "Name", lineIndex1);

@@ -106,22 +106,22 @@ namespace TranslatedProgram
                     {
                         MailAttachment = VBScriptConstants.Nothing;
                         MailAttachment = _.OBJ(_.CALLm1v0(this, Email, "AddAttachment"));
-                        _.SETm1a0(_.VAL(_.CALLm1v0(this, Attachment, "name")), this, MailAttachment, "name");
-                        _.SETm1a0(_.VAL(_.CALLm1v0(this, Attachment, "data")), this, MailAttachment, "data");
+                        _.SETm1a0(this, MailAttachment, "name", _.VAL(_.CALLm1v0(this, Attachment, "name")));
+                        _.SETm1a0(this, MailAttachment, "data", _.VAL(_.CALLm1v0(this, Attachment, "data")));
                     }
                 }
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(MailSender), "")))
             {
-                _.SETm1a0(_.VAL(MailSender), this, Email, "SenderMail");
+                _.SETm1a0(this, Email, "SenderMail", _.VAL(MailSender));
             }
-            _.SETm1a0(_.VAL(Receiver), this, Email, "To");
-            _.SETm1a0(_.VAL(Subject), this, Email, "Subject");
-            _.SETm1a0(_.VAL(body), this, Email, "Body");
+            _.SETm1a0(this, Email, "To", _.VAL(Receiver));
+            _.SETm1a0(this, Email, "Subject", _.VAL(Subject));
+            _.SETm1a0(this, Email, "Body", _.VAL(body));
             if (_.IF(_.NOTEQ(_.NullableSTR(CC), "")))
             {
-                _.SETm1a0(_.VAL(CC), this, Email, "CC");
+                _.SETm1a0(this, Email, "CC", _.VAL(CC));
             }
             _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
         }
@@ -272,9 +272,9 @@ namespace TranslatedProgram
                     body = _.CONCAT(body, _.CALLm1v5(this, hlCase, "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     body = _.CONCAT(body, " konnte wegen einer fehlenden E-Mail Adresse nicht zugestellt werden.");
                 }
-                _.SETm1a0(_.VAL(Emailadress), this, Email, "To");
-                _.SETm1a0(_.VAL(Subject), this, Email, "Subject");
-                _.SETm1a0(_.VAL(body), this, Email, "Body");
+                _.SETm1a0(this, Email, "To", _.VAL(Emailadress));
+                _.SETm1a0(this, Email, "Subject", _.VAL(Subject));
+                _.SETm1a0(this, Email, "Body", _.VAL(body));
                 _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
             }
         }
@@ -761,7 +761,7 @@ namespace TranslatedProgram
             nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
             nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(_.VAL(aliasname), this, attAliasName, "Text");
+            _.SETm1a0(this, attAliasName, "Text", _.VAL(aliasname));
             _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
@@ -975,13 +975,13 @@ namespace TranslatedProgram
 
             nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(_.VAL(aliasname1), this, attAliasName, "Text");
+            _.SETm1a0(this, attAliasName, "Text", _.VAL(aliasname1));
             _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             nodeServiceUnits = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnits")));
             nodeServiceUnit = _.OBJ(_.CALLm1v1(this, nodeServiceUnits, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnit")));
             attAliasNameSU = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(_.VAL(aliasnameSU), this, attAliasNameSU, "Text");
+            _.SETm1a0(this, attAliasNameSU, "Text", _.VAL(aliasnameSU));
             _.CALLm2argp(this, nodeServiceUnit, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
             ////////////////// HLOBJECT.ID
             //Call AppendNode(hlContext,xmldoc, nodeAttributes, True, "HLOBJECTINFO.ID", hlObj.GetValue("HLOBJECTINFO.ID", 0,0,0,0)) '
@@ -1037,7 +1037,7 @@ namespace TranslatedProgram
             ////// obj2: Product///////////////////////////////////////////////////////
             nodeObject2 = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", _.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()))));
             attAliasName2 = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(_.VAL(aliasname2), this, attAliasName2, "Text");
+            _.SETm1a0(this, attAliasName2, "Text", _.VAL(aliasname2));
             _.CALLm2argp(this, nodeObject2, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
             nodeAttributes2 = _.OBJ(_.CALLm1v1(this, nodeObject2, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
             object byrefalias52 = hlContext;
@@ -1094,11 +1094,11 @@ namespace TranslatedProgram
             attIsKey = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "iskey"));
             if (_.IF(iskey))
             {
-                _.SETm1a0("true", this, attIsKey, "Text");
+                _.SETm1a0(this, attIsKey, "Text", "true");
             }
             else
             {
-                _.SETm1a0("false", this, attIsKey, "Text");
+                _.SETm1a0(this, attIsKey, "Text", "false");
             }
             _.CALLm2argp(this, valueNode, "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
 
@@ -1115,7 +1115,7 @@ namespace TranslatedProgram
             finally { key = byrefalias57; }
             _.CALLm1v1(this, nodeObject, "appendChild", valueNode);
 
-            _.SETm1a0(_.VAL(value), this, valueNode, "Text");
+            _.SETm1a0(this, valueNode, "Text", _.VAL(value));
         }
 
         public object DBConnectionString(ref object hlContext)

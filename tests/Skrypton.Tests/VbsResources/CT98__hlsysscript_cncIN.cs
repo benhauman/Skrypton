@@ -239,7 +239,7 @@ namespace TranslatedProgram
         public void LogText(ref object sText)
         {
             //Uncomment to enable logging
-            _.SETm0a1(_.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine), this, _env.session, "processtext");
+            _.SETm0a1(this, _env.session, "processtext", _.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine));
         }
 
         //---------------------------------------------------------------------------------------- ExtractRefNumber ---

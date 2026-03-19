@@ -9,7 +9,7 @@ namespace Skrypton.RuntimeSupport
     {
         internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
-        internal static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
+        internal static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object? context, object target, string memberAccessor, IBuildCallArgumentProviders argumentProviderBuilder, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -17,52 +17,52 @@ namespace Skrypton.RuntimeSupport
                 throw new ArgumentNullException(nameof(argumentProviderBuilder));
             if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, argumentProviderBuilder.GetArgs());
+            source.SET(context, target, optionalMemberAccessor: memberAccessor, argumentProviderBuilder.GetArgs(), valueToSetTo);
         }
 
         // This one allows for the arguments to not be mentioned at all if they're not required for a SET (unlike CALL, there is no concept of "forced brackets"
         // when there are zero arguments since a SET is always part of a value-setting statement, which means that the brackets are an essential part of the
         // statement and not optional tokens that may or may not be present)
-        public static void SETm1a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor)
+        public static void SETm1a0(this IAccessValuesUsingVBScriptRules source, object? context, object target, string memberAccessor, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
+            source.SET(context, target, optionalMemberAccessor: memberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, valueToSetTo);
         }
-        public static void SETm0a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target)
+        public static void SETm0a0(this IAccessValuesUsingVBScriptRules source, object? context, object target, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
+            source.SET(context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, valueToSetTo);
         }
-        public static void SETm1a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor, object arg1)
+        public static void SETm1a1(this IAccessValuesUsingVBScriptRules source, object? context, object target, string memberAccessor, object arg1, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
+            source.SET(context, target, optionalMemberAccessor: memberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]), valueToSetTo);
         }
-        public static void SETm0a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, object arg1)
+        public static void SETm0a1(this IAccessValuesUsingVBScriptRules source, object? context, object target, object arg1, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
+            source.SET(context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]), valueToSetTo);
         }
         // This one allows for no arguments OR member accessors to be mentioned - this should only be used for errors cases (since, otherwise, a simple assignment
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
         // constant, the translated output would be call to this function where the target to would actually be a call to RAISEERROR so that the valueToSet
         // may be evaluated and then a can-not-set-this error raised (consistent with how VBScript would handle it).
-        internal static void SETnm(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target)
+        internal static void SETnm(this IAccessValuesUsingVBScriptRules source, object? context, object target, object? valueToSetTo)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
+            source.SET(context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, valueToSetTo);
         }
 
         // Convenience methods for when there are no arguments (supporting up to MaxNumberOfMemberAccessorBeforeArraysRequired members accessors, just as the

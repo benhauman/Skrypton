@@ -585,12 +585,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 }
             }
-            string argsInitText = argumentsInitialization;
             string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
-            return new ValueSettingStatementAssignmentFormatDetails(
-                translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName}, {memberAccessorText}{argsInitText})", // Pass "this" as the "context" argument
-                variablesAccessed
-            );
+            if (optionalMemberAccessor == null && argumentsInitialization.Length == 0)
+            {
+                return new ValueSettingStatementAssignmentFormatDetails(
+                    translatedExpression => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}, {translatedExpression})", // Pass "this" as the "context" argument
+                    variablesAccessed
+                );
+            }
+            else
+            {
+                return new ValueSettingStatementAssignmentFormatDetails(
+                    translatedExpression => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}, {memberAccessorText}{argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
+                    variablesAccessed
+                );
+            }
         }
 
         private string TranslateIntoErrorRaise(string exceptionClassName, IToken target)

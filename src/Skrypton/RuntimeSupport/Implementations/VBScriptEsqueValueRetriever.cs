@@ -942,7 +942,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// comes before any others since VBScript will evaulate the right-hand side of the assignment before the left, which may be important
         /// if an error is raised at some point in the operation.
         /// </summary>
-        public void SET(object valueToSetTo, object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
+        public void SET(object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, object? valueToSetTo)
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
             if (argumentProvider == null) throw new ArgumentNullException(nameof(argumentProvider));
@@ -959,7 +959,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 invoker = GenerateSetInvoker(target, optionalMemberAccessor, arguments, allowPrivateAccess);
                 _setInvokerCache.TryAdd(cacheKey, invoker);
             }
-            invoker(target, arguments, valueToSetTo);
+            invoker(target, arguments, valueToSetTo!);
             for (int index = 0; index < arguments.Length; index++)
                 argumentProvider.OverwriteValueIfByRef(index, arguments[index]);
         }

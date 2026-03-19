@@ -97,7 +97,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // interface is to allow that to occur where necessary).
             return Ref(
                 valueForArgument!,
-                v => _vbscriptValueAccessor.SET(v, context, target, null, lastArgumentProvider)
+                v => _vbscriptValueAccessor.SET(context, target, null, lastArgumentProvider, v)
             );
         }
 

@@ -21,7 +21,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            _.SETm1a0(_.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)), this, _outer.Person, "BackColor");
+            _.SETm1a0(this, _outer.Person, "BackColor", _.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)));
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

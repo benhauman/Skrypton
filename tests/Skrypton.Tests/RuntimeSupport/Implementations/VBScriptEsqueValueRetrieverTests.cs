@@ -123,8 +123,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var dict = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             using (var _ = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture).Get())
             {
-                _.SETm0a1(1, context: dict, target: dict, "a");
-                _.SETm0a1(2, context: dict, target: dict, "b");
+                _.SETm0a1(context: dict, target: dict, "a", 1);
+                _.SETm0a1(context: dict, target: dict, "b", 2);
                 myAssert.AreEqual(2, _.CALLm1v0(context: null, target: dict, member1: "Count"));
             }
         }
@@ -511,7 +511,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var valueTypeValueToRecord = 123;
             using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
             {
-                _.SETm0a1(valueTypeValueToRecord, context: dict, target: dict, "ACCO");
+                _.SETm0a1(context: dict, target: dict, "ACCO", valueToSetTo: valueTypeValueToRecord);
             }
         }
 
@@ -523,7 +523,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var referenceTypeValueToRecord = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
             {
-                _.SETm0a1(referenceTypeValueToRecord, context: dict, target: dict, arg1: "ACCO");
+                _.SETm0a1(context: dict, target: dict, arg1: "ACCO", valueToSetTo: referenceTypeValueToRecord);
             }
         }
 
@@ -574,7 +574,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             const string name = "test";
             var classWithPrivateMember = new ClassWithPrivateNameProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a0(name, context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Name");
+            _.SETm1a0(context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Name", valueToSetTo: name);
             myAssert.AreEqual(
                 name,
                 _.CALLm1v0(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Name")
@@ -588,7 +588,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var classWithPrivateMember = new ClassWithPrivateNameProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<MissingMemberException>(() =>
-                _.SETm1a0(name, context: null, target: classWithPrivateMember, memberAccessor: "Name")
+                _.SETm1a0(context: null, target: classWithPrivateMember, memberAccessor: "Name", valueToSetTo: name)
             );
         }
 
@@ -626,7 +626,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var i = new object();
             var classWithPrivateMember = new ClassWithPrivateIndexedProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a1(name, context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i);
+            _.SETm1a1(context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i, valueToSetTo: name);
             myAssert.AreEqual(
                 name,
                 _.CALLm1argp(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
@@ -641,7 +641,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var classWithPrivateMember = new ClassWithPrivateIndexedProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.Throws<MissingMethodException>(() =>
-                _.SETm1a1(name, context: null, target: classWithPrivateMember, memberAccessor: "Test", arg1: i)
+                _.SETm1a1(context: null, target: classWithPrivateMember, memberAccessor: "Test", arg1: i, valueToSetTo: name)
             );
         }
 
@@ -670,7 +670,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var i = new object();
             var classWithPrivateMember = new ClassWithPublicIndexedProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a1(name, context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i);
+            _.SETm1a1(context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i, valueToSetTo: name);
             myAssert.AreEqual(
                 name,
                 _.CALLm1argp(context: classWithPrivateMember, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
@@ -684,7 +684,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var i = new object();
             var classWithPrivateMember = new ClassWithPublicIndexedProperty();
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a1(name, context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i);
+            _.SETm1a1(context: classWithPrivateMember, target: classWithPrivateMember, memberAccessor: "Test", arg1: i, valueToSetTo: name);
             myAssert.AreEqual(
                 name,
                 _.CALLm1argp(context: null, target: classWithPrivateMember, member1: "Test", argumentProviderBuilder: _.ARGS.Val(i))
@@ -715,8 +715,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             object i = "123";
             object value = "xyz";
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a1(value, context: null, target: new ClassWithPublicIndexedPropertyThatHasByRefArguments(), memberAccessor: "Test",// argp
-                arg1: i //lubo: argumentProviderBuilder: _.ARGS.Ref(i, iUpdate => { i = iUpdate; })
+            _.SETm1a1(context: null, target: new ClassWithPublicIndexedPropertyThatHasByRefArguments(), memberAccessor: "Test",// argp
+                arg1: i, //lubo: argumentProviderBuilder: _.ARGS.Ref(i, iUpdate => { i = iUpdate; })
+                valueToSetTo: value
             );
             myAssert.AreEqual(i, 123);//lubo "456");
         }
@@ -736,8 +737,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             object i = "123";
             object value = "xyz";
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            _.SETm1a1(value, context: null, target: new ClassWithPublicIndexedPropertyThatHasByRefArgumentsButThatIsNotCalledOverIReflect(), memberAccessor: "Test",
-                arg1: i// lubo: argumentProviderBuilder: _.ARGS.Ref(i, iUpdate => { i = iUpdate; })
+            _.SETm1a1(context: null, target: new ClassWithPublicIndexedPropertyThatHasByRefArgumentsButThatIsNotCalledOverIReflect(), memberAccessor: "Test",
+                arg1: i,// lubo: argumentProviderBuilder: _.ARGS.Ref(i, iUpdate => { i = iUpdate; })
+                valueToSetTo: value
             );
             myAssert.AreEqual(i, 123); //lubo: "456");
         }
