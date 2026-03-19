@@ -43,10 +43,10 @@ namespace TranslatedProgram
             _outer.pCase = VBScriptConstants.Nothing;
             _outer.pCase = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
             _.SETm1a0(VBScriptConstants.vbTextCompare, this, _outer.pCase, "CompareMode");
-            _.SETm1a1(false, this, _outer.pCase, null, "BillCase");
-            _.SETm1a1("IncidentSUAttribute.IncidentOperation", this, _outer.pCase, null, "attrOperation");
-            _.SETm1a1("IncidentAttribute.RequestType", this, _outer.pCase, null, "attrDistinguishMixed");
-            _.SETm1a1(false, this, _outer.pCase, null, "Delegated");
+            _.SETm0a1(false, this, _outer.pCase, "BillCase");
+            _.SETm0a1("IncidentSUAttribute.IncidentOperation", this, _outer.pCase, "attrOperation");
+            _.SETm0a1("IncidentAttribute.RequestType", this, _outer.pCase, "attrDistinguishMixed");
+            _.SETm0a1(false, this, _outer.pCase, "Delegated");
 
             //Vorgangsstatus auslesen.
             //Retrieve Case status.

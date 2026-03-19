@@ -116,7 +116,7 @@ namespace TranslatedProgram
             else
             {
                 GetCommunicationDefault_retVal = true;
-                _.SETm1a1(_.VAL(strValue), this, dict, null, "DefValue");
+                _.SETm0a1(_.VAL(strValue), this, dict, "DefValue");
             }
             return GetCommunicationDefault_retVal;
         }
@@ -351,8 +351,8 @@ namespace TranslatedProgram
                     }
                     finally { hlContext = byrefalias19; }
 
-                    _.SETm1a1(_.VAL(strOrgUnits), this, dict, null, "DefValue");
-                    _.SETm1a1("PersonOrganization", this, dict, null, "PersInfoAttr");
+                    _.SETm0a1(_.VAL(strOrgUnits), this, dict, "DefValue");
+                    _.SETm0a1("PersonOrganization", this, dict, "PersInfoAttr");
                     object byrefalias20 = hlContext, byrefalias21 = hlPerson, byrefalias22 = dict;
                     try
                     {
@@ -549,11 +549,11 @@ namespace TranslatedProgram
             //initialisiert werden.
             if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
             {
-                _.SETm1a1((Int16)1, this, pDict, null, "SoftwareSuiteFolderLevel");
+                _.SETm0a1((Int16)1, this, pDict, "SoftwareSuiteFolderLevel");
             }
             else
             {
-                _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pDict, null, "SoftwareSuiteFolderLevel");
+                _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1), this, pDict, "SoftwareSuiteFolderLevel");
             }
 
             //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
@@ -567,7 +567,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias32; hlParentSWFolder = byrefalias33; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
             {
-                _.SETm1a1(_.VAL(_.CALLm1v5(this, hlParentSWFolder, "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), this, pDict, null, "SoftwareSuiteFolder");
+                _.SETm0a1(_.VAL(_.CALLm1v5(this, hlParentSWFolder, "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), this, pDict, "SoftwareSuiteFolder");
                 return CheckForSoftwareSuiteFolder_retVal;
             }
 
@@ -610,16 +610,16 @@ namespace TranslatedProgram
             retval = (Int16)0;
 
             //Dictionary Eintraege initalisieren
-            _.SETm1a1("", this, pDict, null, "SoftwareLicenses");
-            _.SETm1a1((Int16)0, this, pDict, null, "SumRefLicCounter");
-            _.SETm1a1((Int16)0, this, pDict, null, "SumInstLicCounter");
-            _.SETm1a1((Int16)0, this, pDict, null, "SumFreeLicCounter");
+            _.SETm0a1("", this, pDict, "SoftwareLicenses");
+            _.SETm0a1((Int16)0, this, pDict, "SumRefLicCounter");
+            _.SETm0a1((Int16)0, this, pDict, "SumInstLicCounter");
+            _.SETm0a1((Int16)0, this, pDict, "SumFreeLicCounter");
 
             //Pruefen ob es Software Lizenzobjekte unterhalb des Folders gibt.
             object byrefalias38 = assocName;
             try
             {
-                _.SETm1a1(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v65 => { byrefalias38 = v65; }))), this, pDict, null, "SoftwareLicenses");
+                _.SETm0a1(_.VAL(_.CALLm1argp(this, hlSWFolder, "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(byrefalias38, v65 => { byrefalias38 = v65; }))), this, pDict, "SoftwareLicenses");
             }
             finally { assocName = byrefalias38; }
 
@@ -686,7 +686,7 @@ namespace TranslatedProgram
             finally { hlContext = byrefalias48; hlSWFolder = byrefalias49; }
             if (_.IF(_.EQ(_.CBOOL(CheckLicContrByServer), true)))
             {
-                _.SETm1a1((Int16)0, this, pDict, null, "SumFreeLicCounter");
+                _.SETm0a1((Int16)0, this, pDict, "SumFreeLicCounter");
             }
             object byrefalias50 = pDict;
             try
@@ -765,7 +765,7 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias55, v78 => { byrefalias55 = v78; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias55; }
-                        _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, "SumRefLicCounter");
+                        _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, "SumRefLicCounter");
                     }
                 }
                 else
@@ -778,19 +778,19 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias56, v79 => { byrefalias56 = v79; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias56; }
-                        _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, "SumRefLicCounter");
+                        _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, "SumRefLicCounter");
                         object byrefalias57 = hlContext;
                         try
                         {
                             SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias57, v80 => { byrefalias57 = v80; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias57; }
-                        _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")), SWInstCounter), this, pDict, null, "SumInstLicCounter");
+                        _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")), SWInstCounter), this, pDict, "SumInstLicCounter");
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm1a1(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, "SumFreeLicCounter");
+            _.SETm0a1(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, "SumFreeLicCounter");
 
         }
 
@@ -824,7 +824,7 @@ namespace TranslatedProgram
                         SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias58, v81 => { byrefalias58 = v81; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = byrefalias58; }
-                    _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, "SumRefLicCounter");
+                    _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, "SumRefLicCounter");
 
                     object byrefalias59 = hlContext;
                     try
@@ -834,7 +834,7 @@ namespace TranslatedProgram
                     finally { hlContext = byrefalias59; }
                     if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter")))))
                     {
-                        _.SETm1a1(_.VAL(SWInstCounter), this, pDict, null, "SumInstLicCounter");
+                        _.SETm0a1(_.VAL(SWInstCounter), this, pDict, "SumInstLicCounter");
                     }
                 }
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
@@ -848,12 +848,12 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(byrefalias60, v83 => { byrefalias60 = v83; }).Val(_.CALLm1v5(this, SoftwareLicense, "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = byrefalias60; }
-                        _.SETm1a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, null, "SumRefLicCounter");
+                        _.SETm0a1(_.ADD(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter), this, pDict, "SumRefLicCounter");
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm1a1(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, null, "SumFreeLicCounter");
+            _.SETm0a1(_.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))), this, pDict, "SumFreeLicCounter");
         }
 
         //----------------------------------------------------------------------------------------------------------

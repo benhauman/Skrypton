@@ -9,25 +9,27 @@ namespace Skrypton.RuntimeSupport
     {
         internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
-        internal static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
+        internal static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
             if (argumentProviderBuilder == null)
                 throw new ArgumentNullException(nameof(argumentProviderBuilder));
+            if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor, argumentProviderBuilder.GetArgs());
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, argumentProviderBuilder.GetArgs());
         }
 
         // This one allows for the arguments to not be mentioned at all if they're not required for a SET (unlike CALL, there is no concept of "forced brackets"
         // when there are zero arguments since a SET is always part of a value-setting statement, which means that the brackets are an essential part of the
         // statement and not optional tokens that may or may not be present)
-        public static void SETm1a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor)
+        public static void SETm1a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
         public static void SETm0a0(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target)
         {
@@ -36,19 +38,20 @@ namespace Skrypton.RuntimeSupport
 
             source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
-        public static void SETm1a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, object arg1)
+        public static void SETm1a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string memberAccessor, object arg1)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
 
-            source.SET(valueToSetTo, context, target, optionalMemberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor: memberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
         }
         public static void SETm0a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, object arg1)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
         }
         // This one allows for no arguments OR member accessors to be mentioned - this should only be used for errors cases (since, otherwise, a simple assignment
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
@@ -59,7 +62,7 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            source.SET(valueToSetTo, context, target, null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor: null, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
 
         // Convenience methods for when there are no arguments (supporting up to MaxNumberOfMemberAccessorBeforeArraysRequired members accessors, just as the

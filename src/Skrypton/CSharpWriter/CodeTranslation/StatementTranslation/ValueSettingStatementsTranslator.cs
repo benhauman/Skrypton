@@ -472,7 +472,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // first in this method signature since it needs to be evaluated before the target or any arguments in case any errors occur -
             // eg. in "a(b()) = c()", if "c()" raise an error then no effort to evaluate "b()" should be made.
             // Recall that
-            string argumentsInitialisation;
+            string argumentsInitialization;
             bool allArgsConfirmedToBeByVal;
             bool usesArgProvider = true;
             if (arguments.Length != 0)
@@ -486,7 +486,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         throw new NotImplementedException($"a:{arguments.Length}");
                     }
-                    argumentsInitialisation = "";
+                    argumentsInitialization = "";
                     for (int ixArg = 0; ixArg < arguments.Length; ixArg++)
                     {
                         ParsingExpression argumentExpr = arguments[ixArg];
@@ -494,9 +494,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         variablesAccessed = variablesAccessed.Concat(argumentContent.VariablesAccessed);
                         if (ixArg > 0)
                         {
-                            argumentsInitialisation += ", ";
+                            argumentsInitialization += ", ";
                         }
-                        argumentsInitialisation += argumentContent.TranslatedContent;
+                        argumentsInitialization += argumentContent.TranslatedContent;
                     }
                 }
                 else
@@ -509,17 +509,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
                     TranslatedStatementContentDetails argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
                     variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
-                    argumentsInitialisation = argumentsContent.TranslatedContent ?? "";
+                    argumentsInitialization = argumentsContent.TranslatedContent ?? "";
                 }
 #pragma warning restore CA1508 // Avoid dead conditional code
             }
             else
             {
                 allArgsConfirmedToBeByVal = true;
-                argumentsInitialisation = "";
+                argumentsInitialization = "";
             }
             string methodNameSet;
-            if ((argumentsInitialisation.Length == 0) && (optionalMemberAccessor == null))
+            if ((argumentsInitialization.Length == 0) && (optionalMemberAccessor == null))
             {
                 // If there are no member accessors and no arguments on the target then use the abbreviated SET method signature (this
                 // should only be the case where the assignment is invalid and a runtime exception is going to be raised, otherwise this
@@ -530,11 +530,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     variablesAccessed.ToNonNullImmutableList()
                 );
             }
-            string memberAccessorText = (optionalMemberAccessor == null) ? "null" : optionalMemberAccessor.ToLiteral();
-            string argsInitText = (argumentsInitialisation.Length == 0) ? "" : (", " + argumentsInitialisation);
+
             if (optionalMemberAccessor == null)
             {
-                if (argumentsInitialisation.Length == 0)
+                if (argumentsInitialization.Length == 0)
                 {
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETnm);
                 }
@@ -548,14 +547,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             {
                                 throw new NotImplementedException($"a:{arguments.Length}");
                             }
-                            if (memberAccessorText.Length == 0)
-                            {
-                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
-                            }
-                            else
-                            {
-                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
-                            }
+                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
                         }
                         else
                         {
@@ -565,7 +557,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             }
                             else
                             {
-                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
                             }
                         }
                     }
@@ -590,16 +582,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                 {
-                    if (memberAccessorText.Length == 0)
-                    {
-                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a0);
-                    }
-                    else
-                    {
-                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
-                    }
+                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 }
             }
+            string argsInitText = argumentsInitialization;
+            string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
             return new ValueSettingStatementAssigmentFormatDetails(
                 translatedExpression => $"{_supportRefName.Name}.{methodNameSet}({translatedExpression}, this, {targetAccessorName}, {memberAccessorText}{argsInitText})", // Pass "this" as the "context" argument
                 variablesAccessed.ToNonNullImmutableList()

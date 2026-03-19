@@ -556,7 +556,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SETm1a1(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, null, i);
+                    _.SETm0a1(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, i);
                 }
                 i = _.ADD(i, (Int16)1);
             }
@@ -1291,7 +1291,7 @@ namespace TranslatedProgram
                             {
                                 bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay, "Indicative"));
                             }
-                            _.SETm1a1(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, null, strAvailStayKey);
+                            _.SETm0a1(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, strAvailStayKey);
                             _.ERASE(aryStay, v71 => { aryStay = v71; });
                         }
                         else
@@ -1917,9 +1917,9 @@ namespace TranslatedProgram
 
             // Need to create a new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm1a1(_.VAL(intReqNo), this, objEntry, null, "ReqNo");
-            _.SETm1a1(_.VAL(intNumPeople), this, objEntry, null, "NumPeople");
-            _.SETm1a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, "Units");
+            _.SETm0a1(_.VAL(intReqNo), this, objEntry, "ReqNo");
+            _.SETm0a1(_.VAL(intNumPeople), this, objEntry, "NumPeople");
+            _.SETm0a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, "Units");
             object byrefalias25 = intUnitKey;
             try
             {
@@ -2012,9 +2012,9 @@ namespace TranslatedProgram
 
             // Preparer new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm1a1(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, "NumPeople");
-            _.SETm1a1(_.VAL(intUnitKey), this, objEntry, null, "UnitKey");
-            _.SETm1a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, "PossReqNos");
+            _.SETm0a1(_.ADD(intNumAdults, intNumChildren), this, objEntry, "NumPeople");
+            _.SETm0a1(_.VAL(intUnitKey), this, objEntry, "UnitKey");
+            _.SETm0a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, "PossReqNos");
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
@@ -2224,7 +2224,7 @@ namespace TranslatedProgram
                 {
                     intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches, _.ARGS.Ref(intIndexSel, v152 => { intIndexSel = v152; })), (Int16)1);
                     intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })), _.ARGS.Val("UnitKey")));
-                    _.SETm1a1(_.VAL(intUnitKey), this, lsUnitKeys, null, intIndexOption);
+                    _.SETm0a1(_.VAL(intUnitKey), this, lsUnitKeys, intIndexOption);
                 }
             }
 
