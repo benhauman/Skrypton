@@ -261,7 +261,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // has the optional member accessor and any arguments.
             string targetAccessorName;
             string? optionalMemberAccessor;
-            IEnumerable<ParsingExpression> arguments;
+            ParsingExpression[] arguments;
             if (callExpressionSegments.Count == 1)
             {
                 // The single CallExpressionSegment may have one or two member accessors
@@ -276,7 +276,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     optionalMemberAccessor = callExpressionSegments[0].MemberAccessTokens.Skip(1).Single().Content;
                 }
 
-                arguments = callExpressionSegments[0].Arguments;
+                arguments = callExpressionSegments[0].Arguments.ToArray();
 
                 NameToken? targetAccessorNameToken = targetAccessor as NameToken;
                 DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = (targetAccessorNameToken == null) ? null : scopeAccessInformation.TryToGetDeclaredReferenceDetails(targetAccessorNameToken, _nameRewriter);
@@ -386,7 +386,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // - Note: it may have zero member accessors if the assignment target was of the form "a(0, 1)(2)"
                 CallSetItemExpressionSegment? lastCallExpressionSegment = callExpressionSegments.Last();
                 optionalMemberAccessor = lastCallExpressionSegment.MemberAccessTokens.Count != 0 ? lastCallExpressionSegment.MemberAccessTokens.Single().Content : null;
-                arguments = lastCallExpressionSegment.Arguments;
+                arguments = lastCallExpressionSegment.Arguments.ToArray();
 
                 // Note: In this case, we don't have to apply any special logic to make "return value replacements" for assignment targets
                 // (when "F2 = 1" is setting the return value for the function "F2" that we're inside of, for example) since this will be
@@ -433,22 +433,51 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // eg. in "a(b()) = c()", if "c()" raise an error then no effort to evaluate "b()" should be made.
             // Recall that
             string argumentsInitialisation;
-            if (arguments.Any())
+            bool allArgsConfirmedToBeByVal;
+            if (arguments.Length != 0)
             {
-                TranslatedStatementContentDetails argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
-                variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
-                argumentsInitialisation = argumentsContent.TranslatedContent;
+                allArgsConfirmedToBeByVal = StatementTranslator.ArgumentsWouldBePassedByValBasedUponItsContent(arguments, scopeAccessInformation, _nameRewriter);
+                if (allArgsConfirmedToBeByVal)
+                {
+                    if (arguments.Length > 1)
+                    {
+                        throw new NotImplementedException($"a:{arguments.Length}");
+                    }
+                    argumentsInitialisation = "";
+                    for (int ixArg = 0; ixArg < arguments.Length; ixArg++)
+                    {
+                        ParsingExpression argumentExpr = arguments[ixArg];
+                        TranslatedStatementContentDetails argumentContent = _statementTranslator.TranslateParsingExpression(argumentExpr, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified);
+                        variablesAccessed = variablesAccessed.Concat(argumentContent.VariablesAccessed);
+                        if (ixArg > 0)
+                        {
+                            argumentsInitialisation += ", ";
+                        }
+                        argumentsInitialisation += argumentContent.TranslatedContent;
+                    }
+                }
+                else
+                {
+                    // VBScript: aryFormattedData(i) =
+                    // test: UnitSelection_Renderer_NoSelects Line:413
+                    if (arguments.Length > 1)
+                    {
+                        throw new NotImplementedException($"a:{arguments.Length}");
+                    }
+                    TranslatedStatementContentDetails argumentsContent = _statementTranslator.TranslateAsArgumentProvider(arguments, scopeAccessInformation, forceAllArgumentsToBeByVal: false);
+                    variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
+                    argumentsInitialisation = argumentsContent.TranslatedContent ?? "";
+                }
             }
             else
             {
+                allArgsConfirmedToBeByVal = true;
                 argumentsInitialisation = "";
             }
             string methodNameSet;
-#pragma warning disable CA1820 // Test for empty strings using string length
-            if ((argumentsInitialisation == "") && (optionalMemberAccessor == null))
-#pragma warning restore CA1820 // Test for empty strings using string length
+            if ((argumentsInitialisation.Length == 0) && (optionalMemberAccessor == null))
             {
-                // If there are are no member accessors and no arguments on the target then use the abbreviated SET method signature (this
+                // If there are no member accessors and no arguments on the target then use the abbreviated SET method signature (this
                 // should only be the case where the assignment is invalid and a runtime exception is going to be raised, otherwise this
                 // could have been a simple assignment that didn't even need a SET call)
                 methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
@@ -458,20 +487,29 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 );
             }
             string memberAccessorText = (optionalMemberAccessor == null) ? "null" : optionalMemberAccessor.ToLiteral();
-#pragma warning disable CA1820 // Test for empty strings using string length
-            string argsInitText = (argumentsInitialisation == "") ? "" : (", " + argumentsInitialisation);
-#pragma warning restore CA1820 // Test for empty strings using string length
+            string argsInitText = (argumentsInitialisation.Length == 0) ? "" : (", " + argumentsInitialisation);
             if (optionalMemberAccessor == null)
             {
-                if (argumentsInitialisation != null && argumentsInitialisation.Length == 0)
+                if (argumentsInitialisation.Length == 0)
                 {
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETnm);
                 }
                 else
                 {
-                    if (arguments.Any())
+                    if (arguments.Length != 0)
                     {
-                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                        if (allArgsConfirmedToBeByVal)
+                        {
+                            if (arguments.Length != 1)
+                            {
+                                throw new NotImplementedException($"a:{arguments.Length}");
+                            }
+                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                        }
+                        else
+                        {
+                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                        }
                     }
                     else
                     {
@@ -481,7 +519,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                if (arguments.Any())
+                if (arguments.Length != 0)
                 {
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
                 }

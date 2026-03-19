@@ -1112,7 +1112,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 1 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
-                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
                 if (allArgsConfirmedToBeByVal)
                 {
                     //todoLength = 9876;
@@ -1141,7 +1141,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
                 //callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
-                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
                 if (allArgsConfirmedToBeByVal)
                 {
                     //todoLength = 9876;
@@ -1164,7 +1164,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetMemberAccessTokensArray.Length == 3 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
-                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
                 if (allArgsConfirmedToBeByVal)
                 {
                     //todoLength = 9876;
@@ -1223,7 +1223,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 callExpressionContent.Append(", ");
 
-                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation); ;
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
 
                 //if (isConfirmedToBeByVal && todoLength == 9876)
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
@@ -1463,7 +1463,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
             }
 
-            bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+            bool isConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation, _nameRewriter);
             if (isConfirmedToBeByVal)
             {
                 TranslatedStatementContentDetails translatedCallExpressionByValArgumentContent = TranslateParsingExpression(
@@ -1585,12 +1585,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 )
             );
         }
-        private bool ArgumentsWouldBePassedByValBasedUponItsContent(ParsingExpression[] argumentValues, ScopeAccessInformation scopeAccessInformation)
+        internal static bool ArgumentsWouldBePassedByValBasedUponItsContent(ParsingExpression[] argumentValues, ScopeAccessInformation scopeAccessInformation, VBScriptNameRewriter nameRewriter)
         {
             for (var ixArg = 0; ixArg < argumentValues.Length; ixArg++)
             {
                 var argumentValue = argumentValues[ixArg];
-                bool isConfirmedToBeByVal = ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation);
+                bool isConfirmedToBeByVal = ArgumentWouldBePassedByValBasedUponItsContent(argumentValue, scopeAccessInformation, nameRewriter);
                 if (!isConfirmedToBeByVal)
                 {
                     return false;
@@ -1608,7 +1608,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// may be an array access - in the case of an array element, that must be passed ByRef and so it is not safe to say that "a(0)"
         /// may definitely be passed ByVal.
         /// </summary>
-        public bool ArgumentWouldBePassedByValBasedUponItsContent(ParsingExpression argumentValue, ScopeAccessInformation scopeAccessInformation)
+        private static bool ArgumentWouldBePassedByValBasedUponItsContent(ParsingExpression argumentValue, ScopeAccessInformation scopeAccessInformation, VBScriptNameRewriter nameRewriter)
         {
             if (argumentValue == null)
             {
@@ -1707,7 +1707,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // .. then check for a known function
                     DeclaredReferenceDetails? targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(
                         (NameToken)initialCallSetItemExpressionSegmentToCheckIfAny.MemberAccessTokens.First(), // TODO: Are we sure this is always going to be a NameToken??
-                        _nameRewriter
+                        nameRewriter
                     );
                     if (targetReferenceDetailsIfAvailable == null)
                     {

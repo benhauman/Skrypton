@@ -29,6 +29,13 @@ namespace Skrypton.RuntimeSupport
 
             source.SET(valueToSetTo, context, target, optionalMemberAccessor, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty);
         }
+        public static void SETm1a1(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, object arg1)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            source.SET(valueToSetTo, context, target, optionalMemberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]));
+        }
         // This one allows for no arguments OR member accessors to be mentioned - this should only be used for errors cases (since, otherwise, a simple assignment
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
         // constant, the translated output would be call to this function where the target to would actually be a call to RAISEERROR so that the valueToSet

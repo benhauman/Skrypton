@@ -73,7 +73,7 @@ namespace TranslatedProgram
                 item = enumerationContent.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, oMailRequest, "Subject"), item, (Int16)1)), (Int16)0)))
                 {
-                    _.SETm1argp("Out of Office AutoReply", this, _env.session, null, _.ARGS.Val("processtext"));
+                    _.SETm1a1("Out of Office AutoReply", this, _env.session, null, "processtext");
                     return;
                 }
             }
@@ -135,7 +135,7 @@ namespace TranslatedProgram
         public void LogText(ref object sText)
         {
             //session("worker").trace sText
-            _.SETm1argp(_.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf), this, _env.session, null, _.ARGS.Val("processtext"));
+            _.SETm1a1(_.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf), this, _env.session, null, "processtext");
         }
 
         //--------------------------------------------------------------------------------------- sub 3 ---
@@ -223,7 +223,7 @@ namespace TranslatedProgram
             }
             if (_.IF(_.LT(_.NullableNUM(_.CALLm1v0(this, oMailRequest, "mailtype")), (Int16)0)))
             {
-                _.SETm1argp("unregistered mail subject", this, _env.session, null, _.ARGS.Val("processtext"));
+                _.SETm1a1("unregistered mail subject", this, _env.session, null, "processtext");
                 return;
             }
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("MailRequestType:", _.CALLm1v0(this, oMailRequest, "mailtype")));

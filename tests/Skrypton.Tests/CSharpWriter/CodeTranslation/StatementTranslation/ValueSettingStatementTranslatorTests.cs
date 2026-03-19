@@ -137,7 +137,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm1argp((Int16)1, this, _outer.a, null, _.ARGS.Val((Int16)1))",
+                "_.SETm1a1((Int16)1, this, _outer.a, null, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeVariable(
@@ -174,7 +174,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm1argp((Int16)1, this, _env.a, null, _.ARGS.Val((Int16)1))",
+                "_.SETm1a1((Int16)1, this, _env.a, null, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
@@ -207,7 +207,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NumericValueToken("1", lineIndex1)
             ]);
             var expected = new TranslatedStatementContentDetails(
-                "_.SETm1argp((Int16)1, this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), null, _.ARGS.Val((Int16)1))",
+                "_.SETm1a1((Int16)1, this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), null, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
             var scopeAccessInformation = AddOutermostScopeFunction(

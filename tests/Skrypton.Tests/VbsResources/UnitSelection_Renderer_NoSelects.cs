@@ -1917,9 +1917,9 @@ namespace TranslatedProgram
 
             // Need to create a new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm1argp(_.VAL(intReqNo), this, objEntry, null, _.ARGS.Val("ReqNo"));
-            _.SETm1argp(_.VAL(intNumPeople), this, objEntry, null, _.ARGS.Val("NumPeople"));
-            _.SETm1argp(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("Units"));
+            _.SETm1a1(_.VAL(intReqNo), this, objEntry, null, "ReqNo");
+            _.SETm1a1(_.VAL(intNumPeople), this, objEntry, null, "NumPeople");
+            _.SETm1a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, "Units");
             object byrefalias25 = intUnitKey;
             try
             {
@@ -2012,9 +2012,9 @@ namespace TranslatedProgram
 
             // Preparer new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm1argp(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, _.ARGS.Val("NumPeople"));
-            _.SETm1argp(_.VAL(intUnitKey), this, objEntry, null, _.ARGS.Val("UnitKey"));
-            _.SETm1argp(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, _.ARGS.Val("PossReqNos"));
+            _.SETm1a1(_.ADD(intNumAdults, intNumChildren), this, objEntry, null, "NumPeople");
+            _.SETm1a1(_.VAL(intUnitKey), this, objEntry, null, "UnitKey");
+            _.SETm1a1(_.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")), this, objEntry, null, "PossReqNos");
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
