@@ -101,7 +101,7 @@ namespace Skrypton.Tests.Application
             return AddControlCore(controlId, new DialogGuiImageControl() { });
         }
 
-        internal DialogBuilder AddExternalObject(string objectName, object objectInstance)
+        public DialogBuilder AddExternalObject(string objectName, object objectInstance)
         {
             if (_externalReferences.ContainsKey(objectName))
             {
