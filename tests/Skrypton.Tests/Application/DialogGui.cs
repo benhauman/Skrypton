@@ -284,7 +284,7 @@ WScript.Echo xmlhttp.responseText
             Test_Xml();
             TestCS();
             TestCS_IDispatch();
-            Test_IDispatch_Invoke(); //works only on windows
+            //Test_IDispatch_Invoke(); //works only on windows
 
             var hlobj = new HLObjectInstance()
                     .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")

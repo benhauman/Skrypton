@@ -2391,7 +2391,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // TODO: Ideally, the object returned here would be a managed implementation of "VBScript.RegExp" (which has a fairly simple interface), to reduce the
             // number of dependencies. But this works and so will do for the time being.
-            return Activator.CreateInstance(Type.GetTypeFromProgID("VBScript.RegExp", throwOnError: true));
+            return CREATEOBJECTCore("VBScript.RegExp", optionalMonikerValues: null);
         }
 
         /// <summary>

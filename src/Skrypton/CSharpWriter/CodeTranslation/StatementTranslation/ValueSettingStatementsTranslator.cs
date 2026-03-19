@@ -504,7 +504,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             {
                                 throw new NotImplementedException($"a:{arguments.Length}");
                             }
-                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                            if (memberAccessorText.Length == 0)
+                            {
+                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
+                            }
+                            else
+                            {
+                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                            }
                         }
                         else
                         {
@@ -525,7 +532,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                 {
-                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
+                    if (memberAccessorText.Length == 0)
+                    {
+                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a0);
+                    }
+                    else
+                    {
+                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
+                    }
                 }
             }
             return new ValueSettingStatementAssigmentFormatDetails(
