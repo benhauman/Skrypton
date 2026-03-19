@@ -1640,14 +1640,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (!string.IsNullOrWhiteSpace(typeDescriptorClassName))
                     return typeDescriptorClassName;
             }
-            SourceClassNameAttribute? sourceClassName = type.GetCustomAttributes(typeof(SourceClassNameAttribute), inherit: true).FirstOrDefault() as SourceClassNameAttribute;
+            SourceClassNameAttribute? sourceClassName = type.GetCustomAttributes(typeof(SourceClassNameAttribute), inherit: true).OfType<SourceClassNameAttribute>().FirstOrDefault();
             if (sourceClassName != null)
                 return sourceClassName.Name;
 
             // This will always fall through to Object if it finds nothing better along the way
             while (true)
             {
-                ComVisibleAttribute comVisibleAttributeIfAny = type.GetCustomAttributes(typeof(ComVisibleAttribute), inherit: false).Cast<ComVisibleAttribute>().FirstOrDefault();
+                ComVisibleAttribute? comVisibleAttributeIfAny = type.GetCustomAttributes(typeof(ComVisibleAttribute), inherit: false).OfType<ComVisibleAttribute>().FirstOrDefault();
                 if ((comVisibleAttributeIfAny != null) && comVisibleAttributeIfAny.Value)
                     return type.Name;
                 type = type.BaseType;
