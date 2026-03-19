@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
-using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {

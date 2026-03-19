@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Skrypton.LegacyParser.CodeBlocks;
+﻿using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.ContentBreaking;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Skrypton.LegacyParser
 {

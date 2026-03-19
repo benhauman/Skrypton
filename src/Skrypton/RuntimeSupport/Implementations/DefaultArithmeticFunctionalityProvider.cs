@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Skrypton.RuntimeSupport.Exceptions;
+using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using Skrypton.RuntimeSupport.Exceptions;
 
 namespace Skrypton.RuntimeSupport.Implementations
 {

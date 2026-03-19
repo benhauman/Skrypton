@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Skrypton.LegacyParser.Tokens;
+﻿using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States;
 using Skrypton.StageTwoParser.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Skrypton.RuntimeSupport.Implementations
+﻿namespace Skrypton.RuntimeSupport.Implementations
 {
     public interface IRuntimeHost
     {

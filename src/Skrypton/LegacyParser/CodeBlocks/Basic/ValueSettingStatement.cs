@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Skrypton.LegacyParser.Tokens;
+using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using Skrypton.LegacyParser.Tokens;
-using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
@@ -77,7 +77,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             // be re-used without copying any of it here
             var assignmentOperator = AtomToken.GetNewToken("=".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.First().LineIndex);
             IToken[] tokensList = (ValueSetType == ValueSetTypeOptions.Set
-                ? new IToken[]{ AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.First().LineIndex)}
+                ? new IToken[] { AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace: false, ValueToSet.Tokens.First().LineIndex) }
                 : [])
 
                 .Concat(ValueToSet.Tokens)
@@ -88,7 +88,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             //ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
             ;
 
-                //ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
+            //ValueToSet.Tokens.Concat(new[] { assignmentOperator }).Concat(Expression.Tokens).ToList();
             //if (ValueSetType == ValueSetTypeOptions.Set)
             //    tokensList.Insert(0, AtomToken.GetNewToken("Set".ToUpperX(), hasLeadingWhiteSpace:false, ValueToSet.Tokens.First().LineIndex));
 

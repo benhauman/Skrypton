@@ -470,7 +470,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ErrorType = errorType;
             }
 
-            private IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context) {
+            private IDispatchAccessException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
                 Target = new object();
             }
 

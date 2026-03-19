@@ -1,5 +1,5 @@
-﻿using System;
-using Skrypton.LegacyParser.Tokens.Basic;
+﻿using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 
 namespace Skrypton.StageTwoParser.Tokens
 {

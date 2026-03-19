@@ -1,6 +1,6 @@
-﻿using System;
-using Skrypton.CSharpWriter.Lists;
+﻿using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {

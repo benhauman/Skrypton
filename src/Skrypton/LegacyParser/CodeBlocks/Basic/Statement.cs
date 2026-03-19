@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Skrypton.LegacyParser.Tokens;
+using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Skrypton.LegacyParser.Tokens;
-using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {
@@ -125,15 +125,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                         output.Append(' ');
                     }
                     else
-                    //if (index > 0 && mad.HasLeadingWhiteSpace)
-                    if (index > 0 && !mad.HasLeadingWhiteSpace)
-                    {
-                        //output.Append(' '); //VBScript: SET .Member
-                    }
-                    else if (mad.HasLeadingWhiteSpace)
-                    {
-                        output.Append(' '); //VBScript: .MethodA .MemberX
-                    }
+                        //if (index > 0 && mad.HasLeadingWhiteSpace)
+                        if (index > 0 && !mad.HasLeadingWhiteSpace)
+                        {
+                            //output.Append(' '); //VBScript: SET .Member
+                        }
+                        else if (mad.HasLeadingWhiteSpace)
+                        {
+                            output.Append(' '); //VBScript: .MethodA .MemberX
+                        }
                     //else if (indenter.Indent.Length == 0)
                     //{
                     //    output.Append(' ');

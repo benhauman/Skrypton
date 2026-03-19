@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Skrypton.RuntimeSupport
+﻿namespace Skrypton.RuntimeSupport
 {
     /*
         Definitely ByVal

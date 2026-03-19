@@ -1,6 +1,6 @@
-﻿using System;
-using Skrypton.LegacyParser.CodeBlocks.Basic;
+﻿using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {

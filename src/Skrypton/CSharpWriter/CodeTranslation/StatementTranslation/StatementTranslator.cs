@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
@@ -14,6 +7,12 @@ using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Exceptions;
 using Skrypton.StageTwoParser.ExpressionParsing;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {

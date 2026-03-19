@@ -5,31 +5,31 @@ using System.Runtime.InteropServices;
 
 namespace Skrypton.ScriptControlSupport
 {
-/*
-   | Property                                              | Type                  | Default Value     | Setter Effect / Notes                                                                                           | Typical Use Cases                                             |
-   | ----------------------------------------------------- | --------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-   | `Language`                                            | string                | `""` (empty)      | Must set before running scripts; `"VBScript"` or `"JScript"`                                                    | Select scripting language for code execution                  |
-   | `AllowUI`                                             | bool                  | `false`           | If `true`, scripts can show MsgBox/InputBox/etc.                                                                | Enable UI interaction from scripts                            |
-   | `Timeout`                                             | int                   | `-1`              | Milliseconds; `-1` = infinite                                                                                   | Limit script execution time to prevent hangs                  |
-   | `State`                                               | `ScriptControlStates` | `Initialized (0)` | 0 → reset engine (clears code, variables, modules)<br>1 → engine connected / ready to run code & receive events | Control engine lifecycle; reset or pre-start                  |
-   | `Modules`                                             | `ScriptModules`       | empty collection  | Read-only; adding code implicitly adds to default module                                                        | Inspect all loaded modules/functions; usually 1 module exists |
-   | `UseSafeSubset`                                       | bool                  | `true`            | `false` = allows full scripting access, potentially unsafe                                                      | Security measure to restrict dangerous operations             |
-   | `SitehWnd`                                            | int                   | `0`               | HWND of host window; required if AllowUI = true                                                                 | Needed for script dialogs/MsgBox                              |
-   | `Error`                                               | `ScriptError`         | `null/Nothing`    | Read-only; reflects **last runtime error**                                                                      | Check for runtime errors after `Run` or `ExecuteStatement`    |
-   | `CodeObject`                                          | object                | `null/Nothing`    | Read-only; dynamic interface to **all global functions/subs/variables**                                         | Call functions or access global variables programmatically    |
-   | `AddCode(string code)`                                | method                | n/a               | Adds VBScript/JScript code to default module                                                                    | Define functions, subs, variables                             |
-   | `Run(string functionName, params object[] args)`      | method                | n/a               | Calls a function in the default module                                                                          | Execute script functions and get return value                 |
-   | `ExecuteStatement(string statement)`                  | method                | n/a               | Executes a statement or subroutine                                                                              | Run code without return value                                 |
-   | `AddObject(string name, object obj, bool addMembers)` | method                | n/a               | Expose host object to the script                                                                                | Allow scripts to call back into host app                      |
- */
-/*
-   | Action                           | State Before    | State After     | Effect                                             |
-   | -------------------------------- | --------------- | --------------- | -------------------------------------------------- |
-   | Create ScriptControl             | N/A             | Initialized (0) | Engine created, empty                              |
-   | AddCode / Run / ExecuteStatement | Initialized (0) | Connected (1)   | Engine starts executing code                       |
-   | Set `State = Initialized`        | Connected (1)   | Initialized (0) | Resets engine; clears all code, variables, modules |
-   | Set `State = Connected`          | Initialized (0) | Connected (1)   | Pre-starts engine; makes it ready to run code      |
- */
+    /*
+       | Property                                              | Type                  | Default Value     | Setter Effect / Notes                                                                                           | Typical Use Cases                                             |
+       | ----------------------------------------------------- | --------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+       | `Language`                                            | string                | `""` (empty)      | Must set before running scripts; `"VBScript"` or `"JScript"`                                                    | Select scripting language for code execution                  |
+       | `AllowUI`                                             | bool                  | `false`           | If `true`, scripts can show MsgBox/InputBox/etc.                                                                | Enable UI interaction from scripts                            |
+       | `Timeout`                                             | int                   | `-1`              | Milliseconds; `-1` = infinite                                                                                   | Limit script execution time to prevent hangs                  |
+       | `State`                                               | `ScriptControlStates` | `Initialized (0)` | 0 → reset engine (clears code, variables, modules)<br>1 → engine connected / ready to run code & receive events | Control engine lifecycle; reset or pre-start                  |
+       | `Modules`                                             | `ScriptModules`       | empty collection  | Read-only; adding code implicitly adds to default module                                                        | Inspect all loaded modules/functions; usually 1 module exists |
+       | `UseSafeSubset`                                       | bool                  | `true`            | `false` = allows full scripting access, potentially unsafe                                                      | Security measure to restrict dangerous operations             |
+       | `SitehWnd`                                            | int                   | `0`               | HWND of host window; required if AllowUI = true                                                                 | Needed for script dialogs/MsgBox                              |
+       | `Error`                                               | `ScriptError`         | `null/Nothing`    | Read-only; reflects **last runtime error**                                                                      | Check for runtime errors after `Run` or `ExecuteStatement`    |
+       | `CodeObject`                                          | object                | `null/Nothing`    | Read-only; dynamic interface to **all global functions/subs/variables**                                         | Call functions or access global variables programmatically    |
+       | `AddCode(string code)`                                | method                | n/a               | Adds VBScript/JScript code to default module                                                                    | Define functions, subs, variables                             |
+       | `Run(string functionName, params object[] args)`      | method                | n/a               | Calls a function in the default module                                                                          | Execute script functions and get return value                 |
+       | `ExecuteStatement(string statement)`                  | method                | n/a               | Executes a statement or subroutine                                                                              | Run code without return value                                 |
+       | `AddObject(string name, object obj, bool addMembers)` | method                | n/a               | Expose host object to the script                                                                                | Allow scripts to call back into host app                      |
+     */
+    /*
+       | Action                           | State Before    | State After     | Effect                                             |
+       | -------------------------------- | --------------- | --------------- | -------------------------------------------------- |
+       | Create ScriptControl             | N/A             | Initialized (0) | Engine created, empty                              |
+       | AddCode / Run / ExecuteStatement | Initialized (0) | Connected (1)   | Engine starts executing code                       |
+       | Set `State = Initialized`        | Connected (1)   | Initialized (0) | Resets engine; clears all code, variables, modules |
+       | Set `State = Connected`          | Initialized (0) | Connected (1)   | Pre-starts engine; makes it ready to run code      |
+     */
     //[ComImport]
     //[Guid("0E59F1D3-1FBE-11D0-8FF2-00A0D10038BC")]
     //[TypeLibType(4304)] // 4304 = TypeLibTypeFlags.FDispatchable | TypeLibTypeFlags.FNonExtensible | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FHidden

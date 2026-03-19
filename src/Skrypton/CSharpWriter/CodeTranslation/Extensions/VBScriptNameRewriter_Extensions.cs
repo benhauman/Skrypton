@@ -1,7 +1,7 @@
-﻿using System;
-using Skrypton.LegacyParser.Tokens;
+﻿using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport;
+using System;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {

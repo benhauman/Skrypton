@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Skrypton.CSharpWriter.CodeTranslation;
+﻿using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
@@ -14,6 +10,10 @@ using Skrypton.LegacyParser.Tokens.Basic;
 using Skrypton.RuntimeSupport;
 using Skrypton.StageTwoParser.TokenCombining.NumberRebuilding;
 using Skrypton.StageTwoParser.TokenCombining.OperatorCombinations;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter
 {

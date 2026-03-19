@@ -92,7 +92,7 @@ namespace Skrypton.RuntimeSupport
                     {
                         text = text.Substring(num + 1);
                     }
-                    IL_138:
+                IL_138:
                     if (flag)
                     {
                         Array array = (Array)VarName;
@@ -606,7 +606,7 @@ namespace Skrypton.RuntimeSupport
                 typeInfo.GetDocumentation(-1, out strName, out strDocString, out int dwHelpContext, out strHelpFile);
                 text = strName;
             }
-            IL_67:
+        IL_67:
             if (text[0] == '_')
             {
                 text = text.Substring(1);

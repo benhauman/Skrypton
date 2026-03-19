@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Skrypton.StageTwoParser.ExpressionParsing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Skrypton.StageTwoParser.ExpressionParsing;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {

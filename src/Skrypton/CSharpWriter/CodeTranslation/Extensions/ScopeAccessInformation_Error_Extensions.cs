@@ -1,7 +1,7 @@
-﻿using System;
-using Skrypton.CSharpWriter.Lists;
+﻿using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using System;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Skrypton.LegacyParser.CodeBlocks.Basic;
+﻿using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens;
+using System;
+using System.Collections.Generic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {

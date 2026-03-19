@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+using Skrypton.LegacyParser.Tokens;
+using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using Skrypton.CSharpWriter.CodeTranslation.Extensions;
-using Skrypton.LegacyParser.Tokens;
-using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Skrypton.StageTwoParser.ExpressionParsing;
+﻿using Skrypton.StageTwoParser.ExpressionParsing;
+using System.Collections.Generic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {

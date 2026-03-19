@@ -1,12 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using System;
+using System.Globalization;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {

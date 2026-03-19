@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 using System.Collections.Generic;
-using Skrypton.LegacyParser.Tokens.Basic;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Basic
 {

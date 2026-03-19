@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.CSharpWriter.CodeTranslation.StatementTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
@@ -14,6 +10,10 @@ using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Compat;
 using Skrypton.RuntimeSupport.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {

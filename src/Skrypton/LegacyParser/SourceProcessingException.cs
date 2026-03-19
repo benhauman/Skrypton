@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Skrypton.LegacyParser.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Skrypton.LegacyParser.Tokens;
 
 namespace Skrypton.LegacyParser
 {

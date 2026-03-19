@@ -1,6 +1,6 @@
-﻿using System;
-using Skrypton.LegacyParser.Tokens;
+﻿using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
 {

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
+﻿using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
+using System;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {

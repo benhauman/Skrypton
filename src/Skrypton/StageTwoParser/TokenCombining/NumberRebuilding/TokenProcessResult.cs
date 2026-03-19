@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Skrypton.LegacyParser.Tokens;
+using Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Skrypton.LegacyParser.Tokens;
-using Skrypton.StageTwoParser.TokenCombining.NumberRebuilding.States;
 
 namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
 {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
-using Skrypton.LegacyParser.CodeBlocks.Basic;
+﻿using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.StageTwoParser.ExpressionParsing;
+using System;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {

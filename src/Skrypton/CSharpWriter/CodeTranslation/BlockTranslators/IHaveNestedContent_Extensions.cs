@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Skrypton.LegacyParser.CodeBlocks;
+﻿using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
+using System;
+using System.Collections.Generic;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {

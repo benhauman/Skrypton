@@ -11,7 +11,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     {
         private const string BASIC_ERROR_DESCRIPTION = "Invalid procedure call or argument";
 
-        [Obsolete("do not use it")]internal InvalidProcedureCallOrArgumentException() : this(null, innerException: null) { }
+        [Obsolete("do not use it")] internal InvalidProcedureCallOrArgumentException() : this(null, innerException: null) { }
 
         public InvalidProcedureCallOrArgumentException(string message) : this(message, innerException: null) { }
         public InvalidProcedureCallOrArgumentException(string? additionalInformationIfAny, Exception? innerException)

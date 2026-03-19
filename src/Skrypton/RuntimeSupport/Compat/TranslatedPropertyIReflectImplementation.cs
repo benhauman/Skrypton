@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Skrypton.RuntimeSupport.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Skrypton.RuntimeSupport.Attributes;
 
 namespace Skrypton.RuntimeSupport.Compat
 {

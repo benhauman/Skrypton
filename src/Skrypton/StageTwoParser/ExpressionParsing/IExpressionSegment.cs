@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using Skrypton.LegacyParser.Tokens;
+﻿using Skrypton.LegacyParser.Tokens;
+using System.Collections.Generic;
 
 namespace Skrypton.StageTwoParser.ExpressionParsing
 {
