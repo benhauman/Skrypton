@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#nullable enable
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,16 +17,17 @@ namespace Skrypton.Tests
 {
     public abstract class TestBase : TestBaseX
     {
-        public TestContext TestContext { get; set; }
-        public override string TestName => this.TestContext!.TestName;
-        public override string TestRunResultsDirectory => this.TestContext!.TestRunResultsDirectory;
+        public TestContext? TestContext { get; set; }
+        protected string? MemberDataTestName { get; set; }
+        public override string TestName => MemberDataTestName ?? this.TestContext!.TestName;
+        public override string TestRunResultsDirectory => this.TestContext!.TestRunResultsDirectory ?? throw new NotImplementedException("Not set.");
         public override void AddResultFile(string filePath) => this.TestContext!.AddResultFile(filePath);
     }
     public abstract class TestBaseX
     {
         protected const int lineIndex1 = 1;
         protected const int lineIndex2 = 2;
-        protected const int lineIndex3 = 3;
+//        protected const int lineIndex3 = 3;
 
         public const string CSFileExtension = ".cs"; // ".cstxt"
         public CultureInfo TestCulture { get; set; } = CultureInfo.InvariantCulture;
@@ -52,11 +54,21 @@ namespace Skrypton.Tests
 
             return SaveContentToFile(null, "winMergeStarter.bat", startCommand);
         }
+        internal string SaveExpectedActualFile(string testNameX, string workItemName
+            , string fileName
+            , string actual_xml
+        )
+        {
+            var test_case_name_tokens = TestName.Split('_');
+            string folderpath_tc = workItemName + "/" + test_case_name_tokens.Last();
+
+            return SaveContentToFile("actual/" + folderpath_tc, fileName, actual_xml);
+        }
 
         public const char NewLineNormalized = '\n';
 
 
-        private string SaveContentToFile(string subdir, string fileName, string content)
+        private string SaveContentToFile(string? subdir, string fileName, string content)
         {
             //if (this.TestContext != null)
             {
@@ -94,7 +106,7 @@ namespace Skrypton.Tests
             }
         }
 
-        private DefaultRuntimeSupportClassFactory _defaultRuntimeSupportClassFactoryInstance;
+        private DefaultRuntimeSupportClassFactory? _defaultRuntimeSupportClassFactoryInstance;
         protected DefaultRuntimeSupportClassFactory DefaultRuntimeSupportClassFactoryInstance
         {
             get
@@ -234,7 +246,7 @@ namespace Skrypton.Tests
             return s.Substring(startIndex, take);
         }
 
-        public TestHostServices CreateTestHostServices(Action<TestHostServices> setup = null)
+        public TestHostServices CreateTestHostServices(Action<TestHostServices>? setup = null)
         {
             var container = new TestHostServices();
             setup?.Invoke(container);
@@ -272,7 +284,7 @@ namespace Skrypton.Tests
         TService IRuntimeHost.TryGetRuntimeHostService<TService>()
         {
             //return _hostServices.GetService(typeof(TService)) as TService;
-            return _hostServices.GetService<TService>();
+            return _hostServices.GetService<TService>()!;
         }
     }
 
@@ -285,13 +297,13 @@ namespace Skrypton.Tests
         internal int ProvidersCount => _providers.Count;
         internal TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class
         {
-            _providers.Add(typeof(T).FullName, () => (object)serviceProvider());
+            _providers.Add(typeof(T).FullName!, () => (object)serviceProvider());
             return this;
         }
         public object GetService(Type serviceType)
         {
             if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if (_providers.TryGetValue(serviceType.FullName ?? "", out Func<object> serviceProvider))
+            if (_providers.TryGetValue(serviceType.FullName ?? "", out Func<object>? serviceProvider))
             {
                 return serviceProvider() ?? throw new InvalidOperationException($"Service '{serviceType.FullName}' factorization failed.");
             }
@@ -308,13 +320,13 @@ namespace Skrypton.Tests
         private readonly Dictionary<string, Func<IRuntimeHost, object>> _factories = new Dictionary<string, Func<IRuntimeHost, object>>(StringComparer.OrdinalIgnoreCase);
         internal TestHostObjectFactoryHostService RegisterObjectFactory<T>(string progId, Func<IRuntimeHost, T> factory)
         {
-            _factories.Add(progId, (h) => factory(h));
+            _factories.Add(progId, (h) => factory(h)!);
             return this;
         }
 
-        public Func<IRuntimeHost, object> TryGetObjectFactoryRegistration(string progId)
+        public Func<IRuntimeHost, object>? TryGetObjectFactoryRegistration(string progId)
         {
-            return _factories.TryGetValue(progId, out Func<IRuntimeHost, object> factory) ? factory : null;
+            return _factories.TryGetValue(progId, out Func<IRuntimeHost, object>? factory) ? factory : null;
         }
     }
 

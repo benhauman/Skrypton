@@ -49,7 +49,13 @@ namespace Skrypton.Tests.Application
                     {
                         if (script.Value[0] != '\n')
                             dialogHandlerScriptCodeBuilder.AppendLine();
-                        dialogHandlerScriptCodeBuilder.Append(script.Value);
+
+                        foreach (string line in script.Value.SplitLines())
+                        {
+                            //dialogHandlerScriptCodeBuilder.Append(script.Value);
+                            dialogHandlerScriptCodeBuilder.Append('\t').AppendLine(line);
+                        }
+
                         if (script.Value[script.Value.Length - 1] != '\n')
                             dialogHandlerScriptCodeBuilder.AppendLine();
                     }

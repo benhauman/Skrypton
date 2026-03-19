@@ -32,7 +32,7 @@ namespace Skrypton.Tests.Application
             var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
             DoDialogGui(dialog, gr => { });
         }
 
@@ -53,7 +53,7 @@ namespace Skrypton.Tests.Application
                 .AddTextControl("TextBoxChecklist10URL")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
             DoDialogGui(dialog, gr => { });
 
         }
@@ -526,7 +526,7 @@ WScript.Echo xmlhttp.responseText
                     .BuildDialog();
 
 
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
             DoDialogGui(dialog, gr => { });
         }
 
@@ -631,7 +631,7 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("Button1_Click")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -665,7 +665,7 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -808,7 +808,7 @@ WScript.Echo xmlhttp.responseText
 
             //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
             //{
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, TestName, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
             //}
 
             TestDialogHandlers(this, rsp, dialog);
@@ -893,17 +893,34 @@ WScript.Echo xmlhttp.responseText
                 //.AddExternalObject("hlProduct", hlProduct)
                 //.AddExternalObject("hlProduct", hlOrgunit)
                 .SetGlobalScriptCode(customerDialogGlobalScript)
+                .SetGlobalScriptCode(WorkaroundGlobalScript(customerAlias, customerDialogGlobalScript))
                 .BuildDialog();
             model.RegisterSymbolObjectProvider("Default", () => hlobj);
             //model.RegisterSymbolObjectProvider("product", () => symbol_product);
             model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
-            Assert.Inconclusive(); // Compilation failed.(505,319): error CS0131: The left-hand side of an assignment must be a variable, property or indexer
+            //Assert.Inconclusive(); // Compilation failed.(505,319): error CS0131: The left-hand side of an assignment must be a variable, property or indexer
             DoDialogGui(dialog, (GlobalReferencesBase gr) =>
             {
             });
         }
+        private static string WorkaroundGlobalScript(string customerAlias, string globalScript)
+        {
+            if (customerAlias == "CT127")
+            {
+                string globalScriptFixed = globalScript.Replace(
+                    @"task.SetValue ""RoutingHelper.AgentID"",0,0,0,Person.GetValue(""HLOBJECTINFO.ID"",0,0,GetSvcUnitCount(),0)",
+                    @"task.SetValue ""RoutingHelper.AgentID"",0,0,0,Person.GetValue(""HLOBJECTINFO.ID"",0,0,task.GetSvcUnitCount(),0)"
+                );
+                if (globalScriptFixed == globalScript)
+                {
+                    throw new NotImplementedException(customerAlias); // script not fixed
+                }
 
+                return globalScriptFixed;
+            }
+            return globalScript;//unchanged
+        }
     }
 
     public static class DialogBuilderXmlExtensions

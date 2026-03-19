@@ -32,7 +32,8 @@ namespace Skrypton.Tests.Application
                 // ignore for now: the undeclared external references  should be rendered as environment references and not a variables in 'Go'
                 return;
             }
-            TestScriptChain(this, chainName, scriptUsage);
+            MemberDataTestName = chainName;
+            TestScriptChain(this, scriptUsage);
         }
 
         public static object[][] ChainNames
@@ -88,8 +89,9 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        public static TestScriptResponse TestScriptChain(TestBaseX tst, string chainName, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
         {
+            string chainName = tst.TestName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
             string generated_vbs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".generated.vbs", isOptionalAssert);
             string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension, isOptionalAssert);
@@ -242,13 +244,13 @@ namespace Skrypton.Tests.Application
             }
             else
             {
-                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected ?? "", translated_cs_actual);
+                storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".cs", translated_cs_actual);
             }
 
             if (generated_vbs_expected == null)
             {
                 //storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected ?? "", generated_vbs_actual);
-                storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".vbs", "", scriptContent);
+                storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".vbs", scriptContent);
             }
 
             if (!string.IsNullOrEmpty(failed_text))

@@ -26,4 +26,8 @@
     <EmbeddedResource Include="VbsResources\**\*.cstxt" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Skrypton\" />
+  </ItemGroup>
+
 </Project>

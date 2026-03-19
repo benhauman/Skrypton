@@ -7,7 +7,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [SourceClassName("TypeLib")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [DefaultMember(nameof(MyScriptletTypeLib.GUID))]
+    [DefaultMember(nameof(MyScriptletTypeLib.GUID))] // "Scriptlet.TypeLib"
 
     internal sealed class MyScriptletTypeLib : IReflectOnClrType
     {
