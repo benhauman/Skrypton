@@ -229,24 +229,24 @@ namespace TranslatedProgram
             }
 
             //Einfärben der GrupBox CaseAttributes je nach Priorität
-            object target = _.CALLm1v5(this, _env.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
-            if (_.IF(_.EQ(target, "Priority1")))
+            object targetCaseExpr = _.CALLm1v5(this, _env.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
+            if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
                 _.SET(_.VAL(_.RGB((Int16)107, (Int16)105, (Int16)248)), this, _env.CaseAttributes, "BackColor");
             }
-            else if (_.IF(_.EQ(target, "Priority2")))
+            else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
                 _.SET(_.VAL(_.RGB((Int16)119, (Int16)170, (Int16)251)), this, _env.CaseAttributes, "BackColor");
             }
-            else if (_.IF(_.EQ(target, "Priority3")))
+            else if (_.IF(_.EQ(targetCaseExpr, "Priority3")))
             {
                 _.SET(_.VAL(_.RGB((Int16)132, (Int16)235, (Int16)255)), this, _env.CaseAttributes, "BackColor");
             }
-            else if (_.IF(_.EQ(target, "Priority4")))
+            else if (_.IF(_.EQ(targetCaseExpr, "Priority4")))
             {
                 _.SET(_.VAL(_.RGB((Int16)128, (Int16)213, (Int16)177)), this, _env.CaseAttributes, "BackColor");
             }
-            else if (_.IF(_.EQ(target, "Priority5")))
+            else if (_.IF(_.EQ(targetCaseExpr, "Priority5")))
             {
                 _.SET(_.VAL(_.RGB((Int16)123, (Int16)190, (Int16)99)), this, _env.CaseAttributes, "BackColor");
             }

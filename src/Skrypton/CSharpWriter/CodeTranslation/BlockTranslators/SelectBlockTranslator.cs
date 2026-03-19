@@ -459,7 +459,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // rewriter, so the name "target" needs to be one that we do not expect the name rewriter to affect (this is not great since it means that there is an undeclared implicit
             // dependency on the VBScriptNameRewriter implementation but it's all I've got at the moment - since ScopedNameToken is derived from NameToken, I would have to change this
             // around to support a ScopedDoNotRenameNameToken).
-            var evaluatedTargetName = _tempNameGenerator(new CSharpName("target"), scopeAccessInformation);
+            var evaluatedTargetName = _tempNameGenerator(new CSharpName("targetCaseExpr"), scopeAccessInformation);
             scopeAccessInformation = scopeAccessInformation.ExtendVariables(new NonNullImmutableList<ScopedNameToken>(new[] {
                 new ScopedNameToken(evaluatedTargetName.Name.ToUpperX(), targetCodeExpression.Tokens.First().LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)
             }));

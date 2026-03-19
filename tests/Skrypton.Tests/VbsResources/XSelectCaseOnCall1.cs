@@ -21,12 +21,12 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            object target = _.CALLm1v5(this, _outer.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
-            if (_.IF(_.EQ(target, "Priority1")))
+            object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
+            if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
                 _.SET("RGB(107,105,248)", this, _outer.CaseAttributes, "BackColor");
             }
-            else if (_.IF(_.EQ(target, "Priority2")))
+            else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
                 _.SET("RGB(119,170,251)", this, _outer.CaseAttributes, "BackColor");
             }
