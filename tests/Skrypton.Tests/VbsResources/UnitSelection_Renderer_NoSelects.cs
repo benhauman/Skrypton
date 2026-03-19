@@ -556,7 +556,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SETm1argp(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v27 => { key = v27; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, null, _.ARGS.Ref(i, v26 => { i = v26; }));
+                    _.SETm1a1(_.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf), this, aryFormattedData, null, i);
                 }
                 i = _.ADD(i, (Int16)1);
             }
@@ -636,7 +636,7 @@ namespace TranslatedProgram
             object byrefalias7 = asAvailClassId;
             try
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<div Class=\"pnStayReqmntRoom\">Room ", aiThisReqmnt, " - ", strUnitName, _.CALLm1argp(this, _outer, "BookingUI_AvailClassIcon", _.ARGS.Ref(byrefalias7, v29 => { byrefalias7 = v29; })), " <br/></div>"));
+                _.CALLm1v1(this, pO, "Write", _.CONCAT("<div Class=\"pnStayReqmntRoom\">Room ", aiThisReqmnt, " - ", strUnitName, _.CALLm1argp(this, _outer, "BookingUI_AvailClassIcon", _.ARGS.Ref(byrefalias7, v28 => { byrefalias7 = v28; })), " <br/></div>"));
             }
             finally { asAvailClassId = byrefalias7; }
 
@@ -770,7 +770,7 @@ namespace TranslatedProgram
             {
                 aryAvailStaysKeys = _.VAL(_.CALLm1v0(this, objDictAvaiStays, "Keys"));
                 dStart1 = _.REPLACE(_.CALLm0argp(this, aryAvailStaysKeys, _.ARGS.Val((Int16)0)), "sd_", "");
-                _.ERASE(aryAvailStaysKeys, v31 => { aryAvailStaysKeys = v31; });
+                _.ERASE(aryAvailStaysKeys, v30 => { aryAvailStaysKeys = v30; });
             }
             else
             {
@@ -780,7 +780,7 @@ namespace TranslatedProgram
             object byrefalias8 = sbCalendars, byrefalias9 = objDictAvaiStays;
             try
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(byrefalias8, v32 => { byrefalias8 = v32; }).Ref(dStart1, v33 => { dStart1 = v33; }).Ref(strClassMonth, v34 => { strClassMonth = v34; }).Ref(byrefalias9, v35 => { byrefalias9 = v35; }));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(byrefalias8, v31 => { byrefalias8 = v31; }).Ref(dStart1, v32 => { dStart1 = v32; }).Ref(strClassMonth, v33 => { strClassMonth = v33; }).Ref(byrefalias9, v34 => { byrefalias9 = v34; }));
             }
             finally { sbCalendars = byrefalias8; objDictAvaiStays = byrefalias9; }
 
@@ -794,7 +794,7 @@ namespace TranslatedProgram
                 object byrefalias10 = sbCalendars, byrefalias11 = objDictAvaiStays;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(byrefalias10, v36 => { byrefalias10 = v36; }).Ref(byrefalias11, v37 => { byrefalias11 = v37; }).Val(true));
+                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(byrefalias10, v35 => { byrefalias10 = v35; }).Ref(byrefalias11, v36 => { byrefalias11 = v36; }).Val(true));
                 }
                 finally { sbCalendars = byrefalias10; objDictAvaiStays = byrefalias11; }
             }
@@ -804,13 +804,13 @@ namespace TranslatedProgram
                 object byrefalias12 = sbCalendars;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Ref(dStart1, v38 => { dStart1 = v38; }).Ref(byrefalias12, v39 => { byrefalias12 = v39; }));
+                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Ref(dStart1, v37 => { dStart1 = v37; }).Ref(byrefalias12, v38 => { byrefalias12 = v38; }));
                 }
                 finally { sbCalendars = byrefalias12; }
                 object byrefalias13 = sbCalendars;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(byrefalias13, v40 => { byrefalias13 = v40; }));
+                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(byrefalias13, v39 => { byrefalias13 = v39; }));
                 }
                 finally { sbCalendars = byrefalias13; }
                 _.CALLm1v1(this, sbCalendars, "AppendLine", "</div>");
@@ -826,7 +826,7 @@ namespace TranslatedProgram
             object byrefalias14 = sbCalendars;
             try
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(byrefalias14, v41 => { byrefalias14 = v41; }).Ref(dFirstDayOfMonth, v42 => { dFirstDayOfMonth = v42; }).Ref(strWrapperClass, v43 => { strWrapperClass = v43; }).Val(VBScriptConstants.Nothing));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(byrefalias14, v40 => { byrefalias14 = v40; }).Ref(dFirstDayOfMonth, v41 => { dFirstDayOfMonth = v41; }).Ref(strWrapperClass, v42 => { strWrapperClass = v42; }).Val(VBScriptConstants.Nothing));
             }
             finally { sbCalendars = byrefalias14; }
             return BookingUI_RenderCalendarMonth_retVal;
@@ -866,13 +866,13 @@ namespace TranslatedProgram
             iWeekDayCalStart = _.MOD(_.ADD(iWeekStartDay, (Int16)1), (Int16)7);
             iWeekDayCalEnd = _.MOD(iWeekStartDay, (Int16)7);
 
-            dCalStart = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v44 => { dFirstDayOfMonth = v44; })));
-            dCalEnd = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v45 => { dFirstDayOfMonth = v45; })));
+            dCalStart = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v43 => { dFirstDayOfMonth = v43; })));
+            dCalEnd = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v44 => { dFirstDayOfMonth = v44; })));
             strThisMonthYear = _.CONCAT(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetMonthNameAbbr", _.MONTH(dCalStart)), " ", _.YEAR(dCalStart));
             strTableSummary = _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/availabilitycalendarfor", "Availability calendar for"), " ", strThisMonthYear);
 
-            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<div id=\"Cal_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v46 => { dCalStart = v46; })), "\" class=\"", strWrapperClass, "\">"));
-            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<table id=\"Tbl_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v48 => { dCalStart = v48; })), "\" class=\"availabilityCalendar\" summary=\"", strTableSummary, "\" >"));
+            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<div id=\"Cal_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v45 => { dCalStart = v45; })), "\" class=\"", strWrapperClass, "\">"));
+            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<table id=\"Tbl_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v47 => { dCalStart = v47; })), "\" class=\"availabilityCalendar\" summary=\"", strTableSummary, "\" >"));
             _.CALLm1v1(this, sbCalendars, "AppendLine", "<thead>");
             _.CALLm1v1(this, sbCalendars, "AppendLine", "<tr>");
             _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<th colspan=\"8\">", strThisMonthYear, "</th>"));
@@ -913,7 +913,7 @@ namespace TranslatedProgram
 
                     if (_.IF(bFirstCell))
                     {
-                        iPrePadding = _.VAL(_.DATEDIFF("d", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfWeek", _.ARGS.Val(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dCalStart, v50 => { dCalStart = v50; }))).Ref(iWeekDayCalStart, v51 => { iWeekDayCalStart = v51; })), dCalStart));
+                        iPrePadding = _.VAL(_.DATEDIFF("d", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfWeek", _.ARGS.Val(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dCalStart, v49 => { dCalStart = v49; }))).Ref(iWeekDayCalStart, v50 => { iWeekDayCalStart = v50; })), dCalStart));
                         if (_.IF(_.GT(_.NullableNUM(iPrePadding), (Int16)0)))
                         {
                             var loopEnd8 = _.NUM(iPrePadding);
@@ -943,7 +943,7 @@ namespace TranslatedProgram
                             strStayNumber = _.VAL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)0)));
                             bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)1)));
                             _.CALLm1v1(this, objDictAvailStays, "Remove", _.CONCAT("sd_", dDate));
-                            _.ERASE(aryStay, v52 => { aryStay = v52; });
+                            _.ERASE(aryStay, v51 => { aryStay = v51; });
                         }
                     }
 
@@ -997,7 +997,7 @@ namespace TranslatedProgram
                     // This is for when the last day of the month is not the last day of the week and empty cells are put in place to fill the calendar days
                     if (_.IF(bLastCell))
                     {
-                        iPostPadding = _.VAL(_.DATEDIFF("d", dCalEnd, _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfWeek", _.ARGS.Ref(dCalEnd, v53 => { dCalEnd = v53; }).Ref(iWeekDayCalEnd, v54 => { iWeekDayCalEnd = v54; }))));
+                        iPostPadding = _.VAL(_.DATEDIFF("d", dCalEnd, _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfWeek", _.ARGS.Ref(dCalEnd, v52 => { dCalEnd = v52; }).Ref(iWeekDayCalEnd, v53 => { iWeekDayCalEnd = v53; }))));
                         if (_.IF(_.AND(_.GT(_.NullableNUM(iPostPadding), (Int16)0), _.LT(_.NullableNUM(iPostPadding), (Int16)7))))
                         {
                             var loopEnd9 = _.NUM(iPostPadding);
@@ -1075,8 +1075,8 @@ namespace TranslatedProgram
             strTitleNext = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/nextmonth", "Next Month &gt;&gt;"));
 
             _.CALLm1v1(this, sb, "AppendLine", "<div class=\"CalNavLinks\">");
-            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartPrev, v55 => { dCalStartPrev = v55; }).Ref(strTitlePrev, v56 => { strTitlePrev = v56; }).Val("prev")));
-            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartNext, v57 => { dCalStartNext = v57; }).Ref(strTitleNext, v58 => { strTitleNext = v58; }).Val("next")));
+            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartPrev, v54 => { dCalStartPrev = v54; }).Ref(strTitlePrev, v55 => { strTitlePrev = v55; }).Val("prev")));
+            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartNext, v56 => { dCalStartNext = v56; }).Ref(strTitleNext, v57 => { strTitleNext = v57; }).Val("next")));
             _.CALLm1v1(this, sb, "AppendLine", "</div>");
 
             return BookingUI_RenderAvailCalLinks_retVal;
@@ -1104,16 +1104,16 @@ namespace TranslatedProgram
                     object byrefalias15 = dCalStartDate;
                     try
                     {
-                        sValue = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(byrefalias15, v59 => { byrefalias15 = v59; })));
+                        sValue = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(byrefalias15, v58 => { byrefalias15 = v58; })));
                     }
                     finally { dCalStartDate = byrefalias15; }
                     bFound = true;
                 }
                 else
                 {
-                    sValue = _.VAL(_.CALLm1argp(this, _outer.Request, "QueryString", _.ARGS.Ref(itm, v60 => { itm = v60; })));
+                    sValue = _.VAL(_.CALLm1argp(this, _outer.Request, "QueryString", _.ARGS.Ref(itm, v59 => { itm = v59; })));
                 }
-                strLink = _.CONCAT(strLink, "&amp;", itm, "=", _.CALLm1argp(this, _outer.Server, "UrlEncode", _.ARGS.Ref(sValue, v61 => { sValue = v61; })));
+                strLink = _.CONCAT(strLink, "&amp;", itm, "=", _.CALLm1argp(this, _outer.Server, "UrlEncode", _.ARGS.Ref(sValue, v60 => { sValue = v60; })));
             }
 
             if (_.IF(_.NOT(bFound)))
@@ -1121,7 +1121,7 @@ namespace TranslatedProgram
                 object byrefalias16 = dCalStartDate;
                 try
                 {
-                    strLink = _.CONCAT(strLink, "&amp;isostartdate=", _.CALLm1v1(this, _outer.Server, "UrlEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(byrefalias16, v63 => { byrefalias16 = v63; }))));
+                    strLink = _.CONCAT(strLink, "&amp;isostartdate=", _.CALLm1v1(this, _outer.Server, "UrlEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(byrefalias16, v62 => { byrefalias16 = v62; }))));
                 }
                 finally { dCalStartDate = byrefalias16; }
             }
@@ -1219,7 +1219,7 @@ namespace TranslatedProgram
                 {
                     for (intIndex = loopStart10; _.StrictLTE(intIndex, loopEnd10); intIndex = _.ADD(intIndex, (Int16)1))
                     {
-                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v65 => { intIndex = v65; })));
+                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v64 => { intIndex = v64; })));
                         objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail, "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay, "StartDate"), _.CALLm1v0(this, objFuzzyStay, "Nights")));
                         if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objSuppliersForStay, "Count")), (Int16)0)))
                         {
@@ -1234,7 +1234,7 @@ namespace TranslatedProgram
                             {
                                 for (intIndexSupplier = loopStart11; _.StrictLTE(intIndexSupplier, loopEnd11); intIndexSupplier = _.ADD(intIndexSupplier, (Int16)1))
                                 {
-                                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v66 => { intIndexSupplier = v66; })));
+                                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v65 => { intIndexSupplier = v65; })));
                                     if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objSupplier, "Units", "Count")), (Int16)0)))
                                     {
                                         _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", _.CONCAT("Supplier ", _.CALLm1v0(this, objSupplier, "Name"), " for Stay (", _.CALLm1v0(this, objFuzzyStay, "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay, "Nights"), ") reported zero units"));
@@ -1255,7 +1255,7 @@ namespace TranslatedProgram
                 object byrefalias17 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(byrefalias17, v67 => { byrefalias17 = v67; }));
+                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(byrefalias17, v66 => { byrefalias17 = v66; }));
                 }
                 finally { objRenderSettings = byrefalias17; }
                 _outer.bProdHasAvail = false; // This is exposed through the WSC's public property "ProdHasAvail"
@@ -1275,14 +1275,14 @@ namespace TranslatedProgram
                 {
                     for (intIndex = loopStart12; _.StrictLTE(intIndex, loopEnd12); intIndex = _.ADD(intIndex, (Int16)1))
                     {
-                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v68 => { intIndex = v68; })));
+                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v67 => { intIndex = v67; })));
 
                         strAvailStayKey = _.CONCAT("sd_", _.CALLm1v0(this, objFuzzyStay, "StartDate"));
-                        if (_.IF(_.CALLm1argp(this, objDictAvaiStays, "Exists", _.ARGS.Ref(strAvailStayKey, v69 => { strAvailStayKey = v69; }))))
+                        if (_.IF(_.CALLm1argp(this, objDictAvaiStays, "Exists", _.ARGS.Ref(strAvailStayKey, v68 => { strAvailStayKey = v68; }))))
                         {
 
                             // We expect value in the format [stayNo]_[indicative]
-                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvaiStays, _.ARGS.Ref(strAvailStayKey, v70 => { strAvailStayKey = v70; })), "_");
+                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvaiStays, _.ARGS.Ref(strAvailStayKey, v69 => { strAvailStayKey = v69; })), "_");
                             sStayNo = _.VAL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)0)));
                             sStayNo = _.CONCAT(sStayNo, "-", intIndex);
 
@@ -1291,8 +1291,8 @@ namespace TranslatedProgram
                             {
                                 bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay, "Indicative"));
                             }
-                            _.SETm1argp(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, null, _.ARGS.Ref(strAvailStayKey, v72 => { strAvailStayKey = v72; }));
-                            _.ERASE(aryStay, v73 => { aryStay = v73; });
+                            _.SETm1a1(_.CONCAT(sStayNo, "_", bStayIndicative), this, objDictAvaiStays, null, strAvailStayKey);
+                            _.ERASE(aryStay, v71 => { aryStay = v71; });
                         }
                         else
                         {
@@ -1315,7 +1315,7 @@ namespace TranslatedProgram
                     // 2010-11-03 TB: Stay numbers are 1-based so add 1 to zero-based index
                     iStayNum = _.ADD(intIndex, (Int16)1);
 
-                    objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v74 => { intIndex = v74; })));
+                    objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v72 => { intIndex = v72; })));
 
                     // 2010-01-29 DWR: Need to use DateValue here since dStartNight might be a string
                     // which will cause the comparison to fail when they represent the same date
@@ -1341,7 +1341,7 @@ namespace TranslatedProgram
                         object byrefalias18 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "RenderStay", _.ARGS.Ref(objFuzzyStay, v75 => { objFuzzyStay = v75; }).Ref(objAvail, v76 => { objAvail = v76; }).Ref(iStayNum, v77 => { iStayNum = v77; }).Ref(byrefalias18, v78 => { byrefalias18 = v78; }).Ref(bIsTeleBooking, v79 => { bIsTeleBooking = v79; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Val(_.CALLm1v0(this, objData, "Units")));
+                            _.CALLm1argp(this, _outer, "RenderStay", _.ARGS.Ref(objFuzzyStay, v73 => { objFuzzyStay = v73; }).Ref(objAvail, v74 => { objAvail = v74; }).Ref(iStayNum, v75 => { iStayNum = v75; }).Ref(byrefalias18, v76 => { byrefalias18 = v76; }).Ref(bIsTeleBooking, v77 => { bIsTeleBooking = v77; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Val(_.CALLm1v0(this, objData, "Units")));
                         }
                         finally { objRenderSettings = byrefalias18; }
                     }
@@ -1381,7 +1381,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, ReqDictTemp, "Remove", "Trace");
 
                 _.CALLm1v1(this, _outer.Page, "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - start");
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(pO, v80 => { pO = v80; }).Ref(objDictAvaiStays, v81 => { objDictAvaiStays = v81; }).Val(false));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(pO, v78 => { pO = v78; }).Ref(objDictAvaiStays, v79 => { objDictAvaiStays = v79; }).Val(false));
                 _.CALLm1v1(this, _outer.Page, "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - end");
                 _.CALLm1v1(this, pO, "Write", "<script type=\"text/javascript\">");
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("NewMind.ETWP.ControlData[", _.CALLm1v0(this, _outer.Context, "PageControlKey"), "] = { "));
@@ -1469,7 +1469,7 @@ namespace TranslatedProgram
                 {
 
                     // Get basic supplier data - count FrontDesk as "Other" if ForceExternal enabled
-                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v82 => { intIndexSupplier = v82; })));
+                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v80 => { intIndexSupplier = v80; })));
                     if (_.IF(_.CALLm1v0(this, objSupplier, "IsLocal")))
                     {
                         bStayHasLocalAvail = true;
@@ -1487,7 +1487,7 @@ namespace TranslatedProgram
                         {
                             if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                             {
-                                _.CALLm1argp(this, _outer, "BookingUI_StaySummary", _.ARGS.Ref(dStartNight, v83 => { dStartNight = v83; }).Ref(iNights, v84 => { iNights = v84; }).Val(_.CALLm1v0(this, objFuzzyStay, "StartDate")).Val(_.CALLm1v0(this, objFuzzyStay, "Nights")).Ref(pO, v85 => { pO = v85; }));
+                                _.CALLm1argp(this, _outer, "BookingUI_StaySummary", _.ARGS.Ref(dStartNight, v81 => { dStartNight = v81; }).Ref(iNights, v82 => { iNights = v82; }).Val(_.CALLm1v0(this, objFuzzyStay, "StartDate")).Val(_.CALLm1v0(this, objFuzzyStay, "Nights")).Ref(pO, v83 => { pO = v83; }));
                             }
                             bRenderedStaySummary = true;
                         }
@@ -1526,8 +1526,8 @@ namespace TranslatedProgram
                             if (_.IF(_outer.IsExternalBooking))
                             {
                                 intBookingType = _.VAL(_outer.BOOKING_Redirect);
-                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v86 => { intProdKey = v86; })));
-                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v87 => { _outer.strProductEstateID = v87; })));
+                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v84 => { intProdKey = v84; })));
+                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v85 => { _outer.strProductEstateID = v85; })));
                             }
                             else
                             {
@@ -1550,8 +1550,8 @@ namespace TranslatedProgram
                             if (_.IF(_outer.IsExternalBooking))
                             {
                                 intBookingType = _.VAL(_outer.BOOKING_Redirect);
-                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v88 => { intProdKey = v88; })));
-                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v89 => { _outer.strProductEstateID = v89; })));
+                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v86 => { intProdKey = v86; })));
+                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v87 => { _outer.strProductEstateID = v87; })));
                             }
                             else
                             {
@@ -1614,7 +1614,7 @@ namespace TranslatedProgram
                                 }
                             }
                             // - Supplier Logo
-                            strSupplierLogo = _.VAL(_.CALLm1argp(this, _outer, "GetSupplierLogo", _.ARGS.Ref(_outer.strProductEstateID, v90 => { _outer.strProductEstateID = v90; })));
+                            strSupplierLogo = _.VAL(_.CALLm1argp(this, _outer, "GetSupplierLogo", _.ARGS.Ref(_outer.strProductEstateID, v88 => { _outer.strProductEstateID = v88; })));
 
                         }
 
@@ -1634,11 +1634,11 @@ namespace TranslatedProgram
                         object byrefalias19 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v91 => { pO = v91; }).Ref(intProdKey, v92 => { intProdKey = v92; }).Ref(byrefalias19, v93 => { byrefalias19 = v93; }).Ref(intBookingType, v94 => { intBookingType = v94; }).Ref(strSupplierId, v95 => { strSupplierId = v95; }).Ref(strSupplierName, v96 => { strSupplierName = v96; }).Ref(strSupplierEviivoName, v97 => { strSupplierEviivoName = v97; }).Ref(strSupplierQuality, v98 => { strSupplierQuality = v98; }).Ref(strSupplierLogo, v99 => { strSupplierLogo = v99; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier, "Units", "GetItem", (Int16)0), "IndustryClassification")));
+                            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v89 => { pO = v89; }).Ref(intProdKey, v90 => { intProdKey = v90; }).Ref(byrefalias19, v91 => { byrefalias19 = v91; }).Ref(intBookingType, v92 => { intBookingType = v92; }).Ref(strSupplierId, v93 => { strSupplierId = v93; }).Ref(strSupplierName, v94 => { strSupplierName = v94; }).Ref(strSupplierEviivoName, v95 => { strSupplierEviivoName = v95; }).Ref(strSupplierQuality, v96 => { strSupplierQuality = v96; }).Ref(strSupplierLogo, v97 => { strSupplierLogo = v97; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier, "Units", "GetItem", (Int16)0), "IndustryClassification")));
                         }
                         finally { objRenderSettings = byrefalias19; }
 
-                        _.CALLm1argp(this, _outer, "BookingUI_StayDetails_PollingHeader", _.ARGS.Ref(objSupplier, v100 => { objSupplier = v100; }).Ref(pO, v101 => { pO = v101; }).Ref(strSupplierLogo, v102 => { strSupplierLogo = v102; }).Ref(strSupplierName, v103 => { strSupplierName = v103; }));
+                        _.CALLm1argp(this, _outer, "BookingUI_StayDetails_PollingHeader", _.ARGS.Ref(objSupplier, v98 => { objSupplier = v98; }).Ref(pO, v99 => { pO = v99; }).Ref(strSupplierLogo, v100 => { strSupplierLogo = v100; }).Ref(strSupplierName, v101 => { strSupplierName = v101; }));
 
                         // 2009-09-14 DWR: Forcing iStayNum to "1" every time - since we are clearly only having
                         // one stay per form (since we open the form above - in RenderBookingInfoForm - and we
@@ -1650,7 +1650,7 @@ namespace TranslatedProgram
                         object byrefalias20 = intIndex, byrefalias21 = bIsTeleBooking;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objSupplier, v104 => { objSupplier = v104; }).Ref(byrefalias20, v105 => { byrefalias20 = v105; }).Ref(dStartNight, v106 => { dStartNight = v106; }).Ref(iNights, v107 => { iNights = v107; }).Ref(byrefalias21, v108 => { byrefalias21 = v108; }).Ref(strProductBookingWebIfAny, v109 => { strProductBookingWebIfAny = v109; }).Ref(strEviivoIdIfAny, v110 => { strEviivoIdIfAny = v110; }).Val(_.CALLm1v0(this, objRenderSettings, "ProductKey")).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Ref(objAllUnits, v111 => { objAllUnits = v111; }).Val(VBScriptConstants.Nothing).Ref(pO, v112 => { pO = v112; }).Val(false));
+                            _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objSupplier, v102 => { objSupplier = v102; }).Ref(byrefalias20, v103 => { byrefalias20 = v103; }).Ref(dStartNight, v104 => { dStartNight = v104; }).Ref(iNights, v105 => { iNights = v105; }).Ref(byrefalias21, v106 => { byrefalias21 = v106; }).Ref(strProductBookingWebIfAny, v107 => { strProductBookingWebIfAny = v107; }).Ref(strEviivoIdIfAny, v108 => { strEviivoIdIfAny = v108; }).Val(_.CALLm1v0(this, objRenderSettings, "ProductKey")).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Ref(objAllUnits, v109 => { objAllUnits = v109; }).Val(VBScriptConstants.Nothing).Ref(pO, v110 => { pO = v110; }).Val(false));
                         }
                         finally { intIndex = byrefalias20; bIsTeleBooking = byrefalias21; } //we can't render the maximum available units for polling
 
@@ -1682,15 +1682,15 @@ namespace TranslatedProgram
 
                 _.CALLm1v1(this, pO, "Write", "<div class=\"CalendarsWrapper\">");
                 //
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v113 => { pO = v113; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CONCAT(strClassMonth, " currentmonth")));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v111 => { pO = v111; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CONCAT(strClassMonth, " currentmonth")));
                 //					' last day + 1 to get the first day of the next month for the calendar
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v114 => { pO = v114; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v112 => { pO = v112; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
 
                 // global count used to track how many calendars have been added to the output for the prev/next buttons
                 _outer.g_iNumberOfCalendarsRendered = (Int16)2;
 
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v115 => { pO = v115; }));
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(pO, v116 => { pO = v116; }));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v113 => { pO = v113; }));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(pO, v114 => { pO = v114; }));
                 _.CALLm1v1(this, pO, "Write", "</div>");
 
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("<script type=\"text/javascript\">NewMind.ETWP.Booking.UpdateCalLinks();</", "script>"));
@@ -1766,7 +1766,7 @@ namespace TranslatedProgram
             object byrefalias22 = objRenderSettings;
             try
             {
-                _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v117 => { pO = v117; }).Ref(intProdKey, v118 => { intProdKey = v118; }).Ref(byrefalias22, v119 => { byrefalias22 = v119; }).Ref(intBookingType, v120 => { intBookingType = v120; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
+                _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v115 => { pO = v115; }).Ref(intProdKey, v116 => { intProdKey = v116; }).Ref(byrefalias22, v117 => { byrefalias22 = v117; }).Ref(intBookingType, v118 => { intBookingType = v118; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
             }
             finally { objRenderSettings = byrefalias22; }
 
@@ -1778,7 +1778,7 @@ namespace TranslatedProgram
                 object byrefalias23 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(byrefalias23, v121 => { byrefalias23 = v121; }));
+                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(byrefalias23, v119 => { byrefalias23 = v119; }));
                 }
                 finally { objRenderSettings = byrefalias23; }
                 _outer.bProdHasAvail = false; // This is exposed through the WSC's public property "ProdHasAvail"
@@ -1796,17 +1796,17 @@ namespace TranslatedProgram
                     // are zero-based, so the UnitKey for ReqNo 1 = lsUnitSelections(0). If there was no
                     // selection made for a ReqNo, the lsUnitSelections value will be zero.
                     // NB: This value might be Nothing if no selections are passed in on querystring.
-                    lsRemoteUnitSelections = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetOptionsRemoteSelected", _.ARGS.Ref(objAvailEntry, v122 => { objAvailEntry = v122; })));
+                    lsRemoteUnitSelections = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetOptionsRemoteSelected", _.ARGS.Ref(objAvailEntry, v120 => { objAvailEntry = v120; })));
 
                     // Render the unit selection options (pass "1" as iStayNum parameter - we'll only
                     // be rendering a single stay option here, since fuzzy isn't supported in this
                     // configuration..)
-                    _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objAvailEntry, v123 => { objAvailEntry = v123; }).Val((Int16)1).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights")).Ref(bIsTeleBooking, v124 => { bIsTeleBooking = v124; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Ref(intProdKey, v125 => { intProdKey = v125; }).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Val(_.CALLm1v0(this, objData, "Units")).Ref(lsRemoteUnitSelections, v126 => { lsRemoteUnitSelections = v126; }).Ref(pO, v127 => { pO = v127; }).Val(_.CALLm1v0(this, objRenderSettings, "RenderMaximumUnitsAvailable")));
+                    _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objAvailEntry, v121 => { objAvailEntry = v121; }).Val((Int16)1).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights")).Ref(bIsTeleBooking, v122 => { bIsTeleBooking = v122; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Ref(intProdKey, v123 => { intProdKey = v123; }).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Val(_.CALLm1v0(this, objData, "Units")).Ref(lsRemoteUnitSelections, v124 => { lsRemoteUnitSelections = v124; }).Ref(pO, v125 => { pO = v125; }).Val(_.CALLm1v0(this, objRenderSettings, "RenderMaximumUnitsAvailable")));
 
                 }
                 else
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_TicketsSummary", _.ARGS.Ref(objAvailEntry, v128 => { objAvailEntry = v128; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v129 => { pO = v129; }));
+                    _.CALLm1argp(this, _outer, "BookingUI_TicketsSummary", _.ARGS.Ref(objAvailEntry, v126 => { objAvailEntry = v126; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v127 => { pO = v127; }));
                 }
             }
 
@@ -1844,8 +1844,8 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart15; _.StrictLTE(intIndex, loopEnd15); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndex, v130 => { intIndex = v130; })));
-                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitOption", _.ARGS.Ref(arrReqUnitOptions, v131 => { arrReqUnitOptions = v131; }).Val(_.CALLm1v0(this, objUnit, "ReqNo")).Val(_.CALLm1v0(this, objUnit, "ReqSize")).Val(_.CALLm1v0(this, objUnit, "UnitKey")));
+                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndex, v128 => { intIndex = v128; })));
+                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitOption", _.ARGS.Ref(arrReqUnitOptions, v129 => { arrReqUnitOptions = v129; }).Val(_.CALLm1v0(this, objUnit, "ReqNo")).Val(_.CALLm1v0(this, objUnit, "ReqSize")).Val(_.CALLm1v0(this, objUnit, "UnitKey")));
                     //BookingUI_UnitSel_AddReqUnitOption arrReqUnitOptions, objUnit.ReqNo, objUnit.UnitCount, objUnit.UnitKey
                 }
             }
@@ -1864,7 +1864,7 @@ namespace TranslatedProgram
                 intUnitSel = _.ADD(intUnitSel, (Int16)1);
                 if (_.IF(_.GT(_.NullableNUM(_.LEN(_.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))))), (Int16)0)))
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitSelection", _.ARGS.Ref(arrReqUnitSelections, v132 => { arrReqUnitSelections = v132; }).RefIfArray(_outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))).Ref(arrReqUnitOptions, v133 => { arrReqUnitOptions = v133; }));
+                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitSelection", _.ARGS.Ref(arrReqUnitSelections, v130 => { arrReqUnitSelections = v130; }).RefIfArray(_outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))).Ref(arrReqUnitOptions, v131 => { arrReqUnitOptions = v131; }));
                 }
                 else
                 {
@@ -1881,7 +1881,7 @@ namespace TranslatedProgram
             // Now try to return matched unit options / selections
             // - Get back a list of unit keys, one key per requirement
             //   (If failed to get a perfect match, some of these values may be zero)
-            BookingUI_UnitSel_GetOptionsRemoteSelected_retVal = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetMatchedReqUnitSelection", _.ARGS.Ref(arrReqUnitOptions, v134 => { arrReqUnitOptions = v134; }).Ref(arrReqUnitSelections, v135 => { arrReqUnitSelections = v135; })));
+            BookingUI_UnitSel_GetOptionsRemoteSelected_retVal = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetMatchedReqUnitSelection", _.ARGS.Ref(arrReqUnitOptions, v132 => { arrReqUnitOptions = v132; }).Ref(arrReqUnitSelections, v133 => { arrReqUnitSelections = v133; })));
 
             return BookingUI_UnitSel_GetOptionsRemoteSelected_retVal;
         }
@@ -1908,7 +1908,7 @@ namespace TranslatedProgram
                     object byrefalias24 = intUnitKey;
                     try
                     {
-                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(byrefalias24, v136 => { byrefalias24 = v136; }));
+                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(byrefalias24, v134 => { byrefalias24 = v134; }));
                     }
                     finally { intUnitKey = byrefalias24; }
                     return BookingUI_UnitSel_AddReqUnitOption_retVal;
@@ -1923,10 +1923,10 @@ namespace TranslatedProgram
             object byrefalias25 = intUnitKey;
             try
             {
-                _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(byrefalias25, v137 => { byrefalias25 = v137; }));
+                _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(byrefalias25, v135 => { byrefalias25 = v135; }));
             }
             finally { intUnitKey = byrefalias25; }
-            _.CALLm1argp(this, arrReqUnitOptions, "Add", _.ARGS.Ref(objEntry, v138 => { objEntry = v138; }));
+            _.CALLm1argp(this, arrReqUnitOptions, "Add", _.ARGS.Ref(objEntry, v136 => { objEntry = v136; }));
 
             return BookingUI_UnitSel_AddReqUnitOption_retVal;
         }
@@ -2048,11 +2048,11 @@ namespace TranslatedProgram
                         // UnitKey, then we've got a possible match
                         bool ifResult3;
                         object byrefalias31 = arrReqUnitOptions;
-                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, byrefalias31, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; })), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry, _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, byrefalias31, _.ARGS.Ref(intIndex, v142 => { intIndex = v142; })), _.ARGS.Val("Units")), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
+                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, byrefalias31, _.ARGS.Ref(intIndex, v139 => { intIndex = v139; })), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry, _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, byrefalias31, _.ARGS.Ref(intIndex, v140 => { intIndex = v140; })), _.ARGS.Val("Units")), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
                         if (ifResult3)
                         {
                             object byrefalias32 = arrReqUnitOptions;
-                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("PossReqNos")), "Add", _.ARGS.RefIfArray(byrefalias32, _.ARGS.Ref(intIndex, v143 => { intIndex = v143; }), _.ARGS.Val("ReqNo")));
+                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("PossReqNos")), "Add", _.ARGS.RefIfArray(byrefalias32, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; }), _.ARGS.Val("ReqNo")));
                         }
                         if (!loopConstraintsInitialized)
                             break;
@@ -2072,7 +2072,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("PossReqNos")), "Count")), (Int16)0)))
             {
                 object byrefalias33 = arrReqUnitSelections;
-                _.CALLm1argp(this, byrefalias33, "Add", _.ARGS.Ref(objEntry, v144 => { objEntry = v144; }));
+                _.CALLm1argp(this, byrefalias33, "Add", _.ARGS.Ref(objEntry, v142 => { objEntry = v142; }));
             }
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
@@ -2123,7 +2123,7 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart17; _.StrictLTE(intIndexSel, loopEnd17); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v145 => { intIndexSel = v145; })), _.ARGS.Val("PossReqNos")));
+                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v143 => { intIndexSel = v143; })), _.ARGS.Val("PossReqNos")));
                     if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, lsPermutations, "Count")), (Int16)0)))
                     {
                         // This is the first pass, so initialise the permutations list with
@@ -2134,7 +2134,7 @@ namespace TranslatedProgram
                         {
                             for (intIndexPoss = loopStart18; _.StrictLTE(intIndexPoss, loopEnd18); intIndexPoss = _.ADD(intIndexPoss, (Int16)1))
                             {
-                                _.CALLm1argp(this, lsPermutations, "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v146 => { intIndexPoss = v146; })));
+                                _.CALLm1argp(this, lsPermutations, "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v144 => { intIndexPoss = v144; })));
                             }
                         }
                     }
@@ -2150,7 +2150,7 @@ namespace TranslatedProgram
                         {
                             for (intIndexPerm = loopStart19; _.StrictLTE(intIndexPerm, loopEnd19); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                             {
-                                _.CALLm1argp(this, lsTemp, "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v147 => { intIndexPerm = v147; })));
+                                _.CALLm1argp(this, lsTemp, "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v145 => { intIndexPerm = v145; })));
                             }
                         }
                         // - Clear out permutation list
@@ -2168,7 +2168,7 @@ namespace TranslatedProgram
                                 {
                                     for (intIndexPerm = loopStart21; _.StrictLTE(intIndexPerm, loopEnd21); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                                     {
-                                        _.CALLm1v1(this, lsPermutations, "Add", _.CONCAT(_.CALLm0argp(this, lsTemp, _.ARGS.Ref(intIndexPerm, v148 => { intIndexPerm = v148; })), ",", _.CALLm0argp(this, lsPossReqNos, _.ARGS.Ref(intIndexPoss, v149 => { intIndexPoss = v149; }))));
+                                        _.CALLm1v1(this, lsPermutations, "Add", _.CONCAT(_.CALLm0argp(this, lsTemp, _.ARGS.Ref(intIndexPerm, v146 => { intIndexPerm = v146; })), ",", _.CALLm0argp(this, lsPossReqNos, _.ARGS.Ref(intIndexPoss, v147 => { intIndexPoss = v147; }))));
                                     }
                                 }
                             }
@@ -2185,11 +2185,11 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart22; _.StrictLTE(intIndex, loopEnd22); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    intScore = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v152 => { intIndex = v152; }))));
+                    intScore = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v150 => { intIndex = v150; }))));
                     if (_.IF(_.GT(intScore, intBestScore)))
                     {
                         intBestScore = _.VAL(intScore);
-                        strBestPermutation = _.VAL(_.CALLm0argp(this, lsPermutations, _.ARGS.Ref(intIndex, v153 => { intIndex = v153; })));
+                        strBestPermutation = _.VAL(_.CALLm0argp(this, lsPermutations, _.ARGS.Ref(intIndex, v151 => { intIndex = v151; })));
                     }
                 }
             }
@@ -2222,9 +2222,9 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart24; _.StrictLTE(intIndexSel, loopEnd24); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches, _.ARGS.Ref(intIndexSel, v154 => { intIndexSel = v154; })), (Int16)1);
-                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v155 => { intIndexSel = v155; })), _.ARGS.Val("UnitKey")));
-                    _.SETm1argp(_.VAL(intUnitKey), this, lsUnitKeys, null, _.ARGS.Ref(intIndexOption, v157 => { intIndexOption = v157; }));
+                    intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches, _.ARGS.Ref(intIndexSel, v152 => { intIndexSel = v152; })), (Int16)1);
+                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })), _.ARGS.Val("UnitKey")));
+                    _.SETm1a1(_.VAL(intUnitKey), this, lsUnitKeys, null, intIndexOption);
                 }
             }
 
@@ -2255,10 +2255,10 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart25; _.StrictLTE(intIndex, loopEnd25); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.NOT(_.CALLm1argp(this, lsReqNos, "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v158 => { intIndex = v158; }))))))
+                    if (_.IF(_.NOT(_.CALLm1argp(this, lsReqNos, "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v155 => { intIndex = v155; }))))))
                     {
                         intScore = _.ADD(intScore, (Int16)1);
-                        _.CALLm1argp(this, lsReqNos, "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v159 => { intIndex = v159; })));
+                        _.CALLm1argp(this, lsReqNos, "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v156 => { intIndex = v156; })));
                     }
                 }
             }
@@ -2297,14 +2297,14 @@ namespace TranslatedProgram
                 object byrefalias34 = dtStayFirstNight, byrefalias35 = iStayNights;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayTtl", _.ARGS.Ref(byrefalias34, v160 => { byrefalias34 = v160; }).Ref(byrefalias35, v161 => { byrefalias35 = v161; })));
+                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayTtl", _.ARGS.Ref(byrefalias34, v157 => { byrefalias34 = v157; }).Ref(byrefalias35, v158 => { byrefalias35 = v158; })));
                 }
                 finally { dtStayFirstNight = byrefalias34; iStayNights = byrefalias35; }
                 _.CALLm1v1(this, pO, "Write", "</div>");
                 object byrefalias36 = dtReqFirstNight, byrefalias37 = dtStayFirstNight, byrefalias38 = iReqNights, byrefalias39 = iStayNights;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(byrefalias36, v162 => { byrefalias36 = v162; }).Ref(byrefalias37, v163 => { byrefalias37 = v163; }).Ref(byrefalias38, v164 => { byrefalias38 = v164; }).Ref(byrefalias39, v165 => { byrefalias39 = v165; })));
+                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(byrefalias36, v159 => { byrefalias36 = v159; }).Ref(byrefalias37, v160 => { byrefalias37 = v160; }).Ref(byrefalias38, v161 => { byrefalias38 = v161; }).Ref(byrefalias39, v162 => { byrefalias39 = v162; })));
                 }
                 finally { dtReqFirstNight = byrefalias36; dtStayFirstNight = byrefalias37; iReqNights = byrefalias38; iStayNights = byrefalias39; }
                 _.CALLm1v1(this, pO, "Write", "</div>");
@@ -2353,7 +2353,7 @@ namespace TranslatedProgram
             }
 
             // This method opens a new div - we'll need to close it later
-            _.CALLm1argp(this, _outer, "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v166 => { objAvailEntry = v166; }).Ref(iStayNum, v167 => { iStayNum = v167; }).Ref(adtStartNight, v168 => { adtStartNight = v168; }).Ref(aiReqNights, v169 => { aiReqNights = v169; }).Ref(pO, v170 => { pO = v170; }));
+            _.CALLm1argp(this, _outer, "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v163 => { objAvailEntry = v163; }).Ref(iStayNum, v164 => { iStayNum = v164; }).Ref(adtStartNight, v165 => { adtStartNight = v165; }).Ref(aiReqNights, v166 => { aiReqNights = v166; }).Ref(pO, v167 => { pO = v167; }));
 
             iMaxRq = (Int16)0;
             iLastReqmnt = (Int16)0;
@@ -2367,7 +2367,7 @@ namespace TranslatedProgram
             {
                 for (intIndexUnit = loopStart26; _.StrictLTE(intIndexUnit, loopEnd26); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                 {
-                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v171 => { intIndexUnit = v171; })));
+                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v168 => { intIndexUnit = v168; })));
 
                     iThisReqmnt = _.VAL(_.CALLm1v0(this, objUnit, "ReqNo"));
                     if (_.IF(_.GT(iThisReqmnt, iMaxRq)))
@@ -2375,7 +2375,7 @@ namespace TranslatedProgram
                         // Moved on to next requirement, get key of pre-selected unit - iRemoteUnitKey
                         // will be zero if no selection has been passed in (applies to deep-linking)
                         iMaxRq = _.VAL(iThisReqmnt);
-                        iRemoteUnitKey = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v172 => { lsRemoteUnitSelections = v172; }).Ref(iThisReqmnt, v173 => { iThisReqmnt = v173; })));
+                        iRemoteUnitKey = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v169 => { lsRemoteUnitSelections = v169; }).Ref(iThisReqmnt, v170 => { iThisReqmnt = v170; })));
                     }
 
                     // Check whether we're moving into a new requirement (if so, default to having
@@ -2389,7 +2389,7 @@ namespace TranslatedProgram
                         {
                             _.CALLm1v1(this, pO, "Write", "</div></div>");
                         }
-                        _.CALLm1argp(this, _outer, "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v174 => { objUnit = v174; }).Ref(iStayNum, v175 => { iStayNum = v175; }).Ref(iThisReqmnt, v176 => { iThisReqmnt = v176; }).Val(_.NOT(_.CALLm1v0(this, objAvailEntry, "IsLocal"))).Ref(pO, v177 => { pO = v177; }));
+                        _.CALLm1argp(this, _outer, "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v171 => { objUnit = v171; }).Ref(iStayNum, v172 => { iStayNum = v172; }).Ref(iThisReqmnt, v173 => { iThisReqmnt = v173; }).Val(_.NOT(_.CALLm1v0(this, objAvailEntry, "IsLocal"))).Ref(pO, v174 => { pO = v174; }));
                         bGotOpenReqContainer = true;
 
                         bSelected = true;
@@ -2434,7 +2434,7 @@ namespace TranslatedProgram
                     // state of the whole stay - this was causing all units to be rendered as indicative if any
                     // one of them was, now we take the indicative state from each unit (but keep the indicative
                     // "validity" from the whole stay, where required)
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v178 => { iStayNum = v178; }).Ref(iThisReqmnt, v179 => { iThisReqmnt = v179; }).Ref(bSelected, v180 => { bSelected = v180; }).Ref(objAvailEntry, v181 => { objAvailEntry = v181; }).Ref(objUnit, v182 => { objUnit = v182; }).Ref(objAllUnits, v183 => { objAllUnits = v183; }).Val(_.CALLm1argp(this, _outer, "BookingUI_AvailClassName", _.ARGS.Val(_.CALLm1v0(this, objUnit, "Indicative")).Ref(bIndicativeValid, v184 => { bIndicativeValid = v184; }).Ref(bTeleBooking, v185 => { bTeleBooking = v185; }))).Ref(pO, v186 => { pO = v186; }).Ref(bRenderMaximumUnitsAvailable, v187 => { bRenderMaximumUnitsAvailable = v187; }));
+                    _.CALLm1argp(this, _outer, "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v175 => { iStayNum = v175; }).Ref(iThisReqmnt, v176 => { iThisReqmnt = v176; }).Ref(bSelected, v177 => { bSelected = v177; }).Ref(objAvailEntry, v178 => { objAvailEntry = v178; }).Ref(objUnit, v179 => { objUnit = v179; }).Ref(objAllUnits, v180 => { objAllUnits = v180; }).Val(_.CALLm1argp(this, _outer, "BookingUI_AvailClassName", _.ARGS.Val(_.CALLm1v0(this, objUnit, "Indicative")).Ref(bIndicativeValid, v181 => { bIndicativeValid = v181; }).Ref(bTeleBooking, v182 => { bTeleBooking = v182; }))).Ref(pO, v183 => { pO = v183; }).Ref(bRenderMaximumUnitsAvailable, v184 => { bRenderMaximumUnitsAvailable = v184; }));
 
                 }
             }
@@ -2489,7 +2489,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayButtons\">");
                 _.CALLm1v1(this, pO, "Write", "<p class=\"bookonline\">");
                 _.CALLm1v1(this, pO, "Write", "<a href=\"");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v188 => { strProductBookingWebIfAny = v188; })));
+                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v185 => { strProductBookingWebIfAny = v185; })));
                 _.CALLm1v1(this, pO, "Write", "\"");
                 if (_.IF(_.OR(_.CALLm1v0(this, _outer.Page, "IsPartialRender"), _.EQ(_.NullableSTR(_.CALLm0argp(this, _outer.Request, _.ARGS.Val("PartialRenderType"))), "html"))))
                 {
@@ -2507,9 +2507,9 @@ namespace TranslatedProgram
                 }
                 _.CALLm1v1(this, pO, "Write", " class=\"ProvClickCustom\" name=\"PROBWEBREF|");
                 // This is the "Provider Booking Website Referral" statistic, as required by the SharePoint document for FogBugz 10367
-                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strChannel, v189 => { strChannel = v189; })));
+                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strChannel, v186 => { strChannel = v186; })));
                 _.CALLm1v1(this, pO, "Write", "|");
-                _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(intProductKey, v190 => { intProductKey = v190; }));
+                _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(intProductKey, v187 => { intProductKey = v187; }));
                 _.CALLm1v1(this, pO, "Write", "\"");
                 _.CALLm1v1(this, pO, "Write", ">");
                 _.CALLm1v1(this, pO, "Write", "<img src=\"");
@@ -2531,7 +2531,7 @@ namespace TranslatedProgram
             // period has passed) then there's no point even rendering the button.
             if (_.IF(bHasBookableUnits))
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v191 => { iStayNum = v191; }).Ref(pO, v192 => { pO = v192; }).Val(_.CALLm1v0(this, objAvailEntry, "IsExternal")));
+                _.CALLm1argp(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v188 => { iStayNum = v188; }).Ref(pO, v189 => { pO = v189; }).Val(_.CALLm1v0(this, objAvailEntry, "IsExternal")));
             }
 
             // if we have an invalid indicative unit or telephone unit then
@@ -2725,7 +2725,7 @@ namespace TranslatedProgram
             // If not exact match then render a warning as well as the date difference later
             if (_.IF(_.NOT(bExactMatch)))
             {
-                _.CALLm1argp(this, _outer, "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v193 => { pO = v193; }));
+                _.CALLm1argp(this, _outer, "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v190 => { pO = v190; }));
             }
 
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"StayCandidateItem", sPostfix, "\">", VBScriptConstants.vbCrLf));
@@ -2739,7 +2739,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
                 if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v194 => { adtStartNight = v194; }).Val(_.CALLm1v0(this, objAvailEntry, "StartDate")).Ref(aiReqNights, v195 => { aiReqNights = v195; }).Val(_.CALLm1v0(this, objAvailEntry, "Nights"))));
+                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v191 => { adtStartNight = v191; }).Val(_.CALLm1v0(this, objAvailEntry, "StartDate")).Ref(aiReqNights, v192 => { aiReqNights = v192; }).Val(_.CALLm1v0(this, objAvailEntry, "Nights"))));
                 }
             }
             return BookingUI_RenderNewStay_retVal;
@@ -2755,11 +2755,11 @@ namespace TranslatedProgram
             object BookingUI_StayTtl_retVal = null;
             if (_.IF(_.EQ(_.NullableNUM(aiNights), (Int16)1)))
             {
-                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightstart", " night, start "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v196 => { adtFirstNight = v196; })));
+                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightstart", " night, start "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v193 => { adtFirstNight = v193; })));
                 return BookingUI_StayTtl_retVal;
             }
 
-            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v198 => { adtFirstNight = v198; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
+            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v195 => { adtFirstNight = v195; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
             return BookingUI_StayTtl_retVal;
         }
 
@@ -2776,7 +2776,7 @@ namespace TranslatedProgram
 
             iDateDiff = _.VAL(_.DATEDIFF("d", adtReqDate, adtThisDate));
             iDurDiff = _.SUBT(aiResultNights, aiReqNights);
-            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v200 => { iDateDiff = v200; }).Ref(iDurDiff, v201 => { iDurDiff = v201; }).Ref(aiReqNights, v202 => { aiReqNights = v202; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
+            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v197 => { iDateDiff = v197; }).Ref(iDurDiff, v198 => { iDurDiff = v198; }).Ref(aiReqNights, v199 => { aiReqNights = v199; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
             return BookingUI_StayDiff_retVal;
         }
 
@@ -2802,11 +2802,11 @@ namespace TranslatedProgram
             _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayReqmntTtl\">");
             _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/room", "Room"));
             _.CALLm1v1(this, pO, "Write", " ");
-            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(aiThisReqmnt, v206 => { aiThisReqmnt = v206; }));
+            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(aiThisReqmnt, v203 => { aiThisReqmnt = v203; }));
             _.CALLm1v1(this, pO, "Write", " - ");
             _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/for", "for"));
             _.CALLm1v1(this, pO, "Write", " ");
-            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(iSz, v207 => { iSz = v207; }));
+            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(iSz, v204 => { iSz = v204; }));
             _.CALLm1v1(this, pO, "Write", " ");
             _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guest(s)", "guest(s)"));
 
@@ -2845,7 +2845,7 @@ namespace TranslatedProgram
                 {
                     for (iChildAgeIndex = loopStart27; _.StrictLTE(iChildAgeIndex, loopEnd27); iChildAgeIndex = _.ADD(iChildAgeIndex, (Int16)1))
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALLm0argp(this, aryChildAges, _.ARGS.Ref(iChildAgeIndex, v208 => { iChildAgeIndex = v208; })), "\" />"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALLm0argp(this, aryChildAges, _.ARGS.Ref(iChildAgeIndex, v205 => { iChildAgeIndex = v205; })), "\" />"));
                     }
                 }
 
@@ -2916,7 +2916,7 @@ namespace TranslatedProgram
             }
             _.CALLm1v1(this, pO, "Write", "/>");
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<label for=\"", strIptId, "\"> "));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v0(this, objUnit, "UnitName"), " - ", _.CALLm1argp(this, _outer, "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v210 => { mUnitStayTotal = v210; })), " ", asAvailClassName));
+            _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v0(this, objUnit, "UnitName"), " - ", _.CALLm1argp(this, _outer, "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v207 => { mUnitStayTotal = v207; })), " ", asAvailClassName));
 
             //if we have child pricing discount applied show the icon
             if (_.IF(bDiscountApplied))
@@ -2960,7 +2960,7 @@ namespace TranslatedProgram
                     _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/minoccupancyof", "Min. occupancy of"), " ", _.CALLm1v0(this, objUnit, "MinOcc"), ". "));
                 }
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnLinkedUnit\">", _.CALLm1argp(this, _outer, "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v212 => { objUnit = v212; }).Ref(objAllUnits, v213 => { objAllUnits = v213; })), "</div>"));
+            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnLinkedUnit\">", _.CALLm1argp(this, _outer, "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v209 => { objUnit = v209; }).Ref(objAllUnits, v210 => { objAllUnits = v210; })), "</div>"));
 
             _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
 
@@ -3113,7 +3113,7 @@ namespace TranslatedProgram
             object byrefalias40 = amPrice;
             try
             {
-                strPrice = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(byrefalias40, v216 => { byrefalias40 = v216; })));
+                strPrice = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(byrefalias40, v213 => { byrefalias40 = v213; })));
             }
             finally { amPrice = byrefalias40; }
 
@@ -3129,7 +3129,7 @@ namespace TranslatedProgram
             }
 
             // Return string ready for display
-            BookingUI_NicePrice_retVal = _.VAL(_.CALLm1argp(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v217 => { strPrice = v217; })));
+            BookingUI_NicePrice_retVal = _.VAL(_.CALLm1argp(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v214 => { strPrice = v214; })));
             return BookingUI_NicePrice_retVal;
         }
 
@@ -3165,9 +3165,9 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart28; _.StrictLTE(intIndex, loopEnd28); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v218 => { intIndex = v218; })), "Key"), _.CALLm1v0(this, objUnit, "LinkUnitKey"))))
+                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v215 => { intIndex = v215; })), "Key"), _.CALLm1v0(this, objUnit, "LinkUnitKey"))))
                     {
-                        objParentUnit = _.OBJ(_.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v219 => { intIndex = v219; })));
+                        objParentUnit = _.OBJ(_.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v216 => { intIndex = v216; })));
                         break;
                     }
                 }
@@ -3215,7 +3215,7 @@ namespace TranslatedProgram
                 object byrefalias41 = adtStartNight;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"staydate\">", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(byrefalias41, v220 => { byrefalias41 = v220; }).Val(true).Val(true)), "</th>"));
+                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"staydate\">", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(byrefalias41, v217 => { byrefalias41 = v217; }).Val(true).Val(true)), "</th>"));
                 }
                 finally { adtStartNight = byrefalias41; }
                 _.CALLm1v1(this, pO, "Write", "<th class=\"total\"></th>");
@@ -3230,7 +3230,7 @@ namespace TranslatedProgram
                 {
                     for (intIndexUnit = loopStart29; _.StrictLTE(intIndexUnit, loopEnd29); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                     {
-                        objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v222 => { intIndexUnit = v222; })));
+                        objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v219 => { intIndexUnit = v219; })));
 
                         iSelectedQty = _.CLNG(_.CALLm1v1(this, _outer.Request, "Form", _.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))));
 
@@ -3245,7 +3245,7 @@ namespace TranslatedProgram
 
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<tr id=\"row_", _.CALLm1v0(this, objUnit, "UnitKey"), "\">"));
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"unit\">", _.CALLm1v0(this, objUnit, "UnitName"), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"select\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALLm1v0(this, objUnit, "UnitCount")).Ref(iSelectedQty, v223 => { iSelectedQty = v223; })), "</td>"));
+                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"select\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALLm1v0(this, objUnit, "UnitCount")).Ref(iSelectedQty, v220 => { iSelectedQty = v220; })), "</td>"));
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"price\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.CALLm1v0(this, objUnit, "StayTotalPayable"))), "</td>"));
                         _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" id=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" value=\"", _.CALLm1v0(this, objUnit, "UnitCount"), ",", _.CALLm1v0(this, objUnit, "MinOcc"), ",", _.CALLm1v0(this, objUnit, "UnitSize"), ",", strPriceBasis, ",", _.CALLm1v0(this, objUnit, "StayTotalPayable"), "\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty))), "</td>"));
                         _.CALLm1v1(this, pO, "Write", "</tr>");
@@ -3264,7 +3264,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO, "Write", "<noscript>");
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("<td><input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/unitselection/recalculate", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/bookrecalculate.gif")), "\" name=\"recalculate\" value=\"recalculate\" class=\"submit\"/></td>"));
                 _.CALLm1v1(this, pO, "Write", "</noscript>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<td id=\"AvCalTotal\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v225 => { iSubTotal = v225; }))), "</td>"));
+                _.CALLm1v1(this, pO, "Write", _.CONCAT("<td id=\"AvCalTotal\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v222 => { iSubTotal = v222; }))), "</td>"));
                 _.CALLm1v1(this, pO, "Write", "</tr>");
                 _.CALLm1v1(this, pO, "Write", "</table>");
                 _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/btn/bookticketing", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/bookticketing.gif")), "\" name=\"bookit\" value=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" alt=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" class=\"submit\"/>"));
@@ -3295,11 +3295,11 @@ namespace TranslatedProgram
             {
                 for (i = loopStart30; _.StrictLTE(i, loopEnd30); i = _.ADD(i, (Int16)2))
                 {
-                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v227 => { i = v227; }))))), "DEFAULT")))
+                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v224 => { i = v224; }))))), "DEFAULT")))
                     {
                         strPostUrl_ExtDflt = _.VAL(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
                     }
-                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v228 => { i = v228; })))), _.UCASE(_.TRIM(asEstateID)))))
+                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v225 => { i = v225; })))), _.UCASE(_.TRIM(asEstateID)))))
                     {
                         strPostUrl_Ext = _.VAL(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
                         break;

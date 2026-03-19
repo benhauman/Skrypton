@@ -9,7 +9,7 @@ namespace Skrypton.RuntimeSupport
     {
         internal const int MaxNumberOfMemberAccessorBeforeArraysRequired = 5;
 
-        public static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
+        internal static void SETm1argp(this IAccessValuesUsingVBScriptRules source, object valueToSetTo, object? context, object target, string optionalMemberAccessor, IBuildCallArgumentProviders argumentProviderBuilder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

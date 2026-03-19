@@ -65,9 +65,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private ValueSettingStatementAssigmentFormatDetails GetAssignmentFormatDetails(ValueSettingStatement valueSettingStatement, ScopeAccessInformation scopeAccessInformation)
         {
             if (valueSettingStatement == null)
+            {
                 throw new ArgumentNullException(nameof(valueSettingStatement));
+            }
+
             if (scopeAccessInformation == null)
+            {
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
+            }
 
             // The ValueToSet content should be reducable to a single codeExpression segment; a CallExpression or a CallSetExpression
             // 2014-04-03 DWR: Used to pass valueSettingStatement.ValueToSet.BracketStandardisedTokens here but there is no opportunity for "optional"
@@ -77,10 +82,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             WithStatementInformation? directedWithReferenceTokenIfAny = WithStatementInformation.TryGet(scopeAccessInformation);
             ParsingExpression[] targetExpression = ExpressionGenerator.GenerateExpressions(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
             if (targetExpression.Length != 1)
+            {
                 throw new ArgumentException("The ValueToSet should always be described by a single codeExpression");
+            }
+
             IExpressionSegment[] targetExpressionSegments = targetExpression[0].Segments.ToArray();
             if (targetExpressionSegments.Length != 1)
+            {
                 throw new ArgumentException("The ValueToSet should always be described by a single codeExpression containing a single segment");
+            }
 
             // If there is only a single CallExpressionSegment with a single token then that token must be a NameToken otherwise the statement would be
             // trying to assign a value to a constant or keyword or something inappropriate. If it IS a NameToken, then this is the easiest case - it's
@@ -91,7 +101,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 NameToken? singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
                 if (singleTokenAsName == null)
+                {
                     throw new ArgumentException("Where a ValueSettingStatement's ValueToSet codeExpression is a single codeExpression with a single CallExpressionSegment with one token, that token must be a NameToken");
+                }
 
                 // If this single token is the function name (if we're in a function or property) then we need to make the ParentReturnValueNameIfAny
                 // replacement so that the return value reference is updated.
@@ -191,7 +203,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         translatedExpression =>
                         {
                             if (translatedExpression.StartsWith(wrapperFunction + "(", StringComparison.Ordinal))
+                            {
                                 return translatedExpression;
+                            }
+
                             return wrapperFunction + "(" + translatedExpression + ")";
                         },
                         new NonNullImmutableList<NameToken>()
@@ -223,12 +238,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Get a set of CallExpressionSegments..
             List<CallSetItemExpressionSegment> callExpressionSegments;
             if (callExpressionSegment != null)
+            {
                 callExpressionSegments = new List<CallSetItemExpressionSegment> { callExpressionSegment };
+            }
             else
             {
                 CallSetExpressionSegment? callSetExpressionSegment = expressionSegment as CallSetExpressionSegment;
                 if (callSetExpressionSegment == null)
+                {
                     throw new ArgumentException("The ValueToSet should always be described by a single codeExpression containing a single segment, of type CallExpressionSegment or CallSetExpressionSegment");
+                }
+
                 callExpressionSegments = callSetExpressionSegment.CallExpressionSegments.ToList();
             }
 
@@ -303,19 +323,28 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // acceptable within a class where "p" is a settable property.
                     bool invalidZeroArgumentBracketsArePresent;
                     if (callExpressionSegment!.ZeroArgumentBracketsPresence != CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+                    {
                         invalidZeroArgumentBracketsArePresent = false;
+                    }
                     else if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property)
+                    {
                         invalidZeroArgumentBracketsArePresent = false;
+                    }
                     else
+                    {
                         invalidZeroArgumentBracketsArePresent = true;
+                    }
+
                     bool isSingleTokenSettingParentScopeReturnValue = (
                         (scopeAccessInformation.ParentReturnValueNameIfAny != null) &&
                         targetAccessorName == _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name)
                     );
                     if (invalidZeroArgumentBracketsArePresent)
+                    {
                         targetAccessorName = TranslateIntoErrorRaise("TypeMismatchException", targetAccessor);
+                    }
                     else if ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Constant)
-                    || ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function) && !isSingleTokenSettingParentScopeReturnValue))
+                             || ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function) && !isSingleTokenSettingParentScopeReturnValue))
                     {
                         // If the target is a constant or function then it's an illegal assignment error (note that the "type mismatch" zero-argument bracket
                         // error checked for above takes precedence, so "a() = 1" will result in a "Type mismatch" if "a" is a constant, while "a = 1" will
@@ -328,11 +357,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     else
                     {
                         if (isSingleTokenSettingParentScopeReturnValue)
+                        {
                             targetAccessorName = scopeAccessInformation.ParentReturnValueNameIfAny!.Name;
+                        }
                         else if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.ExternalDependency)
+                        {
                             targetAccessorName = _envRefName.Name + "." + targetAccessorName;
+                        }
                         else if (targetReferenceDetailsIfAvailable.ScopeLocation == ScopeLocationOptions.OutermostScope)
+                        {
                             targetAccessorName = _outerRefName.Name + "." + targetAccessorName;
+                        }
                         else if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function)
                         {
                             // 2014-07-03 DWR: This is the special case talked about above - eg. "a(0) = 1" where "a" is a function. It can not be
@@ -401,7 +436,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             //   need to make a note explaining how/why
             IEnumerable<NameToken> variablesAccessed;
             if (callExpressionSegments.Count == 0)
+            {
                 variablesAccessed = [];
+            }
             else
             {
                 // We will have one or more CallSetItemExpressionSegment instances, the first of which will always have at least one
@@ -419,7 +456,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
                 }
                 else
+                {
                     expressionToAnalyseForVariablesAccessed = new CallSetExpressionSegment(callExpressionSegments);
+                }
+
                 variablesAccessed = _statementTranslator.TranslateParsingExpression(
                         new ParsingExpression(new[] { expressionToAnalyseForVariablesAccessed }),
                         scopeAccessInformation,
@@ -434,10 +474,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Recall that
             string argumentsInitialisation;
             bool allArgsConfirmedToBeByVal;
+            bool usesArgProvider = true;
             if (arguments.Length != 0)
             {
                 allArgsConfirmedToBeByVal = StatementTranslator.ArgumentsWouldBePassedByValBasedUponItsContent(arguments, scopeAccessInformation, _nameRewriter);
-                if (allArgsConfirmedToBeByVal)
+                usesArgProvider = false;
+#pragma warning disable CA1508 // Avoid dead conditional code
+                if (allArgsConfirmedToBeByVal || usesArgProvider == false)
                 {
                     if (arguments.Length > 1)
                     {
@@ -468,6 +511,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     variablesAccessed = variablesAccessed.Concat(argumentsContent.VariablesAccessed);
                     argumentsInitialisation = argumentsContent.TranslatedContent ?? "";
                 }
+#pragma warning restore CA1508 // Avoid dead conditional code
             }
             else
             {
@@ -515,7 +559,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         }
                         else
                         {
-                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                            if (usesArgProvider)
+                            {
+                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                            }
+                            else
+                            {
+                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                            }
                         }
                     }
                     else
@@ -528,7 +579,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 if (arguments.Length != 0)
                 {
-                    methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                    if (usesArgProvider)
+                    {
+                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1argp);
+                    }
+                    else
+                    {
+                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                    }
                 }
                 else
                 {
