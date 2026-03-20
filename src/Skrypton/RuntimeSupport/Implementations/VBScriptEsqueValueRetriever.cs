@@ -861,7 +861,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (memberAccessorsArray.Length != 0)
                     throw new ObjectRequiredException($"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
                 if (arguments.Length != 0)// lubo || argumentProvider.UseBracketsWhereZeroArguments)
-                    throw new TypeMismatchException($"'{targetDescription}'. Procedure or object not registered? CallerLineNo:{callerLineNum}");
+                {
+                    string argumentsText = string.Join(", ", arguments.Select(x => x.ToString()).ToArray());
+                    throw new TypeMismatchException($"'{targetDescription}'. Procedure or object not registered? arg:{argumentsText} CallerLineNo:{callerLineNum}");
+                }
             }
 
             // Deal with special case of a delegate first (as of May 2015, there should't be any way for one of these to sneak in here, but if

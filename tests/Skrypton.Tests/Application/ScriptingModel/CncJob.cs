@@ -86,6 +86,8 @@ namespace Helpline.Application.ScriptingModel
         public string DoExtendWorkflowCase(object objIdentity)
         {
             Console.WriteLine("DoExtendWorkflowCase:" + objIdentity);
+            if (DoExtendWorkflowCaseOverride == null)
+                throw new NotImplementedException(nameof(DoExtendWorkflowCaseOverride));
             DoExtendWorkflowCaseOverride(objIdentity);
             return null;
         }

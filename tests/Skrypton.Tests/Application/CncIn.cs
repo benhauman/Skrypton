@@ -233,6 +233,7 @@ namespace Skrypton.Tests.Application
             // return Assembly.Load(peStream.ToArray());
             var assemblyBytes = peStream.ToArray();
             var context = new UnloadableAssemblyLoadContextContext();
+            //context.LoadFromAssemblyPath()
             context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
             //context.LoadFromAssemblyPath
             return context;

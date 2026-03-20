@@ -32,8 +32,8 @@ namespace Skrypton.Tests.Application
             var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog, gr => { });
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
         }
 
         [TestMethod]
@@ -53,8 +53,8 @@ namespace Skrypton.Tests.Application
                 .AddTextControl("TextBoxChecklist10URL")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog, gr => { });
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
 
         }
 
@@ -526,8 +526,8 @@ WScript.Echo xmlhttp.responseText
                     .BuildDialog();
 
 
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog, gr => { });
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
         }
 
         private void DoDialogGui(DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
@@ -631,8 +631,8 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("Button1_Click")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(this, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
                 foreach (var mi in mis)
@@ -665,8 +665,8 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
-            ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
-            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            DoDialogGui(this, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
                 foreach (var mi in mis)

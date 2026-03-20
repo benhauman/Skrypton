@@ -7,12 +7,15 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Helpline.Application.ScriptingModel;
 using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Skrypton.RuntimeSupport;
+using Skrypton.ScriptControlSupport;
 
 namespace Skrypton.Tests.Application
 {
@@ -33,7 +36,39 @@ namespace Skrypton.Tests.Application
                 return;
             }
             MemberDataTestName = chainName;
-            TestScriptChain(this, scriptUsage);
+
+            TestScriptResponse rsp = TestScriptChain(this, scriptUsage);
+            var tst = this;
+            var hostServices = CreateTestHostServices();
+            var externalReferences = new Dictionary<string, object>();
+
+            if (scriptUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
+            {
+                var oiDefault = new HLOBJECTID(494, 22222);
+                ActionContext actx = new ActionContext() { LocaleId = 1026 };
+
+                ActionArgs actargs = new ActionArgs() { m_oiDefault = oiDefault };
+                EblContext hlContext = new EblContext(actx, actargs);
+                EblObj objX = new EblObj(oiDefault);
+                hlContext.LoadObject_Override = oi => objX;
+
+                externalReferences.Add("hlContext", hlContext); // EBL
+            }
+            else if (scriptUsage == ScriptUsageKind.Connectivity)
+            {
+                Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext = Helpline.Application.ScriptingModel.ApplicationTestContext.Create(ctx =>
+                {
+                });
+                CncJob session = CncIn.CreateSampleConnectivityJob(cncTestContext);
+                session.DoExtendWorkflowCaseOverride = (oi) => { };
+                externalReferences.Add("session", session); // Connectivity IN/OUT
+            }
+            else if (scriptUsage == ScriptUsageKind.DialogGui)
+            {
+            }
+            _ = CncIn.CompileCSharpProgram(this, rsp.TranslatedCsCode); //new ScriptControlClass*()
+            //CncIn.CompileCSharpProgram(tst, translated_cs);
+            //CncIn.ExecuteTranslatedProgram(tst, tst.RuntimeLogger, rsp.TranslatedCsCode, hostServices, tst.TestCulture, tst.TestName, externalReferences, (gr) => { });
         }
 
         public static object[][] ChainNames
@@ -119,7 +154,8 @@ namespace Skrypton.Tests.Application
                 generated_vbs_expected,
                 translated_cs_expected,
                 xml_expected,
-                scrUsage, externalRefs, isOptionalAssert);
+                scrUsage,
+                externalRefs, isOptionalAssert);
         }
         public static TestScriptResponse TestScriptChainX(TestBaseX tst, string chainName,
                 string customerDialogGlobalScript,
@@ -127,14 +163,19 @@ namespace Skrypton.Tests.Application
                 string generated_vbs_expected,
                 string translated_cs_expected,
                 string xml_expected,
-                ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+                ScriptUsageKind scrUsage,
+                IReadOnlyDictionary<string, object> externalRefs = null,
+                bool isOptionalAssert = false)
         {
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
-            if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
-                externalDependencies = externalDependencies.Add("hlContext"); // EBL
-            if (scrUsage == ScriptUsageKind.Connectivity)
-                externalDependencies = externalDependencies.Add("session"); // Connectivity IN/OUT
-            if (externalRefs != null)
+            if (externalRefs == null)
+            {
+                if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
+                    externalDependencies = externalDependencies.Add("hlContext"); // EBL
+                if (scrUsage == ScriptUsageKind.Connectivity)
+                    externalDependencies = externalDependencies.Add("session"); // Connectivity IN/OUT
+            }
+            else
             {
                 foreach (string externalRefName in externalRefs.Keys)
                 {
@@ -258,8 +299,6 @@ namespace Skrypton.Tests.Application
                 Assert.Fail(failed_text);
             }
 
-            //string translated_cs_expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + CSFileExtension);
-            _ = CncIn.CompileCSharpProgram(tst, translated_cs_actual);
             return new TestScriptResponse(translated_cs_actual);
         }
 
