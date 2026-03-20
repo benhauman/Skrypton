@@ -66,7 +66,13 @@ namespace Skrypton.Tests.Application
             else if (scriptUsage == ScriptUsageKind.DialogGui)
             {
             }
-            _ = CncIn.CompileCSharpProgram(this, rsp.TranslatedCsCode); //new ScriptControlClass*()
+
+            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices));
+            scriptengineClass.TestTranslatedStatement(rsp.TranslatedCsCode, [
+                "CS0219", // hidden CS8019: Unnecessary using directive. using System.Runtime.InteropServices;
+                "CS8019" // error CS0219: The variable 'ForWriting' is assigned but its value is never used
+                ], doRun: false, gr => { });
+            //_ = CncIn.CompileCSharpProgram(this, rsp.TranslatedCsCode); //new ScriptControlClass*()
             //CncIn.CompileCSharpProgram(tst, translated_cs);
             //CncIn.ExecuteTranslatedProgram(tst, tst.RuntimeLogger, rsp.TranslatedCsCode, hostServices, tst.TestCulture, tst.TestName, externalReferences, (gr) => { });
         }

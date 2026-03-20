@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 //using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Emit;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -92,7 +93,7 @@ namespace Skrypton.ScriptControlSupport
         //    return expando;
         //}
         //
-        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, int codeNumber, string csCode)
+        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, int codeNumber, string csCode, string[] nowarn)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
             PortableExecutableReference[] references = new[]
@@ -104,11 +105,26 @@ namespace Skrypton.ScriptControlSupport
                 MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
             };
+
+            Dictionary<string, ReportDiagnostic> specificDiagnosticOptions = new Dictionary<string, ReportDiagnostic>(); //["CS0219"] = ReportDiagnostic.Suppress
+            specificDiagnosticOptions["CS0219"] = ReportDiagnostic.Suppress;
+            specificDiagnosticOptions["CS8019"] = ReportDiagnostic.Suppress;
+
+            foreach (string nowarnItem in nowarn)
+            {
+                if (!specificDiagnosticOptions.ContainsKey(nowarnItem))
+                {
+                    specificDiagnosticOptions.Add(nowarnItem, ReportDiagnostic.Suppress);
+                }
+            }
             // Compilation options (warnings as errors, warning level 4)
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,
                 warningLevel: 4,
-                generalDiagnosticOption: ReportDiagnostic.Error
+                generalDiagnosticOption: ReportDiagnostic.Error,
+                specificDiagnosticOptions: specificDiagnosticOptions,
+                optimizationLevel: OptimizationLevel.Debug, // Keep debug info
+                allowUnsafe: false
             );
 
             string codeName = $"InMemDynAsmKey{codeNumber}";
@@ -155,16 +171,16 @@ namespace Skrypton.ScriptControlSupport
                 {
                     if (diagnostic.Severity == DiagnosticSeverity.Error)
                     {
-                        errorsBuffer.AppendLine($"c# {diagnostic.Severity}:" + diagnostic.ToString());
+                        errorsBuffer.AppendLine($"c# {diagnostic.Severity} suppressed: {diagnostic.IsSuppressed} IsWarningAsError:{diagnostic.IsWarningAsError} :" + diagnostic.ToString());
                     }
                     else
                     {
-                        errorsBuffer.AppendLine($"c# {diagnostic.Severity}::" + diagnostic.ToString());
+                        errorsBuffer.AppendLine($"c# {diagnostic.Severity} suppressed: {diagnostic.IsSuppressed} IsWarningAsError:{diagnostic.IsWarningAsError}::" + diagnostic.ToString());
                     }
                 }
 
                 foreach (Diagnostic diagnostic in emitResult.Diagnostics)
-                    Console.WriteLine(diagnostic);
+                    Console.WriteLine("cs " + diagnostic);
 
                 Console.WriteLine(errorsBuffer.ToString());
 

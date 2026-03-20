@@ -11,6 +11,8 @@ using Skrypton.RuntimeSupport;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.RuntimeSupport.Implementations;
 using Microsoft.Testing.Platform.Services;
+using Skrypton.ScriptControlSupport;
+using Skrypton.Tests.Application;
 using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
 namespace Skrypton.Tests
@@ -256,6 +258,17 @@ namespace Skrypton.Tests
         public IHostFileSystemHostService CreateTestFileSystem()
         {
             return new WindowsFileSystem();
+        }
+
+        internal ScriptControlClass CreateScriptControlClass(IRuntimeHost runtimeHost)
+        {
+            ScriptControlConfiguration controlConfig = new TestScriptControlConfiguration(this);
+            ScriptControlClass scriptengineClass = new ScriptControlClass(runtimeHost, RuntimeLogger, TestCulture, controlConfig);
+            IScriptControl scriptengine = scriptengineClass;
+            scriptengine.Language = "VBScript";
+            scriptengine.AllowUI = false;
+            scriptengine.Timeout = -1;//MSScriptControl::NoTimeout;
+            return scriptengineClass;
         }
     }
 

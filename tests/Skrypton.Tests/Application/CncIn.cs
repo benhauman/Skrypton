@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
+using Skrypton.ScriptControlSupport;
 
 namespace Skrypton.Tests.Application
 {
@@ -77,38 +78,40 @@ namespace Skrypton.Tests.Application
                 DoExtendWorkflowCaseIdentity = (CncObj)oi;
             };
             var hostServices = CreateTestHostServices();
-            string translated_cs_expected = rsp.TranslatedCsCode;// TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            ExecuteTranslatedProgram(this, RuntimeLogger, translated_cs_expected, hostServices, TestCulture, TestName, new Dictionary<string, object> { { "session", session } }, gr => { });
+            //string translated_cs_expected = rsp.TranslatedCsCode;// TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
+            ExecuteTranslatedProgram(this, rsp.TranslatedCsCode, hostServices, new Dictionary<string, object> { { "session", session } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
             Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
 
         }
-        internal static void ExecuteTranslatedProgram(TestBaseX tst, IRuntimeLogger runtimeLogger, string translated_cs, IServiceProvider hostServices, CultureInfo culture, string chainName, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+
+        internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
+            IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
+            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost);
 
-            UnloadableAssemblyLoadContextContext asmctx = CompileCSharpProgram(tst, translated_cs);
-            WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
+            scriptControlClass.TestSetDefaultRuntimeFunctionalityProviderSetup((x) => SetupDefaultRuntimeFunctionalityProvider(x, hostServices, tst.TestCulture));
+
+            //RunTranslatedProgram(scriptengineClass, runtimeLogger, hostServices, externalReferences, dialogHandler);
+            foreach (KeyValuePair<string, object> externalReferencesEntry in externalReferences)
             {
-                Assembly asm = asmctx.LoadedAssembly;
-                Type tRunner = asm.GetType("TranslatedProgram.Runner", true); // TODO: use an assembly attribute for this class instead of reflection
-
-                RunTranslatedProgram(runtimeLogger, hostServices, culture, tRunner, externalReferences, dialogHandler);
+                string externalReferenceName = externalReferencesEntry.Key;
+                object externalReferenceInstance = externalReferencesEntry.Value;
+                IScriptControl scriptControl = scriptControlClass;
+                scriptControl.AddObject(externalReferenceName, externalReferenceInstance);
             }
-            asmctx.UnloadContextCollectAndWait();
 
-            if (!weakRef.IsAlive)
-                Console.WriteLine("ALC successfully unloaded");
-            else
-                Console.WriteLine("ALC still alive");
+            scriptControlClass.TestTranslatedStatement(translatedCsCode, ["CS8019"], doRun: true, dialogHandler);
         }
-
         internal static void RunTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, Type tRunner, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
             DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeHost, runtimeLogger, culture);
-            Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
+            //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayerX = CreateDefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
+            DefaultRuntimeFunctionalityProvider compatLayer = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
+            SetupDefaultRuntimeFunctionalityProvider(compatLayer, hostServices, culture);
 
             RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
@@ -133,9 +136,14 @@ namespace Skrypton.Tests.Application
             dialogHandler(gr);
         }
 
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeHost runtimeHost, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
+        //internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeHost runtimeHost, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
+        //{
+        //    DefaultRuntimeFunctionalityProvider compatLayer = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, valueRetriever, culture);
+        //    SetupDefaultRuntimeFunctionalityProvider(compatLayer, hostServices, culture);
+        //    return compatLayer;
+        //}
+        internal static void SetupDefaultRuntimeFunctionalityProvider(DefaultRuntimeFunctionalityProvider provider, IServiceProvider hostServices, CultureInfo culture)
         {
-            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, valueRetriever, culture);
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
@@ -148,11 +156,9 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("ADODB.Recordset", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBRecordSet());
             provider.RegisterObjectCreateFactory("Scripting.FileSystemObject", (_) => Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport.MyFileSystemObject.Create(hostServices));
             provider.RegisterObjectCreateFactory("Scriptlet.TypeLib", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptletTypeLib());
-
-            return provider;
         }
 
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgram(TestBaseX tst, string translated_cs)
+        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgramX(TestBaseX tst, string translated_cs)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
             PortableExecutableReference[] references =

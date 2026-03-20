@@ -544,7 +544,7 @@ WScript.Echo xmlhttp.responseText
         }
         private static void DoDialogGui(TestBaseX tst, string translated_cs, DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
         {
-            CncIn.ExecuteTranslatedProgram(tst, tst.RuntimeLogger, translated_cs, dialog.HostServices, tst.TestCulture, tst.TestName, dialog.ExternalReferences, dialogHandler);
+            CncIn.ExecuteTranslatedProgram(tst, translated_cs, dialog.HostServices, dialog.ExternalReferences, dialogHandler);
         }
 
         static object InvokePropertyGet(IDispatchAccess.IDispatch disp, string name)

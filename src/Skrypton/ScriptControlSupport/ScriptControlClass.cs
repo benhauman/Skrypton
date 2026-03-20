@@ -125,6 +125,37 @@ namespace Skrypton.ScriptControlSupport
             throw new NotImplementedException();
         }
 
+        public void TestTranslatedStatement(string csCode, string[] nowarn, bool doRun, Action<GlobalReferencesBase> testHandler)
+        {
+            if (nowarn == null) throw new ArgumentNullException(nameof(nowarn));
+            if (testHandler == null) throw new ArgumentNullException(nameof(testHandler));
+            if (string.IsNullOrEmpty(csCode)) throw new ArgumentException("Value cannot be null or empty.", nameof(csCode));
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode, nowarn);
+            try
+            {
+                using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();
+                Type tRunner = asmctx!.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
+                RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
+
+                EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
+
+                foreach (KeyValuePair<string, object> externalReferencesEntry in _addedObjects)
+                {
+                    environmentReferences.InitializeExternalReference(externalReferencesEntry.Key, externalReferencesEntry.Value);
+                }
+
+                if (doRun)
+                {
+                    GlobalReferencesBase globalRefs = runner.Run(environmentReferences);
+                    testHandler(globalRefs);
+                }
+            }
+            finally
+            {
+                asmctx?.UnloadContextCollectAndWait();
+                asmctx = null;
+            }
+        }
         private static int _lastExecNumber;
         void IScriptControl.ExecuteStatement(string statement)
         {
@@ -136,11 +167,12 @@ namespace Skrypton.ScriptControlSupport
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             Interlocked.Increment(ref _lastExecNumber); // threadsafe
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode);
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode, []);
+            //WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             try
             {
-                DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
-                using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateDefaultRuntimeFunctionalityProvider(defaultRuntimeSupportClassFactoryInstance.RuntimeHost, defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
+                //DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = _defaultRuntimeSupportClassFactoryProvider(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
+                using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();// defaultRuntimeSupportClassFactoryInstance.RuntimeHost, defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
                 Type tRunner = asmctx!.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
                 RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
@@ -160,15 +192,28 @@ namespace Skrypton.ScriptControlSupport
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
-        }
-        internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeHost hostServices, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, CultureInfo culture)
-        {
-            DefaultRuntimeFunctionalityProvider provider = new DefaultRuntimeFunctionalityProvider(hostServices, runtimeLogger, valueRetriever, culture);
-            //provider.RegisterObjectCreateFactory();
-            //provider.RegisterObjectCreateFactory();
-            return provider;
+
+            //if (!weakRef.IsAlive)
+            //    Console.WriteLine("ALC successfully unloaded");
+            //else
+            //    Console.WriteLine("ALC still alive");
         }
 
+        private DefaultRuntimeFunctionalityProvider CreateCompatLayer()
+        {
+            DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = DefaultRuntimeSupportClassFactory.Create(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
+            DefaultRuntimeFunctionalityProvider compatLayer = new DefaultRuntimeFunctionalityProvider(EngineRuntimeHost, EngineRuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
+            if (_setupDefaultRuntimeFunctionalityProvider != null)
+            {
+                _setupDefaultRuntimeFunctionalityProvider.Invoke(compatLayer);
+            }
+            return compatLayer;
+        }
+        private Action<DefaultRuntimeFunctionalityProvider>? _setupDefaultRuntimeFunctionalityProvider;
+        public void TestSetDefaultRuntimeFunctionalityProviderSetup(Action<DefaultRuntimeFunctionalityProvider> setupDefaultRuntimeFunctionalityProvider)
+        {
+            _setupDefaultRuntimeFunctionalityProvider = setupDefaultRuntimeFunctionalityProvider ?? throw new ArgumentNullException(nameof(setupDefaultRuntimeFunctionalityProvider));
+        }
         object IScriptControl.Run(string procedureName, ref object[] parameters)
         {
             //RoslynScriptControl sc = StartAsync(null, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
