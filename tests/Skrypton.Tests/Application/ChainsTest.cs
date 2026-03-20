@@ -72,9 +72,6 @@ namespace Skrypton.Tests.Application
                 "CS0219", // hidden CS8019: Unnecessary using directive. using System.Runtime.InteropServices;
                 "CS8019" // error CS0219: The variable 'ForWriting' is assigned but its value is never used
                 ], doRun: false, gr => { });
-            //_ = CncIn.CompileCSharpProgram(this, rsp.TranslatedCsCode); //new ScriptControlClass*()
-            //CncIn.CompileCSharpProgram(tst, translated_cs);
-            //CncIn.ExecuteTranslatedProgram(tst, tst.RuntimeLogger, rsp.TranslatedCsCode, hostServices, tst.TestCulture, tst.TestName, externalReferences, (gr) => { });
         }
 
         public static object[][] ChainNames

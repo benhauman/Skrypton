@@ -109,7 +109,6 @@ namespace Skrypton.Tests.Application
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
             DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(runtimeHost, runtimeLogger, culture);
-            //Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayerX = CreateDefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, hostServices, culture);
             DefaultRuntimeFunctionalityProvider compatLayer = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, culture);
             SetupDefaultRuntimeFunctionalityProvider(compatLayer, hostServices, culture);
 
@@ -136,12 +135,6 @@ namespace Skrypton.Tests.Application
             dialogHandler(gr);
         }
 
-        //internal static DefaultRuntimeFunctionalityProvider CreateDefaultRuntimeFunctionalityProvider(IRuntimeHost runtimeHost, IRuntimeLogger runtimeLogger, IAccessValuesUsingVBScriptRules valueRetriever, IServiceProvider hostServices, CultureInfo culture)
-        //{
-        //    DefaultRuntimeFunctionalityProvider compatLayer = new DefaultRuntimeFunctionalityProvider(runtimeHost, runtimeLogger, valueRetriever, culture);
-        //    SetupDefaultRuntimeFunctionalityProvider(compatLayer, hostServices, culture);
-        //    return compatLayer;
-        //}
         internal static void SetupDefaultRuntimeFunctionalityProvider(DefaultRuntimeFunctionalityProvider provider, IServiceProvider hostServices, CultureInfo culture)
         {
             provider.RegisterObjectCreateFactory("Scripting.Dictionary", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
@@ -157,118 +150,6 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("Scripting.FileSystemObject", (_) => Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport.MyFileSystemObject.Create(hostServices));
             provider.RegisterObjectCreateFactory("Scriptlet.TypeLib", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptletTypeLib());
         }
-
-        internal static UnloadableAssemblyLoadContextContext CompileCSharpProgramX(TestBaseX tst, string translated_cs)
-        {
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(translated_cs);
-            PortableExecutableReference[] references =
-            [
-                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
-                MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
-                MetadataReference.CreateFromFile(typeof(IDisposable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
-            ];
-            // Compilation options (warnings as errors, warning level 4)
-            CSharpCompilationOptions options = new CSharpCompilationOptions(
-                OutputKind.DynamicallyLinkedLibrary,
-                warningLevel: 4,
-                generalDiagnosticOption: ReportDiagnostic.Error,
-                specificDiagnosticOptions: new Dictionary<string, ReportDiagnostic>
-                {
-                    ["CS0219"] = ReportDiagnostic.Suppress
-                },
-                optimizationLevel: OptimizationLevel.Debug, // Keep debug info
-                allowUnsafe: false
-            );
-
-            CSharpCompilation compilation = CSharpCompilation.Create(
-                "InMemDynAsmKey2",
-                [syntaxTree],
-                references,
-                options
-            );
-
-            using MemoryStream peStream = new MemoryStream();
-            using MemoryStream pdbStream = new MemoryStream();
-
-            // Emit with debug info
-            EmitResult emitResult = compilation.Emit(
-                peStream,
-                pdbStream,
-                options: new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb)
-            );
-
-            // Equivalent to results.Errors
-            if (!emitResult.Success)
-            {
-                StringBuilder errorsBuffer = new StringBuilder();
-
-                foreach (Diagnostic diagnostic in emitResult.Diagnostics)
-                {
-                    if (diagnostic.Severity == DiagnosticSeverity.Error)
-                    {
-                        errorsBuffer.AppendLine(diagnostic.ToString());
-                    }
-                }
-
-                Console.WriteLine(errorsBuffer.ToString());
-
-
-                string chainName = tst.TestName.Split("_")[0];
-                string workItemName = "Script";
-                string storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".translated.cs", translated_cs);
-
-                // In unit tests, you can fail like this:
-                throw new Exception("Compilation failed.");
-                // Or if using NUnit/xUnit:
-                // Assert.Fail("Compilation failed.");
-            }
-
-
-            if (!emitResult.Success)
-            {
-                foreach (Diagnostic diagnostic in emitResult.Diagnostics)
-                    Console.WriteLine(diagnostic);
-                return null;
-            }
-
-            // Load assembly from memory
-            peStream.Seek(0, SeekOrigin.Begin);
-            // return Assembly.Load(peStream.ToArray());
-            var assemblyBytes = peStream.ToArray();
-            var context = new UnloadableAssemblyLoadContextContext();
-            //context.LoadFromAssemblyPath()
-            context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
-            //context.LoadFromAssemblyPath
-            return context;
-        }
-        internal sealed class UnloadableAssemblyLoadContextContext : System.Runtime.Loader.AssemblyLoadContext
-        {
-            public Assembly LoadedAssembly { get; set; }
-
-            public UnloadableAssemblyLoadContextContext() : base(isCollectible: true)
-            {
-            }
-            protected override Assembly Load(AssemblyName assemblyName)
-            {
-                return base.Load(assemblyName);
-            }
-
-            protected override nint LoadUnmanagedDll(string unmanagedDllName)
-            {
-                return base.LoadUnmanagedDll(unmanagedDllName);
-            }
-
-            internal void UnloadContextCollectAndWait()
-            {
-                this.Unload();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-        }
-
 
 
         internal static Helpline.Application.ScriptingModel.CncJob CreateSampleConnectivityJob(Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext)
