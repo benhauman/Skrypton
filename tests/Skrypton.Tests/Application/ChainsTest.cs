@@ -70,7 +70,6 @@ namespace Skrypton.Tests.Application
             var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices));
             scriptengineClass.TestTranslatedStatement(rsp.TranslatedCsCode, [
                 "CS0219", // error CS0219: The variable 'ForWriting' is assigned but its value is never used
-                "CS8019"// hidden CS8019: Unnecessary using directive. using System.Runtime.InteropServices;
                 ], doRun: false, gr => { });
         }
 

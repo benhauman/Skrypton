@@ -47,3 +47,6 @@ Error Context: 0'
 13: donot use VAL() fuer string, int, & etc see MSGBOX(string) in
 
 14: ??? _.CALLm1argp(this, with, "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
+
+15: CS0219: // error CS0219: The variable 'ForWriting' is assigned but its value is never used
+  => remove/comment out unused constants and variables
