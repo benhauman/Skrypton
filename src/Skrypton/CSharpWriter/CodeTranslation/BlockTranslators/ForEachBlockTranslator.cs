@@ -65,7 +65,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 loopSourceContent.TranslatedContent
             );
             if (!scopeAccessInformation.IsDeclaredReference(forEachBlock.LoopVar, _nameRewriter))
+            {
                 translationResult = translationResult.AddUndeclaredVariables(new[] { forEachBlock.LoopVar });
+            }
+
             string rewrittenLoopVarName = _nameRewriter.GetMemberAccessTokenName(forEachBlock.LoopVar);
             CSharpName? loopVarTargetContainer = scopeAccessInformation.GetNameOfTargetContainerIfAnyRequired(forEachBlock.LoopVar, _envRefName, _outerRefName, _nameRewriter);
             if (loopVarTargetContainer != null)

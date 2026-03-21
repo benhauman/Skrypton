@@ -251,10 +251,6 @@ namespace Skrypton.ScriptControlSupport
                 scriptContent += "\r\n";
             }
             scriptContent += statementOrNull;
-            //IReadOnlyCollection<ICodeBlock> parsedBlocks = Skrypton.LegacyParser.Parser.Parse(EngineCulture, scriptContent);
-
-
-            //var csLines = DefaultCSharpTranslation.GetTranslatedStatements(tst.TestCulture, scriptContent, externalDependencies);
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
             var warningLogger = Skrypton.CSharpWriter.DefaultTranslator.CommentsLogger(true, new Skrypton.CSharpWriter.DefaultTranslator.DelegateWrappingWarningLogger(warningMessageText =>
             {

@@ -50,12 +50,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 }
                 else
                 {
-                    if (s.IndentationDepth > 0)
-                    {
-                        tb.Append(new string(' ', s.IndentationDepth * 4));
-                    }
-
-                    tb.Append(s.Content);
+                    s.RenderTranslatedStatement(tb);
                     tb.Append(NewLineNormalized);
                 }
             }

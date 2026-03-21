@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
@@ -18,7 +19,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 throw new ArgumentOutOfRangeException(nameof(lineIndexOfStatementStartInSource), "must be zero or greater");
 
             Content = content;
-            IndentationDepth = indentationDepth;
+            _indentationDepth = indentationDepth;
             LineIndexOfStatementStartInSource = lineIndexOfStatementStartInSource;
 
         }
@@ -32,7 +33,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will always be zero or greater
         /// </summary>
-        public int IndentationDepth { get; private set; }
+        private readonly int _indentationDepth;
 
         /// <summary>
         /// This will indicate where in the VBScript source that code exists that resulted in the current line of C# being generated. Not all lines of C# have
@@ -51,6 +52,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             }
 #pragma warning restore CA1820 // Test for empty strings using string length
             Content += translatedCommentContent;
+        }
+
+        public StringBuilder RenderTranslatedStatement(StringBuilder tb)
+        {
+            if (tb == null) throw new ArgumentNullException(nameof(tb));
+            if (_indentationDepth > 0)
+            {
+                _ = tb.Append(new string(' ', _indentationDepth * 4));
+            }
+
+            tb.Append(Content);
+            return tb;
         }
     }
 
