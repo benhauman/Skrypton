@@ -120,7 +120,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // We don't have any information about where blank lines comes from as the code blocks don't contain this information directly
             // and there are no tokens in the BlankLine class to infer the information from. So we'll have to leave it as zero (it is
             // documented on TranslatedStatement that some line index values will be approximate or inaccurate in some cases).
-            return (block is BlankLine) ? translationResult.Add(new TranslatedStatement("", indentationDepth, lineIndexOfStatementStartInSource: 0)) : null;
+            return (block is BlankLine) ? translationResult.Add(new TranslatedStatement(lineIndexOfStatementStartInSource: 0)) : null;
         }
 
         protected TranslationResult? TryToTranslateClass(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -157,20 +157,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (commentBlock == null)
                 return null;
 
-            string translatedCommentContent = "//" + commentBlock.Content;
             if (block is InlineCommentStatement)
             {
                 var lastTranslatedStatement = translationResult.TranslatedStatements.LastOrDefault();
                 if ((lastTranslatedStatement != null))// && (lastTranslatedStatement.HasContent))
                 {
                     // see 'ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables'
-                    lastTranslatedStatement.AppendInlineComment(translatedCommentContent);
+                    lastTranslatedStatement.AppendInlineComment(commentBlock.Content);
                     return translationResult;
                 }
             }
 
             return translationResult.Add(
-                new TranslatedStatement(translatedCommentContent, indentationDepth, commentBlock.LineIndex)
+                new TranslatedStatement("//" + commentBlock.Content, indentationDepth, commentBlock.LineIndex)
             );
         }
 

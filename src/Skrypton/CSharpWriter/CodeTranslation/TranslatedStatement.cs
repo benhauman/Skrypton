@@ -4,10 +4,18 @@ using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
-    [DebuggerDisplay("{Content}")]
+    [DebuggerDisplay("{_content}")]
     public class TranslatedStatement
     {
+        public TranslatedStatement(int lineIndexOfStatementStartInSource) // 'empty' ctor
+            : this(true, "", 0, lineIndexOfStatementStartInSource)
+        {
+        }
         public TranslatedStatement(string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+            : this(false, content, indentationDepth, lineIndexOfStatementStartInSource)
+        {
+        }
+        private TranslatedStatement(bool isEmpty, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
@@ -18,7 +26,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             if (lineIndexOfStatementStartInSource < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndexOfStatementStartInSource), "must be zero or greater");
 
-            Content = content;
+            if (!isEmpty && content.Length == 0)
+                throw new InvalidOperationException("Use the 'empty' ctor.");
+            _content = content;
             _indentationDepth = indentationDepth;
             LineIndexOfStatementStartInSource = lineIndexOfStatementStartInSource;
 
@@ -27,8 +37,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will never be null, though it may be blank if it represents a blank line. It will never have any leading or trailing whitespace.
         /// </summary>
-        public string Content { get; private set; }
-        public bool HasContent => !string.IsNullOrEmpty(Content);
+        private readonly string _content;
+        internal bool HasContent => _content.Length > 0;
 
         /// <summary>
         /// This will always be zero or greater
@@ -41,28 +51,36 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// line continuation character). As such, there are times when this value will be somewhat approximate (and blank lines often have a value of
         /// zero, since they are not of any significant importance). This value will always be zero or greater.
         /// </summary>
-        public int LineIndexOfStatementStartInSource { get; private set; }
+        public int LineIndexOfStatementStartInSource { get; }
 
+        private string? _inlineCommentIfAny;
         internal void AppendInlineComment(string translatedCommentContent)
         {
-#pragma warning disable CA1820 // Test for empty strings using string length
-            if (Content != "")
-            {
-                Content += " ";
-            }
-#pragma warning restore CA1820 // Test for empty strings using string length
-            Content += translatedCommentContent;
+            if (_inlineCommentIfAny != null)
+                throw new InvalidOperationException("Inline comment already set;");
+            _inlineCommentIfAny = translatedCommentContent;
         }
 
         public StringBuilder RenderTranslatedStatement(StringBuilder tb)
         {
             if (tb == null) throw new ArgumentNullException(nameof(tb));
-            if (_indentationDepth > 0)
+            if (HasContent || _inlineCommentIfAny != null)
             {
-                _ = tb.Append(new string(' ', _indentationDepth * 4));
-            }
+                if (_indentationDepth > 0)
+                {
+                    _ = tb.Append(new string(' ', _indentationDepth * 4));
+                }
 
-            tb.Append(Content);
+                tb.Append(_content);
+                if (_inlineCommentIfAny != null)
+                {
+                    tb.Append(" //").Append(_inlineCommentIfAny);
+                }
+            }
+            else
+            {
+                //tb.Append(s._content); // no indention for blank lines
+            }
             return tb;
         }
     }

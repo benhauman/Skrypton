@@ -81,24 +81,24 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             WithoutScaffolding
         }
 
-        public IReadOnlyCollection<TranslatedStatement> Translate(NonNullImmutableList<ICodeBlock> blocks)
+        public IReadOnlyCollection<TranslatedStatement> Translate(IReadOnlyCollection<ICodeBlock> codeBlocks)
         {
-            if (blocks == null)
-                throw new ArgumentNullException(nameof(blocks));
+            if (codeBlocks == null)
+                throw new ArgumentNullException(nameof(codeBlocks));
 
             // There are some date literal values that need to be validated at runtime (they may vary by culture - if they include a month name, basically, which will
             // depend upon the current language). If any of these literals are invalid for the runtime culture then no further processing may take place (this is the
             // same as the VBScript interpreter refusing to process a script when it reads it, in whatever culture is active when it executes). We need to build this
             // list before we remove any duplicate functions since, although VBScript will "overwrite" functions with the same name in the outermost scope, if the
             // functions it overwrites / ignores contained any invalid date literals, the interpreter will still not execute. We'll use this data further down..
-            var dateLiteralsToValidateAtRuntime = EnumerateAllDateLiteralTokens(blocks)
+            var dateLiteralsToValidateAtRuntime = EnumerateAllDateLiteralTokens(codeBlocks)
                 .Where(d => d.RequiresRuntimeValidation)
                 .GroupBy(d => d.Content)
                 .Select(g => new { DateLiteralValue = g.Key, LineNumbers = g.Select(d => d.LineIndex + 1) })
                 .ToArray();
 
             // Note: There is no need to check for identically-named classes since that would cause a "Name Redefined" error even if Option Explicit was not enabled
-            blocks = RemoveDuplicateFunctions(blocks);
+            NonNullImmutableList<ICodeBlock> blocks = RemoveDuplicateFunctions(codeBlocks);
 
             // Group the code blocks that need to be executed (the functions from the outermost scope need to go into a "global references" class
             // which will appear after any other classes, which will appear after everything else)
@@ -447,7 +447,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // set in the outermost scope and then a function has a statement "ReDim a(2)", that "a" reference should be that one in the outermost scope). To achieve
                 // this, the "implicitly declared" outermost scope variables are added to the ExternalDependencies set in the ScopeAccessInformation instance provided
                 // to the function block translator. The same must be done for class block translation (see below).
-                translatedStatements = translatedStatements.Add(new TranslatedStatement("", 1, 0));
+                translatedStatements = translatedStatements.Add(new TranslatedStatement(0));
                 translatedStatements = translatedStatements.AddRange(
                     Translate(
                         annotatedFunctionBlock.LeadingComments.Cast<ICodeBlock>().Concat(new[] { annotatedFunctionBlock.CodeBlock }).ToNonNullImmutableList(),
@@ -526,7 +526,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         }
 
-        private static readonly TranslatedStatement EmptyLine = new TranslatedStatement("", 0, 0);
+        private static readonly TranslatedStatement EmptyLine = new TranslatedStatement(0);
 
         private static NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {
@@ -579,13 +579,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         /// allowed within classes, however properties may exist with the same name as functions and take precedence so long as they come after the
         /// functions - a "Name Redefined" error will be raised if the property comes first or if there are multiple properties with the same name)
         /// </summary>
-        private NonNullImmutableList<ICodeBlock> RemoveDuplicateFunctions(NonNullImmutableList<ICodeBlock> blocks)
+        private NonNullImmutableList<ICodeBlock> RemoveDuplicateFunctions(IReadOnlyCollection<ICodeBlock> codeBlocks)
         {
-            if (blocks == null)
-                throw new ArgumentNullException(nameof(blocks));
+            if (codeBlocks == null)
+                throw new ArgumentNullException(nameof(codeBlocks));
 
             List<int> removeAtLocations = new List<int>();
-            foreach (ICodeBlock block in blocks)
+            foreach (ICodeBlock block in codeBlocks)
             {
                 AbstractFunctionBlock? functionBlock = block as AbstractFunctionBlock;
                 if (functionBlock == null)
@@ -593,7 +593,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
                 string functionName = _nameRewriter.GetMemberAccessTokenName(functionBlock.Name);
                 removeAtLocations.AddRange(
-                    blocks
+                    codeBlocks
                         .Select((b, blockIndex) => new { Index = blockIndex, Block = b })
                         .Where(indexedBlock => indexedBlock.Block is AbstractFunctionBlock)
                         .Where(indexedBlock => _nameRewriter.GetMemberAccessTokenName(((AbstractFunctionBlock)indexedBlock.Block).Name) == functionName)
@@ -601,8 +601,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         .OrderByDescending(blockIndex => blockIndex).Skip(1) // Leave the last one intact
                 );
             }
+
+            NonNullImmutableList<ICodeBlock> blocks = codeBlocks.ToNonNullImmutableList();
             foreach (int removeIndex in removeAtLocations.Distinct().OrderByDescending(i => i))
+            {
                 blocks = blocks.RemoveAt(removeIndex);
+            }
+
             return blocks;
         }
 

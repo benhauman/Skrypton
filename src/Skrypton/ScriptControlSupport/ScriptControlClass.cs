@@ -256,13 +256,7 @@ namespace Skrypton.ScriptControlSupport
             {
                 Console.WriteLine(warningMessageText);
             }));
-            IReadOnlyCollection<TranslatedStatement> translatedStatements = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
-            StringBuilder codeBuffer = new StringBuilder();
-            foreach (var translatedStatement in translatedStatements)
-            {
-                translatedStatement.RenderTranslatedStatement(codeBuffer).Append(NewLineNormalized);
-            }
-            string csCode = codeBuffer.ToString();
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
             return csCode;
         }
         private const char NewLineNormalized = '\n';

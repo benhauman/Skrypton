@@ -29,11 +29,11 @@ namespace Skrypton.CSharpWriter
         /// </summary>
         public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies)
         {
-            return RenderTranslatedProgramCode(TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true)));
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
         {
-            return RenderTranslatedProgramCode(TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true)));
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
@@ -43,7 +43,7 @@ namespace Skrypton.CSharpWriter
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList
         /// of strings and it requires an ILogInformation implementation to deal with logging warnings
         /// </summary>
-        internal static IReadOnlyCollection<TranslatedStatement> TranslateCore(
+        internal static string TranslateCore(
             CultureInfo culture,
             string scriptContent,
             IReadOnlyCollection<string> externalDependencies,
@@ -60,19 +60,19 @@ namespace Skrypton.CSharpWriter
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
-            var startNamespace = new CSharpName("TranslatedProgram");
-            var startClassName = new CSharpName("Runner");
-            var startMethodName = new CSharpName("Go");
-            var runtimeDateLiteralValidatorClassName = new CSharpName("RuntimeDateLiteralValidator");
-            var supportRefName = new CSharpName("_");
-            var envClassName = new CSharpName("EnvironmentReferences");
-            var envRefName = new CSharpName("_env");
-            var outerClassName = new CSharpName("GlobalReferences");
-            var outerRefName = new CSharpName("_outer");
+            CSharpName startNamespace = new CSharpName("TranslatedProgram");
+            CSharpName startClassName = new CSharpName("Runner");
+            CSharpName startMethodName = new CSharpName("Go");
+            CSharpName runtimeDateLiteralValidatorClassName = new CSharpName("RuntimeDateLiteralValidator");
+            CSharpName supportRefName = new CSharpName("_");
+            CSharpName envClassName = new CSharpName("EnvironmentReferences");
+            CSharpName envRefName = new CSharpName("_env");
+            CSharpName outerClassName = new CSharpName("GlobalReferences");
+            CSharpName outerRefName = new CSharpName("_outer");
             VBScriptNameRewriter nameRewriter = new DefaultVBScriptNameRewriter();
             TempValueNameGenerator tempNameGenerator = new DefaultTempValueNameGenerator().GenerateTempValueName;
-            var statementTranslator = new StatementTranslator(supportRefName, envRefName, outerRefName, nameRewriter, tempNameGenerator, logger);
-            var codeBlockTranslator = new OuterScopeBlockTranslator(
+            StatementTranslator statementTranslator = new StatementTranslator(supportRefName, envRefName, outerRefName, nameRewriter, tempNameGenerator, logger);
+            OuterScopeBlockTranslator codeBlockTranslator = new OuterScopeBlockTranslator(
                 startNamespace,
                 startClassName,
                 startMethodName,
@@ -91,27 +91,19 @@ namespace Skrypton.CSharpWriter
                 logger
             );
 
-            var parsedBlocks = Parse(culture, scriptContent);
-            return codeBlockTranslator.Translate(parsedBlocks.ToNonNullImmutableList());
+            IReadOnlyList<ICodeBlock> parsedBlocks = Parse(culture, scriptContent);
+            IReadOnlyCollection<TranslatedStatement> translatedStatements = codeBlockTranslator.Translate(parsedBlocks);
+            return RenderTranslatedProgramCode(translatedStatements);
         }
         private const char NewLineNormalized = '\n';
-
-        public static string RenderTranslatedProgramCode(IReadOnlyCollection<TranslatedStatement> statements)
+        private static string RenderTranslatedProgramCode(IReadOnlyCollection<TranslatedStatement> statements)
         {
             if (statements == null) throw new ArgumentNullException(nameof(statements));
             StringBuilder tb = new StringBuilder();
             foreach (TranslatedStatement s in statements)
             {
-                if (!s.HasContent)
-                {
-                    tb.Append(s.Content); // no indention for blank lines
-                    tb.Append(NewLineNormalized);
-                }
-                else
-                {
-                    s.RenderTranslatedStatement(tb);
-                    tb.Append(NewLineNormalized);
-                }
+                s.RenderTranslatedStatement(tb);
+                tb.Append(NewLineNormalized);
             }
             string csText = tb.ToString();
             return csText;
@@ -126,7 +118,7 @@ namespace Skrypton.CSharpWriter
             // Translate these tokens into ICodeBlock implementations (representing code VBScript structures)
             return CodeBlockHandler.RootBlock.Process(
                 GetTokens(culture, scriptContent).ToList(),
-                out var _
+                out string[]? _
             );
         }
 
@@ -153,11 +145,11 @@ namespace Skrypton.CSharpWriter
         private static IToken[] GetTokens(CultureInfo culture, string scriptContent)
         {
             // Break down content into String, Comment and UnprocessedContent tokens
-            var tokens = StringBreaker.SegmentString(culture, scriptContent);
+            List<IToken> tokens = StringBreaker.SegmentString(culture, scriptContent);
 
             // Break down further into String, Comment, Atom and AbstractEndOfStatement tokens
-            var atomTokens = new List<IToken>();
-            foreach (var token in tokens)
+            List<IToken> atomTokens = new List<IToken>();
+            foreach (IToken? token in tokens)
             {
                 if (token is UnprocessedContentToken unProccessed)
                 {
@@ -255,7 +247,7 @@ namespace Skrypton.CSharpWriter
             else
             {
                 string rewrittenName = DefaultRuntimeSupportClassFactory.RewriteName(value);
-                var entryR = new RewriteEntry(originalName: value, rewrittenName: rewrittenName, 0);
+                RewriteEntry entryR = new RewriteEntry(originalName: value, rewrittenName: rewrittenName, 0);
                 entry = (entryR, new CSharpName(entryR.RewrittenName));
                 _entries.Add(key, entry);
             }

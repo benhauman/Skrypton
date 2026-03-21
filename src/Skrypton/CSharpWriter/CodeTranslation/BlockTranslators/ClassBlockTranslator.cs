@@ -120,7 +120,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
             if (classContentTranslationResult.TranslatedStatements.Any())
             {
-                translatedClassHeaderContent = translatedClassHeaderContent.Concat(new[] { new TranslatedStatement("", 0, classBlock.Name.LineIndex) }).ToArray();
+                translatedClassHeaderContent = translatedClassHeaderContent.Concat(new[] { new TranslatedStatement(classBlock.Name.LineIndex) }).ToArray();
             }
 
             var lineIndexOfLastStatement = classContentTranslationResult.TranslatedStatements.Any()
@@ -246,13 +246,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement("try { " + _supportRefName.Name + ".SETERROR(e); } catch { }", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("}", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("void IDisposable.Dispose()", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement(disposeMethodName.Name + "(true);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("GC.SuppressFinalize(this);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("private void " + disposeMethodName.Name + "(bool disposing)", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
                     new TranslatedStatement("if (" + disposedFlagNameIfAny.Name + ")", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
@@ -343,12 +343,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
             if (disposeImplementationStatements.Length != 0)
             {
-                classHeaderStatements.Add(new TranslatedStatement("", indentationDepth + 1, classTerminateMethodNameIfAny!.LineIndex));
+                classHeaderStatements.Add(new TranslatedStatement(classTerminateMethodNameIfAny!.LineIndex));
                 classHeaderStatements.AddRange(disposeImplementationStatements);
             }
             if (explicitVariableDeclarationsFromWithinClass.Any())
             {
-                classHeaderStatements.Add(new TranslatedStatement("", indentationDepth + 1, explicitVariableDeclarationsFromWithinClass.Min(v => v.Name.LineIndex)));
+                classHeaderStatements.Add(new TranslatedStatement(explicitVariableDeclarationsFromWithinClass.Min(v => v.Name.LineIndex)));
                 classHeaderStatements.AddRange(
                     explicitVariableDeclarationsFromWithinClass.Select(declaredVariableToInitialise =>
                         new TranslatedStatement(
