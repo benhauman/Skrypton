@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.StageTwoParser.ExpressionParsing;
-using Skrypton.Tests.RuntimeSupport.Implementations;
 using static Skrypton.Tests.RuntimeSupport.Implementations.VBScriptEsqueValueRetrieverTests;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
@@ -16,85 +15,83 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     public class EndToEndEraseTranslationTests : TestBase
     {
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
-        public void SuccessCases(int testno, string description, string source, string[] expected)
+        public void SuccessCases(int testno, string description, string source, string expected)
         {
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(expected, WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies));
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
-
         public static IEnumerable<object[]> SuccessData
         {
             get
             {
-                yield return new object[] { 1, "Empty ERASE is a runtime error", "ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
-                yield return new object[] { 2, "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", new[] { "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");" } };
+                yield return [1, "Empty ERASE is a runtime error", "ERASE", "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");"];
+                yield return [2, "Empty ERASE is a runtime error (with CALL keyword)", "CALL ERASE", "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");"];
 
-                yield return new object[] { 3, "Simplest case: ERASE a", "ERASE a", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
-                yield return new object[] { 4, "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", new[] { "_.ERASE(_env.a, v => { _env.a = v; });" } };
+                yield return [3, "Simplest case: ERASE a", "ERASE a", "_.ERASE(_env.a, v => { _env.a = v; });"];
+                yield return [4, "Simplest case: ERASE a (with CALL keyword)", "CALL ERASE(a)", "_.ERASE(_env.a, v => { _env.a = v; });"];
 
                 // If the target is specified with arguments, then it must be an array where the arguments are indices. The non-by-ref ERASE method signature is used and validation of the
                 // target (whether it's an array and whether the indices are valid) is handled at runtime.
-                yield return new object[] { 5, "Target with arguments: ERASE a(0)", "ERASE a(0)", new[] { "_.ERASE(_env.a, (Int16)0);" } };
-                yield return new object[] { 6, "Target with arguments: CALL ERASE(a(0)) (with CALL keyword)", "CALL ERASE(a(0))", new[] { "_.ERASE(_env.a, (Int16)0);" } };
+                yield return [5, "Target with arguments: ERASE a(0)", "ERASE a(0)", "_.ERASE(_env.a, (Int16)0);"];
+                yield return [6, "Target with arguments: CALL ERASE(a(0)) (with CALL keyword)", "CALL ERASE(a(0))", "_.ERASE(_env.a, (Int16)0);"];
 
                 // "ERASE a()" is either a "Subscript out of range" or a "Type mismatch", depending upon whether "a" is an array or not - this needs to be decided at runtime. It does this
                 // using the non-by-ref argument argument signature. This is the case where "a" is known to be a variable (whether explicitly declared or not, if "a" is known to be a
                 // function then it's a different error case).
-                yield return new object[] { 7, "ERASE a()", "ERASE a()", new[] { "_.ERASE(_env.a);" } };
+                yield return [7, "ERASE a()", "ERASE a()", "_.ERASE(_env.a);"];
 
-                yield return new object[] { 8,
+                yield return
+                [
+                    8,
                     "Error if the target is known not to be a variable",
                     "ERASE a\nFUNCTION a\nEND FUNCTION",
-                    new[] {
-                        "var invalidEraseTarget = _.CALLm1v0(this, _outer, \"a\");",
-                        "throw new TypeMismatchException(\"'Erase' (line 1)\");",
-                        "public object a()",
-                        "{",
-                        "return null;",
-                        "}"
-                    }
-                };
-                yield return new object[] { 9,
+                        @"var invalidEraseTarget = _.CALLm1v0(this, _outer, ""a"");
+                        throw new TypeMismatchException(""'Erase' (line 1)"");
+                        public object a()
+                        {
+                        return null;
+                        }"
+                ];
+                yield return
+                [
+                    9,
                     "Error if the target is known not to be a variable (takes precedence over other ERASE a() error case)",
                     "ERASE a()\nFUNCTION a\nEND FUNCTION",
-                    new[] {
-                        "var invalidEraseTarget = _.CALLm1argp(this, _outer, \"a\", _.ARGS.ForceBrackets());",
-                        "throw new TypeMismatchException(\"'Erase' (line 1)\");",
-                        "public object a()",
-                        "{",
-                        "return null;",
-                        "}"
-                    }
-                };
+                        @"var invalidEraseTarget = _.CALLm1argp(this, _outer, ""a"", _.ARGS.ForceBrackets());
+                        throw new TypeMismatchException(""'Erase' (line 1)"");
+                        public object a()
+                        {
+                            return null;
+                        }"
+                ];
 
                 // Note: When the arguments are invalid, they are still evaluated and THEN the runtime error is raised. The references are not forced into value types (if they appear valid
                 // at this point then the ERASE call must confirm at runtime that the target is an array), so the evaulation of some targets (eg. "a") will have no effect while others (eg.
                 // "a.GetName()" may have side effects).
-                yield return new object[] {10,
+                yield return
+                [
+                    10,
                     "Brackets around target (would be by-val => invalid)",
                     "ERASE (a)",
-                    new[] {
-                        "var invalidEraseTarget = _env.a;",
-                        "throw new TypeMismatchException(\"'Erase' (line 1)\");"
-                    }
-                };
-                yield return new object[] {11,
+                        @"var invalidEraseTarget = _env.a;
+                        throw new TypeMismatchException(""'Erase' (line 1)"");"
+                ];
+                yield return
+                [
+                    11,
                     "Multiple targets",
                     "ERASE a, b",
-                    new[] {
-                        "var invalidEraseTarget = _env.a;",
-                        "var invalidEraseTarget2 = _env.b;",
-                        "throw new InvalidOperationException(\"Wrong number of arguments: 'Erase' (line 1)\");"
-                    }
-                };
-                yield return new object[] {12,
+                        @"var invalidEraseTarget = _env.a;
+                        var invalidEraseTarget2 = _env.b;
+                        throw new InvalidOperationException(""Wrong number of arguments: 'Erase' (line 1)"");"
+                ];
+                yield return
+                [
+                    12,
                     "Member access target",
                     "ERASE a.Name",
-                    new[] {
-                        "var invalidEraseTarget = _.CALLm1v0(this, _env.a, \"Name\");",
-                        "throw new TypeMismatchException(\"'Erase' (line 1)\");"
-                    }
-                };
+                        @"var invalidEraseTarget = _.CALLm1v0(this, _env.a, ""Name"");
+                        throw new TypeMismatchException(""'Erase' (line 1)"");"
+                ];
             }
         }
 
@@ -118,10 +115,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     return F1_retVal;
                 }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.SplitLines().Skip(1).Select(v => v.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
     }
 }

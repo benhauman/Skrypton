@@ -16,17 +16,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5
 				Next
 			";
-            var expected = new[]
-            {
-                "for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, (Int16)1))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, (Int16)1))
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -43,18 +36,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 32768
 				Next
 			";
-            var expected = new[]
-            {
-                "var loopStart = _.NUM((Int16)1, 32768);",
-                "for (_outer.i = loopStart; _.StrictLTE(_outer.i, 32768); _outer.i = _.ADD(_outer.i, (Int16)1))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"var loopStart = _.NUM((Int16)1, 32768);
+                for (_outer.i = loopStart; _.StrictLTE(_outer.i, 32768); _outer.i = _.ADD(_outer.i, (Int16)1))
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -68,11 +54,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffoldingA([], source);
-            //myAssert.AreEqual(
-            //    [],
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding("", source);
         }
 
         [TestMethod, MyFact]
@@ -82,17 +64,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            var expected = new[]
-            {
-                "for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -105,18 +81,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step 0.1
 				Next
 			";
-            var expected = new[]
-            {
-                "var loopStart = _.NUM((Int16)1, (Int16)5, 0.1);",
-                "for (_outer.i = loopStart; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, 0.1))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                var loopStart = _.NUM((Int16)1, (Int16)5, 0.1);
+                for (_outer.i = loopStart; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, 0.1))
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         [TestMethod, MyFact]
@@ -126,17 +96,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step 0
 				Next
 			";
-            var expected = new[]
-            {
-                "for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5);)",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5);)
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -150,10 +114,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
             TestCSharpCodeTranslationWithoutScaffolding("", source);
-            //myAssert.AreEqual(
-            //    [],
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -167,10 +127,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
             TestCSharpCodeTranslationWithoutScaffolding("", source);
-            //myAssert.AreEqual(
-            //    [],
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -184,10 +140,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
             TestCSharpCodeTranslationWithoutScaffolding("", source);
-            //myAssert.AreEqual(
-            //    [],
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -204,10 +156,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -217,17 +165,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            var expected = new[]
-            {
-                "for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -243,26 +185,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For i = a To b Step c
 				Next
 			";
-            var expected = new[]
-            {
-                "var loopEnd = _.NUM(_env.b);",
-                "var loopStep = _.NUM(_env.c);",
-                "var loopStart = _.NUM(_env.a, loopEnd, loopStep);",
-                "if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))",
-                "|| (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))",
-                "{",
-                "for (_env.i = loopStart;",
-                "    (_.StrictGTE(loopStep, 0) && _.StrictLTE(_env.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_env.i, loopEnd));",
-                "     _env.i = _.ADD(_env.i, loopStep))",
-                "{",
-                "}",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                var loopEnd = _.NUM(_env.b);
+                var loopStep = _.NUM(_env.c);
+                var loopStart = _.NUM(_env.a, loopEnd, loopStep);
+                if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))
+                || (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))
+                {
+                    for (_env.i = loopStart;
+                        (_.StrictGTE(loopStep, 0) && _.StrictLTE(_env.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_env.i, loopEnd));
+                         _env.i = _.ADD(_env.i, loopStep))
+                    {
+                    }
+                }";
+
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
