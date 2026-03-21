@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-//#using Xunit#;
-
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
     [TestClass]
@@ -21,21 +17,15 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Else
 				End If
 			";
-            var expected = new[]
-            {
-                "if (_.IF(true))",
-                "{",
-                "  //Else",
-                "}",
-                "else",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                if (_.IF(true))
+                {
+                  //Else
+                }
+                else
+                {
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -55,10 +45,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}",
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>

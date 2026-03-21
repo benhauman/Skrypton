@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-//#using Xunit#;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
     [TestClass]
-	public class EndToEndSubTranslationTests : TestBase
+    public class EndToEndSubTranslationTests : TestBase
     {
         /// <summary>
         /// Since SUBs do not return values, attempting to set a return value within a SUB results in an illegal assignment error
@@ -19,18 +16,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     F1 = Null
                 END SUB
             ";
-            var expected = new[]
-            {
-                "public void F1()",
-                "{",
-                "    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(\"'F1'\")));",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public void F1()
+                {
+                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(""'F1'"")));
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -45,18 +36,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     F1() = Null
                 END SUB
             ";
-            var expected = new[]
-            {
-                "public void F1()",
-                "{",
-                "    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")));",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public void F1()
+                {
+                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(""'F1'"")));
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
     }
 }

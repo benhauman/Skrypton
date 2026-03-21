@@ -16,20 +16,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Dim myVariable
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "object F1_retVal = null;",
-                "object myVariable = null;",
-                "return F1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public object F1()
+                {
+                    object F1_retVal = null;
+                    object myVariable = null;
+                    return F1_retVal;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         [TestMethod, MyFact]
@@ -40,20 +34,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Dim myArray(63)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "object F1_retVal = null;",
-                "object myArray = new object[64];",
-                "return F1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public object F1()
+                {
+                    object F1_retVal = null;
+                    object myArray = new object[64];
+                    return F1_retVal;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
     }
 }
