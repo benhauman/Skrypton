@@ -11,28 +11,10 @@ using System.Collections.Generic;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
-    public static class WithoutScaffoldingTranslator // use 'DefaultCSharpTranslation'
+    internal static class WithoutScaffoldingTranslator
     {
         public static NonNullImmutableList<string> DefaultConsoleExternalDependencies = new NonNullImmutableList<string>().Add("WScript");
-
-        /// <summary>
-        /// This will never return null or an array containing any nulls, blank values or values with leading or trailing whitespace or values containing line
-        /// returns (this format makes the myAssert.AreEquals easier, where it can make array comparisons easily but not any IEnumerable implementation)
-        /// </summary>
-        public static string[] GetTranslatedStatements(CultureInfo culture, string content, NonNullImmutableList<string> externalDependencies)
-        {
-            if (content == null)
-                throw new ArgumentNullException(nameof(content));
-            if (externalDependencies == null)
-                throw new ArgumentNullException(nameof(externalDependencies));
-
-            return DefaultTranslator.TranslateWithoutScaffolding(culture, content, externalDependencies) // Executable:159 tests
-                .Select(s => s.Content)
-                .Where(s => s != "") // 129 tests
-                .ToArray();
-        }
     }
-
     internal static class DefaultCSharpTranslation
     {
         public const char NewLineNormalized = '\n';

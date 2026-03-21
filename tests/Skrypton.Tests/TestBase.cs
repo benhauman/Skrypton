@@ -11,6 +11,7 @@ using Skrypton.RuntimeSupport;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.RuntimeSupport.Implementations;
 using Microsoft.Testing.Platform.Services;
+using Skrypton.CSharpWriter;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application;
 using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
@@ -134,10 +135,11 @@ namespace Skrypton.Tests
                 .ToArray();
             string expectCsCode = string.Join(NewLineNormalized, expectCsLines);
 
-            string[] actualCsLines = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                    .Where(s => s != "") // Trim
+            string[] actualCsLines = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
+                    .Where(s => s.Content != "") // Trim
+                    .Select(s => s.Content)
                     .ToArray();
-            //myAssert.AreEqual(expectCsLines, actualCsLines);
+
             string actualCsCode = string.Join(NewLineNormalized, actualCsLines);
             var idx = myAssert.FindArrayStringDiff(expectCsLines, actualCsLines);
             if (idx >= 0)

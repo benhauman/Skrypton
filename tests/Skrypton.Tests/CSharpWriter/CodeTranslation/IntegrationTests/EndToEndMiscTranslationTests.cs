@@ -169,10 +169,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'vbObjectError' is called like a function\"))));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -181,7 +177,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = "c = new C1()";
             myAssert.Throws<InvalidOperationException>(() =>
             {
-                WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
+                TestCSharpCodeTranslationWithoutScaffolding("", source);
             });
         }
 
@@ -200,10 +196,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _env.b, _env.c, _env.d));"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
