@@ -106,9 +106,9 @@ namespace Skrypton.ScriptControlSupport
                 MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
             };
 
-            Dictionary<string, ReportDiagnostic> specificDiagnosticOptions = new Dictionary<string, ReportDiagnostic>(); //["CS0219"] = ReportDiagnostic.Suppress
-            specificDiagnosticOptions["CS0219"] = ReportDiagnostic.Suppress;
-            specificDiagnosticOptions["CS8019"] = ReportDiagnostic.Suppress;
+            Dictionary<string, ReportDiagnostic> specificDiagnosticOptions = new Dictionary<string, ReportDiagnostic>();
+            specificDiagnosticOptions["CS0219"] = ReportDiagnostic.Suppress; // error CS0219: The variable 'ForWriting' is assigned but its value is never used
+            specificDiagnosticOptions["CS8019"] = ReportDiagnostic.Suppress; // hidden CS8019: Unnecessary using directive. using System.Runtime.InteropServices;
 
             foreach (string nowarnItem in nowarn)
             {

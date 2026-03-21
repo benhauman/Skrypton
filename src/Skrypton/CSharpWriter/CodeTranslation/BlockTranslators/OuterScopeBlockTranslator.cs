@@ -206,10 +206,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    new TranslatedStatement("using " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Namespace + ";", 0, 0),
-                    new TranslatedStatement("using " + typeof(SourceClassNameAttribute).Namespace + ";", 0, 0),
-                    new TranslatedStatement("using " + typeof(SpecificVBScriptException).Namespace + ";", 0, 0),
-                    new TranslatedStatement("using " + typeof(TranslatedPropertyIReflectImplementation).Namespace + ";", 0, 0),
+                    new TranslatedStatement("using " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport;
+                    //new TranslatedStatement("using " + typeof(SourceClassNameAttribute).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Attributes;
+                    //new TranslatedStatement("using " + typeof(SpecificVBScriptException).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Exceptions;
+                    //new TranslatedStatement("using " + typeof(TranslatedPropertyIReflectImplementation).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Compat;
                     EmptyLine,
                     new TranslatedStatement("namespace " + _startNamespace.Name, 0, 0),
                     new TranslatedStatement("{", 0, 0),
