@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace Skrypton.CSharpWriter
 {
@@ -26,50 +27,17 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static IReadOnlyCollection<TranslatedStatement> TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies)
+        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return RenderTranslatedProgramCode(TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true)));
         }
-        public static IReadOnlyCollection<TranslatedStatement> TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+        public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return RenderTranslatedProgramCode(TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true)));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
             : new NullLogger();
-
-        ///// <summary>
-        ///// This Translate signature exists to provide an extremely simple way to get code translated - it is used in some of the examples so that
-        ///// there's a way to get to translating before worrying about what the NonNullImmutableList type is all about
-        ///// </summary>
-        //internal static NonNullImmutableList<TranslatedStatement> TranslateX(CultureInfo culture, string scriptContent, string[] externalDependencies,
-        //    OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable,
-        //    bool renderCommentsAboutUndeclaredVariables = true)
-        //{
-        //    if (externalDependencies == null)
-        //        throw new ArgumentNullException("externalDependencies");
-
-        //    return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, true);
-        //}
-
-        /// <summary>
-        /// This Translate signature exists to provide a slightly-simpler way to specify a custom warning logger (by providing a simple delegate,
-        /// rather than having to provide an ILogInformation implementation)
-        /// </summary>
-        //lubo:public static NonNullImmutableList<TranslatedStatement> Translate(
-        //lubo:    CultureInfo culture,
-        //lubo:    string scriptContent,
-        //lubo:    string[] externalDependencies,
-        //lubo:    Action<string> warningLogger,
-        //lubo:    OuterScopeBlockTranslator.OutputTypeOptions outputType = OuterScopeBlockTranslator.OutputTypeOptions.Executable)
-        //lubo:{
-        //lubo:    if (externalDependencies == null)
-        //lubo:        throw new ArgumentNullException("externalDependencies");
-        //lubo:    if (warningLogger == null)
-        //lubo:        throw new ArgumentNullException("warningLogger");
-        //lubo:
-        //lubo:    return Translate(culture, scriptContent, externalDependencies.ToNonNullImmutableList(), outputType, new DelegateWrappingWarningLogger(warningLogger));
-        //lubo:}
 
         /// <summary>
         /// This Translate signature is what the others call into - it doesn't try to hide the fact that externalDependencies should be a NonNullImmutableList
@@ -125,6 +93,28 @@ namespace Skrypton.CSharpWriter
 
             var parsedBlocks = Parse(culture, scriptContent);
             return codeBlockTranslator.Translate(parsedBlocks.ToNonNullImmutableList());
+        }
+        private const char NewLineNormalized = '\n';
+
+        public static string RenderTranslatedProgramCode(IReadOnlyCollection<TranslatedStatement> statements)
+        {
+            if (statements == null) throw new ArgumentNullException(nameof(statements));
+            StringBuilder tb = new StringBuilder();
+            foreach (TranslatedStatement s in statements)
+            {
+                if (!s.HasContent)
+                {
+                    tb.Append(s.Content); // no indention for blank lines
+                    tb.Append(NewLineNormalized);
+                }
+                else
+                {
+                    s.RenderTranslatedStatement(tb);
+                    tb.Append(NewLineNormalized);
+                }
+            }
+            string csText = tb.ToString();
+            return csText;
         }
 
         /// <summary>

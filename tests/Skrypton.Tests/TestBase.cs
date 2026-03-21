@@ -135,18 +135,20 @@ namespace Skrypton.Tests
                 .ToArray();
             string expectCsCode = string.Join(NewLineNormalized, expectCsLines);
 
-            string[] actualCsLines = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                    .Where(s => s.Content != "") // Trim
-                    .Select(s => s.Content)
-                    .ToArray();
+            string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
 
-            string actualCsCode = string.Join(NewLineNormalized, actualCsLines);
+            string[] actualCsLines = actualCsCodeRaw.Split([NewLineNormalized], StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
+                .Where(s => s != "") // Empty
+                .ToArray();
+
+            string actualCsCodeX = string.Join(NewLineNormalized, actualCsLines);
             var idx = myAssert.FindArrayStringDiff(expectCsLines, actualCsLines);
             if (idx >= 0)
             {
                 // failed
             }
-            TestCSharpCodeTranslationCore(expectCsCode, actualCsCode);
+            TestCSharpCodeTranslationCore(expectCsCode, actualCsCodeX);
         }
         protected void TestCSharpCodeTranslation(string csSource) // TODO remove 'WithoutScaffoldingTranslator'
         {
