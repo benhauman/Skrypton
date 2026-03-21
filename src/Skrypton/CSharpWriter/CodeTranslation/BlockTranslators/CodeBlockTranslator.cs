@@ -1172,7 +1172,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 txt.Append(indentionText).Append("#pragma warning restore CS0219");
                 return txt.ToString();
                 */
-                return renderer(); // TODO: analyze the actual usage and remove the declaration at all => comment it out
+                //return $"//?!?! {variableDeclaration.Name.LineIndex}:" + renderer(); // TODO: analyze the actual usage and remove the declaration at all => comment it out
+                throw new NotSupportedException($"{variableDeclaration.Name.ContentUpperX()} {variableDeclaration.Name.LineIndex}"); // test?
             }
             else
             {
@@ -1213,7 +1214,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             foreach (var explicitVariableDeclaration in uniqueExplicitVariableDeclarations)
             {
                 variableDeclarationStatements = variableDeclarationStatements.Add(new TranslatedStatement(
-                    TranslateVariableInitialization(explicitVariableDeclaration, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: true, indentationDepthForExplicitVariableDeclarations),
+                    TranslateVariableInitialization(explicitVariableDeclaration, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: false, indentationDepthForExplicitVariableDeclarations),
                     indentationDepthForExplicitVariableDeclarations,
                     explicitVariableDeclaration.Name.LineIndex
                 ));
