@@ -2,7 +2,7 @@ TODO:
 1) Loop index : 1, 2, 3
 -loopEnd4 => loopXEnd, loopXStart, loopXConstraintsInitialized, loopXContinue (continueLoop7)
 
-2) byrefalias
+2) byrefalias - keep the source value as a prefix
 object byrefalias = x;
 object byrefalias2 = y;
 object x_byrefalias = x;
@@ -12,8 +12,6 @@ v2 => { byrefalias = v2; })
 x_val => { x_byrefalias = x_val; })
 
 3) ifResult4
-
-
 
 4) sort the properties a-z of EnvironmentReferences
 
@@ -45,7 +43,7 @@ Error Context: 0'
 10: use nameof : [TranslatedProperty(""Name"")]
 
 11: keep HEX code: const SOME_CONSTANT = &H0001 => const int SOME_CONSTANT = 0x0001 and not (Int16)1;
-
 12: keep source name for the local variables.
-
 13: donot use VAL() fuer string, int, & etc see MSGBOX(string) in
+
+14: ??? _.CALLm1argp(this, with, "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));

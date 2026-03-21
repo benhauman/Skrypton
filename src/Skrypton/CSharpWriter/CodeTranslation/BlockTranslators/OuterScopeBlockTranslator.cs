@@ -204,7 +204,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // System.Collections.ObjectModel is only required for the ReadOnlyCollection, which is only used when there are date literals that need validating at runtime
                     translatedStatements = translatedStatements.Add(new TranslatedStatement("using System.Collections.ObjectModel;", 0, 0));
                 }
-                translatedStatements = translatedStatements.Add(new TranslatedStatement("using System.Runtime.InteropServices;", 0, 0));
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
                     new TranslatedStatement("using " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Namespace + ";", 0, 0),

@@ -41,10 +41,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Split"");
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
 		[TestMethod]
@@ -58,8 +54,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		Case "" MB""	Size = Round(Size / 1048576, 2) 
 	End Select
 ";
-			//_ = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
-
             base.TestCSharpCodeTranslation(source);
         }
     }
