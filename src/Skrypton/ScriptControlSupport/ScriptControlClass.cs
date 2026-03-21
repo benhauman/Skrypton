@@ -248,7 +248,7 @@ namespace Skrypton.ScriptControlSupport
             string scriptContent = _code.ToString(); // Assume this is populated with the script code to be parsed
             if (!string.IsNullOrEmpty(scriptContent))
             {
-                scriptContent += "\r\n";
+                scriptContent += NewLineNormalized;
             }
             scriptContent += statementOrNull;
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
@@ -257,13 +257,15 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(warningMessageText);
             }));
             IReadOnlyCollection<TranslatedStatement> translatedStatements = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
-
-            string[] translatedStatementLines = translatedStatements.Select(ts => ts.Content).ToArray();
-
-            string csCode = "";// "[assembly: Skrypton.ScriptControlSupport.EntryRunnerType(() => new TranslatedProgram.Runner())]\r\n";
-            csCode += string.Join("\r\n", translatedStatementLines);
+            StringBuilder codeBuffer = new StringBuilder();
+            foreach (var translatedStatement in translatedStatements)
+            {
+                translatedStatement.RenderTranslatedStatement(codeBuffer).Append(NewLineNormalized);
+            }
+            string csCode = codeBuffer.ToString();
             return csCode;
         }
+        private const char NewLineNormalized = '\n';
     }
 
     [AttributeUsage(AttributeTargets.Assembly)]
