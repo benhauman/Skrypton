@@ -75,7 +75,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 rewrittenLoopVarName = loopVarTargetContainer.Name + "." + rewrittenLoopVarName;
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                     "var " + enumeratorInitialisationContent,
                     indentationDepth,
                     forEachBlock.LoopVar.LineIndex
@@ -103,7 +103,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 //   translated FOR EACH loop WOULD be entered and enumerated through once (without the value of the loop variable being altered, as
                 //   is consistent with VBScript)
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                         string.Format(CultureInfo.InvariantCulture,
                             "IEnumerator {0} = null;",
                             enumerationContentVariableName.Name
@@ -111,7 +111,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
@@ -120,16 +120,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         enumeratorInitialisationContent,
                         indentationDepth + 1,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement("});", indentationDepth, forEachBlock.LoopVar.LineIndex));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", indentationDepth, forEachBlock.LoopVar.LineIndex));
             }
             translationResult = translationResult
-                .Add(new TranslatedStatement("while (true)", indentationDepth, forEachBlock.LoopVar.LineIndex))
-                .Add(new TranslatedStatement("{", indentationDepth, forEachBlock.LoopVar.LineIndex));
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "while (true)", indentationDepth, forEachBlock.LoopVar.LineIndex))
+                .Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "{", indentationDepth, forEachBlock.LoopVar.LineIndex));
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 // If error-trapping is enabled and an error was indeed trapped while trying evaluate the enumerator, then the enumerator will be null.
@@ -138,7 +138,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // that work. If error-trapping is not enabled then this check is not required and a level of nesting in the translated output can be
                 // avoided.
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "if ({0} != null)",
                             enumerationContentVariableName.Name
@@ -146,19 +146,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth + 1,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement("{", indentationDepth + 1, forEachBlock.LoopVar.LineIndex));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth + 1, forEachBlock.LoopVar.LineIndex));
                 indentationDepth++;
             }
             translationResult = translationResult
-                .Add(new TranslatedStatement(string.Format(CultureInfo.InvariantCulture,
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText, string.Format(CultureInfo.InvariantCulture,
                         "if (!{0}.MoveNext())",
                         enumerationContentVariableName.Name
                     ),
                     indentationDepth + 1,
                     forEachBlock.LoopVar.LineIndex
                 ))
-                .Add(new TranslatedStatement("break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex))
-                .Add(new TranslatedStatement(
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex))
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1}.Current;",
                         rewrittenLoopVarName,
@@ -170,13 +170,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 // If error-trapping may be enabled then the above MoveNext and set-to-Current work was wrapped in a condition which must be closed
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forEachBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forEachBlock.LoopVar.LineIndex));
                 indentationDepth--;
             }
             CSharpName? earlyExitNameIfAny = GetEarlyExitNameIfRequired(forEachBlock, scopeAccessInformation);
             if (earlyExitNameIfAny != null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     forEachBlock.LoopVar.LineIndex
@@ -196,7 +196,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // will be null - so check for that and exit if so. If there is no chance that error-trapping is enabled then this condition is not
                 // required and there is no point emitting it.
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "if ({0} == null)",
                             enumerationContentVariableName.Name
@@ -204,9 +204,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth + 1,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement("break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex));
             }
-            translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forEachBlock.LoopVar.LineIndex));
+            translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forEachBlock.LoopVar.LineIndex));
 
             string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
@@ -218,12 +218,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // EXIT DO was encountered within the FOR that must refer to the containing DO, then the FOR loop will have been broken out of, but
                 // also a flag set that means that we must break further to get out of the DO loop.
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "if (" + string.Join(" || ", earlyExitFlagNamesToCheck) + ")",
                         indentationDepth,
                         forEachBlock.LoopVar.LineIndex
                     ))
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "break;",
                         indentationDepth + 1,
                         forEachBlock.LoopVar.LineIndex

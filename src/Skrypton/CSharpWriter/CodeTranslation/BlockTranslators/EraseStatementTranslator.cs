@@ -195,7 +195,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     var undeclaredVariablesReferencedByTarget = translatedTarget.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
                     foreach (var undeclaredVariable in undeclaredVariablesReferencedByTarget)
                         _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "var {0} = {1};",
                             _tempNameGenerator(new CSharpName("invalidEraseTarget"), scopeAccessInformation).Name,
@@ -206,7 +206,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ));
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesReferencedByTarget);
                 }
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     exceptionStatementIfTargetConfigurationIsInvalid,
                     indentationDepth,
                     eraseStatement.KeywordLineIndex
@@ -230,7 +230,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesInSingleEraseTarget);
                 if (singleEraseTarget.ArgumentsIfAny == null)
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.ERASE({1}, {2} => {{ {1} = {2}; }});",
                             _supportRefName.Name,
@@ -254,7 +254,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             _logger.Warning
                         ))
                         .ToArray(); // Going to evaluate everything twice, might as well ToArray it
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.ERASE({1}{2}{3});",
                             _supportRefName.Name,

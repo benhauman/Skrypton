@@ -120,7 +120,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // We don't have any information about where blank lines comes from as the code blocks don't contain this information directly
             // and there are no tokens in the BlankLine class to infer the information from. So we'll have to leave it as zero (it is
             // documented on TranslatedStatement that some line index values will be approximate or inaccurate in some cases).
-            return (block is BlankLine) ? translationResult.Add(new TranslatedStatement(lineIndexOfStatementStartInSource: 0)) : null;
+            return (block is BlankLine) ? translationResult.Add(new TranslatedStatement(TranslatedStatementKind.Unknown, lineIndexOfStatementStartInSource: 0)) : null;
         }
 
         protected TranslationResult? TryToTranslateClass(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -169,7 +169,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             return translationResult.Add(
-                new TranslatedStatement("//" + commentBlock.Content, indentationDepth, commentBlock.LineIndex)
+                new TranslatedStatement(TranslatedStatementKind.Comment, "//" + commentBlock.Content, indentationDepth, commentBlock.LineIndex)
             );
         }
 
@@ -408,7 +408,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.RELEASEERRORTRAPPINGTOKEN({1});",
                             _supportRefName.Name,
@@ -419,7 +419,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ));
                 }
                 return translationResult.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "return{0};",
                             (scopeAccessInformation.ParentReturnValueNameIfAny == null) ? "" : (" " + scopeAccessInformation.ParentReturnValueNameIfAny.Name)
@@ -457,13 +457,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentException($"Unsupported ExitableStatementType: {exitStatement.StatementType}. Line:{exitStatement.LineIndex}");
             if (exitEarlyFlagForValidatedLoopTypeExitIfAny != null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     exitEarlyFlagForValidatedLoopTypeExitIfAny.Name + " = true;",
                     indentationDepth,
                     exitStatement.LineIndex
                 ));
             }
-            return translationResult.Add(new TranslatedStatement(
+            return translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                 "break;",
                 indentationDepth,
                 exitStatement.LineIndex
@@ -588,7 +588,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentException("The ScopeAccessInformation's ErrorRegistrationTokenIfAny may not be null when the scope contains OnErrorResumeNext");
 
             // Note: Any time an "On Error Resume Next" statement is encountered, any current error information is cleared
-            return translationResult.Add(new TranslatedStatement(
+            return translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.STARTERRORTRAPPINGANDCLEARANYERROR({1});",
                     _supportRefName.Name,
@@ -610,14 +610,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
             {
                 _logger.Warning("Ignoring ON ERROR GOTO 0 within a scope that contains no ON ERROR RESUME NEXT (line " + (onErrorGotoZeroBlock.LineIndex + 1) + ")");
-                return translationResult.Add(new TranslatedStatement(
+                return translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     _supportRefName.Name + ".CLEARANYERROR();",
                     indentationDepth,
                     onErrorGotoZeroBlock.LineIndex
                 ));
             }
 
-            return translationResult.Add(new TranslatedStatement(
+            return translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.STOPERRORTRAPPINGANDCLEARANYERROR({1});",
                     _supportRefName.Name,
@@ -667,7 +667,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (mayRequireErrorWrapping)
             {
                 translatedRandomizeStatements = translatedRandomizeStatements.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!),
                         indentationDepth,
                         randomizeStatement.SeedIfAny!.Tokens.First().LineIndex
@@ -690,7 +690,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translatedSeedIfAny = translatedSeedExpression.TranslatedContent;
             }
 
-            translatedRandomizeStatements = translatedRandomizeStatements.Add(new TranslatedStatement(
+            translatedRandomizeStatements = translatedRandomizeStatements.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.RANDOMIZE({1});",
                     _supportRefName.Name,
@@ -703,7 +703,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (mayRequireErrorWrapping)
             {
                 translatedRandomizeStatements = translatedRandomizeStatements.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         "});",
                         indentationDepth,
                         randomizeStatement.SeedIfAny!.Tokens.First().LineIndex
@@ -814,7 +814,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (mayRequireErrorWrapping)
                 {
                     translatedReDimStatements = translatedReDimStatements.Add(
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.RawText,
                             GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!),
                             indentationDepth,
                             variable.Name.LineIndex
@@ -851,7 +851,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariables);
                 }
                 translatedReDimStatements = translatedReDimStatements.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             translatedContentFormat,
                             targetReference,
@@ -866,7 +866,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (mayRequireErrorWrapping)
                 {
                     translatedReDimStatements = translatedReDimStatements.Add(
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.RawText,
                             "});",
                             indentationDepth,
                             variable.Name.LineIndex
@@ -876,7 +876,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (isKnownIllegalAssignment)
                 {
                     translatedReDimStatements = translatedReDimStatements.Add(
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.RawText,
                             string.Format(CultureInfo.InvariantCulture, "_.RAISEERROR(new IllegalAssignmentException({0}));", ("'" + variable.Name.Content + "'").ToLiteral()),
                             indentationDepth,
                             variable.Name.LineIndex
@@ -955,14 +955,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var coreContent = translatedStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))
-                translationResult = translationResult.Add(new TranslatedStatement(coreContent, indentationDepth, statementBlock.Tokens.First().LineIndex));
+            {
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, coreContent, indentationDepth, statementBlock.Tokens.First().LineIndex));
+            }
             else
             {
                 var lineIndexForClosingErrorWrappingContent = statementBlock.Tokens.Last().LineIndex;
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
-                    .Add(new TranslatedStatement(coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
-                    .Add(new TranslatedStatement("});", indentationDepth, lineIndexForClosingErrorWrappingContent));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", indentationDepth, lineIndexForClosingErrorWrappingContent));
             }
 
             if (byRefArgumentsToRewrite.Any())
@@ -1014,24 +1016,30 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 );
             }
             else
+            {
                 distanceToIdentEvaluationCodeDueToByRefMappings = 0;
+            }
 
             var translatedValueSettingStatementContentDetails = _valueSettingStatementTranslator.Translate(valueSettingStatement, scopeAccessInformation);
             var undeclaredVariables = translatedValueSettingStatementContentDetails.VariablesAccessed
                 .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter));
             foreach (var undeclaredVariable in undeclaredVariables)
+            {
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            }
 
             var coreContent = translatedValueSettingStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))
-                translationResult = translationResult.Add(new TranslatedStatement(coreContent, indentationDepth, valueSettingStatement.ValueToSet.Tokens.First().LineIndex));
+            {
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, coreContent, indentationDepth, valueSettingStatement.ValueToSet.Tokens.First().LineIndex));
+            }
             else
             {
                 var lineIndexForClosingErrorWrappingContent = valueSettingStatement.Expression.Tokens.Last().LineIndex;
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
-                    .Add(new TranslatedStatement(coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
-                    .Add(new TranslatedStatement("});", indentationDepth, lineIndexForClosingErrorWrappingContent));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, GetHandleErrorContent(scopeAccessInformation.ErrorRegistrationTokenIfAny!), indentationDepth, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, coreContent, indentationDepth + 1, lineIndexForClosingErrorWrappingContent))
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", indentationDepth, lineIndexForClosingErrorWrappingContent));
             }
 
             if (byRefArgumentsToRewrite.Any())
@@ -1212,7 +1220,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var variableDeclarationStatements = new NonNullImmutableList<TranslatedStatement>();
             foreach (var explicitVariableDeclaration in uniqueExplicitVariableDeclarations)
             {
-                variableDeclarationStatements = variableDeclarationStatements.Add(new TranslatedStatement(
+                variableDeclarationStatements = variableDeclarationStatements.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     TranslateVariableInitialization(explicitVariableDeclaration, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: false, indentationDepthForExplicitVariableDeclarations),
                     indentationDepthForExplicitVariableDeclarations,
                     explicitVariableDeclaration.Name.LineIndex
@@ -1271,7 +1279,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return new TranslationResult(
                 uniqueVariables
                     .Select(v =>
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.RawText,
                             TranslateVariableInitialization(v, ScopeLocationOptions.WithinFunctionOrPropertyOrWith, asUnreferencedVar: true, indentationDepthForExplicitVariableDeclarations) + " /* Undeclared in source */",
                             indentationDepthForExplicitVariableDeclarations,
                             v.Name.LineIndex

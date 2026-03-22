@@ -129,7 +129,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return TranslationResult.Empty
                 .Add(translatedClassHeaderContent)
                 .Add(classContentTranslationResult)
-                .Add(new TranslatedStatement("}", indentationDepth, lineIndexOfLastStatement));
+                .Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, lineIndexOfLastStatement));
         }
 
         private TranslationResult TranslateForClass(NonNullImmutableList<ICodeBlock> blocks, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -198,15 +198,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // result in the method exiting, but the error won't be propagated up (so the caller will continue as if it hadn't happened).
                 // Wrapping the call in a try..catch simulates this behaviour (there is similar required for Class_Terminate).
                 classInitializeCallStatements = new[] {
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.TryBegin,
                         "try { " + _nameRewriter.GetMemberAccessTokenName(classInitializeMethodNameIfAny) + "(); }",
                         indentationDepth + 2,
                         classBlock.Name.LineIndex
                     ),
-                    new TranslatedStatement("catch(Exception e)", indentationDepth + 2, classBlock.Name.LineIndex),
-                    new TranslatedStatement("{", indentationDepth + 2, classBlock.Name.LineIndex),
-                    new TranslatedStatement(_supportRefName.Name + ".SETERROR(e);", indentationDepth + 3, classBlock.Name.LineIndex),
-                    new TranslatedStatement("}", indentationDepth + 2, classBlock.Name.LineIndex)
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "catch(Exception e)", indentationDepth + 2, classBlock.Name.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth + 2, classBlock.Name.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + ".SETERROR(e);", indentationDepth + 3, classBlock.Name.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth + 2, classBlock.Name.LineIndex)
                 };
             }
             TranslatedStatement[] disposeImplementationStatements;
@@ -238,29 +238,29 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 var disposeMethodName = _tempNameGenerator(new CSharpName("Dispose"), scopeAccessInformation);
                 disposeImplementationStatements = new[]
                 {
-                    new TranslatedStatement("~" + className + "()", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("try { " + disposeMethodName.Name + "(false); }", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("catch(Exception e)", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("{", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("try { " + _supportRefName.Name + ".SETERROR(e); } catch { }", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("}", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    //new TranslatedStatement(classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("void IDisposable.Dispose()", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement(disposeMethodName.Name + "(true);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("GC.SuppressFinalize(this);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    //new TranslatedStatement(classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("private void " + disposeMethodName.Name + "(bool disposing)", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("if (" + disposedFlagNameIfAny.Name + ")", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("return;", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("if (disposing)", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement(_nameRewriter.GetMemberAccessTokenName(classTerminateMethodNameIfAny) + "();", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement(disposedFlagNameIfAny.Name + " = true;", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
-                    new TranslatedStatement("}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex)
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "~" + className + "()", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "try { " + disposeMethodName.Name + "(false); }", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "catch(Exception e)", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "try { " + _supportRefName.Name + ".SETERROR(e); } catch { }", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "}", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "void IDisposable.Dispose()", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, disposeMethodName.Name + "(true);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "GC.SuppressFinalize(this);", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "private void " + disposeMethodName.Name + "(bool disposing)", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "if (" + disposedFlagNameIfAny.Name + ")", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "return;", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "if (disposing)", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, _nameRewriter.GetMemberAccessTokenName(classTerminateMethodNameIfAny) + "();", indentationDepth + 3, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, disposedFlagNameIfAny.Name + " = true;", indentationDepth + 2, classTerminateMethodNameIfAny.LineIndex),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "}", indentationDepth + 1, classTerminateMethodNameIfAny.LineIndex)
                 };
 #pragma warning disable CA1820 // Test for empty strings using string length
                 if (inheritanceChainIfAny == "")
@@ -290,23 +290,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // has the same methods and properties on it).
             var classHeaderStatements = new List<TranslatedStatement>
             {
-                new TranslatedStatement("[ComVisible(true)]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("[ClassInterface(ClassInterfaceType.AutoDispatch)]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("[SourceClassName(" + sourceClassNameArg + ")]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("public sealed class " + className + inheritanceChainIfAny, indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("{", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement("private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),
-                new TranslatedStatement("private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),
-                new TranslatedStatement("private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex)
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[ComVisible(true)]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[ClassInterface(ClassInterfaceType.AutoDispatch)]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[SourceClassName(" + sourceClassNameArg + ")]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "public sealed class " + className + inheritanceChainIfAny, indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex)
             };
             if (disposedFlagNameIfAny != null)
             {
                 classHeaderStatements.Add(
-                    new TranslatedStatement("private bool " + disposedFlagNameIfAny.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex)
+                    new TranslatedStatement(TranslatedStatementKind.RawText, "private bool " + disposedFlagNameIfAny.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex)
                 );
             }
             classHeaderStatements.AddRange(new[] {
-                new TranslatedStatement(
+                new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture,
                         "public {0}({1} compatLayer, {2} env, {3} outer)",
                         className,
@@ -317,20 +317,20 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     indentationDepth + 1,
                     classBlock.Name.LineIndex
                 ),
-                new TranslatedStatement("{", indentationDepth + 1, classBlock.Name.LineIndex),
-                new TranslatedStatement(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement(_envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", indentationDepth + 2, classBlock.Name.LineIndex),
-                new TranslatedStatement(_outerRefName.Name + " = outer ?? throw new ArgumentNullException(nameof(outer));", indentationDepth + 2, classBlock.Name.LineIndex)
+                new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 1, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", indentationDepth + 2, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", indentationDepth + 2, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _outerRefName.Name + " = outer ?? throw new ArgumentNullException(nameof(outer));", indentationDepth + 2, classBlock.Name.LineIndex)
             });
             if (disposedFlagNameIfAny != null)
             {
                 classHeaderStatements.Add(
-                    new TranslatedStatement(disposedFlagNameIfAny.Name + " = false;", indentationDepth + 2, classBlock.Name.LineIndex)
+                    new TranslatedStatement(TranslatedStatementKind.RawText, disposedFlagNameIfAny.Name + " = false;", indentationDepth + 2, classBlock.Name.LineIndex)
                 );
             }
             classHeaderStatements.AddRange(
                 explicitVariableDeclarationsFromWithinClass.Select(
-                    v => new TranslatedStatement(
+                    v => new TranslatedStatement(TranslatedStatementKind.RawText,
                         base.TranslateVariableInitialization(v, ScopeLocationOptions.WithinClass, asUnreferencedVar: false, indentationDepth + 2),
                         indentationDepth + 2,
                         v.Name.LineIndex
@@ -339,7 +339,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
             classHeaderStatements.AddRange(classInitializeCallStatements);
             classHeaderStatements.Add(
-                new TranslatedStatement("}", indentationDepth + 1, classBlock.Name.LineIndex)
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth + 1, classBlock.Name.LineIndex)
             );
             if (disposeImplementationStatements.Length != 0)
             {
@@ -351,7 +351,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 //classHeaderStatements.Add(new TranslatedStatement(explicitVariableDeclarationsFromWithinClass.Min(v => v.Name.LineIndex)));
                 classHeaderStatements.AddRange(
                     explicitVariableDeclarationsFromWithinClass.Select(declaredVariableToInitialise =>
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.PropertyDeclarationStatement,
                             string.Format(CultureInfo.InvariantCulture,
                                 "{0} object {1} {{ get; set; }}",
                                 (declaredVariableToInitialise.Scope == VariableDeclarationScopeOptions.Private) ? "private" : "public",

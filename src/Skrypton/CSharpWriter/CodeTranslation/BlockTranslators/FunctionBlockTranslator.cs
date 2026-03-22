@@ -60,7 +60,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (functionBlock.Statements.ToNonNullImmutableList().DoesScopeContainOnErrorResumeNext())
             {
                 errorRegistrationTokenIfAny = _tempNameGenerator(new CSharpName("errOn"), scopeAccessInformation);
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                     string.Format(CultureInfo.InvariantCulture,
                         "var {0} = {1}.GETERRORTRAPPINGTOKEN();",
                         errorRegistrationTokenIfAny.Name,
@@ -91,7 +91,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             int lineIndexForClosingScaffolding = translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource;
             if (errorRegistrationTokenIfAny != null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.RELEASEERRORTRAPPINGTOKEN({1});",
                         _supportRefName.Name,
@@ -105,7 +105,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 // If this is an empty function then just render "return null" (TranslateFunctionHeader won't declare the return value reference)
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.ReturnText,
                         string.Format(CultureInfo.InvariantCulture,
                             "return {0};",
                             functionBlock.Statements.Any() ? returnValueName!.Name : "null"
@@ -115,7 +115,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ));
             }
             return translationResult.Add(
-                new TranslatedStatement("}", indentationDepth, lineIndexForClosingScaffolding)
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, lineIndexForClosingScaffolding)
             );
         }
 
@@ -185,7 +185,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             return translationResult
-                .Add(new TranslatedStatement(
+                .Add(new TranslatedStatement(TranslatedStatementKind.ReturnText,
                     "return " + translatedStatementContentDetails.TranslatedContent + ";",
                     indentationDepth,
                     valueSettingStatement.Expression.Tokens.First().LineIndex
@@ -226,7 +226,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             List<TranslatedStatement> translatedStatements = new List<TranslatedStatement>();
             if (functionBlock.IsDefault)
-                translatedStatements.Add(new TranslatedStatement("[" + typeof(IsDefaultAttribute).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
+                translatedStatements.Add(new TranslatedStatement(TranslatedStatementKind.ReturnText, "[" + typeof(IsDefaultAttribute).FullName + "]", indentationDepth, functionBlock.Name.LineIndex));
             PropertyBlock? property = functionBlock as PropertyBlock;
             if (property != null)
             {
@@ -237,7 +237,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // will result in runtime failures. So we could apply the attribute to indexed properties and all properties within classes that have at least one
                 // indexed property but that feels like complications for little benefit so I think it's easier to just put it on ALL from-property methods.
                 translatedStatements.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "[TranslatedProperty({0})]", // Note: Safe to assume that using statements are present for the namespace that contains TranslatedProperty
                             property.Name.Content.ToLiteral()
@@ -247,11 +247,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     )
                 );
             }
-            translatedStatements.Add(new TranslatedStatement(content.ToString(), indentationDepth, functionBlock.Name.LineIndex));
-            translatedStatements.Add(new TranslatedStatement("{", indentationDepth, functionBlock.Name.LineIndex));
+            translatedStatements.Add(new TranslatedStatement(TranslatedStatementKind.RawText, content.ToString(), indentationDepth, functionBlock.Name.LineIndex));
+            translatedStatements.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth, functionBlock.Name.LineIndex));
             if (functionBlock.HasReturnValue && functionBlock.Statements.Any() && !IsSingleReturnValueStatementFunctionWithoutAnyByRefMappings(functionBlock, scopeAccessInformation))
             {
-                translatedStatements.Add(new TranslatedStatement(
+                translatedStatements.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     base.TranslateVariableInitialization(
                         new VariableDeclaration(
                             new DoNotRenameNameToken(

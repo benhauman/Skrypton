@@ -35,12 +35,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             //TestCulture = CultureInfo.GetCultureInfo("en-GB");
             var source = "If (a = #29 May 2015#) Then\nEnd If";
             TestCSharpCodeTranslation(source);
-            //
-            //string expected = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            //base.AreEqualStringArray(TestName, CSFileExtension,
-            //    expected.SplitLines().Select(s => s.Trim()).Where(s => s != "").ToArray(),
-            //    DefaultTranslator.Translate(TestCulture, source, new string[0], OuterScopeBlockTranslator.OutputTypeOptions.Executable).Select(s => s.Content.Trim()).Where(s => s != "").ToArray()
-            //);
         }
     }
 }

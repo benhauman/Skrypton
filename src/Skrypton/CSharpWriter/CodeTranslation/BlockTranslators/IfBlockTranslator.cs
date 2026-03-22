@@ -88,8 +88,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     requiresNewScopeWithinElseBlock = previousConditionalEntry.ByRefArgumentsToRewriteInTranslatedContent.Any() || conditionalEntry.ByRefArgumentsToRewriteInTranslatedContent.Any();
                 if (requiresNewScopeWithinElseBlock)
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement("else", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
-                    translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.Else, "else", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
                     indentationDepth++;
                     numberOfAdditionalBlocksInjectedForErrorTrapping++;
                 }
@@ -114,7 +114,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
                             .ToNonNullImmutableList()
                     );
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                         "bool " + evaluatedResultName.Name + ";",
                         indentationDepth,
                         conditionalEntry.Conditional.Condition.Tokens.First().LineIndex
@@ -131,7 +131,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     var ifStatementFormat = (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
                         ? "{0} = {1}.IF({2});"
                         : "{0} = {1}.IF(() => {2}, {3});";
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             ifStatementFormat,
                             evaluatedResultName.Name,
@@ -185,7 +185,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (conditionalInlineCommentIfAny != null)
                     innerStatements = innerStatements.RemoveAt(0);
                 translationResult = translationResult.Add(
-                    new TranslatedStatement(
+                    new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0} ({1}){2}",
                             (previousConditionalEntry == null) || requiresNewScopeWithinElseBlock ? "if" : "else if",
@@ -196,7 +196,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         conditionalEntry.Conditional.Condition.Tokens.First().LineIndex
                     )
                 );
-                translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, conditionalEntry.Conditional.Condition.Tokens.First().LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth, conditionalEntry.Conditional.Condition.Tokens.First().LineIndex));
                 translationResult = translationResult.Add(
                     Translate(
                         innerStatements,
@@ -204,7 +204,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth + 1
                     )
                 );
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
             }
 
             if (ifBlock.OptionalElseClause != null)
@@ -212,8 +212,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Unlike the IF or ELSE IF lines, we don't have a LineIndex for the final ELSE block, so we'll just use the LineIndex of the previous line (we know that there
                 // is one since it's not valid for an IfBlock to have ONLY an ELSE, it must have at least one IF before if). Note: We only have a LineIndex for the IF and ELSE
                 // IF lines since those lines have conditions, which have tokens, and we use the LineIndex of the first token.
-                translationResult = translationResult.Add(new TranslatedStatement("else", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
-                translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.Else, "else", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
                 translationResult = translationResult.Add(
                     Translate(
                         ifBlock.OptionalElseClause.Statements.ToNonNullImmutableList(),
@@ -221,14 +221,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth + 1
                     )
                 );
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
             }
 
             // If any additional levels of nesting were required above (for error-trapping scenarios), ensure they are closed off here
             for (var index = 0; index < numberOfAdditionalBlocksInjectedForErrorTrapping; index++)
             {
                 indentationDepth--;
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));
             }
 
             return translationResult;

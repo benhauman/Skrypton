@@ -7,15 +7,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     [DebuggerDisplay("{_content}")]
     public class TranslatedStatement
     {
-        public TranslatedStatement(int lineIndexOfStatementStartInSource) // 'empty' ctor
-            : this(true, "", 0, lineIndexOfStatementStartInSource)
+        public TranslatedStatement(TranslatedStatementKind kind, int lineIndexOfStatementStartInSource) // 'empty' ctor
+            : this(kind, true, "", 0, lineIndexOfStatementStartInSource)
         {
         }
-        public TranslatedStatement(string content, int indentationDepth, int lineIndexOfStatementStartInSource)
-            : this(false, content, indentationDepth, lineIndexOfStatementStartInSource)
+        public TranslatedStatement(TranslatedStatementKind kind, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+            : this(kind, false, content, indentationDepth, lineIndexOfStatementStartInSource)
         {
         }
-        private TranslatedStatement(bool isEmpty, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+        private TranslatedStatement(TranslatedStatementKind kind, bool isEmpty, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
@@ -88,7 +88,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     public sealed class TranslatedVariableDeclarationStatement : TranslatedStatement
     {
         public TranslatedVariableDeclarationStatement(string variableAccessToken, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
-            : base(content, indentationDepth, lineIndexOfStatementStartInSource)
+            : base(TranslatedStatementKind.VariableDeclarationStatement, content, indentationDepth, lineIndexOfStatementStartInSource)
         {
             if (string.IsNullOrEmpty(variableAccessToken))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(variableAccessToken));
@@ -99,6 +99,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
     public enum TranslatedStatementKind
     {
-        Unknown
+        Unknown,
+        RawText,
+        Comment,
+        CurlyBraceOpen,
+        CurlyBraceClose,
+        Else,
+        IfWithCondition, // if ()
+        IfText,
+        TryBegin,
+        FinallyClause,
+        NamespaceBegin,
+        SetText,
+        SupportHandleError,
+        VariableDeclarationStatement,
+        PropertyDeclarationStatement,
+        FieldDeclarationStatement,
+        ReturnText,
+        UsingText
     }
 }

@@ -71,7 +71,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return new TranslationResult(
                 withBlockContentTranslationResult.TranslatedStatements
                     .Insert(
-                        new TranslatedStatement(
+                        new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                             string.Format(CultureInfo.InvariantCulture,
                                 "var {0} = {1};",
                                 targetName.Name,

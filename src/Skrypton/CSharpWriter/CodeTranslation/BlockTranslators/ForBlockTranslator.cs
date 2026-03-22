@@ -261,7 +261,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 foreach (var loopConstraintInitialiser in loopConstraintInitialisersWhereRequired)
                 {
                     translationResult = translationResult
-                        .Add(new TranslatedStatement(
+                        .Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                             string.Format(CultureInfo.InvariantCulture,
                                 "var {0} = {1};",
                                 loopConstraintInitialiser.VariableName.Name,
@@ -276,7 +276,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 if (loopConstraintInitialisersWhereRequired.Count != 0)
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "object " + string.Join(", ", loopConstraintInitialisersWhereRequired.Select(l => l.VariableName.Name + " = 0")) + ";",
                         indentationDepth,
                         forBlock.LoopVar.LineIndex // This statement doesn't directly exist in the source, so we'll have to approximate here
@@ -284,7 +284,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 constraintsInitialisedFlagNameIfAny = _tempNameGenerator(new CSharpName("loopConstraintsInitialized"), scopeAccessInformation);
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                         string.Format(CultureInfo.InvariantCulture,
                             "var {0} = false;",
                             constraintsInitialisedFlagNameIfAny.Name
@@ -300,7 +300,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
                 {
                     translationResult = translationResult
-                        .Add(new TranslatedStatement(
+                        .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
@@ -339,7 +339,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     else
                         initialisationContentToUse = loopConstraintInitialiser.InitialisationContent;
                     translationResult = translationResult
-                        .Add(new TranslatedStatement(
+                        .Add(new TranslatedStatement(TranslatedStatementKind.SetText,
                             string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 loopConstraintInitialiser.VariableName.Name,
@@ -367,7 +367,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         // that the max value for a Currency is  922,337,203,685,477.5807 - see https://msdn.microsoft.com/en-us/library/9e7a57cf%28v=vs.84%29.aspx)
                         //   FOR i = CCur(922337203685475) TO CCur(922337203685476) STEP CDBL("9223372036854760") ' Loop is entered once, "i" is set to a Currency value
                         //   FOR i = CDbl("9223372036854760") TO CCur(922337203685475) STEP -1 ' Loop is entered once but "i" will not be set
-                        translationResult = translationResult.Add(new TranslatedStatement(
+                        translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                             string.Format(CultureInfo.InvariantCulture,
                                 "if (({0} is DateTime) || ({0} is Decimal))",
                                 loopStart
@@ -375,7 +375,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             indentationDepth + 1,
                             loopStartConstraintInitialiserIfAny.LineIndexForSourceConstraint
                         ));
-                        translationResult = translationResult.Add(new TranslatedStatement(
+                        translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.SetText,
                             string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 rewrittenLoopVariableName,
@@ -384,7 +384,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             indentationDepth + 2,
                             loopStartConstraintInitialiserIfAny.LineIndexForSourceConstraint
                         ));
-                        translationResult = translationResult.Add(new TranslatedStatement(
+                        translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.SetText,
                             string.Format(CultureInfo.InvariantCulture,
                                 "{0} = {1};",
                                 loopStart,
@@ -396,13 +396,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     }
                 }
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.SetText,
                         constraintsInitialisedFlagNameIfAny.Name + " = true;",
                         indentationDepth + 1,
                         forBlock.LoopVar.LineIndex // This statement doesn't directly exist in the source, so we'll have to approximate here
                     ));
                 if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
-                    translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth, forBlock.LoopVar.LineIndex)); // This statement doesn't directly exist in the source, so we'll have to approximate here
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", indentationDepth, forBlock.LoopVar.LineIndex)); // This statement doesn't directly exist in the source, so we'll have to approximate here
 
                 indentationDepth -= distanceToIndentLoopConstraintCodeDueToByRefMappings;
                 translationResult = byRefArgumentsToRewrite.CloseByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
@@ -478,10 +478,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (guardClauseLines.Any())
             {
                 // These lines don't directly exist in the source, so we'll have to approximate again
-                translationResult = translationResult.Add(new TranslatedStatement("if " + guardClauseLines.First(), indentationDepth, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "if " + guardClauseLines.First(), indentationDepth, forBlock.LoopVar.LineIndex));
                 foreach (var guardClauseLine in guardClauseLines.Skip(1))
-                    translationResult = translationResult.Add(new TranslatedStatement(guardClauseLine, indentationDepth, forBlock.LoopVar.LineIndex));
-                translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, forBlock.LoopVar.LineIndex));
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, guardClauseLine, indentationDepth, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth, forBlock.LoopVar.LineIndex));
                 indentationDepth++;
             }
             string continuationCondition;
@@ -571,7 +571,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     // Note: There is no space before {2} so that if there is no loop increment required then the output doesn't look like it's missing
                     // something (this may be the case if the loop step is zero)
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "for ({0}; {1};{2})",
                             loopVarInitialiser,
@@ -584,7 +584,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 else
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "for ({0};",
                             loopVarInitialiser
@@ -593,14 +593,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         forBlock.LoopVar.LineIndex
                     ));
 #pragma warning disable CA1820 // Test for empty strings using string length
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         continuationCondition + ";" + ((loopIncrementWithLeadingSpaceIfNonBlank == "") ? ")" : ""),
                         indentationDepth + 1,
                         forBlock.LoopVar.LineIndex
                     ));
                     if (loopIncrementWithLeadingSpaceIfNonBlank != "")
                     {
-                        translationResult = translationResult.Add(new TranslatedStatement(
+                        translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                             loopIncrementWithLeadingSpaceIfNonBlank.Trim() + ")",
                             indentationDepth + 1,
                             forBlock.LoopVar.LineIndex
@@ -621,24 +621,24 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (constraintsInitialisedFlagNameIfAny != null)
                 {
                     // This line doesn't have a direct representation in the source, so we'll approximate
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "if (" + constraintsInitialisedFlagNameIfAny.Name + ")",
                         indentationDepth,
                         forBlock.LoopVar.LineIndex
                     ));
                     indentationDepth++;
                 }
-                translationResult = translationResult.Add(new TranslatedStatement(loopVarInitialiser + ";", indentationDepth, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, loopVarInitialiser + ";", indentationDepth, forBlock.LoopVar.LineIndex));
                 if (constraintsInitialisedFlagNameIfAny != null)
                     indentationDepth--;
 
-                translationResult = translationResult.Add(new TranslatedStatement("while (true)", indentationDepth, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "while (true)", indentationDepth, forBlock.LoopVar.LineIndex));
             }
-            translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, forBlock.LoopVar.LineIndex));
+            translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth, forBlock.LoopVar.LineIndex));
             var earlyExitNameIfAny = GetEarlyExitNameIfRequired(forBlock, scopeAccessInformation);
             if (earlyExitNameIfAny != null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     forBlock.LoopVar.LineIndex
@@ -663,12 +663,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // flag (but we do still need to wrap the loop variable increment in a HANDLEERROR call in case something strang was done to it during
                     // the loop - eg. a FOR i = 1 TO 5 loop where i is set to "z" within the loop).
                     translationResult = translationResult
-                        .Add(new TranslatedStatement("if (!" + constraintsInitialisedFlagNameIfAny.Name + ")", indentationDepth + 1, forBlock.LoopVar.LineIndex))
-                        .Add(new TranslatedStatement("break;", indentationDepth + 2, forBlock.LoopVar.LineIndex));
+                        .Add(new TranslatedStatement(TranslatedStatementKind.RawText,"if (!" + constraintsInitialisedFlagNameIfAny.Name + ")", indentationDepth + 1, forBlock.LoopVar.LineIndex))
+                        .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "break;", indentationDepth + 2, forBlock.LoopVar.LineIndex));
                 }
 
                 var continueLoopName = _tempNameGenerator(new CSharpName("continueLoop"), scopeAccessInformation);
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                     "var " + continueLoopName.Name + " = false;",
                     indentationDepth + 1,
                     forBlock.LoopVar.LineIndex
@@ -691,7 +691,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 else
                     distanceToIndentEvaluationCodeDueToByRefMappings = 0;
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.HANDLEERROR({1}, () => {{",
                             _supportRefName.Name,
@@ -704,20 +704,20 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 #pragma warning disable CA1820 // Test for empty strings using string length
                 if (loopIncrementWithLeadingSpaceIfNonBlank != "")
                 {
-                    translationResult = translationResult.Add(new TranslatedStatement(
+                    translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         loopIncrementWithLeadingSpaceIfNonBlank.Trim() + ";",
                         indentationDepth + 2,
                         forBlock.LoopVar.LineIndex
                     ));
                 }
 #pragma warning restore CA1820 // Test for empty strings using string length
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     continueLoopName.Name + " = " + continuationCondition + ";",
                     indentationDepth + 2,
                     forBlock.LoopVar.LineIndex
                 ));
 
-                translationResult = translationResult.Add(new TranslatedStatement("});", indentationDepth + 1, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", indentationDepth + 1, forBlock.LoopVar.LineIndex));
                 if (loopVarAliasIfRequired != null)
                 {
                     indentationDepth -= distanceToIndentEvaluationCodeDueToByRefMappings;
@@ -729,14 +729,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
 
                 translationResult = translationResult
-                    .Add(new TranslatedStatement("if (!" + continueLoopName.Name + ")", indentationDepth + 1, forBlock.LoopVar.LineIndex))
-                    .Add(new TranslatedStatement("break;", indentationDepth + 2, forBlock.LoopVar.LineIndex));
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "if (!" + continueLoopName.Name + ")", indentationDepth + 1, forBlock.LoopVar.LineIndex))
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "break;", indentationDepth + 2, forBlock.LoopVar.LineIndex));
             }
-            translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forBlock.LoopVar.LineIndex));
+            translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forBlock.LoopVar.LineIndex));
             if (guardClauseLines.Any())
             {
                 indentationDepth--;
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, forBlock.LoopVar.LineIndex));
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forBlock.LoopVar.LineIndex));
             }
             foreach (var undeclaredVariable in undeclaredVariableReferencesAccessedByLoopConstraints)
                 _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
@@ -750,12 +750,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // EXIT DO was encountered within the FOR that must refer to the containing DO, then the FOR loop will have been broken out of, but
                 // also a flag set that means that we must break further to get out of the DO loop.
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "if (" + string.Join(" || ", earlyExitFlagNamesToCheck) + ")",
                         indentationDepth,
                         forBlock.LoopVar.LineIndex // More lines that we'll need to approximate to source LineIndex for..
                     ))
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "break;",
                         indentationDepth + 1,
                         forBlock.LoopVar.LineIndex // More lines that we'll need to approximate to source LineIndex for..

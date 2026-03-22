@@ -43,7 +43,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if ((doBlock.ConditionIfAny == null) && !doBlock.Statements.Any())
             {
                 _logger.Warning("Infinite DO/WHILE loop at line " + (doBlock.LineIndexOfStartOfConstruct + 1));
-                return TranslationResult.Empty.Add(new TranslatedStatement(
+                return TranslationResult.Empty.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     "while (true) { }",
                     indentationDepth,
                     doBlock.LineIndexOfStartOfConstruct
@@ -129,7 +129,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             if (whileConditionExpressionContentIfAny == null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     "while (true)",
                     indentationDepth,
                     doBlock.LineIndexOfStartOfConstruct
@@ -137,7 +137,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             else if (doBlock.IsPreCondition)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     "while (" + whileConditionExpressionContentIfAny.TranslatedContent + ")",
                     indentationDepth,
                     doBlock.LineIndexOfStartOfConstruct
@@ -145,16 +145,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
             else
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     "do",
                     indentationDepth,
                     doBlock.LineIndexOfStartOfConstruct
                 ));
             }
-            translationResult = translationResult.Add(new TranslatedStatement("{", indentationDepth, doBlock.LineIndexOfStartOfConstruct));
+            translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", indentationDepth, doBlock.LineIndexOfStartOfConstruct));
             if (earlyExitNameIfAny != null)
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                     string.Format(CultureInfo.InvariantCulture, "var {0} = false;", earlyExitNameIfAny.Name),
                     indentationDepth + 1,
                     doBlock.LineIndexOfStartOfConstruct
@@ -165,10 +165,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 ? loopStatementsTranslationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource
                 : doBlock.LineIndexOfStartOfConstruct;
             if ((whileConditionExpressionContentIfAny == null) || doBlock.IsPreCondition)
-                translationResult = translationResult.Add(new TranslatedStatement("}", indentationDepth, lineIndexForClosingCode));
+            {
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, lineIndexForClosingCode));
+            }
             else
             {
-                translationResult = translationResult.Add(new TranslatedStatement(
+                translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     "} while (" + whileConditionExpressionContentIfAny.TranslatedContent + ");",
                     indentationDepth,
                     doBlock.ConditionIfAny!.Tokens.First().LineIndex
@@ -188,12 +190,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // EXIT FOR was encountered within the DO..LOOP that must refer to the containing FOR, then the DO..LOOP will have been broken out
                 // of, but also a flag set that means that we must break further to get out of the FOR loop.
                 translationResult = translationResult
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "if (" + string.Join(" || ", earlyExitFlagNamesToCheck) + ")",
                         indentationDepth,
                         lineIndexForEarlyExitCode
                     ))
-                    .Add(new TranslatedStatement(
+                    .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         "break;",
                         indentationDepth + 1,
                         lineIndexForEarlyExitCode
