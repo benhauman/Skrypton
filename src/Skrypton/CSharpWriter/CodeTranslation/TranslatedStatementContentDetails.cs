@@ -8,7 +8,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     [DebuggerDisplay("({VariablesAccessed.Count}){TranslatedContent}")]
     public class TranslatedStatementContentDetails // base class of 'TranslatedStatementContentDetailsWithContentType'
     {
-        public TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind kind, string translatedContent, IReadOnlyCollection<NameToken> variablesAccessed)
+        // lubo: 'kind' is just for easy finding of specific renderer.
+        internal TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind kind, string translatedContent, IReadOnlyCollection<NameToken> variablesAccessed)
         {
             if (string.IsNullOrWhiteSpace(translatedContent))
                 throw new ArgumentException("Null/blank translatedContent specified");
@@ -24,16 +25,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will never be null
         /// </summary>
-        public IReadOnlyCollection<NameToken> VariablesAccessed { get; private set; }
+        public IReadOnlyCollection<NameToken> VariablesAccessed { get; }
     }
 
-    public enum TranslatedStatementContentDetailsKind
+    internal enum TranslatedStatementContentDetailsKind
     {
-        Unknown,
-        RawText,
+        [Obsolete("do not use it")] Unknown,
         ReturnType,
-        Args,
-        CallContent,
+        SupportArgs,  // _.ARGS.
+        BracketedExpression, // for CALL, SET
         CallText,
         ConstNothing,
         ConstTrue,
@@ -54,6 +54,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         DotRefIfArray,
         NotUntil,
         IfResultName,
+        SetText,
         TargetName,
         ValueDateFromParse,
         ValueNum,

@@ -56,7 +56,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 _logger.Warning
             );
 
-            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.Unknown,
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.SetText,
                 assignmentFormatDetails.AssignmentFormat(translatedExpressionContentDetails.TranslatedContent),
                 assignmentFormatDetails.VariablesAccessed.Concat(translatedExpressionContentDetails.VariablesAccessed).ToArray()
             );

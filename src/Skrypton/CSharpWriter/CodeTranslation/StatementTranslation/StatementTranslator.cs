@@ -519,7 +519,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified
             );
-            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.Unknown,
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.BracketedExpression,
                 translatedInnerContentDetails.TranslatedContent,
                 ExpressionReturnTypeOptions.NotSpecified,
                 translatedInnerContentDetails.VariablesAccessed
@@ -818,7 +818,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             NameToken? targetNameToken = firstMemberAccessToken as NameToken;
             if ((targetNameToken != null) && !firstMemberAccessTokenIsParentReturnValueName)
             {
-                result = new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.Unknown,
+                result = new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                     result.TranslatedContent,
                     result.ContentType,
                     result.VariablesAccessed.Concat([targetNameToken]).ToArray()
@@ -1007,7 +1007,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             }
                         }
                         memberCallContent.Append(')');
-                        return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallContent,
+                        return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                             memberCallContent.ToString(),
                             ExpressionReturnTypeOptions.NotSpecified,
                             memberCallVariablesAccessed
@@ -1316,7 +1316,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 argumentProviderContent.Append(argumentContent.TranslatedContent);
                 variablesAccessed = variablesAccessed.AddRange(argumentContent.VariablesAccessed);
             }
-            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.Args,
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.SupportArgs,
                 argumentProviderContent.ToString(),
                 variablesAccessed
             );

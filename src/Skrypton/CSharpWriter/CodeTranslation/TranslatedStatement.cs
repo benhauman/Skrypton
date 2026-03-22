@@ -96,4 +96,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
         public string VariableAccessToken { get; private set; }
     }
+
+    public enum TranslatedStatementKind
+    {
+        Unknown
+    }
 }

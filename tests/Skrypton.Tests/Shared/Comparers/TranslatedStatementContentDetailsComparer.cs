@@ -1,4 +1,5 @@
 ﻿using Skrypton.CSharpWriter.CodeTranslation;
+using Skrypton.LegacyParser.Tokens.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +8,35 @@ namespace Skrypton.Tests.Shared.Comparers
 {
 	public class TranslatedStatementContentDetailsComparer : IEqualityComparer<TranslatedStatementContentDetails>
 	{
-		public bool Equals(TranslatedStatementContentDetails x, TranslatedStatementContentDetails y)
+        internal static readonly TranslatedStatementContentDetailsComparer Instance = new TranslatedStatementContentDetailsComparer();
+
+        public TranslatedStatementContentDetailsComparer() // TODO: private
+        {
+        }
+        public bool Equals(TranslatedStatementContentDetails x, TranslatedStatementContentDetails y)
 		{
 			if (x == null)
 				throw new ArgumentNullException(nameof(x));
 			if (y == null)
 				throw new ArgumentNullException(nameof(y));
-
-			if (x.TranslatedContent != y.TranslatedContent)
-				return false;
-
-			var tokenSetComparer = new TokenSetComparer();
-			return tokenSetComparer.Equals(
-                x.VariablesAccessed.Distinct(new TokenComparer()),
-                y.VariablesAccessed.Distinct(new TokenComparer())
-            );
+			return EqualsX(x.TranslatedContent, x.VariablesAccessed, y);
 		}
+        public static bool EqualsX(string exTranslatedContent, IReadOnlyCollection<NameToken> exVariablesAccessed, TranslatedStatementContentDetails y)
+        {
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
 
-		public int GetHashCode(TranslatedStatementContentDetails obj)
+            if (exTranslatedContent != y.TranslatedContent)
+                return false;
+
+            var tokenSetComparer = new TokenSetComparer();
+            return tokenSetComparer.Equals(
+                exVariablesAccessed.Distinct(TokenComparer.Instance),
+                y.VariablesAccessed.Distinct(TokenComparer.Instance)
+            );
+        }
+
+        public int GetHashCode(TranslatedStatementContentDetails obj)
 		{
 			if (obj == null)
 				throw new ArgumentNullException(nameof(obj));

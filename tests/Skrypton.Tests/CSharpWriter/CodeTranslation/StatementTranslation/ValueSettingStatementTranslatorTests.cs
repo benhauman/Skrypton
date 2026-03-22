@@ -19,10 +19,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
             var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_env.a = (Int16)1",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -32,7 +28,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_env.a = (Int16)1",
+                [new NameToken("a", lineIndex1)], actual);
         }
 
         /// <summary>
@@ -43,10 +40,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
             var expressionToSetTo = new CodeExpression([new BuiltInValueToken("true", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_env.a = true",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -56,7 +49,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_env.a = true", [new NameToken("a", lineIndex1)], actual);
         }
 
         [TestMethod, MyFact]
@@ -72,10 +65,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm1a0(this, _env.a, \"b\", (Int16)1)",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -85,7 +74,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX(@"_.SETm1a0(this, _env.a, ""b"", (Int16)1)", [new NameToken("a", lineIndex1)], actual);
         }
 
         [TestMethod, MyFact]
@@ -99,10 +88,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_outer.a = (Int16)1",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
             var scopeAccessInformation = AddOutermostScopeVariable(
                 GetEmptyScopeAccessInformation(),
                 "a",
@@ -116,7 +101,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_outer.a = (Int16)1", [new NameToken("a", lineIndex1)], actual);
         }
 
         /// <summary>
@@ -136,10 +121,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm0a1(this, _outer.a, (Int16)1, (Int16)1)",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
+
             var scopeAccessInformation = AddOutermostScopeVariable(
                 GetEmptyScopeAccessInformation(),
                 "a",
@@ -153,7 +135,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_.SETm0a1(this, _outer.a, (Int16)1, (Int16)1)", [new NameToken("a", lineIndex1)], actual);
         }
 
         /// <summary>
@@ -173,10 +155,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm0a1(this, _env.a, (Int16)1, (Int16)1)",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
+
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -186,7 +165,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_.SETm0a1(this, _env.a, (Int16)1, (Int16)1)", [new NameToken("a", lineIndex1)], actual);
         }
 
         /// <summary>
@@ -206,10 +185,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm0a1(this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), (Int16)1, (Int16)1)",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
+
             var scopeAccessInformation = AddOutermostScopeFunction(
                 GetEmptyScopeAccessInformation(),
                 "a",
@@ -223,7 +199,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_.SETm0a1(this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), (Int16)1, (Int16)1)",
+                [new NameToken("a", lineIndex1)],
+                actual);
         }
 
         [TestMethod, MyFact]
@@ -243,10 +221,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NameToken("a", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_env.a = _.CDATE(_env.a)",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
+
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -256,7 +231,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_env.a = _.CDATE(_env.a)",
+                [new NameToken("a", lineIndex1)],
+                actual);
         }
 
         [TestMethod, MyFact]
@@ -279,10 +256,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NameToken("b", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                @"_env.a = _.VAL(_.CALLm1v2(this, _, ""CDATE"", _env.a, _env.b))",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)])
-            );
+
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -292,7 +266,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX(@"_env.a = _.VAL(_.CALLm1v2(this, _, ""CDATE"", _env.a, _env.b))",
+                [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)], actual);
         }
 
         [TestMethod, MyFact]
@@ -324,10 +299,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 statements: [valueSettingStatement]
             );
 
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "a = (Int16)1",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             scopeAccessInformation = new ScopeAccessInformation(
                 containingFunction, // parent
@@ -344,7 +315,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.StructureExitPoints
             );
             var actual = GetDefaultValueSettingStatementTranslator().Translate(valueSettingStatement, scopeAccessInformation);
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("a = (Int16)1", [new NameToken("a", lineIndex1)], actual);
         }
 
         /// <summary>
@@ -361,10 +332,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new CloseBrace(lineIndex1)
             ]);
             var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
-                new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
-            );
+
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -374,7 +342,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
+                [new NameToken("a", lineIndex1)],
+                actual);
         }
 
         /// <summary>
@@ -393,10 +363,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
-                new NonNullImmutableList<NameToken>([new NameToken("F1", lineIndex1)])
-            );
+
             var scopeAccessInformation = AddOutermostScopeFunction(GetEmptyScopeAccessInformation(), "F1", lineIndex1);
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -406,7 +373,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX("_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
+                [new NameToken("F1", lineIndex1)],
+                actual);
         }
 
         /// <summary>
@@ -426,10 +395,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
-                @"_.SETm1a0(this, this, ""Name"", (Int16)1)",
-                new NonNullImmutableList<NameToken>([new NameToken("Name", lineIndex1)])
-            );
             var scopeAccessInformation = AddPropertyToScope(GetEmptyScopeAccessInformation(), "Name", lineIndex1);
             var actual = GetDefaultValueSettingStatementTranslator().Translate(
                 new ValueSettingStatement(
@@ -439,7 +404,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(expected, actual, new TranslatedStatementContentDetailsComparer(), x => x.TranslatedContent);
+            myAssert.AreEqualX(@"_.SETm1a0(this, this, ""Name"", (Int16)1)", [new NameToken("Name", lineIndex1)], actual);
         }
 
         // TODO:

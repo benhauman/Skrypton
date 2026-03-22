@@ -8,6 +8,9 @@ using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.StageTwoParser.ExpressionParsing;
 using static Skrypton.Tests.RuntimeSupport.Implementations.VBScriptEsqueValueRetrieverTests;
+using Skrypton.CSharpWriter.CodeTranslation;
+using Skrypton.LegacyParser.Tokens.Basic;
+using Skrypton.Tests.Shared.Comparers;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -330,11 +333,12 @@ namespace Skrypton.Tests
                 Assert.Fail("Not Equal. Expected:" + expected + ", Actual:" + actual);
             }
         }
-        public static void AreEqualX<T>(T expected, T actual, IEqualityComparer<T> comparer, Func<T, string> extract)
+
+        public static void AreEqualX(string expectedTranslatedContent, IReadOnlyCollection<NameToken> expectedVariablesAccessed, TranslatedStatementContentDetails actual)
         {
-            if (!comparer.Equals(expected, actual))
+            if (!TranslatedStatementContentDetailsComparer.EqualsX(expectedTranslatedContent, expectedVariablesAccessed, actual))
             {
-                Assert.Fail("Not Equal. Expected:" + extract(expected) + ", Actual:" + extract(actual));
+                Assert.Fail("Not Equal. Expected:" + expectedTranslatedContent + ", Actual:" + actual.TranslatedContent);
             }
         }
         public static void AreEqualCollection<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<IEnumerable<T>> comparer)

@@ -13,8 +13,7 @@ namespace Skrypton.Tests.Shared.Comparers
             if (y == null)
                 throw new ArgumentNullException(nameof(y));
 
-            var tokenComparer = new TokenComparer();
-            return tokenComparer.Equals(x.Token, y.Token);
+            return TokenComparer.Instance.Equals(x.Token, y.Token);
         }
 
         public int GetHashCode(BuiltInValueExpressionSegment obj)

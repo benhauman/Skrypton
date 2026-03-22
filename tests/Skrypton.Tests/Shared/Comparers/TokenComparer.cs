@@ -9,6 +9,9 @@ namespace Skrypton.Tests.Shared.Comparers
     public class TokenComparer : IEqualityComparer<IToken>
     {
         internal static readonly TokenComparer Instance = new TokenComparer();
+        private TokenComparer()
+        {
+        }
         public bool Equals(IToken x, IToken y)
         {
             if (x == null)
