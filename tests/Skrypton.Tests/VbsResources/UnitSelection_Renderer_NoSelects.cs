@@ -95,12 +95,10 @@ namespace TranslatedProgram
         internal object bRenderAsCalendar { get; set; }
         internal object g_iNumberOfCalendarsRendered { get; set; }
         internal object bProdHasAvail { get; set; }
-
         public object GetProdHasAvail()
         {
             return _.VAL(_outer.bProdHasAvail);
         }
-
         // ====================================================================================================
         // RENDER: Availability Calendar (supports local availability only!)
         // - Note: This doesn't actually perform any data access, all of the content required is passed
@@ -238,7 +236,6 @@ namespace TranslatedProgram
             }
             return BookingUI_StayMain_AvailCal_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Main entry point when not using Availability Calendar
         // ====================================================================================================
@@ -297,7 +294,6 @@ namespace TranslatedProgram
             }
             return BookingUI_StayMain_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Write out form with hidden input fields used for internal or FrontDesk bookings
         // - This will open the form, but the caller must close it
@@ -517,7 +513,6 @@ namespace TranslatedProgram
 
             return RenderBookingInfoForm_retVal;
         }
-
         //generates a string of room requirement details in a format suitable for use in a form i.e hidden inputs ;)
         public object GenerateRequirementFormData(ref object objAccoSearchRequirement)
         {
@@ -558,7 +553,6 @@ namespace TranslatedProgram
             GenerateRequirementFormData_retVal = _.JOIN(aryFormattedData);
             return GenerateRequirementFormData_retVal;
         }
-
         public object GetPostUrl(object bSecure)
         {
             object GetPostUrl_retVal = null;
@@ -599,7 +593,6 @@ namespace TranslatedProgram
             GetPostUrl_retVal = _.VAL(strPostUrl);
             return GetPostUrl_retVal;
         }
-
         // SUMMARY: render new requirement UI from avail calendar
         // [ireqSz]: ADO unit recordset from availability object
         // [aiStayNum]: integer stay index
@@ -736,7 +729,6 @@ namespace TranslatedProgram
             }
             return BookingUI_RenderNewReq_AvailCal_retVal;
         }
-
         // SUMMARY: Draw availability month calendar
         // [sbCalendars]:  ASP [nmStringBuilder] object instance output string
         // [dCalStartDflt]: date default calendar start date
@@ -813,7 +805,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderAvailCal_retVal;
         }
-
         public object BookingUI_RenderCalendarMonth(ref object sbCalendars, object dFirstDayOfMonth, object strWrapperClass)
         {
             object BookingUI_RenderCalendarMonth_retVal = null;
@@ -825,7 +816,6 @@ namespace TranslatedProgram
             finally { sbCalendars = byrefalias14; }
             return BookingUI_RenderCalendarMonth_retVal;
         }
-
         public object BookingUI_RenderCalendarMonthWithAvailability(ref object sbCalendars, object dFirstDayOfMonth, object strWrapperClass, object objDictAvailStays)
         {
             object BookingUI_RenderCalendarMonthWithAvailability_retVal = null;
@@ -1024,7 +1014,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderCalendarMonthWithAvailability_retVal;
         }
-
         public object BookingUI_RenderAvailCalKey(ref object sb)
         {
             object BookingUI_RenderAvailCalKey_retVal = null;
@@ -1036,7 +1025,6 @@ namespace TranslatedProgram
             }
             return BookingUI_RenderAvailCalKey_retVal;
         }
-
         public object BookingUI_RenderAvailCalLinks(ref object dStart, ref object sb)
         {
             object BookingUI_RenderAvailCalLinks_retVal = null;
@@ -1075,7 +1063,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderAvailCalLinks_retVal;
         }
-
         public object BookingUI_RenderAvailCalLink(ref object dCalStartDate, ref object strTitle, ref object strClass)
         {
             object BookingUI_RenderAvailCalLink_retVal = null;
@@ -1136,7 +1123,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderAvailCalLink_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Main entry point when VB Polling is enabled
         // - Applies to acco products only
@@ -1395,14 +1381,12 @@ namespace TranslatedProgram
 
             return BookingUI_StayMain_Polling_retVal;
         }
-
         public object RenderNotRequiredDateWarning(ref object pO)
         {
             object RenderNotRequiredDateWarning_retVal = null;
             _.CALLm1v1(this, pO, "Write", _.CONCAT("<p class=\"fuzzyWarning\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/notrequireddates", "Sorry, we don't have any availability for the dates you requested. These are the nearest available dates for your room and duration requirements."), "</p>"));
             return RenderNotRequiredDateWarning_retVal;
         }
-
         public object RenderStay(ref object objFuzzyStay, ref object objAvail, ref object intIndex, ref object objRenderSettings, ref object bIsTeleBooking, object strProductBookingWebIfAny, object strEviivoIdIfAny, object objAllUnits)
         {
             object RenderStay_retVal = null;
@@ -1657,7 +1641,6 @@ namespace TranslatedProgram
 
             return RenderStay_retVal;
         }
-
         public object RenderNoAvailElement(object objRenderSettings)
         {
             object RenderNoAvailElement_retVal = null;
@@ -1692,7 +1675,6 @@ namespace TranslatedProgram
 
             return RenderNoAvailElement_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Main entry point when VB Polling is disabled (or handling tickets, not acco products)
         // ====================================================================================================
@@ -1809,7 +1791,6 @@ namespace TranslatedProgram
             _.CALLm1v1(this, pO, "Write", "</form>");
             return BookingUI_StayMain_Legacy_retVal;
         }
-
         // SUMMARY: prepare a list of UnitKey selections for each ReqNo is availability recordset
         // [rsAvail]: ADO unit recordset from availability object
         // <retval>: clsList with as many values as there are ReqNo entries, containing the UnitKey for each one
@@ -1879,7 +1860,6 @@ namespace TranslatedProgram
 
             return BookingUI_UnitSel_GetOptionsRemoteSelected_retVal;
         }
-
         public object BookingUI_UnitSel_AddReqUnitOption(ref object arrReqUnitOptions, ref object intReqNo, ref object intNumPeople, ref object intUnitKey)
         {
             object BookingUI_UnitSel_AddReqUnitOption_retVal = null;
@@ -1924,7 +1904,6 @@ namespace TranslatedProgram
 
             return BookingUI_UnitSel_AddReqUnitOption_retVal;
         }
-
         public object BookingUI_UnitSel_AddReqUnitSelection(ref object arrReqUnitSelections, ref object strUnitSelInfo, ref object arrReqUnitOptions)
         {
             object BookingUI_UnitSel_AddReqUnitSelection_retVal = null;
@@ -2072,7 +2051,6 @@ namespace TranslatedProgram
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
             return BookingUI_UnitSel_AddReqUnitSelection_retVal;
         }
-
         public object BookingUI_UnitSel_GetMatchedReqUnitSelection(ref object arrReqUnitOptions, ref object arrReqUnitSelections)
         {
             object BookingUI_UnitSel_GetMatchedReqUnitSelection_retVal = null;
@@ -2229,7 +2207,6 @@ namespace TranslatedProgram
 
             return BookingUI_UnitSel_GetMatchedReqUnitSelection_retVal;
         }
-
         public object BookingUI_UnitSel_ScoreUnitSelPermutation(ref object strPermutation)
         {
             object BookingUI_UnitSel_ScoreUnitSelPermutation_retVal = null;
@@ -2261,7 +2238,6 @@ namespace TranslatedProgram
 
             return BookingUI_UnitSel_ScoreUnitSelPermutation_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Render options for accommodation products (only used with non-precise fuzzy stays)
         // ====================================================================================================
@@ -2307,7 +2283,6 @@ namespace TranslatedProgram
 
             return BookingUI_StaySummary_retVal;
         }
-
         // SUMMARY: Render details for a single stay, including UNIT booking UI
         // [objAvailEntry]: A single supplier's availability data for a single stay (AvailabilityStayResultsWrapped)
         // [iStayNum]: Only applies when displaying multiple fuzzy results
@@ -2559,7 +2534,6 @@ namespace TranslatedProgram
 
             return BookingUI_StayDetails_retVal;
         }
-
         public object BookingUI_GetPreSelectedUnitKey(object lsRemoteUnitSelections, object iReqNo)
         {
             object BookingUI_GetPreSelectedUnitKey_retVal = null;
@@ -2581,7 +2555,6 @@ namespace TranslatedProgram
             BookingUI_GetPreSelectedUnitKey_retVal = (Int16)0;
             return BookingUI_GetPreSelectedUnitKey_retVal;
         }
-
         // SUMMARY: for VB Polling - we want to render a supplier name and icon above each set of unit options
         public object BookingUI_StayDetails_PollingHeader(object objAvailEntry, object pO, object strSupplierLogo, object strSupplierName)
         {
@@ -2612,7 +2585,6 @@ namespace TranslatedProgram
             _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
             return BookingUI_StayDetails_PollingHeader_retVal;
         }
-
         //tries to get a supplier logo for us
         public object GetSupplierLogo(ref object strProductEstateID)
         {
@@ -2646,7 +2618,6 @@ namespace TranslatedProgram
             GetSupplierLogo_retVal = _.VAL(strSupplierLogo);
             return GetSupplierLogo_retVal;
         }
-
         // SUMMARY: return URL which browsers without Javascript can use to navigate stay candidates page
         // [aiStay]: integer stay number. 1 = 1st stay, 2 = 2nd stay. Zero produces back URL to stay candidates page
         // <retval>: string URL for hyperlink
@@ -2685,7 +2656,6 @@ namespace TranslatedProgram
             BookingUI_StayDetailsUrl_retVal = _.CONCAT(sUrl, sStay);
             return BookingUI_StayDetailsUrl_retVal;
         }
-
         // SUMMARY: render new stay UI - WARNING: this doesn't close all of the elements it opens!
         // [objAvailEntry]: avail data for a single stay
         // [aiStayNum]: integer stay index (1-based)
@@ -2738,7 +2708,6 @@ namespace TranslatedProgram
             }
             return BookingUI_RenderNewStay_retVal;
         }
-
         // SUMMARY: return title for this stay candidate
         // [aiNights]: integer number nights for this stay
         // [adtFirstNight]: date of first night
@@ -2756,7 +2725,6 @@ namespace TranslatedProgram
             BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v195 => { adtFirstNight = v195; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
             return BookingUI_StayTtl_retVal;
         }
-
         // SUMMARY: describe difference between THIS DATE and REQUESTED stay date
         // [adtReqDate]: date of REQUESTED first night of stay
         // [adtThisDate]: date of RESULTANT first night of stay
@@ -2773,7 +2741,6 @@ namespace TranslatedProgram
             BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v197 => { iDateDiff = v197; }).Ref(iDurDiff, v198 => { iDurDiff = v198; }).Ref(aiReqNights, v199 => { aiReqNights = v199; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
             return BookingUI_StayDiff_retVal;
         }
-
         // SUMMARY: render new requirement UI - WARNING: this doesn't close all of the elements it opens!
         // [arsAvail]: ADO unit recordset from availability object
         // [aiStayNum]: integer stay index
@@ -2850,7 +2817,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderNewReq_retVal;
         }
-
         // SUMMARY: render unit option HTML
         // [aiStayNum]: integer stay index
         // [aiThisReqmnt]: integer requirement index
@@ -2978,7 +2944,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderUnit_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Generate markup for booking buttons (only used by Acco, not Ticketing)
         // ====================================================================================================
@@ -3017,7 +2982,6 @@ namespace TranslatedProgram
 
             return BookingUI_RenderButtons_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Translate availability options -> action description string
         //  eg. Telephone Booking       -> "Submit a Booking Enquiry"
@@ -3055,7 +3019,6 @@ namespace TranslatedProgram
             }
             return BookingUI_AvailClassName_retVal;
         }
-
         // ====================================================================================================
         // RENDER:Translate avail class ID -> action description string
         //  eg. "ALLOC" -> "Book Online"
@@ -3090,7 +3053,6 @@ namespace TranslatedProgram
             BookingUI_AvailClassIcon_retVal = _.CONCAT("<img src=\"", sImg, "\" style=\"vertical-align:middle;\" alt=\"", sTxt, "\" />");
             return BookingUI_AvailClassIcon_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Format currency value
         // ====================================================================================================
@@ -3126,7 +3088,6 @@ namespace TranslatedProgram
             BookingUI_NicePrice_retVal = _.VAL(_.CALLm1argp(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v214 => { strPrice = v214; })));
             return BookingUI_NicePrice_retVal;
         }
-
         // ====================================================================================================
         // RENDER: Pull description of linked unit (includes name of linked unit, name of source unit and
         // size of linked unit)
@@ -3176,7 +3137,6 @@ namespace TranslatedProgram
             BookingUI_LinkedUnitDesc_retVal = _.REPLACE(_.REPLACE(_.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/alsosoldaswithpersoncapacity", "(<i>#linkedunitname#</i> sold as #unitname# with #linkunitsize# person capacity)"), "#linkedunitname#", sLinkedUnitName), "#unitname#", sUnitName), "#linkunitsize#", _.CALLm1v0(this, objParentUnit, "Capacity"));
             return BookingUI_LinkedUnitDesc_retVal;
         }
-
         // ====================================================================================================
         // RENDER: This handles all of the rendering for ticketing - none of the StaySummary, StayDetails,
         // RenderButtons malarkey is required
@@ -3265,7 +3225,6 @@ namespace TranslatedProgram
             }
             return BookingUI_TicketsSummary_retVal;
         }
-
         // ====================================================================================================
         // RENDER: If Site Param Booking_ForceExternal is set, then all  bookings are forced to external sites
         // (the site depends upon the product's Estate) - this function gets the external destination
@@ -3318,7 +3277,6 @@ namespace TranslatedProgram
 
             return GetExtBookUrlFromProductEstate_retVal;
         }
-
         public object InitExternalBookingSettings()
         {
             object InitExternalBookingSettings_retVal = null;
@@ -3332,7 +3290,6 @@ namespace TranslatedProgram
             }
             return InitExternalBookingSettings_retVal;
         }
-
         // ====================================================================================================
         // MISC: Since the RenderSettings.BookingRequirement references passed into here are usually read-only
         // instances from the Page.Functions.GetSharedObject method, we'll need to make a local copy that we

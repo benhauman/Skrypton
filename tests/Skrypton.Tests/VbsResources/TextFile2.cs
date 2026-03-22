@@ -42,12 +42,10 @@ namespace TranslatedProgram
         internal object Server { get; set; }
         internal object DMS { get; set; }
         internal object bProdHasAvail { get; set; }
-
         public void DoProdHasAvail()
         {
             object bMuku = null;
         }
-
         public object GetProdHasAvail()
         {
             object GetProdHasAvail_retVal = null;

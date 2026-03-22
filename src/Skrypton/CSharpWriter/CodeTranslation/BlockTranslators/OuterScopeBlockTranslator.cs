@@ -447,7 +447,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // set in the outermost scope and then a function has a statement "ReDim a(2)", that "a" reference should be that one in the outermost scope). To achieve
                 // this, the "implicitly declared" outermost scope variables are added to the ExternalDependencies set in the ScopeAccessInformation instance provided
                 // to the function block translator. The same must be done for class block translation (see below).
-                translatedStatements = translatedStatements.Add(new TranslatedStatement(0));
+                //translatedStatements = translatedStatements.Add(new TranslatedStatement(0));
                 translatedStatements = translatedStatements.AddRange(
                     Translate(
                         annotatedFunctionBlock.LeadingComments.Cast<ICodeBlock>().Concat(new[] { annotatedFunctionBlock.CodeBlock }).ToNonNullImmutableList(),

@@ -28,7 +28,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         public void ButtonShowWebsite_Click()
         {
             object sServer = null;

@@ -30,7 +30,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         public object F1()
         {
             object F1_retVal = null;
@@ -57,9 +56,7 @@ namespace TranslatedProgram
             _outer = outer ?? throw new ArgumentNullException(nameof(outer));
             c = null;
         }
-
         private object c { get; set; }
-
         public object CF1()
         {
             object CF1_retVal = null;

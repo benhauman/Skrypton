@@ -31,7 +31,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         //--------------------------------------------------------------------------------------- ProcessIn ---
         public void ProcessIn()
         {
@@ -70,7 +69,6 @@ namespace TranslatedProgram
 
             _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail end.");
         }
-
         //--------------------------------------------------------------------------------------- IsAutoReplyMail ---
         public object IsAutoReplyMail(ref object mailSubject)
         {
@@ -95,7 +93,6 @@ namespace TranslatedProgram
             IsAutoReplyMail_retVal = _.VAL(retVal);
             return IsAutoReplyMail_retVal;
         }
-
         //--------------------------------------------------------------------------------------- TryExtendCase ---
         public object TryExtendCase(ref object mailSubject)
         {
@@ -127,7 +124,6 @@ namespace TranslatedProgram
             TryExtendCase_retVal = _.VAL(retVal);
             return TryExtendCase_retVal;
         }
-
         //--------------------------------------------------------------------------------------- StartNewWorkflow ---
         public void StartNewWorkflow(ref object mailSubject)
         {
@@ -211,7 +207,6 @@ namespace TranslatedProgram
             reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "Request"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v31 => { reportText = v31; }));
         }
-
         //--------------------------------------------------------------------------------------- StartNewFMWorkflow ---
         public void StartNewFMWorkflow(ref object mailSubject)
         {
@@ -220,7 +215,6 @@ namespace TranslatedProgram
             reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "FacilityIncidentManagement"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v32 => { reportText = v32; }));
         }
-
         //--------------------------------------------------------------------------------------- StartNewHRWorkflow ---
         public void StartNewHRWorkflow(ref object mailSubject)
         {
@@ -229,14 +223,12 @@ namespace TranslatedProgram
             reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "HRRequestManagement"));
             _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v33 => { reportText = v33; }));
         }
-
         //--------------------------------------------------------------------------------------- LogText ---
         public void LogText(ref object sText)
         {
             //Uncomment to enable logging
             _.SETm0a1(this, _env.session, "processtext", _.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine));
         }
-
         //---------------------------------------------------------------------------------------- ExtractRefNumber ---
         public object ExtractRefNumber(ref object mailSubject)
         {
@@ -259,7 +251,6 @@ namespace TranslatedProgram
             ExtractRefNumber_retVal = _.VAL(refNum);
             return ExtractRefNumber_retVal;
         }
-
         //--------------------------------------------------------------------------------------- IsFMMail ---
         public object IsFMMail(ref object mailTo)
         {
@@ -275,7 +266,6 @@ namespace TranslatedProgram
             IsFMMail_retVal = _.VAL(retVal);
             return IsFMMail_retVal;
         }
-
         //--------------------------------------------------------------------------------------- IsFMMail ---
         public object IsHRMail(ref object mailTo)
         {
@@ -291,7 +281,6 @@ namespace TranslatedProgram
             IsHRMail_retVal = _.VAL(retVal);
             return IsHRMail_retVal;
         }
-
         //---------------------------------------------------------------------------------------- IsWorkflowEmail ---
         public object IsWFEmail(ref object mailSubject, ref object keywordList)
         {

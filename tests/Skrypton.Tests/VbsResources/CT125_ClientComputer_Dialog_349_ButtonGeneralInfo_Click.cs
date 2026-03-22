@@ -29,7 +29,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         public object ConvertSize(ref object Size)
         {
             object ConvertSize_retVal = null;
@@ -82,22 +81,18 @@ namespace TranslatedProgram
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
             return ConvertSize_retVal;
         }
-
         public object getNexthinkUser()
         {
             return "myusr2";
         }
-
         public object getNexthinkBaseURL()
         {
             return "";
         }
-
         public object getNexthinkPassword()
         {
             return "mypwd2";
         }
-
         public void ButtonGeneralInfo_Click()
         {
             var errOn = _.GETERRORTRAPPINGTOKEN();

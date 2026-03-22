@@ -44,7 +44,6 @@ namespace TranslatedProgram
         internal object HLASC_SoftwareLicenseFolderView { get; set; }
         internal object HLASC_SoftwareLicenseGroupView { get; set; }
         internal object HLASC_Software2Computer { get; set; }
-
         //---------------------------------------------------------------
         //Diese Funktion ermittelt den Standard-Eintrag zum angegebenen Attribut aus
         //dem Dictionary.
@@ -113,7 +112,6 @@ namespace TranslatedProgram
             }
             return GetCommunicationDefault_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Deaktivieren bzw. aktivieren aller Traces, Text = Logtext im App.Log
         public void Trace(ref object hlContext, ref object text)
@@ -125,7 +123,6 @@ namespace TranslatedProgram
             }
             finally { text = byrefalias6; }
         }
-
         //---------------------------------------------------------------
         //Setzt den vorhandenen Wert aus dem VB-Dictionary in die ODE "PersonInformation".
         public void SetPersonInformation(ref object hlContext, ref object hlObject, ref object dict)
@@ -141,7 +138,6 @@ namespace TranslatedProgram
 
             _.CALLm1argp(this, hlObject, "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
         }
-
         //---------------------------------------------------------------
         public object IsHLObject(ref object hlContext, ref object hlObject)
         {
@@ -160,13 +156,11 @@ namespace TranslatedProgram
             IsHLObject_retVal = _.VAL(_.AND(_.EQ(_.ISOBJECT(hlObject), true), _.EQ(_.IS(hlObject, VBScriptConstants.Nothing), false)));
             return IsHLObject_retVal;
         }
-
         //-------------------------------------------------------------------
         public object GetBaseType(ref object hlContext, ref object hlObject)
         {
             return _.VAL(_.CALLm1v5(this, hlObject, "GetValue", "HLOBJECTINFO.BASETYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
         }
-
         //---------------------------------------------------------------
         //Dies ist eine rekursive Function zum ermitteln der Organisationshierarchie,
         //ausgehend vom der ersten OU ueberhalb einer Person.
@@ -228,7 +222,6 @@ namespace TranslatedProgram
             }
             return GetPersonOrganisation_retVal;
         }
-
         //---------------------------------------------------------------
         //ueber diese Function wird fuer ein Flag Attribut immer der Wert
         //True oder False ausgegeben.
@@ -247,7 +240,6 @@ namespace TranslatedProgram
             }
             return GetFlagValue_retVal;
         }
-
         //-------------------------------------------------------------------
         //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
         //Woerterbuch ohne Parameter.
@@ -271,7 +263,6 @@ namespace TranslatedProgram
             GetErrMsg0_retVal = _.REPLACE(strErrMsg, "%LF%", VBScriptConstants.vbNewLine);
             return GetErrMsg0_retVal;
         }
-
         //Das Script ermittelt auf Basis der ersten uebergeordneten OU den gesamten Pfad bis zur Firma oder Konzern
         //und speichert diesen in das Hilfsattribut PersonInformation.PersonOrganisation.
         //This script detects the entire path based on the first parent OU up to the company or holding
@@ -355,7 +346,6 @@ namespace TranslatedProgram
                 }
             }
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Prozedur fuellt die Umzugshistorie fuer das entsprechende Objekt
         public void SetAssetHistory(ref object hlContext, ref object hlObjectA, ref object hlObjectB, ref object created)
@@ -414,7 +404,6 @@ namespace TranslatedProgram
                 }
             }
         }
-
         //---------------------------------------------------------------
         //Diese Function ermitellt eine Fehlermeldung aus dem helpLine
         //Woerterbuch mit einem Parameter.
@@ -439,7 +428,6 @@ namespace TranslatedProgram
             GetErrMsg1_retVal = _.REPLACE(strErrMsg, "%LF%", VBScriptConstants.vbNewLine);
             return GetErrMsg1_retVal;
         }
-
         public object GetErrMsg2(ref object hlContext, ref object LocaleID, ref object ErrCode, ref object Arg1, ref object Arg2)
         {
             object GetErrMsg2_retVal = null;
@@ -462,7 +450,6 @@ namespace TranslatedProgram
             GetErrMsg2_retVal = _.REPLACE(strErrMsg, "%LF%", VBScriptConstants.vbNewLine);
             return GetErrMsg2_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         //In dieser Funktion wird geprueft, ob es unterhalb einer Software Suite
         //bereits Lizenzumschlaege mit Lizenzen gibt.
@@ -522,7 +509,6 @@ namespace TranslatedProgram
             }
             return GetReferenceLicenseCount_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
         //den obersten Lizenz Umschlag ermittelt. Auf dem Weg dort hin wird geprueft ob einer
@@ -587,7 +573,6 @@ namespace TranslatedProgram
             }
             return CheckForSoftwareSuiteFolder_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         //In dieser Rekursiven Funktion wird solange nach oben gegangen, bis man
         //den obersten Lizenz Umschlag ermittelt und neu berechnet hat.
@@ -719,13 +704,11 @@ namespace TranslatedProgram
             }
             return SetLicenseCounter_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         public object IsValidObject(ref object obj)
         {
             return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
         }
-
         //----------------------------------------------------------------------------------------------------------
         public void CalcAllLicCounter(ref object hlContext, ref object pDict)
         {
@@ -786,7 +769,6 @@ namespace TranslatedProgram
             _.SETm0a1(this, pDict, "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))));
 
         }
-
         //----------------------------------------------------------------------------------------------------------
         public void CalcFolderLicCounter(ref object hlContext, ref object pDict)
         {
@@ -848,7 +830,6 @@ namespace TranslatedProgram
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
             _.SETm0a1(this, pDict, "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict, _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict, _.ARGS.Val("SumInstLicCounter"))));
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Diese Function ueberprueft den ganzzahligen Wert (Integer).
         public object CheckIntegerValue(ref object hlContext, ref object intval)
@@ -864,7 +845,6 @@ namespace TranslatedProgram
             }
             return CheckIntegerValue_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         public object OnCreate_HasAssociationToDelete(ref object hlContext, ref object AscDefName, ref object hlObjB)
         {
@@ -908,7 +888,6 @@ namespace TranslatedProgram
             OnCreate_HasAssociationToDelete_retVal = _.VAL(result);
             return OnCreate_HasAssociationToDelete_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         public object OnCreate_HasAssociationToCreate(ref object hlContext, ref object AscDefName, ref object hlObjB)
         {
@@ -952,7 +931,6 @@ namespace TranslatedProgram
             OnCreate_HasAssociationToCreate_retVal = _.VAL(result);
             return OnCreate_HasAssociationToCreate_retVal;
         }
-
         public object OnDelete_HasAssociationToCreate(ref object hlContext, ref object AscDefName, ref object hlObjB)
         {
             object OnDelete_HasAssociationToCreate_retVal = null;
@@ -1001,7 +979,6 @@ namespace TranslatedProgram
             OnDelete_HasAssociationToCreate_retVal = _.VAL(result);
             return OnDelete_HasAssociationToCreate_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         public object GetAssociatedOrganizationalUnit(ref object hlContext, ref object lcid, ref object hlChild, ref object pDict, ref object outParentDefName)
         {

@@ -29,7 +29,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         public void Test()
         {
             object hlContext = null;

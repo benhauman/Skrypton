@@ -28,7 +28,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         public void IncReqOnLoad()
         {
             object rewritten_ReadOnly = null;
@@ -259,7 +258,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void OnSUIDAdded()
         {
             object rewritten_ReadOnly = null;
@@ -345,7 +343,6 @@ namespace TranslatedProgram
             _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, "DefaultNotificationEmail");
 
         }
-
         public void SearchAsset_AfterExecute()
         {
             //Status der Inventarsuche prüfen, um die Bezeichnung des Suchbuttons zu setzen
@@ -360,7 +357,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void SearchAsset_AfterReset()
         {
             object objO = null; /* Undeclared in source */
@@ -391,7 +387,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void SearchAsset_Click()
         {
             object rewritten_ReadOnly = null;
@@ -461,7 +456,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void SearchCaller_AfterExecute()
         {
             object tempmail = null;
@@ -608,7 +602,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void SearchCaller_AfterReset()
         {
             object objO = null; /* Undeclared in source */
@@ -639,7 +632,6 @@ namespace TranslatedProgram
             _.SETm1a0(this, _env.Person, "BackColor", _.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)));
 
         }
-
         public void SearchCaller_Click()
         {
             object rewritten_ReadOnly = null;
@@ -667,7 +659,6 @@ namespace TranslatedProgram
             LangID = _.VAL(_.CALLm1argp(this, _env.hlSession, "LangIDFromLCID", _.ARGS.Ref(lcid, v6 => { lcid = v6; })));
 
         }
-
         public void SetProblemText2Subject()
         {
             object varSubject = null; /* Undeclared in source */
@@ -678,7 +669,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ComboIncidentStatus_SelectionChanged()
         {
             object tempmail = null;
@@ -861,7 +851,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ComboRequestType_SelectionChanged()
         {
             object Anfrageart = null;
@@ -919,7 +908,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void OnSave()
         {
             object CheckOverView = null; /* Undeclared in source */
@@ -944,7 +932,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void TreeKeyword_ondatachange()
         {
             object isreserved = null;
@@ -1012,7 +999,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ComboLevel_SelectionChanged()
         {
             object level = null;
@@ -1029,7 +1015,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonDiscovery_Click()
         {
             object Hostname = null;
@@ -1042,7 +1027,6 @@ namespace TranslatedProgram
             oExec = _.OBJ(_.CALLm1argp(this, wshshell, "Exec", _.ARGS.Ref(Command1, v17 => { Command1 = v17; })));
 
         }
-
         public void b_template_save_Click()
         {
             object isreserved = null;
@@ -1112,7 +1096,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void b_template_load_Click()
         {
             object msg = null;
@@ -1321,7 +1304,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void b_template_change_Click()
         {
             object agent = null;
@@ -1407,7 +1389,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void cb_template_load_onfocus()
         {
             var errOn = _.GETERRORTRAPPINGTOKEN();
@@ -1522,7 +1503,6 @@ namespace TranslatedProgram
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
         }
-
         public void b_template_delete_Click()
         {
             object msg = null;
@@ -1610,7 +1590,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void cb_template_load_SelectionEndOK()
         {
             var errOn2 = _.GETERRORTRAPPINGTOKEN();
@@ -1794,7 +1773,6 @@ namespace TranslatedProgram
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn2);
         }
-
         public void ButtonSCCMRemote_Click()
         {
             var errOn3 = _.GETERRORTRAPPINGTOKEN();
@@ -1891,7 +1869,6 @@ namespace TranslatedProgram
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn3);
         }
-
         public void ButtonShowOverView_Click()
         {
             object lcid = null; /* Undeclared in source */
@@ -2013,7 +1990,6 @@ namespace TranslatedProgram
             //ButtonShowOverView.Disabled = True
 
         }
-
         public void ComboBoxEmailCaller_SelectionChanged()
         {
             object tempmail = null;
@@ -2104,7 +2080,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonSearchMail_Click()
         {
             object ConString = null;
@@ -2160,7 +2135,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonTo_Click()
         {
             object email = null; /* Undeclared in source */
@@ -2199,7 +2173,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonCC_Click()
         {
             object email = null; /* Undeclared in source */
@@ -2238,7 +2211,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonSetAgent1_Click()
         {
             object isreserved = null;
@@ -2280,7 +2252,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonSetKW_Click()
         {
             object isreserved = null;
@@ -2360,7 +2331,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonResetTo_Click()
         {
             object CaseCallers = null;
@@ -2411,7 +2381,6 @@ namespace TranslatedProgram
             _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v43 => { strEmail = v43; }));
 
         }
-
         public void ButtonEmailPreview_Click()
         {
             const Int16 ForReading = (Int16)1;
@@ -2746,7 +2715,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonSaveKW_Click()
         {
             object isreserved = null;
@@ -2808,7 +2776,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void EditSubjectCase_ondatachange()
         {
             object Text = null;
@@ -2860,7 +2827,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonActionItemsAdd_Click()
         {
             object textdata = null;
@@ -2885,7 +2851,6 @@ namespace TranslatedProgram
             }
 
         }
-
         public void ButtonActionItemsDel_Click()
         {
             object delete = null;

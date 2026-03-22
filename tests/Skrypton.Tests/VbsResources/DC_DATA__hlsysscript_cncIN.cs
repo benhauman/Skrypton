@@ -31,7 +31,6 @@ namespace TranslatedProgram
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
         }
-
         //--------------------------------------------------------------------------------------- sub 1 ---
         public void ProcessIn()
         {
@@ -138,14 +137,12 @@ namespace TranslatedProgram
 
             _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail end.");
         }
-
         //--------------------------------------------------------------------------------------- sub 2 ---
         public void LogText(ref object sText)
         {
             //session("worker").trace sText
             _.SETm0a1(this, _env.session, "processtext", _.CONCAT(_.CALLm0argp(this, _env.session, _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf));
         }
-
         //--------------------------------------------------------------------------------------- sub 3 ---
         public void SetCaseAttributes(ref object hlcase, ref object mail)
         {
@@ -171,7 +168,6 @@ namespace TranslatedProgram
             _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v16 => { oScripter = v16; }).Ref(_env.session, v17 => { _env.session = v17; }).Val("receive"));
 
         }
-
         public object AdhocMailCfg(ref object oMailRequest)
         {
             object AdhocMailCfg_retVal = null;
@@ -202,7 +198,6 @@ namespace TranslatedProgram
             AdhocMailCfg_retVal = _.OBJ(oCaseCfg);
             return AdhocMailCfg_retVal;
         }
-
         public object IsAdhocMail(ref object oMailRequest)
         {
             object IsAdhocMail_retVal = null;
@@ -238,7 +233,6 @@ namespace TranslatedProgram
             IsAdhocMail_retVal = _.VAL(bRegisteredMailType);
             return IsAdhocMail_retVal;
         }
-
         public void CreateAdhocCase(ref object oMailRequest)
         {
             object oSubjectValue = null;
@@ -273,7 +267,6 @@ namespace TranslatedProgram
             }
             finally { oMailRequest = byrefalias3; }
         }
-
         public void SetSUAttributes(ref object hlcase, ref object mail)
         {
             object oScripter = null;
@@ -298,7 +291,6 @@ namespace TranslatedProgram
             _.CALLm1argp(this, _.CALLm0argp(this, _env.session, _.ARGS.Val("worker")), "ExecuteScript", _.ARGS.Ref(oScripter, v23 => { oScripter = v23; }).Ref(_env.session, v24 => { _env.session = v24; }).Val("extend"));
 
         }
-
         public void AssociateSenderToCase(ref object oMailRequestX, ref object oCaseCfgX, ref object oHLServerX, ref object oCaseX)
         {
             object oCaseCfgZ = null;
@@ -347,7 +339,6 @@ namespace TranslatedProgram
             }
 
         }
-
         //---------------------------------------------------------------------------------------- createCaseFromMail ---
         public object CreateCaseFromMail(ref object oMailRequest, ref object oCaseCfg, ref object oHLServer)
         {
@@ -405,7 +396,6 @@ namespace TranslatedProgram
             CreateCaseFromMail_retVal = _.VAL(sReportText);
             return CreateCaseFromMail_retVal;
         }
-
         //---------------------------------------------------------------------------------------- extractRefNumber ---
         public object ExtractRefNumber(ref object subject)
         {
@@ -432,7 +422,6 @@ namespace TranslatedProgram
             ExtractRefNumber_retVal = _.VAL(refNum);
             return ExtractRefNumber_retVal;
         }
-
         //---------------------------------------------------------------------------------------- extendCaseFromMail ---
         public object ExtendCaseFromMail(ref object oMailRequest, ref object oCaseCfg, ref object oHLServer, ref object refNumber)
         {
@@ -470,7 +459,6 @@ namespace TranslatedProgram
             ExtendCaseFromMail_retVal = "";
             return ExtendCaseFromMail_retVal;
         }
-
         //---------------------------------------------------------------------------------------- ExtendCase ---
         public void ExtendCase(ref object ocaseZeC, ref object oMailRequestZeC, ref object oCaseCfg, ref object oHLServerZeC)
         {
@@ -495,7 +483,6 @@ namespace TranslatedProgram
             _.CALLm1v0(this, ocaseZeC, "mergeSUs");
 
         }
-
         //---------------------------------------------------------------------------------------- IsWorkflowEmail ---
         public object IsWFEmail(ref object subject, ref object keywordList)
         {

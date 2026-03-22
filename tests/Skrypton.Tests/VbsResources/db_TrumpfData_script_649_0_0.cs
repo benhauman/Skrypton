@@ -39,7 +39,6 @@ namespace TranslatedProgram
         }
         internal object HLASC_SoftwareLicenseFolderView { get; set; }
         internal object HLASC_SoftwareLicenseGroupView { get; set; }
-
         //----------------------------------------------------------------------------------------------------------
         //Globale Funktion zur Initialisierung der Datei hlStartITIL2.dll.
         //Diese DLL-Datei beinhaltet alle globalen Funktionen und Prozeduren,
@@ -57,7 +56,6 @@ namespace TranslatedProgram
             _.CALLm2argp(this, _outer, "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
             return hlITIL2_retVal;
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Deaktivieren bzw. aktivieren aller Traces, Text = Logtext im App.Log
         public void Trace(ref object hlContext, ref object text)
@@ -69,7 +67,6 @@ namespace TranslatedProgram
             }
             finally { text = byrefalias; }
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Funktion InfoMail
         //Zum Aufrufen aus EBL-Skripten von Vorgaengen
@@ -118,7 +115,6 @@ namespace TranslatedProgram
             }
             _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
         }
-
         //----------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------
         public void CreateSubject(ref object hlContext, ref object Survey, ref object hlCaller)
@@ -134,7 +130,6 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, Survey, "SetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, "Survey about the Service-Quality from your Support-Team");
             }
         }
-
         //----------------------------------------------------------------------------------------------------------
         public void InviteSurveyEmail(ref object hlContext, ref object hlCase, ref object hlCaller)
         {
@@ -271,7 +266,6 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
             }
         }
-
         //----------------------------------------------------------------------------------------------------------
         //Diese Funktion steuert den SystemTask wenn dieser im Vorgangstyp Task konfiguriert wurde.
         //This function controls a SystemTask if it had been configured within the casetype Task.
@@ -372,7 +366,6 @@ namespace TranslatedProgram
             _.CALLm1v1(this, hlContext, "SaveObject", newTask);
             _.CALLm1argp(this, newTask, "Unreserve", _.ARGS.ForceBrackets());
         }
-
         //Festlegung der Definitionen eines SystemTasks pro Tag.
         //Determining of definitions of a SystemTask by day.
         public void CreateSystemTaskDefbyDay(ref object SysTaskBeginnDate, ref object SysTaskEndDate, ref object NoEndDate, ref object NumberOfDays, ref object taskDefname, ref object recurrenceEndType)
@@ -461,7 +454,6 @@ namespace TranslatedProgram
             hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
             _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v39 => { hlSystemTaskDefinitionObj = v39; }));
         }
-
         //Entfernt einen vorhandenen SystemTask.
         //Remove an existing SystemTask.
         public void DeleteSystemTask(ref object hlContext, ref object hlObj, ref object hlSystemTask, ref object taskname)
@@ -473,7 +465,6 @@ namespace TranslatedProgram
             }
             finally { hlSystemTask = byrefalias11; }
         }
-
         //Festlegung der Definitionen eines SystemTasks pro Woche.
         //Determining of definitions of a SystemTask by week.
         public void CreateSystemTaskDefbyWeek(ref object SysTaskBeginnDate, ref object SysTaskEndDate, ref object NoEndDate, ref object NumberOfWeeks, ref object MondayFlag, ref object TuesdayFlag, ref object WednesdayFlag, ref object ThursdayFlag, ref object FridayFlag, ref object SaturdayFlag, ref object SundayFlag, ref object taskDefname, ref object recurrencedaymask, ref object recurrenceEndType)
@@ -567,7 +558,6 @@ namespace TranslatedProgram
             hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
             _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v52 => { hlSystemTaskDefinitionObj = v52; }));
         }
-
         //Festlegung der Definitionen eines SystemTasks pro Monat.
         //Determining of definitions of a SystemTask by month.
         public void CreateSystemTaskDefbyMonth(ref object SysTaskBeginnDate, ref object SysTaskEndDate, ref object NoEndDate, ref object DayOfMonth, ref object NumberOfMonths, ref object taskDefname, ref object recurrenceEndType)
@@ -660,7 +650,6 @@ namespace TranslatedProgram
             hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
             _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v64 => { hlSystemTaskDefinitionObj = v64; }));
         }
-
         //Sub fuehrt den SystemTask einmalig aus.
         //Sub execute SystemTask one-time.
         public void CreateOneTimeSystemTask(ref object OneTimeTask, ref object SysTaskEndDate, ref object SysTaskBeginnDate, ref object taskDefname)
@@ -714,13 +703,11 @@ namespace TranslatedProgram
             _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v71 => { hlSystemTaskDefinitionObj = v71; }));
             _.CALLm1argp(this, hlObj, "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v72 => { systemTaskDefinitionName = v72; }));
         }
-
         //----------------------------------------------------------------------------------------------------------
         public object IsValidObject(ref object obj)
         {
             return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
         }
-
         public void ExportObject(ref object hlContext, ref object hlObj)
         {
             object objDefname = null;
@@ -853,7 +840,6 @@ namespace TranslatedProgram
             _.CALLm1v1(this, xmldoc, "Save", Filename);
 
         }
-
         public void ExportObjectIncident(ref object hlContext, ref object hlObj)
         {
             object objDefname = null;
@@ -1063,7 +1049,6 @@ namespace TranslatedProgram
             _.CALLm1v1(this, xmldoc, "Save", Filename);
 
         }
-
         public void AppendNode(ref object hlContext, ref object xmldoc, ref object nodeObject, ref object iskey, ref object key, ref object value)
         {
             object valueNode = null;
@@ -1096,7 +1081,6 @@ namespace TranslatedProgram
             _.CALLm2argp(this, valueNode, "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
 
         }
-
         public void AppendTextNode(ref object hlContext, ref object xmldoc, ref object nodeObject, ref object key, ref object value)
         {
             object valueNode = null;
@@ -1110,7 +1094,6 @@ namespace TranslatedProgram
 
             _.SETm1a0(this, valueNode, "Text", _.VAL(value));
         }
-
         public object DBConnectionString(ref object hlContext)
         {
             object DBConnectionString_retVal = null;
