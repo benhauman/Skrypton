@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             //Check if invalid characters are in any of the url textboxes
             _env.dict = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
             _env.objRegEx = _.OBJ(_.CREATEOBJECT("VBScript.RegExp"));
@@ -67,11 +65,9 @@ namespace TranslatedProgram
             element = null;
             errMsg = null;
         }
-
         internal object element { get; set; }
         internal object errMsg { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object dict { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

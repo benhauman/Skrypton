@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
@@ -46,12 +44,10 @@ namespace TranslatedProgram
             CaseAttributes = null;
             backColor = null;
         }
-
         internal object hlObj { get; set; }
         internal object CaseAttributes { get; set; }
         internal object backColor { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

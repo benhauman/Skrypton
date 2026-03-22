@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("29 5 2015"))))
             {
             }
@@ -34,7 +32,6 @@ namespace TranslatedProgram
             _outer = this;
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

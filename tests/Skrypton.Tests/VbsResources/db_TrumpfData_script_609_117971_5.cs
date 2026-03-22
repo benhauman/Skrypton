@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             _.CALLm1v0(this, _env.hlContext, "EnableTrace");
             //Deaktiviern bzw. aktivieren aller Traces fuer ein Skript, Text = Logtext im App.Log
             //Ermitteln der Locale ID fuer die Sprachauswahl.
@@ -5412,7 +5410,6 @@ namespace TranslatedProgram
             ProblemtitleNew = null;
             SUIdx = null;
         }
-
         internal object lcid { get; set; }
         internal object LangID { get; set; }
         internal object hlCase { get; set; }
@@ -5500,7 +5497,6 @@ namespace TranslatedProgram
         internal object ProblemtitleNew { get; set; }
         internal object SUIdx { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object ExportObjectIncident { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

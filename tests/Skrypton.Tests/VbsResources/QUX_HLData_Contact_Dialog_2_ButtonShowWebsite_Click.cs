@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             _outer.objShell = _.OBJ(_.CREATEOBJECT("Shell.Application"));
             if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _env.TextBoxWebsite, "Text"))), "")))
             {
@@ -36,10 +34,8 @@ namespace TranslatedProgram
             _outer = this;
             objShell = null;
         }
-
         internal object objShell { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object TextBoxWebsite { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

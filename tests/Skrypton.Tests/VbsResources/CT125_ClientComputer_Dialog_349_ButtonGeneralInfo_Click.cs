@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             _.CALLm1v0(this, _outer, "ButtonGeneralInfo_Click");
         }
     }
@@ -553,7 +551,6 @@ namespace TranslatedProgram
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object ButtonGeneralInfo { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

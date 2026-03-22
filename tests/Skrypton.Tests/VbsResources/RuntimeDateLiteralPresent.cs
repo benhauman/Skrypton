@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -18,7 +17,6 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             RuntimeDateLiteralValidator.ValidateAgainstCurrentCulture(_);
-
             if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("29 May 2015"))))
             {
             }
@@ -29,7 +27,6 @@ namespace TranslatedProgram
             new ReadOnlyCollection<Tuple<string, int[]>>(new[] {
                 Tuple.Create("29 May 2015", new[] { 2 })
             });
-
             public static void ValidateAgainstCurrentCulture(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
             {
                 if (compatLayer == null)
@@ -49,7 +46,6 @@ namespace TranslatedProgram
                 }
             }
         }
-
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
     {
@@ -63,7 +59,6 @@ namespace TranslatedProgram
             _outer = this;
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

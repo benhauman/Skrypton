@@ -210,7 +210,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     //new TranslatedStatement("using " + typeof(SourceClassNameAttribute).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Attributes;
                     //new TranslatedStatement("using " + typeof(SpecificVBScriptException).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Exceptions;
                     //new TranslatedStatement("using " + typeof(TranslatedPropertyIReflectImplementation).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport.Compat;
-                    EmptyLine,
+                    //EmptyLine,
                     new TranslatedStatement("namespace " + _startNamespace.Name, 0, 0),
                     new TranslatedStatement("{", 0, 0),
                 });
@@ -273,7 +273,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         0
                     ));
                 }
-                translatedStatements = translatedStatements.Add(EmptyLine);
+                //translatedStatements = translatedStatements.Add(EmptyLine);
             }
 
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
@@ -336,7 +336,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         ));
                     }
                     translatedStatements = translatedStatements.Add(new TranslatedStatement("});", 3, 0));
-                    translatedStatements = translatedStatements.Add(EmptyLine);
+                    //translatedStatements = translatedStatements.Add(EmptyLine);
 
                     // Declare the function that reads the data above and performs the validation work
                     translatedStatements = translatedStatements.AddRange(new[]
@@ -367,7 +367,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         new TranslatedStatement("}", 4, 0),
                         new TranslatedStatement("}", 3, 0),
                         new TranslatedStatement("}", 2, 0),
-                        EmptyLine
+                        //EmptyLine
                     });
                 }
                 if (_outputType == OutputTypeOptions.Executable)
@@ -418,7 +418,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                 if (explicitVariableDeclarationsFromWithOuterScope.Any())
                 {
-                    translatedStatements = translatedStatements.Add(EmptyLine);
+                    //translatedStatements = translatedStatements.Add(EmptyLine);
                     Dictionary<string, TranslatedVariableDeclarationStatement> variableDeclarationStatements = [];
                     foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
                     {
@@ -468,7 +468,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
                     new TranslatedStatement("}", 1, 0), // Close 'GlobalReferences' class
-                    EmptyLine
+                    //EmptyLine
                 });
 
                 // This has to be generated after all of the Translate calls to ensure that the UndeclaredVariablesAccessed data for all of the TranslationResults is available
@@ -484,7 +484,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             if (classBlocksTranslationResult.TranslatedStatements.Any())
             {
-                translatedStatements = translatedStatements.Add(EmptyLine);
+                //translatedStatements = translatedStatements.Add(EmptyLine);
                 translatedStatements = translatedStatements.AddRange(
                     classBlocksTranslationResult.TranslatedStatements
                 );
@@ -526,7 +526,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         }
 
-        private static readonly TranslatedStatement EmptyLine = new TranslatedStatement(0);
+        //private static readonly TranslatedStatement EmptyLine = new TranslatedStatement(0);
 
         private static NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {

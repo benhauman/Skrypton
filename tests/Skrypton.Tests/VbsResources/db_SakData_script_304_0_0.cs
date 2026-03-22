@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             //---------------------------------------------------------------
 
             //---------------------------------------------------------------
@@ -43,7 +41,6 @@ namespace TranslatedProgram
             HLASC_SoftwareLicenseGroupView = "LicenseGroupView";
             HLASC_Software2Computer = "Software2Computer";
         }
-
         internal object HLASC_SoftwareLicenseFolderView { get; set; }
         internal object HLASC_SoftwareLicenseGroupView { get; set; }
         internal object HLASC_Software2Computer { get; set; }
@@ -1048,7 +1045,6 @@ namespace TranslatedProgram
             return GetAssociatedOrganizationalUnit_retVal;
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

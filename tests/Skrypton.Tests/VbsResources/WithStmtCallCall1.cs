@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             var with = _.OBJ(_outer.adoSQLCmdParam);
             _.SETm1a0(this, with, "ActiveConnection", VBScriptConstants.Nothing);
             _.CALLm2v1(this, with, "Pr", "Ap", _.CALLm1v3(this, with, "CreateParameterX", "RETURN_VALUEx", (Int16)3, (Int16)4));
@@ -38,11 +36,9 @@ namespace TranslatedProgram
             parmval = null;
             adoSQLCmdParam = null;
         }
-
         internal object parmval { get; set; }
         internal object adoSQLCmdParam { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

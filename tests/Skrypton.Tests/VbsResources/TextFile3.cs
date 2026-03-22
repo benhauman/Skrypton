@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
             if (_.IF(_.GTE(_outer.position, _outer.anzahl_agent_templates)))
             {
                 //Select für Agententemplate ausführen
@@ -40,11 +38,9 @@ namespace TranslatedProgram
             position = null;
             anzahl_agent_templates = null;
         }
-
         internal object position { get; set; }
         internal object anzahl_agent_templates { get; set; }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }

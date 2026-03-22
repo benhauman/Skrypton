@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -39,12 +38,10 @@ namespace TranslatedProgram
             return F1_retVal;
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
-
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [SourceClassName(nameof(C1))]

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Skrypton.RuntimeSupport;
-
 namespace TranslatedProgram
 {
     public sealed class Runner : RunnerBaseT<EnvironmentReferences, GlobalReferences>
@@ -16,7 +15,6 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -38,7 +36,6 @@ namespace TranslatedProgram
             _.CALLm1v5(this, task, "SetValue", "RoutingHelper.AgentID", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v5(this, Person, "GetValue", "HLOBJECTINFO.ID", (Int16)0, (Int16)0, _.CALLm1argp(this, task, "GetSvcUnitCount", _.ARGS.ForceBrackets()), (Int16)0));
         }
     }
-
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
         public object hlContext { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
