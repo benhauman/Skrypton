@@ -133,7 +133,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             if (segments.Length == 1)
             {
                 TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[0], scopeAccessInformation);
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                     ApplyReturnTypeGuarantee(
                         result.TranslatedContent,
                         result.ContentType,
@@ -146,7 +146,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (segments.Length == 2)
             {
                 TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                     ApplyReturnTypeGuarantee(
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.{1}({2})",
@@ -329,7 +329,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 resultRight = WrapTranslatedResultInStringConversion(resultRight);
             }
 
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                 ApplyReturnTypeGuarantee(
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.{1}({2}, {3})",
@@ -357,7 +357,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             //   If (Null = 1) Then
             // but it is not in other cases where NUM must be used such as
             //   For i = Null To 10
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotNullableNum,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.NullableNUM({1})",
                     _supportRefName.Name,
@@ -375,7 +375,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(translatedStatement));
             }
 
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotNullableDate,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.NullableDATE({1})",
                     _supportRefName.Name,
@@ -393,7 +393,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new ArgumentNullException(nameof(translatedStatement));
             }
 
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotNullableSTR,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.NullableSTR({1})",
                     _supportRefName.Name,
@@ -424,7 +424,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             NumericValueExpressionSegment? numericValueSegment = segment as NumericValueExpressionSegment;
             if (numericValueSegment != null)
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ValueNum,
                     numericValueSegment.Token.AsCSharpValue(out var _),
                     ExpressionReturnTypeOptions.Value,
                     new NonNullImmutableList<NameToken>()
@@ -434,7 +434,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             StringValueExpressionSegment? stringValueSegment = segment as StringValueExpressionSegment;
             if (stringValueSegment != null)
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ValueString,
                     stringValueSegment.Token.Content.ToLiteral(),
                     ExpressionReturnTypeOptions.Value,
                     new NonNullImmutableList<NameToken>()
@@ -449,7 +449,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // from when the request started is used in all cases - if the request is slow and the year ticks over part-way through, all date literals with dynamic
                 // years must be use the year from when the request started. Subsequent requests will use the new year. This is consistent with VBScript since the
                 // script is re-interpreted each time it's run.
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ValueDateFromParse,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.DateLiteralParser.Parse({1})",
                         _supportRefName.Name,
@@ -519,7 +519,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation,
                 ExpressionReturnTypeOptions.NotSpecified
             );
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.Unknown,
                 translatedInnerContentDetails.TranslatedContent,
                 ExpressionReturnTypeOptions.NotSpecified,
                 translatedInnerContentDetails.VariablesAccessed
@@ -536,7 +536,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Handle non-constants special cases
             if (builtInValueExpressionSegment.Token.Content.Equals("err", StringComparison.OrdinalIgnoreCase))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotERR,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.ERR",
                         _supportRefName.Name
@@ -549,7 +549,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Handle constants special cases
             if (builtInValueExpressionSegment.Token.Content.Equals("nothing", StringComparison.OrdinalIgnoreCase))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ConstNothing,
                     string.Format(CultureInfo.InvariantCulture,
                         "VBScriptConstants.Nothing"
                     //_supportRefName.Name
@@ -560,7 +560,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (builtInValueExpressionSegment.Token.Content.Equals("true", StringComparison.OrdinalIgnoreCase))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ConstTrue,
                     string.Format(CultureInfo.InvariantCulture,
                         "true"
                     //_supportRefName.Name
@@ -571,7 +571,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (builtInValueExpressionSegment.Token.Content.Equals("false", StringComparison.OrdinalIgnoreCase))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ConstFalse,
                     string.Format(CultureInfo.InvariantCulture,
                         "false"
                     //_supportRefName.Name
@@ -591,7 +591,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new NotSupportedException("Unsupported BuiltInValueToken content: " + builtInValueExpressionSegment.Token.Content);
             }
 
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ConstKnown,
                 string.Format(CultureInfo.InvariantCulture,
                     "VBScriptConstants.{1}",
                     _supportRefName.Name,
@@ -818,7 +818,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             NameToken? targetNameToken = firstMemberAccessToken as NameToken;
             if ((targetNameToken != null) && !firstMemberAccessTokenIsParentReturnValueName)
             {
-                result = new TranslatedStatementContentDetailsWithContentType(
+                result = new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.Unknown,
                     result.TranslatedContent,
                     result.ContentType,
                     result.VariablesAccessed.Concat([targetNameToken]).ToArray()
@@ -1007,7 +1007,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             }
                         }
                         memberCallContent.Append(')');
-                        return new TranslatedStatementContentDetailsWithContentType(
+                        return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallContent,
                             memberCallContent.ToString(),
                             ExpressionReturnTypeOptions.NotSpecified,
                             memberCallVariablesAccessed
@@ -1057,7 +1057,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // applied - only if there are no arguments and no brackets may the value be returned unwrapped.
             if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}{1}",
                         (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name),
@@ -1274,7 +1274,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 throw new NotImplementedException(callExpressionContent.ToString());
             }
 
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                 callExpressionContent.ToString(),
                 ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type
                 callExpressionVariablesAccessed
@@ -1316,7 +1316,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 argumentProviderContent.Append(argumentContent.TranslatedContent);
                 variablesAccessed = variablesAccessed.AddRange(argumentContent.VariablesAccessed);
             }
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.Args,
                 argumentProviderContent.ToString(),
                 variablesAccessed
             );
@@ -1412,7 +1412,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // must be a Reference type.
                 supportFunctionReturnType = ExpressionReturnTypeOptions.Reference;
             }
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                 supportFunctionCallContent.ToString(),
                 supportFunctionReturnType,
                 variablesAccessed
@@ -1464,7 +1464,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
                 );
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotVal,
                     string.Format(CultureInfo.InvariantCulture,
                         ".Val({0})",
                         translatedCallExpressionByValArgumentContent.TranslatedContent
@@ -1487,7 +1487,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     scopeAccessInformation,
                     ExpressionReturnTypeOptions.NotSpecified
                 );
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotRef,
                     string.Format(CultureInfo.InvariantCulture,
                         ".Ref({0}, {1} => {{ {0} = {1}; }})",
                         translatedCallExpressionByRefArgumentContent.TranslatedContent,
@@ -1571,7 +1571,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             TranslatedStatementContentDetails[] translatedContentForPossibleByRefArgumentSets = possibleByRefArgumentSets
                 .Select(args => TranslateAsArgumentProvider(args, scopeAccessInformation, forceAllArgumentsToBeByVal: false)).ToArray();
 
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotRefIfArray,
                     FormattableString.Invariant($".{nameof(IBuildCallArgumentProvidersExtensions.RefIfArray)}({possibleByRefTarget.TranslatedContent}, {string.Join(", ", translatedContentForPossibleByRefArgumentSets.Select(content => content.TranslatedContent))})"
                 ),
                 possibleByRefTarget.VariablesAccessed.ConcatCollection(translatedContentForPossibleByRefArgumentSets.SelectMany(content => content.VariablesAccessed).ToArray())
@@ -1771,7 +1771,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 content = translatedContent.TranslatedContent;
                 variablesAccessed = variablesAccessed.AddRange(translatedContent.VariablesAccessed);
             }
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                 content,
                 ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type
                 variablesAccessed
@@ -1796,7 +1796,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // responsibility of the runtime support class to provide it)
             if (newInstanceExpressionSegment.ClassName.Content.Equals("RegExp", StringComparison.OrdinalIgnoreCase))
             {
-                return new TranslatedStatementContentDetailsWithContentType(
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotNewRefExp,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.NEWREGEXP()",
                         _supportRefName.Name
@@ -1807,7 +1807,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             // Send the new instance to the NEW method so that it can be tracked and forcibly disposed of after ther request
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DotNewClassInstance,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.NEW(new {1}({0}, {2}, {3}))",
                     _supportRefName.Name,
@@ -1834,7 +1834,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // Note: Translated programs will include a "using" for the namespace containing the VBScript-specific exceptions, which are what are most
             // commonly expected here. If the required exception is within the same namespace as SpecificVBScriptException then it need only be specified
             // by name, otherwise its "FullName" will be required (which includes its namespace).
-            return new TranslatedStatementContentDetailsWithContentType(
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.DorRaiseError,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.RAISEERROR(new {1}({2}))",
                     _supportRefName.Name,
@@ -2054,7 +2054,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // return now. We can't do this if the return type is NotSpecified since in C# it's not valid to have a statement that is only an instance
             // of a class (but if it's wrapped in a call to OBJ or VAL then it's ok). This logic can only be applied to non-value-returning Statements,
             // Expressions that return values could exist as just "o" since that WOULD be valid C#.
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotVal,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.VAL({1})",
                     _supportRefName.Name,
@@ -2112,7 +2112,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
 
             IEnumerable<TranslatedStatementContentDetailsWithContentType> translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation));
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                 ApplyReturnTypeGuarantee(
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.{1}({2})",
@@ -2130,10 +2130,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
         private sealed class TranslatedStatementContentDetailsWithContentType : TranslatedStatementContentDetails
         {
-            public TranslatedStatementContentDetailsWithContentType(
+            public TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind kind,
                 string content,
                 ExpressionReturnTypeOptions contentType,
-                IReadOnlyCollection<NameToken> variablesAccessed) : base(content, variablesAccessed)
+                IReadOnlyCollection<NameToken> variablesAccessed) : base(kind, content, variablesAccessed)
             {
                 if (!Enum.IsDefined(typeof(ExpressionReturnTypeOptions), contentType))
                 {

@@ -554,7 +554,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 indentationDepth -= byRefMappingOpeningTranslationDetails.DistanceToIndentCodeWithMappedValues;
                 translationResult = byRefArgumentsToRewrite.CloseByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
-                evaluatedTargetContent = new TranslatedStatementContentDetails(
+                evaluatedTargetContent = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.TargetName,
                     evaluatedTargetName.Name,
                     rewrittenConditionalContent.VariablesAccessed
                 );
@@ -664,7 +664,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 if (Is<NumericValueToken>(value))
                 {
-                    return new TranslatedStatementContentDetails(
+                    return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {2})",
                             _supportRefName.Name,
@@ -677,7 +677,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
                 if (isFirstValueInCaseSet)
                 {
-                    return new TranslatedStatementContentDetails(
+                    return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {0}.NUM({2}))",
                             _supportRefName.Name,
@@ -688,7 +688,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                 }
 
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.EQish({1}, {2})",
                         _supportRefName.Name,
@@ -704,7 +704,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 if (evaluatedTarget is NumericValueToken)
                 {
-                    return new TranslatedStatementContentDetails(
+                    return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.EQ({1}, {2})",
                             _supportRefName.Name,
@@ -715,7 +715,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                 }
 
-                return new TranslatedStatementContentDetails(
+                return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0}.EQ({0}.NUM({1}), {2})",
                         _supportRefName.Name,
@@ -728,7 +728,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             // If neither value (target nor case option) are numeric literals, then no flexible matching is applied (there is apparently no special behaviour applied to string literals in either the target
             // codeExpression nor any value within a case set)
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotEqual,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.EQ({1}, {2})",
                     _supportRefName.Name,

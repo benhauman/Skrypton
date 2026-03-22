@@ -75,7 +75,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if (!doBlock.IsDoWhileCondition)
                 {
                     // C# doesn't support "DO UNTIL x" but it's equivalent to "DO WHILE !x"
-                    whileConditionExpressionContentIfAny = new TranslatedStatementContentDetails(
+                    whileConditionExpressionContentIfAny = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.NotUntil,
                         "!" + whileConditionExpressionContentIfAny.TranslatedContent,
                         whileConditionExpressionContentIfAny.VariablesAccessed
                     );
@@ -107,7 +107,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // must be within the outer, error-handling IF call. (A simpler example of the above is to replace the GetValue() call with 1/0, which will
                     // result in a "Division by zero" error if ON ERROR RESUME NEXT is not present, but which will result in both of the above loops being
                     // entered if it IS present).
-                    whileConditionExpressionContentIfAny = new TranslatedStatementContentDetails(
+                    whileConditionExpressionContentIfAny = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotIf,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF(() => {1}, {2})",
                             _supportRefName.Name,

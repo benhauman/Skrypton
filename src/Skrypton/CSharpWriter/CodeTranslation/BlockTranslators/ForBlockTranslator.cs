@@ -808,7 +808,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             );
             if (IsCallingBuiltInNumberReturningFunction(codeExpression, scopeAccessInformation))
                 return translatedExpressionContent;
-            return new TranslatedStatementContentDetails(
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotNum,
                 string.Format(CultureInfo.InvariantCulture,
                     "{0}.NUM({1})",
                     _supportRefName.Name,

@@ -19,7 +19,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
             var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_env.a = (Int16)1",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
             var expressionToSetTo = new CodeExpression([new BuiltInValueToken("true", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_env.a = true",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -72,7 +72,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm1a0(this, _env.a, \"b\", (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -99,7 +99,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_outer.a = (Int16)1",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -136,7 +136,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm0a1(this, _outer.a, (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -173,7 +173,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm0a1(this, _env.a, (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -206,7 +206,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm0a1(this, _.RAISEERROR(new IllegalAssignmentException(\"'a'\")), (Int16)1, (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -243,7 +243,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NameToken("a", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_env.a = _.CDATE(_env.a)",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -279,7 +279,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new NameToken("b", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 @"_env.a = _.VAL(_.CALLm1v2(this, _, ""CDATE"", _env.a, _env.b))",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)])
             );
@@ -324,7 +324,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 statements: [valueSettingStatement]
             );
 
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "a = (Int16)1",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -361,7 +361,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 new CloseBrace(lineIndex1)
             ]);
             var expressionToSetTo = new CodeExpression([new NumericValueToken("1", lineIndex1)]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
                 new NonNullImmutableList<NameToken>([new NameToken("a", lineIndex1)])
             );
@@ -393,7 +393,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
                 new NonNullImmutableList<NameToken>([new NameToken("F1", lineIndex1)])
             );
@@ -426,7 +426,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new NumericValueToken("1", lineIndex1)
             ]);
-            var expected = new TranslatedStatementContentDetails(
+            var expected = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.RawText,
                 @"_.SETm1a0(this, this, ""Name"", (Int16)1)",
                 new NonNullImmutableList<NameToken>([new NameToken("Name", lineIndex1)])
             );

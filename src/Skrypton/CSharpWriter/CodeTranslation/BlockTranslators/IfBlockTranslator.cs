@@ -144,7 +144,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     ));
                     indentationDepth -= byRefMappingOpeningTranslationDetails.DistanceToIndentCodeWithMappedValues;
                     translationResult = byRefArgumentsToRewrite.CloseByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
-                    conditionalContent = new TranslatedStatementContentDetails(
+                    conditionalContent = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.IfResultName,
                         evaluatedResultName.Name,
                         rewrittenConditionalContent.VariablesAccessed
                     );
@@ -154,7 +154,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // If we're not in a function or property or if that function or property does not have any by-ref arguments that we need to pass in as by-ref arguments
                     // to further functions or properties, then we're in the less complicate error-trapping scenario; we only have to use the IF extension method that deals
                     // with error-trapping.
-                    conditionalContent = new TranslatedStatementContentDetails(
+                    conditionalContent = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotIf,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF(() => {1}, {2})",
                             _supportRefName.Name,
@@ -166,7 +166,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 else
                 {
-                    conditionalContent = new TranslatedStatementContentDetails(
+                    conditionalContent = new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.DotIf,
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.IF({1})",
                             _supportRefName.Name,
