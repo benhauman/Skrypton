@@ -92,21 +92,8 @@ namespace Skrypton.CSharpWriter
             );
 
             IReadOnlyList<ICodeBlock> parsedBlocks = Parse(culture, scriptContent);
-            IReadOnlyCollection<TranslatedStatement> translatedStatements = codeBlockTranslator.Translate(parsedBlocks);
-            return RenderTranslatedProgramCode(translatedStatements);
-        }
-        private const char NewLineNormalized = '\n';
-        private static string RenderTranslatedProgramCode(IReadOnlyCollection<TranslatedStatement> statements)
-        {
-            if (statements == null) throw new ArgumentNullException(nameof(statements));
-            StringBuilder tb = new StringBuilder();
-            foreach (TranslatedStatement s in statements)
-            {
-                s.RenderTranslatedStatement(tb);
-                tb.Append(NewLineNormalized);
-            }
-            string csText = tb.ToString();
-            return csText;
+            CSharpOutermostCodeBuilder outerBuilder = codeBlockTranslator.Translate(parsedBlocks);
+            return outerBuilder.RenderTranslatedProgramCode();
         }
 
         /// <summary>

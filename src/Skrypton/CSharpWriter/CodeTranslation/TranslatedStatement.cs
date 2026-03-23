@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Skrypton.CSharpWriter.Lists;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
@@ -124,6 +126,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         ReturnText,
         UsingText,
         ////////////////////
+        OutermostCodeText,
         ConstructorDeclarationStatement,
     }
 
@@ -156,6 +159,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             StringBuilder sb = new StringBuilder();
             DoBuildTranslatedStatement(sb);
             return new TranslatedStatement(true, _kind, sb.ToString(), 0, LineIndexOfStatementStartInSource);
+        }
+        internal void RenderTranslatedStatement(StringBuilder sb)
+        {
+            DoBuildTranslatedStatement(sb);
         }
         protected abstract void DoBuildTranslatedStatement(StringBuilder sb);
     }
@@ -239,6 +246,72 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             }
 
             tb.Append(indentationCtor).Append('}');//.AppendLine()
+        }
+    }
+
+    internal sealed class CSharpOutermostCodeBuilder() : CSharpCodeBuilder(TranslatedStatementKind.OutermostCodeText)
+    {
+        private readonly List<CSharpCodeBuilder> _preBuilders = new List<CSharpCodeBuilder>();
+        private readonly List<CSharpCodeBuilder> _postBuilders = new List<CSharpCodeBuilder>();
+        private NonNullImmutableList<TranslatedStatement> translatedStatements = new NonNullImmutableList<TranslatedStatement>();
+        protected override void DoBuildTranslatedStatement(StringBuilder sb)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        internal CSharpOutermostCodeBuilder AddBuilder(CSharpCodeBuilder builder)
+        {
+            _preBuilders.Add(builder);
+            return this;
+        }
+        public CSharpOutermostCodeBuilder AddRange(IReadOnlyCollection<TranslatedStatement> values)
+        {
+            translatedStatements = translatedStatements.AddRange(values);
+            return this;
+        }
+        public CSharpOutermostCodeBuilder Add(TranslatedStatement value)
+        {
+            translatedStatements = translatedStatements.Add(value);
+            return this;
+        }
+
+        private void RemoveRunsOfBlankLines()
+        {
+            translatedStatements =  translatedStatements
+                .Select((s, i) => ((i == 0) || (s.HasContent) || (translatedStatements[i - 1].HasContent)) ? s : null)
+                .Where(s => s != null)
+                .Select(s => s!)
+                .ToNonNullImmutableList();
+        }
+        private const char NewLineNormalized = '\n';
+
+        internal string RenderTranslatedProgramCode()
+        {
+            RemoveRunsOfBlankLines();
+
+            StringBuilder tb = new StringBuilder();
+            foreach (CSharpCodeBuilder b in _preBuilders)
+            {
+                b.RenderTranslatedStatement(tb);
+                tb.Append(NewLineNormalized);
+            }
+
+            foreach (TranslatedStatement s in translatedStatements)
+            {
+                s.RenderTranslatedStatement(tb);
+                tb.Append(NewLineNormalized);
+            }
+
+            foreach (CSharpCodeBuilder b in _postBuilders)
+            {
+                b.RenderTranslatedStatement(tb);
+                tb.Append(NewLineNormalized);
+            }
+
+
+            string csText = tb.ToString();
+            return csText;
         }
     }
 }
