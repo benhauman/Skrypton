@@ -215,7 +215,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
                     new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
 
-                    TranslatedStatementFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
+                    CSharpSyntaxFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
                         .AddStatement(new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0))
                         .BuildTranslatedStatement()
                 });
@@ -254,12 +254,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"int {scopeAccessInformation.ErrorRegistrationTokenIfAny.Name} = {_supportRefName.Name}.GETERRORTRAPPINGTOKEN();", 3, 0));
-                outerBuilder.AddVariableDeclaration(3, 0, stmt => { stmt.VariableType<int>().VariableName(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name).VariableInitialization($"{_supportRefName.Name}.GETERRORTRAPPINGTOKEN();"); });
+                outerBuilder.AddVariableDeclaration(3, 0, stmt => stmt.VariableType<int>().VariableName(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name).VariableInitialization($"{_supportRefName.Name}.GETERRORTRAPPINGTOKEN();"));
             }
             outerBuilder.AddRange(outerExecutableBlocksTranslationResult.TranslatedStatements);
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
-                outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"{_supportRefName.Name}.RELEASEERRORTRAPPINGTOKEN({scopeAccessInformation.ErrorRegistrationTokenIfAny.Name});", 3, 0));
+                //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"{_supportRefName.Name}.RELEASEERRORTRAPPINGTOKEN({scopeAccessInformation.ErrorRegistrationTokenIfAny.Name});", 3, 0));
+                outerBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RELEASEERRORTRAPPINGTOKEN)).AddParameterVariableReference(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name));
             }
 
             if (_outputType == OutputTypeOptions.Executable)

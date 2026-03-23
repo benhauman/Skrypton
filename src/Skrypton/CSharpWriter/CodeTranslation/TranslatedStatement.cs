@@ -132,7 +132,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         ConstructorDeclarationStatement,
     }
 
-    internal static class TranslatedStatementFactory
+    internal static class CSharpSyntaxFactory
     {
         internal static CSharpStatementBuilderConstructor CreateConstructor(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpStatementBuilderConstructor(), indentationDepth, lineIndexOfStatementStartInSource);
 
@@ -170,7 +170,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         {
             _builders.Add(builder);
         }
-        protected IReadOnlyCollection<CSharpCodeBuilder> ChildBuilders() => _builders;
+        protected IReadOnlyList<CSharpCodeBuilder> ChildBuilders() => _builders;
 
         internal TranslatedStatement BuildTranslatedStatement()
         {
@@ -329,9 +329,46 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
         internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
 
-        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddChildBuilderX(TranslatedStatementFactory.FromRawText($"using {typeof(T).Namespace!};", 0, 0));
+        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddChildBuilderX(CSharpSyntaxFactory.FromRawText($"using {typeof(T).Namespace!};", 0, 0));
         internal CSharpOutermostCodeBuilder AddAssignmentStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpAssignmentStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpAssignmentStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
         internal CSharpOutermostCodeBuilder AddVariableDeclaration(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpVariableDeclarationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpVariableDeclarationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+        internal CSharpOutermostCodeBuilder AddMethodInvocationStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpInvocationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpInvocationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+    }
+
+    internal sealed class CSharpInvocationStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
+    {
+        private string? _targetName;
+        private string? _methodName;
+        public CSharpInvocationStatement TargetName(string targetName)
+        {
+            _targetName = targetName;
+            return this;
+        }
+        public CSharpInvocationStatement MethodName(string methodName)
+        {
+            _methodName = methodName;
+            return this;
+        }
+        public CSharpInvocationStatement AddParameterVariableReference(string name)
+        {
+            AddChildBuilder(CSharpSyntaxFactory.FromRawText(name, 0, LineIndexOfStatementStartInSource));
+            return this;
+        }
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            // _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            tb.Append(IndentationSpace).Append(_targetName).Append('.').Append(_methodName);
+            tb.Append('(');
+            var parameters = ChildBuilders();
+            for (int ixPrm = 0; ixPrm < parameters.Count; ixPrm++)
+            {
+                var prm = parameters[ixPrm];
+                if (ixPrm > 0)
+                    tb.Append(", ");
+                prm.RenderTranslatedStatement(tb);
+            }
+            tb.Append(')').Append(';');
+        }
     }
 
     internal sealed class CSharpVariableDeclarationStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
@@ -373,8 +410,22 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     }
     internal sealed class CSharpAssignmentStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
     {
+        private string? _referenceName;
+        public CSharpAssignmentStatement ReferenceName(string referenceName)
+        {
+            _referenceName = referenceName;
+            return this;
+        }
+        private string? _expressionText;
+        public CSharpAssignmentStatement ExpressionText(string expressionText)
+        {
+            _expressionText = expressionText;
+            return this;
+        }
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {
+            // $"{_supportRefName.Name}.RELEASEERRORTRAPPINGTOKEN({scopeAccessInformation.ErrorRegistrationTokenIfAny.Name});
+            tb.Append(IndentationSpace).Append(_referenceName).Append(' ').Append('=').Append(' ').Append(_expressionText).Append(';');
             throw new NotImplementedException();
         }
     }
