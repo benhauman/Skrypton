@@ -1391,7 +1391,7 @@ namespace TranslatedProgram
         }
         public void cb_template_load_onfocus()
         {
-            var errOn = _.GETERRORTRAPPINGTOKEN();
+            int errOn = _.GETERRORTRAPPINGTOKEN();
             object isreserved = null;
             object agent = null;
             object teamID = null;
@@ -1592,7 +1592,7 @@ namespace TranslatedProgram
         }
         public void cb_template_load_SelectionEndOK()
         {
-            var errOn2 = _.GETERRORTRAPPINGTOKEN();
+            int errOn2 = _.GETERRORTRAPPINGTOKEN();
             object agent = null;
             object team = null;
             object position = null;
@@ -1775,7 +1775,7 @@ namespace TranslatedProgram
         }
         public void ButtonSCCMRemote_Click()
         {
-            var errOn3 = _.GETERRORTRAPPINGTOKEN();
+            int errOn3 = _.GETERRORTRAPPINGTOKEN();
             object wshshell = null;
             object oExec = null;
             object OsType = null;

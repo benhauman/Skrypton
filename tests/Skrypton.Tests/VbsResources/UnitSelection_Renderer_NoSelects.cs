@@ -1907,7 +1907,7 @@ namespace TranslatedProgram
         public object BookingUI_UnitSel_AddReqUnitSelection(ref object arrReqUnitSelections, ref object strUnitSelInfo, ref object arrReqUnitOptions)
         {
             object BookingUI_UnitSel_AddReqUnitSelection_retVal = null;
-            var errOn = _.GETERRORTRAPPINGTOKEN();
+            int errOn = _.GETERRORTRAPPINGTOKEN();
             object arrSegments = null;
             object intNumAdults = null;
             object intNumChildren = null;

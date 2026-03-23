@@ -62,7 +62,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 errorRegistrationTokenIfAny = _tempNameGenerator(new CSharpName("errOn"), scopeAccessInformation);
                 translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.VariableDeclarationStatement,
                     string.Format(CultureInfo.InvariantCulture,
-                        "var {0} = {1}.GETERRORTRAPPINGTOKEN();",
+                        "int {0} = {1}.GETERRORTRAPPINGTOKEN();",
                         errorRegistrationTokenIfAny.Name,
                         _supportRefName.Name
                     ),

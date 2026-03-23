@@ -56,35 +56,29 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-			var expected = new[]
-			{
-				"var errOn = _.GETERRORTRAPPINGTOKEN();",
-				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
-				"IEnumerator enumerationContent = null;",
-				"_.HANDLEERROR(errOn, () => {",
-                "    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
-				"});",
-				"while (true)",
-				"{",
-                "    if (enumerationContent != null)",
-				"    {",
-				"        if (!enumerationContent.MoveNext())",
-				"            break;",
-				"        _env.value = enumerationContent.Current;",
-				"    }",
-				"    _.HANDLEERROR(errOn, () => {",
-                "        _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
-				"    });",
-				"    if (enumerationContent == null)",
-				"        break;",
-				"}",
-				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
-			};
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-			//	expected.Select(s => s.Trim()).ToArray(),
-			//	WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-			//);
+			var expected = @"
+				int errOn = _.GETERRORTRAPPINGTOKEN();
+				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+				IEnumerator enumerationContent = null;
+				_.HANDLEERROR(errOn, () => {
+                    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();
+				});
+				while (true)
+				{
+                    if (enumerationContent != null)
+				    {
+				        if (!enumerationContent.MoveNext())
+				            break;
+				        _env.value = enumerationContent.Current;
+				    }
+				    _.HANDLEERROR(errOn, () => {
+                        _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
+				    });
+				    if (enumerationContent == null)
+				        break;
+				}
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
 		}
 
 		/// <summary>
@@ -105,30 +99,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-			var expected = new[]
-			{
-				"var errOn = _.GETERRORTRAPPINGTOKEN();",
-				"_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
-				"_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);",
-				"IEnumerator enumerationContent = null;",
-				"_.HANDLEERROR(errOn, () => {",
-				"    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
-				"});",
-				"while (true)",
-				"{",
-				"    if (enumerationContent != null)",
-				"    {",
-				"        if (!enumerationContent.MoveNext())",
-				"            break;",
-				"        _env.value = enumerationContent.Current;",
-				"    }",
-                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
-				"    if (enumerationContent == null)",
-				"        break;",
-				"}",
-				"_.RELEASEERRORTRAPPINGTOKEN(errOn);"
-			};
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+			var expected = @"
+				int errOn = _.GETERRORTRAPPINGTOKEN();
+				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
+				IEnumerator enumerationContent = null;
+				_.HANDLEERROR(errOn, () => {
+				    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();
+				});
+				while (true)
+				{
+				    if (enumerationContent != null)
+				    {
+				        if (!enumerationContent.MoveNext())
+				            break;
+				        _env.value = enumerationContent.Current;
+				    }
+                    _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
+				    if (enumerationContent == null)
+				        break;
+				}
+				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
 		}
 
 		/// <summary>

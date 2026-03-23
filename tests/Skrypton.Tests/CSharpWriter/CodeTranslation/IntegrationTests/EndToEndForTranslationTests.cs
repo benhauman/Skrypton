@@ -221,7 +221,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
             var expected = @"
-                var errOn = _.GETERRORTRAPPINGTOKEN();
+                int errOn = _.GETERRORTRAPPINGTOKEN();
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 object loopEnd = 0, loopStart = 0;
                 var loopConstraintsInitialized = false;
@@ -274,7 +274,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Next
 			";
             var expected = @"
-                var errOn = _.GETERRORTRAPPINGTOKEN();
+                int errOn = _.GETERRORTRAPPINGTOKEN();
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _env.i = (Int16)1;
                 while (true)
@@ -581,7 +581,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					object loopEnd = 0, loopStart = 0;
@@ -651,7 +651,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					object loopEnd = 0, loopStart = 0;

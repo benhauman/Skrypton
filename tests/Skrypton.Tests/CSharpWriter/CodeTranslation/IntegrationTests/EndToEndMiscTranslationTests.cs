@@ -416,10 +416,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return _.VAL(x);
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -438,7 +434,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					object byrefalias = x;
 					try
@@ -452,10 +448,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>

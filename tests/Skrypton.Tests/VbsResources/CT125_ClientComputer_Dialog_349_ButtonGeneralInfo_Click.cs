@@ -95,7 +95,7 @@ namespace TranslatedProgram
         }
         public void ButtonGeneralInfo_Click()
         {
-            var errOn = _.GETERRORTRAPPINGTOKEN();
+            int errOn = _.GETERRORTRAPPINGTOKEN();
             object nexthinkBaseURL = null;
             object nexthinkQuery = null;
             object nexthinkURL = null;

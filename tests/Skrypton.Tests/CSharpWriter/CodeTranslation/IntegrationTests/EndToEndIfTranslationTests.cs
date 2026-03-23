@@ -723,7 +723,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     public object F1(ref object a)
                     {
                         object F1_retVal = null;
-                        var errOn = _.GETERRORTRAPPINGTOKEN();
+                        int errOn = _.GETERRORTRAPPINGTOKEN();
                         _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                         bool ifResult;
                         object byrefalias = a;
@@ -771,7 +771,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     public object F1(ref object a)
                     {
                         object F1_retVal = null;
-                        var errOn = _.GETERRORTRAPPINGTOKEN();
+                        int errOn = _.GETERRORTRAPPINGTOKEN();
                         _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                         bool ifResult;
                         object byrefalias = a;

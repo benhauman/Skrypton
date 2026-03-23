@@ -22,7 +22,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test1""
 			";
             var expected = @"
-				var errOn = _.GETERRORTRAPPINGTOKEN();
+				int errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
 					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
@@ -46,7 +46,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test3""
 			";
             var expected = @"
-				var errOn = _.GETERRORTRAPPINGTOKEN();
+				int errOn = _.GETERRORTRAPPINGTOKEN();
 				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
@@ -75,7 +75,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				WScript.Echo ""Test1""
 			";
             var expected = @"
-				var errOn = _.GETERRORTRAPPINGTOKEN();
+				int errOn = _.GETERRORTRAPPINGTOKEN();
 				if (_.IF(false))
 				{
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
@@ -98,7 +98,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				var errOn = _.GETERRORTRAPPINGTOKEN();
+				int errOn = _.GETERRORTRAPPINGTOKEN();
 				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 				_.HANDLEERROR(errOn, () => {
 					_.CALLm1v0(this, _outer, ""Func1"");
@@ -130,7 +130,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object Func1()
 				{
 					object Func1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					_.HANDLEERROR(errOn, () => {
 						_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
@@ -200,7 +200,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(ref object x)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					object byrefalias = x;
 					try
 					{
@@ -266,7 +266,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(object value)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
 					if (_.IF(() => true, errOn))
 					{
@@ -307,7 +307,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(object value)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					if (_.IF(true))
 					{
 						F1_retVal = _.DATEVALUE(value);
@@ -353,7 +353,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				public object F1(object value)
 				{
 					object F1_retVal = null;
-					var errOn = _.GETERRORTRAPPINGTOKEN();
+					int errOn = _.GETERRORTRAPPINGTOKEN();
 					object i = null;
 					i = (Int16)1;
 					while (true)

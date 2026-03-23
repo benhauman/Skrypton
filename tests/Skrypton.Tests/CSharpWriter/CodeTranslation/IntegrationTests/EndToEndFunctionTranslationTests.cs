@@ -332,7 +332,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// the value before the error occurred).
         /// </summary>
         [TestMethod, MyFact]
-        public void ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteMannerWithinPotentiallyErrorTrappingStatement()
+        public void ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteMannerWithinPotentiallyErrTrappingStmt()
         {
             var source = @"
 				Function F1(a)
@@ -340,30 +340,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    var errOn = _.GETERRORTRAPPINGTOKEN();",
-                "    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);",
-                "    object byrefalias = a;",
-                "    try",
-                "    {",
-                "        _.HANDLEERROR(errOn, () => {",
-                "            _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }));",
-                "        });",
-                "    }",
-                "    finally { a = byrefalias; }",
-                "    _.RELEASEERRORTRAPPINGTOKEN(errOn);",
-                "    return F1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public object F1(ref object a)
+                {
+                    object F1_retVal = null;
+                    int errOn = _.GETERRORTRAPPINGTOKEN();
+                    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+                    object byrefalias = a;
+                    try
+                    {
+                        _.HANDLEERROR(errOn, () => {
+                            _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }));
+                        });
+                    }
+                    finally { a = byrefalias; }
+                    _.RELEASEERRORTRAPPINGTOKEN(errOn);
+                    return F1_retVal;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -387,7 +381,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 @"public object F1(ref object a)
                 {
                     object F1_retVal = null;
-                    var errOn = _.GETERRORTRAPPINGTOKEN();
+                    int errOn = _.GETERRORTRAPPINGTOKEN();
                     _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                     object byrefalias = a;
                     _.HANDLEERROR(errOn, () => {
