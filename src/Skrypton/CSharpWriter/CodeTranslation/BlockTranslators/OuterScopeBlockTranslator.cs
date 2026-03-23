@@ -253,7 +253,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
-                outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"int {scopeAccessInformation.ErrorRegistrationTokenIfAny.Name} = {_supportRefName.Name}.GETERRORTRAPPINGTOKEN();", 3, 0));
+                //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"int {scopeAccessInformation.ErrorRegistrationTokenIfAny.Name} = {_supportRefName.Name}.GETERRORTRAPPINGTOKEN();", 3, 0));
+                outerBuilder.AddVariableDeclaration(3, 0, stmt => { stmt.VariableType<int>().VariableName(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name).VariableInitialization($"{_supportRefName.Name}.GETERRORTRAPPINGTOKEN();"); });
             }
             outerBuilder.AddRange(outerExecutableBlocksTranslationResult.TranslatedStatements);
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)

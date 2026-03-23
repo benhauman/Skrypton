@@ -1,4 +1,5 @@
-﻿using Skrypton.CSharpWriter.Lists;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Skrypton.CSharpWriter.Lists;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -159,6 +160,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             builder.IndentationSpace = indentationDepth == 0 ? "" : new string(' ', indentationDepth * 4);
             return builder;
         }
+        internal static TBuilder CreateInitSetup<TBuilder>(TBuilder builder, int indentationDepth, int lineIndexOfStatementStartInSource, Action<TBuilder> setup) where TBuilder : CSharpCodeBuilder
+        {
+            Init(builder, indentationDepth, lineIndexOfStatementStartInSource);
+            setup(builder);
+            return builder;
+        }
         protected void AddChildBuilder(CSharpCodeBuilder builder)
         {
             _builders.Add(builder);
@@ -272,10 +279,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             throw new NotImplementedException();
         }
 
-
+        private CSharpOutermostCodeBuilder AddChildBuilderX(CSharpCodeBuilder builder)
+        {
+            base.AddChildBuilder(builder);
+            return this;
+        }
         internal CSharpOutermostCodeBuilder AddBuilder(CSharpCodeBuilder builder)
         {
-            base.AddChildBuilder(builder); return this;
+            return AddChildBuilderX(builder);
         }
         public CSharpOutermostCodeBuilder AddRange(IReadOnlyCollection<TranslatedStatement> values)
         {
@@ -287,8 +298,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
         public CSharpOutermostCodeBuilder Add(TranslatedStatement value)
         {
-            AddChildBuilder(new CSharpCodeBuilderWrap(value));
-            return this;
+            return AddChildBuilderX(new CSharpCodeBuilderWrap(value));
         }
 
         private List<CSharpCodeBuilder> RemoveRunsOfBlankLines()
@@ -319,11 +329,53 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
         internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
 
-        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddUsing(typeof(T).Namespace!);
-        internal CSharpOutermostCodeBuilder AddUsing(string namespaceName)
+        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddChildBuilderX(TranslatedStatementFactory.FromRawText($"using {typeof(T).Namespace!};", 0, 0));
+        internal CSharpOutermostCodeBuilder AddAssignmentStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpAssignmentStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpAssignmentStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+        internal CSharpOutermostCodeBuilder AddVariableDeclaration(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpVariableDeclarationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpVariableDeclarationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+    }
+
+    internal sealed class CSharpVariableDeclarationStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
+    {
+        private string? _name;
+        private string? _typeText;
+        private string? _initializationText;
+        internal CSharpVariableDeclarationStatement VariableName(string name)
         {
-            AddChildBuilder(TranslatedStatementFactory.FromRawText($"using {namespaceName};", 0, 0));
+            _name = name;
             return this;
+        }
+
+        internal CSharpVariableDeclarationStatement VariableType<T>()
+        {
+            if (typeof(T) == typeof(int))
+            {
+                _typeText = "int";
+            }
+            else
+            {
+                _typeText = typeof(T).FullName;
+            }
+            return this;
+        }
+
+        internal CSharpVariableDeclarationStatement VariableInitialization(string initializationText)
+        {
+            _initializationText = initializationText;
+            return this;
+        }
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            tb.Append(IndentationSpace).Append(_typeText).Append(' ').Append(_name);
+            if (!string.IsNullOrEmpty(_initializationText))
+                tb.Append(' ').Append('=').Append(' ').Append(_initializationText);
+        }
+
+    }
+    internal sealed class CSharpAssignmentStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
+    {
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            throw new NotImplementedException();
         }
     }
 
