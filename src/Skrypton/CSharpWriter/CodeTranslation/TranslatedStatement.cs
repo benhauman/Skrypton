@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -8,25 +9,29 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     public class TranslatedStatement
     {
         public TranslatedStatement(TranslatedStatementKind kind, int lineIndexOfStatementStartInSource) // 'empty' ctor
-            : this(kind, true, "", 0, lineIndexOfStatementStartInSource)
+            : this(true, kind, true, "", 0, lineIndexOfStatementStartInSource)
         {
         }
         public TranslatedStatement(TranslatedStatementKind kind, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
-            : this(kind, false, content, indentationDepth, lineIndexOfStatementStartInSource)
+            : this(false, kind, false, content, indentationDepth, lineIndexOfStatementStartInSource)
         {
         }
-        private TranslatedStatement(TranslatedStatementKind kind, bool isEmpty, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+        internal TranslatedStatement(bool isStatement, TranslatedStatementKind kind, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
+            : this(true, kind, false, content, indentationDepth, lineIndexOfStatementStartInSource)
+        {
+        }
+        private TranslatedStatement(bool isStatement, TranslatedStatementKind kind, bool isEmpty, string content, int indentationDepth, int lineIndexOfStatementStartInSource)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
-            if (content != content.Trim())
+            if (!isStatement && content != content.Trim())
                 throw new ArgumentException("content may be blank but may not have any leading or trailing whitespace");
             if (indentationDepth < 0)
                 throw new ArgumentOutOfRangeException(nameof(indentationDepth), "must be zero or greater");
             if (lineIndexOfStatementStartInSource < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndexOfStatementStartInSource), "must be zero or greater");
 
-            if (!isEmpty && content.Length == 0)
+            if (!isStatement && !isEmpty && content.Length == 0)
                 throw new InvalidOperationException("Use the 'empty' ctor.");
             _content = content;
             _indentationDepth = indentationDepth;
@@ -61,6 +66,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             _inlineCommentIfAny = translatedCommentContent;
         }
 
+        internal const char NewLineNormalized = '\n'; // 10: line feed (LF) character.
         public StringBuilder RenderTranslatedStatement(StringBuilder tb)
         {
             if (tb == null) throw new ArgumentNullException(nameof(tb));
@@ -116,6 +122,123 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         PropertyDeclarationStatement,
         FieldDeclarationStatement,
         ReturnText,
-        UsingText
+        UsingText,
+        ////////////////////
+        ConstructorDeclarationStatement,
+    }
+
+    internal static class TranslatedStatementFactory
+    {
+        internal static CSharpStatementBuilderConstructor CreateConstructor(int indentationDepth, int lineIndexOfStatementStartInSource)
+        {
+            return CSharpCodeBuilder.Init(new CSharpStatementBuilderConstructor(), indentationDepth, lineIndexOfStatementStartInSource);
+        }
+    }
+
+    internal abstract class CSharpCodeBuilder
+    {
+        private readonly TranslatedStatementKind _kind;
+        protected int IndentationDepth { get; private set; }
+        protected int LineIndexOfStatementStartInSource { get; private set; }
+
+        protected CSharpCodeBuilder(TranslatedStatementKind kind)
+        {
+            _kind = kind;
+        }
+        internal static TBuilder Init<TBuilder>(TBuilder builder, int indentationDepth, int lineIndexOfStatementStartInSource) where TBuilder : CSharpCodeBuilder
+        {
+            builder.IndentationDepth = indentationDepth;
+            builder.LineIndexOfStatementStartInSource = lineIndexOfStatementStartInSource;
+            return builder;
+        }
+        internal TranslatedStatement BuildTranslatedStatement()
+        {
+            StringBuilder sb = new StringBuilder();
+            DoBuildTranslatedStatement(sb);
+            return new TranslatedStatement(true, _kind, sb.ToString(), 0, LineIndexOfStatementStartInSource);
+        }
+        protected abstract void DoBuildTranslatedStatement(StringBuilder sb);
+    }
+
+    internal sealed class CSharpParameterDeclaration
+    {
+        public string ParameterTypeName { get; }
+        public string ParameterName { get; }
+
+        public CSharpParameterDeclaration(string parameterTypeName, string parameterName)
+        {
+            ParameterTypeName = parameterTypeName;
+            ParameterName = parameterName;
+        }
+    }
+
+    internal sealed class CSharpStatementBuilderConstructor() : CSharpCodeBuilder(TranslatedStatementKind.ConstructorDeclarationStatement)
+    {
+        private string? _className;
+        private readonly List<CSharpParameterDeclaration> _parameters = new List<CSharpParameterDeclaration>();
+        private readonly List<string> _baseParameters = new List<string>();
+        public CSharpStatementBuilderConstructor ClassName(string className)
+        {
+            _className = className;
+            return this;
+        }
+        public CSharpStatementBuilderConstructor Parameter(string parameterTypeName, string parameterName, bool asBaseParameter)
+        {
+            _parameters.Add(new CSharpParameterDeclaration(parameterTypeName, parameterName));
+            if (asBaseParameter)
+            {
+                _baseParameters.Add(parameterName);
+            }
+            return this;
+        }
+
+        private readonly List<TranslatedStatement> _bodyStatements = new List<TranslatedStatement>();
+        public CSharpStatementBuilderConstructor AddStatement(TranslatedStatement stmt)
+        {
+            _bodyStatements.Add(stmt);
+            return this;
+        }
+
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            string indentationCtor = new string(' ', IndentationDepth * 4);
+            string indentationBody = new string(' ', IndentationDepth * 6);
+
+            tb.Append(indentationCtor).Append("public").Append(' ').Append(_className).Append('(');
+            for (int ixPrm = 0; ixPrm < _parameters.Count; ixPrm++)
+            {
+                var prm = _parameters[ixPrm];
+                if (ixPrm > 0)
+                    tb.Append(", ");
+                tb.Append(prm.ParameterTypeName).Append(' ').Append(prm.ParameterName);
+            }
+            tb.Append(')');
+            if (_baseParameters.Count > 0)
+            {
+                tb.Append(" : base(");
+                //  : base({parameter1Name})"
+                for (int ixPrm = 0; ixPrm < _baseParameters.Count; ixPrm++)
+                {
+                    var prmParameterName = _baseParameters[ixPrm];
+                    if (ixPrm > 0)
+                        tb.Append(", ");
+                    tb.Append(prmParameterName);
+                }
+                tb.Append(')');
+            }
+            tb.Append(TranslatedStatement.NewLineNormalized);
+
+            // body
+            tb.Append(indentationCtor).Append('{').Append(TranslatedStatement.NewLineNormalized);
+
+            foreach (var bodyStatement in _bodyStatements)
+            {
+                tb.Append(indentationBody);
+                bodyStatement.RenderTranslatedStatement(tb);
+                tb.Append(TranslatedStatement.NewLineNormalized);
+            }
+
+            tb.Append(indentationCtor).Append('}');//.AppendLine()
+        }
     }
 }

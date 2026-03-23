@@ -219,28 +219,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 {
                     new TranslatedStatement(TranslatedStatementKind.RawText, $"public sealed class {_startClassName.Name} : RunnerBaseT<{_envClassName.Name}, {_outerClassName.Name}>", 1, 0), // 'public sealed class Runner : '
                     new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"public " + _startClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer) : base(compatLayer)", 2, 0),
-
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0) // end of ctor
+                    new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
+                    /*
+                    TranslatedStatementFactory.CreateConstructor(2, 0, _startClassName.Name, typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", [
+                            new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0)
+                        ])*/
+                    TranslatedStatementFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
+                        .AddStatement(new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0))
+                        .BuildTranslatedStatement()
                 });
                 translatedStatements = translatedStatements.AddRange(new[]
                 {
-                    //EmptyLine,
-                    //new TranslatedStatement(
-                    //    $"public {_outerClassName.Name} {_startMethodName.Name}()",
-                    //    2,
-                    //    0
-                    //),
-                    //new TranslatedStatement("{", 2, 0),
-                    //new TranslatedStatement(
-                    //    $"return {_startMethodName.Name}(new {_envClassName.Name}());",
-                    //    3,
-                    //    0
-                    //),
-                    //new TranslatedStatement("}", 2, 0),
                     new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override {_outerClassName.Name} CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env) => new {_outerClassName.Name}(compatLayer, env);", 2, 0),
                     new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override void {_startMethodName.Name}(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env, {_outerClassName.Name} globalReferences)", // "GO"
                         2,

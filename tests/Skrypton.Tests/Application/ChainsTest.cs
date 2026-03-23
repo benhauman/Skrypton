@@ -279,7 +279,7 @@ namespace Skrypton.Tests.Application
                 if (translated_cs_expected != translated_cs_actual)
                 {
                     storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", translated_cs_expected, translated_cs_actual);
-                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
+                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn, out char? mismatchCharA, out char? mismatchCharB);
                     string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
                     string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
                     failed_text = $"C# translation failed. See 'Output' for more information. {NewLineNormalized}Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) {NewLineNormalized}E:'{snippetE}' {NewLineNormalized}A:'{snippetA}'. storedFile:" + storedFile;

@@ -197,12 +197,20 @@ namespace Skrypton.Tests
 
                     string translated_cs_expected = expectCs;
                     string translated_cs_actual = actualCs;
-                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn);
+                    int mismatchIndex = FindFirstMismatchIndex(translated_cs_expected, translated_cs_actual, out int mismatchLine, out int mismatchColumn, out char? mismatchCharE, out char? mismatchCharA);
                     string snippetE = GetMismatchedSnippet(translated_cs_expected, mismatchIndex, 100);
                     string snippetA = GetMismatchedSnippet(translated_cs_actual, mismatchIndex, 100);
-                    string failed_text = $"C# translation failed. Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex}) \r\nE:'{snippetE}' \r\nA:'{snippetA}'";
+                    StringBuilder failed_text = new StringBuilder();
+                    failed_text.AppendLine($"C# translation failed.")
+                        .AppendLine($"Mismatch at line:{mismatchLine}, column:{mismatchColumn} (Index:{mismatchIndex})")
+                        .AppendLine($"E.Length:{snippetE.Length}")
+                        .AppendLine($"A.Length:{snippetA.Length}")
+                        .AppendLine($"E.char:{(mismatchCharE.HasValue ? (int)mismatchCharE.Value : -1)}")
+                        .AppendLine($"A.char:{(mismatchCharA.HasValue ? (int)mismatchCharA.Value : -1)}")
+                        .AppendLine($"E:'{snippetE}'")
+                        .AppendLine($"A:'{snippetA}'");
 
-                    Assert.Fail(failed_text);// $"File content different at index:{diffAtIndex}");
+                    Assert.Fail(failed_text.ToString());// $"File content different at index:{diffAtIndex}");
                 }
                 else
                 {
@@ -215,7 +223,7 @@ namespace Skrypton.Tests
             }
         }
 
-        internal static int FindFirstMismatchIndex(string a, string b, out int line, out int column)
+        internal static int FindFirstMismatchIndex(string a, string b, out int line, out int column, out char? mismatchCharA, out char? mismatchCharB)
         {
             line = 1;
             column = 1;
@@ -224,7 +232,11 @@ namespace Skrypton.Tests
             for (int i = 0; i < minLength; i++)
             {
                 if (a[i] != b[i])
+                {
+                    mismatchCharA = a[i];
+                    mismatchCharB = b[i];
                     return i;
+                }
                 if (a[i] == '\n') // handle windows and unix line endings
                 {
                     line++;
@@ -235,8 +247,22 @@ namespace Skrypton.Tests
                     column++;
                 }
             }
-            if (a.Length != b.Length)
+            if (a.Length > b.Length)
+            {
+                int i = a.Length - b.Length - 1;
+                mismatchCharA = a[i];
+                mismatchCharB = null;
                 return minLength;
+            }
+            if (a.Length < b.Length)
+            {
+                int i = b.Length - a.Length - 1;
+                mismatchCharA = null;
+                mismatchCharB = b[i];
+                return minLength;
+            }
+            mismatchCharA = null;
+            mismatchCharB = null;
             return -1; // no mismatch
         }
         public static string GetMismatchedSnippet(string s, int startIndex, int maxLength)
