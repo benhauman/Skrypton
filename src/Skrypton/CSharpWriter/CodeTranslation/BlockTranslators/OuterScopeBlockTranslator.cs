@@ -464,21 +464,36 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         private CSharpOutermostCodeBuilder RenderClassEnvironmentReferences(CSharpOutermostCodeBuilder outerBuilder, NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed)
         {
             // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
-            outerBuilder.AddRange(new[]
-            {
-                new TranslatedStatement(TranslatedStatementKind.RawText,  $"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
-                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0)
-            });
+            CSharpClassBuilder classBuilder = TranslatedStatementFactory.CreateClass(1, 0)
+                .ClassName(_envClassName.Name)
+                .BaseClassName(nameof(EnvironmentReferencesBase))
+                .AsPublic()
+                .AsSealed()
+                ;
+
+            //outerBuilder.AddRange(new[]
+            //{
+            //    new TranslatedStatement(TranslatedStatementKind.RawText,  $"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
+            //    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0)
+            //});
             var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex }).ToArray();
             HashSet<string> environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
             foreach (var v in allEnvironmentVariableNames.OrderBy(x => x.RewrittenName))
             {
                 if (environmentVariableNamesThatHaveBeenAccountedFor.Contains(v.RewrittenName))
-                    continue;
-                outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.PropertyDeclarationStatement, "public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex));
-                environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
+                {
+
+                }
+                else
+                {
+                    classBuilder.AddProperty(TranslatedStatementFactory.FromRawText("public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex));
+                    //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.PropertyDeclarationStatement, "public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex));
+                    environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
+                }
             }
-            outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close 'EnvironmentReferences' class
+            //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close 'EnvironmentReferences' class
+
+            outerBuilder.AddBuilder(classBuilder);
             return outerBuilder;
 
         }
