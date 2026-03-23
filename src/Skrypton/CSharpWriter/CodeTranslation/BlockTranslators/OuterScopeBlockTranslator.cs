@@ -194,19 +194,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             CSharpOutermostCodeBuilder outerBuilder = new CSharpOutermostCodeBuilder();
             if (_outputType == OutputTypeOptions.Executable)
             {
-                outerBuilder.AddRange(new[]
-                {
-                    new TranslatedStatement(TranslatedStatementKind.UsingText, "using System;", 0, 0),
-                    new TranslatedStatement(TranslatedStatementKind.UsingText, "using System.Collections;", 0, 0)
-                });
+                outerBuilder.AddUsing<System.String>()
+                            .AddUsing<System.Collections.IList>()
+                    ;
                 if (dateLiteralsToValidateAtRuntime.Length != 0)
                 {
                     // System.Collections.ObjectModel is only required for the ReadOnlyCollection, which is only used when there are date literals that need validating at runtime
-                    outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.UsingText, "using System.Collections.ObjectModel;", 0, 0));
+                    outerBuilder.AddUsing<System.Collections.ObjectModel.ReadOnlyCollection<int>>();
                 }
+                outerBuilder.AddUsing<IProvideVBScriptCompatFunctionalityToIndividualRequests>(); // using Skrypton.RuntimeSupport;
                 outerBuilder.AddRange(new[]
                 {
-                    new TranslatedStatement(TranslatedStatementKind.UsingText, "using " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Namespace + ";", 0, 0), // using Skrypton.RuntimeSupport;
                     new TranslatedStatement(TranslatedStatementKind.NamespaceBegin, "namespace " + _startNamespace.Name, 0, 0),
                     new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 0, 0),
                 });
@@ -463,19 +461,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
         private CSharpOutermostCodeBuilder RenderClassEnvironmentReferences(CSharpOutermostCodeBuilder outerBuilder, NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed)
         {
-            // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
-            CSharpClassBuilder classBuilder = TranslatedStatementFactory.CreateClass(1, 0)
-                .ClassName(_envClassName.Name)
-                .BaseClassName(nameof(EnvironmentReferencesBase))
-                .AsPublic()
-                .AsSealed()
-                ;
-
-            //outerBuilder.AddRange(new[]
-            //{
-            //    new TranslatedStatement(TranslatedStatementKind.RawText,  $"public sealed class {_envClassName.Name} : EnvironmentReferencesBase", 1, 0), // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase
-            //    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0)
-            //});
+            CSharpClassBuilder classBuilder = outerBuilder.CreateClass(1, 0).ClassName(_envClassName.Name).BaseClassName(nameof(EnvironmentReferencesBase)).AsPublic().AsSealed(); // // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
             var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex }).ToArray();
             HashSet<string> environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
             foreach (var v in allEnvironmentVariableNames.OrderBy(x => x.RewrittenName))
@@ -486,19 +472,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 }
                 else
                 {
-                    classBuilder.AddProperty(TranslatedStatementFactory.FromRawText("public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex));
-                    //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.PropertyDeclarationStatement, "public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }", 2, v.LineIndex));
+                    classBuilder.AddProperty(v.LineIndex, pb => pb.AsPublic().PropertyTypeName("object").PropertyName(v.RewrittenName).PublicGetter("GetExternalReferenceAsObject()").InternalSetter("RestoreExternalReferenceAsObject(value)"));
                     environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
                 }
             }
-            //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close 'EnvironmentReferences' class
-
             outerBuilder.AddBuilder(classBuilder);
             return outerBuilder;
 
         }
-
-        //private static readonly TranslatedStatement EmptyLine = new TranslatedStatement(0);
 
         private static NonNullImmutableList<ICodeBlock> TrimTrailingBlankLines(NonNullImmutableList<ICodeBlock> blocks)
         {

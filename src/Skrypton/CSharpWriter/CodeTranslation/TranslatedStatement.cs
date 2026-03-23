@@ -134,7 +134,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     internal static class TranslatedStatementFactory
     {
         internal static CSharpStatementBuilderConstructor CreateConstructor(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpStatementBuilderConstructor(), indentationDepth, lineIndexOfStatementStartInSource);
-        internal static CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource);
 
         internal static CSharpCodeBuilder FromRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpCodeBuilderRawText(rawText), indentationDepth, lineIndexOfStatementStartInSource);
     }
@@ -317,6 +316,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             string csText = tb.ToString();
             return csText;
         }
+
+        internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
+
+        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddUsing(typeof(T).Namespace!);
+        internal CSharpOutermostCodeBuilder AddUsing(string namespaceName)
+        {
+            AddChildBuilder(TranslatedStatementFactory.FromRawText($"using {namespaceName};", 0, 0));
+            return this;
+        }
     }
 
     internal sealed class CSharpCodeBuilderWrap(TranslatedStatement statement) : CSharpCodeBuilder(TranslatedStatementKind.RawText)
@@ -342,6 +350,55 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 tb.Append(indentationText);
             }
             tb.Append(_statement);
+        }
+    }
+
+    internal sealed class CSharpPropertyDeclarationBuilder() : CSharpCodeBuilder(TranslatedStatementKind.PropertyDeclarationStatement)
+    {
+        private string? _propertyName;
+        public CSharpPropertyDeclarationBuilder PropertyName(string propertyName)
+        {
+            _propertyName = propertyName;
+            return this;
+        }
+        private bool _public;
+        public CSharpPropertyDeclarationBuilder AsPublic()
+        {
+            _public = true;
+            return this;
+        }
+        private string? _propertyTypeName;
+        public CSharpPropertyDeclarationBuilder PropertyTypeName(string propertyTypeName)
+        {
+            _propertyTypeName = propertyTypeName;
+            return this;
+        }
+
+        private string? _getterText;
+        public CSharpPropertyDeclarationBuilder PublicGetter(string getterText)
+        {
+            _getterText = getterText;
+            return this;
+        }
+
+        private string? _setterText;
+        public CSharpPropertyDeclarationBuilder InternalSetter(string setterText)
+        {
+            _setterText = setterText;
+            return this;
+        }
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            // public object " + v.RewrittenName + " { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
+            tb.Append(IndentationSpace);
+            if (_public)
+                tb.Append("public").Append(' ');
+            tb.Append(_propertyTypeName).Append(' ').Append(_propertyName).Append(' ').Append('{');
+            if (!string.IsNullOrEmpty(_getterText))
+                tb.Append(' ').Append("get").Append(' ').Append("=>").Append(' ').Append(_getterText).Append(';');
+            if (!string.IsNullOrEmpty(_setterText))
+                tb.Append(' ').Append("internal").Append(' ').Append("set").Append(' ').Append("=>").Append(' ').Append(_setterText).Append(';');
+            tb.Append(' ').Append('}');
         }
     }
 
@@ -374,6 +431,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
         internal CSharpClassBuilder AddProperty(CSharpCodeBuilder builder)
         {
+            base.AddChildBuilder(builder);
+            return this;
+        }
+        internal CSharpClassBuilder AddProperty(int line, Action<CSharpPropertyDeclarationBuilder> setup)
+        {
+            CSharpPropertyDeclarationBuilder builder = CSharpPropertyDeclarationBuilder.Init(new CSharpPropertyDeclarationBuilder(), IndentationDepth + 1, line);
+            setup(builder);
             base.AddChildBuilder(builder);
             return this;
         }
