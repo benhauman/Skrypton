@@ -300,6 +300,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         {
             return AddChildBuilderX(new CSharpCodeBuilderWrap(value));
         }
+        internal CSharpOutermostCodeBuilder AddRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource)
+        {
+            return AddChildBuilderX(CSharpSyntaxFactory.FromRawText(rawText, indentationDepth, lineIndexOfStatementStartInSource));
+        }
 
         private List<CSharpCodeBuilder> RemoveRunsOfBlankLines()
         {
@@ -352,6 +356,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public CSharpInvocationStatement AddParameterVariableReference(string name)
         {
             AddChildBuilder(CSharpSyntaxFactory.FromRawText(name, 0, LineIndexOfStatementStartInSource));
+            return this;
+        }
+        public CSharpInvocationStatement AddParameters<T>(T[] sources, Func<T, string> gen)
+        {
+            foreach (var source in sources)
+            {
+                string text = gen(source);
+                AddChildBuilder(CSharpSyntaxFactory.FromRawText(text, 0, LineIndexOfStatementStartInSource));
+            }
             return this;
         }
         protected override void DoBuildTranslatedStatement(StringBuilder tb)

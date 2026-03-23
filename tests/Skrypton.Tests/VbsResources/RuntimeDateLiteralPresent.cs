@@ -16,34 +16,12 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            RuntimeDateLiteralValidator.ValidateAgainstCurrentCulture(_);
+            _.ValidateDateTimeLiteralAgainstCurrentCulture(Tuple.Create("29 May 2015", 1), Tuple.Create("02 June 2011", 2));
             if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("29 May 2015"))))
             {
             }
-        }
-        private static class RuntimeDateLiteralValidator
-        {
-            private static readonly ReadOnlyCollection<Tuple<string, int[]>> _literalsToValidate =
-            new ReadOnlyCollection<Tuple<string, int[]>>(new[] {
-                Tuple.Create("29 May 2015", new[] { 2 })
-            });
-            public static void ValidateAgainstCurrentCulture(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)
+            if (_.IF(_.EQ(_.NullableDATE(_env.a), _.DateLiteralParser.Parse("02 June 2011"))))
             {
-                if (compatLayer == null)
-                    throw new ArgumentNullException(nameof(compatLayer));
-                foreach (var dateLiteralValueAndLineNumbers in _literalsToValidate)
-                {
-                    try { compatLayer.DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1); }
-                    catch
-                    {
-                        throw new SyntaxError(string.Format(
-                            "Invalid date literal #{0}# on line{1} {2}",
-                            dateLiteralValueAndLineNumbers.Item1,
-                            (dateLiteralValueAndLineNumbers.Item2.Length == 1) ? "" : "s",
-                            string.Join<int>(", ", dateLiteralValueAndLineNumbers.Item2)
-                        ));
-                    }
-                }
             }
         }
     }

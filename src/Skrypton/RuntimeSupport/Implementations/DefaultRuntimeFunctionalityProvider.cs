@@ -57,6 +57,18 @@ namespace Skrypton.RuntimeSupport.Implementations
             _trappedErrorIfAny = null;
         }
 
+        void IProvideVBScriptCompatFunctionalityToIndividualRequests.ValidateDateTimeLiteralAgainstCurrentCulture(params Tuple<string, int>[] literalsToValidate)
+        {
+            foreach (var dateLiteralValueAndLineNumbers in literalsToValidate)
+            {
+                try { DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1, _culture); }
+                catch
+                {
+                    throw new SyntaxError($@"Invalid date literal '{dateLiteralValueAndLineNumbers.Item1}' on line:{dateLiteralValueAndLineNumbers.Item2}");
+                }
+            }
+        }
+
         private readonly Dictionary<string, Func<string?, object>> _objectCreateFactories = new Dictionary<string, Func<string?, object>>(StringComparer.OrdinalIgnoreCase);
 
         private static object HandlePostInitializationHandler(string progId, object objectInstance)

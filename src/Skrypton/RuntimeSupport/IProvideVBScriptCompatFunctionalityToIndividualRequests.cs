@@ -315,6 +315,7 @@ namespace Skrypton.RuntimeSupport
 #pragma warning disable CA1716 // Identifiers should not match keywords
         bool IF(Func<object> valueEvaluator, int errorToken);
 #pragma warning restore CA1716 // Identifiers should not match keywords
+        void ValidateDateTimeLiteralAgainstCurrentCulture(params Tuple<string, int>[] literalsToValidate); // datetimeText, sourceLineNumber
 
         /// <summary>
         /// Where date literals were present in the source code, in a format that does not specify a date, they must be translated into dates at

@@ -94,7 +94,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var dateLiteralsToValidateAtRuntime = EnumerateAllDateLiteralTokens(codeBlocks)
                 .Where(d => d.RequiresRuntimeValidation)
                 .GroupBy(d => d.Content)
-                .Select(g => new { DateLiteralValue = g.Key, LineNumbers = g.Select(d => d.LineIndex + 1) })
+                .Select(g => Tuple.Create(g.Key, g.Min(d => d.LineIndex)))
                 .ToArray();
 
             // Note: There is no need to check for identically-named classes since that would cause a "Name Redefined" error even if Option Explicit was not enabled
@@ -227,15 +227,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         0
                     ),
                     new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText,
-                        string.Format(CultureInfo.InvariantCulture, "var {0} = env ?? throw new ArgumentNullException(nameof(env));", _envRefName.Name),
-                        3,
-                        0
-                    ),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",
-                        3,
-                        0
-                    )
+                    new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_envRefName.Name} = env ?? throw new ArgumentNullException(nameof(env));",3,0),
+                    new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",3,0)
                 });
                 if (dateLiteralsToValidateAtRuntime.Length != 0)
                 {
@@ -244,22 +237,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // environment at runtime) then these literals need to be validated each run before any other work is attempted. (This is the equivalent of
                     // the VBScript interpreter reading the script for every execution and validating date literals against the current culture - if it finds
                     // any of them to be invalid then it will raise a syntax error and not attempt to execute any of the script).
-                    outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"{_runtimeDateLiteralValidatorClassName.Name}.ValidateAgainstCurrentCulture({_supportRefName.Name});",
-                        3,
-                        0
-                    ));
+                    outerBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ValidateDateTimeLiteralAgainstCurrentCulture))
+                            .AddParameters(dateLiteralsToValidateAtRuntime, (lit) => $@"Tuple.Create(""{lit.Item1}"", {lit.Item2})"));
                 }
             }
 
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
-                //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"int {scopeAccessInformation.ErrorRegistrationTokenIfAny.Name} = {_supportRefName.Name}.GETERRORTRAPPINGTOKEN();", 3, 0));
                 outerBuilder.AddVariableDeclaration(3, 0, stmt => stmt.VariableType<int>().VariableName(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name).VariableInitialization($"{_supportRefName.Name}.GETERRORTRAPPINGTOKEN();"));
             }
             outerBuilder.AddRange(outerExecutableBlocksTranslationResult.TranslatedStatements);
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
-                //outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"{_supportRefName.Name}.RELEASEERRORTRAPPINGTOKEN({scopeAccessInformation.ErrorRegistrationTokenIfAny.Name});", 3, 0));
                 outerBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RELEASEERRORTRAPPINGTOKEN)).AddParameterVariableReference(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name));
             }
 
@@ -270,63 +259,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // Executable so that just the real meat of the source code is generated)
                 outerBuilder.AddRange(new[]
                 {
-                    //new TranslatedStatement(string.Format("return {0};", _outerRefName.Name), 3, 0),
                     new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0),
-                    //?!?EmptyLine
                 });
 
-                if (dateLiteralsToValidateAtRuntime.Length != 0)
-                {
-                    // Declare a static readonly immutable set of date literals that need validating against the current culture before any request can do any actual work
-                    outerBuilder.AddRange(new[]
-                    {
-                        new TranslatedStatement(TranslatedStatementKind.RawText,
-                            string.Format(CultureInfo.InvariantCulture,
-                                "private static class {0}",
-                                _runtimeDateLiteralValidatorClassName.Name
-                            ),
-                            2,
-                            0
-                        ),
-                        new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen,"{", 2, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText,"private static readonly ReadOnlyCollection<Tuple<string, int[]>> _literalsToValidate =", 3, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText,"new ReadOnlyCollection<Tuple<string, int[]>>(new[] {", 3, 0)
-                    });
-                    foreach (var indexedDateLiteralToValidate in dateLiteralsToValidateAtRuntime.Select((d, i) => new { Index = i, DateLiteralValue = d.DateLiteralValue, LineNumbers = d.LineNumbers }))
-                    {
-                        outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"Tuple.Create({indexedDateLiteralToValidate.DateLiteralValue.ToLiteral()}, new[] {{ {string.Join<int>(", ", indexedDateLiteralToValidate.LineNumbers)} }}){((indexedDateLiteralToValidate.Index < (dateLiteralsToValidateAtRuntime.Length - 1)) ? "," : "")}",
-                            4,
-                            0
-                        ));
-                    }
-                    outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, "});", 3, 0));
-
-                    // Declare the function that reads the data above and performs the validation work
-                    outerBuilder.AddRange(new[]
-                    {
-                        // TODO : move to base class or _.
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "public static void ValidateAgainstCurrentCulture(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer)", 3, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "{", 3, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "if (compatLayer == null)", 4, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "throw new ArgumentNullException(nameof(compatLayer));", 5, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "foreach (var dateLiteralValueAndLineNumbers in _literalsToValidate)", 4, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "{", 4, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "try { compatLayer.DateLiteralParser.Parse(dateLiteralValueAndLineNumbers.Item1); }",5, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "catch", 5, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "{", 5, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "throw new SyntaxError(string.Format(", 6, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "\"Invalid date literal #{0}# on line{1} {2}\",", 7, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "dateLiteralValueAndLineNumbers.Item1,", 7, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "(dateLiteralValueAndLineNumbers.Item2.Length == 1) ? \"\" : \"s\",", 7, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "string.Join<int>(\", \", dateLiteralValueAndLineNumbers.Item2)", 7, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "));", 6, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "}", 5, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "}", 4, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "}", 3, 0),
-                        new TranslatedStatement(TranslatedStatementKind.RawText, "}", 2, 0),
-                        //EmptyLine
-                    });
-                }
                 if (_outputType == OutputTypeOptions.Executable)
                 {
                     outerBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close outer class 'Runner'
