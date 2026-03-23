@@ -145,38 +145,45 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
     }
 
-    internal sealed class CSharpOutermostCodeBuilder() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
+    internal abstract class CSharpBlockCodeBuilderT<TBuilder>() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
     {
-        protected override void DoBuildTranslatedStatement(StringBuilder tb)
-        {
-            throw new NotImplementedException();
-        }
-
-        private CSharpOutermostCodeBuilder AddChildBuilderX(CSharpCodeBuilder builder)
+        protected abstract TBuilder That { get; }
+        protected TBuilder AddChildBuilderX(CSharpCodeBuilder builder)
         {
             base.AddChildBuilder(builder);
-            return this;
+            return That;
         }
-        internal CSharpOutermostCodeBuilder AddBuilder(CSharpCodeBuilder builder)
+        protected static TB AddChildBuilderT<TB>(TB parent, CSharpCodeBuilder builder) where TB : CSharpBlockCodeBuilderT<TBuilder>
+        {
+            parent.AddChildBuilder(builder);
+            return parent;
+        }
+        internal TBuilder AddBuilder(CSharpCodeBuilder builder)
         {
             return AddChildBuilderX(builder);
         }
-        public CSharpOutermostCodeBuilder AddRange(IReadOnlyCollection<TranslatedStatement> values)
+        public TBuilder AddRange(IReadOnlyCollection<TranslatedStatement> values)
         {
             foreach (TranslatedStatement value in values)
             {
                 AddChildBuilder(new CSharpCodeBuilderWrap(value));
             }
-            return this;
+            return That;
         }
-        public CSharpOutermostCodeBuilder Add(TranslatedStatement value)
+        public TBuilder Add(TranslatedStatement value)
         {
             return AddChildBuilderX(new CSharpCodeBuilderWrap(value));
         }
-        internal CSharpOutermostCodeBuilder AddRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource)
+        internal TBuilder AddRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource)
         {
             return AddChildBuilderX(CSharpSyntaxFactory.FromRawText(rawText, indentationDepth, lineIndexOfStatementStartInSource));
         }
+
+        internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
+
+        internal TBuilder AddAssignmentStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpAssignmentStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpAssignmentStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+        internal TBuilder AddVariableDeclaration(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpVariableDeclarationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpVariableDeclarationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+        internal TBuilder AddMethodInvocationStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpInvocationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpInvocationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
 
         private List<CSharpCodeBuilder> RemoveRunsOfBlankLines()
         {
@@ -189,6 +196,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 .ToList();
         }
 
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            foreach (CSharpCodeBuilder s in ChildBuilders())
+            {
+                s.RenderTranslatedStatement(tb);
+                tb.Append(NewLineNormalized);
+            }
+        }
         internal string RenderTranslatedProgramCode()
         {
             var children = RemoveRunsOfBlankLines();
@@ -203,13 +218,28 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             string csText = tb.ToString();
             return csText;
         }
+    }
 
-        internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
+    internal abstract class CSharpOutermostCodeBuilder() : CSharpBlockCodeBuilderT<CSharpOutermostCodeBuilder>
+    {
+        protected override CSharpOutermostCodeBuilder That =>  this;
+        protected override void DoBuildTranslatedStatement(StringBuilder tb)
+        {
+            throw new NotImplementedException();
+        }
 
-        internal CSharpOutermostCodeBuilder AddUsing<T>() => AddChildBuilderX(CSharpSyntaxFactory.FromRawText($"using {typeof(T).Namespace!};", 0, 0));
-        internal CSharpOutermostCodeBuilder AddAssignmentStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpAssignmentStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpAssignmentStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
-        internal CSharpOutermostCodeBuilder AddVariableDeclaration(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpVariableDeclarationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpVariableDeclarationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
-        internal CSharpOutermostCodeBuilder AddMethodInvocationStatement(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpInvocationStatement> setup) => AddChildBuilderX(CSharpCodeBuilder.CreateInitSetup(new CSharpInvocationStatement(), indentationDepth, lineIndexOfStatementStartInSource, setup));
+        internal CSharpProgramCodeBuilder AsProgramBuilder()
+        {
+            return (CSharpProgramCodeBuilder)this;
+        }
+    }
+    internal sealed class CSharpProgramCodeBuilder : CSharpOutermostCodeBuilder
+    {
+        internal CSharpProgramCodeBuilder AddUsing<T>() => AddChildBuilderT(this, CSharpSyntaxFactory.FromRawText($"using {typeof(T).Namespace!};", 0, 0));
+    }
+    internal sealed class CSharpScaffoldingCodeBuilder : CSharpOutermostCodeBuilder
+    {
+
     }
 
     internal sealed class CSharpVariableDeclarationStatement() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
