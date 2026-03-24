@@ -115,6 +115,41 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5]), line: 0);
         }
+        public static object? CALLm1v6(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5, object value6)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5, value6]), line: 0);
+        }
+        public static object? CALLm1v8(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5, object value6, object value7, object value8)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5, value6, value7, value8]), line: 0);
+        }
+        public static object? CALLm1v9(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5, object value6, object value7, object value8, object value9)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5, value6, value7, value8, value9]), line: 0);
+        }
+        public static object? CALLm1v10(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5, object value6, object value7, object value8, object value9, object value10)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5, value6, value7, value8, value9, value10]), line: 0);
+        }
+        public static object? CALLm1v15(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, object value1, object value2, object value3, object value4, object value5, object value6, object value7, object value8, object value9, object value10, object value11, object value12, object value13, object value14, object value15)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15]), line: 0);
+        }
         public static object? CALLm2v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2)
         {
             if (source == null)
@@ -129,13 +164,13 @@ namespace Skrypton.RuntimeSupport
 
             return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
         }
-        //public static object? CALLm2v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2)
-        //{
-        //    if (source == null)
-        //        throw new ArgumentNullException(nameof(source));
-        //
-        //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]), line: 0);
-        //}
+        public static object? CALLm2v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]), line: 0);
+        }
         //public static object? CALLm2v3(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, object value1, object value2, object value3)
         //{
         //    if (source == null)
@@ -184,9 +219,36 @@ namespace Skrypton.RuntimeSupport
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            return source.CALL(context, target, new[] { member1, member2, member3 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
+            return source.CALL(context, target, [member1, member2, member3], DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1]), line: 0);
         }
+        public static object? CALLm3v2(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, object value1, object value2)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
 
+            return source.CALL(context, target, [member1, member2, member3], DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2]), line: 0);
+        }
+        public static object? CALLm3v3(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, object value1, object value2, object value3)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, [member1, member2, member3], DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3]), line: 0);
+        }
+        public static object? CALLm3v4(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, object value1, object value2, object value3, object value4)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, [member1, member2, member3], DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4]), line: 0);
+        }
+        public static object? CALLm3v5(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, object value1, object value2, object value3, object value4, object value5)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, [member1, member2], DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, member3, value3, value4, value5]), line: 0);
+        }
         // Convenience methods so that the calling code can omit the "GetArgs" call if an IBuildCallArgumentProviders is already available (results in shorter
         // translated code)
         public static object? CALLarrmargp(this IAccessValuesUsingVBScriptRules source, object context, object target, string[] members, IBuildCallArgumentProviders argumentProviderBuilder, [CallerLineNumber] int line = 0)

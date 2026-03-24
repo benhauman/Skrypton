@@ -207,7 +207,7 @@ namespace Skrypton.ScriptControlSupport
             }
 
             Func<Assembly> asmLoad;
-            if (!string.IsNullOrEmpty(fileNameDll))// && config.EnabledLoadFromDisk)
+            if (!string.IsNullOrEmpty(fileNameDll) && config.EnabledLoadFromDisk)
             {
                 string dllFilePath = config.EnsureFilePathX(tempFolderName, fileNameDll);
                 if (!File.Exists(dllFilePath))

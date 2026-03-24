@@ -684,8 +684,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 var translatedSeedExpression = _statementTranslator.Translate(randomizeStatement.SeedIfAny, scopeAccessInformation, ExpressionReturnTypeOptions.Value, _logger.Warning);
                 var undeclaredVariables = translatedSeedExpression.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                foreach (var undeclaredVariable in undeclaredVariables)
-                    _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+                CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
                 translationResult = translationResult.AddUndeclaredVariables(undeclaredVariables);
                 translatedSeedIfAny = translatedSeedExpression.TranslatedContent;
             }
@@ -712,6 +711,30 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             return translationResult.Add(translatedRandomizeStatements);
+        }
+
+        internal static void LogUndeclaredVariables(ILogInformation logger, IReadOnlyCollection<NameToken> undeclaredVariables, ICodeBlock? block, ScopeAccessInformation scopeAccessInformation)
+        {
+            if (undeclaredVariables.Count > 0)
+            {
+                foreach (var undeclaredVariable in undeclaredVariables)
+                {
+                    string scopeName = scopeAccessInformation.Parent switch
+                    {
+                        OutermostScope scopeOutermostScope => scopeOutermostScope.Name.Content, // test:SelectCaseWithStringTokens
+                        SubBlock scopeSubBlock => scopeSubBlock.Name.Content, // test:LUNA12_quxDATA__hlsysscript_cncIN
+                        FunctionBlock scopeFunctionBlock => scopeFunctionBlock.Name.Content, // test:ClassContainedFunctionMayNotBeTargetOfCallExpression
+                        ForBlock scopeForBlock => scopeForBlock.GetType().Name, // test:UndeclaredVariablesShouldNotBeFlushedAtForBlockEnd
+                        ForEachBlock scopeForEachBlock => scopeForEachBlock.GetType().Name, // test:SimpleCaseWithoutErrorHandling
+                        IfBlock scopeIfBlock => scopeIfBlock.GetType().Name, // test:XIfOnMissingFunc1
+                        SelectBlock scopeSelectBlock => scopeSelectBlock.GetType().Name, // test:CT132_Dialog_83
+                        WithBlock scopeWithBlock => scopeWithBlock.GetType().Name, // test:CT130_ClientComputer_Dialog_567_Button1_Click
+                        DoBlock scopeDoBlock => scopeDoBlock.GetType().Name, // test:CT132_Dialog_83
+                        _ => throw new NotImplementedException(scopeAccessInformation.Parent.GetType().FullName)
+                    };
+                    logger.Warning($"Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'");
+                }
+            }
         }
 
         private TranslationResult? TryToTranslateReDim(TranslationResult translationResult, ICodeBlock block, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
@@ -846,8 +869,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                     translatedArguments.Add(translatedArgumentDetails.TranslatedContent);
                     var undeclaredVariables = translatedArgumentDetails.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                    foreach (var undeclaredVariable in undeclaredVariables)
-                        _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+                    CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
+
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariables);
                 }
                 translatedReDimStatements = translatedReDimStatements.Add(
@@ -949,9 +972,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var translatedStatementContentDetails = _statementTranslator.Translate(statementBlock, scopeAccessInformation, _logger.Warning);
             var undeclaredVariables = translatedStatementContentDetails.VariablesAccessed
-                .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter));
-            foreach (var undeclaredVariable in undeclaredVariables)
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+                .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
 
             var coreContent = translatedStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))
@@ -1022,11 +1044,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var translatedValueSettingStatementContentDetails = _valueSettingStatementTranslator.Translate(valueSettingStatement, scopeAccessInformation);
             var undeclaredVariables = translatedValueSettingStatementContentDetails.VariablesAccessed
-                .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter));
-            foreach (var undeclaredVariable in undeclaredVariables)
-            {
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
-            }
+                .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
 
             var coreContent = translatedValueSettingStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))

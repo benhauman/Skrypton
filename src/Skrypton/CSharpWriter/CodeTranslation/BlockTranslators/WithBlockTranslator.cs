@@ -43,8 +43,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var translatedTargetReference = _statementTranslator.Translate(withBlock.Target, scopeAccessInformation, ExpressionReturnTypeOptions.Reference, _logger.Warning);
             var undeclaredVariables = translatedTargetReference.VariablesAccessed
                 .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
-            foreach (var undeclaredVariable in undeclaredVariables)
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, withBlock, scopeAccessInformation);
 
             var targetName = base._tempNameGenerator(new CSharpName("with"), scopeAccessInformation);
             var withBlockContentTranslationResult = Translate(

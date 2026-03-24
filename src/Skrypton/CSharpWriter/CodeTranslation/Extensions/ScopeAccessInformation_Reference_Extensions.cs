@@ -123,20 +123,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 }
             }
 
-            var scopedNameTokens =
+            Tuple<ScopedNameToken, ReferenceTypeOptions>[] scopedNameTokens =
                 scopeInformation.Classes.Select(t => Tuple.Create(t, ReferenceTypeOptions.Class))
                 .Concat(scopeInformation.Functions.Select(t => Tuple.Create(t, ReferenceTypeOptions.Function)))
                 .Concat(scopeInformation.Properties.Select(t => Tuple.Create(t, ReferenceTypeOptions.Property)))
                 .Concat(scopeInformation.Constants.Select(t => Tuple.Create(t, ReferenceTypeOptions.Constant)))
-                .Concat(scopeInformation.Variables.Select(t => Tuple.Create(t, ReferenceTypeOptions.Variable)));
+                .Concat(scopeInformation.Variables.Select(t => Tuple.Create(t, ReferenceTypeOptions.Variable)))
+                .ToArray();
 
             // There could be references matching the requested name in multiple scopes, start from the closest and work outwards
-            var possibleScopes = new[]
-            {
+            ScopeLocationOptions[] possibleScopes =
+            [
                 ScopeLocationOptions.WithinFunctionOrPropertyOrWith,
                 ScopeLocationOptions.WithinClass,
                 ScopeLocationOptions.OutermostScope
-            };
+            ];
             foreach (var scope in possibleScopes)
             {
                 var firstMatch = scopedNameTokens

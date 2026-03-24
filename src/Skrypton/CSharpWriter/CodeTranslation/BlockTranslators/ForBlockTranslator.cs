@@ -738,8 +738,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 indentationDepth--;
                 translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forBlock.LoopVar.LineIndex));
             }
-            foreach (var undeclaredVariable in undeclaredVariableReferencesAccessedByLoopConstraints)
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariableReferencesAccessedByLoopConstraints, forBlock, scopeAccessInformation);
             string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
                 .Select(e => e.ExitEarlyBooleanNameIfAny!.Name)

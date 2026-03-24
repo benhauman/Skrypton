@@ -6,6 +6,7 @@ using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -53,9 +54,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // value passed to the statement translator is "NotSpecified".
 
             TranslatedStatementContentDetails loopSourceContent = _statementTranslator.Translate(forEachBlock.LoopSrc, scopeAccessInformation, ExpressionReturnTypeOptions.NotSpecified, _logger.Warning);
-            NonNullImmutableList<NameToken> undeclaredVariablesInLoopSourceContent = loopSourceContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-            foreach (NameToken? undeclaredVariable in undeclaredVariablesInLoopSourceContent)
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            IReadOnlyCollection<NameToken> undeclaredVariablesInLoopSourceContent = loopSourceContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesInLoopSourceContent, forEachBlock, scopeAccessInformation);
             TranslationResult translationResult = TranslationResult.Empty.AddUndeclaredVariables(undeclaredVariablesInLoopSourceContent);
             CSharpName enumerationContentVariableName = _tempNameGenerator(new CSharpName("enumerationContent"), scopeAccessInformation);
             string enumeratorInitialisationContent = string.Format(CultureInfo.InvariantCulture,

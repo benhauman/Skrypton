@@ -2,6 +2,7 @@
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
@@ -11,7 +12,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This will never be null
         /// </summary>
-        public static NonNullImmutableList<NameToken> GetUndeclaredVariablesAccessed(
+        public static IReadOnlyCollection<NameToken> GetUndeclaredVariablesAccessed(
             this TranslatedStatementContentDetails source,
             ScopeAccessInformation scopeAccessInformation,
             VBScriptNameRewriter nameRewriter)

@@ -119,9 +119,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         ))
                         .ToArray();
 
-                    var undeclaredVariablesInCondition = conditions.SelectMany(c => c.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter));
-                    foreach (var undeclaredVariable in undeclaredVariablesInCondition)
-                        _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+                    var undeclaredVariablesInCondition = conditions.SelectMany(c => c.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter)).ToArray();
+                    CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesInCondition, selectBlock, scopeAccessInformation);
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesInCondition);
 
                     // We need to record line index values for the "scaffolding" C# code that will be emitted here - we'll approximate by taking the line index of the first
@@ -442,7 +441,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 var targetNameToken = (NameToken)targetCodeExpression.Tokens.Single();
                 if (!scopeAccessInformation.IsDeclaredReference(targetNameToken, _nameRewriter))
                 {
-                    _logger.Warning("Undeclared variable: \"" + targetNameToken.Content + "\" (line " + (targetNameToken.LineIndex + 1) + ")");
+                    CodeBlockTranslator.LogUndeclaredVariables(_logger, [targetNameToken], null, scopeAccessInformation);
                     translationResult = translationResult.AddUndeclaredVariables(new[] { targetNameToken });
                 }
                 return new SelectTargetExpressionTranslationData(
@@ -616,8 +615,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 successfullyEvaluatedTargetNameIfRequired = null; // Not required since we can don't have to deal with fail cases (since error handling is not enabled)
             }
             var undeclaredVariablesAccessedInTargetExpression = evaluatedTargetContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-            foreach (var undeclaredVariable in undeclaredVariablesAccessedInTargetExpression)
-                _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesAccessedInTargetExpression, null, scopeAccessInformation);
             translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesAccessedInTargetExpression);
 
             // Since the target codeExpression wasn't something simple (like a literal or built-in value), then it's stored in a variable so that it's not evaluated for each case

@@ -282,11 +282,14 @@ namespace Skrypton.ScriptControlSupport
         public bool TempEnabled { get; }
         protected string TempDirectoryPath { get; }
 
-        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath)
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk)
         {
             TempEnabled = tempEnabled;
             TempDirectoryPath = tempDirectoryPath ?? "";
+            EnabledLoadFromDisk = enabledLoadFromDisk;
         }
+
+        internal bool EnabledLoadFromDisk { get; }
 
         internal string EnsureFilePathX(string folderName, string fileName)
         {

@@ -6,6 +6,7 @@ using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -48,7 +49,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // take by-ref arguments and any of those arguments are by-ref arguments of the containing function, then it will have to be re-written since C# will not allow "ref"
             // arguments to be manipulated in lambas (and that is how by-ref arguments are dealt with when calling nested functions or properties). This third arrangement is
             // the most complicated code path.
-            var byRefArgumentIdentifier = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
+            FuncByRefArgumentMapper byRefArgumentIdentifier = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
             var conditionalClausesWithTranslatedConditions = ifBlock.ConditionalClauses
                 .Select((conditional, index) => new
                 {
@@ -68,11 +69,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 })
                 .ToArray();
 
-            var translationResult = TranslationResult.Empty;
-            var numberOfAdditionalBlocksInjectedForErrorTrapping = 0;
+            TranslationResult translationResult = TranslationResult.Empty;
+            int numberOfAdditionalBlocksInjectedForErrorTrapping = 0;
             foreach (var conditionalEntry in conditionalClausesWithTranslatedConditions)
             {
-                var conditionalContent = conditionalEntry.TranslatedContent;
+                TranslatedStatementContentDetails conditionalContent = conditionalEntry.TranslatedContent;
                 var previousConditionalEntry = (conditionalEntry.Index == 0) ? null : conditionalClausesWithTranslatedConditions[conditionalEntry.Index - 1];
 
                 // If we're dealing with multiple if (a).. elseif (b).. elseif (c).. [else] blocks then these would be most simply represented by if (a).. else if (b)..
@@ -100,7 +101,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // will update the value after the call completes using a lambda). The other way is if error-trapping might be enabled at runtime - in this case, the evaluation
                 // of the condition is performed within a lambda so that any errors can be swallowed if necessary. If any such reference rewriting is required then the code that
                 // must be emitted is more complex.
-                var byRefArgumentsToRewrite = conditionalEntry.ByRefArgumentsToRewriteInTranslatedContent;
+                NonNullImmutableList<FuncByRefMapping> byRefArgumentsToRewrite = conditionalEntry.ByRefArgumentsToRewriteInTranslatedContent;
                 if (byRefArgumentsToRewrite.Any())
                 {
                     // If we're in a function or property and that function / property has by-ref arguments that we then need to pass into further function / property calls
@@ -108,7 +109,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // the temporary values back into the original references. This is required in order to be consistent with VBScript and yet also produce code that compiles
                     // as C# (which will not let "ref" arguments of the containing function be used in lambdas, which is how we deal with updating by-ref arguments after function
                     // or property calls complete).
-                    var evaluatedResultName = _tempNameGenerator(new CSharpName("ifResult"), scopeAccessInformation);
+                    CSharpName evaluatedResultName = _tempNameGenerator(new CSharpName("ifResult"), scopeAccessInformation);
                     scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                         byRefArgumentsToRewrite
                             .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
@@ -119,16 +120,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         indentationDepth,
                         conditionalEntry.Conditional.Condition.Tokens.First().LineIndex
                     ));
-                    var byRefMappingOpeningTranslationDetails = byRefArgumentsToRewrite.OpenByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
+                    FuncByRefMappingListExtensions.ByRefReplacementTranslationResultDetails byRefMappingOpeningTranslationDetails = byRefArgumentsToRewrite.OpenByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
                     translationResult = byRefMappingOpeningTranslationDetails.TranslationResult;
                     indentationDepth += byRefMappingOpeningTranslationDetails.DistanceToIndentCodeWithMappedValues;
-                    var rewrittenConditionalContent = _statementTranslator.Translate(
+                    TranslatedStatementContentDetails rewrittenConditionalContent = _statementTranslator.Translate(
                         byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(conditionalEntry.Conditional.Condition, _nameRewriter),
                         scopeAccessInformation,
                         ExpressionReturnTypeOptions.NotSpecified,
                         _logger.Warning
                     );
-                    var ifStatementFormat = (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
+                    string ifStatementFormat = (scopeAccessInformation.ErrorRegistrationTokenIfAny == null)
                         ? "{0} = {1}.IF({2});"
                         : "{0} = {1}.IF(() => {2}, {3});";
                     translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
@@ -176,12 +177,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                 }
 
-                var undeclaredVariablesAccessed = conditionalContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                foreach (var undeclaredVariable in undeclaredVariablesAccessed)
-                    _logger.Warning("Undeclared variable: \"" + undeclaredVariable.Content + "\" (line " + (undeclaredVariable.LineIndex + 1) + ")");
+                IReadOnlyCollection<NameToken> undeclaredVariablesAccessed = conditionalContent.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
+                CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesAccessed, ifBlock, scopeAccessInformation);
                 translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesAccessed);
-                var innerStatements = conditionalEntry.Conditional.Statements.ToNonNullImmutableList();
-                var conditionalInlineCommentIfAny = !innerStatements.Any() ? null : (innerStatements.First() as InlineCommentStatement);
+                NonNullImmutableList<ICodeBlock> innerStatements = conditionalEntry.Conditional.Statements.ToNonNullImmutableList();
+                InlineCommentStatement? conditionalInlineCommentIfAny = !innerStatements.Any() ? null : (innerStatements.First() as InlineCommentStatement);
                 if (conditionalInlineCommentIfAny != null)
                     innerStatements = innerStatements.RemoveAt(0);
                 translationResult = translationResult.Add(
@@ -225,7 +225,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             // If any additional levels of nesting were required above (for error-trapping scenarios), ensure they are closed off here
-            for (var index = 0; index < numberOfAdditionalBlocksInjectedForErrorTrapping; index++)
+            for (int index = 0; index < numberOfAdditionalBlocksInjectedForErrorTrapping; index++)
             {
                 indentationDepth--;
                 translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, translationResult.TranslatedStatements.Last().LineIndexOfStatementStartInSource));

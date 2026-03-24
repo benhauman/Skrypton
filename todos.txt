@@ -50,3 +50,35 @@ Error Context: 0'
 
 15: CS0219: // error CS0219: The variable 'ForWriting' is assigned but its value is never used
   => remove/comment out unused constants and variables
+
+
+16: Simplify ByRef arguments:
+* From:
+				public object F1(ref object x)
+				{
+					object byrefalias = x;
+					try
+					{
+						_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }))));
+					}
+					finally { x = byrefalias; }
+				...
+* To:
+				public object F1(ref object x)
+				{
+					{
+						using RefScope<object> x__byref = _.ARGS.CreateRefScope(x, v => x = v);
+						_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", x__byref));
+					}
+				...
+
+17: Use special class for not defined function/sub holding the name of the function or sub
+* From:
+	object IsAgent = null; /* Undeclared in source */
+	if (_.IF(_.EQ(_.CALLm0argp(this, IsAgent, _.ARGS.Ref(_env.hlObj, v85 => { _env.hlObj = v85; })), true)))
+    {
+    }
+	=> Type mismatch: '[undefined]'. Procedure or object not registered? arg:Skrypton.Tests.Application.HLObjectInstance CallerLineNo:850
+
+* To: Type mismatch: '[Function 'IsAgent' not found]'. Procedure or object not registered? arg:Skrypton.Tests.Application.HLObjectInstance CallerLineNo:850
+!!! Compile time!!!

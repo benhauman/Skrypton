@@ -1077,6 +1077,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             //int todoLength = 0;
             if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
+                bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm0argp);
                 callNameResolved = true;
             }
@@ -1122,6 +1123,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v3),
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v4),
                         5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v5),
+                        6 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v6), // test : db_TrumpfData_script_649_0_0
+                        8 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v8), // test: UnitSelection_Renderer_NoSelects
+                        9 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v9), // test: UnitSelection_Renderer_NoSelects
+                        10 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v10), // test: UnitSelection_Renderer_NoSelects
+                        15 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v15), // test: UnitSelection_Renderer_NoSelects
                         _ => throw new NotSupportedException($"Overload 'CALLm1v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
                     };
                 }
@@ -1147,7 +1153,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     callName = argumentsArray.Length switch
                     {
                         1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v1), // test: CT74_
-                        //2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v2),
+                        2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v2), // test: db_TrumpfData_script_649_0_0
                         //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3),
                         //4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4),
                         //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
@@ -1170,10 +1176,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     callName = argumentsArray.Length switch
                     {
                         1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v1), // test: UnitSelection_Renderer_NoSelects
-                        //2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v2),
-                        //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v3),
-                        //4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v4),
-                        //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v5),
+                        2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v2), // test: UnitSelection_Renderer_NoSelects
+                        3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v3), // test: UnitSelection_Renderer_NoSelects  Line:2427 : Page.Functions.Dates.NiceDateGuts(adtStartNight,True,True)
+                        4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v4), // test: UnitSelection_Renderer_NoSelects  Line:2447 : Page.Functions.Booking.DrawSelectRange("unit_" &objUnit.UnitKey, 0, objUnit.UnitCount, iSelectedQty)
+                        5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v5), // test: UnitSelection_Renderer_NoSelects  Line:2060 : Page.Functions.Booking.Booking_MatchQual(0, iDateDiff, iDurDiff, aiReqNights, 2)
                         _ => throw new NotSupportedException($"Overload 'CALLm3v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
                     };
                 }
@@ -1709,11 +1715,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
                     else
                     {
-                        isConfirmedToBeByVal = (
-                            (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Constant) ||
-                            (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function) ||
-                            (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property)
-                        );
+                        if (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Variable)
+                        {
+                            ///////////////
+                            // lubo : test BookingUI_StayDetails all are ByVal
+                            // * KnownVariablePassedAsArgumentToKnownFunctionIsPassedByRef
+                            // * ByRefArgumentRequireByRefArgumentMappingWhenPassedIndirectlyToBuiltInFunction
+                            //isConfirmedToBeByVal = true; Inspect function arguments if they are 'ByVal'
+                            ////////////
+                        }
+                        else
+                        {
+                            isConfirmedToBeByVal = (
+                                (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Constant) ||
+                                (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function) ||
+                                (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Property)
+                            );
+                        }
                     }
                 }
             }
