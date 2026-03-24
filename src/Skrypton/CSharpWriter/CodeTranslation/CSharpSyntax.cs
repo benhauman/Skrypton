@@ -60,7 +60,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         internal virtual bool HasContent => true;
 
         protected const char NewLineNormalized = '\n';
-
     }
 
     internal sealed class CSharpParameterDeclaration
@@ -226,11 +225,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {
             throw new NotImplementedException();
-        }
-
-        internal CSharpProgramCodeBuilder AsProgramBuilder()
-        {
-            return (CSharpProgramCodeBuilder)this;
         }
     }
     internal sealed class CSharpProgramCodeBuilder : CSharpOutermostCodeBuilder

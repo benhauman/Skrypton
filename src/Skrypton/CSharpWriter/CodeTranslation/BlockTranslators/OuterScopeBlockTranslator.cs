@@ -190,55 +190,95 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed
             );
 
-            CSharpOutermostCodeBuilder outerBuilder = _outputType == OutputTypeOptions.Executable ? new CSharpProgramCodeBuilder() : new CSharpScaffoldingCodeBuilder();
             if (_outputType == OutputTypeOptions.Executable)
             {
-                CSharpProgramCodeBuilder programBuilder = outerBuilder.AsProgramBuilder();
-                programBuilder.AddUsing<System.String>()
-                              .AddUsing<System.Collections.IList>()
-                    ;
-                if (dateLiteralsToValidateAtRuntime.Length != 0)
-                {
-                    // System.Collections.ObjectModel is only required for the ReadOnlyCollection, which is only used when there are date literals that need validating at runtime
-                    programBuilder.AddUsing<System.Collections.ObjectModel.ReadOnlyCollection<int>>();
-                }
-                programBuilder.AddUsing<IProvideVBScriptCompatFunctionalityToIndividualRequests>(); // using Skrypton.RuntimeSupport;
-                programBuilder.AddRange([new TranslatedStatement(TranslatedStatementKind.NamespaceBegin, "namespace " + _startNamespace.Name, 0, 0),
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 0, 0),
-                ]);
-                // Runner
-                programBuilder.AddRange([new TranslatedStatement(TranslatedStatementKind.RawText, $"public sealed class {_startClassName.Name} : RunnerBaseT<{_envClassName.Name}, {_outerClassName.Name}>", 1, 0), // 'public sealed class Runner : '
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
-                    new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
+                CSharpProgramCodeBuilder programBuilder = new CSharpProgramCodeBuilder();
+                TranslateCode1Program(programBuilder, dateLiteralsToValidateAtRuntime);
+                TranslateCode2Outermost(programBuilder, scopeAccessInformation, outerExecutableBlocksTranslationResult);
+                TranslateCode3Program(programBuilder, explicitVariableDeclarationsFromWithOuterScope);
+                TranslateCode4Outermost(programBuilder, annotatedFunctions, scopeAccessInformation, outerExecutableBlocksTranslationResult);
 
-                    CSharpSyntaxFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
-                        .AddStatement(new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0))
-                        .BuildTranslatedStatement()
-                ]);
-                programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override {_outerClassName.Name} CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env) => new {_outerClassName.Name}(compatLayer, env);", 2, 0));
-                programBuilder.AddRange([
-                    // "GO"
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override void {_startMethodName.Name}(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env, {_outerClassName.Name} globalReferences)",2,0),
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_envRefName.Name} = env ?? throw new ArgumentNullException(nameof(env));",3,0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",3,0)
-                ]);
-                if (dateLiteralsToValidateAtRuntime.Length != 0)
-                {
-                    // When rendering in full Executable format (not just in WithoutScaffolding), if there were any date literals in the source content that could not
-                    // be confirmed as valid at translation time (meaning they include a month name, which will vary in validity depending upon the culture of the
-                    // environment at runtime) then these literals need to be validated each run before any other work is attempted. (This is the equivalent of
-                    // the VBScript interpreter reading the script for every execution and validating date literals against the current culture - if it finds
-                    // any of them to be invalid then it will raise a syntax error and not attempt to execute any of the script).
-                    programBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ValidateDateTimeLiteralAgainstCurrentCulture))
-                            .AddParameters(dateLiteralsToValidateAtRuntime, (lit) => $@"Tuple.Create(""{lit.Item1}"", {lit.Item2})"));
-                }
+                TranslationResult classBlocksTranslationResult = Translate(TrimTrailingBlankLines(annotatedClasses.SelectMany(c => c.LeadingComments.Cast<ICodeBlock>().Concat([c.CodeBlock])).ToNonNullImmutableList()),
+                    scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed), // See comment above relating to ExternalDependencies for function blocks
+                    1 // indentationDepth
+                );
+                TranslateCode5Program(programBuilder, scopeAccessInformation, outerExecutableBlocksTranslationResult, classBlocksTranslationResult); // Close 'GlobalReferences' class
+                TranslateCode6Outermost(programBuilder, classBlocksTranslationResult);
+                TranslateCode7Program(programBuilder);
+
+                // Moving the functions and classes around can sometimes leaving extraneous blank lines in their wake. This tidies them up. (This would also result in
+                // runs of blank lines in the source being reduced to a single line, not just runs that were introduced by the rearranging, but I can't see how that
+                // could be a big problem).
+                return programBuilder;
             }
             else
             {
-                // CSharpScaffoldingCodeBuilder
-            }
+                // Scaffolding
+                CSharpOutermostCodeBuilder outerBuilder = new CSharpScaffoldingCodeBuilder();
+                TranslateCode2Outermost(outerBuilder, scopeAccessInformation, outerExecutableBlocksTranslationResult);
+                TranslateCode4Outermost(outerBuilder, annotatedFunctions, scopeAccessInformation, outerExecutableBlocksTranslationResult);
 
+                TranslationResult classBlocksTranslationResult = Translate(TrimTrailingBlankLines(annotatedClasses.SelectMany(c => c.LeadingComments.Cast<ICodeBlock>().Concat([c.CodeBlock])).ToNonNullImmutableList()),
+                    scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed), // See comment above relating to ExternalDependencies for function blocks
+                    1 // indentationDepth
+                );
+                TranslateCode6Outermost(outerBuilder, classBlocksTranslationResult);
+
+                // Moving the functions and classes around can sometimes leaving extraneous blank lines in their wake. This tidies them up. (This would also result in
+                // runs of blank lines in the source being reduced to a single line, not just runs that were introduced by the rearranging, but I can't see how that
+                // could be a big problem).
+                return outerBuilder;
+            }
+        }
+
+        private static void TranslateCode7Program(CSharpProgramCodeBuilder programBuilder)
+        {
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 0, 0)); // Close namespace
+        }
+
+        private static void TranslateCode6Outermost(CSharpOutermostCodeBuilder outerBuilder, TranslationResult classBlocksTranslationResult)
+        {
+            if (classBlocksTranslationResult.TranslatedStatements.Any())
+            {
+                outerBuilder.AddRange(classBlocksTranslationResult.TranslatedStatements);
+            }
+        }
+
+        private void TranslateCode5Program(CSharpProgramCodeBuilder programBuilder, ScopeAccessInformation scopeAccessInformation, TranslationResult outerExecutableBlocksTranslationResult, TranslationResult classBlocksTranslationResult)
+        {
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close 'GlobalReferences' class
+
+            // This has to be generated after all of the Translate calls to ensure that the UndeclaredVariablesAccessed data for all of the TranslationResults is available
+            NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed =
+                scopeAccessInformation.ExternalDependencies
+                    .AddRange(
+                        outerExecutableBlocksTranslationResult
+                            .Add(classBlocksTranslationResult)
+                            .UndeclaredVariablesAccessed
+                    );
+            RenderClassEnvironmentReferences(programBuilder, allEnvironmentVariablesAccessed);
+        }
+
+        private void TranslateCode4Outermost(CSharpOutermostCodeBuilder outerBuilder, NonNullImmutableList<Annotated<AbstractFunctionBlock>> annotatedFunctions, ScopeAccessInformation scopeAccessInformation, TranslationResult outerExecutableBlocksTranslationResult)
+        {
+            foreach (Annotated<AbstractFunctionBlock> annotatedFunctionBlock in annotatedFunctions)
+            {
+                // Note that any variables that were accessed by code in the outermost scope, but that were not explicitly declared, are considered to be IMPLICITLY declared.
+                // So, if they are referenced within any of the functions, they must share the same reference unless explicit declared within those functions (so if "a" is
+                // set in the outermost scope and then a function has a statement "ReDim a(2)", that "a" reference should be that one in the outermost scope). To achieve
+                // this, the "implicitly declared" outermost scope variables are added to the ExternalDependencies set in the ScopeAccessInformation instance provided
+                // to the function block translator. The same must be done for class block translation (see below).
+                //translatedStatements = translatedStatements.Add(new TranslatedStatement(0));
+                outerBuilder.AddRange(Translate(annotatedFunctionBlock.LeadingComments.Cast<ICodeBlock>().Concat([annotatedFunctionBlock.CodeBlock]).ToNonNullImmutableList(),
+                        scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed),
+                        2 // indentationDepth
+                    ).TranslatedStatements
+                );
+            }
+        }
+
+        private void TranslateCode2Outermost(CSharpOutermostCodeBuilder outerBuilder, ScopeAccessInformation scopeAccessInformation, TranslationResult outerExecutableBlocksTranslationResult)
+        {
             if (scopeAccessInformation.ErrorRegistrationTokenIfAny != null)
             {
                 outerBuilder.AddVariableDeclaration(3, 0, stmt => stmt.VariableType<int>().VariableName(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name).VariableInitialization($"{_supportRefName.Name}.GETERRORTRAPPINGTOKEN();"));
@@ -248,137 +288,129 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 outerBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RELEASEERRORTRAPPINGTOKEN)).AddParameterVariableReference(scopeAccessInformation.ErrorRegistrationTokenIfAny.Name));
             }
+        }
 
-            if (_outputType == OutputTypeOptions.Executable)
-            {
-                CSharpProgramCodeBuilder programBuilder = outerBuilder.AsProgramBuilder();
+        private void TranslateCode3Program(CSharpProgramCodeBuilder programBuilder, NonNullImmutableList<VariableDeclaration> explicitVariableDeclarationsFromWithOuterScope)
+        {
+            // Close the main "TranslatedProgram" function and then write out the runtime-date-literal-validation logic and the global references class (when a complete executable
+            // is not required, none of this is of much benefit and detracts from the core of what's being translated - most tests will specify WithoutScaffolding rather than
+            // Executable so that just the real meat of the source code is generated)
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0)); // end of 'GO'
 
-                // Close the main "TranslatedProgram" function and then write out the runtime-date-literal-validation logic and the global references class (when a complete executable
-                // is not required, none of this is of much benefit and detracts from the core of what's being translated - most tests will specify WithoutScaffolding rather than
-                // Executable so that just the real meat of the source code is generated)
-                programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0)); // end of 'GO'
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close outer class 'Runner'
 
-                programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0)); // Close outer class 'Runner'
-
-                programBuilder.AddRange(
-                [
-                    new TranslatedStatement(TranslatedStatementKind.RawText, $"public sealed class {_outerClassName.Name} : GlobalReferencesBaseT<{_envClassName.Name}>", 1, 0), // 'public sealed class GlobalReferences'
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
-                    new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, "public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env) : base(compatLayer, env)", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, _envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 3, 0),
-                    new TranslatedStatement(TranslatedStatementKind.RawText, _outerRefName.Name + " = this;", 3, 0)
+            programBuilder.AddRange(
+            [
+                new TranslatedStatement(TranslatedStatementKind.RawText, $"public sealed class {_outerClassName.Name} : GlobalReferencesBaseT<{_envClassName.Name}>", 1, 0), // 'public sealed class GlobalReferences'
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
+                new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
+                new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _outerClassName.Name + " " + _outerRefName.Name + ";", 2, 0),
+                new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 2, 0)
                 ]);
+            // ctor
+            programBuilder.AddRange(
+            [
+                new TranslatedStatement(TranslatedStatementKind.RawText, "public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env) : base(compatLayer, env)", 2, 0),
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 3, 0),
+                new TranslatedStatement(TranslatedStatementKind.RawText, _outerRefName.Name + " = this;", 3, 0)
+            ]);
 
-                // Note: Any repeated "explicitVariableDeclarationsFromWithOuterScope" entries are ignored - this makes the ReDim translation process easier (where ReDim statements
-                // may target already-declared variables or they may be considered to implicitly declare them) but it means that the Dim translation has to do some extra work to
-                // pick up on "Name redefined" scenarios.
-                Dictionary<string, TranslatedVariableDeclarationStatement> variableInitializationStatements = [];
-                foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+            // Note: Any repeated "explicitVariableDeclarationsFromWithOuterScope" entries are ignored - this makes the ReDim translation process easier (where ReDim statements
+            // may target already-declared variables or they may be considered to implicitly declare them) but it means that the Dim translation has to do some extra work to
+            // pick up on "Name redefined" scenarios.
+            Dictionary<string, TranslatedVariableDeclarationStatement> variableInitializationStatements = [];
+            foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+            {
+                string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
+                if (!variableInitializationStatements.ContainsKey(variableAccessTokenName))
                 {
-                    string variableAccessTokenName = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
-
                     TranslatedVariableDeclarationStatement variableInitializationStatement = new TranslatedVariableDeclarationStatement(variableAccessTokenName, TranslateVariableInitialization(explicitVariableDeclaration, variableAccessTokenName, ScopeLocationOptions.OutermostScope, asUnreferencedVar: true, 3),
                         3,
                         explicitVariableDeclaration.Name.LineIndex
                     );
-                    if (!variableInitializationStatements.ContainsKey(variableAccessTokenName))
-                    {
-                        variableInitializationStatements.Add(variableAccessTokenName, variableInitializationStatement);
-                    }
-                    else
-                    {
-                        //already registered. see 'RepeatedReDimInOutermostScope1, RepeatedReDimInOutermostScope2'
-                    }
+                    variableInitializationStatements.Add(variableAccessTokenName, variableInitializationStatement);
+                    programBuilder.Add(variableInitializationStatement);
                 }
-                programBuilder.AddRange(variableInitializationStatements.Values);
-                programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0));
-                if (explicitVariableDeclarationsFromWithOuterScope.Any())
+                else
                 {
-                    Dictionary<string, TranslatedVariableDeclarationStatement> variableDeclarationStatements = [];
-                    foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+                    //already registered. see 'RepeatedReDimInOutermostScope1, RepeatedReDimInOutermostScope2'
+                }
+            }
+            //programBuilder.AddRange(variableInitializationStatements.Values);
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0));
+
+            if (explicitVariableDeclarationsFromWithOuterScope.Any())
+            {
+                Dictionary<string, TranslatedVariableDeclarationStatement> variableDeclarationStatements = [];
+                foreach (VariableDeclaration explicitVariableDeclaration in explicitVariableDeclarationsFromWithOuterScope)
+                {
+                    string variableAccessToken = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
+                    if (!variableDeclarationStatements.ContainsKey(variableAccessToken))
                     {
-                        string variableAccessToken = _nameRewriter.GetMemberAccessTokenName(explicitVariableDeclaration.Name);
                         TranslatedVariableDeclarationStatement variableDeclarationStatement = new TranslatedVariableDeclarationStatement(variableAccessToken, "internal object " + variableAccessToken + " { get; set; }",
                             2,
                             explicitVariableDeclaration.Name.LineIndex
                         );
 
-                        if (!variableDeclarationStatements.ContainsKey(variableAccessToken))
-                        {
-                            variableDeclarationStatements.Add(variableAccessToken, variableDeclarationStatement);
-                        }
-                        else
-                        {
-                            // already registered. see 'RepeatedReDimInOutermostScope1'
-                        }
+                        variableDeclarationStatements.Add(variableAccessToken, variableDeclarationStatement);
+                        programBuilder.Add(variableDeclarationStatement);
                     }
-                    programBuilder.AddRange(variableDeclarationStatements.Values);
+                    else
+                    {
+                        // already registered. see 'RepeatedReDimInOutermostScope1'
+                    }
                 }
+                //programBuilder.AddRange(variableDeclarationStatements.Values);
             }
-            foreach (Annotated<AbstractFunctionBlock> annotatedFunctionBlock in annotatedFunctions)
-            {
-                // Note that any variables that were accessed by code in the outermost scope, but that were not explicitly declared, are considered to be IMPLICITLY declared.
-                // So, if they are referenced within any of the functions, they must share the same reference unless explicit declared within those functions (so if "a" is
-                // set in the outermost scope and then a function has a statement "ReDim a(2)", that "a" reference should be that one in the outermost scope). To achieve
-                // this, the "implicitly declared" outermost scope variables are added to the ExternalDependencies set in the ScopeAccessInformation instance provided
-                // to the function block translator. The same must be done for class block translation (see below).
-                //translatedStatements = translatedStatements.Add(new TranslatedStatement(0));
-                outerBuilder.AddRange(
-                    Translate(annotatedFunctionBlock.LeadingComments.Cast<ICodeBlock>().Concat([annotatedFunctionBlock.CodeBlock]).ToNonNullImmutableList(),
-                        scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed),
-                        2 // indentationDepth
-                    ).TranslatedStatements
-                );
-            }
-            TranslationResult classBlocksTranslationResult = Translate(TrimTrailingBlankLines(annotatedClasses.SelectMany(c => c.LeadingComments.Cast<ICodeBlock>().Concat([c.CodeBlock])).ToNonNullImmutableList()),
-                scopeAccessInformation.ExtendExternalDependencies(outerExecutableBlocksTranslationResult.UndeclaredVariablesAccessed), // See comment above relating to ExternalDependencies for function blocks
-                1 // indentationDepth
-            );
-            if (_outputType == OutputTypeOptions.Executable)
-            {
-                CSharpProgramCodeBuilder programBuilder = outerBuilder.AsProgramBuilder();
-                programBuilder.AddRange(
-                [
-                    new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 1, 0), // Close 'GlobalReferences' class
-                ]);
-
-                // This has to be generated after all of the Translate calls to ensure that the UndeclaredVariablesAccessed data for all of the TranslationResults is available
-                NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed =
-                    scopeAccessInformation.ExternalDependencies
-                    .AddRange(
-                        outerExecutableBlocksTranslationResult
-                            .Add(classBlocksTranslationResult)
-                            .UndeclaredVariablesAccessed
-                    );
-                _ = RenderClassEnvironmentReferences(programBuilder, allEnvironmentVariablesAccessed);
-            }
-
-            if (classBlocksTranslationResult.TranslatedStatements.Any())
-            {
-                outerBuilder.AddRange(classBlocksTranslationResult.TranslatedStatements);
-            }
-
-            if (_outputType == OutputTypeOptions.Executable)
-            {
-                CSharpProgramCodeBuilder programBuilder = outerBuilder.AsProgramBuilder();
-                //translatedStatements = translatedStatements.Add(new TranslatedStatement("}", 1, 0)); // Close outer class
-                programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 0, 0)); // Close namespace
-            }
-
-            // Moving the functions and classes around can sometimes leaving extraneous blank lines in their wake. This tidies them up. (This would also result in
-            // runs of blank lines in the source being reduced to a single line, not just runs that were introduced by the rearranging, but I can't see how that
-            // could be a big problem).
-            return outerBuilder;
         }
 
-        private CSharpOutermostCodeBuilder RenderClassEnvironmentReferences(CSharpOutermostCodeBuilder outerBuilder, NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed)
+        private void TranslateCode1Program(CSharpProgramCodeBuilder programBuilder, Tuple<string, int>[] dateLiteralsToValidateAtRuntime)
         {
-            CSharpClassBuilder classBuilder = outerBuilder.CreateClass(1, 0).ClassName(_envClassName.Name).BaseClassName(nameof(EnvironmentReferencesBase)).AsPublic().AsSealed(); // // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
+            programBuilder.AddUsing<System.String>()
+                .AddUsing<System.Collections.IList>()
+                ;
+            if (dateLiteralsToValidateAtRuntime.Length != 0)
+            {
+                // System.Collections.ObjectModel is only required for the ReadOnlyCollection, which is only used when there are date literals that need validating at runtime
+                programBuilder.AddUsing<System.Collections.ObjectModel.ReadOnlyCollection<int>>();
+            }
+            programBuilder.AddUsing<IProvideVBScriptCompatFunctionalityToIndividualRequests>(); // using Skrypton.RuntimeSupport;
+            programBuilder.AddRange([new TranslatedStatement(TranslatedStatementKind.NamespaceBegin, "namespace " + _startNamespace.Name, 0, 0),
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 0, 0),
+            ]);
+            // Runner
+            programBuilder.AddRange([new TranslatedStatement(TranslatedStatementKind.RawText, $"public sealed class {_startClassName.Name} : RunnerBaseT<{_envClassName.Name}, {_outerClassName.Name}>", 1, 0), // 'public sealed class Runner : '
+                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
+                new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
+
+                CSharpSyntaxFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
+                    .AddStatement(new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0))
+                    .BuildTranslatedStatement()
+            ]);
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override {_outerClassName.Name} CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env) => new {_outerClassName.Name}(compatLayer, env);", 2, 0));
+            // "GO"
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override void {_startMethodName.Name}(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env, {_outerClassName.Name} globalReferences)", 2, 0));
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0));
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_envRefName.Name} = env ?? throw new ArgumentNullException(nameof(env));",3,0));
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",3,0));
+
+            if (dateLiteralsToValidateAtRuntime.Length != 0)
+            {
+                // When rendering in full Executable format (not just in WithoutScaffolding), if there were any date literals in the source content that could not
+                // be confirmed as valid at translation time (meaning they include a month name, which will vary in validity depending upon the culture of the
+                // environment at runtime) then these literals need to be validated each run before any other work is attempted. (This is the equivalent of
+                // the VBScript interpreter reading the script for every execution and validating date literals against the current culture - if it finds
+                // any of them to be invalid then it will raise a syntax error and not attempt to execute any of the script).
+                programBuilder.AddMethodInvocationStatement(3, 0, x => x.TargetName(_supportRefName.Name).MethodName(nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ValidateDateTimeLiteralAgainstCurrentCulture))
+                    .AddParameters(dateLiteralsToValidateAtRuntime, (lit) => $@"Tuple.Create(""{lit.Item1}"", {lit.Item2})"));
+            }
+        }
+
+        private void RenderClassEnvironmentReferences(CSharpProgramCodeBuilder programBuilder, NonNullImmutableList<NameToken> allEnvironmentVariablesAccessed)
+        {
+            CSharpClassBuilder classBuilder = programBuilder.CreateClass(1, 0).ClassName(_envClassName.Name).BaseClassName(nameof(EnvironmentReferencesBase)).AsPublic().AsSealed(); // // 'public sealed class EnvironmentReferences : EnvironmentReferencesBase'
             var allEnvironmentVariableNames = allEnvironmentVariablesAccessed.Select(v => new { RewrittenName = _nameRewriter.GetMemberAccessTokenName(v), LineIndex = v.LineIndex }).ToArray();
             HashSet<string> environmentVariableNamesThatHaveBeenAccountedFor = new HashSet<string>();
             foreach (var v in allEnvironmentVariableNames.OrderBy(x => x.RewrittenName))
@@ -393,8 +425,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     environmentVariableNamesThatHaveBeenAccountedFor.Add(v.RewrittenName);
                 }
             }
-            outerBuilder.AddBuilder(classBuilder);
-            return outerBuilder;
+            programBuilder.AddBuilder(classBuilder);
 
         }
 
