@@ -117,6 +117,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             body.AddRawText(rawText, lineIndexOfStatementStartInSource);
             return this;
         }
+        public CSharpStatementBuilderConstructor AddStatementX(TranslatedStatement statement)
+        {
+            body.AddBuilder(new CSharpCodeBuilderWrap(statement));
+            return this;
+        }
 
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {

@@ -308,19 +308,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 2, 0)
                 ]);
             // ctor
-            CSharpStatementBuilderConstructor ctorBuilder = CSharpClassBuilder.CreateConstructor(1, 0, x => x.ClassName(_outerClassName.Name))
+            CSharpStatementBuilderConstructor ctorBuilder = CSharpClassBuilder.CreateConstructor(2, 0, x => x.ClassName(_outerClassName.Name))
                 .Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
                 .Parameter(_envClassName.Name, "env", true);
-            //ctorBuilder.
 
-            programBuilder.AddRange(
-            [
-                new TranslatedStatement(TranslatedStatementKind.RawText, "public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env) : base(compatLayer, env)", 2, 0),
-                new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0),
-                new TranslatedStatement(TranslatedStatementKind.RawText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 3, 0),
-                new TranslatedStatement(TranslatedStatementKind.RawText, _envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 3, 0),
-                new TranslatedStatement(TranslatedStatementKind.RawText, _outerRefName.Name + " = this;", 3, 0)
-            ]);
+            ctorBuilder.AddStatementRawText(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0);
+            ctorBuilder.AddStatementRawText(_envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 0);
+            ctorBuilder.AddStatementRawText(_outerRefName.Name + " = this;", 0);
 
             // Note: Any repeated "explicitVariableDeclarationsFromWithOuterScope" entries are ignored - this makes the ReDim translation process easier (where ReDim statements
             // may target already-declared variables or they may be considered to implicitly declare them) but it means that the Dim translation has to do some extra work to
@@ -336,15 +330,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         explicitVariableDeclaration.Name.LineIndex
                     );
                     variableInitializationStatements.Add(variableAccessTokenName, variableInitializationStatement);
-                    programBuilder.Add(variableInitializationStatement);
+                    ctorBuilder.AddStatementX(variableInitializationStatement);
                 }
                 else
                 {
                     //already registered. see 'RepeatedReDimInOutermostScope1, RepeatedReDimInOutermostScope2'
                 }
             }
-            //programBuilder.AddRange(variableInitializationStatements.Values);
-            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", 2, 0));
+            programBuilder.AddBuilder(ctorBuilder);
 
             if (explicitVariableDeclarationsFromWithOuterScope.Any())
             {
@@ -367,7 +360,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         // already registered. see 'RepeatedReDimInOutermostScope1'
                     }
                 }
-                //programBuilder.AddRange(variableDeclarationStatements.Values);
             }
         }
 
