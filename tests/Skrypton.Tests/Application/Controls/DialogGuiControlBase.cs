@@ -86,14 +86,24 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTreeSelControl", () => new HelpLineTreeSelControl()},
             { "HelpLineLabel", () => new DialogGuiLabelControl() },
             { "HelpLineDateTimeControl", () => new DialogGuiDateTimeControl() },
+            { "HelpLineTabPage", () => new DialogGuiHelpLineTabPageControl() },
+            { "HelpLineTasksControl", () => new DialogGuiHelpLineTasksControl() },
+            { "HelpLineTableControl", () => new DialogGuiHelpLineTableControl() },
+            { "HelpLineCompound", () => new DialogGuiCompoundControl() },
+            { "HelpLineAttachmentControl", () => new DialogGuiAttachmentControl() },
+            { "HelpLineTreeComboBox", () => new DialogGuiTreeComboBoxControl() },
+            { "HelpLineCheckBox", () => new DialogGuiCheckBoxControl() },
+            { "HelpLineButton", () => new DialogGuiButtonControl() },
+            { "HelpLineSUControl", () => new DialogGuiSUControl() },
+            { "HelpLineComplexText", () => new DialogGuiComplexTextControl() }
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
         {
             return ControlFactories.TryGetValue(controlTypeName, out var factory)
                 ? factory()
-                : new DialogGuiUnknownControl(controlTypeName)
-                //: throw new NotImplementedException($"ControlTypeName:{controlTypeName}")
+                //: new DialogGuiUnknownControl(controlTypeName)
+                : throw new NotImplementedException($"ControlTypeName:{controlTypeName}")
                 ;
 
         }
@@ -169,6 +179,41 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiComplexTextControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiSUControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiCheckBoxControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiTreeComboBoxControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiAttachmentControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiCompoundControl : DialogGuiControlBase
+    {
+    }
+    public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
+    {
+
+    }
+    public sealed class DialogGuiHelpLineTasksControl : DialogGuiControlBase
+    {
+
+    }
     public sealed class DialogGuiDateTimeControl : DialogGuiControlBase
     {
         public void DeleteContent()
