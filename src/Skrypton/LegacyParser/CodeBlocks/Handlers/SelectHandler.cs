@@ -154,9 +154,26 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                                 valueTokens.RemoveRange(1, valueTokens.Count - 1);
                                 tokens.RemoveRange(0, valueTokens.Count);
                             }
+                            else if (firstToken is KeyWordToken kwrdTkn && kwrdTkn.KeyWordId == KnownKeyWordId.KeywordElse && secondToken is NameToken nametkn2)
+                            {
+                                // test: XMultipleTokensOnTheCaseLine1
+                                doRemoveEofToken = false;
+                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
+                                tokens.RemoveRange(0, valueTokens.Count);
+                                //throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}. KeyWordId:{kwrdTkn.KeyWordId}, Second.Name:{nametkn2.Content}");
+                            }
+                            else if (firstToken is NumericValueToken numtkn && secondToken is NameToken nametkn3)
+                            {
+                                // Test with 'XMultipleTokensOnTheCaseLine2'
+                                // condition token and statement tokens on the same line
+                                //    => remove only the condition token and all other token interpret as statement tokens.
+                                doRemoveEofToken = false;
+                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
+                                tokens.RemoveRange(0, valueTokens.Count);
+                            }
                             else
                             {
-                                throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}");
+                                throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}. First:{firstToken.GetType().Name}, Second:{secondToken.GetType().Name}");
                             }
                         }
                         else
@@ -186,7 +203,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         {
                             if ((exprValues.Count > 1) || (exprValues[0].Count != 1))
                             {
-                                throw new InvalidOperationException("Invalid CASE ELSE opening statement");
+                                throw new InvalidOperationException($"Invalid CASE ELSE opening statement. Line:{firstExprToken.LineIndex}");
                             }
 
                             caseElse = true;
