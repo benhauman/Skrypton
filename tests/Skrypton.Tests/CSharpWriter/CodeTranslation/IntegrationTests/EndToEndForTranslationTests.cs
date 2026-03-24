@@ -197,7 +197,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     }
                 }";
 
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 }
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
             ";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY104"]);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 }
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
             ";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY104"]);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     }
                     return F1_retVal;
                 }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY103", "SKY104"]);
 
         }
 

@@ -28,8 +28,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             TempValueNameGenerator tempNameGenerator,
             ITranslateIndividualStatements statementTranslator,
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger)
-            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
+            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, translatorOptions, logger)
         {
             _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -738,7 +739,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 indentationDepth--;
                 translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceClose, "}", indentationDepth, forBlock.LoopVar.LineIndex));
             }
-            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariableReferencesAccessedByLoopConstraints, forBlock, scopeAccessInformation);
+            LogUndeclaredVariables(undeclaredVariableReferencesAccessedByLoopConstraints, forBlock, scopeAccessInformation);
             string[] earlyExitFlagNamesToCheck = scopeAccessInformation.StructureExitPoints
                 .Where(e => e.ExitEarlyBooleanNameIfAny != null)
                 .Select(e => e.ExitEarlyBooleanNameIfAny!.Name)

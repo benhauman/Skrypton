@@ -25,8 +25,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             TempValueNameGenerator tempNameGenerator,
             ITranslateIndividualStatements statementTranslator,
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger)
-            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
+            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, translatorOptions, logger)
         {
             _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -194,7 +195,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         _logger.Warning
                     );
                     IReadOnlyCollection<NameToken> undeclaredVariablesReferencedByTarget = translatedTarget.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                    CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesReferencedByTarget, eraseStatement, scopeAccessInformation);
+                    LogUndeclaredVariables(undeclaredVariablesReferencedByTarget, eraseStatement, scopeAccessInformation);
 
                     translationResult = translationResult.Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
@@ -226,7 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     _logger.Warning
                 );
                 var undeclaredVariablesInSingleEraseTarget = translatedSingleEraseTarget.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter).ToArray();
-                CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesInSingleEraseTarget, eraseStatement, scopeAccessInformation);
+                LogUndeclaredVariables(undeclaredVariablesInSingleEraseTarget, eraseStatement, scopeAccessInformation);
 
                 translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesInSingleEraseTarget);
                 if (singleEraseTarget.ArgumentsIfAny == null)
@@ -267,7 +268,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         singleEraseTarget.Target.Tokens.First().LineIndex
                     ));
                     var undeclaredVariablesInArguments = translatedArguments.SelectMany(arg => arg.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter)).ToArray();
-                    CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariablesInArguments, eraseStatement, scopeAccessInformation);
+                    LogUndeclaredVariables(undeclaredVariablesInArguments, eraseStatement, scopeAccessInformation);
 
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariablesInArguments);
                 }

@@ -27,13 +27,16 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies)
+        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<string> suppressions)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
-        public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies)
+
+        internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions) => new DefaultTranslatorOptions(suppressions);
+
+        public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies, IReadOnlyCollection<string> suppressions)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
@@ -48,6 +51,7 @@ namespace Skrypton.CSharpWriter
             string scriptContent,
             IReadOnlyCollection<string> externalDependencies,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger
             )
         {
@@ -55,6 +59,7 @@ namespace Skrypton.CSharpWriter
                 throw new ArgumentNullException(nameof(scriptContent));
             if (externalDependencies == null)
                 throw new ArgumentNullException(nameof(externalDependencies));
+            if (translatorOptions == null) throw new ArgumentNullException(nameof(translatorOptions));
             if ((outputType != OuterScopeBlockTranslator.OutputTypeOptions.Executable) && (outputType != OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding))
                 throw new ArgumentOutOfRangeException(nameof(outputType));
             if (logger == null)
@@ -88,6 +93,7 @@ namespace Skrypton.CSharpWriter
                 new ValueSettingStatementsTranslator(supportRefName, envRefName, outerRefName, nameRewriter, statementTranslator, logger),
                 externalDependencies.Select(name => new NameToken(false, name.ToUpperX(), 1)).ToNonNullImmutableList(), //1:First line
                 outputType,
+                translatorOptions,
                 logger
             );
 

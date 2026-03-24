@@ -17,9 +17,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     }
     internal static class DefaultCSharpTranslation
     {
-        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, IReadOnlyCollection<string> externalDependencies)
+        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, IReadOnlyCollection<string> externalDependencies, string[] translationSuppression)
         {
-            return Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies);
+            return Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies, translationSuppression);
         }
     }
 }

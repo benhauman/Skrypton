@@ -11,7 +11,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void NoRuntimeDateLiteralPresent()
         {
             var source = "If (a = #29 5 2015#) Then\nEnd If";
-            TestCSharpCodeTranslation(source);
+            TestCSharpCodeTranslation(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void RuntimeDateLiteralPresent()
         {
             var source = "If (a = #29 May 2015#) Then\nEnd If If (a = #02 June 2011#) Then\nEnd If";
-            TestCSharpCodeTranslation(source);
+            TestCSharpCodeTranslation(source, ["SKY101"]);
         }
     }
 }

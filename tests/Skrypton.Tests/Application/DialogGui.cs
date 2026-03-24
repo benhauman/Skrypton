@@ -53,7 +53,7 @@ namespace Skrypton.Tests.Application
                 .AddTextControl("TextBoxChecklist10URL")
                 .BuildDialog();
 
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, suppressions: ["SKY101", "SKY105", "SKY106"]);
             DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
 
         }
@@ -526,18 +526,18 @@ WScript.Echo xmlhttp.responseText
                     .BuildDialog();
 
 
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, suppressions: ["SKY102", "SKY103", "SKY105", "SKY106"]);
             DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
         }
 
-        private void DoDialogGui(DialogBase dialog, Action<GlobalReferencesBase> dialogHandler)
+        private void DoDialogGui(DialogBase dialog, string[] suppressions, Action<GlobalReferencesBase> dialogHandler)
         {
             string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
             if (translated_cs == null)
             {
                 Console.WriteLine("translating...");
                 string scriptContent = dialog.CompleteScriptCode();
-                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray());
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray(), suppressions);
             }
 
             DoDialogGui(this, translated_cs, dialog, dialogHandler);
@@ -631,7 +631,7 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("Button1_Click")
                 .BuildDialog();
 
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, suppressions: ["SKY102", "SKY105", "SKY106", "SKY108"]);
             DoDialogGui(this, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -643,7 +643,7 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
-                ScriptControlClass.RunProcedure(gr, "Button1_click", []);
+                ScriptControlClass.RunProcedure(gr, "Button1_click", parameters: []);
             });
         }
 
@@ -665,7 +665,7 @@ WScript.Echo xmlhttp.responseText
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, suppressions: ["SKY106"]);
             DoDialogGui(this, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
@@ -808,7 +808,7 @@ WScript.Echo xmlhttp.responseText
 
             //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
             //{
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false, suppressions: ["SKY102", "SKY104", "SKY105", "SKY106", "SKY107", "SKY109"]);
             //}
 
             TestDialogHandlers(this, rsp, dialog);
@@ -900,7 +900,8 @@ WScript.Echo xmlhttp.responseText
             model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
             //Assert.Inconclusive(); // Compilation failed.(505,319): error CS0131: The left-hand side of an assignment must be a variable, property or indexer
-            DoDialogGui(dialog, (GlobalReferencesBase gr) =>
+            string[] suppressions = ["SKY103", "SKY104", "SKY105", "SKY106"];
+            DoDialogGui(dialog, suppressions, (GlobalReferencesBase gr) =>
             {
             });
         }

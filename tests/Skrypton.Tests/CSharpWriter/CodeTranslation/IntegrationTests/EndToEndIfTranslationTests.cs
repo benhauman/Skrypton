@@ -161,11 +161,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
             }
 
             /// <summary>
@@ -184,11 +180,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
             }
 
             /// <summary>
@@ -235,11 +227,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
             }
 
             /// <summary>
@@ -284,11 +272,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
             }
 
             /// <summary>
@@ -309,7 +293,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -419,7 +403,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -541,11 +525,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
             }
         }
 

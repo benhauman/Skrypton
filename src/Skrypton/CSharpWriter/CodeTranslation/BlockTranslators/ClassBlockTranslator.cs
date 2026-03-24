@@ -26,8 +26,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             TempValueNameGenerator tempNameGenerator,
             ITranslateIndividualStatements statementTranslator,
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger)
-            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger) { }
+            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, translatorOptions, logger) { }
 
         public TranslationResult Translate(ClassBlock classBlock, ScopeAccessInformation scopeAccessInformation, int indentationDepth)
         {

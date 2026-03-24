@@ -19,6 +19,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         internal readonly TempValueNameGenerator _tempNameGenerator;
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ITranslateValueSettingsStatements _valueSettingStatementTranslator;
+        internal readonly ITranslatorOptions _translatorOptions;
         private readonly ILogInformation _logger;
         protected CodeBlockTranslator(
             CSharpName supportRefName,
@@ -30,6 +31,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             TempValueNameGenerator tempNameGenerator,
             ITranslateIndividualStatements statementTranslator,
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger)
         {
             _supportRefName = supportRefName ?? throw new ArgumentNullException(nameof(supportRefName));
@@ -41,6 +43,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             _tempNameGenerator = tempNameGenerator ?? throw new ArgumentNullException(nameof(tempNameGenerator));
             _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
             _valueSettingStatementTranslator = valueSettingStatementTranslator ?? throw new ArgumentNullException(nameof(valueSettingStatementTranslator));
+            _translatorOptions = translatorOptions ?? throw new ArgumentNullException(nameof(translatorOptions));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -139,6 +142,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -338,6 +342,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -365,6 +370,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -486,6 +492,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -513,6 +520,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -540,6 +548,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -567,6 +576,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -684,7 +694,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 var translatedSeedExpression = _statementTranslator.Translate(randomizeStatement.SeedIfAny, scopeAccessInformation, ExpressionReturnTypeOptions.Value, _logger.Warning);
                 var undeclaredVariables = translatedSeedExpression.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
+                LogUndeclaredVariables(undeclaredVariables, block, scopeAccessInformation);
                 translationResult = translationResult.AddUndeclaredVariables(undeclaredVariables);
                 translatedSeedIfAny = translatedSeedExpression.TranslatedContent;
             }
@@ -713,26 +723,35 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             return translationResult.Add(translatedRandomizeStatements);
         }
 
-        internal static void LogUndeclaredVariables(ILogInformation logger, IReadOnlyCollection<NameToken> undeclaredVariables, ICodeBlock? block, ScopeAccessInformation scopeAccessInformation)
+        protected void LogUndeclaredVariables(IReadOnlyCollection<NameToken> undeclaredVariables, ICodeBlock? block, ScopeAccessInformation scopeAccessInformation)
         {
             if (undeclaredVariables.Count > 0)
             {
                 foreach (var undeclaredVariable in undeclaredVariables)
                 {
-                    string scopeName = scopeAccessInformation.Parent switch
+                    (string errorKey, string scopeName, bool acceptIt) = scopeAccessInformation.Parent switch
                     {
-                        OutermostScope scopeOutermostScope => scopeOutermostScope.Name.Content, // test:SelectCaseWithStringTokens
-                        SubBlock scopeSubBlock => scopeSubBlock.Name.Content, // test:LUNA12_quxDATA__hlsysscript_cncIN
-                        FunctionBlock scopeFunctionBlock => scopeFunctionBlock.Name.Content, // test:ClassContainedFunctionMayNotBeTargetOfCallExpression
-                        ForBlock scopeForBlock => scopeForBlock.GetType().Name, // test:UndeclaredVariablesShouldNotBeFlushedAtForBlockEnd
-                        ForEachBlock scopeForEachBlock => scopeForEachBlock.GetType().Name, // test:SimpleCaseWithoutErrorHandling
-                        IfBlock scopeIfBlock => scopeIfBlock.GetType().Name, // test:XIfOnMissingFunc1
-                        SelectBlock scopeSelectBlock => scopeSelectBlock.GetType().Name, // test:CT132_Dialog_83
-                        WithBlock scopeWithBlock => scopeWithBlock.GetType().Name, // test:CT130_ClientComputer_Dialog_567_Button1_Click
-                        DoBlock scopeDoBlock => scopeDoBlock.GetType().Name, // test:CT132_Dialog_83
+                        OutermostScope scopeOutermostScope => ("SKY101", scopeOutermostScope.Name.Content, false), // test:SelectCaseWithStringTokens
+                        SubBlock scopeSubBlock => ("SKY102", scopeSubBlock.Name.Content, false), // test:LUNA12_quxDATA__hlsysscript_cncIN
+                        FunctionBlock scopeFunctionBlock => ("SKY103", scopeFunctionBlock.Name.Content, false), // test:ClassContainedFunctionMayNotBeTargetOfCallExpression
+                        ForBlock scopeForBlock => ("SKY104", scopeForBlock.GetType().Name, false), // test:UndeclaredVariablesShouldNotBeFlushedAtForBlockEnd
+                        ForEachBlock scopeForEachBlock => ("SKY105", scopeForEachBlock.GetType().Name, false), // test:SimpleCaseWithoutErrorHandling
+                        IfBlock scopeIfBlock => ("SKY106", scopeIfBlock.GetType().Name, false), // test:XIfOnMissingFunc1
+                        SelectBlock scopeSelectBlock => ("SKY107", scopeSelectBlock.GetType().Name, false), // test:CT132_Dialog_83
+                        WithBlock scopeWithBlock => ("SKY108", scopeWithBlock.GetType().Name, false), // test:CT130_ClientComputer_Dialog_567_Button1_Click
+                        DoBlock scopeDoBlock => ("SKY109", scopeDoBlock.GetType().Name, false), // test:CT132_Dialog_83
                         _ => throw new NotImplementedException(scopeAccessInformation.Parent.GetType().FullName)
                     };
-                    logger.Warning($"Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'");
+                    bool acceptErr = _translatorOptions.AcceptTranslationError(errorKey);
+                    _logger.Warning($"{errorKey}: Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'");
+                    if (acceptErr)
+                    {
+                        // ok
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Error {errorKey}: Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'");
+                    }
                 }
             }
         }
@@ -869,7 +888,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     );
                     translatedArguments.Add(translatedArgumentDetails.TranslatedContent);
                     var undeclaredVariables = translatedArgumentDetails.GetUndeclaredVariablesAccessed(scopeAccessInformation, _nameRewriter);
-                    CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
+                    LogUndeclaredVariables(undeclaredVariables, block, scopeAccessInformation);
 
                     translationResult = translationResult.AddUndeclaredVariables(undeclaredVariables);
                 }
@@ -929,6 +948,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(
@@ -973,7 +993,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var translatedStatementContentDetails = _statementTranslator.Translate(statementBlock, scopeAccessInformation, _logger.Warning);
             var undeclaredVariables = translatedStatementContentDetails.VariablesAccessed
                 .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
-            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
+            LogUndeclaredVariables(undeclaredVariables, block, scopeAccessInformation);
 
             var coreContent = translatedStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))
@@ -1045,7 +1065,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var translatedValueSettingStatementContentDetails = _valueSettingStatementTranslator.Translate(valueSettingStatement, scopeAccessInformation);
             var undeclaredVariables = translatedValueSettingStatementContentDetails.VariablesAccessed
                 .Where(v => !scopeAccessInformation.IsDeclaredReference(v, _nameRewriter)).ToArray();
-            CodeBlockTranslator.LogUndeclaredVariables(_logger, undeclaredVariables, block, scopeAccessInformation);
+            LogUndeclaredVariables(undeclaredVariables, block, scopeAccessInformation);
 
             var coreContent = translatedValueSettingStatementContentDetails.TranslatedContent + ";";
             if (!scopeAccessInformation.MayRequireErrorWrapping(block))
@@ -1086,6 +1106,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 _tempNameGenerator,
                 _statementTranslator,
                 _valueSettingStatementTranslator,
+                _translatorOptions,
                 _logger
             );
             return translationResult.Add(

@@ -54,8 +54,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
             NonNullImmutableList<NameToken> externalDependencies,
             OutputTypeOptions outputType,
+            ITranslatorOptions translatorOptions,
             ILogInformation logger)
-            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, logger)
+            : base(supportRefName, envClassName, envRefName, outerClassName, outerRefName, nameRewriter, tempNameGenerator, statementTranslator, valueSettingStatementTranslator, translatorOptions, logger)
         {
             if (!Enum.IsDefined(typeof(OutputTypeOptions), outputType))
                 throw new ArgumentOutOfRangeException(nameof(outputType));

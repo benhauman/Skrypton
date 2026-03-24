@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skrypton.CSharpWriter;
-//#using Xunit#;
-
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
     [TestClass]
 	public class EndToEndForEachTranslationTests : TestBase
     {
-		[TestMethod, MyFact]
+		[TestMethod]
 		public void SimpleCaseWithoutErrorHandling()
 		{
 			var source = @"
@@ -28,11 +23,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
 				"}"
 			};
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-			//	expected.Select(s => s.Trim()).ToArray(),
-			//	WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture,source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-			//);
+            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>
@@ -78,7 +69,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				        break;
 				}
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>
@@ -120,7 +111,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				        break;
 				}
 				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>
@@ -133,7 +124,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For Each value In Array(1, 2)
 				Next
 			";
-			TestCSharpCodeTranslation(source);
+			TestCSharpCodeTranslation(source, []);
         }
     }
 }

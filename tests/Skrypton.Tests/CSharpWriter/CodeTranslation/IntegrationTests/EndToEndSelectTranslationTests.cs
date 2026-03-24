@@ -40,7 +40,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				{
 					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Split"");
 				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
         }
 
 		[TestMethod]
@@ -54,7 +54,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		Case "" MB""	Size = Round(Size / 1048576, 2) 
 	End Select
 ";
-            base.TestCSharpCodeTranslation(source);
+            base.TestCSharpCodeTranslation(source, ["SKY101"]);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Skrypton.Tests.Application
 
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
 
-            ScriptControlConfiguration controlConfig = new TestScriptControlConfiguration(this);
+            ScriptControlConfiguration controlConfig = new TestScriptControlConfiguration(this, ["SKY102", "SKY106"]);
 
             IScriptControl scriptengine = new ScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture, controlConfig);
             scriptengine.Language = "VBScript";
@@ -73,7 +73,7 @@ scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName
     {
         private readonly TestBaseX _tst;
 
-        public TestScriptControlConfiguration(TestBaseX tst) : base(true, tst.TestRunResultsDirectory, enabledLoadFromDisk: false)
+        public TestScriptControlConfiguration(TestBaseX tst, string[] translationSuppression) : base(true, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression)
         {
             _tst = tst ?? throw new ArgumentNullException(nameof(tst));
         }

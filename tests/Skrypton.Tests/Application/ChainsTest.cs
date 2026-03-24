@@ -41,8 +41,8 @@ namespace Skrypton.Tests.Application
                 //return;
             }
             MemberDataTestName = chainName;
-
-            TestScriptResponse rsp = TestScriptChain(this, scriptUsage);
+            string[] suppressions = ["SKY101", "SKY102", "SKY106"];
+            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, suppressions: suppressions);
             var tst = this;
             var hostServices = CreateTestHostServices();
             var externalReferences = new Dictionary<string, object>();
@@ -72,7 +72,7 @@ namespace Skrypton.Tests.Application
             {
             }
 
-            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices));
+            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices), suppressions);
             scriptengineClass.TestTranslatedStatement(rsp.TranslatedCsCode, [
                 "CS0219", // error CS0219: The variable 'ForWriting' is assigned but its value is never used
                 ], doRun: false, gr => { });
@@ -131,7 +131,7 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false)
+        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false, params string[] suppressions)
         {
             string chainName = tst.TestName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
@@ -162,7 +162,7 @@ namespace Skrypton.Tests.Application
                 translated_cs_expected,
                 xml_expected,
                 scrUsage,
-                externalRefs, isOptionalAssert);
+                externalRefs, isOptionalAssert, suppressions);
         }
         public static TestScriptResponse TestScriptChainX(TestBaseX tst, string chainName,
                 string customerDialogGlobalScript,
@@ -172,7 +172,8 @@ namespace Skrypton.Tests.Application
                 string xml_expected,
                 ScriptUsageKind scrUsage,
                 IReadOnlyDictionary<string, object> externalRefs = null,
-                bool isOptionalAssert = false)
+                bool isOptionalAssert = false,
+                params string[] suppressions)
         {
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
             if (externalRefs == null)
@@ -260,7 +261,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies, suppressions ?? []);
 
             //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
             //

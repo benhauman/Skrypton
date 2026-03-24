@@ -1,4 +1,5 @@
-﻿using Skrypton.CSharpWriter.CodeTranslation;
+﻿using Skrypton.CSharpWriter;
+using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.RuntimeSupport;
 using Skrypton.RuntimeSupport.Implementations;
@@ -256,7 +257,8 @@ namespace Skrypton.ScriptControlSupport
             {
                 Console.WriteLine(warningMessageText);
             }));
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, warningLogger);
+            string[] suppressions = _config._translationSuppression;
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions),  warningLogger);
             return csCode;
         }
         private const char NewLineNormalized = '\n';
@@ -279,11 +281,13 @@ namespace Skrypton.ScriptControlSupport
 
     public class ScriptControlConfiguration
     {
+        internal readonly string[] _translationSuppression;
         public bool TempEnabled { get; }
         protected string TempDirectoryPath { get; }
 
-        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk)
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression)
         {
+            _translationSuppression = translationSuppression ?? throw new ArgumentNullException(nameof(translationSuppression));
             TempEnabled = tempEnabled;
             TempDirectoryPath = tempDirectoryPath ?? "";
             EnabledLoadFromDisk = enabledLoadFromDisk;

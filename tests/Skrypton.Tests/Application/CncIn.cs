@@ -45,13 +45,13 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, suppressions: ["SKY102", "SKY104", "SKY106"]);
             DoCncInTest(rsp);
         }
         [TestMethod]
         public void LUNA12_quxDATA__hlsysscript_cncIN()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, suppressions: ["SKY102", "SKY104", "SKY106"]);
             DoCncInTest(rsp);
         }
         [TestMethod]
@@ -90,7 +90,7 @@ namespace Skrypton.Tests.Application
         internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
-            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost);
+            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, []);
 
             scriptControlClass.TestSetDefaultRuntimeFunctionalityProviderSetup((x) => SetupDefaultRuntimeFunctionalityProvider(x, hostServices, tst.TestCulture));
 

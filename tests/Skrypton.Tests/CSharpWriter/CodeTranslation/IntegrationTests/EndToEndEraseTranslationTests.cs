@@ -20,7 +20,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(int testno, string description, string source, string expected)
         {
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
         }
         public static IEnumerable<object[]> SuccessData
         {
