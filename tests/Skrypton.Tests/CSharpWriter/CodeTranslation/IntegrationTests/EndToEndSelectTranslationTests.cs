@@ -118,20 +118,12 @@ END SUB
         {
             var source = @"
 SUB PriorityMatrix()
-	Dim impact
-	Dim urgency
-	Dim impactText
-	Dim urgencyText
 	Dim priority
-	Dim priorityText
-	
+
 	Select Case priority 
-		Case 1 hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""PriorityNormal""
-		Case 2 hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""PriorityMedium""
-		Case 3 hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""PriorityHigh""
-		Case 4 hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""PriorityUrgent""
-		Case 5 hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""PriorityCritical""
-		Case Else hlObj.SetValue ""CaseGeneral.Priority"" ,0,0,0,""""
+		Case 1 hlObj.SetValue ""CaseGeneral.Priority"" ,101,102,103,""PriorityNormal""
+		Case 2 hlObj.SetValue ""CaseGeneral.Priority"" ,201,202,203,""PriorityMedium""
+		Case Else hlObj.SetValue ""CaseGeneral.Priority"" ,901,902,903,""""
 	End Select
 
 END SUB
