@@ -122,6 +122,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             body.AddBuilder(new CSharpCodeBuilderWrap(statement));
             return this;
         }
+        internal CSharpMethodBodyBuilder Body => body;
 
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {

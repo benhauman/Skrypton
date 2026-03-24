@@ -312,6 +312,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
                 .Parameter(_envClassName.Name, "env", true);
 
+            //ctorBuilder.Body.AddAssignmentStatement()
             ctorBuilder.AddStatementRawText(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0);
             ctorBuilder.AddStatementRawText(_envRefName.Name + " = env ?? throw new ArgumentNullException(nameof(env));", 0);
             ctorBuilder.AddStatementRawText(_outerRefName.Name + " = this;", 0);
