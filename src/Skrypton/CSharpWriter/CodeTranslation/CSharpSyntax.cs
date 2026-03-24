@@ -7,9 +7,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 {
     internal static class CSharpSyntaxFactory
     {
-        internal static CSharpStatementBuilderConstructor CreateConstructor(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpStatementBuilderConstructor(), indentationDepth, lineIndexOfStatementStartInSource);
-
         internal static CSharpCodeBuilder FromRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpCodeBuilderRawText(rawText), indentationDepth, lineIndexOfStatementStartInSource);
+
+        internal static CSharpMethodBodyBuilder CreateMethodBodyBuilder(int indentationDepth, int lineIndexOfStatementStartInSource)
+        {
+            return CSharpCodeBuilder.Init(new CSharpMethodBodyBuilder(), indentationDepth, lineIndexOfStatementStartInSource);
+        }
     }
 
     internal abstract class CSharpCodeBuilder
@@ -28,10 +31,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
         internal static TBuilder Init<TBuilder>(TBuilder builder, int indentationDepth, int lineIndexOfStatementStartInSource) where TBuilder : CSharpCodeBuilder
         {
-            builder.IndentationDepth = indentationDepth;
-            builder.LineIndexOfStatementStartInSource = lineIndexOfStatementStartInSource;
-            builder.IndentationSpace = indentationDepth == 0 ? "" : new string(' ', indentationDepth * 4);
+            builder.InitBuilder(indentationDepth, lineIndexOfStatementStartInSource);
             return builder;
+        }
+        protected virtual void InitBuilder(int indentationDepth, int lineIndexOfStatementStartInSource)
+        {
+            IndentationDepth = indentationDepth;
+            LineIndexOfStatementStartInSource = lineIndexOfStatementStartInSource;
+            IndentationSpace = indentationDepth == 0 ? "" : new string(' ', indentationDepth * 4);
         }
         internal static TBuilder CreateInitSetup<TBuilder>(TBuilder builder, int indentationDepth, int lineIndexOfStatementStartInSource, Action<TBuilder> setup) where TBuilder : CSharpCodeBuilder
         {
@@ -79,6 +86,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         private string? _className;
         private readonly List<CSharpParameterDeclaration> _parameters = new List<CSharpParameterDeclaration>();
         private readonly List<string> _baseParameters = new List<string>();
+        //protected override CSharpStatementBuilderConstructor That => this;
+
+        private CSharpMethodBodyBuilder? _body;
+        private CSharpMethodBodyBuilder body => _body ?? throw new InvalidOperationException("not initialized");
+
+        protected override void InitBuilder(int indentationDepth, int lineIndexOfStatementStartInSource)
+        {
+            base.InitBuilder(indentationDepth, lineIndexOfStatementStartInSource);
+            _body = CSharpSyntaxFactory.CreateMethodBodyBuilder(indentationDepth + 1, lineIndexOfStatementStartInSource);
+        }
+
         public CSharpStatementBuilderConstructor ClassName(string className)
         {
             _className = className;
@@ -94,10 +112,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             return this;
         }
 
-        private readonly List<TranslatedStatement> _bodyStatements = new List<TranslatedStatement>();
-        public CSharpStatementBuilderConstructor AddStatement(TranslatedStatement stmt)
+        public CSharpStatementBuilderConstructor AddStatementRawText(string rawText, int lineIndexOfStatementStartInSource)
         {
-            _bodyStatements.Add(stmt);
+            body.AddRawText(rawText, lineIndexOfStatementStartInSource);
             return this;
         }
 
@@ -133,15 +150,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             // body
             tb.Append(indentationCtor).Append('{').Append(TranslatedStatement.NewLineNormalized);
 
-            foreach (var bodyStatement in _bodyStatements)
-            {
-                tb.Append(indentationBody);
-                bodyStatement.RenderTranslatedStatement(tb);
-                tb.Append(TranslatedStatement.NewLineNormalized);
-            }
+            body.RenderTranslatedStatement(tb);
+            //foreach (var bodyStatement in _bodyStatements)
+            //{
+            //    tb.Append(indentationBody);
+            //    bodyStatement.RenderTranslatedStatement(tb);
+            //    tb.Append(TranslatedStatement.NewLineNormalized);
+            //}
 
             tb.Append(indentationCtor).Append('}');//.AppendLine()
         }
+    }
+
+    internal sealed class CSharpMethodBodyBuilder : CSharpBlockCodeBuilderT<CSharpMethodBodyBuilder>
+    {
+        protected override CSharpMethodBodyBuilder That => this;
     }
 
     internal abstract class CSharpBlockCodeBuilderT<TBuilder>() : CSharpCodeBuilder(TranslatedStatementKind.RawText)
@@ -173,9 +196,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         {
             return AddChildBuilderX(new CSharpCodeBuilderWrap(value));
         }
-        internal TBuilder AddRawText(string rawText, int indentationDepth, int lineIndexOfStatementStartInSource)
+        internal TBuilder AddRawText(string rawText, int lineIndexOfStatementStartInSource)
         {
-            return AddChildBuilderX(CSharpSyntaxFactory.FromRawText(rawText, indentationDepth, lineIndexOfStatementStartInSource));
+            return AddChildBuilderX(CSharpSyntaxFactory.FromRawText(rawText, IndentationDepth, lineIndexOfStatementStartInSource));
         }
 
         internal CSharpClassBuilder CreateClass(int indentationDepth, int lineIndexOfStatementStartInSource) => CSharpCodeBuilder.Init(new CSharpClassBuilder(), indentationDepth, lineIndexOfStatementStartInSource > 0 ? lineIndexOfStatementStartInSource : LineIndexOfStatementStartInSource);
@@ -409,6 +432,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             base.AddChildBuilder(builder);
             return this;
         }
+
+        internal static CSharpStatementBuilderConstructor CreateConstructor(int indentationDepth, int lineIndexOfStatementStartInSource, Action<CSharpStatementBuilderConstructor> setup) => CSharpCodeBuilder.CreateInitSetup(new CSharpStatementBuilderConstructor(), indentationDepth, lineIndexOfStatementStartInSource, setup);
 
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {

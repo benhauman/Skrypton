@@ -308,6 +308,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + _envClassName.Name + " " + _envRefName.Name + ";", 2, 0)
                 ]);
             // ctor
+            CSharpStatementBuilderConstructor ctorBuilder = CSharpClassBuilder.CreateConstructor(1, 0, x => x.ClassName(_outerClassName.Name))
+                .Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
+                .Parameter(_envClassName.Name, "env", true);
+            //ctorBuilder.
+
             programBuilder.AddRange(
             [
                 new TranslatedStatement(TranslatedStatementKind.RawText, "public " + _outerClassName.Name + "(" + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " compatLayer, " + _envClassName.Name + " env) : base(compatLayer, env)", 2, 0),
@@ -385,16 +390,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 1, 0),
                 new TranslatedStatement(TranslatedStatementKind.FieldDeclarationStatement, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", 2, 0),
 
-                CSharpSyntaxFactory.CreateConstructor(2, 0).ClassName(_startClassName.Name).Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
-                    .AddStatement(new TranslatedStatement(TranslatedStatementKind.SetText, _supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0, 0))
-                    .BuildTranslatedStatement()
+                CSharpClassBuilder.CreateConstructor(2, 0, x => x.ClassName(_startClassName.Name)
+                    .Parameter(typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name, "compatLayer", true)
+                    .AddStatementRawText(_supportRefName.Name + " = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));", 0)
+                    ).BuildTranslatedStatement()
             ]);
             programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override {_outerClassName.Name} CreateGlobalReferences(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env) => new {_outerClassName.Name}(compatLayer, env);", 2, 0));
             // "GO"
             programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"protected override void {_startMethodName.Name}(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, {_envClassName.Name} env, {_outerClassName.Name} globalReferences)", 2, 0));
             programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.CurlyBraceOpen, "{", 2, 0));
-            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_envRefName.Name} = env ?? throw new ArgumentNullException(nameof(env));",3,0));
-            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));",3,0));
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_envRefName.Name} = env ?? throw new ArgumentNullException(nameof(env));", 3, 0));
+            programBuilder.Add(new TranslatedStatement(TranslatedStatementKind.RawText, $"var {_outerRefName.Name} = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));", 3, 0));
 
             if (dateLiteralsToValidateAtRuntime.Length != 0)
             {
