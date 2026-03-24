@@ -1703,7 +1703,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
                     if (targetReferenceDetailsIfAvailable == null)
                     {
-                        // If this is an undeclared reference then it will be implicitly declared later as a variable and so will be elligible
+                        // If this is an undeclared reference then it will be implicitly declared later as a variable and so will be eligible
                         // to be passed ByRef
                         isConfirmedToBeByVal = false;
                     }

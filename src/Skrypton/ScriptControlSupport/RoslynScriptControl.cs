@@ -203,11 +203,25 @@ namespace Skrypton.ScriptControlSupport
             // write the .pdb
             if (!string.IsNullOrEmpty(fileNamePdb))
             {
-                File.WriteAllBytes(fileNamePdb, pdbBytes);
+                config.TempFileWriteAllBytes(tempFolderName, fileNamePdb, pdbBytes);
             }
 
+            Func<Assembly> asmLoad;
+            if (!string.IsNullOrEmpty(fileNameDll))// && config.EnabledLoadFromDisk)
+            {
+                string dllFilePath = config.EnsureFilePathX(tempFolderName, fileNameDll);
+                if (!File.Exists(dllFilePath))
+                    throw new InvalidOperationException("generated program could not be found.");
+                System.Console.WriteLine("Load assembly from:" + dllFilePath);
+                var asm = Assembly.LoadFile(dllFilePath); // this a dynamic assembly => do not use Assembly.Load(AssemblyName.GetAssemblyName(dllFilePath))!!! otherwise 'System.IO.FileNotFoundException'
+                asmLoad = () => asm;
+            }
+            else
+            {
+                asmLoad = () => Assembly.Load(assemblyBytes);
+            }
             // return Assembly.Load(peStream.ToArray());
-            UnloadableAssemblyLoadContextContext context = new UnloadableAssemblyLoadContextContext(Assembly.Load(assemblyBytes));
+            UnloadableAssemblyLoadContextContext context = new UnloadableAssemblyLoadContextContext(asmLoad());
             //context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
             //context.LoadFromAssemblyPath
             //return context;

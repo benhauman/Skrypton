@@ -287,7 +287,8 @@ namespace Skrypton.ScriptControlSupport
             TempEnabled = tempEnabled;
             TempDirectoryPath = tempDirectoryPath ?? "";
         }
-        private string EnsureFilePath(string folderName, string fileName)
+
+        internal string EnsureFilePathX(string folderName, string fileName)
         {
             string folderPath = Path.Combine(TempDirectoryPath, folderName);
             if (!Directory.Exists(folderName))
@@ -295,6 +296,12 @@ namespace Skrypton.ScriptControlSupport
                 Directory.CreateDirectory(folderPath);
             }
             string filePath = Path.Combine(folderPath, fileName);
+            return filePath;
+        }
+
+        private string EnsureFilePath(string folderName, string fileName)
+        {
+            string filePath = EnsureFilePathX(folderName, fileName);
             OnTempFileAdd(filePath);
             return filePath;
         }
