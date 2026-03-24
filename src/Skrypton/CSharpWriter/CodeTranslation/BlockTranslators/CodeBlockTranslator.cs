@@ -312,7 +312,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     (v.Dimensions == null) ? null : CollectDimensionsAsNumericValueToken(v).Select(d => (uint)d.Value),
                     isConst: null,
                     initializationValue: null // ConstantNonNegativeArrayDimensionDimVariable
-                ))
+                )).ToArray()
             );
         }
 
@@ -807,7 +807,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         v.SourceName.LineIndex,
                         scopeAccessInformation.ScopeDefiningParent.Scope
                     ))
-                    .ToNonNullImmutableList()
+                    .ToArray()
             );
 
             var translatedReDimStatements = new NonNullImmutableList<TranslatedStatement>();
@@ -928,7 +928,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             }
 
             return translationResult
-                .AddExplicitVariableDeclarations(explicitVariableDeclarationsToRecord.Select(v => v.VariableDeclaration))
+                .AddExplicitVariableDeclarations(explicitVariableDeclarationsToRecord.Select(v => v.VariableDeclaration).ToArray())
                 .Add(translatedReDimStatements);
         }
 
@@ -983,7 +983,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 statementBlock = byRefArgumentsToRewrite.RewriteStatementUsingByRefArgumentMappings(statementBlock, _nameRewriter);
             }
@@ -1049,7 +1049,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 valueSettingStatement = new ValueSettingStatement(
                     byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(valueSettingStatement.ValueToSet, _nameRewriter),
@@ -1255,7 +1255,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 .Select(group => group.First())
                 .OrderBy(indexedVariable => indexedVariable.Index)
                 .Select(indexedVariable => indexedVariable.Variable)
-                .ToNonNullImmutableList();
+                .ToArray();
 
             var variableDeclarationStatements = new NonNullImmutableList<TranslatedStatement>();
             foreach (var explicitVariableDeclaration in uniqueExplicitVariableDeclarations)

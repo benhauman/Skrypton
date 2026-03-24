@@ -49,7 +49,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             );
         }
 
-        public static TranslationResult AddExplicitVariableDeclarations(this TranslationResult source, IEnumerable<VariableDeclaration> toAdd)
+        public static TranslationResult AddExplicitVariableDeclarations(this TranslationResult source, IReadOnlyCollection<VariableDeclaration> toAdd)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -58,12 +58,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 
             return new TranslationResult(
                 source.TranslatedStatements,
-                source.ExplicitVariableDeclarations.AddRange(toAdd.ToNonNullImmutableList()),
+                source.ExplicitVariableDeclarations.AddRange(toAdd),
                 source.UndeclaredVariablesAccessed
             );
         }
 
-        public static TranslationResult AddUndeclaredVariables(this TranslationResult source, IEnumerable<NameToken> toAdd)
+        public static TranslationResult AddUndeclaredVariables(this TranslationResult source, IReadOnlyCollection<NameToken> toAdd)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -73,7 +73,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             return new TranslationResult(
                 source.TranslatedStatements,
                 source.ExplicitVariableDeclarations,
-                source.UndeclaredVariablesAccessed.AddRange(toAdd.ToNonNullImmutableList())
+                source.UndeclaredVariablesAccessed.AddRange(toAdd)
             );
         }
     }

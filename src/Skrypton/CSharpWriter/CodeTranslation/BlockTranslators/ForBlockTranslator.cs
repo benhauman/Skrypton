@@ -93,7 +93,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 var numericLoopEndContent = WrapInNUMCallIfRequired(
                     byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(forBlock.LoopTo, _nameRewriter),
@@ -142,7 +142,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 var numericLoopStepContent = WrapInNUMCallIfRequired(
                     byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(forBlock.LoopStep!, _nameRewriter),
@@ -197,7 +197,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 var loopStartExpressionContent = _statementTranslator.Translate(
                     byRefArgumentsToRewrite.RewriteExpressionUsingByRefArgumentMappings(forBlock.LoopFrom, _nameRewriter),

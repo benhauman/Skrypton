@@ -163,7 +163,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 scopeAccessInformation = scopeAccessInformation.ExtendVariables(
                     byRefArgumentsToRewrite
                         .Select(r => new ScopedNameToken(r.To.Name.ToUpperX(), r.From.LineIndex, ScopeLocationOptions.WithinFunctionOrPropertyOrWith))
-                        .ToNonNullImmutableList()
+                        .ToArray()
                 );
                 var byRefMappingOpeningTranslationDetails = byRefArgumentsToRewrite.OpenByRefReplacementDefinitionWork(translationResult, indentationDepth, _nameRewriter);
                 translationResult = byRefMappingOpeningTranslationDetails.TranslationResult;

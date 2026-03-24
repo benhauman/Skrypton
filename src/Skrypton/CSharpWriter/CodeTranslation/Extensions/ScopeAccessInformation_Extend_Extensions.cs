@@ -4,6 +4,7 @@ using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
@@ -16,7 +17,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             IDefineScope scopeDefiningParent,
             CSharpName? parentReturnValueNameIfAny,
             CSharpName? errorRegistrationTokenIfAny,
-            NonNullImmutableList<ICodeBlock> blocks)
+            IReadOnlyCollection<ICodeBlock> blocksIn)
         {
             if (parent == null)
                 throw new ArgumentNullException(nameof(parent));
@@ -24,13 +25,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 throw new ArgumentNullException(nameof(scopeDefiningParent));
             if (scopeInformation == null)
                 throw new ArgumentNullException(nameof(scopeInformation));
-            if (blocks == null)
-                throw new ArgumentNullException(nameof(blocks));
+            if (blocksIn == null)
+                throw new ArgumentNullException(nameof(blocksIn));
 
             var blocksScopeLocation = scopeDefiningParent.Scope;
-            blocks = FlattenAllAccessibleBlockLevelCodeBlocks(blocks);
+            var blocksF = FlattenAllAccessibleBlockLevelCodeBlocks(blocksIn);
             var variables = scopeInformation.Variables.AddRange(
-                blocks
+                blocksF
                     .OfType<DimStatement>() // This covers DIM, REDIM, PRIVATE and PUBLIC (they may all be considered the same for these purposes)
                     .SelectMany(d => d.Variables.Select(v => new ScopedNameToken(
                         v.Name.ContentUpperX(),
@@ -52,7 +53,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 );
             }
             var constants = scopeInformation.Constants.AddRange(
-                blocks
+                blocksF
                     .OfType<ConstStatement>()
                     .SelectMany(c => c.Values.Select(v => new ScopedNameToken(
                         v.Name.ContentUpperX(),
@@ -70,21 +71,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies,
                 scopeInformation.Classes.AddRange(
-                    blocks
+                    blocksF
                         .Where(b => b is ClassBlock)
                         .Cast<ClassBlock>()
                         .Select(c => new ScopedNameToken(c.Name.ContentUpperX(), c.Name.LineIndex, ScopeLocationOptions.OutermostScope)) // These are always OutermostScope
                         .ToArray()
                 ),
                 scopeInformation.Functions.AddRange(
-                    blocks
+                    blocksF
                         .Where(b => (b is FunctionBlock) || (b is SubBlock))
                         .Cast<AbstractFunctionBlock>()
                         .Select(b => new ScopedNameToken(b.Name.ContentUpperX(), b.Name.LineIndex, blocksScopeLocation))
                         .ToArray()
                 ),
                 scopeInformation.Properties.AddRange(
-                    blocks
+                    blocksF
                         .Where(b => b is PropertyBlock)
                         .Cast<PropertyBlock>()
                         .Select(p => new ScopedNameToken(p.Name.ContentUpperX(), p.Name.LineIndex, ScopeLocationOptions.WithinClass)) // These are always WithinClass
@@ -96,7 +97,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             );
         }
 
-        private static NonNullImmutableList<ICodeBlock> FlattenAllAccessibleBlockLevelCodeBlocks(NonNullImmutableList<ICodeBlock> blocks)
+        private static NonNullImmutableList<ICodeBlock> FlattenAllAccessibleBlockLevelCodeBlocks(IReadOnlyCollection<ICodeBlock> blocks)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));
@@ -148,7 +149,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             return Extend(scopeInformation, parent, parent, parentReturnValueNameIfAny, errorRegistrationTokenIfAny, blocks);
         }
 
-        public static ScopeAccessInformation ExtendExternalDependencies(this ScopeAccessInformation scopeInformation, NonNullImmutableList<NameToken> externalDependencies)
+        public static ScopeAccessInformation ExtendExternalDependencies(this ScopeAccessInformation scopeInformation, IReadOnlyCollection<NameToken> externalDependencies)
         {
             if (scopeInformation == null)
                 throw new ArgumentNullException(nameof(scopeInformation));
@@ -171,7 +172,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             );
         }
 
-        public static ScopeAccessInformation ExtendVariables(this ScopeAccessInformation scopeInformation, NonNullImmutableList<ScopedNameToken> variables)
+        public static ScopeAccessInformation ExtendVariables(this ScopeAccessInformation scopeInformation, IReadOnlyCollection<ScopedNameToken> variables)
         {
             if (scopeInformation == null)
                 throw new ArgumentNullException(nameof(scopeInformation));
