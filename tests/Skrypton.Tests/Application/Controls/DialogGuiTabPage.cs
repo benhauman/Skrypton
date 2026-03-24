@@ -11,5 +11,7 @@ namespace Skrypton.Tests.Application.Controls
             get => _valueCaption;
             set => _valueCaption = value;
         }
+
+        public int CurrentSelection { get; set; }
     }
 }

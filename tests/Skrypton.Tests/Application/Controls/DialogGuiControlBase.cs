@@ -95,7 +95,9 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineCheckBox", () => new DialogGuiCheckBoxControl() },
             { "HelpLineButton", () => new DialogGuiButtonControl() },
             { "HelpLineSUControl", () => new DialogGuiSUControl() },
-            { "HelpLineComplexText", () => new DialogGuiComplexTextControl() }
+            { "HelpLineComplexText", () => new DialogGuiComplexTextControl() },
+            { "HelpLineTimeCallControl", () => new DialogGuiTimeCallControl() },
+            { "HelpLineNumericTextBox", () => new DialogGuiNumericTextBoxControl() }
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -179,6 +181,14 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiNumericTextBoxControl : DialogGuiControlBase
+    {
+    }
+
+    public sealed class DialogGuiTimeCallControl : DialogGuiControlBase
+    {
+    }
+
     public sealed class DialogGuiComplexTextControl : DialogGuiControlBase
     {
     }
@@ -208,7 +218,6 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
     {
-
     }
     public sealed class DialogGuiHelpLineTasksControl : DialogGuiControlBase
     {
