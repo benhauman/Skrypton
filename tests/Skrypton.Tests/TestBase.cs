@@ -338,7 +338,7 @@ namespace Skrypton.Tests
         {
         }
         internal int ProvidersCount => _providers.Count;
-        internal TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class
+        public TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class // for Cli
         {
             _providers.Add(typeof(T).FullName!, () => (object)serviceProvider());
             return this;

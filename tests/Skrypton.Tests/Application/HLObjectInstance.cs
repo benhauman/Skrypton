@@ -21,18 +21,25 @@ namespace Skrypton.Tests.Application
             _traceName = string.IsNullOrEmpty(traceName) ? traceName : $"|{traceName}|";
         }
         private int? _objectId;
+        private int? _objectDefId;
         private string _objectDefName;
-        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null, string objectDefName = null)
+        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null, int? objectDefId = null, string objectDefName = null)
         {
             IsNew = isNew ? 1 : 0;
             _objectId = objectId;
+            _objectDefId = objectDefId;
             _objectDefName = objectDefName;
             return this;
         }
 
+
         public int objID()
         {
             return _objectId.HasValue ? _objectId.Value : throw new InvalidOperationException($"{_traceName}Id not set.");
+        }
+        internal int TestGetObjectDefId()
+        {
+            return _objectDefId.HasValue ? _objectDefId.Value : throw new InvalidOperationException($"{_traceName}DefId not set.");
         }
         public new object GetType() // definition name, defid, basetype
         {
@@ -123,6 +130,20 @@ namespace Skrypton.Tests.Application
         public int[] GetSvcUnitIndices()
         {
             return _sus.Keys.OrderBy(x => x).ToArray();
+        }
+
+        public int GetSvcUnitCount()
+        {
+            return _sus.Count;
+        }
+
+        public int[] GetAttachmentKeys(object key, int suidx)
+        {
+            string attributeKey = (string)key;
+            if (attributeKey != "HLOBJECTINFO.ATTACHMENT" && attributeKey != "SUINFO.ATTACHMENT")
+                throw new ArgumentException($"Invalid attribute key:{key}");
+            int[] attachmentIds = [101111, 102222];
+            return attachmentIds;
         }
 
         internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)

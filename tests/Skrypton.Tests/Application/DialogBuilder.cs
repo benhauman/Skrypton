@@ -140,6 +140,7 @@ namespace Skrypton.Tests.Application
 
     public class DialogGuiButtonControl : DialogGuiControlBase
     {
+        public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
 
     internal class DialogGuiImageControl : DialogGuiControlBase

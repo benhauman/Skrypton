@@ -682,7 +682,7 @@ WScript.Echo xmlhttp.responseText
             });
         }
 
-        private IHostProcessControlHostService CreateTestProcessControlHostService()
+        public static IHostProcessControlHostService CreateTestProcessControlHostService() // for Cli
         {
             return new TestHostProcessControlHostService();
         }
@@ -1080,8 +1080,15 @@ WScript.Echo xmlhttp.responseText
     [ComVisible(true)]
     public sealed class DialogGuidModel
     {
-        public DialogGuidModel()
+        public bool IsInWeb { get; private set; }
+
+        public DialogGuidModel(bool isInWeb = false)
         {
+            IsInWeb = isInWeb;
+        }
+        public void ChangeIsInWeb(bool isInWeb)
+        {
+            IsInWeb = isInWeb;
         }
 
         public void MsgBox(string message)
@@ -1114,6 +1121,53 @@ WScript.Echo xmlhttp.responseText
         public void RegisterSymbolObjectProvider(string symbolName, Func<HLObjectInstance> func)
         {
             _symbols.Add(symbolName, func);
+        }
+
+        private Func<HLObjectInstance> _objProvider;
+        public void SetCurrentObject(Func<HLObjectInstance> objProvider)
+        {
+            _objProvider = objProvider ?? throw new ArgumentNullException(nameof(objProvider));
+        }
+        private UniqueID CurrentObjectID
+        {
+            get
+            {
+                var obj = _objProvider();
+                return new UniqueID(obj.objID(), obj.TestGetObjectDefId());
+            }
+        }
+        private sealed class UniqueID(int objID, int defID)
+        {
+            public int ObjID => objID;
+            public int DefID => defID;
+        }
+        public WorkflowParameters CreateWorkflowParameters(string workFlowName)
+        {
+            WorkflowParameters parameters = new WorkflowParameters(workFlowName);
+            parameters.Add("DEFID", this.DialogUserControl.CurrentObjectID.DefID);
+            parameters.Add("OBJID", this.DialogUserControl.CurrentObjectID.ObjID);
+
+            return parameters;
+        }
+    }
+
+    public class WorkflowParameters
+    {
+        private string workflowName;
+        private Dictionary<string, object> dictionary = new Dictionary<string, object>();
+
+        public WorkflowParameters(string workflowName)
+        {
+            this.workflowName = workflowName;
+        }
+
+        public void Add(string key, object value)
+        {
+            if (value == null || (value.GetType() != typeof(string) && value.GetType() != typeof(Int32)))
+            {
+                throw new Exception(String.Format("Invalid value or type given for key \"{0}\" (value: {1}, type: {2})", key, value == null ? "null" : value, value == null ? "null" : value.GetType().ToString()));
+            }
+            dictionary.Add(key, value);
         }
     }
 

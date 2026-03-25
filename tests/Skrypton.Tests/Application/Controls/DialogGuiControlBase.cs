@@ -218,6 +218,7 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
     {
+        public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
     public sealed class DialogGuiHelpLineTasksControl : DialogGuiControlBase
     {
