@@ -122,7 +122,6 @@ SUB PriorityMatrix()
 
 	Select Case priority 
 		Case 1 hlObj.SetValue ""CaseGeneral.Priority"" ,101,102,103,""PriorityNormal""
-		Case 2 hlObj.SetValue ""CaseGeneral.Priority"" ,201,202,203,""PriorityMedium""
 		Case Else hlObj.SetValue ""CaseGeneral.Priority"" ,901,902,903,""""
 	End Select
 
