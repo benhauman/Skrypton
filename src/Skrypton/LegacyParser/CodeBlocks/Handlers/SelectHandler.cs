@@ -153,18 +153,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                                 // condition token and statement tokens on the same line
                                 //    => remove only the condition token and all other token interpret as statement tokens.
                                 doRemoveEofToken = false;
-                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
-                                tokens.RemoveRange(0, valueTokens.Count);
-                            }
-                            else if (firstToken is KeyWordToken kwrdTkn && kwrdTkn.KeyWordId == KnownKeyWordId.KeywordElse && secondToken is NameToken nametkn2)
-                            {
-                                // test: XMultipleTokensOnTheCaseLine1
-                                doRemoveEofToken = false;
-                                tokens.RemoveRange(0, 1); // remove only the 'ELSE' and keep the rest for ELSE - Expression processing
-                                break;
                                 //valueTokens.RemoveRange(1, valueTokens.Count - 1);
                                 //tokens.RemoveRange(0, valueTokens.Count);
-                                //throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}. KeyWordId:{kwrdTkn.KeyWordId}, Second.Name:{nametkn2.Content}");
+                                tokens.RemoveRange(0, 1); // remove string token only and keep the rest for CASE - Expression processing
+                                doRemoveFromTokens = false;
+                                valueTokens.RemoveRange(1, valueTokens.Count - 1); // leave only the string token - they are in tokens.
+                                exprValues.RemoveRange(1, exprValues.Count - 1); // keep only the first exprValue for the condition
                             }
                             else if (exprValueIndex == 0 && firstToken is NumericValueToken numtkn && secondToken is NameToken nametkn3)
                             {
@@ -179,6 +173,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                                 valueTokens.RemoveRange(1, valueTokens.Count - 1); // leave only the numeric token
                                 exprValues.RemoveRange(1, exprValues.Count - 1);
                                 break;
+                            }
+                            else if (firstToken is KeyWordToken kwrdTkn && kwrdTkn.KeyWordId == KnownKeyWordId.KeywordElse && secondToken is NameToken nametkn2)
+                            {
+                                // test: XMultipleTokensOnTheCaseLine1
+                                doRemoveEofToken = false;
+                                tokens.RemoveRange(0, 1); // remove only the 'ELSE' and keep the rest for ELSE - Expression processing
+                                break;
+                                //valueTokens.RemoveRange(1, valueTokens.Count - 1);
+                                //tokens.RemoveRange(0, valueTokens.Count);
+                                //throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}. KeyWordId:{kwrdTkn.KeyWordId}, Second.Name:{nametkn2.Content}");
                             }
                             else
                             {

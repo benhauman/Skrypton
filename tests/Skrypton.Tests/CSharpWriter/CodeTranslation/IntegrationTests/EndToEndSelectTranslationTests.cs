@@ -126,5 +126,20 @@ END SUB
 
             TestCSharpCodeTranslation(source, ["SKY101", "SKY102", "SKY107"]);
         }
+
+        [TestMethod]
+        public void XMultipleTokensOnTheCaseLine3() // from CT127_dialog_67
+        {
+            var source = @"Dim priority
+
+	Select Case priority 
+		Case ""A"" hlObj.SetValue ""CaseGeneral.Priority"" ,101,102,103,""PriorityNormal""
+		Case ""B"" hlObj.SetValue ""CaseGeneral.Priority"" ,201,202,203,""PriorityMedium""
+		Case Else hlObj.SetValue ""CaseGeneral.Priority"" ,901,902,903,""""
+	End Select
+";
+
+            TestCSharpCodeTranslation(source, ["SKY101", "SKY102", "SKY107"]);
+        }
     }
 }
