@@ -203,7 +203,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     // Check for endMarker
                     bool reachedEndMarker = false;
                     if ((offset >= tokens.Count) || (endMarker is AbstractEndOfStatementToken) && isEndOfStatement(tokens, offset))
+                    {
                         reachedEndMarker = true;
+                    }
                     else
                     {
                         var possibleEndMarker = getToken(tokens, offset, allowedTokenTypes);
@@ -212,7 +214,9 @@ namespace Skrypton.LegacyParser.CodeBlocks
                             && (possibleEndMarker.Content.Equals(endMarker.Content, StringComparison.OrdinalIgnoreCase)));
                     }
                     if (reachedEndMarker)
+                    {
                         break;
+                    }
                 }
 
                 // Only check for separator if not in bracket sequence
