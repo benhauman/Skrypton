@@ -124,8 +124,10 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     tokens.RemoveRange(0, 1);
                     // - Remove the exprValues tokens
                     bool doRemoveEofToken = true;
-                    foreach (List<IToken> valueTokens in exprValues)
+                    bool doRemoveFromTokens = false;
+                    for (int exprValueIndex = 0; exprValueIndex < exprValues.Count; exprValueIndex++)
                     {
+                        List<IToken> valueTokens = exprValues[exprValueIndex];
                         if (valueTokens.Count > 1)
                         {
                             // VBScript uses new lines to determine where one statement starts and another one begins, but you can use a colon to terminate a statement instead which allows you to span multiple statements across one line.
@@ -158,18 +160,25 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                             {
                                 // test: XMultipleTokensOnTheCaseLine1
                                 doRemoveEofToken = false;
-                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
-                                tokens.RemoveRange(0, valueTokens.Count);
+                                tokens.RemoveRange(0, 1); // remove only the 'ELSE' and keep the rest for ELSE - Expression processing
+                                break;
+                                //valueTokens.RemoveRange(1, valueTokens.Count - 1);
+                                //tokens.RemoveRange(0, valueTokens.Count);
                                 //throw new NotImplementedException($"Multiple tokens on the 'case' line. Line:{valueTokens[0].LineIndex}. KeyWordId:{kwrdTkn.KeyWordId}, Second.Name:{nametkn2.Content}");
                             }
-                            else if (firstToken is NumericValueToken numtkn && secondToken is NameToken nametkn3)
+                            else if (exprValueIndex == 0 && firstToken is NumericValueToken numtkn && secondToken is NameToken nametkn3)
                             {
                                 // Test with 'XMultipleTokensOnTheCaseLine2'
                                 // condition token and statement tokens on the same line
                                 //    => remove only the condition token and all other token interpret as statement tokens.
                                 doRemoveEofToken = false;
-                                valueTokens.RemoveRange(1, valueTokens.Count - 1);
-                                tokens.RemoveRange(0, valueTokens.Count);
+                                //valueTokens.RemoveRange(0, 1); // remove the numeric token only and keep the rest for the 'CaseBlockExpressionSegment'
+                                tokens.RemoveRange(0, 1); // remove numeric token only and keep the rest for CASE - Expression processing
+                                //tokens.RemoveRange(0, valueTokens.Count);
+                                doRemoveFromTokens = false;
+                                valueTokens.RemoveRange(1, valueTokens.Count - 1); // leave only the numeric token
+                                exprValues.RemoveRange(1, exprValues.Count - 1);
+                                break;
                             }
                             else
                             {
@@ -182,16 +191,9 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         }
                     }
 
-                    // - Remove the commas between expressions
-                    tokens.RemoveRange(0, exprValues.Count - 1);
-                    if (doRemoveEofToken)
-                    {
-                        // - Remove the end-of-statement token
-                        tokens.RemoveRange(0, 1);
-                    }
-
                     // Quick check that it appears valid
                     bool caseElse = false;
+                    bool elseWithExpressions = false;
                     if (exprValues.Count == 0)
                     {
                         throw new InvalidOperationException("CASE block with no comparison value");
@@ -203,10 +205,34 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                         {
                             if ((exprValues.Count > 1) || (exprValues[0].Count != 1))
                             {
-                                throw new InvalidOperationException($"Invalid CASE ELSE opening statement. Line:{firstExprToken.LineIndex}");
+                                // there are tokens on the 'CASE ELSE' line and this is allowed
+                                elseWithExpressions = true;
+                                //throw new InvalidOperationException($"Invalid CASE ELSE opening statement. Line:{firstExprToken.LineIndex}");
                             }
 
                             caseElse = true;
+                        }
+                        else
+                        {
+                            // not an ELSE
+                        }
+                    }
+
+                    if (elseWithExpressions)
+                    {
+                        // 'restore' exprValues
+                    }
+                    else
+                    {
+                        if (doRemoveFromTokens)
+                        {
+                            // - Remove the commas between expressions
+                            tokens.RemoveRange(0, exprValues.Count - 1);
+                        }
+                        if (doRemoveEofToken)
+                        {
+                            // - Remove the end-of-statement token
+                            tokens.RemoveRange(0, 1);
                         }
                     }
 

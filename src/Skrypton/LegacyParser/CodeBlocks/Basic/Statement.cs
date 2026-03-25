@@ -400,9 +400,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                     // The most common forms will be to start with a base AtomToken or KeyWordToken but the statement "Call(a.Test(1))" would appear
                     // here as "(a.Test(1))" as the "Call" keyword is removed and so an OpenBrace is a valid first token as well
                     if (token is OpenBrace)
+                    {
                         bracketCount = 1;
+                    }
                     else if (!IsTokenAcceptableToCommenceCallExecution(token, nextTokenIfAny))
-                        throw new ArgumentException("The first token should be an AtomToken or a KeyWordToken (not another type derived from AtomToken) to be a valid Statement");
+                    {
+                        throw new ArgumentException($"The first token should be an AtomToken or a KeyWordToken (not another type derived from AtomToken like '{token.GetType().Name}') to be a valid Statement. Line:{token.LineIndex}");
+                    }
                 }
                 else
                 {

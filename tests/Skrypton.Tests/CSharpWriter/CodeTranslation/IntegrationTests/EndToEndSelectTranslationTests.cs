@@ -113,7 +113,6 @@ END SUB
         }
 
         [TestMethod]
-		[Ignore] // todo
         public void XMultipleTokensOnTheCaseLine2() // from CT127_dialog_67
         {
             var source = @"Dim priority
@@ -124,7 +123,7 @@ END SUB
 	End Select
 ";
 
-            TestCSharpCodeTranslation(source, ["SKY102", "SKY107"]);
+            TestCSharpCodeTranslation(source, ["SKY101", "SKY102", "SKY107"]);
         }
     }
 }
