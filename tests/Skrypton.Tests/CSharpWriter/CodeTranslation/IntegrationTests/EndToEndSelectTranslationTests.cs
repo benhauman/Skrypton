@@ -116,16 +116,12 @@ END SUB
 		[Ignore] // todo
         public void XMultipleTokensOnTheCaseLine2() // from CT127_dialog_67
         {
-            var source = @"
-SUB PriorityMatrix()
-	Dim priority
+            var source = @"Dim priority
 
 	Select Case priority 
 		Case 1 hlObj.SetValue ""CaseGeneral.Priority"" ,101,102,103,""PriorityNormal""
 		Case Else hlObj.SetValue ""CaseGeneral.Priority"" ,901,902,903,""""
 	End Select
-
-END SUB
 ";
 
             TestCSharpCodeTranslation(source, ["SKY102", "SKY107"]);
