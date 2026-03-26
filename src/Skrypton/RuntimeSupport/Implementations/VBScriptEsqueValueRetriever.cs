@@ -541,13 +541,20 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidUseOfNullException("value is null.");
             if (IsVBScriptNothing(value))
                 throw new ObjectVariableNotSetException("value is nothing");
-            if ((value is string valueString) && string.IsNullOrEmpty(valueString))
-                throw new TypeMismatchException($"null/empty string");
 
-#pragma warning disable CA1820 // Test for empty strings using string length
-            if ((value as string) == "")
-                throw new TypeMismatchException($"null/empty string");
-#pragma warning restore CA1820 // Test for empty strings using string length
+            // “Empty: Variant is uninitialized. Value is 0 for numeric variables or a zero-length string ("") for string variables.”
+            if ((value is string valueString) && valueString.Length == 0)
+            {
+                return (int)0;
+            }
+            //            if ((value is string valueString) && string.IsNullOrEmpty(valueString))
+            //                throw new TypeMismatchException($"null/empty string");
+            //
+            //#pragma warning disable CA1820 // Test for empty strings using string length
+            //            if ((value as string) == "")
+            //                throw new TypeMismatchException($"null/empty string");
+            //#pragma warning restore CA1820 // Test for empty strings using string length
+
             if (value is bool)
                 return (bool)value ? (Int16)(-1) : (Int16)0; // Return an "Integer" for True / False
             if (value is DateTime)
@@ -1149,7 +1156,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         argstext += marker + argval + marker;
                     }
 
-                    throw new MissingMemberException(targetType.FullName, $"Name:{optionalName}({argstext})");
+                    throw new MissingMemberException(targetType.FullName, $" | Name:{optionalName} args({argstext})");
                 }
             }
 

@@ -20,8 +20,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r));
 			}
 
-			[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
-			public void TypeMismatchCases(string description, object l, object r)
+			[TestMethod, MyTheory, MyMemberData(nameof(TypeMismatchData))]
+			public void TypeMismatchCases(int testNo, string description, object l, object r)
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
 				{
@@ -151,19 +151,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				{
 					// Blank and non-numeric values are invalid (the number parsing logic is shared with the NUM function, so the tests there cover the variety of acceptable and
 					// unacceptable values more thoroughly)
-					yield return new object[] { "CInt(1) / \"\"", (short)1, "" };
-					yield return new object[] { "CInt(1) / \"a\"", (short)1, "a" };
+					//lubo: yield return new object[] { 1, "CInt(1) / \"\"", (short)1, "" };
+					yield return new object[] { 2, "CInt(1) / \"a\"", (short)1, "a" };
 
 					// String representations of boolean values are not considered valid for division
-					yield return new object[] { "CInt(1) / \"True\"", (short)1, "True" };
-					yield return new object[] { "CInt(1) / \"true\"", (short)1, "true" };
+					yield return new object[] { 3, "CInt(1) / \"True\"", (short)1, "True" };
+					yield return new object[] { 4, "CInt(1) / \"true\"", (short)1, "true" };
 
 					// String representations of dates values are not considered valid for division
-					yield return new object[] { "CInt(1) / \"2015-03-02\"", (short)1, "2015-03-02" };
+					yield return new object[] { 5, "CInt(1) / \"2015-03-02\"", (short)1, "2015-03-02" };
 
 					// No wrangling to arrays is supported (not even "if it's one-dimensional and has only a single element then use that")
-					yield return new object[] { "CInt(1) / Array()", (short)1, new object[0] };
-					yield return new object[] { "CInt(1) / Array(1)", (short)1, new object[] { 1 } };
+					yield return new object[] { 6, "CInt(1) / Array()", (short)1, new object[0] };
+					yield return new object[] { 7, "CInt(1) / Array(1)", (short)1, new object[] { 1 } };
 				}
 			}
 

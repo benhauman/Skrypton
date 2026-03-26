@@ -1149,6 +1149,11 @@ WScript.Echo xmlhttp.responseText
 
             return parameters;
         }
+
+        public void CreateWorkflow(string workFlowName, object parameters)
+        {
+            Console.WriteLine($"[DIALOGMODEL] CreateWorkflow('{workFlowName}')");
+        }
     }
 
     public class WorkflowParameters

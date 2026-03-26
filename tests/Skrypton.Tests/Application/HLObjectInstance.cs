@@ -32,6 +32,7 @@ namespace Skrypton.Tests.Application
             return this;
         }
 
+        public int GetID() => objID();
 
         public int objID()
         {
@@ -92,6 +93,11 @@ namespace Skrypton.Tests.Application
         public int GetItemCount(int flags, object assocdef)//(0, 130)' not found
         {
             return 0;
+        }
+        public void RemoveItem(int flags, object val, object assocdef)
+        {
+            Console.WriteLine($"{_traceName}SetValue(flags:{flags}, val:{val}, assocdef:{assocdef})");
+            //RemoveItemEx(flags, val, 0, assocdef);
         }
         public object HasContent(object attributeKey, int contentid, int suidx)
         {
