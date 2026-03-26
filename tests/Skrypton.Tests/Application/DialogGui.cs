@@ -682,6 +682,10 @@ WScript.Echo xmlhttp.responseText
             });
         }
 
+        public static IHostMessageBoxHostService CreateHostMessageBoxHostService()
+        {
+            return new TestMessageBoxHostService();
+        }
         public static IHostProcessControlHostService CreateTestProcessControlHostService() // for Cli
         {
             return new TestHostProcessControlHostService();
@@ -714,7 +718,7 @@ WScript.Echo xmlhttp.responseText
             // Trumpf, 78, FlagNoLicenseEndDate_ondatachange : rs.fields(0).value
             _ = nameof(DialogGuiControlBase.ControlFactoryCreateDialogControl);
             var model = new DialogGuidModel();
-            var hlSession = new DialogGuiSession(TestCulture);
+            var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
                     .RegisterValueKey<string>("CASEINFO.REFERENCENUMBER", 0, 0, "20260101-0001")
@@ -864,7 +868,7 @@ WScript.Echo xmlhttp.responseText
             string customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
 
             var model = new DialogGuidModel();
-            var hlSession = new DialogGuiSession(TestCulture);
+            var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
                 ;
@@ -1180,10 +1184,12 @@ WScript.Echo xmlhttp.responseText
     public sealed class DialogGuiSession // see public sealed class HlSession : IScriptingUserSession
     {
         private readonly CultureInfo _culture;
+        private readonly int _agentId;
 
-        public DialogGuiSession(CultureInfo culture)
+        public DialogGuiSession(CultureInfo culture, int agentId)
         {
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
+            _agentId = agentId;
         }
 
         public int GetLocaleID()
@@ -1195,6 +1201,11 @@ WScript.Echo xmlhttp.responseText
         public int LangIDFromLCID(int lcid)
         {
             return lcid & ~1024;
+        }
+
+        public int GetAgentID()
+        {
+            return _agentId;
         }
     }
 
