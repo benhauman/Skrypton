@@ -258,7 +258,7 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(warningMessageText);
             }));
             string[] suppressions = _config._translationSuppression;
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions),  warningLogger);
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, [], CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions),  warningLogger);
             return csCode;
         }
         private const char NewLineNormalized = '\n';

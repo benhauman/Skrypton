@@ -34,7 +34,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// <summary>
         /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
         /// </summary>
-        public IEnumerable<NameToken> ExplicitScopeAdditions { get { return []; } }
+        public IReadOnlyCollection<NameToken> ExplicitScopeAdditions { get { return []; } }
 
         public ScopeLocationOptions Scope { get { return ScopeLocationOptions.OutermostScope; } }
 

@@ -70,6 +70,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 errorRegistrationTokenIfAny,
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies,
+                scopeInformation.ExternalMemberMethods,
                 scopeInformation.Classes.AddRange(
                     blocksF
                         .Where(b => b is ClassBlock)
@@ -163,6 +164,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 scopeInformation.ErrorRegistrationTokenIfAny,
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies.AddRange(externalDependencies),
+                scopeInformation.ExternalMemberMethods,
                 scopeInformation.Classes,
                 scopeInformation.Functions,
                 scopeInformation.Properties,
@@ -186,6 +188,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 scopeInformation.ErrorRegistrationTokenIfAny,
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies,
+                scopeInformation.ExternalMemberMethods,
                 scopeInformation.Classes,
                 scopeInformation.Functions,
                 scopeInformation.Properties,
@@ -231,6 +234,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 scopeInformation.ErrorRegistrationTokenIfAny,
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies,
+                scopeInformation.ExternalMemberMethods,
                 scopeInformation.Classes,
                 scopeInformation.Functions,
                 scopeInformation.Properties,
@@ -263,6 +267,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 scopeInformation.ErrorRegistrationTokenIfAny,
                 scopeInformation.DirectedWithReferenceIfAny,
                 scopeInformation.ExternalDependencies,
+                scopeInformation.ExternalMemberMethods,
                 scopeInformation.Classes,
                 scopeInformation.Functions,
                 scopeInformation.Properties,

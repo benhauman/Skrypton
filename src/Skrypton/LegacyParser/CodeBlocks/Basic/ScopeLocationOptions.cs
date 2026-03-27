@@ -4,6 +4,7 @@
     {
         OutermostScope,
         WithinClass,
-        WithinFunctionOrPropertyOrWith
+        WithinFunctionOrPropertyOrWith,
+        ExternalObjectScope, // for methods of external added object
     }
 }

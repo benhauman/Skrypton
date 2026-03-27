@@ -153,6 +153,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (firstExternalDependencyMatch != null)
                 return new DeclaredReferenceDetails(ReferenceTypeOptions.ExternalDependency, ScopeLocationOptions.OutermostScope);
 
+            if (scopeInformation.ScopeDefiningParent != null)// && scopeInformation.ScopeDefiningParent.Scope == ScopeLocationOptions.OutermostScope)
+            {
+                foreach (var memberMethod in scopeInformation.ExternalMemberMethods)
+                {
+                    if (string.Equals(memberMethod.MethodName, rewrittenTargetName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new DeclaredReferenceDetails(ReferenceTypeOptions.ExternalDependency, ScopeLocationOptions.ExternalObjectScope, ownerName: memberMethod.OwnerName);
+                    }
+                }
+            }
             return null;
         }
     }

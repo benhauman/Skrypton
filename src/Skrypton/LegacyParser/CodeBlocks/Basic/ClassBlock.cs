@@ -51,7 +51,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         /// This must never be null but it may be empty (this may be the names of a a function's arguments, for example)
         /// </summary>
 #pragma warning disable CA1033 // Interface methods should be callable by child types
-        IEnumerable<NameToken> IDefineScope.ExplicitScopeAdditions => [];
+        IReadOnlyCollection<NameToken> IDefineScope.ExplicitScopeAdditions => [];
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
         /// <summary>

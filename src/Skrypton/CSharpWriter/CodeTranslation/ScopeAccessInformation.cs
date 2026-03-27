@@ -4,6 +4,9 @@ using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
+using System.Collections.Generic;
+using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
+using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation
 {
@@ -16,6 +19,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             CSharpName? errorRegistrationTokenIfAny,
             DirectedWithReferenceDetails? directedWithReferenceIfAny,
             NonNullImmutableList<NameToken> externalDependencies,
+            IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods,
             NonNullImmutableList<ScopedNameToken> classes,
             NonNullImmutableList<ScopedNameToken> functions,
             NonNullImmutableList<ScopedNameToken> properties,
@@ -29,6 +33,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             ErrorRegistrationTokenIfAny = errorRegistrationTokenIfAny;
             DirectedWithReferenceIfAny = directedWithReferenceIfAny;
             ExternalDependencies = externalDependencies ?? throw new ArgumentNullException(nameof(externalDependencies));
+            ExternalMemberMethods = externalMemberMethods ?? throw new ArgumentNullException(nameof(externalMemberMethods));
             Classes = classes ?? throw new ArgumentNullException(nameof(classes));
             Functions = functions ?? throw new ArgumentNullException(nameof(functions));
             Properties = properties ?? throw new ArgumentNullException(nameof(properties));
@@ -52,7 +57,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public static ScopeAccessInformation FromOutermostScope(
             CSharpName outermostScopeWrapperName,
             NonNullImmutableList<ICodeBlock> blocks,
-            NonNullImmutableList<NameToken> externalDependencies)
+            NonNullImmutableList<NameToken> externalDependencies,
+            IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods
+            )
         {
             if (outermostScopeWrapperName == null)
                 throw new ArgumentNullException(nameof(outermostScopeWrapperName));
@@ -60,6 +67,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 throw new ArgumentNullException(nameof(blocks));
             if (externalDependencies == null)
                 throw new ArgumentNullException(nameof(externalDependencies));
+            if (externalMemberMethods == null) throw new ArgumentNullException(nameof(externalMemberMethods));
+
+            List<ScopedNameToken> externalAddedFunctions = new List<ScopedNameToken>();
+            foreach (ExternalMemberMethodInfo externalMemberMethod in externalMemberMethods)
+            {
+                var extref = externalDependencies.FirstOrDefault(x => string.Equals(x.Content, externalMemberMethod.OwnerName, StringComparison.OrdinalIgnoreCase));
+                if (extref == null)
+                {
+                    throw new InvalidOperationException($"Owner '{externalMemberMethod.OwnerName}' of method '{externalMemberMethod.MethodName}' not registered.");
+                }
+                externalAddedFunctions.Add(new ScopedNameToken(externalMemberMethod.MethodName, 1, ScopeLocationOptions.ExternalObjectScope));
+            }
+
 
             // This prepares the empty template for the primary instance..
             var outermostScope = new OutermostScope(outermostScopeWrapperName, blocks);
@@ -70,8 +90,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 null, // errorRegistrationTokenIfAny
                 null, // directedWithReferenceIfAn
                 externalDependencies,
+                externalMemberMethods,
                 new NonNullImmutableList<ScopedNameToken>(), // classes
-                new NonNullImmutableList<ScopedNameToken>(), // functions,
+                                                             new NonNullImmutableList<ScopedNameToken>(), // functions,
+                //externalAddedFunctions.ToNonNullImmutableList(),
                 new NonNullImmutableList<ScopedNameToken>(), // properties,
                 new NonNullImmutableList<ScopedNameToken>(), // constants
                 new NonNullImmutableList<ScopedNameToken>(), // variables
@@ -123,6 +145,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         /// it, even though there is nothing to indicate its presence in the source. This will never be null.
         /// </summary>
         public NonNullImmutableList<NameToken> ExternalDependencies { get; private set; }
+
+        public IReadOnlyCollection<ExternalMemberMethodInfo> ExternalMemberMethods { get; }
 
         /// <summary>
         /// This will never be null

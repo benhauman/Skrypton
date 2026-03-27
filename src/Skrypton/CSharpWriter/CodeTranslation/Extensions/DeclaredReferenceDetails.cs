@@ -5,7 +5,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 {
     public class DeclaredReferenceDetails
     {
-        public DeclaredReferenceDetails(ReferenceTypeOptions referenceType, ScopeLocationOptions scopeLocation)
+        public DeclaredReferenceDetails(ReferenceTypeOptions referenceType, ScopeLocationOptions scopeLocation, string? ownerName = null)
         {
             if (!Enum.IsDefined(typeof(ReferenceTypeOptions), referenceType))
                 throw new ArgumentOutOfRangeException(nameof(referenceType));
@@ -14,9 +14,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
 
             ReferenceType = referenceType;
             ScopeLocation = scopeLocation;
+            OwnerName = ownerName;
         }
 
         public ReferenceTypeOptions ReferenceType { get; private set; }
         public ScopeLocationOptions ScopeLocation { get; private set; }
+        public string? OwnerName { get; }
     }
 }

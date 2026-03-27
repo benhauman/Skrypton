@@ -29,14 +29,15 @@ namespace Skrypton.CSharpWriter
         /// </summary>
         public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<string> suppressions)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
+            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
 
         internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions) => new DefaultTranslatorOptions(suppressions);
 
-        public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies, IReadOnlyCollection<string> suppressions)
+        public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())
@@ -50,6 +51,7 @@ namespace Skrypton.CSharpWriter
             CultureInfo culture,
             string scriptContent,
             IReadOnlyCollection<string> externalDependencies,
+            IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
             ITranslatorOptions translatorOptions,
             ILogInformation logger
@@ -92,6 +94,7 @@ namespace Skrypton.CSharpWriter
                 statementTranslator,
                 new ValueSettingStatementsTranslator(supportRefName, envRefName, outerRefName, nameRewriter, statementTranslator, logger),
                 externalDependencies.Select(name => new NameToken(false, name.ToUpperX(), 1)).ToNonNullImmutableList(), //1:First line
+                externalMemberMethods,
                 outputType,
                 translatorOptions,
                 logger

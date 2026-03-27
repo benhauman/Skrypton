@@ -12,6 +12,7 @@ using Skrypton.RuntimeSupport.Compat;
 using Skrypton.RuntimeSupport.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
@@ -36,6 +37,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
     {
         private readonly CSharpName _startNamespace, _startClassName, _startMethodName, _runtimeDateLiteralValidatorClassName;
         private readonly NonNullImmutableList<NameToken> _externalDependencies;
+        private readonly IReadOnlyCollection<ExternalMemberMethodInfo> _externalMemberMethods;
         private readonly OutputTypeOptions _outputType;
         private readonly ILogInformation _logger;
         internal OuterScopeBlockTranslator(
@@ -53,6 +55,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ITranslateIndividualStatements statementTranslator,
             ITranslateValueSettingsStatements valueSettingStatementTranslator,
             NonNullImmutableList<NameToken> externalDependencies,
+            IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods,
             OutputTypeOptions outputType,
             ITranslatorOptions translatorOptions,
             ILogInformation logger)
@@ -65,6 +68,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             _startMethodName = startMethodName ?? throw new ArgumentNullException(nameof(startMethodName));
             _runtimeDateLiteralValidatorClassName = runtimeDateLiteralValidatorClassName ?? throw new ArgumentNullException(nameof(runtimeDateLiteralValidatorClassName));
             _externalDependencies = externalDependencies ?? throw new ArgumentNullException(nameof(externalDependencies));
+            _externalMemberMethods = externalMemberMethods ?? throw new ArgumentNullException(nameof(externalMemberMethods));
             _outputType = outputType;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -171,7 +175,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             ScopeAccessInformation scopeAccessInformation = ScopeAccessInformation.FromOutermostScope(
                 _startClassName, // A placeholder name is required for an OutermostScope instance and so is required by this method
                 blocks,
-                _externalDependencies
+                _externalDependencies,
+                _externalMemberMethods
             );
             if (blocks.DoesScopeContainOnErrorResumeNext())
             {
@@ -541,6 +546,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             /// This will never be null
             /// </summary>
             public T CodeBlock { get; private set; }
+        }
+    }
+
+    [DebuggerDisplay("{OwnerName}::{MethodName}")]
+    public sealed class ExternalMemberMethodInfo
+    {
+        public string MethodName { get; }
+        public string OwnerName { get; }
+
+        public ExternalMemberMethodInfo(string ownerName, string methodName)
+        {
+            OwnerName = ownerName;
+            MethodName = methodName;
         }
     }
 }

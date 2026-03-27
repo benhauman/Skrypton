@@ -307,6 +307,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.ErrorRegistrationTokenIfAny,
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
+                scopeAccessInformation.ExternalMemberMethods,
                 scopeAccessInformation.Classes,
                 scopeAccessInformation.Functions.Add(new ScopedNameToken("F1", lineIndex1, ScopeLocationOptions.WithinFunctionOrPropertyOrWith)),
                 scopeAccessInformation.Properties,
@@ -423,7 +424,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             return ScopeAccessInformation.FromOutermostScope(
                 new CSharpName("UnitTestOutermostScope"),
                 new NonNullImmutableList<Skrypton.LegacyParser.CodeBlocks.ICodeBlock>(),
-                new NonNullImmutableList<NameToken>()
+                new NonNullImmutableList<NameToken>(),
+                []
             );
         }
 
@@ -462,6 +464,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.ErrorRegistrationTokenIfAny,
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
+                scopeAccessInformation.ExternalMemberMethods,
                 scopeAccessInformation.Classes,
                 scopeAccessInformation.Functions.Add(new ScopedNameToken(
                     name,
@@ -491,6 +494,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.ErrorRegistrationTokenIfAny,
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
+                scopeAccessInformation.ExternalMemberMethods,
                 scopeAccessInformation.Classes,
                 scopeAccessInformation.Functions,
                 scopeAccessInformation.Properties.Add(new ScopedNameToken(
@@ -520,6 +524,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 scopeAccessInformation.ErrorRegistrationTokenIfAny,
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
+                scopeAccessInformation.ExternalMemberMethods,
                 scopeAccessInformation.Classes,
                 scopeAccessInformation.Functions,
                 scopeAccessInformation.Properties,

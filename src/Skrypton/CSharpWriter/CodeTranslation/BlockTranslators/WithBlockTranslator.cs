@@ -59,6 +59,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         withBlock.Target.Tokens.First().LineIndex
                     ),
                     scopeAccessInformation.ExternalDependencies,
+                    scopeAccessInformation.ExternalMemberMethods,
                     scopeAccessInformation.Classes,
                     scopeAccessInformation.Functions,
                     scopeAccessInformation.Properties,

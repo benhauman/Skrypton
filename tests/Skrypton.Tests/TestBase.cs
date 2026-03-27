@@ -12,9 +12,11 @@ using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Skrypton.RuntimeSupport.Implementations;
 using Microsoft.Testing.Platform.Services;
 using Skrypton.CSharpWriter;
+using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application;
 using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
+using System.Collections.Immutable;
 
 namespace Skrypton.Tests
 {
@@ -124,9 +126,13 @@ namespace Skrypton.Tests
         protected void TestCSharpCodeTranslationWithoutScaffoldingA(string[] expectedLines, string vbsSource, params string[] translationSuppression)
         {
             string expected = string.Join(NewLineNormalized, expectedLines);
-            TestCSharpCodeTranslationWithoutScaffolding(expected, vbsSource, translationSuppression);
+            TestCSharpCodeTranslationWithoutScaffoldingX(expected, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
         }
         protected void TestCSharpCodeTranslationWithoutScaffolding(string expected, string vbsSource, params string[] translationSuppression)
+        {
+            TestCSharpCodeTranslationWithoutScaffoldingX(expected, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+        }
+        protected void TestCSharpCodeTranslationWithoutScaffoldingX(string expected, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, params string[] translationSuppression)
         {
             string[] expectCsLines = expected.Replace(Environment.NewLine, "\n")
                 .Split(['\n'], StringSplitOptions.RemoveEmptyEntries)
@@ -135,7 +141,7 @@ namespace Skrypton.Tests
                 .ToArray();
             string expectCsCode = string.Join(NewLineNormalized, expectCsLines);
 
-            string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, translationSuppression);
+            string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, vbsSource, new Skrypton.CSharpWriter.Lists.NonNullImmutableList<string>(externalDependencies), externalMemberMethods, translationSuppression);
 
             string[] actualCsLines = actualCsCodeRaw.Split([NewLineNormalized], StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())

@@ -773,6 +773,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // valid C#, however it CAN be represented by _.CALL(this, _outer, "GetSomething", "Name") or _.CALL(this, "GetSomething", "Name"), depending upon where the function
             // is defined).
             DeclaredReferenceDetails? targetReferenceDetails = scopeAccessInformation.TryToGetDeclaredReferenceDetails(target, _nameRewriter);
+            if (targetReferenceDetails == null)
+            {
+
+            }
             if (targetReferenceDetails != null)
             {
                 if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Class)
@@ -792,9 +796,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         target = new ProcessedNameToken("this".ToUpperX(), target.LineIndex);
                     }
                 }
-                if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Constant)
+                else if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Constant)
                 {
                     // 'CT132_Dialog_83' throw new NotImplementedException();
+                }
+                else if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.ExternalDependency && targetReferenceDetails.ScopeLocation == ScopeLocationOptions.ExternalObjectScope)
+                {
+                    // 'ExternalFuncX'
+                    memberAccessors = new[] { target }.Concat(memberAccessors).ToArray();
+                    target = new ProcessedNameToken(targetReferenceDetails.OwnerName!.ToUpperX(), target.LineIndex);
                 }
             }
 

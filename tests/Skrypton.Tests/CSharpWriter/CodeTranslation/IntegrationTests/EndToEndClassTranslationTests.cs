@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.CSharpWriter;
+using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
+using Skrypton.CSharpWriter.Lists;
 
 //#using Xunit#;
 
@@ -456,6 +460,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
             //);
+        }
+
+		[TestMethod]
+		public void ExternalFuncX() // see 'TryToGetDeclaredReferenceDetails'
+        {
+            var source = @"Dim Person: set Person = GetPersonForAgent(123)";
+
+			//NonNullImmutableList<string> testExternalDependencies = new NonNullImmutableList<string>().Add("hlmodel");
+			List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
+			externalMemberMethods.Add(new ExternalMemberMethodInfo("hlmodel", "GetPersonForAgent"));
+            //string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, source, testExternalDependencies, externalMemberMethods, []);
+			var expected = @"_outer.Person = _.OBJ(_.CALLm1v1(this, hlmodel, ""GetPersonForAgent"", (Int16)123));";
+			TestCSharpCodeTranslationWithoutScaffoldingX(expected, source, ["hlmodel"], externalMemberMethods, []); // SKY101
+			//Assert.Inconclusive();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 errorRegistrationTokenIfAny,
                 scopeAccessInformation.DirectedWithReferenceIfAny,
                 scopeAccessInformation.ExternalDependencies,
+                scopeAccessInformation.ExternalMemberMethods,
                 scopeAccessInformation.Classes,
                 scopeAccessInformation.Functions,
                 scopeAccessInformation.Properties,
