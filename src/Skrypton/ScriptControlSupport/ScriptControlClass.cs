@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 
 namespace Skrypton.ScriptControlSupport
 {
@@ -86,6 +87,7 @@ namespace Skrypton.ScriptControlSupport
         }
 
         private readonly Dictionary<string, object> _addedObjects = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string[]> _addedObjectMembers = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
         void IScriptControl.AddObject(string objectName, object objectInstance, bool addMembers)
         {
             if (objectName == null) throw new ArgumentNullException(nameof(objectName));
@@ -96,11 +98,19 @@ namespace Skrypton.ScriptControlSupport
                 // “An object with this name already exists in the script namespace.”
                 throw new InvalidOperationException($"An object with this name already exists in the script namespace. '{objectName}' HR:0x800A03EC (SCRIPT_E_DUPLICATEOBJECTNAME)"); // SCRIPT_E_DUPLICATEOBJECTNAME
             }
+            if (addMembers)
+            {
+                string[] methods = objectInstance.GetType().GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Select(x => x.Name).Distinct().ToArray();
+                if (methods.Length > 0)
+                {
+                    _addedObjectMembers.Add(objectName, methods);
+                }
+            }
             _addedObjects[objectName] = objectInstance ?? throw new ArgumentNullException(nameof(objectInstance));
 
             if (addMembers)
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
         }
 
@@ -253,12 +263,21 @@ namespace Skrypton.ScriptControlSupport
             }
             scriptContent += statementOrNull;
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
+            List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
+            foreach (var  xx in _addedObjectMembers)
+            {
+                foreach (string externalMemberName in xx.Value)
+                {
+                    externalMemberMethods.Add(new ExternalMemberMethodInfo(xx.Key, externalMemberName));
+                }
+            }
+
             var warningLogger = Skrypton.CSharpWriter.DefaultTranslator.CommentsLogger(true, new Skrypton.CSharpWriter.DefaultTranslator.DelegateWrappingWarningLogger(warningMessageText =>
             {
                 Console.WriteLine(warningMessageText);
             }));
             string[] suppressions = _config._translationSuppression;
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, [], CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions),  warningLogger);
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions), warningLogger);
             return csCode;
         }
         private const char NewLineNormalized = '\n';

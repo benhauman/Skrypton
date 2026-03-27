@@ -11,8 +11,9 @@ namespace Skrypton.Tests.Application
     public class DialogBuilder
     {
         private readonly IServiceProvider _hostServices;
-        private readonly Dictionary<string, object> _externalReferences = new Dictionary<string, object>();
+        private readonly Dictionary<string, DialogExternalReferenceInfo> _externalReferences = new Dictionary<string, DialogExternalReferenceInfo>();
         private readonly DialogGuidModel _dialogModel;
+
 
         internal DialogBuilder(IServiceProvider hostServices, DialogGuidModel dialogModel) : this(hostServices, dialogModel, [])
         {
@@ -76,7 +77,7 @@ namespace Skrypton.Tests.Application
             {
                 throw new InvalidOperationException($"controlId:{controlId}");
             }
-            _externalReferences.Add(c.ID, c);
+            _externalReferences.Add(c.ID, new DialogExternalReferenceInfo(c, []));
             return this;
         }
         public DialogBuilder AddTabControl(string controlId)
@@ -107,13 +108,13 @@ namespace Skrypton.Tests.Application
             return AddControlCore(controlId, new DialogGuiImageControl() { });
         }
 
-        public DialogBuilder AddExternalObject(string objectName, object objectInstance)
+        public DialogBuilder AddExternalObject(string objectName, object objectInstance, params string[] members)
         {
             if (_externalReferences.ContainsKey(objectName))
             {
                 throw new InvalidOperationException($"objectName:{objectName}");
             }
-            _externalReferences.Add(objectName, objectInstance);
+            _externalReferences.Add(objectName, new DialogExternalReferenceInfo(objectInstance, members));
             return this;
         }
 
@@ -153,14 +154,14 @@ namespace Skrypton.Tests.Application
 
     public sealed class DialogBase
     {
-        public IReadOnlyDictionary<string, object> ExternalReferences { get; }
+        public IReadOnlyDictionary<string, DialogExternalReferenceInfo> ExternalReferences { get; }
         public IServiceProvider HostServices { get; }
         public string DialogHandlerScriptCode { get; }
         public string DialogGlobalScriptCode { get; }
 
         public IReadOnlyCollection<string> ScriptNames { get; }
 
-        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode,  string dialogHandlerScriptCode, IReadOnlyDictionary<string, object> externalReferences, IReadOnlyCollection<string> scriptNames)
+        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode,  string dialogHandlerScriptCode, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalReferences, IReadOnlyCollection<string> scriptNames)
         {
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             DialogGlobalScriptCode = dialogGlobalScriptCode ?? throw new ArgumentNullException(nameof(dialogGlobalScriptCode));
@@ -174,6 +175,20 @@ namespace Skrypton.Tests.Application
             if (string.IsNullOrEmpty(DialogGlobalScriptCode))
                 return DialogHandlerScriptCode;
             return new StringBuilder().AppendLine(DialogGlobalScriptCode).AppendLine(DialogHandlerScriptCode).ToString();
+        }
+    }
+
+    public sealed class DialogExternalReferenceInfo
+    {
+        public object Instance { get; }
+        public string[] Members { get; }
+
+        public bool AddMembers => Members.Length > 0;
+
+        public DialogExternalReferenceInfo(object instance, string[] members)
+        {
+            Instance = instance ?? throw new ArgumentNullException(nameof(instance));
+            Members = members ?? throw new ArgumentNullException(nameof(members));
         }
     }
 }

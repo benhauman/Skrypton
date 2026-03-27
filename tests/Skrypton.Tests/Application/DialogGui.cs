@@ -537,7 +537,7 @@ WScript.Echo xmlhttp.responseText
             {
                 Console.WriteLine("translating...");
                 string scriptContent = dialog.CompleteScriptCode();
-                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray(), suppressions);
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray(), [], suppressions);
             }
 
             DoDialogGui(this, translated_cs, dialog, dialogHandler);
@@ -802,7 +802,7 @@ WScript.Echo xmlhttp.responseText
                 );
 
             }), model)
-                .AddExternalObject("model", model)
+                .AddExternalObject("model", model, nameof(DialogGuidModel.GetPersonForAgent))
                 .AddExternalObject("hlSession", hlSession)
                 .AddExternalObject("hlObj", hlobj)
                 .AddExternalObject("hlCaller", hlcaller)
@@ -1157,6 +1157,13 @@ WScript.Echo xmlhttp.responseText
         public void CreateWorkflow(string workFlowName, object parameters)
         {
             Console.WriteLine($"[DIALOGMODEL] CreateWorkflow('{workFlowName}')");
+        }
+
+
+        public object GetPersonForAgent(int agentId)
+        {
+            Console.WriteLine($"[DIALOGMODEL] GetPersonForAgent(agentId:{agentId})");
+            return null;
         }
     }
 

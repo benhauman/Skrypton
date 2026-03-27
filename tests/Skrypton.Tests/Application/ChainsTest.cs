@@ -14,6 +14,7 @@ using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.SourceRendering;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 using Skrypton.RuntimeSupport;
 using Skrypton.ScriptControlSupport;
 
@@ -131,7 +132,7 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, object> externalRefs = null, bool isOptionalAssert = false, params string[] suppressions)
+        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalRefs = null, bool isOptionalAssert = false, params string[] suppressions)
         {
             string chainName = tst.TestName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
@@ -171,10 +172,12 @@ namespace Skrypton.Tests.Application
                 string translated_cs_expected,
                 string xml_expected,
                 ScriptUsageKind scrUsage,
-                IReadOnlyDictionary<string, object> externalRefs = null,
+                IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalRefs = null,
                 bool isOptionalAssert = false,
                 params string[] suppressions)
         {
+            List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
+
             NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
             if (externalRefs == null)
             {
@@ -185,9 +188,15 @@ namespace Skrypton.Tests.Application
             }
             else
             {
-                foreach (string externalRefName in externalRefs.Keys)
+                foreach (KeyValuePair<string, DialogExternalReferenceInfo> externalRef in externalRefs)
                 {
+                    string externalRefName = externalRef.Key;
+                    var info = externalRef.Value;
                     externalDependencies = externalDependencies.Add(externalRefName);
+                    foreach (string methodName in info.Members)
+                    {
+                        externalMemberMethods.Add(new ExternalMemberMethodInfo(ownerName: externalRefName, methodName: methodName));
+                    }
                 }
             }
 
@@ -261,7 +270,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies, suppressions ?? []);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies, externalMemberMethods ?? [], suppressions ?? []);
 
             //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
             //
