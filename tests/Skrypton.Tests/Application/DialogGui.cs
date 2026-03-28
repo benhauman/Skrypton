@@ -1252,6 +1252,24 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine($"[DIALOGMODEL] Translate(key:'{key}')");
             return $"({_culture.Name}):key";
         }
+
+        private int _currentSUIndex;
+        public int CurrentSUIndex
+        {
+            get
+            {
+                Console.WriteLine($"[DIALOGMODEL] CurrentSUIndex.get");
+                return _currentSUIndex;
+            }
+            set
+            {
+                Console.WriteLine($"[DIALOGMODEL] CurrentSUIndex.set:{value}");
+                if (_currentSUIndex != value)
+                {
+                    _currentSUIndex = value;
+                }
+            }
+        }
     }
 
     [ComVisible(true)]

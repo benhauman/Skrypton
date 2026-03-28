@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 namespace Skrypton.Tests.Application.Controls
 {
     [DebuggerDisplay("[{GetType().Name}]ID:{ID}")]
+    [ComVisible(true)] // needed for 'DefaultMember' lookup. Property with name 'Value' without arguments is considered as default member
     public abstract class DialogGuiControlBase// : IReflectOnClrType
     {
         protected DialogGuiControlBase()
