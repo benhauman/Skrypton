@@ -93,7 +93,7 @@ namespace Skrypton.ScriptControlSupport
         //    return expando;
         //}
         //
-        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, int codeNumber, string csCode, string[] nowarn)
+        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, string programName, int codeNumber, string csCode, string[] nowarn)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
             PortableExecutableReference[] references = new[]
@@ -127,7 +127,7 @@ namespace Skrypton.ScriptControlSupport
             );
 
             string codeName = $"InMemDynAsmKey{codeNumber}";
-            string tempFolderName = $"InMemDyn{codeNumber}";
+            string tempFolderName = $"programName{codeNumber}";
             string fileNameCsc = $"{codeName}.cs";
             string fileNameDll = $"{codeName}.dll";
             string fileNamePdb = $"{codeName}.pdb";

@@ -1006,6 +1006,7 @@ WScript.Echo xmlhttp.responseText
                             "xsd:string" => xValue.Value,
                             "xsd:int" => XmlConvert.ToInt32(xValue.Value),
                             "xsd:boolean" => XmlConvert.ToBoolean(xValue.Value),
+                            "ComboBoxHelplineSearch" => FromXmlComboBoxHelplineSearch(xValue),
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
                         if (controlPropertyName == "SymbolName" && controlPropertyValue is string sv)
@@ -1020,6 +1021,28 @@ WScript.Echo xmlhttp.responseText
 
                 CollectControls(controls, xControl);
             }
+        }
+        private static ComboBoxHelplineSearch FromXmlComboBoxHelplineSearch(XElement xValue)
+        {
+            if (xValue.HasElements)
+            {
+                /*
+                   <Value xsi:type="ComboBoxHelplineSearch">
+                     <SearchObjects>
+                       <string>Contact</string>
+                     </SearchObjects>
+                     <SearchCondition>PersonDisplayHelper.GroupIDText Like "163392*"</SearchCondition>
+                     <SearchAttributeKey>PersonInformation.Name</SearchAttributeKey>
+                     <AttributeKeyDefId>WorkflowHelper.AgentDefID</AttributeKeyDefId>
+                     <AttributeKeyName>RoutingHelper.AgentName</AttributeKeyName>
+                   </Value>
+                 */
+                var xSearchCondition = xValue.Elements().First(x => x.Name.LocalName == "SearchCondition");
+                var xAttributeKeyName = xValue.Elements().First(x => x.Name.LocalName == "AttributeKeyName");
+                return new ComboBoxHelplineSearch(attributeKeyName: xAttributeKeyName.Value, searchCondition: xSearchCondition.Value);
+            }
+
+            return new ComboBoxHelplineSearch();
         }
 
         internal static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
@@ -1160,11 +1183,18 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine($"[DIALOGMODEL] CreateWorkflow('{workFlowName}')");
         }
 
+        private readonly Dictionary<int, HLObjectInstance> _personOfAgents = new Dictionary<int, HLObjectInstance>();
+        public DialogGuidModel InitPersonForAgent(int agentId, HLObjectInstance person)
+        {
+            _personOfAgents.Add(agentId, person);
+            return this;
+        }
 
         public object GetPersonForAgent(int agentId)
         {
-            Console.WriteLine($"[DIALOGMODEL] GetPersonForAgent(agentId:{agentId})");
-            return null;
+            bool found = _personOfAgents.TryGetValue(agentId, out HLObjectInstance person);
+            Console.WriteLine($"[DIALOGMODEL] GetPersonForAgent(agentId:{agentId}) : {found}");
+            return found ? person : null;
         }
 
         public bool AllowAddNewSu { get; set; } = true;
@@ -1192,6 +1222,11 @@ WScript.Echo xmlhttp.responseText
                 Console.WriteLine($"[DIALOGMODEL] CurrentCommand.get");
                 return currentCommand;
             }
+        }
+
+        public void SetFocusToControl(string attributeKey)
+        {
+            Console.WriteLine($"[DIALOGMODEL] SetFocusToControl(attributeKey:{attributeKey})");
         }
     }
 

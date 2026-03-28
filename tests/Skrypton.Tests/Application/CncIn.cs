@@ -104,7 +104,7 @@ namespace Skrypton.Tests.Application
                 scriptControl.AddObject(externalReferenceName, externalReferenceInstance, nfo.AddMembers);
             }
 
-            scriptControlClass.TestTranslatedStatement(translatedCsCode, ["CS0219"], doRun: true, dialogHandler);
+            scriptControlClass.TestTranslatedStatement(tst.TestName, translatedCsCode, ["CS0219"], doRun: true, dialogHandler);
         }
         internal static void RunTranslatedProgram(IRuntimeLogger runtimeLogger, IServiceProvider hostServices, CultureInfo culture, Type tRunner, IReadOnlyDictionary<string, object> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {

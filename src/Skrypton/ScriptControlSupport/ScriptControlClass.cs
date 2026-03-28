@@ -136,12 +136,12 @@ namespace Skrypton.ScriptControlSupport
             throw new NotImplementedException();
         }
 
-        public void TestTranslatedStatement(string csCode, string[] nowarn, bool doRun, Action<GlobalReferencesBase> testHandler)
+        public void TestTranslatedStatement(string programName, string csCode, string[] nowarn, bool doRun, Action<GlobalReferencesBase> testHandler)
         {
             if (nowarn == null) throw new ArgumentNullException(nameof(nowarn));
             if (testHandler == null) throw new ArgumentNullException(nameof(testHandler));
             if (string.IsNullOrEmpty(csCode)) throw new ArgumentException("Value cannot be null or empty.", nameof(csCode));
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode, nowarn);
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, programName, codeNumber: _lastExecNumber, csCode, nowarn);
             try
             {
                 using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();
@@ -178,7 +178,7 @@ namespace Skrypton.ScriptControlSupport
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             Interlocked.Increment(ref _lastExecNumber); // threadsafe
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, codeNumber: _lastExecNumber, csCode, []);
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: _lastExecNumber, csCode, []);
             //WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             try
             {

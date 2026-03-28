@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Skrypton.Tests.Application.Controls
 {
@@ -98,7 +99,8 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineSUControl", () => new DialogGuiSUControl() },
             { "HelpLineComplexText", () => new DialogGuiComplexTextControl() },
             { "HelpLineTimeCallControl", () => new DialogGuiTimeCallControl() },
-            { "HelpLineNumericTextBox", () => new DialogGuiNumericTextBoxControl() }
+            { "HelpLineNumericTextBox", () => new DialogGuiNumericTextBoxControl() },
+            { "HelpLineRadioButton", () => new DialogGuiRadioButtonControl() }
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -158,6 +160,10 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiRadioButtonControl : DialogGuiControlBase
+    {
+
+    }
     public sealed class DialogGuiNumericTextBoxControl : DialogGuiControlBase
     {
         public string Text { get => RetrieveValueForText(); set => UpdateValueForText(value); }
@@ -258,6 +264,29 @@ namespace Skrypton.Tests.Application.Controls
         public void AddItem(string item)
         {
             Console.WriteLine($"[ComboBox]({ID}).AddItem('{item}')");
+        }
+
+        private ComboBoxHelplineSearch _search = new ComboBoxHelplineSearch();
+        public ComboBoxHelplineSearch Search
+        {
+            get { return _search; }
+            //set { _search = value; }
+        }
+    }
+
+    [ComVisible(true)]
+    public sealed class ComboBoxHelplineSearch // IAttributeKeyProperty
+    {
+        public string AttributeKeyName { get; }
+        public string SearchCondition { get; set; }
+
+        public ComboBoxHelplineSearch()
+        {
+        }
+        public ComboBoxHelplineSearch(string attributeKeyName, string searchCondition)
+        {
+            AttributeKeyName = attributeKeyName;
+            SearchCondition = searchCondition;
         }
     }
 

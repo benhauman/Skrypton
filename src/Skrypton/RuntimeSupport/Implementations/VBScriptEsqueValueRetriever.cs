@@ -252,8 +252,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public object OBJ(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
-            if ((o == null) || IsVBScriptValueType(o))
+            if (o == null)
+            {
+                // Dim person: Set person = <CALL that returns null>; .... control.title = person
+                return o!; // lubo
+            }
+            if (IsVBScriptValueType(o))
+            {
                 throw new ObjectRequiredException(optionalExceptionMessageForInvalidContent ?? "");
+            }
 
             return o;
         }
@@ -1036,7 +1043,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 invoker = GenerateGetInvoker(target, optionalName, arguments, allowPrivateAccess, onlyConsiderMethods);
                 _getInvokerCache.TryAdd(cacheKey, invoker);
             }
-            return invoker(target, arguments);
+            object resultValue = invoker(target, arguments);
+            return resultValue;
         }
 
         private delegate object GetInvoker(object target, object[] arguments);
@@ -1536,7 +1544,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // must be an indexed property, it can not be an array (see note above about the only place that array access is permitted).
                 method = GetNamedSetMethods(targetType, optionalMemberAccessor, argumentsArray.Length, allowPrivateAccess).FirstOrDefault();
                 if (method == null)
-                    throw new MissingMemberException(targetType.FullName, optionalMemberAccessor);
+                    throw new MissingMemberException(targetType.FullName, optionalMemberAccessor + " | SET");
             }
             else
             {

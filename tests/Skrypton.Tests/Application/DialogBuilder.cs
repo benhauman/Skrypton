@@ -150,6 +150,7 @@ namespace Skrypton.Tests.Application
 
     public class DialogGuiGroupBox : DialogGuiControlBase
     {
+        public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
 
     public sealed class DialogBase

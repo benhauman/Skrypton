@@ -123,7 +123,14 @@ namespace Skrypton.Tests.Application
             {
                 if (vk.AttributePath == "CASEINFO.REACTIONTIME")
                     return false;
-                throw new InvalidOperationException($"IsReadOnly('{key}', suidx:{suidx}");
+                if (vk.AttributePath.StartsWith("HLOBJECTINFO."))
+                    return false;
+                if (vk.AttributePath.StartsWith("CASEINFO."))
+                    return false;
+                if (vk.AttributePath.StartsWith("SUINFO."))
+                    return false;
+                //throw new InvalidOperationException($"IsReadOnly('{key}', suidx:{suidx}");
+                return true;
             }
         }
 
@@ -141,6 +148,12 @@ namespace Skrypton.Tests.Application
         public int GetSvcUnitCount()
         {
             return _sus.Count;
+        }
+
+        public void AddItem(int flags, object val, object assocdef)
+        {
+            Console.WriteLine($"{_traceName}AddItem(flags:{flags}, val:{val}', assocdef:{assocdef})");
+            //AddItemEx(flags, val, 0, assocdef);
         }
 
         public int[] GetAttachmentKeys(object key, int suidx)
@@ -165,6 +178,10 @@ namespace Skrypton.Tests.Application
             if (ov.DataType == typeof(int))
             {
                 return ov.DataRaw == null ? "" : ((int)ov.DataRaw).ToString(CultureInfo.InvariantCulture);
+            }
+            if (ov.DataType == typeof(bool))
+            {
+                return ov.DataRaw == null ? "" : ((bool)ov.DataRaw) ? "1" : "0"; // see 'BitFormatter'
             }
             throw new NotImplementedException($"[{vk.DebugText}]({ov.DataType.Name}):{ov.DataRaw}");
         }
@@ -210,11 +227,22 @@ namespace Skrypton.Tests.Application
                     object newValue = value;
                     if (value.GetType() != DataType)
                     {
-                        // todo : convert it if needed
-                        throw new NotImplementedException($"Expect:{DataType.Name}, actual:{value.GetType().Name}");
+                        if (DataType == typeof(int) && value is string stringValue && stringValue.Length == 0)
+                        {
+                            HasValue = false;
+                            DataRaw = null;
+                        }
+                        else
+                        {
+                            // todo : convert it if needed
+                            throw new NotImplementedException($"Expect:{DataType.Name}, actual:{value.GetType().Name}");
+                        }
                     }
-                    HasValue = true;
-                    DataRaw = newValue;
+                    else
+                    {
+                        HasValue = true;
+                        DataRaw = newValue;
+                    }
                 }
             }
             public void UpdateValue(object newValue)
