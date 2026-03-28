@@ -193,6 +193,8 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiCheckBoxControl : DialogGuiControlBase
     {
+        // checked (=1), notchecked(=0)
+        public int Value { get; set; }
     }
 
     public sealed class DialogGuiTreeComboBoxControl : DialogGuiControlBase
@@ -224,6 +226,8 @@ namespace Skrypton.Tests.Application.Controls
         {
             Console.WriteLine($"[DateTimeControl]({ID}).DeleteContent");
         }
+
+        public DateTime Value { get; set; }
     }
 
     public sealed class DialogGuiComboBoxControl : DialogGuiControlBase

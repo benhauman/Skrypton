@@ -1006,6 +1006,7 @@ WScript.Echo xmlhttp.responseText
                             "xsd:string" => xValue.Value,
                             "xsd:int" => XmlConvert.ToInt32(xValue.Value),
                             "xsd:boolean" => XmlConvert.ToBoolean(xValue.Value),
+                            "xsd:dateTime" => XmlConvert.ToDateTime(xValue.Value, XmlDateTimeSerializationMode.Utc),
                             "ComboBoxHelplineSearch" => FromXmlComboBoxHelplineSearch(xValue),
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
@@ -1202,9 +1203,24 @@ WScript.Echo xmlhttp.responseText
         public bool AllowAddNewSu { get; set; } = true;
 
 
+        private readonly Dictionary<int, bool> _timerRunning = new Dictionary<int, bool>();
         public void EnableTimer(int suId, bool enable)
         {
             Console.WriteLine($"[DIALOGMODEL] EnableTimer(suId:{suId}, enable:{enable})");
+            if (_timerRunning.TryGetValue(suId, out bool prevValue))
+            {
+                _timerRunning[suId] = enable;
+            }
+            else
+            {
+                if (enable)
+                    _timerRunning.Add(suId, true);
+            }
+        }
+        public bool IsTimerEnabled(int suId)
+        {
+            Console.WriteLine($"[DIALOGMODEL] IsTimerEnabled(suId:{suId})");
+            return _timerRunning.TryGetValue(suId, out bool enabled) && enabled;
         }
         //[ReadOnly(true)]
         public int SaveReason
