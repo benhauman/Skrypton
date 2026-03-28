@@ -30,7 +30,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         private readonly Func<string, int, string> _nameRewriter;
         private readonly AbsentDefaultMemberOnComObjectCacheOptions _absentDefaultMemberOnComObjectCacheOptions;
         private readonly CultureInfo _culture;
-        private readonly ConcurrentDictionary<InvokerCacheKey, GetInvoker> _getInvokerCache;
+        private readonly ConcurrentDictionary<InvokerCacheKey, GetterInfo> _getInvokerCache;
         private readonly ConcurrentDictionary<InvokerCacheKey, SetInvoker> _setInvokerCache;
         private readonly ConcurrentDictionary<string, bool> _absentDefaultMemberCache;
         private readonly ConcurrentDictionary<Type, Func<object, IEnumerator>> _duckTypeEnumeratorBuilderCache;
@@ -43,7 +43,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
             _absentDefaultMemberOnComObjectCacheOptions = absentDefaultMemberOnComObjectCacheOptions;
             _culture = culture ?? throw new ArgumentNullException(nameof(culture));
-            _getInvokerCache = new ConcurrentDictionary<InvokerCacheKey, GetInvoker>();
+            _getInvokerCache = new ConcurrentDictionary<InvokerCacheKey, GetterInfo>();
             _setInvokerCache = new ConcurrentDictionary<InvokerCacheKey, SetInvoker>();
             _absentDefaultMemberCache = new ConcurrentDictionary<string, bool>();
             _duckTypeEnumeratorBuilderCache = new ConcurrentDictionary<Type, Func<object, IEnumerator>>();
@@ -1039,18 +1039,27 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new ArgumentNullException(nameof(arguments));
 
             InvokerCacheKey cacheKey = new InvokerCacheKey(target.GetType(), optionalName, arguments.Length, allowPrivateAccess, onlyConsiderMethods);
-            GetInvoker invoker;
+            GetterInfo invoker;
             if (!_getInvokerCache.TryGetValue(cacheKey, out invoker))
             {
                 invoker = GenerateGetInvoker(target, optionalName, arguments, allowPrivateAccess, onlyConsiderMethods);
                 _getInvokerCache.TryAdd(cacheKey, invoker);
             }
-            object resultValue = invoker(target, arguments);
+            object resultValue = invoker.DelegateFunc(target, arguments);
             return resultValue;
         }
 
-        private delegate object GetInvoker(object target, object[] arguments);
-        private GetInvoker GenerateGetInvoker(object target, string? optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        //private delegate object GetInvoker(object target, object[] arguments);
+        private sealed class GetterInfo
+        {
+            internal readonly Func<object, object[], object> DelegateFunc;
+
+            public GetterInfo(Func<object, object[], object> delegateFunc)
+            {
+                DelegateFunc = delegateFunc ?? throw new ArgumentNullException(nameof(delegateFunc));
+            }
+        }
+        private GetterInfo GenerateGetInvoker(object target, string? optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1067,7 +1076,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ParameterExpression arrayTargetParameter = Expression.Parameter(typeof(object), "target");
                 ParameterExpression indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
                 ParameterExpression arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
-                return Expression.Lambda<GetInvoker>(
+                var getterFunc = Expression.Lambda<Func<object, object[], object>>(
                     Expression.TryCatch(
                         Expression.Convert(
                             Expression.ArrayAccess(
@@ -1097,11 +1106,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                         indexesParameter
                     }
                 ).Compile();
+
+                return new GetterInfo(getterFunc);
             }
 
             if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
             {
-                return (invokeTarget, invokeArguments) =>
+                Func<object, object[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
                     // As above, don't try to wrap any errors here
                     int dispId;
@@ -1124,12 +1135,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                         invokeArguments.ToArray()
                     );
                 };
+                return new GetterInfo(getterFunc);
             }
 
             if (target is IReflect targetIReflect)
             {
                 MethodInfo? ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
-                return (invokeTarget, invokeArguments) =>
+                Func<object, object[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
                     // Note: An InvalidCastException will be raised if the arguments are not of appropriate types, so there's a temptation
                     // to wrap that up into a "Type mismatch" error. But it's possible that the member was called with correctly-typed
@@ -1149,6 +1161,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                         namedParameters: null
                     );
                 };
+
+                return new GetterInfo(getterFunc);
             }
 
             // TODO: There is a problem here with things like "source.Get(abc)" because it could be a call to a method "Get" on the source reference or it could be that "Get"
@@ -1217,7 +1231,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         //    return null;
         //}
 
-        private GetInvoker GenerateCompiledLinqExpressionGetInvoker(Type targetType, MethodInfo method, int numberOfArguments)
+        private GetterInfo GenerateCompiledLinqExpressionGetInvoker(Type targetType, MethodInfo method, int numberOfArguments)
         {
             if (targetType == null)
                 throw new ArgumentNullException(nameof(targetType));
@@ -1418,7 +1432,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 );
             }
             IEnumerable<ParameterExpression> variablesToDeclare = variablesToDeclareForHandlingOfArguments.Concat(new[] { resultVariable });
-            return Expression.Lambda<GetInvoker>(
+            var getterFunc = Expression.Lambda<Func<object, object[], object>>(
                 Expression.Block(
                     variablesToDeclare,
                     Expression.Block(
@@ -1428,6 +1442,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 targetParameter,
                 argumentsParameter
             ).Compile();
+            return new GetterInfo(getterFunc);
         }
 
         private delegate void SetInvoker(object target, object[] arguments, object value);
@@ -1559,11 +1574,11 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Rather than trying to do more LINQ ParsingExpression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
             // that the index-arguments-plus-value get flattened into a single arguments array
-            GetInvoker getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
+            GetterInfo getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
             return (invokeTarget, invokeArguments, value) =>
             {
                 object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
-                getInvoker(invokeTarget, combinedArguments);
+                getInvoker.DelegateFunc(invokeTarget, combinedArguments);
 
                 // Ensure that any ByRef-altered arguments are propagated back onto the callers arguments array (note that VBScript does not support
                 // the value reference being changed ByRef but it does support the index arguments - if any - being altered ByRef)

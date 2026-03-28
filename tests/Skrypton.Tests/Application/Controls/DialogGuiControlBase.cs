@@ -223,6 +223,21 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiCompoundControl : DialogGuiControlBase
     {
+        private CompoundControlViewMode viewMode;
+        public CompoundControlViewMode ViewMode
+        {
+            get { return viewMode; }
+            set
+            {
+                viewMode = value;
+            }
+        }
+    }
+
+    public enum CompoundControlViewMode
+    {
+        FormView,
+        TableView
     }
     public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
     {
