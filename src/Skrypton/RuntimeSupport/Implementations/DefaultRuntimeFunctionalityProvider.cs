@@ -2763,7 +2763,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object? CALL(object? context, object target, IReadOnlyCollection<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
-            return _valueRetriever.CALL(context, target, members, argumentProvider, line) ?? VBScriptConstants.Nothing;
+            return _valueRetriever.CALL(context, target, members, argumentProvider, line);// ?? VBScriptConstants.Nothing;
         }
         public void SET(object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, object? valueToSetTo)
         {

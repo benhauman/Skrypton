@@ -26,7 +26,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().CBOOL(value));
             }
 
-            [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+            [TestMethod, MyTheory, MyMemberData(nameof(InvalidUseOfNullData))]
             public void InvalidUseOfNullCases(string description, object value)
             {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -35,7 +35,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+            [TestMethod, MyTheory, MyMemberData(nameof(ObjectVariableNotSetData))]
             public void ObjectVariableNotSetCases(string description, object value)
             {
             myAssert.Throws<ObjectVariableNotSetException>(() =>

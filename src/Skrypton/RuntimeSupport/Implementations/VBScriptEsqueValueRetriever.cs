@@ -108,12 +108,16 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public object VAL(object? o, string? exceptionMessageForInvalidContent = null)
         {
+            return VALCore(o, exceptionMessageForInvalidContent, throwOnNothing: true);
+        }
+        internal object VALCore(object? o, string? exceptionMessageForInvalidContent, bool throwOnNothing)
+        {
             bool parameterLessDefaultMemberWasAvailable;
             if (TryVAL(o, out parameterLessDefaultMemberWasAvailable, out o))
                 return o!;
 
             if (IsVBScriptNothing(o))
-                return DBNull.Value;//lubo: throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent ?? "");
+                return !throwOnNothing ? DBNull.Value : throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent ?? ""); // lubo
             throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent ?? "Invalid argument.");
         }
 
@@ -256,6 +260,20 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         /// <summary>
         /// Reduce a reference down to a boolean value type, in the same ways that VBScript would attempt.
+        /// Behavior summary:
+        /// - Converts numeric 0 to False.
+        /// - Converts any non‑zero numeric value to True.
+        /// - Converts the string "True" to True (case-insensitive).
+        /// - Converts the string "False" to False (case-insensitive).
+        /// - Converts Empty to False.
+        /// - Throws 'Type mismatch' on:
+        ///   • Null
+        ///   • Nothing (objects that are not set)
+        ///   • Any Object reference
+        ///   • DBNull.Value (ADO)
+        /// Notes:
+        /// - In VBScript, Nothing is only valid for objects and cannot be cast.
+        /// - Null(vbNull) and DBNull.Value are different: both cause CBool() to fail.
         /// </summary>
         public bool BOOL(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
@@ -431,26 +449,26 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public DateTime DATE(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
-            o = VAL(o);
-            if (o == null)
+            var ov = VAL(o);
+            if (ov == null)
                 return VBScriptConstants.ZeroDate;
-            if (o == DBNull.Value)
+            if (ov == DBNull.Value)
                 throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent ?? "");
-            if (o is DateTime valDateTime)
+            if (ov is DateTime valDateTime)
                 return valDateTime;
 
             double? numericValue;
             try
             {
 
-                if (o is string valString && double.TryParse(valString, NumberStyles.Any, _culture, out double doubleValue))
+                if (ov is string valString && double.TryParse(valString, NumberStyles.Any, _culture, out double doubleValue))
                 {
                     numericValue = doubleValue;
                 }
                 else
                 {
                     //numericValue = null; // not a number, we'll try to parse as a date string below
-                    numericValue = Convert.ToDouble(o, _culture); //throws a FormatException => TryParse
+                    numericValue = Convert.ToDouble(ov, _culture); //throws a FormatException => TryParse
                 }
             }
             catch (FormatException)
@@ -461,7 +479,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 if (numericValue != null)
                     return DateParser.ForCulture(_culture).Parse(numericValue.Value);
-                return DateParser.ForCulture(_culture).Parse(o.ToString(), _culture);
+                return DateParser.ForCulture(_culture).Parse(ov.ToString(), _culture);
             }
             catch (OverflowException e)
             {
@@ -590,7 +608,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // return (o == DBNull.Value) ? "" : STR(o);
 
             if (o != null && o is DispatchWrapper dw)
-                //if (IsVBScriptNothing(o))
+            //if (IsVBScriptNothing(o))
             {
                 if (dw.WrappedObject == null)
                     return "";
