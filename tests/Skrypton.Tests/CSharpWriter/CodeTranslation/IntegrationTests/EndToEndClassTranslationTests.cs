@@ -471,7 +471,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 			List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
 			externalMemberMethods.Add(new ExternalMemberMethodInfo("hlmodel", "GetPersonForAgent"));
             //string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, source, testExternalDependencies, externalMemberMethods, []);
-			var expected = @"_outer.Person = _.OBJ(_.CALLm1v1(this, hlmodel, ""GetPersonForAgent"", (Int16)123));";
+			var expected = @"_outer.Person = _.OBJ(_.CALLm2v1(this, _env, ""hlmodel"", ""GetPersonForAgent"", (Int16)123));";
 			TestCSharpCodeTranslationWithoutScaffoldingX(expected, source, ["hlmodel"], externalMemberMethods, []); // SKY101
 			//Assert.Inconclusive();
         }

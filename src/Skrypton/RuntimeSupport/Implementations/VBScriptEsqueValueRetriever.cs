@@ -285,8 +285,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public object NullableNUM(object o)
         {
-            o = VAL(o);
-            return (o == DBNull.Value) ? DBNull.Value : NUM(o);
+            var ov = VAL(o);
+            return (ov == DBNull.Value) ? DBNull.Value : NUM(ov);
         }
 
         /// <summary>
@@ -305,21 +305,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object NUM(object? o, params object[] numericValuesTheTypeMustBeAbleToContain)
         {
             // Before we try anything, we need to call VAL to ensure we don't have something VBScript wouldn't consider a "value type"
-            o = VAL(o);
+            object? oval = VAL(o);
 
             // Now, check whether it's a DateTime. If so, then don't try any harder to extract a value from it - VBScript considers DateTime
             // to be a numeric type.
             object valueToConvert;
-            if (o is DateTime)
+            if (oval is DateTime)
             {
-                valueToConvert = o;
+                valueToConvert = oval;
             }
             else
             {
                 // Next, try to force it into one of the VBScript-acceptable number types - if it fails then it's a type mismatch
                 try
                 {
-                    valueToConvert = GetAsVBScriptNumber(o);
+                    valueToConvert = GetAsVBScriptNumber(oval);
                 }
                 catch (SpecificVBScriptException)
                 {
@@ -327,7 +327,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 catch (Exception e)
                 {
-                    throw new TypeMismatchException($"o:{o}", e);
+                    throw new TypeMismatchException($"o:{oval}", e);
                 }
             }
 
@@ -419,8 +419,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public object NullableDATE(object o)
         {
-            o = VAL(o);
-            return (o == DBNull.Value) ? DBNull.Value : (object)DATE(o);
+            var ov = VAL(o);
+            return (ov == DBNull.Value) ? DBNull.Value : (object)DATE(ov);
         }
 
         /// <summary>
@@ -478,7 +478,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// one of those set. This will ensure that a value is returned as a number that is one of those types (or an exception will be raised, it will
         /// never return null).
         /// </summary>
-        private object GetAsVBScriptNumber(object value)
+        private object GetAsVBScriptNumber(object? value)
         {
             // Handle the cases of null, DBNull.Value, empty string, booleans, Dates, etc.. (some of these will error, the function will return null if it
             // can't help)
@@ -794,8 +794,8 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // The BOOL function will not accept VBScript Null since it can't strictly be translated into a boolean, in the context of an IF
             // condition it can be taken to mean false, though
-            object value = VAL(o);
-            if (value == DBNull.Value)
+            object? value = VAL(o);
+            if (value == null || value == DBNull.Value)
                 return false;
             return BOOL(value);
         }

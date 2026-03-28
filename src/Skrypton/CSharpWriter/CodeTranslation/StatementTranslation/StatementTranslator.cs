@@ -803,8 +803,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 else if (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.ExternalDependency && targetReferenceDetails.ScopeLocation == ScopeLocationOptions.ExternalObjectScope)
                 {
                     // 'ExternalFuncX'
-                    memberAccessors = new[] { target }.Concat(memberAccessors).ToArray();
-                    target = new ProcessedNameToken(targetReferenceDetails.OwnerName!.ToUpperX(), target.LineIndex);
+                    NameToken ownerTkn = new NameToken(targetReferenceDetails.OwnerName!, 1);
+                    //DeclaredReferenceDetails? ownerDetails = scopeAccessInformation.TryToGetDeclaredReferenceDetails(new NameToken(targetReferenceDetails.OwnerName!, 1), _nameRewriter);
+                    //if (ownerDetails == null)
+                    //{
+                    //    throw new InvalidOperationException($"Owner '{target}' of method '{targetReferenceDetails.OwnerName}' could not be found.");
+                    //}
+
+                    memberAccessors = new NameToken[] { ownerTkn, target }.Concat(memberAccessors).ToArray();
+                    target = new ProcessedNameToken(_envRefName.Name.ToUpperX(), target.LineIndex);
                 }
             }
 

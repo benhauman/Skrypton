@@ -2763,7 +2763,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object? CALL(object? context, object target, IReadOnlyCollection<string> members, IProvideCallArguments argumentProvider, [CallerLineNumber] int line = 0)
         {
-            return _valueRetriever.CALL(context, target, members, argumentProvider, line);
+            return _valueRetriever.CALL(context, target, members, argumentProvider, line) ?? VBScriptConstants.Nothing;
         }
         public void SET(object? context, object target, string? optionalMemberAccessor, IProvideCallArguments argumentProvider, object? valueToSetTo)
         {
@@ -2805,7 +2805,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             return _valueRetriever.DATE(o);
         }
-        public object NullableSTR(object o) => _valueRetriever.NullableSTR(o);
+        public object NullableSTR(object o) => _valueRetriever.TryRetrieveStringOrEmpty(o);
         public string TryRetrieveStringOrEmpty(object? o) => _valueRetriever.TryRetrieveStringOrEmpty(o);
 
         public string STR(object? o, string? optionalExceptionMessageForInvalidContent = null)
