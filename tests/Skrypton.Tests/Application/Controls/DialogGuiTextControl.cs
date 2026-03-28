@@ -6,11 +6,8 @@ namespace Skrypton.Tests.Application.Controls
     internal sealed class DialogGuiTextControl : DialogGuiControlBase // <ControlName>HelpLineTextBox</ControlName>
     {
         private string _valueText;
-        public string Text
-        {
-            get => RetrieveValueForText();
-            set => UpdateValueForText(value);
-        }
+        public string Text { get => RetrieveValueForText(); set => UpdateValueForText(value); }
+        public string ToolTip { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
 
         private void UpdateValueForText(string value)
         {

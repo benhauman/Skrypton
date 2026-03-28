@@ -113,7 +113,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return o!;
 
             if (IsVBScriptNothing(o))
-                throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent ?? "");
+                return DBNull.Value;//lubo: throw new ObjectVariableNotSetException(exceptionMessageForInvalidContent ?? "");
             throw new ObjectDoesNotSupportPropertyOrMemberException(exceptionMessageForInvalidContent ?? "Invalid argument.");
         }
 
@@ -586,8 +586,21 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public string TryRetrieveStringOrEmpty(object? o) // see 'NullableSTR'
         {
-            o = VAL(o);
-            return (o == DBNull.Value) ? "" : STR(o);
+            // o = VAL(o);
+            // return (o == DBNull.Value) ? "" : STR(o);
+
+            if (o != null && o is DispatchWrapper dw)
+                //if (IsVBScriptNothing(o))
+            {
+                if (dw.WrappedObject == null)
+                    return "";
+                return STR(dw.WrappedObject);
+            }
+            else if (TryVAL(o, out bool _, out object? ov) && ov != null && ov != DBNull.Value)
+            {
+                return STR(ov);
+            }
+            return "";
         }
 
         /// <summary>
@@ -856,13 +869,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             // the translation process. VBScript considers arrays to be value types (ie. when returning an array from a function, you don't have
             // to call SET), so we need to exclude that case since clearly arguments CAN be used with arrays.
             bool isArray = (target != null) && target.GetType().IsArray;
-            if (!isArray && IsVBScriptValueType(target))
+            if (!isArray && (IsVBScriptValueType(target)) || (IsVBScriptNothing(target)))
             {
                 string targetDescription;
                 if (target == null)
                     targetDescription = "[undefined]"; // This is what VBScript shows for "Empty.ToString()"
                 else if (target == DBNull.Value)
                     targetDescription = "Null";
+                else if (target is DispatchWrapper)
+                    targetDescription = "[nothing]";
                 else
                     targetDescription = STR(target);
                 if (memberAccessorsArray.Length != 0)

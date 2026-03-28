@@ -13,12 +13,12 @@ namespace Skrypton.Tests.Application.Controls
     {
         protected DialogGuiControlBase()
         {
-
         }
         internal void InitializeControl(DialogGuidModel dialogModel, string id)
         {
             ID = id ?? throw new ArgumentNullException(nameof(id));
             _model = dialogModel ?? throw new ArgumentNullException(nameof(dialogModel));
+            _currentSUID = 0;
         }
         private DialogGuidModel _model;
         internal DialogGuidModel model => _model ?? throw new InvalidOperationException("model not set");
@@ -42,6 +42,7 @@ namespace Skrypton.Tests.Application.Controls
         public bool RequestFocus { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
         public bool Required { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
 
+        public string Font { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
 
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
 
@@ -109,35 +110,11 @@ namespace Skrypton.Tests.Application.Controls
                 ;
 
         }
-        //protected virtual void SetPropertyValue(string propertyName, object propertyValue)
-
-        //protected virtual void SetPropertyValue(string propertyName, object propertyValue)
-        //{
-        //    if (propertyName == "ID")
-        //    {
-        //        string valueID = (string)propertyValue;
-        //        if (valueID != ID)
-        //            throw new InvalidOperationException($"Invalid property value. Expected:{ID}, actual{valueID}");
-        //    }
-        //    else
-        //    {
-        //        //if (ShouldIgnoreValueForProperty(propertyName))
-        //        //{
-        //        //    // put a breakpoint here
-        //        //}
-        //        //else
-        //        var pi = GetType().GetProperty(propertyName);
-        //        pi.SetValue(this, propertyValue);
-        //        //{
-        //        //    throw new InvalidOperationException($"[{GetType().Name}] Unknown control property name:{propertyName}:{propertyValue}");
-        //        //}
-        //        //WritePropertyValue(propertyName, propertyValue);
-        //    }
-        //}
-        //protected void WritePropertyValue(string propertyName, object propertyValue)
-        //{
-        //    _properties.Add(propertyName, propertyValue);
-        //}
+        private int _currentSUID;
+        public int GetCurrentSUID()
+        {
+            return _currentSUID;
+        }
     }
     public enum ShowControlType
     {
@@ -183,6 +160,17 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiNumericTextBoxControl : DialogGuiControlBase
     {
+        public string Text { get => RetrieveValueForText(); set => UpdateValueForText(value); }
+        private string _valueText;
+        private void UpdateValueForText(string value)
+        {
+            _valueText = value;
+        }
+
+        private string RetrieveValueForText()
+        {
+            return _valueText;
+        }
     }
 
     public sealed class DialogGuiTimeCallControl : DialogGuiControlBase
@@ -234,6 +222,8 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiComboBoxControl : DialogGuiControlBase
     {
+        public string ToolTip { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+
         public void SelectItem(string value, bool mustEqual = true)
         {
             Console.WriteLine($"[ComboBox]({ID}).SelectItem({value})");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -1164,6 +1165,44 @@ WScript.Echo xmlhttp.responseText
         {
             Console.WriteLine($"[DIALOGMODEL] GetPersonForAgent(agentId:{agentId})");
             return null;
+        }
+
+        public bool AllowAddNewSu { get; set; } = true;
+
+
+        public void EnableTimer(int suId, bool enable)
+        {
+            Console.WriteLine($"[DIALOGMODEL] EnableTimer(suId:{suId}, enable:{enable})");
+        }
+        //[ReadOnly(true)]
+        public int SaveReason
+        {
+            get
+            {
+                Console.WriteLine($"[DIALOGMODEL] SaveReason.get");
+                return 0;// 0:Default,0x00000010:Associate
+            }
+        }
+        private CurrentCommandHelper currentCommand = new CurrentCommandHelper();
+        [Category("helpLine")]
+        public CurrentCommandHelper CurrentCommand
+        {
+            get
+            {
+                Console.WriteLine($"[DIALOGMODEL] CurrentCommand.get");
+                return currentCommand;
+            }
+        }
+    }
+
+    [ComVisible(true)]
+    public sealed class CurrentCommandHelper
+    {
+        public bool Aborted = false;
+        public void Abort(string text)
+        {
+            Console.WriteLine($"[CurrentCommand] Abort(text:'{text}')");
+            Aborted = true;
         }
     }
 
