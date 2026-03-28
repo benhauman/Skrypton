@@ -284,23 +284,25 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool BOOL(object? o, string? optionalExceptionMessageForInvalidContent = null)
         {
-            o = VAL(o, optionalExceptionMessageForInvalidContent);
-            if (o == null)
+            var ov = VAL(o, optionalExceptionMessageForInvalidContent);
+            if (ov == null)
                 return false;
-            if (o == DBNull.Value)
+            if (ov == DBNull.Value)
                 throw new InvalidUseOfNullException(optionalExceptionMessageForInvalidContent ?? "");
-            if (o is bool)
-                return (bool)o;
-            if (o is DateTime)
-                return ((DateTime)o) != VBScriptConstants.ZeroDate;
-            string? valueString = o.ToString();
+            if (ov is bool)
+                return (bool)ov;
+            if (ov is DateTime)
+                return ((DateTime)ov) != VBScriptConstants.ZeroDate;
+            string? valueString = ov.ToString();
+            if (valueString.Length == 0)
+                return false; // VBScript converts an empty string ("") to a number before converting it to Boolean. "" → numeric 0 => false
             if (valueString.Equals("true", StringComparison.OrdinalIgnoreCase))
                 return true;
             if (valueString.Equals("false", StringComparison.OrdinalIgnoreCase))
                 return false;
             double valueNumber;
             if (!double.TryParse(valueString, out valueNumber))
-                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent ?? "");
+                throw new TypeMismatchException((optionalExceptionMessageForInvalidContent ?? "") + $" v:{ov}");
             return valueNumber != 0;
         }
 

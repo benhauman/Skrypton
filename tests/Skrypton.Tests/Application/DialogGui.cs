@@ -29,7 +29,7 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void QUX_HLData_Contact_Dialog_2_ButtonShowWebsite_Click()// => TestDialogGui();
         {
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
             var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxWebsite")
                 .BuildDialog();
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void CT35_LogChecklist_Dialog_388_OnSave() // 35:DFSnDLNeu  id = select id, dbname from _databasestats order by dbname asc -- [hlsysdialog]
         {
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
             var dialog = new DialogBuilder(CreateTestHostServices(), model)
                 .AddTextControl("TextBoxChecklist1URL")
                 .AddTextControl("TextBoxChecklist2URL")
@@ -290,7 +290,7 @@ WScript.Echo xmlhttp.responseText
             var hlobj = new HLObjectInstance()
                     .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
                 ;
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
 
             var dialog = new DialogBuilder(CreateTestHostServices(), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                     .AddTabControl("TabPageGeneralInfo")
@@ -624,7 +624,7 @@ WScript.Echo xmlhttp.responseText
             var hlobj = new HLObjectInstance()
                     .RegisterValueKey<string>("vRealize.LansweeperURL", 0, 0, "hst-X_1")
                 ;
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
 
             IHostProcessControlHostService processControlHostService = CreateTestProcessControlHostService();
 
@@ -658,7 +658,7 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
                     .RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
                 ;
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
 
             IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
 
@@ -718,7 +718,7 @@ WScript.Echo xmlhttp.responseText
             // Trumpf, 83, 83, cb_template_load_onfocus : rs.eof + rs.MoveFirst + rs.MoveNext + rs.fields("templatename").value
             // Trumpf, 78, FlagNoLicenseEndDate_ondatachange : rs.fields(0).value
             _ = nameof(DialogGuiControlBase.ControlFactoryCreateDialogControl);
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
             var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
@@ -868,7 +868,7 @@ WScript.Echo xmlhttp.responseText
             string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
             string customerDialogGlobalScript = TextResourceHelper.LoadResourceText<CncIn>($"Skrypton.Tests.VbsResources.{customerAlias}_DialogGlobalScript.vbs"); // see [hlsysdialogglobalscript]
 
-            var model = new DialogGuidModel();
+            var model = new DialogGuidModel(TestCulture);
             var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
@@ -1108,10 +1108,12 @@ WScript.Echo xmlhttp.responseText
     [ComVisible(true)]
     public sealed class DialogGuidModel
     {
+        private readonly CultureInfo _culture;
         public bool IsInWeb { get; private set; }
 
-        public DialogGuidModel(bool isInWeb = false)
+        public DialogGuidModel(CultureInfo culture, bool isInWeb = false)
         {
+            _culture = culture;
             IsInWeb = isInWeb;
         }
         public void ChangeIsInWeb(bool isInWeb)
@@ -1227,6 +1229,12 @@ WScript.Echo xmlhttp.responseText
         public void SetFocusToControl(string attributeKey)
         {
             Console.WriteLine($"[DIALOGMODEL] SetFocusToControl(attributeKey:{attributeKey})");
+        }
+
+        public string Translate(string key)
+        {
+            Console.WriteLine($"[DIALOGMODEL] Translate(key:'{key}')");
+            return $"({_culture.Name}):key";
         }
     }
 
