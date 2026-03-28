@@ -118,6 +118,21 @@ namespace Skrypton.Tests.Application.Controls
         {
             return _currentSUID;
         }
+
+        internal void AddEventScript(string eventName, string scriptName)
+        {
+            _eventScripts.Add(eventName, scriptName);
+        }
+
+        private readonly Dictionary<string, string> _eventScripts = new Dictionary<string, string>();
+
+        public void CollectControlEventScriptNames(Action<DialogGuiControlBase, string, string> collector)
+        {
+            foreach (var kvp in _eventScripts)
+            {
+                collector(this, kvp.Key, kvp.Value);
+            }
+        }
     }
     public enum ShowControlType
     {

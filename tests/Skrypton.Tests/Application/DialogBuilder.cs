@@ -12,6 +12,7 @@ namespace Skrypton.Tests.Application
     {
         private readonly IServiceProvider _hostServices;
         private readonly Dictionary<string, DialogExternalReferenceInfo> _externalReferences = new Dictionary<string, DialogExternalReferenceInfo>();
+        private readonly Dictionary<string, DialogGuiControlBase> _controls = new Dictionary<string, DialogGuiControlBase>();
         private readonly DialogGuidModel _dialogModel;
 
 
@@ -41,23 +42,24 @@ namespace Skrypton.Tests.Application
             StringBuilder dialogHandlerScriptCodeBuilder = new StringBuilder();
             if (gui)
             {
-                foreach (KeyValuePair<string, string> script in GuiScripts)
+                foreach (KeyValuePair<string, ScriptInfo> script in GuiScripts)
                 {
                     scriptNames.Add(script.Key);
+                    ScriptInfo scriptInfo = script.Value;
 
                     dialogHandlerScriptCodeBuilder.Append($"SUB {script.Key}()");
-                    if (script.Value.Length > 0)
+                    if (scriptInfo.Code.Length > 0)
                     {
-                        if (script.Value[0] != '\n')
+                        if (scriptInfo.Code[0] != '\n')
                             dialogHandlerScriptCodeBuilder.AppendLine();
 
-                        foreach (string line in script.Value.SplitLines())
+                        foreach (string line in scriptInfo.Code.SplitLines())
                         {
-                            //dialogHandlerScriptCodeBuilder.Append(script.Value);
+                            //dialogHandlerScriptCodeBuilder.Append(scriptInfo.Code);
                             dialogHandlerScriptCodeBuilder.Append('\t').AppendLine(line);
                         }
 
-                        if (script.Value[script.Value.Length - 1] != '\n')
+                        if (scriptInfo.Code[scriptInfo.Code.Length - 1] != '\n')
                             dialogHandlerScriptCodeBuilder.AppendLine();
                     }
                     else
@@ -68,7 +70,7 @@ namespace Skrypton.Tests.Application
                 }
             }
 
-            return new DialogBase(_hostServices, _globalScriptCode, dialogHandlerScriptCodeBuilder.ToString(), _externalReferences, scriptNames);
+            return new DialogBase(_hostServices, _globalScriptCode, dialogHandlerScriptCodeBuilder.ToString(), _externalReferences, scriptNames, _controls);
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
@@ -78,6 +80,7 @@ namespace Skrypton.Tests.Application
                 throw new InvalidOperationException($"controlId:{controlId}");
             }
             _externalReferences.Add(c.ID, new DialogExternalReferenceInfo(c, []));
+            _controls.Add(c.ID, c);
             return this;
         }
         public DialogBuilder AddTabControl(string controlId)
@@ -85,6 +88,10 @@ namespace Skrypton.Tests.Application
             return AddControlCore(controlId, new DialogGuiTabPage() { });
         }
 
+        public DialogBuilder AddComboBoxControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiComboBoxControl() { });
+        }
         public DialogBuilder AddTextControl(string controlId)
         {
             return AddControlCore(controlId, new DialogGuiTextControl() { });
@@ -120,18 +127,32 @@ namespace Skrypton.Tests.Application
 
         public void AddScriptCode(string scriptName, string scriptCode)
         {
-            GuiScripts.Add(scriptName, scriptCode);
+            GuiScripts.Add(scriptName, new ScriptInfo(scriptCode));
         }
         public string GetScriptCode(string scriptName)
         {
-            return GuiScripts[scriptName];
+            return GuiScripts[scriptName].Code;
         }
         public void FixScriptCode(string scriptName, string newCode)
         {
-            GuiScripts[scriptName] = newCode;
+            GuiScripts[scriptName] = new ScriptInfo(newCode);
         }
 
-        private readonly Dictionary<string, string> GuiScripts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ScriptInfo> GuiScripts = new Dictionary<string, ScriptInfo>(StringComparer.OrdinalIgnoreCase);
+
+        private sealed class ScriptInfo
+        {
+            public string Code { get; set; }
+            public ScriptInfo(string code)
+            {
+                Code = code ?? throw new ArgumentNullException(nameof(code));
+            }
+            private readonly Dictionary<string, string> _usedBy = new Dictionary<string, string>();
+            public void AddControlEvent(string controlName, string eventName)
+            {
+                _usedBy.Add(controlName, eventName);
+            }
+        }
     }
 
     public sealed class DialogGuiRoot : DialogGuiControlBase
@@ -155,6 +176,7 @@ namespace Skrypton.Tests.Application
 
     public sealed class DialogBase
     {
+        private readonly IReadOnlyDictionary<string, DialogGuiControlBase> _controls;
         public IReadOnlyDictionary<string, DialogExternalReferenceInfo> ExternalReferences { get; }
         public IServiceProvider HostServices { get; }
         public string DialogHandlerScriptCode { get; }
@@ -162,8 +184,9 @@ namespace Skrypton.Tests.Application
 
         public IReadOnlyCollection<string> ScriptNames { get; }
 
-        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode,  string dialogHandlerScriptCode, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalReferences, IReadOnlyCollection<string> scriptNames)
+        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode, string dialogHandlerScriptCode, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalReferences, IReadOnlyCollection<string> scriptNames, IReadOnlyDictionary<string, DialogGuiControlBase> controls)
         {
+            _controls = controls ?? throw new ArgumentNullException(nameof(controls));
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
             DialogGlobalScriptCode = dialogGlobalScriptCode ?? throw new ArgumentNullException(nameof(dialogGlobalScriptCode));
             DialogHandlerScriptCode = dialogHandlerScriptCode ?? throw new ArgumentNullException(nameof(dialogHandlerScriptCode));
@@ -176,6 +199,14 @@ namespace Skrypton.Tests.Application
             if (string.IsNullOrEmpty(DialogGlobalScriptCode))
                 return DialogHandlerScriptCode;
             return new StringBuilder().AppendLine(DialogGlobalScriptCode).AppendLine(DialogHandlerScriptCode).ToString();
+        }
+
+        public void CollectControlEventScriptNames(Action<DialogGuiControlBase, string, string> collector)
+        {
+            foreach (var c in _controls.Values)
+            {
+                c.CollectControlEventScriptNames(collector);
+            }
         }
     }
 

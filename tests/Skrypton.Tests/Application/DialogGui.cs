@@ -816,10 +816,10 @@ WScript.Echo xmlhttp.responseText
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false, suppressions: ["SKY102", "SKY104", "SKY105", "SKY106", "SKY107", "SKY109"]);
             //}
 
-            TestDialogHandlers(this, rsp, dialog);
+            TestDialogHandlers(this, rsp, dialog, skipUnusedScript: (s) => null);
         }
 
-        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog)
+        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript)
         {
             //string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
             //if (translated_cs == null)
@@ -841,6 +841,11 @@ WScript.Echo xmlhttp.responseText
                     }
                 }
 
+                Dictionary<string, string> allControlEventScriptNames = new Dictionary<string, string>();
+                dialog.CollectControlEventScriptNames((DialogGuiControlBase controlX, string eventNameX, string scriptNameX) =>
+                {
+                    allControlEventScriptNames.Add(scriptNameX, $"{controlX.ID}.{eventNameX}");
+                });
                 // 1: IncReqOnLoad
                 string[] scriptNames = dialog.ScriptNames.OrderBy(x => x).ToArray();
 
@@ -851,7 +856,33 @@ WScript.Echo xmlhttp.responseText
                     foreach (string scriptName in scriptNames)
                     {
 
-                        Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] Invoke :{scriptName}");
+                        if (allControlEventScriptNames.TryGetValue(scriptName, out string usedBy))
+                        {
+
+                        }
+                        else
+                        {
+                            // unused script
+                            bool? skip = skipUnusedScript(scriptName);
+                            if (skip == null)
+                            {
+                                throw new InvalidOperationException($"********** Unused script:{scriptName} *********** ");
+                            }
+                            else
+                            {
+                                if (skip.Value)
+                                {
+                                    Console.WriteLine($"********** Unused script:{scriptName} (SKIP)*********** ");
+                                    continue;
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"********** Unused script:{scriptName} *********** ");
+                                }
+                            }
+                        }
+
+                        Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] {usedBy} Invoke:{scriptName}");
                         //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
                         ScriptControlClass.RunProcedure(gr, scriptName, []);
 
@@ -992,6 +1023,23 @@ WScript.Echo xmlhttp.responseText
                     if (setter == null)
                     {
                         //Console.WriteLine($"IGNORE: {ControlTypeName} | {controlPropertyName} = ...");
+                        var xName = xControlProperty.Elements().Single(x => x.Name.LocalName == "Name");
+                        var xValue = xControlProperty.Elements().Single(x => x.Name.LocalName == "Value");
+                        string valueTypeName = xValue.Attributes().Single(x => x.Name.LocalName == "type").Value;
+
+                        if (valueTypeName == "HelpLineScript")
+                        {
+                            // <name>ButtonSubmit_Click</name>
+                            string scriptName = xValue.Elements().Single(x => x.Name.LocalName == "name").Value;
+                            if (!string.IsNullOrEmpty(scriptName))
+                            {
+                                controlBase.AddEventScript(xName.Value, scriptName);
+                            }
+                        }
+                        else
+                        {
+                            //throw new NotImplementedException($"IGNORE: {ControlTypeName} | {controlPropertyName} = ({valueTypeName})");
+                        }
                     }
                     else
                     {
