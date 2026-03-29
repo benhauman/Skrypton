@@ -20,12 +20,14 @@ namespace Skrypton.Tests.Application
         {
             _traceName = string.IsNullOrEmpty(traceName) ? traceName : $"|{traceName}|";
         }
+        private CultureInfo _culture;
         private int? _objectId;
         private int? _objectDefId;
         private string _objectDefName;
-        public HLObjectInstance InitializeObjectInstance(bool isNew, int? objectId = null, int? objectDefId = null, string objectDefName = null)
+        public HLObjectInstance InitializeObjectInstance(bool isNew, CultureInfo culture, int? objectId = null, int? objectDefId = null, string objectDefName = null)
         {
             IsNew = isNew ? 1 : 0;
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             _objectId = objectId;
             _objectDefId = objectDefId;
             _objectDefName = objectDefName;
@@ -194,6 +196,16 @@ namespace Skrypton.Tests.Application
             if (ov.DataType == typeof(bool))
             {
                 return ov.DataRaw == null ? "" : ((bool)ov.DataRaw) ? "1" : "0"; // see 'BitFormatter'
+            }
+            if (ov.DataType == typeof(DateTime))
+            {
+                if (ov.DataRaw == null)
+                    return "";
+                // see 'DateTimeFormatter'
+                var dt = (DateTime)ov.DataRaw;
+                if (langid == 0)
+                    return dt.ToString("yyyy-MM-dd HH:mm:ss");
+                return dt.ToString(_culture!);
             }
             throw new NotImplementedException($"[{vk.DebugText}]({ov.DataType.Name}):{ov.DataRaw}");
         }

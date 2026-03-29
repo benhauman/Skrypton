@@ -651,7 +651,7 @@ WScript.Echo xmlhttp.responseText
         [TestMethod]
         public void CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click() // select * from hlsysdialog where dbname = '_CustomerTest_Mainova' and dialogid = 2; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Mainova';
         {
-            var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true)
+            var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true, TestCulture)
                     .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
                     .RegisterValueKey<string>("PersonGeneral.Name", 0, 0, "Kuku-Muku")
@@ -721,7 +721,7 @@ WScript.Echo xmlhttp.responseText
             var model = new DialogGuidModel(TestCulture);
             var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
-            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
+            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true, TestCulture)
                     .RegisterValueKey<string>("CASEINFO.REFERENCENUMBER", 0, 0, "20260101-0001")
                     .RegisterValueKey<int>("CASEINFO.RESERVEDBY", 0, 0, 0)
                     .RegisterValueKey<string>("CaseClassificationAttribute.Impact", 0, 0, "")
@@ -764,7 +764,7 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<int>("SUINFO.INDEX", 0, 2, 2)
                     .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
-            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, objectId: 101301, objectDefName: "MyPersonDef")
+            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, culture: TestCulture, objectId: 101301, objectDefName: "MyPersonDef")
                     .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
                     .RegisterValueKey<string>("PersonInformation.EmailAddress", 0, 0, "zz2@svr.com")
                     .RegisterValueKey<string>("PersonGeneral.PersonSurname", 0, 0, "psn1")
@@ -772,11 +772,11 @@ WScript.Echo xmlhttp.responseText
                     .RegisterValueKey<string>("PersonInformation.PersonOrganisation", 0, 0, "pou1")
                     .RegisterValueKey<string>("PersonInformation.PhoneNumber", 0, 0, "ptel1")
                 ;
-            var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false, objectId: null, objectDefName: "DesktopComputer")
+            var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false, culture: TestCulture, objectId: null, objectDefName: "DesktopComputer")
                     .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
                 ;
 
-            var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false)
+            var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false, culture: TestCulture)
                     .RegisterValueKey<string>("AssetGeneral.AssetName", 0, 0, "MyAN1")
                     .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
                     .RegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
@@ -791,7 +791,7 @@ WScript.Echo xmlhttp.responseText
             var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>
             {
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
-                        .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA())
+                        .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA(TestCulture))
                     );
 
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
@@ -902,9 +902,9 @@ WScript.Echo xmlhttp.responseText
             var model = new DialogGuidModel(TestCulture);
             var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
-            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true)
+            var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true, culture: TestCulture)
                 ;
-            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, objectId: 101301, objectDefName: "MyPersonDef")
+            var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, culture: TestCulture, objectId: 101301, objectDefName: "MyPersonDef")
                 ;
 
             var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>

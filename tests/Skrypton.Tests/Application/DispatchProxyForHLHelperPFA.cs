@@ -2,14 +2,17 @@
 using Skrypton.Tests.RuntimeSupport.Implementations;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Skrypton.Tests.Application;
 
 internal sealed class DispatchProxyForHLHelperPFA : IReflectOnClrType
 {
-    public DispatchProxyForHLHelperPFA() // VBScript: CreateObject("helpline.hlcontrols.HLHelperPFA")
-    {
+    private readonly CultureInfo _culture;
 
+    public DispatchProxyForHLHelperPFA(CultureInfo culture) // VBScript: CreateObject("helpline.hlcontrols.HLHelperPFA")
+    {
+        _culture = culture ?? throw new ArgumentNullException(nameof(culture));
     }
 
     public object GetPersonForAgent(object modelContext, int agentId)
@@ -17,7 +20,7 @@ internal sealed class DispatchProxyForHLHelperPFA : IReflectOnClrType
         Console.WriteLine($"[HLHelperPFA].GetPersonForAgent(agentId:{agentId})");
         if (agentId == 710)
         {
-            return new HLObjectInstance().InitializeObjectInstance(isNew: false)
+            return new HLObjectInstance().InitializeObjectInstance(isNew: false, _culture)
                 .RegisterValueKey<string>("PersonGeneralTrumpf.Responsibility", 0, 0, "ResponsibilityBSZDitzingen")
                 ;
             //return new AgentPerson(agentId);
