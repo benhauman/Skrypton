@@ -76,6 +76,8 @@ namespace Skrypton.Tests.Application
             }
             if (datatype == 0)
                 return "";
+            if (datatype == 1)
+                return 1234567;// why not
             throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
         }
         public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)

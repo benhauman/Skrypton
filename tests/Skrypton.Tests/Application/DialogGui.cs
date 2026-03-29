@@ -844,7 +844,14 @@ WScript.Echo xmlhttp.responseText
                 Dictionary<string, string> allControlEventScriptNames = new Dictionary<string, string>();
                 dialog.CollectControlEventScriptNames((DialogGuiControlBase controlX, string eventNameX, string scriptNameX) =>
                 {
-                    allControlEventScriptNames.Add(scriptNameX, $"{controlX.ID}.{eventNameX}");
+                    if (allControlEventScriptNames.ContainsKey(scriptNameX))
+                    {
+                        // scriptNameX:"PriorityMatrix", "ComboBoxImpact.OnDataChange", "ComboBoxUrgency.OnDataChange"
+                    }
+                    else
+                    {
+                        allControlEventScriptNames.Add(scriptNameX, $"{controlX.ID}.{eventNameX}");
+                    }
                 });
                 // 1: IncReqOnLoad
                 string[] scriptNames = dialog.ScriptNames.OrderBy(x => x).ToArray();
