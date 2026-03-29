@@ -1086,9 +1086,9 @@ WScript.Echo xmlhttp.responseText
                      <AttributeKeyName>RoutingHelper.AgentName</AttributeKeyName>
                    </Value>
                  */
-                var xSearchCondition = xValue.Elements().First(x => x.Name.LocalName == "SearchCondition");
+                var xSearchCondition = xValue.Elements().FirstOrDefault(x => x.Name.LocalName == "SearchCondition");
                 var xAttributeKeyName = xValue.Elements().First(x => x.Name.LocalName == "AttributeKeyName");
-                return new ComboBoxHelplineSearch(attributeKeyName: xAttributeKeyName.Value, searchCondition: xSearchCondition.Value);
+                return new ComboBoxHelplineSearch(attributeKeyName: xAttributeKeyName.Value, searchCondition: xSearchCondition?.Value);
             }
 
             return new ComboBoxHelplineSearch();
@@ -1317,6 +1317,11 @@ WScript.Echo xmlhttp.responseText
                     _currentSUIndex = value;
                 }
             }
+        }
+
+        public void SetCustomerInCase(string symbol, object helpLineObject)
+        {
+            Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{(HLObjectInstance)helpLineObject}')");
         }
     }
 

@@ -92,7 +92,14 @@ namespace Skrypton.Tests.Application
         }
         public int GetItemCount(int flags, object assocdef)//(0, 130)' not found
         {
+            Console.WriteLine($"{_traceName}GetItemCount(flags:{flags}, assocdef:{assocdef})");
             return 0;
+        }
+        public object[] GetItems(int flags, int nfirst, int nlast, object assocdef)
+        {
+            Console.WriteLine($"{_traceName}GetItems(flags:{flags}, nfirst:{nfirst}, nlast:{nlast}, assocdef:{assocdef})");
+            object[] hlObjects = [];
+            return hlObjects;
         }
         public void RemoveItem(int flags, object val, object assocdef)
         {
@@ -148,6 +155,11 @@ namespace Skrypton.Tests.Application
         public int GetSvcUnitCount()
         {
             return _sus.Count;
+        }
+        public int[] GetContentIDs(object key, int suidx)
+        {
+            Console.WriteLine($"{_traceName}GetContentIDs(key:{key}, suidx:{suidx}')");
+            return [];
         }
 
         public void AddItem(int flags, object val, object assocdef)
