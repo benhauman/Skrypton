@@ -1045,6 +1045,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 invoker = GenerateGetInvoker(target, optionalName, arguments, allowPrivateAccess, onlyConsiderMethods);
                 _getInvokerCache.TryAdd(cacheKey, invoker);
             }
+            if (arguments.Any(x => x is DispatchWrapper))
+            {
+                arguments = arguments.Select(x => x is DispatchWrapper dw ? dw.WrappedObject : x).ToArray();
+            }
             object resultValue = invoker.DelegateFunc(target, arguments);
             return resultValue;
         }
