@@ -431,10 +431,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "}"
             };
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -451,20 +447,31 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F1() = Null
 				END FUNCTION
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "    object F1_retVal = null;",
-                "    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")));",
-                "    return F1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            var expected = @"
+                public object F1()
+                {
+                    object F1_retVal = null;
+                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(""'F1'"")));
+                    return F1_retVal;
+                }";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+        }
+
+        [TestMethod]
+        public void XIfSameLineZ()
+        {
+            string source = @"If hlObj.GetValue(""ServiceRequestRecordSpecific.TargetDateScheduled"",0,0,0,0) = 1 Then ComboBoxPriority.Disabled = ""true"" Else ComboBoxPriority.Disabled = ""false"" End If";
+            string expected = @"
+if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v5(this, _env.hlObj, ""GetValue"", ""ServiceRequestRecordSpecific.TargetDateScheduled"", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), (Int16)1)))
+{
+_.SETm1a0(this, _env.ComboBoxPriority, ""Disabled"", ""true"");
+}
+else
+{
+_.SETm1a0(this, _env.ComboBoxPriority, ""Disabled"", ""false"");
+}
+";
+            TestCSharpCodeTranslationWithoutScaffoldingX(expected, source, ["hlObj", "ComboBoxPriority"], [], []);
         }
     }
 }

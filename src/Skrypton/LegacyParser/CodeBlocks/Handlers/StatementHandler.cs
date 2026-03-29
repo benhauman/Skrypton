@@ -32,16 +32,30 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 IToken token = tokens[index];
                 if (token == null)
                     throw new ArgumentException("Encountered null token in stream");
-                if (token is AtomToken)
+
+                bool addItToExtract = true;
+                if (token is AtomToken atToken)
                 {
                     IToken? prevToken = (index == 0 ? null : tokens[index - 1]);
                     if ((prevToken == null) || (!(prevToken is AtomToken)) || (prevToken.Content != "."))
                     {
                         // This is an AtomToken that does not appear to be a property of an object, so we need to ensure it's not a keyword that
                         // should have been handled already by this point
-                        if (AtomToken.IsMustHandleKeyWord(((AtomToken)token).ContentUpperX()))
+                        if (AtomToken.IsMustHandleKeyWord(atToken.ContentUpperX()))
                         {
-                            throw new SourceProcessingException("Encountered must-handle keyword in statement content, this should have been handled by a previous AbstractBlockHandler: \"" + token.Content + "\", line " + (token.LineIndex + 1) + " (this often indicates a mismatched block terminator, such as an END SUB when an END FUNCTION was expected)");
+                            IToken? nextToken = ((index + 1) == (tokens.Count - 1)) ? tokens[tokens.Count - 1] : null;  // is there one more token? (the last one?)
+                            if (token is KeyWordToken kwToken && kwToken.KeyWordId == KnownKeyWordId.KeywordEnd && nextToken != null && nextToken is KeyWordToken kwLast && kwLast.KeyWordId == KnownKeyWordId.KeywordIf)
+                            {
+                                // lubo
+                                // 'END IF'
+                                // test: 'XIfSameLineZ'
+                                addItToExtract = false;
+                                break;
+                            }
+                            else
+                            {
+                                throw new SourceProcessingException("Encountered must-handle keyword in statement content, this should have been handled by a previous AbstractBlockHandler: \"" + token.Content + "\", line " + (token.LineIndex + 1) + " (this often indicates a mismatched block terminator, such as an END SUB when an END FUNCTION was expected)");
+                            }
                         }
                     }
                 }
@@ -50,13 +64,21 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     indexRemoveTo = index;
                     break;
                 }
-                tokensToExtract.Add(token);
+
+                if (addItToExtract)
+                {
+                    tokensToExtract.Add(token);
+                }
             }
 
             if (indexRemoveTo == -1)
+            {
                 tokens.Clear();
+            }
             else
+            {
                 tokens.RemoveRange(0, indexRemoveTo + 1);
+            }
 
             return ReturnAppropriateStatement(tokensToExtract);
         }

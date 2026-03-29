@@ -110,7 +110,10 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     index++;
                     int breakPoint = scriptContent.IndexOf("\n", index, StringComparison.Ordinal);
                     if (breakPoint == -1)
+                    {
                         breakPoint = scriptContent.Length;
+                    }
+
                     if (tokens.Count > 0)
                     {
                         IToken? prevToken = tokens[tokens.Count - 1];

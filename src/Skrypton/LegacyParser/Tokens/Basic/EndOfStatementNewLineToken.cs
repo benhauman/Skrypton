@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
     [Serializable]
-    public class EndOfStatementNewLineToken : AbstractEndOfStatementToken
+    public sealed class EndOfStatementNewLineToken : AbstractEndOfStatementToken
     {
         public EndOfStatementNewLineToken(int lineIndex) : base(lineIndex) { }
 
