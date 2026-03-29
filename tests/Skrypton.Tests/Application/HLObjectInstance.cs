@@ -251,15 +251,22 @@ namespace Skrypton.Tests.Application
                     object newValue = value;
                     if (value.GetType() != DataType)
                     {
-                        if (DataType == typeof(int) && value is string stringValue && stringValue.Length == 0)
+                        if (DataType == typeof(int) && value is string stringValueInt && stringValueInt.Length == 0)
                         {
                             HasValue = false;
                             DataRaw = null;
                         }
+                        else if (DataType == typeof(DateTime) && value is string stringValueDateTime)
+                        {
+                            // 2026-04-01 22:16:58
+                            var dt = DateTime.Parse(stringValueDateTime);
+                            HasValue = true;
+                            DataRaw = dt;
+                        }
                         else
                         {
                             // todo : convert it if needed
-                            throw new NotImplementedException($"Expect:{DataType.Name}, actual:{value.GetType().Name}");
+                            throw new NotImplementedException($"Expect:{DataType.Name}, actual:{value.GetType().Name}. Value:{value}");
                         }
                     }
                     else
