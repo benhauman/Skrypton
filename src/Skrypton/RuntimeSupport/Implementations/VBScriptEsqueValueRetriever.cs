@@ -1049,14 +1049,18 @@ namespace Skrypton.RuntimeSupport.Implementations
             return resultValue;
         }
 
-        //private delegate object GetInvoker(object target, object[] arguments);
+        [DebuggerDisplay("{_debugInfo}")]
         private sealed class GetterInfo
         {
             internal readonly Func<object, object[], object> DelegateFunc;
+            private readonly string _debugInfo;
+            internal readonly MemberInfo? _member;
 
-            public GetterInfo(Func<object, object[], object> delegateFunc)
+            public GetterInfo(Func<object, object[], object> delegateFunc, string debugInfo, MemberInfo? method)
             {
                 DelegateFunc = delegateFunc ?? throw new ArgumentNullException(nameof(delegateFunc));
+                _debugInfo = debugInfo;
+                _member = method;
             }
         }
         private GetterInfo GenerateGetInvoker(object target, string? optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
@@ -1107,7 +1111,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                 ).Compile();
 
-                return new GetterInfo(getterFunc);
+                return new GetterInfo(getterFunc, "Array", null); // Array
             }
 
             if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
@@ -1117,7 +1121,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                     // As above, don't try to wrap any errors here
                     int dispId;
                     if (optionalName == null)
+                    {
                         dispId = 0;
+                    }
                     else
                     {
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
@@ -1135,23 +1141,48 @@ namespace Skrypton.RuntimeSupport.Implementations
                         invokeArguments.ToArray()
                     );
                 };
-                return new GetterInfo(getterFunc);
+                return new GetterInfo(getterFunc, $"IDispatch::{optionalName}", null); // IDispatch
             }
 
             if (target is IReflect targetIReflect)
             {
+                // Note: An InvalidCastException will be raised if the arguments are not of appropriate types, so there's a temptation
+                // to wrap that up into a "Type mismatch" error. But it's possible that the member was called with correctly-typed
+                // arguments and the InvalidCastException originated from an operation inside it. There's no way to know so it's
+                // better to err on the side of caution and not try to wrap up that error.
+                BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.OptionalParamBinding;
+                if (allowPrivateAccess)
+                    invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
+
+                MemberInfo[] members = targetIReflect.GetMember(optionalName ?? "[DISPID=0]", invokeAttributes); //  IReflect can receive a member name like "[DISPID=0]", but it will not treat it as a normal identifier.
+                MemberInfo? member = members.Length switch
+                {
+                    0 => null, // see below
+                    1 => members[0],
+                    _ => null // hmmm, argc?
+                };
+                if (members.Length == 0)
+                {
+                    var allMembers = targetIReflect.GetMembers(invokeAttributes);
+                    foreach (var m in allMembers)
+                    {
+                        var dispidAttr = m.GetCustomAttributes<DispIdAttribute>().FirstOrDefault();
+                        if (dispidAttr != null && dispidAttr.Value == 0)
+                        {
+                            member = m;
+                            break;
+                        }
+                    }
+                }
+                else if (members.Length > 1)
+                {
+
+                }
                 MethodInfo? ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
                 Func<object, object[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
-                    // Note: An InvalidCastException will be raised if the arguments are not of appropriate types, so there's a temptation
-                    // to wrap that up into a "Type mismatch" error. But it's possible that the member was called with correctly-typed
-                    // arguments and the InvalidCastException originated from an operation inside it. There's no way to know so it's
-                    // better to err on the side of caution and not try to wrap up that error.
-                    BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.OptionalParamBinding;
-                    if (allowPrivateAccess)
-                        invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
                     return (targetIReflect).InvokeMember(
-                        optionalName ?? "[DISPID=0]",
+                        optionalName ?? "[DISPID=0]", // IReflect can receive a member name like "[DISPID=0]", but it will not treat it as a normal identifier.
                         invokeAttributes,
                         binder: null,
                         target: invokeTarget,
@@ -1162,7 +1193,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     );
                 };
 
-                return new GetterInfo(getterFunc);
+                return new GetterInfo(getterFunc, $"IReflect::{optionalName}", member); // IReflect
             }
 
             // TODO: There is a problem here with things like "source.Get(abc)" because it could be a call to a method "Get" on the source reference or it could be that "Get"
@@ -1442,7 +1473,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 targetParameter,
                 argumentsParameter
             ).Compile();
-            return new GetterInfo(getterFunc);
+            return new GetterInfo(getterFunc, $"{method.DeclaringType!.FullName}::{method.Name}", method); // MethodInfo
         }
 
         private delegate void SetInvoker(object target, object[] arguments, object value);
@@ -1578,12 +1609,20 @@ namespace Skrypton.RuntimeSupport.Implementations
             return (invokeTarget, invokeArguments, value) =>
             {
                 object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
+
+                // lubo:workaround for VBScript Int16 to 'Enum' Property setter;
+                if (value is Int16 && invokeArguments.Length == 0 && getInvoker._member != null && getInvoker._member is MethodInfo methodX && methodX.GetParameters().Length == 1 && methodX.GetParameters()[0].ParameterType.IsEnum)
+                {
+                    combinedArguments = [Enum.ToObject(methodX.GetParameters()[0].ParameterType, value)];
+                }
                 getInvoker.DelegateFunc(invokeTarget, combinedArguments);
 
                 // Ensure that any ByRef-altered arguments are propagated back onto the callers arguments array (note that VBScript does not support
                 // the value reference being changed ByRef but it does support the index arguments - if any - being altered ByRef)
                 for (int i = 0; i < invokeArguments.Length; i++)
+                {
                     invokeArguments[i] = combinedArguments[i];
+                }
             };
         }
 
