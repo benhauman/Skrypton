@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.Testing.Extensions.VSTestBridge;
 using System.Collections.Generic;
 using Skrypton.ScriptControlSupport;
+using Skrypton.Tests.Application;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -20,28 +21,33 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     {
         internal static string GetTranslatedProgramCode(TestBaseX tst, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, string[] translationSuppression)
         {
-            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), translationSuppression);
-            IScriptControl scriptengine = scriptengineClass;
+            Dictionary<string, ScriptExternalReferenceInfo> xr = new Dictionary<string, ScriptExternalReferenceInfo>();
             foreach (string externalDependencyName in externalDependencies)
             {
-                var addMembers = externalMemberMethods.Any(m => m.OwnerName == externalDependencyName);
-                if (addMembers)
-                {
-                    scriptengine.AddObject(externalDependencyName, new object(), AddMembers: false); // added below
-                }
-                else
-                {
-                    scriptengine.AddObject(externalDependencyName, new object(), AddMembers: false);
-                }
+                string[] members = externalMemberMethods.Where(m => m.OwnerName == externalDependencyName).Select(x => x.MethodName).ToArray();
+                xr.Add(externalDependencyName, new ScriptExternalReferenceInfo(instance: new object(), members));
             }
+            //Dictionary<string, string[]> dictMembers =
+            //    externalMemberMethods
+            //        .GroupBy(x => x.OwnerName)
+            //        .ToDictionary(
+            //            g => g.Key,
+            //            g => g.Select(x => x.MethodName).ToArray());
 
-            Dictionary<string, string[]> dictMembers =
-                externalMemberMethods
-                    .GroupBy(x => x.OwnerName)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(x => x.MethodName).ToArray());
-            return scriptengineClass.TestGenerateCSharpCode(vbsSource, dictMembers);
+            return GetTranslatedProgramCodeX(tst, vbsSource, xr, translationSuppression);
+        }
+        internal static string GetTranslatedProgramCodeX(TestBaseX tst, string vbsSource,
+            IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalDependencies,
+            string[] translationSuppression)
+        {
+            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), translationSuppression);
+            IScriptControl scriptengine = scriptengineClass;
+            foreach (var externalDependencyInfo in externalDependencies)
+            {
+                scriptengine.AddObject(externalDependencyInfo.Key, new object(), AddMembers: externalDependencyInfo.Value.AddMembers); // added explicitly
+            }
+            scriptengine.AddCode(vbsSource);
+            return scriptengineClass.TestGenerateCSharpCode(null, null);
         }
     }
 }

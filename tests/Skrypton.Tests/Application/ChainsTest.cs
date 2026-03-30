@@ -43,7 +43,7 @@ namespace Skrypton.Tests.Application
             }
             MemberDataTestName = chainName;
             string[] suppressions = ["SKY101", "SKY102", "SKY106"];
-            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, suppressions: suppressions);
+            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), suppressions: suppressions);
             var tst = this;
             var hostServices = CreateTestHostServices();
             var externalReferences = new Dictionary<string, object>();
@@ -132,7 +132,7 @@ namespace Skrypton.Tests.Application
                 return result.ToArray();
             }
         }
-        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalRefs = null, bool isOptionalAssert = false, params string[] suppressions)
+        public static TestScriptResponse TestScriptChain(TestBaseX tst, ScriptUsageKind scrUsage, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalRefs, bool isOptionalAssert = false, params string[] suppressions)
         {
             string chainName = tst.TestName;
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
@@ -156,50 +156,25 @@ namespace Skrypton.Tests.Application
                 customerDialogGlobalScript = null;
             }
 
-            return TestScriptChainX(tst, chainName,
-                customerDialogGlobalScript,
-                scriptContent,
+            string completeVbsScript = BuildCompleteScript(chainName, scrUsage, customerDialogGlobalScript, scriptContent);
+
+            return TestScriptChainX(tst, chainName, completeVbsScript,
                 generated_vbs_expected,
                 translated_cs_expected,
                 xml_expected,
-                scrUsage,
                 externalRefs, isOptionalAssert, suppressions);
         }
-        public static TestScriptResponse TestScriptChainX(TestBaseX tst, string chainName,
-                string customerDialogGlobalScript,
-                string scriptContent,
-                string generated_vbs_expected,
-                string translated_cs_expected,
-                string xml_expected,
-                ScriptUsageKind scrUsage,
-                IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalRefs = null,
-                bool isOptionalAssert = false,
-                params string[] suppressions)
+        public static Dictionary<string, ScriptExternalReferenceInfo> CollectExternalRefs(ScriptUsageKind scrUsage)
         {
-            List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
-
-            NonNullImmutableList<string> externalDependencies = new NonNullImmutableList<string>();
-            if (externalRefs == null)
-            {
-                if (scrUsage == ScriptUsageKind.EBL)//(scriptContent.Contains("hlContext"))
-                    externalDependencies = externalDependencies.Add("hlContext"); // EBL
-                if (scrUsage == ScriptUsageKind.Connectivity)
-                    externalDependencies = externalDependencies.Add("session"); // Connectivity IN/OUT
-            }
-            else
-            {
-                foreach (KeyValuePair<string, DialogExternalReferenceInfo> externalRef in externalRefs)
-                {
-                    string externalRefName = externalRef.Key;
-                    var info = externalRef.Value;
-                    externalDependencies = externalDependencies.Add(externalRefName);
-                    foreach (string methodName in info.Members)
-                    {
-                        externalMemberMethods.Add(new ExternalMemberMethodInfo(ownerName: externalRefName, methodName: methodName));
-                    }
-                }
-            }
-
+            if (scrUsage == ScriptUsageKind.EBL)
+                return new Dictionary<string, ScriptExternalReferenceInfo>() { { "hlContext", new ScriptExternalReferenceInfo(new object(), []) } };
+            if (scrUsage == ScriptUsageKind.Connectivity) // Connectivity IN/OUT
+                return new Dictionary<string, ScriptExternalReferenceInfo>() { { "session", new ScriptExternalReferenceInfo(new object(), []) } };
+            return [];
+        }
+        public static string BuildCompleteScript(string chainName, ScriptUsageKind scrUsage, string customerDialogGlobalScript, string scriptContentIn)
+        {
+            string completeDialogScript;
             if (scrUsage == ScriptUsageKind.DialogGui || scrUsage == ScriptUsageKind.DialogWeb)
             {
                 string[] chainTokens = chainName.Split('_');
@@ -209,30 +184,48 @@ namespace Skrypton.Tests.Application
                     customerAlias = $"{chainTokens[0]}_{chainTokens[1]}";
                 }
 
-                StringBuilder completeDialogScript = new StringBuilder();
+                StringBuilder completeDialogScriptBuffer = new StringBuilder();
                 if (!string.IsNullOrEmpty(customerDialogGlobalScript))
                 {
-                    if (completeDialogScript.Length > 0)
+                    if (completeDialogScriptBuffer.Length > 0)
                     {
-                        completeDialogScript.AppendLine();
+                        completeDialogScriptBuffer.AppendLine();
                     }
-                    completeDialogScript.Append(customerDialogGlobalScript);
+                    completeDialogScriptBuffer.Append(customerDialogGlobalScript);
                 }
 
-                if (!string.IsNullOrEmpty(scriptContent))
+                if (!string.IsNullOrEmpty(scriptContentIn))
                 {
-                    if (completeDialogScript.Length > 0)
+                    if (completeDialogScriptBuffer.Length > 0)
                     {
-                        completeDialogScript.AppendLine();
+                        completeDialogScriptBuffer.AppendLine();
                     }
-                    completeDialogScript.Append(scriptContent);
+                    completeDialogScriptBuffer.Append(scriptContentIn);
                 }
 
-                scriptContent = completeDialogScript.ToString();
+                completeDialogScript = completeDialogScriptBuffer.ToString();
+            }
+            else
+            {
+                completeDialogScript = scriptContentIn;
             }
 
+            return completeDialogScript;
+        }
+        public static TestScriptResponse TestScriptChainX(TestBaseX tst, string chainName,
+                string completeVbsScript,
+                string generated_vbs_expected,
+                string translated_cs_expected,
+                string xml_expected,
+                IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalRefs,
+                bool isOptionalAssert = false,
+                params string[] suppressions)
+        {
+            if (externalRefs == null) throw new ArgumentNullException(nameof(externalRefs));
+
+
             //Console.WriteLine("parsing...");
-            var parsed_items = Skrypton.LegacyParser.Parser.Parse(tst.TestCulture, scriptContent);
+            var parsed_items = Skrypton.LegacyParser.Parser.Parse(tst.TestCulture, completeVbsScript);
 
             StringBuilder parsed_output = new StringBuilder();
             var generationContext = BaseSourceGenerationContextDefault.CreateBaseSourceGenerationContext();
@@ -270,25 +263,8 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst, scriptContent, externalDependencies, externalMemberMethods ?? [], suppressions ?? []);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCodeX(tst, completeVbsScript, externalRefs, suppressions ?? []);
 
-            //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
-            //
-            //StringBuilder translated_buffer = new StringBuilder();
-            //foreach (var translated_item in translated_items)
-            //{
-            //    if (translated_item.Content.Length == 0)
-            //    {
-            //        translated_buffer.AppendLine("");
-            //    }
-            //    else
-            //    {
-            //        string indent = translated_item.IndentationDepth == 0 ? "" : new string(' ', translated_item.IndentationDepth * 4);
-            //        translated_buffer.Append(indent).AppendLine(translated_item.Content);
-            //    }
-            //}
-
-            //string translated_cs_actual = translated_buffer.ToString();
             if (translated_cs_expected != null)
             {
                 if (translated_cs_expected != translated_cs_actual)
@@ -307,8 +283,7 @@ namespace Skrypton.Tests.Application
 
             if (generated_vbs_expected == null)
             {
-                //storedFile = tst.SaveExpectedActualFiles(chainName, workItemName, chainName + ".generated.vbs", generated_vbs_expected ?? "", generated_vbs_actual);
-                storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".vbs", scriptContent);
+                storedFile = tst.SaveExpectedActualFile(chainName, workItemName, chainName + ".vbs", completeVbsScript);
             }
 
             if (!string.IsNullOrEmpty(failed_text))

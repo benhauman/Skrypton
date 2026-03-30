@@ -45,19 +45,19 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void DC_DATA__hlsysscript_cncIN()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, suppressions: ["SKY102", "SKY104", "SKY106"]);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, externalRefs: ChainsTest.CollectExternalRefs(ScriptUsageKind.Connectivity), suppressions: ["SKY102", "SKY104", "SKY106"]);
             DoCncInTest(rsp);
         }
         [TestMethod]
         public void LUNA12_quxDATA__hlsysscript_cncIN()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, suppressions: ["SKY102", "SKY104", "SKY106"]);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, externalRefs: ChainsTest.CollectExternalRefs(ScriptUsageKind.Connectivity), suppressions: ["SKY102", "SKY104", "SKY106"]);
             DoCncInTest(rsp);
         }
         [TestMethod]
         public void CT98__hlsysscript_cncIN()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, externalRefs: ChainsTest.CollectExternalRefs(ScriptUsageKind.Connectivity));
             DoCncInTest(rsp);
         }
 
@@ -79,7 +79,7 @@ namespace Skrypton.Tests.Application
             };
             var hostServices = CreateTestHostServices();
             //string translated_cs_expected = rsp.TranslatedCsCode;// TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            ExecuteTranslatedProgram(this, rsp.TranslatedCsCode, hostServices, new Dictionary<string, DialogExternalReferenceInfo> { { "session", new DialogExternalReferenceInfo(session, [])} }, gr => { });
+            ExecuteTranslatedProgram(this, rsp.TranslatedCsCode, hostServices, new Dictionary<string, ScriptExternalReferenceInfo> { { "session", new ScriptExternalReferenceInfo(session, [])} }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.Application
 
         }
 
-        internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, DialogExternalReferenceInfo> externalReferences, Action<GlobalReferencesBase> dialogHandler)
+        internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
             var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, []);
@@ -95,10 +95,10 @@ namespace Skrypton.Tests.Application
             scriptControlClass.TestSetDefaultRuntimeFunctionalityProviderSetup((x) => SetupDefaultRuntimeFunctionalityProvider(x, hostServices, tst.TestCulture));
 
             //RunTranslatedProgram(scriptengineClass, runtimeLogger, hostServices, externalReferences, dialogHandler);
-            foreach (KeyValuePair<string, DialogExternalReferenceInfo> externalReferencesEntry in externalReferences)
+            foreach (KeyValuePair<string, ScriptExternalReferenceInfo> externalReferencesEntry in externalReferences)
             {
                 string externalReferenceName = externalReferencesEntry.Key;
-                DialogExternalReferenceInfo nfo  = externalReferencesEntry.Value;
+                ScriptExternalReferenceInfo nfo  = externalReferencesEntry.Value;
                 object externalReferenceInstance = nfo.Instance;
                 IScriptControl scriptControl = scriptControlClass;
                 scriptControl.AddObject(externalReferenceName, externalReferenceInstance, nfo.AddMembers);

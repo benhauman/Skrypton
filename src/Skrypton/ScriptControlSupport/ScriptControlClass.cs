@@ -128,7 +128,7 @@ namespace Skrypton.ScriptControlSupport
         void IScriptControl.AddCode(string code)
         {
             if (string.IsNullOrEmpty(code)) throw new ArgumentException("Value cannot be null or empty.", nameof(code));
-            _code.AppendLine(code);
+            _code.Append(code);
         }
 
         object IScriptControl.Eval(string Expression)
@@ -253,18 +253,24 @@ namespace Skrypton.ScriptControlSupport
             return Task.FromResult(sc);
             //return Task.CompletedTask;
         }*/
-        public string TestGenerateCSharpCode(string vbsCode, Dictionary<string, string[]>? addedObjectMembers)
+        public string TestGenerateCSharpCode(string? vbsCode, Dictionary<string, string[]>? addedObjectMembers)
         {
             return GenerateCSharpCode(vbsCode, addedObjectMembers ?? _addedObjectMembers);
         }
-        private string GenerateCSharpCode(string statementOrNull, Dictionary<string, string[]> addedObjectMembers)
+        private string GenerateCSharpCode(string? statementOrNull, Dictionary<string, string[]> addedObjectMembers)
         {
             string scriptContent = _code.ToString(); // Assume this is populated with the script code to be parsed
             if (!string.IsNullOrEmpty(scriptContent))
             {
-                scriptContent += NewLineNormalized;
+                if (statementOrNull != null)
+                {
+                    scriptContent += NewLineNormalized;
+                }
             }
-            scriptContent += statementOrNull;
+            if (statementOrNull != null)
+            {
+                scriptContent += statementOrNull;
+            }
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
             List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
             foreach (var  xx in addedObjectMembers)
