@@ -816,10 +816,10 @@ WScript.Echo xmlhttp.responseText
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false, suppressions: ["SKY102", "SKY104", "SKY105", "SKY106", "SKY107", "SKY109"]);
             //}
 
-            TestDialogHandlers(this, rsp, dialog, skipUnusedScript: (s) => null);
+            TestDialogHandlers(this, rsp, dialog, skipUnusedScript: (s) => null, s => true);
         }
 
-        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript)
+        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript, Func<string, bool> doInvokeScript)
         {
             //string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
             //if (translated_cs == null)
@@ -892,9 +892,16 @@ WScript.Echo xmlhttp.responseText
                             }
                         }
 
-                        Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] {usedBy} Invoke:{scriptName}");
-                        //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
-                        ScriptControlClass.RunProcedure(gr, scriptName, []);
+                        if (doInvokeScript != null && doInvokeScript(scriptName) == false)
+                        {
+                            Console.WriteLine($"NOEXEC [{scriptNames.Length}/{ixSearch + 1}] {usedBy} Invoke:{scriptName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] {usedBy} Invoke:{scriptName}");
+                            //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
+                            ScriptControlClass.RunProcedure(gr, scriptName, []);
+                        }
 
                         ixSearch++;
                     }
