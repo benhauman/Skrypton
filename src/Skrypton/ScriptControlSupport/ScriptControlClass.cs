@@ -100,7 +100,7 @@ namespace Skrypton.ScriptControlSupport
             }
             if (addMembers)
             {
-                string[] methods = objectInstance.GetType().GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Select(x => x.Name).Distinct().ToArray();
+                string[] methods = objectInstance.GetType().GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly).Where(x => x.DeclaringType != typeof(object)).Select(x => x.Name).Distinct().ToArray();
                 if (methods.Length > 0)
                 {
                     _addedObjectMembers.Add(objectName, methods);
@@ -273,7 +273,7 @@ namespace Skrypton.ScriptControlSupport
             }
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
             List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
-            foreach (var  xx in addedObjectMembers)
+            foreach (var xx in addedObjectMembers)
             {
                 foreach (string externalMemberName in xx.Value)
                 {

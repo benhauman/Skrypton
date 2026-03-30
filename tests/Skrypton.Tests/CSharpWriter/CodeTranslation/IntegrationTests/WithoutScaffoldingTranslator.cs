@@ -44,7 +44,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             IScriptControl scriptengine = scriptengineClass;
             foreach (var externalDependencyInfo in externalDependencies)
             {
-                scriptengine.AddObject(externalDependencyInfo.Key, new object(), AddMembers: externalDependencyInfo.Value.AddMembers); // added explicitly
+                scriptengine.AddObject(externalDependencyInfo.Key, externalDependencyInfo.Value.Instance, AddMembers: externalDependencyInfo.Value.AddMembers); // added explicitly
             }
             scriptengine.AddCode(vbsSource);
             return scriptengineClass.TestGenerateCSharpCode(null, null);
