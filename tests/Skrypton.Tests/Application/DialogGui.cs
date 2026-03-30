@@ -863,9 +863,13 @@ WScript.Echo xmlhttp.responseText
                     foreach (string scriptName in scriptNames)
                     {
 
-                        if (allControlEventScriptNames.TryGetValue(scriptName, out string usedBy))
+                        if (allControlEventScriptNames.TryGetValue(scriptName, out string usedBy) 
+                            || string.Equals(scriptName, "OnLoad")
+                            || string.Equals(scriptName, "OnSave")
+                        //|| (scriptName.StartsWith("On", StringComparison.OrdinalIgnoreCase) && scriptName.Contains("_", StringComparison.OrdinalIgnoreCase))
+                        )
                         {
-
+                            // OnSave, OnLoad
                         }
                         else
                         {
