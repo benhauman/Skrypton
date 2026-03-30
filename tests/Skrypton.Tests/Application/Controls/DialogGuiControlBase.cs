@@ -186,7 +186,11 @@ namespace Skrypton.Tests.Application.Controls
     }
     public sealed class DialogGuiRadioButtonControl : DialogGuiControlBase
     {
-
+        public int SelectedIndex
+        {
+            get;
+            set;
+        }
     }
     public sealed class DialogGuiNumericTextBoxControl : DialogGuiControlBase
     {
@@ -263,6 +267,7 @@ namespace Skrypton.Tests.Application.Controls
     }
     public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
     {
+        public int Top { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
     }
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase

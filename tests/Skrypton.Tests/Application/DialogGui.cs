@@ -1340,6 +1340,11 @@ WScript.Echo xmlhttp.responseText
         {
             Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{(HLObjectInstance)helpLineObject}')");
         }
+
+        public void Save()
+        {
+            Console.WriteLine($"[DIALOGMODEL] Save()");
+        }
     }
 
     [ComVisible(true)]

@@ -65,14 +65,17 @@ namespace Skrypton.Tests.Application
                         return string.Empty;
                     return GetOutputValueText(vk, ov, langid);
                 }
-                if (datatype == 1)
+                else
                 {
+                    // datatype:2  // Bei Schlagworten den vollständigen Pfad liefern
                     if (ov.DataRaw == null)
                         return null;
                     if (ov.DataRaw is int)
                         return ov.DataRaw;
+                    if (ov.DataRaw is string)
+                        return ov.DataRaw;
                 }
-                throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
+                throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype}). VT:{ov.DataRaw?.GetType()}, V:{ov.DataRaw}");
             }
             if (datatype == 0)
                 return "";
@@ -91,7 +94,7 @@ namespace Skrypton.Tests.Application
             else
             {
                 _values.Add(vk, new ObjectValueData(newValue?.GetType() ?? typeof(string)).NewValue(newValue));
-//                throw new InvalidOperationException($"{_traceName}SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
+                //                throw new InvalidOperationException($"{_traceName}SetValue('{key}', langid:{langid}, contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name ?? "null")}):{(newValue ?? "null")})");
             }
         }
         public int GetItemCount(int flags, object assocdef)//(0, 130)' not found
@@ -102,8 +105,28 @@ namespace Skrypton.Tests.Application
         public object[] GetItems(int flags, int nfirst, int nlast, object assocdef)
         {
             Console.WriteLine($"{_traceName}GetItems(flags:{flags}, nfirst:{nfirst}, nlast:{nlast}, assocdef:{assocdef})");
-            object[] hlObjects = [];
-            return hlObjects;
+            if (flags == 0x10000)
+            {
+                if (_associatedItemsA.TryGetValue((string)assocdef, out var items))
+                    return items.Values.Select(x => (object)x).ToArray();
+                return [];
+            }
+            else
+            {
+                object[] hlObjects = [];
+                return hlObjects;
+            }
+        }
+        private Dictionary<string, Dictionary<int, HLObjectInstance>> _associatedItemsA = new Dictionary<string, Dictionary<int, HLObjectInstance>>();
+        public HLObjectInstance TestRegisterAssociateItemA(string assocdef, HLObjectInstance item)
+        {
+            if (!_associatedItemsA.TryGetValue(assocdef, out var items))
+            {
+                items = new Dictionary<int, HLObjectInstance>();
+                _associatedItemsA.Add(assocdef, items);
+            }
+            items.Add(item._objectId!.Value, item);
+            return this;
         }
         public void RemoveItem(int flags, object val, object assocdef)
         {
