@@ -251,6 +251,9 @@ namespace Skrypton.Tests.Application.Controls
                 viewMode = value;
             }
         }
+
+        public void ShowNext() { }
+        public void ShowPrev() { }
     }
 
     public enum CompoundControlViewMode

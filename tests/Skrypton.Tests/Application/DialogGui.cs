@@ -1344,6 +1344,11 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine($"[CurrentCommand] Abort(text:'{text}')");
             Aborted = true;
         }
+        public void Abort()
+        {
+            Console.WriteLine($"[CurrentCommand] Abort()");
+            Aborted = true;
+        }
     }
 
     public class WorkflowParameters
