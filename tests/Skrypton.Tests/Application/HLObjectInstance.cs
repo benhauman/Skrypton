@@ -81,6 +81,8 @@ namespace Skrypton.Tests.Application
                 return "";
             if (datatype == 1)
                 return 1234567;// why not
+            if (datatype == 2)
+                return 7654321;// why not
             throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
         }
         public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
@@ -217,6 +219,10 @@ namespace Skrypton.Tests.Application
             if (ov.DataType == typeof(int))
             {
                 return ov.DataRaw == null ? "" : ((int)ov.DataRaw).ToString(CultureInfo.InvariantCulture);
+            }
+            if (ov.DataType == typeof(short))
+            {
+                return ov.DataRaw == null ? "" : ((short)ov.DataRaw).ToString(CultureInfo.InvariantCulture);
             }
             if (ov.DataType == typeof(bool))
             {

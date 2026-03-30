@@ -1250,7 +1250,10 @@ WScript.Echo xmlhttp.responseText
         {
             Console.WriteLine($"[DIALOGMODEL] CreateWorkflow('{workFlowName}')");
         }
-
+        public void CreateWorkflowSilent(string workFlowName, object parameters)
+        {
+            Console.WriteLine($"[DIALOGMODEL] CreateWorkflowSilent(workFlowName:'{workFlowName}', parameters:{parameters})");
+        }
         private readonly Dictionary<int, HLObjectInstance> _personOfAgents = new Dictionary<int, HLObjectInstance>();
         public DialogGuidModel InitPersonForAgent(int agentId, HLObjectInstance person)
         {

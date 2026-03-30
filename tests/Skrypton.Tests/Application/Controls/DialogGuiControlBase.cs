@@ -103,7 +103,22 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineNumericTextBox", () => new DialogGuiNumericTextBoxControl() },
             { "HelpLineRadioButton", () => new DialogGuiRadioButtonControl() },
             { "HelpLineTableLayoutPanel", () => new DialogGuiTableLayoutPanelControl() },
-            { "HelpLineServiceSelector", () => new DialogGuiServiceSelectorControl() }
+            { "HelpLineServiceSelector", () => new DialogGuiServiceSelectorControl() },
+            { "HelpLineWebControl", () => new DialogGuiWebControl() },
+            { "HelpLineImageControl", () => new DialogGuiImageControl() },
+#pragma warning disable SA1028
+            // see 'SetCustomControlType'
+            //            { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() }, 
+            //            { "HelpLineListControl", () => new DialogGuiListControl() }, 
+            //            { "HelpLineTimeControl", () => new DialogGuiTimeControl() }, 
+            //            { "HelpLineTreeControl", () => new DialogGuiTreeControl() }, 
+            //            { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() }, 
+            //            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() }, 
+            //            { "HelpLineCommunicationFeed", () => new DialogGuiCommunicationFeedControl() }, 
+            //            { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() }, 
+            //            { "HelpLineHistory", () => new DialogGuiHistoryControl() }, 
+            //            { "HelpLineServiceCatalogItemOverview", () => new DialogGuiServiceCatalogItemOverviewControl() }, 
+#pragma warning restore SA1028
         };
 
         internal static DialogGuiControlBase ControlFactoryCreateDialogControl(string controlTypeName)
@@ -178,6 +193,13 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiImageControl : DialogGuiControlBase
+    {
+    }
+    public sealed class DialogGuiWebControl : DialogGuiControlBase
+    {
+        public string Url { get; set; }
+    }
     public sealed class DialogGuiServiceSelectorControl : DialogGuiControlBase
     {
     }
@@ -333,6 +355,11 @@ namespace Skrypton.Tests.Application.Controls
         {
             get { return _search; }
             //set { _search = value; }
+        }
+
+        public int GetItemsCount()
+        {
+            return 0;
         }
     }
 
