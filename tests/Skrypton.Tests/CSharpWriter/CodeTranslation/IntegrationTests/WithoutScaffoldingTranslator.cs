@@ -8,6 +8,7 @@ using Skrypton.CSharpWriter.CodeTranslation;
 using System.Text;
 using Microsoft.Testing.Extensions.VSTestBridge;
 using System.Collections.Generic;
+using Skrypton.ScriptControlSupport;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -17,9 +18,30 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     }
     internal static class DefaultCSharpTranslation
     {
-        internal static string GetTranslatedProgramCode(CultureInfo culture, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, string[] translationSuppression)
+        internal static string GetTranslatedProgramCode(TestBaseX tst, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, string[] translationSuppression)
         {
-            return Skrypton.CSharpWriter.DefaultTranslator.TranslateExecutable(culture, vbsSource, externalDependencies, externalMemberMethods, translationSuppression);
+            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), translationSuppression);
+            IScriptControl scriptengine = scriptengineClass;
+            foreach (string externalDependencyName in externalDependencies)
+            {
+                var addMembers = externalMemberMethods.Any(m => m.OwnerName == externalDependencyName);
+                if (addMembers)
+                {
+                    scriptengine.AddObject(externalDependencyName, new object(), AddMembers: false); // added below
+                }
+                else
+                {
+                    scriptengine.AddObject(externalDependencyName, new object(), AddMembers: false);
+                }
+            }
+
+            Dictionary<string, string[]> dictMembers =
+                externalMemberMethods
+                    .GroupBy(x => x.OwnerName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(x => x.MethodName).ToArray());
+            return scriptengineClass.TestGenerateCSharpCode(vbsSource, dictMembers);
         }
     }
 }

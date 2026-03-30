@@ -538,7 +538,7 @@ WScript.Echo xmlhttp.responseText
             {
                 Console.WriteLine("translating...");
                 string scriptContent = dialog.CompleteScriptCode();
-                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray(), [], suppressions);
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, scriptContent, dialog.ExternalReferences.Keys.ToArray(), [], suppressions);
             }
 
             DoDialogGui(this, translated_cs, dialog, dialogHandler);
@@ -1341,12 +1341,18 @@ WScript.Echo xmlhttp.responseText
 
         public void SetCustomerInCase(string symbol, object helpLineObject)
         {
-            Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{(HLObjectInstance)helpLineObject}')");
+            Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{((HLObjectInstance)helpLineObject).GetID()}')");
         }
 
         public void Save()
         {
             Console.WriteLine($"[DIALOGMODEL] Save()");
+        }
+
+        public bool IsAgent(object hlObj)
+        {
+            Console.WriteLine($"[DIALOGMODEL] IsAgent(hlObj:{((HLObjectInstance)hlObj).GetID()})");
+            return true;
         }
     }
 

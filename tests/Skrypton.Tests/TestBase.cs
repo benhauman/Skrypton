@@ -158,7 +158,7 @@ namespace Skrypton.Tests
         }
         protected void TestCSharpCodeTranslation(string csSource, string[] suppressions) // TODO remove 'WithoutScaffoldingTranslator'
         {
-            string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, csSource, [], [], suppressions);
+            string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, csSource, [], [], suppressions);
             string expectCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true) ?? "";
             TestCSharpCodeTranslationCore(expectCs, actualCs);
         }

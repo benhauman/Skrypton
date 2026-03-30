@@ -174,7 +174,7 @@ namespace Skrypton.ScriptControlSupport
                 throw new ArgumentException("Value cannot be null or empty.", nameof(statement));
             //RoslynScriptControl sc = StartAsync(statement, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             //sc.ExecuteStatementAsync(statement)
-            string csCode = GenerateCSharpCode(statement);
+            string csCode = GenerateCSharpCode(statement, _addedObjectMembers);
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             Interlocked.Increment(ref _lastExecNumber); // threadsafe
@@ -253,8 +253,11 @@ namespace Skrypton.ScriptControlSupport
             return Task.FromResult(sc);
             //return Task.CompletedTask;
         }*/
-
-        private string GenerateCSharpCode(string statementOrNull)
+        public string TestGenerateCSharpCode(string vbsCode, Dictionary<string, string[]>? addedObjectMembers)
+        {
+            return GenerateCSharpCode(vbsCode, addedObjectMembers ?? _addedObjectMembers);
+        }
+        private string GenerateCSharpCode(string statementOrNull, Dictionary<string, string[]> addedObjectMembers)
         {
             string scriptContent = _code.ToString(); // Assume this is populated with the script code to be parsed
             if (!string.IsNullOrEmpty(scriptContent))
@@ -264,7 +267,7 @@ namespace Skrypton.ScriptControlSupport
             scriptContent += statementOrNull;
             NonNullImmutableList<string> externalDependencies = _addedObjects.Keys.ToArray().ToNonNullImmutableList();
             List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
-            foreach (var  xx in _addedObjectMembers)
+            foreach (var  xx in addedObjectMembers)
             {
                 foreach (string externalMemberName in xx.Value)
                 {

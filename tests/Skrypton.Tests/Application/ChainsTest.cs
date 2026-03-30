@@ -270,7 +270,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst.TestCulture, scriptContent, externalDependencies, externalMemberMethods ?? [], suppressions ?? []);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCode(tst, scriptContent, externalDependencies, externalMemberMethods ?? [], suppressions ?? []);
 
             //IEnumerable<TranslatedStatement> translated_items = Skrypton.CSharpWriter.DefaultTranslator.Translate(tst.TestCulture, scriptContent, externalDependencies.ToArray());
             //
