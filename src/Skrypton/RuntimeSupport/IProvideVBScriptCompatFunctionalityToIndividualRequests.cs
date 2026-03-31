@@ -241,7 +241,8 @@ namespace Skrypton.RuntimeSupport
         object INPUTBOX(object prompt, object? title = null, object? defaultValue = null);
         object LOADPICTURE(object value);
         object MSGBOX(object value);
-        object MSGBOX(object value, object buttons, object? title = null);
+        object MSGBOX(object value, object buttons);
+        object MSGBOX(object value, object buttons, object title);
         string SCRIPTENGINE(object value);
         int SCRIPTENGINEBUILDVERSION(object value);
         int SCRIPTENGINEMAJORVERSION(object value);

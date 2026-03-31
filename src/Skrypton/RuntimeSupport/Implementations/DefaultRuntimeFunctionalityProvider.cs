@@ -2259,11 +2259,18 @@ namespace Skrypton.RuntimeSupport.Implementations
             string prompt = _valueRetriever.STR(value);
             return MSGBOXCore(prompt, null, null);
         }
-        public object MSGBOX(object value, object buttons, object? title = null)
+        public object MSGBOX(object value, object buttons)
         {
             string prompt = _valueRetriever.STR(value);
             short buttonsNum = Convert.ToInt16(_valueRetriever.NUM(buttons), CultureInfo.InvariantCulture);
             return MSGBOXCore(prompt, buttonsNum, null);
+        }
+        public object MSGBOX(object value, object buttons, object title)
+        {
+            string prompt = _valueRetriever.STR(value);
+            short buttonsNum = Convert.ToInt16(_valueRetriever.NUM(buttons), CultureInfo.InvariantCulture);
+            string titleString = _valueRetriever.STR(title);
+            return MSGBOXCore(prompt, buttonsNum, titleString);
         }
         private object MSGBOXCore(string prompt, short? buttons = null, string? title = null)
         {

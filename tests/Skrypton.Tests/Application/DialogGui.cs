@@ -640,7 +640,7 @@ WScript.Echo xmlhttp.responseText
                 {
                     if (mi.DeclaringType == gr.GetType())
                     {
-                        Console.WriteLine($"Method: {mi.Name}");
+                        //Console.WriteLine($"Method: {mi.Name}");
                     }
                 }
 
@@ -674,7 +674,7 @@ WScript.Echo xmlhttp.responseText
                 {
                     if (mi.DeclaringType == gr.GetType())
                     {
-                        Console.WriteLine($"Method: {mi.Name}");
+                        //Console.WriteLine($"Method: {mi.Name}");
                     }
                 }
 
@@ -821,23 +821,14 @@ WScript.Echo xmlhttp.responseText
 
         public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript, Func<string, bool> doInvokeScript)
         {
-            //string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
-            //if (translated_cs == null)
-            //{
-            //    Console.WriteLine("translating...");
-            //    string scriptContent = dialog.CompleteScriptCode();
-            //    translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCode(TestCulture, scriptContent, dialog.ExternalReferences.Keys.ToArray());
-            //}
-
             DoDialogGui(tst, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
-
                 var mis = gr.GetType().GetMethods().OrderBy(x => x.Name).ToArray();
                 foreach (var mi in mis)
                 {
                     if (mi.DeclaringType == gr.GetType())
                     {
-                        Console.WriteLine($"Method: {mi.Name}");
+                        //Console.WriteLine($"Method: {mi.Name}");
                     }
                 }
 
