@@ -189,8 +189,23 @@ namespace Skrypton.Tests.Application
         public int[] GetContentIDs(object key, int suidx)
         {
             Console.WriteLine($"{_traceName}GetContentIDs(key:{key}, suidx:{suidx}')");
+            var vk = new ObjectValueKey((string)key, contentId: 0, suidx);
+            if (_contentIds.TryGetValue(vk, out var contentIds))
+                return contentIds.ToArray();
             return [];
         }
+        private readonly Dictionary<ObjectValueKey, List<int>> _contentIds = new Dictionary<ObjectValueKey, List<int>>();
+        public void TestRegisterContentID(object key, int suidx, int contentid)
+        {
+            var vk = new ObjectValueKey((string)key, contentId: 0, suidx);
+            if (!_contentIds.TryGetValue(vk, out var contentIds))
+            {
+                contentIds = new List<int>();
+                _contentIds.Add(vk, contentIds);
+            }
+            contentIds.Add(contentid);
+        }
+
         public void RemoveContentID(object key, int contentid, int suidx)
         {
             Console.WriteLine($"{_traceName}RemoveContentID(key:{key}, contentid:{contentid}, suidx:{suidx}')");
