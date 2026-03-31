@@ -158,6 +158,11 @@ namespace Skrypton.Tests.Application
                 _usedBy.Add(controlName, eventName);
             }
         }
+
+        public bool HasScriptCode(string scriptName)
+        {
+            return GuiScripts.ContainsKey(scriptName);
+        }
     }
 
     public sealed class DialogGuiRoot : DialogGuiControlBase

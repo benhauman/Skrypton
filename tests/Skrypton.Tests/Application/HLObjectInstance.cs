@@ -313,6 +313,11 @@ namespace Skrypton.Tests.Application
                             HasValue = true;
                             DataRaw = dt;
                         }
+                        else if (DataType == typeof(string) && value is int valueInt32)
+                        {
+                            DataRaw = valueInt32.ToString(CultureInfo.InvariantCulture);
+                            HasValue = true;
+                        }
                         else
                         {
                             // todo : convert it if needed
