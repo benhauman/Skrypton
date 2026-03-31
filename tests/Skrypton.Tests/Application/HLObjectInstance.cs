@@ -198,6 +198,24 @@ namespace Skrypton.Tests.Application
             //AddItemEx(flags, val, 0, assocdef);
         }
 
+
+        public void Reserve()
+        {
+            Console.WriteLine($"{_traceName}Reserve()");
+        }
+        public void Unreserve()
+        {
+            Console.WriteLine($"{_traceName}Unreserve()");
+        }
+
+        private int _lastContentId = 12300200;
+        public int GenerateContentID()
+        {
+            _lastContentId++;
+            int nextId = _lastContentId;
+            return nextId;
+        }
+
         public int[] GetAttachmentKeys(object key, int suidx)
         {
             string attributeKey = (string)key;

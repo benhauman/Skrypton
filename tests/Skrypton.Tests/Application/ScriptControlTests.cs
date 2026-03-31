@@ -73,7 +73,7 @@ scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName
     {
         private readonly TestBaseX _tst;
 
-        public TestScriptControlConfiguration(TestBaseX tst, string[] translationSuppression) : base(true, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression)
+        public TestScriptControlConfiguration(TestBaseX tst, string[] translationSuppression) : base(false, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression)
         {
             _tst = tst ?? throw new ArgumentNullException(nameof(tst));
         }

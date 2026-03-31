@@ -291,12 +291,18 @@ namespace Skrypton.Tests.Application.Controls
     {
         public int Top { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
 
+        private HLObjectInstance _selectedObject;
         public HLObjectInstance SelectedObject
         {
             get
             {
-                return null;
+                return _selectedObject;
             }
+        }
+
+        public void TestSetSelectedObject(HLObjectInstance selectedObjectIfAny)
+        {
+            _selectedObject = selectedObjectIfAny;
         }
     }
 

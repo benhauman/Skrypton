@@ -96,15 +96,42 @@ namespace Skrypton.ScriptControlSupport
         internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, string programName, int codeNumber, string csCode, string[] nowarn)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
-            PortableExecutableReference[] references = new[]
+            MetadataReference[] references = new[]
             {
-                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
+                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location), // => C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\netstandard.dll *** his is not the compiler’s API reference.
                 MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
                 MetadataReference.CreateFromFile(typeof(IDisposable).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
             };
+
+            /*
+            string dotnetRoot = Path.GetDirectoryName(typeof(object).Assembly.Location);// path to dotnet runtime: eg 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.3'
+            //string netstandardRefDir = Path.Combine(
+            //    dotnetRoot,
+            //    "packs",
+            //    "NETStandard.Library.Ref",
+            //    "2.0.0",
+            //    "ref",
+            //    "netstandard2.0"
+            //); // eg 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.3\packs\NETStandard.Library.Ref\2.0.0\ref\netstandard2.0'
+            string netstandardRefDir = dotnetRoot;
+
+            if (!Directory.Exists(netstandardRefDir))
+                throw new DirectoryNotFoundException($"netstandard2.0 reference pack cannot be resolved:'{netstandardRefDir}'");
+
+
+            // STEP 1: Load .NET reference assemblies (required for Assembly.Load)
+            var referencesX = Directory.GetFiles(netstandardRefDir, "*.dll")
+                .Select(f => MetadataReference.CreateFromFile(f))
+                .Cast<MetadataReference>()
+                .OrderBy(x => x.Display)
+                .ToList();
+
+
+            references = references.Concat(referencesX).Distinct().ToArray();
+            */
 
             Dictionary<string, ReportDiagnostic> specificDiagnosticOptions = new Dictionary<string, ReportDiagnostic>();
             //specificDiagnosticOptions["CS0219"] = ReportDiagnostic.Suppress; // error CS0219: The variable 'ForWriting' is assigned but its value is never used
@@ -116,16 +143,6 @@ namespace Skrypton.ScriptControlSupport
                     specificDiagnosticOptions.Add(nowarnItem, ReportDiagnostic.Suppress);
                 }
             }
-            // Compilation options (warnings as errors, warning level 4)
-            CSharpCompilationOptions options = new CSharpCompilationOptions(
-                OutputKind.DynamicallyLinkedLibrary,
-                warningLevel: 4,
-                generalDiagnosticOption: ReportDiagnostic.Error,
-                specificDiagnosticOptions: specificDiagnosticOptions,
-                optimizationLevel: OptimizationLevel.Debug, // Keep debug info
-                allowUnsafe: false
-            );
-
             string codeName = $"InMemDynAsmKey{codeNumber}";
             string tempFolderName = $"programName{codeNumber}";
             string fileNameCsc = $"{codeName}.cs";
@@ -138,11 +155,22 @@ namespace Skrypton.ScriptControlSupport
                 config.TempFileWriteAllText(tempFolderName, fileNameCsc, csCode);
             }
 
+            // Compilation options (warnings as errors, warning level 4)
+            CSharpCompilationOptions options = new CSharpCompilationOptions(
+                OutputKind.DynamicallyLinkedLibrary, // 'DynamicallyLinkedLibrary' or '
+                warningLevel: 4,
+                generalDiagnosticOption: ReportDiagnostic.Error,
+                specificDiagnosticOptions: specificDiagnosticOptions,
+                optimizationLevel: OptimizationLevel.Debug, // Keep debug info
+                allowUnsafe: false
+            );
+
+
             CSharpCompilation compilation = CSharpCompilation.Create(
-                $"InMemDynAsmKey{codeNumber}",
-                new[] { syntaxTree },
-                references,
-                options
+                assemblyName: $"InMemDynAsmKey{codeNumber}",
+                syntaxTrees: new[] { syntaxTree },
+                references: references,
+                options: options
             );
 
             using MemoryStream peStream = new MemoryStream();
@@ -196,18 +224,18 @@ namespace Skrypton.ScriptControlSupport
             byte[] pdbBytes = peStream.ToArray();
 
             // write the .dll
-            if (!string.IsNullOrEmpty(fileNameDll))
+            if (config.TempEnabled && !string.IsNullOrEmpty(fileNameDll))
             {
                 config.TempFileWriteAllBytes(tempFolderName, fileNameDll!, assemblyBytes);
             }
             // write the .pdb
-            if (!string.IsNullOrEmpty(fileNamePdb))
+            if (config.TempEnabled && !string.IsNullOrEmpty(fileNamePdb))
             {
                 config.TempFileWriteAllBytes(tempFolderName, fileNamePdb, pdbBytes);
             }
 
             Func<Assembly> asmLoad;
-            if (!string.IsNullOrEmpty(fileNameDll) && config.EnabledLoadFromDisk)
+            if (!string.IsNullOrEmpty(fileNameDll) && config.TempEnabled && !config.EnabledLoadFromDisk)
             {
                 string dllFilePath = config.EnsureFilePathX(tempFolderName, fileNameDll);
                 if (!File.Exists(dllFilePath))

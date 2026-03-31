@@ -1884,11 +1884,20 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new NotSupportedException($"Unsupported interval: '{interval}'"); // This will be a different exception type once all VBScript-support interval strings are supported
 
                 case "d":
+                    /*
+    VBScript: DateDiff("d", "2024-01-01 12:00", "2024-01-02 11:00") == 0
+    Your current code → 1 (because of Ceiling)
+                    BUT!!!
+                    VBScript DateDiff("d", ...) counts day boundaries crossed, not elapsed 24-hour periods. => "d" should always be based on .Date, not TotalDays. (but wrong in other cases)
+                     */
+                    //return (int)(d2 - d1).TotalDays; //return (int)Math.Ceiling(difference.TotalDays);
                     return (int)Math.Ceiling(difference.TotalDays);
                 case "m":
                     int yearDifference = d2.Year - d1.Year;
                     int monthDifference = d2.Month - d1.Month;
                     return (yearDifference * 12) + monthDifference;
+                case "s":
+                    return (int)(d2 - d1).TotalSeconds;
             }
         }
         public object DATEPART(object value) { throw new NotImplementedException(); }

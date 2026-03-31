@@ -1354,6 +1354,11 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine($"[DIALOGMODEL] IsAgent(hlObj:{((HLObjectInstance)hlObj).GetID()})");
             return true;
         }
+
+        public void SaveObject(object hlObject)
+        {
+            Console.WriteLine($"[DIALOGMODEL] SaveObject(hlObj:{((HLObjectInstance)hlObject).GetID()})");
+        }
     }
 
     [ComVisible(true)]

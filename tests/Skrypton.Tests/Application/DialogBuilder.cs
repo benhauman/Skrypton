@@ -138,6 +138,11 @@ namespace Skrypton.Tests.Application
             GuiScripts[scriptName] = new ScriptInfo(newCode);
         }
 
+        public TControl GetControlById<TControl>(string v) where TControl : DialogGuiControlBase
+        {
+            return (TControl)_controls[v];
+        }
+
         private readonly Dictionary<string, ScriptInfo> GuiScripts = new Dictionary<string, ScriptInfo>(StringComparer.OrdinalIgnoreCase);
 
         private sealed class ScriptInfo

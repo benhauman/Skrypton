@@ -15,7 +15,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // TODO: Incomplete..
     public class DATEDIFF : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object interval, object date1, object date2, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2));
@@ -61,7 +61,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             get
             {
-                // Note: We could go to town with test cases for the various string formats that VBScript supports, but the DATEDIFFimplementation backs onto the DateParser and
+                // Note: We could go to town with test cases for the various string formats that VBScript supports, but the DATEDIFF implementation backs onto the DateParser and
                 // it would be duplication of effort going through everything again here
 
                 // Middle-of-the-road cases
