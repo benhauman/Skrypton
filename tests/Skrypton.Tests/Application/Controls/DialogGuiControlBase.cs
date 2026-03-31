@@ -304,6 +304,13 @@ namespace Skrypton.Tests.Application.Controls
         {
             _selectedObject = selectedObjectIfAny;
         }
+
+        private bool _allowModify = true;
+        public bool AllowModify
+        {
+            get { return _allowModify; }
+            set { _allowModify = value; }
+        }
     }
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
