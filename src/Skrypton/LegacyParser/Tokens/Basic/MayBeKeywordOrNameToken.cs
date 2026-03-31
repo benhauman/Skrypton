@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
@@ -6,7 +7,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
     /// There are tokens that may be reference names or keywords, depending upon context - it is not possible to tell just from their content. Values
     /// (such as "step") are represented by these tokens.
     /// </summary>
-    [Serializable]
+    //[Serializable]
+    [DataContract(Namespace = "http://vbs")]
     public sealed class MayBeKeywordOrNameToken : NameToken
     {
         public MayBeKeywordOrNameToken(StringUpper contentUpper, int lineIndex) : base(contentUpper, WhiteSpaceBehaviourOptions.Disallow, lineIndex)

@@ -58,6 +58,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         ,typeof(OutermostScope) // [DataContract(Namespace = "http://vbs")]
 
         ,typeof(WhiteSpaceToken) // [DataContract(Namespace = "http://vbs")]
+        ,typeof(MayBeKeywordOrNameToken)
         };
     }
 }
