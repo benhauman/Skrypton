@@ -43,6 +43,7 @@ namespace Skrypton.Tests.Application.Controls
         public string BackColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
         public bool RequestFocus { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
         public bool Required { get => GetPropertyValueAsT<bool>(); set => SetPropertyValueAsT(value); }
+        public int Top { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
 
         public string Font { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
 
@@ -289,8 +290,6 @@ namespace Skrypton.Tests.Application.Controls
     }
     public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
     {
-        public int Top { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
-
         private HLObjectInstance _selectedObject;
         public HLObjectInstance SelectedObject
         {

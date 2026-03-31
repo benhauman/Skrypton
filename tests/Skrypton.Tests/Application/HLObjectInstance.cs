@@ -191,7 +191,10 @@ namespace Skrypton.Tests.Application
             Console.WriteLine($"{_traceName}GetContentIDs(key:{key}, suidx:{suidx}')");
             return [];
         }
-
+        public void RemoveContentID(object key, int contentid, int suidx)
+        {
+            Console.WriteLine($"{_traceName}RemoveContentID(key:{key}, contentid:{contentid}, suidx:{suidx}')");
+        }
         public void AddItem(int flags, object val, object assocdef)
         {
             Console.WriteLine($"{_traceName}AddItem(flags:{flags}, val:{val}', assocdef:{assocdef})");

@@ -1335,10 +1335,6 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{((HLObjectInstance)helpLineObject).GetID()}')");
         }
 
-        public void Save()
-        {
-            Console.WriteLine($"[DIALOGMODEL] Save()");
-        }
 
         public bool IsAgent(object hlObj)
         {
@@ -1346,9 +1342,20 @@ WScript.Echo xmlhttp.responseText
             return true;
         }
 
+        public void Save()
+        {
+            Console.WriteLine($"[DIALOGMODEL] Save()");
+        }
+
+
         public void SaveObject(object hlObject)
         {
             Console.WriteLine($"[DIALOGMODEL] SaveObject(hlObj:{((HLObjectInstance)hlObject).GetID()})");
+        }
+
+        public void SaveAndRelease(bool close, bool release)
+        {
+            Console.WriteLine($"[DIALOGMODEL] SaveAndRelease(close:{close}, release:{release})");
         }
     }
 
