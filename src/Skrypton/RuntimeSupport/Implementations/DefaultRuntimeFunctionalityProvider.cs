@@ -1553,7 +1553,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // If this can not be coerced into a value type then it can't be Empty, so return false
                 bool parameterLessDefaultMemberWasAvailable;
                 if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
+                {
+                    if (value is DispatchWrapper dw)
+                    {
+                        return false;//return dw.WrappedObject == null; // value is an object variable containing Nothing, not Empty, BUT lubo checks for null :-))
+                    }
                     return false;
+                }
 
                 // If it IS a value type, or was manipulated into one, then check for null (aka VBScript's Empty)
                 return valueVal == null;

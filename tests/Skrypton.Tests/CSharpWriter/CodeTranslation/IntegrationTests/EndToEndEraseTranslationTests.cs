@@ -359,7 +359,7 @@ namespace Skrypton.Tests
             Assert.IsTrue(v, message);
         }
 
-        internal static void Null(object v)
+        internal static void IsNull(object v)
         {
             Assert.IsNull(v);
         }

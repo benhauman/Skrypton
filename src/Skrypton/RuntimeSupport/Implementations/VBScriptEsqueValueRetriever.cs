@@ -163,7 +163,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 // .. then try to retrieve the default value for the target - if this succeeds, then we know we have a default member (add that information to the cache and
                 // return the retrieved value in the "yes, this object has a default member" response)
-                object defaultValue = GetDefaultValueFromObject(o);
+                object? defaultValue = GetDefaultValueFromObject(o);
                 if (cacheKeyIfApplicable != null)
                     _absentDefaultMemberCache.TryAdd(cacheKeyIfApplicable, true);
                 return DefaultMemberDetails.RetrievedResult(defaultValue);
@@ -209,7 +209,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA1031 // Do not catch general exception types
         }
 
-        private object GetDefaultValueFromObject(object o)
+        private object? GetDefaultValueFromObject(object o)
         {
             if (o == null)
                 throw new ArgumentNullException(nameof(o));
@@ -526,7 +526,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Convert.ToDouble seems to match VBScript's string-to-number behaviour pretty well (see the test cases for more details) with one exception;
                 // VBScript will tolerate whitespace between a negative sign and the start of the content, so we need to do consider replacements (any "-"
                 // followed by whitespace should become just "-")
-                return Convert.ToDouble(SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-"), CultureInfo.InvariantCulture);
+                string sValX = SpaceFollowingMinusSignRemover.Replace(value.ToString(), "-");
+                if (TryParseToSmallestNumericType(sValX, CultureInfo.InvariantCulture, out object ? numResult) && numResult != null)
+                {
+                    return numResult;
+                }
+                return Convert.ToDouble(sValX, CultureInfo.InvariantCulture);
             }
 
             // These are the types that map directly onto VBScript types, we can return these unaltered
@@ -551,6 +556,51 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new ArgumentException("Unsupported type, do not know how to fit it to a VBScript numeric type: " + value.GetType());
         }
         private static Regex SpaceFollowingMinusSignRemover = new Regex(@"-\s+", RegexOptions.Compiled);
+
+        private  static bool TryParseToSmallestNumericType(string input, CultureInfo culture, out object? result)
+        {
+            result = null;
+
+            // 1. Check integer types safely
+            if (short.TryParse(input, NumberStyles.Integer, culture, out short s))
+            {
+                result = s;
+                return true;
+            }
+
+            if (int.TryParse(input, NumberStyles.Integer, culture, out int i))
+            {
+                result = i;
+                return true;
+            }
+
+            if (long.TryParse(input, NumberStyles.Integer, culture, out long l))
+            {
+                result = l;
+                return true;
+            }
+
+            // 2. Decimal → exact, preferred for precise numeric strings
+            if (decimal.TryParse(input, NumberStyles.Number, culture, out decimal dec))
+            {
+                result = dec;
+                return true;
+            }
+
+            // 3. Double (least precise, last fallback)
+            if (double.TryParse(input, out double dbl))
+            {
+                // Ensure double parsed the value with no information loss
+                // Convert back and compare
+                if (input == dbl.ToString("R", culture))
+                {
+                    result = dbl;
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// There are some values which can be treated as numbers (such as Empty, booleans and dates), some of which result in error if this is attempted
@@ -879,7 +929,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Note: The arguments array elements may be mutated if the call target has "ref" method arguments.
         /// </summary>
-        private object? CALLCore(object? context, object target, IEnumerable<string> members, object[] arguments, IProvideCallArguments argumentProvider, int callerLineNum)
+        private object? CALLCore(object? context, object? target, IEnumerable<string> members, object[] arguments, IProvideCallArguments argumentProvider, int callerLineNum)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -1031,7 +1081,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// The arguments set must be an array since its contents may be mutated if the call target has "ref" parameters
         /// </summary>
-        private object InvokeGetter(object target, string? optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private object? InvokeGetter(object target, string? optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1050,18 +1100,27 @@ namespace Skrypton.RuntimeSupport.Implementations
                 arguments = arguments.Select(x => x is DispatchWrapper dw ? dw.WrappedObject : x).ToArray();
             }
             object resultValue = invoker.DelegateFunc(target, arguments);
+            if (invoker.UsesIReflect)
+            {
+                if (resultValue != null && resultValue is DispatchWrapper dw)
+                {
+                    return dw.WrappedObject;
+                }
+            }
             return resultValue;
         }
 
         [DebuggerDisplay("{_debugInfo}")]
         private sealed class GetterInfo
         {
+            internal readonly bool UsesIReflect;
             internal readonly Func<object, object[], object> DelegateFunc;
             private readonly string _debugInfo;
             internal readonly MemberInfo? _member;
 
-            public GetterInfo(Func<object, object[], object> delegateFunc, string debugInfo, MemberInfo? method)
+            public GetterInfo(Func<object, object[], object> delegateFunc, string debugInfo, MemberInfo? method, bool usesIReflect)
             {
+                UsesIReflect = usesIReflect;
                 DelegateFunc = delegateFunc ?? throw new ArgumentNullException(nameof(delegateFunc));
                 _debugInfo = debugInfo;
                 _member = method;
@@ -1115,7 +1174,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                 ).Compile();
 
-                return new GetterInfo(getterFunc, "Array", null); // Array
+                return new GetterInfo(getterFunc, "Array", null, usesIReflect: false); // Array
             }
 
             if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
@@ -1145,7 +1204,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         invokeArguments.ToArray()
                     );
                 };
-                return new GetterInfo(getterFunc, $"IDispatch::{optionalName}", null); // IDispatch
+                return new GetterInfo(getterFunc, $"IDispatch::{optionalName}", null, usesIReflect: false); // IDispatch
             }
 
             if (target is IReflect targetIReflect)
@@ -1197,7 +1256,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     );
                 };
 
-                return new GetterInfo(getterFunc, $"IReflect::{optionalName}", member); // IReflect
+                return new GetterInfo(getterFunc, $"IReflect::{optionalName}", member, usesIReflect: false); // IReflect
             }
 
             // TODO: There is a problem here with things like "source.Get(abc)" because it could be a call to a method "Get" on the source reference or it could be that "Get"
@@ -1434,6 +1493,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     // null return value into Nothing (aka. new DispatchWrapper(null)). We can only do this when retrieving
                     // values over reflection in this manner, there's no way for us to try to add this behaviour to IDispatch
                     // or IReflect calls, we'll have to hope that those classes behave properly already.
+                    /*
                     ConstructorInfo? dispatchWrapperConstructor = typeof(DispatchWrapper).GetConstructor(new[] { typeof(object) });
                     methodCallAndAndResultAssignments = methodCallAndAndResultAssignments
                         .Concat(new[]
@@ -1446,7 +1506,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                                 )
                             )
                         })
-                        .ToArray();
+                        .ToArray();*/
                 }
             }
 
@@ -1477,7 +1537,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 targetParameter,
                 argumentsParameter
             ).Compile();
-            return new GetterInfo(getterFunc, $"{method.DeclaringType!.FullName}::{method.Name}", method); // MethodInfo
+            return new GetterInfo(getterFunc, $"{method.DeclaringType!.FullName}::{method.Name}", method, usesIReflect: false); // MethodInfo
         }
 
         private delegate void SetInvoker(object target, object[] arguments, object value);
@@ -1735,7 +1795,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         //    return (int)Math.Round(value, MidpointRounding.ToEven); // This is what effectively what VBScript does
         //}
 
-        private object WalkMemberAccessors(object target, IEnumerable<string> memberAccessors, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private object? WalkMemberAccessors(object target, IEnumerable<string> memberAccessors, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1748,10 +1808,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                     throw new ArgumentException("Encountered null/blank in memberAccessors set");
 
                 // This should only be the case after we've gone round the loop at least once
+#pragma warning disable CA1508 // Avoid dead conditional code
                 if (target == null)
                     throw new ArgumentException("Unable to access member \"" + memberAccessor + "\" on null reference");
+#pragma warning restore CA1508 // Avoid dead conditional code
 
-                target = InvokeGetter(target, memberAccessor, [], allowPrivateAccess, onlyConsiderMethods);
+                object? targetX = InvokeGetter(target, memberAccessor, [], allowPrivateAccess, onlyConsiderMethods);
+                if (targetX == null)
+                {
+                    //throw new ArgumentException($"Encountered null in member resolving. memberAccessor:{memberAccessor}");
+                }
+                target = targetX!;
             }
             return target;
         }

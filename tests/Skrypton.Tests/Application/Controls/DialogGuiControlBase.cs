@@ -290,6 +290,14 @@ namespace Skrypton.Tests.Application.Controls
     public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
     {
         public int Top { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
+
+        public HLObjectInstance SelectedObject
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase

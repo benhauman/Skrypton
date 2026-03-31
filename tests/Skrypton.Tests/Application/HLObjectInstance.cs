@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Skrypton.Tests.RuntimeSupport.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,7 +12,7 @@ namespace Skrypton.Tests.Application
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     //[ComDefaultInterface(typeof(IScriptingHelplineObject))]
-    public sealed class HLObjectInstance // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
+    public sealed class HLObjectInstance : IReflectOnClrType // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
     {
         private readonly string _traceName;
         private readonly Dictionary<ObjectValueKey, ObjectValueData> _values = new Dictionary<ObjectValueKey, ObjectValueData>();

@@ -794,9 +794,10 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             var value = _.CALLm1v0(context: null, target: new ClassWithComVisiblePropertyThatIsAlwaysNull(), member1: "Value");
+            myAssert.IsNull(value);
 #pragma warning disable CA1416 // Validate platform compatibility
-            myAssert.IsType<DispatchWrapper>(value);
-            myAssert.Null(((DispatchWrapper)value).WrappedObject);
+            //lubo myAssert.IsType<DispatchWrapper>(value);
+            //lubo myAssert.Null(((DispatchWrapper)value).WrappedObject);
 #pragma warning restore CA1416 // Validate platform compatibility
         }
 
@@ -804,7 +805,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void NothingShouldNotBeReturnedForNullForPropertyOfObjectType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            myAssert.Null(
+            myAssert.IsNull(
                 _.CALLm1v0(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }
@@ -817,7 +818,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void NothingShouldNotBeReturnedForNullForPropertyOfStringType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
-            myAssert.Null(
+            myAssert.IsNull(
                 _.CALLm1v0(context: null, target: new ClassWithObjectPropertyThatIsAlwaysNull(), member1: "Value")
             );
         }

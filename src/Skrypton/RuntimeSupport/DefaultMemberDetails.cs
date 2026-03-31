@@ -8,7 +8,7 @@ namespace Skrypton.RuntimeSupport
         private static readonly DefaultMemberDetails _knownToNotHaveDefaultMemberPresent = new DefaultMemberDetails(false, false, null, null);
         public static DefaultMemberDetails KnownToHaveDefault() { return _knownToHaveDefaultMemberPresent; }
         public static DefaultMemberDetails KnownToNotHaveDefault() { return _knownToNotHaveDefaultMemberPresent; }
-        public static DefaultMemberDetails RetrievedResult(object value)
+        public static DefaultMemberDetails RetrievedResult(object? value)
         {
             return new DefaultMemberDetails(true, true, value, null);
         }
