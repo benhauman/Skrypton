@@ -14,7 +14,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class CHR : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object value, Char expectedResult)
         {
             myAssert.AreEqual(new string(expectedResult, 1), DefaultRuntimeSupportClassFactoryInstance.Get().CHR(value));
@@ -45,7 +45,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(InvalidUseOfNullData))]
+        [TestMethod, MyMemberData(nameof(InvalidUseOfNullData))]
         public void InvalidUseOfNullCases(string description, object value)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(TypeMismatchData))]
+        [TestMethod, MyMemberData(nameof(TypeMismatchData))]
         public void TypeMismatchCases(string description, object value)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(ObjectVariableNotSetData))]
+        [TestMethod, MyMemberData(nameof(ObjectVariableNotSetData))]
         public void ObjectVariableNotSetCases(string description, object value)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -97,7 +97,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        [TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object value)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>

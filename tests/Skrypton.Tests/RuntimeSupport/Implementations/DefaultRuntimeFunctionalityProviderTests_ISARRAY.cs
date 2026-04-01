@@ -13,13 +13,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class ISARRAY : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("TrueData")]
+        [TestMethod, MyMemberData("TrueData")]
         public void TrueCases(string description, object value)
         {
             myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().ISARRAY(value));
         }
 
-        [TestMethod, MyTheory, MyMemberData("FalseData")]
+        [TestMethod, MyMemberData("FalseData")]
         public void FalseCases(string description, object value)
         {
             myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().ISARRAY(value));

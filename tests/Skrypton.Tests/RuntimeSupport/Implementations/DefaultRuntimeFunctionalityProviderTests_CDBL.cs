@@ -15,7 +15,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     //{
         public class CDBL : TestBase
     {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Empty()
             {
                 myAssert.AreEqual(
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Null()
             {
                 myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -33,7 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BlankString()
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NonNumericString()
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -51,7 +51,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveNumberAsString()
             {
                 myAssert.AreEqual(
@@ -60,7 +60,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveNumberAsStringWithLeadingAndTrailingWhitespace()
             {
                 myAssert.AreEqual(
@@ -69,7 +69,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveNumberWithNoZeroBeforeDecimalPoint()
             {
                 myAssert.AreEqual(
@@ -78,7 +78,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NegativeNumberWithNoZeroBeforeDecimalPoint()
             {
                 myAssert.AreEqual(
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NegativeNumberWithNoZeroBeforeDecimalPointAndSpaceBetweenSignAndPoint()
             {
                 myAssert.AreEqual(
@@ -96,7 +96,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NegativeNumberAsString()
             {
                 myAssert.AreEqual(
@@ -105,7 +105,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Nothing()
             {
                 var nothing = VBScriptConstants.Nothing;
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ObjectWithoutDefaultProperty()
             {
                 myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
@@ -124,7 +124,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ObjectWithDefaultProperty()
             {
                 var target = new exampledefaultpropertytype { result = 123.4 };
@@ -134,7 +134,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Zero()
             {
                 myAssert.AreEqual(
@@ -143,7 +143,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PlusOne()
             {
                 myAssert.AreEqual(
@@ -152,7 +152,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void MinusOne()
             {
                 myAssert.AreEqual(
@@ -161,7 +161,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void OnePointOne()
             {
                 myAssert.AreEqual(
@@ -170,7 +170,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DateAndTime()
             {
                 myAssert.AreEqualX(
@@ -180,7 +180,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void True()
             {
                 myAssert.AreEqual(
@@ -189,7 +189,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void False()
             {
                 myAssert.AreEqual(

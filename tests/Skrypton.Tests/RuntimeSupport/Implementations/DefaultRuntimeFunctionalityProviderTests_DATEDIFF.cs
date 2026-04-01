@@ -15,13 +15,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // TODO: Incomplete..
     public class DATEDIFF : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object interval, object date1, object date2, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEDIFF(interval, date1, date2));
         }
 
-        //[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        //[TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object interval, object date1, object date2)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        //[TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        //[TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object interval, object date1, object date2)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        //[TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        //[TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object interval, object date1, object date2)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        //[TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        //[TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object interval, object date1, object date2)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>

@@ -38,7 +38,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		/// in the output (see the SimpleCaseWithoutErrorHandling test), but if error-trapping may be enabled then this code must be present
 		/// (even if there's a chance that an ON ERROR GOTO 0 will disable the error-trapping in the current scope at some point at runtime).
 		/// </summary>
-		[TestMethod, MyFact]
+		[TestMethod]
 		public void SimpleCaseWithErrorHandling()
 		{
 			var source = @"
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		/// is no scenario where error-trapping could be enabled within the loop, so the WScript.Echo call is not wrapped in a HANDLEERROR call. This
 		/// could be improved in the future but I thought it was worth having this test to illustrate the discrepancy.
 		/// </summary>
-		[TestMethod, MyFact]
+		[TestMethod]
 		public void SimpleCaseWithErrorHandlingButWithItDisabledAtRunTimeBeforeTheLoop()
 		{
 			var source = @"
@@ -117,7 +117,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		/// <summary>
 		/// This tests a fix where the loop variable was not being included in the "env" references if it was a non-declared variable
 		/// </summary>
-		[TestMethod, MyFact]
+		[TestMethod]
 		public void UndeclaredLoopVariablesMustBeAddedToTheEnvironmentReferences()
 		{
 			var source = @"

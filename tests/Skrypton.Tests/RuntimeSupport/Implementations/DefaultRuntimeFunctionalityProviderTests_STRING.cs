@@ -13,13 +13,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class STRING : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object numberOfTimesToRepeat, object character, string expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().STRING(numberOfTimesToRepeat, character));
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -46,7 +46,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("OverflowData")]
+        [TestMethod, MyMemberData("OverflowData")]
         public void OverflowCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
@@ -55,7 +55,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        [TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -64,7 +64,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("OutOfStringSpaceData")]
+        [TestMethod, MyMemberData("OutOfStringSpaceData")]
         public void OutOfStringSpaceCases(string description, object numberOfTimesToRepeat, object character)
         {
             myAssert.Throws<OutOfStringSpaceException>(() =>

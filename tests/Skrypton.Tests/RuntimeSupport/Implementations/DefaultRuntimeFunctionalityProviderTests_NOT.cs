@@ -13,13 +13,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     //{
         public class NOT : TestBase
     {
-            [TestMethod, MyTheory, MyMemberData("SuccessData")]
+            [TestMethod, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, object expectedResult)
             {
                 myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().NOT(value));
             }
 
-            [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+            [TestMethod, MyMemberData("TypeMismatchData")]
             public void TypeMismatchCases(string description, object value)
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyTheory, MyMemberData("OverflowData")]
+            [TestMethod, MyMemberData("OverflowData")]
             public void OverflowCases(string description, object value)
             {
                 myAssert.Throws<VBScriptOverflowException>(() =>
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+            [TestMethod, MyMemberData("ObjectVariableNotSetData")]
             public void ObjectVariableNotSetCases(string description, object value)
             {
                 myAssert.Throws<ObjectVariableNotSetException>(() =>

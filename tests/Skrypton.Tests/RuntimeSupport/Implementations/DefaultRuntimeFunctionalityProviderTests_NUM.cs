@@ -14,7 +14,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     //{
         public class NUM : TestBase
     {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Empty()
             {
                 myAssert.AreEqual(
@@ -23,7 +23,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Null()
             {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -32,7 +32,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void True()
             {
                 myAssert.AreEqual(
@@ -41,7 +41,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void False()
             {
                 myAssert.AreEqual(
@@ -50,7 +50,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BlankString()
             {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -59,7 +59,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveIntegerString()
             {
                 myAssert.AreEqual(
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveIntegerStringWithLeadingWhitespace()
             {
                 myAssert.AreEqual(
@@ -77,7 +77,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveIntegerStringWithTrailingWhitespace()
             {
                 myAssert.AreEqual(
@@ -86,7 +86,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void TwoIntegersSeparatedByWhitespace()
             {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -95,7 +95,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PositiveDecimalString()
             {
                 myAssert.AreEqual(
@@ -104,7 +104,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PseudoNumberWithMultipleDecimalPoints()
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -113,7 +113,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DateAndTime()
             {
                 var date = new DateTime(2015, 1, 22, 20, 11, 5, 0);
@@ -123,7 +123,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void IntegerWithDate()
             {
                 myAssert.AreEqual(
@@ -132,7 +132,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BytesWithAnInteger()
             {
                 // In a loop "FOR i = CBYTE(1) TO CBYTE(5) STEP 1", the "Integer" step of 1 (this would happen with an implicit step too, since that defaults
@@ -144,7 +144,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DateWithDoublesThatAreWithinDateAcceptableRange()
             {
                 var date = new DateTime(2015, 1, 22, 20, 11, 5, 0);
@@ -154,7 +154,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DateWithDoublesThatAreNotWithinDateAcceptableRange()
             {
                 myAssert.Throws<VBScriptOverflowException>(() =>
@@ -163,7 +163,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void IntegerWithIntegerValueAsString()
             {
                 // Strings are always parsed into doubles, regardless of the size of the value they represent
@@ -173,7 +173,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringRepresentationsOfDatesAreNotParsed()
             {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -182,7 +182,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringRepresentationsOfISODatesAreNotParsed()
             {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -191,7 +191,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringRepresentationsOfBooleanValuesAreNotParsed()
             {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -200,7 +200,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DecimalIsEvenBiggerThanDouble()
             {
                 // Although the double type can contain a greater range of values than decimal, VBScript prefers decimal if both are present
@@ -210,7 +210,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 );
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DecimalWithDoublesThatAreNotWithinVBScriptCurrencyAcceptableRange()
             {
             // See https://msdn.microsoft.com/en-us/library/9e7a57cf%28v=vs.84%29.aspx for limits of the VBScript data types
@@ -223,7 +223,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void IntegerWithDecimal()
             {
                 myAssert.AreEqual(

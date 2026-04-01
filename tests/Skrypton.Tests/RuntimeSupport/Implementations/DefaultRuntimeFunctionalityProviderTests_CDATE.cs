@@ -23,7 +23,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// had to be added around the integer that represents the greatest possible date in VBScript (2958465 / 9999-12-31) and so any non-integer values based upon that number
         /// will fail a round trip by a small margin (eg. 2958465.9), but other values should pass through a round trip unaltered (to a certain level of precision).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RoundTripConversionCases()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.Get();
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object value, DateTime expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CDATE(value));
@@ -82,7 +82,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object value)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -91,7 +91,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object value)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -100,7 +100,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object value)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -109,7 +109,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("OverflowData")]
+        [TestMethod, MyMemberData("OverflowData")]
         public void OverflowCases(string description, object value)
         {
             myAssert.Throws<VBScriptOverflowException>(() =>

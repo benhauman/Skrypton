@@ -8,7 +8,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// When running the parser against real content a silly mistake was found where an "ELSE" inside a comment would be treated as a
         /// real ELSE and result in an exception being raised when the real ELSE keyword was encountered
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotConsiderKeywordsInComments()
         {
             var source = @"
@@ -17,21 +17,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Else
 				End If
 			";
-            var expected = @"
-                if (_.IF(true))
-                {
-                  //Else
-                }
-                else
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// When testing against real content, another silly mistake was found where an inline comment would result in the parser getting confused
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotGetConfusedByCommentsInLineWithConditions()
         {
             var source = @"
@@ -44,13 +36,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "{",
                 "}",
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// Similar issue to DoNotGetConfusedByCommentsInLineWithConditions
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotGetConfusedByCommentsInLineWithConditionsInSingleLineIfStatements()
         {
             var source = "If True Then WScript.Echo True 'Comment";
@@ -61,14 +53,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 _.CALLm1v1(this, _env.WScript, ""Echo"", true); //Comment
                 }"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This addresses a bug found in testing (relating to InlineCommentStatement detection in the IfBlockTranslator, which assumed that there would
         /// always be at least one statement within any conditional block)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyIfBlocksDoNotCauseExceptions()
         {
             var source = @"
@@ -81,7 +73,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "{",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -91,7 +83,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// by-ref argument of that function as a by-ref argument to another function, since the calling code of the second function will reference the by-ref
         /// argument in a lambda and it's not legal in C# to reference a ref variable within a lambda) then the second conditional was not nested correctly
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ElseIfConditionalThatRequiresByRefArgumentRewritingMustBeWithinOwnElseBlockEvenIfFollowing2() // ElseIfConditionalThatRequiresByRefArgumentRewritingMustBeWithinOwnElseBlockEvenIfFollowingConditionalThatDoesNotNeedByRefArgumentRewriting
         {
             var source = @"
@@ -104,34 +96,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            if (_.IF(true))
-            {
-            }
-            else
-            {
-                bool ifResult;
-                object x_vref = x;
-                try
-                {
-                    ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v2 => { x_vref = v2; })));
-                }
-                finally { x = x_vref; }
-                if (ifResult)
-                {
-                }
-            }
-            return F1_retVal;
-        }
-        public object F2(ref object x)
-        {
-            return null;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         [TestClass]
@@ -147,7 +112,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// is a variable with a numeric value, a comparison to a value that is not parseable as a number would fail, rather than error - it only errors
             /// if one side is a number.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NonNegativeNumericConstantComparedToVariableRequiresTheVariableBeParsedToNumber()
             {
                 var source = @"
@@ -166,7 +131,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// <summary>
             /// Negative numbers are not considered to be numeric literals, they do not get the special treatment
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NegativeNumericConstantsDoNotGetSpecialTreatment()
             {
                 var source = @"
@@ -188,7 +153,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// holds when one side is a numeric constant and the other isn't, NOT just when one side is a numeric constant - the logic considers
             /// both sides of the operation)
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NumericConstantComparedToAnotherNumericConstantDoesNotRequireAdditionalParsing()
             {
                 var source = @"
@@ -201,7 +166,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -213,7 +178,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// that is seen when a "real" numeric constant appears in a comparison (if the other side of the operation is a variable, this variable is not
             /// forced parsed into a numeric value)
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NumericBuiltInValuesDoNotCountAsNumericConstantsWhenMakingComparisons()
             {
                 var source = @"
@@ -233,7 +198,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// Although boolean values are often treated as numbers in VBScript, if a comparison to a numeric constant is made then that boolean value
             /// must be translated into a number, just to be sure
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BooleansDoNotGetTreatedAsNumericConstants()
             {
                 var source = @"
@@ -246,7 +211,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -258,7 +223,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// could be identified at compile time as effectively being a numeric constant value. The VBScript interpreter does not do this, so if
             /// a variable is compared to (1+0) then the variable will not be parsed into a number before the runtime comparison method is called.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void CalculationsThatCouldBeEvaluatedAsNumericConstantsAreNotTreatedAsNumericConstants()
             {
                 var source = @"
@@ -279,7 +244,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// away then they are no longer treated as numeric constants. This is not the case, though, unnecessary brackets are removed and so any
             /// value that is compared to that value must be parsed into a numeric value (or an error raised) before the comparison is made.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void UnnecessaryBracketsAreUnrolledFromNumericConstants()
             {
                 var source = @"
@@ -307,7 +272,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// to see when this might have happened and the CInt / CLng / CDbl call gets removed after it has done its job of preventing the values from
             /// being treated as a literal where it matters in the translation process.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DoubleNegativesAreRemovedButCanPreventsNumericLiteralSpecialBehaviour()
             {
                 var source = @"
@@ -320,7 +285,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -332,7 +297,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// sign that is removed rather than double minus sign. Both have no effect on the value itself, but they do affect whether or not it
             /// is treated as a literal (it is not).
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void PlusSignBeforeNumberPreventsNumericLiteralSpecialBehaviour()
             {
                 var source = @"
@@ -345,7 +310,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -356,7 +321,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// If there is a case of where a date literal is compared to a numeric literal, the numeric literal rule takes precedence and the date value
             /// must be considered as a number in the comparison
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void DateLiteralWillBeInterpretedAsNumberIfComparedToNumericLiteral()
             {
                 var source = @"
@@ -369,7 +334,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -389,7 +354,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// at a glance since there is no can-not-parse-into-number type mismatch that may be raised. The simplest example that illustrates it is to consider
             /// two variables; i = 1, j = "1". The comparison (i = j) returns false but (i = "1") returns true, even though j = "1".
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringConstantComparedToVariableResultsInTheOtherValueBeingTranslatedIntoString()
             {
                 var source = @"
@@ -402,17 +367,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
             }
 
             /// <summary>
             /// If both sides of a comparison are string constants, then there is no casting required since they are both known to be string at compile time
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringConstantComparedToAnotherStringConstantDoesNotRequireAdditionalParsing()
             {
                 var source = @"
@@ -425,18 +386,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
 
             /// <summary>
             /// If there is a case of where a numeric literal is compared to a string literal, the numeric literal rule takes precedence and the string
             /// value must be parsed into a number (or a type mismatch raised)
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringConstantWillBeParsedAsNumberIfComparedToNumericConstant()
             {
                 var source = @"
@@ -449,7 +406,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -460,7 +417,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// If there is a case of where a date literal is compared to a string literal, the date literal rule takes precedence and the string
             /// value must be parsed into a date (or a type mismatch raised)
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void StringConstantWillBeParsedAsDateIfComparedToDateLiteral()
             {
                 var source = @"
@@ -473,7 +430,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -484,7 +441,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// There are no special cases around boolean literals, so if a boolean literal is compared to a string literal then the boolean is
             /// converted into a string, just like any other (non-numeric-literal) value will be
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BooleanConstantComparedToStringConstantWillBeConsideredAsString()
             {
                 var source = @"
@@ -497,7 +454,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "{",
                     "}"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
                 //myAssert.AreEqual(
                 //    expected.Select(s => s.Trim()).ToArray(),
                 //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -511,7 +468,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// </summary>
         public class BooeleanLiteralAbsentSpecialCases : TestBase
         {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void BooleanConstantComparedToVariableDoesNotResultInAnyFunnyBusiness()
             {
                 var source = @"
@@ -532,7 +489,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// When the ScopeAccessInformation extension method SetParent is called, it is verified that the specified parent is one of the code blocks within the current
         /// scope's "scope defining parent", but the code was checking the AllExecutableBlocks property, which doesn't recursively search every block
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NestedIfBlocksDoNotConfuseTheTranslatorScopeAccessInformationParentBlockTracking()
         {
             var source = @"
@@ -550,7 +507,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "  }",
                 "}",
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
             //myAssert.AreEqual(
             //    expected.Select(s => s.Trim()).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -565,7 +522,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// updated from this variable after the function call completes (whether it succeeds or fails - if the ByRef argument was altered before the error
             /// then that updated value must be persisted). This is to avoid trying to access "ref" reference in a lambda, which is a compile error in C#.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByRefArgument()
             {
                 var source = @"
@@ -577,28 +534,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(a)
 					End Function
 				";
-                string expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            bool ifResult;
-            object a_vref = a;
-            try
-            {
-                ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })));
-            }
-            finally { a = a_vref; }
-            if (ifResult)
-            {
-            }
-            return F1_retVal;
-        }
-        public object F2(ref object a)
-        {
-            return null;
-        }
-                ";
-                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
 
             /// <summary>
@@ -606,7 +542,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// function is used within an codeExpression where it will not be considered ByRef (eg. if argument "a" is indirectly referenced as "a.Name" to specify
             /// another function argument then it be passed ByVal, since neither "a" nor "a.Name" may be affected by the function it is being passed into it)
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ByRefFunctionArgumentDoesNotRequireSpecialTreatmentIfUsedInConditionsAsByValArgument()
             {
                 var source = @"
@@ -633,7 +569,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         return null;
                     }"
                 };
-                TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
 
             /// <summary>
@@ -644,7 +580,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// would know to consider that a ByVal argument since "a.Name" can never be changed when passed as a ByRef function argument, but it makes the
             /// decision based solely on information at the caller.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ByRefFunctionArgumentDoNotRequireSpecialTreatmentIfUsedInConditionsAsByValArgument()
             {
                 var source = @"
@@ -656,27 +592,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(ByVal a)
 					End Function
 				";
-                var expected = @"
-public object F1(ref object a)
-{
-    object F1_retVal = null;
-    bool ifResult;
-    object a_vref = a;
-try
-{
-    ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })));
-}
-finally { a = a_vref; }
-if (ifResult)
-{
-}
-    return F1_retVal;
-}
-public object F2(object a)
-{
-    return null;
-}";
-                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
 
             /// <summary>
@@ -685,7 +601,7 @@ public object F2(object a)
             /// a case, the standard alias-ByRef-argument-when-passing-elsewhere-as-ByRef-argument application is sufficient, the two processes should
             /// not incur any kind of "double aliasing" madness.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByRefArgument_AlsoTheCaseWhenWithinErrorTrapping()
             {
                 var source = @"
@@ -698,31 +614,7 @@ public object F2(object a)
 					Function F2(ByVal a)
 					End Function
 				";
-                string expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            bool ifResult;
-            object a_vref = a;
-            try
-            {
-                ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })), errOn);
-            }
-            finally { a = a_vref; }
-            if (ifResult)
-            {
-            }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-        public object F2(object a)
-        {
-            return null;
-        }
-                ";
-                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
 
             /// <summary>
@@ -733,7 +625,7 @@ public object F2(object a)
             /// the condition is evaluated, however, there is no need to overwrite the original argument with the alias reference's value since there was
             /// no way for that alias to have been altered by the evaluation.
             /// </summary>
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByValArgumentWhenErr() // ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByValArgumentWhenWithinErrorTrapping
             {
                 var source = @"
@@ -746,27 +638,7 @@ public object F2(object a)
 					Function F2(ByVal a)
 					End Function
 				";
-                var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            bool ifResult;
-            object a_zref = a;
-            ifResult = _.IF(() => _.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, a_zref, ""Name"")), errOn);
-            if (ifResult)
-            {
-            }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-        public object F2(object a)
-        {
-            return null;
-        }
-";
-                TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+                TestCSharpCodeTranslationWithoutScaffolding(null, source);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Skrypton.Tests.LegacyParser
         /// in a value-setting-statement, any subsequent equals signs are comparison operators (C# uses "==" for comparisons, as opposed to "=" for setting
         /// values, which is clearer.. but this is VBScript)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SubsequentEqualsTokensInValueSettingStatementAreComparisonOperators()
         {
             var statement = (new StatementHandler()).Process(new List<IToken>

@@ -14,7 +14,7 @@ namespace Skrypton.Tests.LegacyParser
         /// There was an issue where the argument separator tokens weren't being removed from DIM statements for multiple variables - this is the
         /// fail-before-fixing test for that issue
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VariableSeparatorsAreCorrectlyRemovedAsProcessedContent()
         {
             var tokens = new List<IToken>

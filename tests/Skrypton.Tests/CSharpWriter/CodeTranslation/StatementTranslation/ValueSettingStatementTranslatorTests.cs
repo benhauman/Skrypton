@@ -14,7 +14,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
     [TestClass]
     public class ValueSettingStatementTranslatorTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredSimpleValueTypeUpdate()
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
@@ -35,7 +35,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// There used to be an unnecessary VAL function call wrapped around boolean literals for LET ValueSettingStatements, this test proves the fix
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredSimpleValueTypeUpdateToBoolean()
         {
             var expressionToSet = new CodeExpression([new NameToken("a", lineIndex1)]);
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             myAssert.AreEqualX(this, "_env.a = true", [new NameToken("a", lineIndex1)], actual);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfThereAreZeroArgumentsThenSpecifyingArgumentProviderIsNotRequired()
         {
             var expressionToSet = new CodeExpression(
@@ -77,7 +77,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1)], actual);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OutermostScopeDeclaredSimpleValueTypeUpdate()
         {
             var expressionToSet = new CodeExpression(
@@ -107,7 +107,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// If "a" is declared as a variable in "a(0) = 1" then access will be attempted as an array or default indexed function or property
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OutermostScopeDeclaredSimpleValueTypeUpdateOfArray()
         {
             var expressionToSet = new CodeExpression(
@@ -141,7 +141,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// If "a" is undeclared then it is implicitly treated as a variable (so this is very similar to OutermostScopeDeclaredSimpleValueTypeUpdateOfArray)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredSimpleValueTypeUpdateOfArray()
         {
             var expressionToSet = new CodeExpression(
@@ -171,7 +171,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// If "a" is a function then special handling is required for "a(0) = 1"; it must compile but fail at run time
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void InvalidFunctionSettingMustCompileThoughFailAtRunTime()
         {
             var expressionToSet = new CodeExpression(
@@ -204,7 +204,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 actual);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BuiltInFunctionsAreMappedToTheSupportClassAndMayBeCalledDirectlyIfArgumentCountsMatch()
         {
             // CDate(..) needs to be mapped to _.CDATE(..) - this may be called directly if the correct number of arguments are specified. If an incorrect number
@@ -236,7 +236,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 actual);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BuiltInFunctionsAreMappedToTheSupportClassButMayNotBeCalledDirectlyIfArgumentCountsMatch()
         {
             // This is a complement to BuiltInFunctionsAreMappedToTheSupportClassAndMayBeCalledDirectlyIfArgumentCountsMatch, where an incorrect number of
@@ -269,7 +269,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)], actual);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredSetTargetsWithinFunctionsAreScopeRestrictedToThatFunction()
         {
             // The ValueSettingStatementsTranslator wasn't using the ScopeAccessInformation's GetNameOfTargetContainerIfAnyRequired extension method and
@@ -322,7 +322,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// If the value-to-set is a variable (whether explicitly declared or not), if that name is followed by brackets with no arguments inside
         /// then there will always by a type-mismatch error
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ValueSettingTargetOfTypeVariableWithZeroArgumentBracketsResultsInTypeMismatch()
         {
             var expressionToSet = new CodeExpression(
@@ -350,7 +350,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// <summary>
         /// If the value-to-set is a function, if that name is followed by brackets with no arguments inside then there will always by a type-mismatch error
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ValueSettingTargetOfTypeFunctionWithZeroArgumentBracketsResultsInTypeMismatch()
         {
             var expressionToSet = new CodeExpression(
@@ -382,7 +382,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// If the value-to-set is a property, if that name is followed by brackets with no arguments inside then there will NOT be a type-mismatch
         /// error (which is surprising consider the function behaviour, but there you go)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ValueSettingTargetOfTypePropertyWithZeroArgumentBracketsResultsInTypeMismatch()
         {
             var expressionToSet = new CodeExpression(

@@ -26,7 +26,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         // TODO: "WScript.Echo o" where "o" has a default parameter-less function => "Type mismatch"
         // TODO: "WScript.Echo o()" where "o" has a default parameter-less function => displays the function return value (if value-type, "Type mismatch" if reference)
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IsolatedNonFunctionOrPropertyReferenceHasValueTypeAccessLogic()
         {
             // "o" (where there is no function or property in scope called "o")
@@ -45,7 +45,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IsolatedFunctionCallAccordingToScopeDoesNotHaveValueTypeAccessLogic()
         {
             // "o" (where there is a function in scope called "o")
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByRef()
         {
             // "o(a)" (where there is a function in scope called "o" and a variable "a")
@@ -104,7 +104,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         /// VBScript will give special significance to arguments that are wrapped in extra brackets - if the argument would have been passed ByRef
         /// before, the brackets will force it to be passed ByVal
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void KnownVariablePassedAsArgumentToKnownFunctionIsPassedByValIfWrappedInBrackets()
         {
             // "o((a))" (where there is a function in scope called "o" and a variable "a")
@@ -137,7 +137,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NestedFunctionOrArrayAccess()
         {
             // "a(0)(b)" (where neither a nor b are defined and so there could be method calls OR array accesses)
@@ -169,7 +169,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // know that until runtime).
             myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)], GetDefaultStatementTranslator().TranslateParsingExpression(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None));
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NestedBracketAndFurtherMemberAccessExpressionShouldBePassedByValIntoFunctions()
         {
             // When "a.b(0).c" is considered as an argument, it should be identified as ByVal (since only a direct reference - eg. "a" or even "a(0)" if "a"

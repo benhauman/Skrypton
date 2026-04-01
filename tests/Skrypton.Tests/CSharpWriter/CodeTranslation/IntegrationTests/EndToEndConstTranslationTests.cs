@@ -9,7 +9,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndConstTranslationTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RepeatedConstNameInSameScopeResultsInNameRedefinedError()
         {
             var source = @"
@@ -21,7 +21,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ConstThenDimForSameNameInSameScopeResultsInNameRedefinedError()
         {
             var source = @"
@@ -31,7 +31,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             myAssert.Throws<NameRedefinedException>(() => DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], []));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DimThenConstForSameNameInSameScopeResultsInNameRedefinedError()
         {
             var source = @"
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// variable already declared for it to target). However, a REDIM and THEN a CONST for the same variable IS a name-redefined compile
         /// error since the REDIM will have been treated as an explicit variable declaration (since it came first).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ReDimBeforeConstForSameNameInSameScopeResultsInNameRedefinedError()
         {
             var source = @"
@@ -66,7 +66,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// so doesn't try to create one of its own) but it will result in a runtime illegal assignment error. This happens after any evaluation
         /// is performed regarding dimension sizes, so each argument of the REDIM must be processed and the error raised afterward.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ReDimAfterConstForSameNameInSameScopeResultsInIllegalAssignmentRuntimeError()
         {
             var source = @"
@@ -75,18 +75,10 @@ sub test
     ReDim a(1)
 end sub
 			";
-            var expected = @"
-public void test()
-{
-    const Int16 a = (Int16)1;
-    _.NEWARRAY(new object[] { (Int16)1 });
-    _.RAISEERROR(new IllegalAssignmentException(""'a'""));
-}
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ConstsForTheSameVariableAreAllowedIfTheyAreInSeparateScopes()
         {
             var source = @"
@@ -97,23 +89,14 @@ public void test()
                     F1 = a
 				End Function
 			";
-            var expected = @"
-_outer.obj = _.VAL(_outer.a);
-public object F1()
-{
-    object F1_retVal = null;
-    const Int16 a = (Int16)1;
-    F1_retVal = _.VAL(a);
-    return F1_retVal;
-}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// It doesn't make sense for a CONST value to ever be passed as a function argument by-ref since it can't be changed - the easiest way to
         /// deal with this is for the translation process to always pass CONST value by-val
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ConstValuesShouldAlwaysBePassedToFunctionsByVal()
         {
             var source = @"
@@ -122,25 +105,14 @@ public object F1()
                 Function F1(a)
                 End Function
 			";
-            var expected = @"
-_.CALLm1v1(this, _outer, ""F1"", _outer.a);
-public object F1(ref object a)
-{
-return null;
-}
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// There was a flaw with the Const translation that resulted in the value token's string being emitted directly, rather than correctly processed (in the case of a string,
         /// this would have meant that there were no quotes around the value)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void StringValuesAreCorrectlyEscaped()
         {
             var source = @"
@@ -149,14 +121,7 @@ sub func
     msgbox name
 end sub
                 ";
-            var expected = @"
-public void func()
-{
-    const string name = ""test"";
-    _.MSGBOX(name);
-}
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
     }
 }

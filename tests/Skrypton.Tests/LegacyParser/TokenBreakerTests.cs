@@ -14,7 +14,7 @@ namespace Skrypton.Tests.LegacyParser
         /// Previously, there was an error where a line break would result in a LineIndex increment for both the line break token and the token
         /// preceding it, rather than tokens AFTER the line break
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IncrementLineIndexAfterLineBreaks()
         {
             myAssert.AreEqual(
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UnderscoresAreLineContinuationsWhenTheyArePrecededByWhitespace()
         {
             myAssert.AreEqual(
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UnderscoresAreLineContinuationsWhenTheyArePrecededByTokenBreakers()
         {
             myAssert.AreEqual(
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotConsiderUnderscoresToBeLineContinuationsWhenTheyArePartOfVariableNames()
         {
             myAssert.AreEqual(
@@ -72,7 +72,7 @@ namespace Skrypton.Tests.LegacyParser
         /// I realised that "1/0" wasn't being correctly broken down since the "/" wasn't being considered a "Token Break Character" and so the "1/0" was being
         /// interpreted as a NameToken, instead of two numeric value tokens and an operator.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EnsureThatDivisionOperatorsAreRecognised()
         {
             myAssert.AreEqual(
@@ -90,7 +90,7 @@ namespace Skrypton.Tests.LegacyParser
         /// This is the same issue as that for which the EnsureThatDivisionOperatorsAreRecognised test was added, but for the integer division opereator (back
         /// slash, rather than forward)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EnsureThatIntegerDivisionOperatorsAreRecognised()
         {
             myAssert.AreEqual(
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.LegacyParser
         ///   StringToken:""
         /// The TokenBreaker would then get an UnprocessedContentToken with content "value<>" which it needs to break into three.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void LessThanComparisonOperatorIndicatesTokenBreakRegardlessOfWhitespace()
         {
             myAssert.AreEqual(

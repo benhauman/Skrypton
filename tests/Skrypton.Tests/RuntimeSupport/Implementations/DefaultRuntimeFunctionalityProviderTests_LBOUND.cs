@@ -14,13 +14,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class LBOUND : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, int dimension, int expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().LBOUND(value, dimension));
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object value, int dimension)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object value, int dimension)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("SubscriptOutOfRangeData")]
+        [TestMethod, MyMemberData("SubscriptOutOfRangeData")]
         public void SubscriptOutOfRangeCases(string description, object value, int dimension)
         {
             myAssert.Throws<SubscriptOutOfRangeException>(() =>

@@ -11,7 +11,7 @@ namespace Skrypton.Tests.StageTwoParser
     [TestClass]
     public class OperatorCombinerTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OnePlusNegativeOne()
         {
             myAssert.AreEqual(
@@ -32,7 +32,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OneMinusNegativeOne()
         {
             myAssert.AreEqual(
@@ -53,7 +53,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OneMultipliedByPlusOne()
         {
             // When operators are removed entirely by the OperatorCombiner, if they are removed from in front of numeric values, the numeric value is wrapped
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TwoGreaterThanOrEqualToOne()
         {
             myAssert.AreEqual(

@@ -5,7 +5,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndReDimTranslationTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfUndeclaredVarInOutermostShouldDeclareTheVarInOutermost() // NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
@@ -14,7 +14,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfUndeclaredVarInTheOutermostShouldDeclareTheVarInOutermost() // PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
@@ -23,81 +23,51 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfUndeclaredVarInFuncShouldDeclareTheVarInLocal()
         {
             string source = @"
                     Function F1()
                         ReDim a(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfUndeclaredVarInFunctShouldDeclareTheVarInLocal()
         {
             string source = @"
                     Function F1()
                         ReDim Preserve a(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.RESIZEARRAY(a, new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfFunctionReturnValue()
         {
             string source = @"
                     Function F1()
                         ReDim F1(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      F1_retVal = _.NEWARRAY(new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfFunctionReturnValue()
         {
             string source = @"
                     Function F1()
                         ReDim Preserve F1(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      F1_retVal = _.RESIZEARRAY(F1_retVal, new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This test is just to ensure that multiple ReDim statements for the same otherwise-undeclared variable do not result in that variable
         /// being defined multiple times in the C# code (when the ReDim statements exist within in the outermost scope)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RepeatedReDimInOutermostScope1()
         {
             string source = @"
@@ -115,7 +85,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This test is just to ensure that multiple ReDim statements for the same otherwise-undeclared variable do not result in that variable
         /// being defined multiple times in the C# code (when the ReDim statements exist within a function or property)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RepeatedReDimInFunction1()
         {
             string source = @"
@@ -124,19 +94,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.NEWARRAY(new object[] { (Int16)0 });
-                      a = _.NEWARRAY(new object[] { (Int16)1 });
-                      a = _.NEWARRAY(new object[] { (Int16)2 });
-                      return F1_retVal;
-                   }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope1()
         {
             string source = @"
@@ -146,10 +106,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string[] expected = [
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
                 ];
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfDeclaredVariableInTheOutermostScope1()
         {
             string source = @"
@@ -159,10 +119,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string[] expected = [
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
                 ];
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfDeclaredVariableInFunction1()
         {
             string source = @"
@@ -170,18 +130,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a
                         ReDim a(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfDeclaredVariableInFunction1()
         {
             string source = @"
@@ -189,22 +141,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a
                         ReDim Preserve a(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.RESIZEARRAY(a, new object[] { (Int16)0 });
-                      return F1_retVal;
-                    }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This is almost identical to the corresponding test in the UndeclaredVariables class but it ensure that a Dim statement before the repeated
         /// ReDims does not cause any problems (or, in fact, change in behaviour)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RepeatedReDimInOutermostScope2()
         {
             string source = @"
@@ -223,7 +167,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is almost identical to the corresponding test in the UndeclaredVariables class but it ensure that a Dim statement before the repeated
         /// ReDims does not cause any problems (or, in fact, change in behaviour)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RepeatedReDimInFunction2()
         {
             string source = @"
@@ -233,17 +177,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = null;
-                      a = _.NEWARRAY(new object[] { (Int16)0 });
-                      a = _.NEWARRAY(new object[] { (Int16)1 });
-                      a = _.NEWARRAY(new object[] { (Int16)2 });
-                      return F1_retVal;
-                   }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -251,7 +185,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// variable declaration (followed by an array initialisation targetting that variable). The non-array-type variable declaration from the ReDim must
         /// be ignored, the array-type declaration from the Dim must take precedence.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ReDimFollowingNonDimensionalArrayDimInFunction()
         {
             string source = @"
@@ -259,21 +193,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a()
                         ReDim a(0)
                     End Function";
-            string expected = @"
-                    public object F1()
-                    {
-                      object F1_retVal = null;
-                      object a = (object[])null;
-                      a = _.NEWARRAY(new object[] { (Int16)0 });
-                      return F1_retVal;
-                   }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
         /// <summary>
         /// ReDim will implicitly declare any target variable, if it has not been already declared - this means that a Dim statement that FOLLOWS a ReDim
         /// will result in a "Name redefined" compile time error in VBScript, so all of these cases should result in a translation exception
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope2()
         {
             string source = @"
@@ -286,7 +212,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfDeclaredVariableInTheOutermostScope2()
         {
             string source = @"
@@ -299,7 +225,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonPreserveReDimOfDeclaredVariableInFunction2()
         {
             string source = @"
@@ -313,7 +239,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PreserveReDimOfDeclaredVariableInFunction2()
         {
             string source = @"
@@ -331,7 +257,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// If a ReDim exists for a particular variable before a Dim for the same variable, even if they are not present on a single code branch that may
         /// be executed by a single request, the Dim will still result in a "Name redefined" error being raise
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ReDimBeforeDimButOnDifferentCodePath()
         {
             string source = @"
@@ -353,7 +279,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// a variable that it might be referencing in a parent scope then the REDIM should NOT be interpreted as explicitly declaring a new variable (even if the variable in the
         /// parent scope was only IMPLICITLY declared - ie. accessed but never DIM'd)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ReDimsWithinFuncCanPointToImplicitlyDeclOuterMostScopeVars() // ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables
         {
             string source = @"

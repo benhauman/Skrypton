@@ -13,19 +13,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class INSTRREV : TestBase // Note that INSTRREV has a different method signature to INSTR (the startIndex argument is in a different place)
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object valueToSearch, object valueToSearchFor, object startIndex, object compareMode, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor, startIndex, compareMode));
         }
 
-        [TestMethod, MyTheory, MyMemberData("SuccessDataWithNoStartIndex")]
+        [TestMethod, MyMemberData("SuccessDataWithNoStartIndex")]
         public void SuccessCasesWithoutStartIndexValues(string description, object valueToSearch, object valueToSearchFor, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTRREV(valueToSearch, valueToSearchFor));
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object valueToSearch, object valueToSearchFor, object startIndex, object compareMode)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        [TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object valueToSearch, object valueToSearchFor, object startIndex, object compareMode)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object valueToSearch, object valueToSearchFor, object startIndex, object compareMode)
         {
             myAssert.Throws<TypeMismatchException>(() =>

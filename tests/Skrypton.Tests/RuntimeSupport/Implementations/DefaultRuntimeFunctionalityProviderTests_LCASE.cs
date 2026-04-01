@@ -12,19 +12,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class LCASE : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyResultsInBlankString()
         {
             myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().LCASE(null));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullResultsInNull()
         {
             myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LCASE(DBNull.Value));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test()
         {
             myAssert.AreEqual("test", DefaultRuntimeSupportClassFactoryInstance.Get().LCASE("Test"));

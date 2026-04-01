@@ -13,7 +13,7 @@ namespace Skrypton.Tests.StageTwoParser
     [TestClass]
     public class NumberRebuilderTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegativeOne()
         {
             myAssert.AreEqual(
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BracketedNegativeOne()
         {
             myAssert.AreEqual(
@@ -51,7 +51,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PointOne()
         {
             myAssert.AreEqual(
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OnePointOne()
         {
             myAssert.AreEqual(
@@ -86,7 +86,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegativeOnePointOne()
         {
             myAssert.AreEqual(
@@ -105,7 +105,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegativePointOne()
         {
             myAssert.AreEqual(
@@ -123,7 +123,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OnePlusNegativeOne()
         {
             myAssert.AreEqual(
@@ -144,7 +144,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegativeOneAsNonBracketedArgument()
         {
             myAssert.AreEqual(
@@ -164,7 +164,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PointOneAsNonBracketedArgument()
         {
             myAssert.AreEqual(
@@ -183,7 +183,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ForLoopWithNegativeConstraints()
         {
             myAssert.AreEqual(
@@ -220,7 +220,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// When NameTokens are prefixed with a MemberAccessorOrDecimalPointToken, this is presumably because the content is wrapped in a "WITH" statement
         /// that will resolve the property / method access. As such, it shouldn't be assumed that a trailing dot is always a decimal point.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotTryToTreatMemberSeparatorRelyUponWithKeywordAsDecimalPoint()
         {
             myAssert.AreEqual(

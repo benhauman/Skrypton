@@ -14,7 +14,7 @@ namespace Skrypton.Tests.LegacyParser
     [TestClass]
     public class NonChangingTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithNoArgumentsAndNoBrackets()
         {
             var tokens = new[]
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleArgumentWithBracketsAndCallKeyword()
         {
             var tokens = new IToken[]
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleArgumentWithBracketsAndCallKeywordAndExtraBracketsCall()
         {
             // eg. "CALL(Test(1))"
@@ -69,7 +69,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FunctionCallWithCallKeywordAndMandatoryArgumentBrackets()
         {
             var tokens = new IToken[]
@@ -87,7 +87,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FunctionCallWithCallKeywordAndMandatoryAndAdditionalArgumentBrackets()
         {
             var tokens = new IToken[]
@@ -107,7 +107,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FunctionCallWithCallKeywordAndMandatoryArgumentBracketsAroundNegatedVariable()
         {
             var tokens = new IToken[]
@@ -126,7 +126,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FunctionCallWithCallKeywordAndMandatoryArgumentBracketsAroundNegatedConstant()
         {
             // For statements such as "CALL Test(-1)" the "-" and "1" tokens should have been combined before passing them to the
@@ -147,7 +147,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test1() // TODO: Rename
         {
             // "F1(a).Go" does not need to be rewritten since there are already brackets around the argument "a" but they do not signify that it
@@ -169,7 +169,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test2() // TODO: Rename
         {
             // "F1((a)).Go" does not need to be rewritten - there are brackets around "a" since it is a value-returning function call and there are
@@ -204,7 +204,7 @@ namespace Skrypton.Tests.LegacyParser
         /// that ByVal-enforcing brackets are still present within the standardised format (where brackets MUST be used to associate
         /// arguments with the target function - this is the whole point of the bracket standardising process).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleArgumentWithBrackets()
         {
             var tokens = new IToken[]
@@ -233,7 +233,7 @@ namespace Skrypton.Tests.LegacyParser
         /// The same logic that applies to DirectMethodWithSingleArgumentWithBrackets applies if an argument already appears to be
         /// "double wrapped", there is no logic to remove extra brackets that are not required
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleArgumentWithDoubleBrackets()
         {
             var tokens = new IToken[]
@@ -262,7 +262,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleNegativeArgumentWithoutBrackets()
         {
             var tokens = new IToken[]
@@ -291,7 +291,7 @@ namespace Skrypton.Tests.LegacyParser
         /// in the processing chain makes that decision) the "-" and "1" tokens can be combined since it is clear that they are
         /// part of the same value and the "-" token is not an operator acting on "Test" and "1".
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleNegativeNumericArgumentWithoutBrackets()
         {
             // From a previous comment on test "TestMinusOneIsMethodCallNotSubtractionOperation" (which was written but not
@@ -318,7 +318,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithSingleArgumentWithoutBrackets()
         {
             var statement = new Statement(
@@ -340,7 +340,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ObjectMethodWithSingleArgumentWithoutBrackets()
         {
             // This should become "a.Test(1)" in the "standardised" format, the brackets are there for parsing, not for signficant meaning
@@ -368,7 +368,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ObjectMethodWithSingleVariableArgumentWithBrackets()
         {
             // This should become "a.Test((b))" since "b" should keep its brackets which indicate the argument be passed ByVal but additional
@@ -399,7 +399,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithTwoArgumentsWithoutBrackets()
         {
             var tokens = new IToken[]
@@ -429,7 +429,7 @@ namespace Skrypton.Tests.LegacyParser
         /// number to make a negative value if it is the first argument (until the bracket-standardising process, it could have
         /// meant a subtraction operation as far as we knew)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectMethodWithTwoArgumentsWithoutBracketsWhereFirstTermIsNegative()
         {
             var tokens = new IToken[]
@@ -455,7 +455,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NestedMethodCallWithArgumentsShouldNotGetDoubleBrackets()
         {
             // "Test Test2(a)" should be transformed into "Test(Test2(a))", the brackets around the "a" do not imply that it
@@ -486,7 +486,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test1() // TODO: Rename
         {
             // "F1(a)" should be rewritten as "F1((a))" since the brackets in the non-returning function call indicate that "a" should be passed
@@ -513,7 +513,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test2() // TODO: Rename
         {
             // "F1(a).Go b" should be rewritten as "F1(a).Go(b)" so that the argument "b" is wrapped up nicely
@@ -545,7 +545,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test3() // TODO: Rename
         {
             // "F1(a).Go(b)" should be rewritten as "F1(a).Go((b))" because the "Go" call is a non-value-returning call and so the brackets around the
@@ -582,7 +582,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test4() // TODO: Rename
         {
             // "F1((a)).Go(b)" should be rewritten as "F1((a)).Go((b))" because the "Go" call is a non-value-returning call and so the brackets around the
@@ -625,7 +625,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test5() // TODO: Rename
         {
             // "F1 F2(1)" should be rewritten as "F1(F2(1))" for "standardised brackets". There are no additional brackets required relating to ByVal
@@ -654,7 +654,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test6() // TODO: Rename
         {
             // "x.y (i), j" should be rewritten as "x.y((i), j)"
@@ -692,7 +692,7 @@ namespace Skrypton.Tests.LegacyParser
         /// It's not really part of the GetBracketStandardisedTokens contract to expand any with references but it makes the implementation easier for cases where the
         /// first token in a statement is a member accessor and the statement is inside a with block
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void InitialWithReferencesWillBeExpandedForEaseOfManipulation()
         {
             var tokens = new IToken[]

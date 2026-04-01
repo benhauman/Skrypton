@@ -8,7 +8,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndDimTranslationTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DimInsideFunction()
         {
             var source = @"
@@ -16,17 +16,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Dim myVariable
 				End Function
 			";
-            var expected = @"
-                public object F1()
-                {
-                    object F1_retVal = null;
-                    object myVariable = null;
-                    return F1_retVal;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DimWithDimensionsInsideFunction()
         {
             var source = @"
@@ -34,14 +27,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Dim myArray(63)
 				End Function
 			";
-            var expected = @"
-                public object F1()
-                {
-                    object F1_retVal = null;
-                    object myArray = new object[64];
-                    return F1_retVal;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
     }
 }

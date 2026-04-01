@@ -19,7 +19,7 @@ namespace Skrypton.Tests.StageTwoParser
     [TestClass]
     public class ExpressionGeneratorTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectFunctionCallWithNoArgumentsAndNoBrackets()
         {
             // Test
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectFunctionCallWithNoArgumentsWithBrackets()
         {
             // Test()
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ObjectFunctionCallWithNoArgumentsAndNoBrackets()
         {
             // a.Test
@@ -88,7 +88,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NestedObjectFunctionCallWithNoArgumentsAndNoBrackets()
         {
             // a.b.Test
@@ -115,7 +115,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectFunctionCallWithOneArgument()
         {
             // Test(1)
@@ -142,7 +142,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectFunctionCallWithTwoArguments()
         {
             // Test(1, 2)
@@ -172,7 +172,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DirectFunctionCallWithTwoArgumentsOneIsNestedDirectionFunctionCallWithOneArgument()
         {
             // Test(Test2(1), 2)
@@ -210,7 +210,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ArrayElementFunctionCallWithNoArguments()
         {
             // a(0).Test
@@ -244,7 +244,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ObjectPropertyArrayElementFunctionCallWithNoArguments()
         {
             // a.b(0).Test
@@ -280,7 +280,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ArrayElementNestedFunctionCallWithNoArguments()
         {
             // a(0).b.Test
@@ -315,7 +315,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void JaggedArrayAccess()
         {
             // a(0)(1)
@@ -354,7 +354,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// Additional brackets will be applied around all operations to ensure that VBScript operator rules are always maintained (if the operators
         /// are all equivalent in terms of priority, terms will be bracketed from left-to-right, so a and b should be bracketed together)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdditionWithThreeTerms()
         {
             // a + b + c
@@ -388,7 +388,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// Multiplication should take precedence over addition so b and c should be bracketed together
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdditionAndMultiplicationWithThreeTerms()
         {
             // a + b * c
@@ -419,7 +419,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdditionAndMultiplicationWithThreeTermsWhereTheThirdTermIsAnArrayElement()
         {
             // a + b * c(0)
@@ -459,7 +459,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// This will try to ensure that the bracket around the array access doesn't interfere with the formatting of the fourth term
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdditionAndMultiplicationAndAdditionWithFourTermsWhereTheThirdTermIsAnArrayElement()
         {
             // a + b * c(0) + d
@@ -505,7 +505,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// If an operation is already bracketed then additional brackets should not be added around the operation, they would be unnecessary
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AlreadyBracketedOperationsShouldNotGetUnnecessaryBracketing()
         {
             // a + (b * c)
@@ -538,7 +538,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AlreadyBracketedOperationsShouldNotGetUnnecessaryBracketingIfTheyAppearInTheMiddleOfTheExpression()
         {
             // a + (b * c) + d
@@ -580,7 +580,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// Arithmetic operations should take precedence over comparisons so b and c should be bracketed together
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdditionAndEqualityComparisonWithThreeTerms()
         {
             // a = b + c
@@ -614,7 +614,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// This covers an array of different types of codeExpression
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TestArrayAccessObjectAccessMethodArgumentsMixedArithmeticAndComparisonOperations()
         {
             // a + b * c.d(Test(0), 1) + e = f
@@ -679,7 +679,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// To make it clear that the "-" is a one-sided operation (a negation, not a subtraction), it should be bracketed
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegatedTermsShouldBeBracketed()
         {
             // a * -b
@@ -711,7 +711,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// This is the boolean equivalent of NegatedTermsShouldBeBracketed
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void LogicalInversionsTermsShouldBeBracketed()
         {
             // a AND NOT b
@@ -743,7 +743,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// <summary>
         /// This exercises a fix for the translation of "NOT NOT a", which was bracketing the two NOTs together instead of (NOT(NOT(a))
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AdjacentLogicalInversionsShouldBracketWithOtherTermsAndNotEachOther()
         {
             // a AND NOT NOT b
@@ -780,7 +780,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// This indicates different precedence that is applied to a NOT operation depending upon content, as compared to the test
         /// LogicalInversionsTermsShouldBeBracketed
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegationOperationHasLessPrecendenceThanComparsionOperations()
         {
             // NOT a IS Nothing
@@ -809,7 +809,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NewInstanceRequestsShouldNotBeConfusedWithCallExpressions()
         {
             // new Test
@@ -836,7 +836,7 @@ namespace Skrypton.Tests.StageTwoParser
         /// This means that brackets can have special significance and should not be removed, even from places where they would have significance or
         /// meaning in C#.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BracketsShouldNotBeRemovedFromSingleArgumentCallStatements()
         {
             // CALL Test((a))
@@ -867,7 +867,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ObjectFunctionCallWithNoArgumentsAndNoBracketsThatReliesUponDirectedWithReference()
         {
             // ".Test" within "WITH a"
@@ -902,7 +902,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PropertyAccessOnNumberLiteralResultsInException()
         {
             // "WScript.Echo 1.a" results in a compile time error from the VBScript parser
@@ -927,7 +927,7 @@ namespace Skrypton.Tests.StageTwoParser
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NumericLiteralPropertyAccessResultsInException()
         {
             // "WScript.Echo a.1" results in a compile time error from the VBScript parser
@@ -952,7 +952,7 @@ namespace Skrypton.Tests.StageTwoParser
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroArgumentMethodAccessOnNumberLiteralResultsInException()
         {
             // "WScript.Echo 1.a()" results in a compile time error from the VBScript parser
@@ -979,7 +979,7 @@ namespace Skrypton.Tests.StageTwoParser
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroArgumentDefaultMethodAccessOnNumberLiteralResultsInRuntimeError()
         {
             // "WScript.Echo 1()" results in a runtime error ("Type mismatch")
@@ -1018,7 +1018,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleArgumentMethodAccessOnNumberLiteralResultsInException()
         {
             // "WScript.Echo 1.a(b)" results in a compile time error from the VBScript parser
@@ -1046,7 +1046,7 @@ namespace Skrypton.Tests.StageTwoParser
              });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PropertyAccessOnStringLiteralResultsInRuntimeError()
         {
             // "WScript.Echo \"1\".a" results in a runtime "Object required" runtime error. HOWEVER, this is handled at runtime by the CALL implementation,
@@ -1082,7 +1082,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroArgumentMethodAccessOnStringLiteralResultsInRuntimeError()
         {
             // "WScript.Echo \"1\".a()" results in a runtime "Object required" runtime error
@@ -1121,7 +1121,7 @@ namespace Skrypton.Tests.StageTwoParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleArgumentMethodAccessOnStringLiteralResultsInException()
         {
             // "WScript.Echo \"1\".a(b)" results in a runtime "Object required" runtime error

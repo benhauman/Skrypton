@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestClass]
         public class ByRefMethodSignature : TestBase
         {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void ArrayTargetShouldBeReplacedWithEmptyArray()
             {
                 object target = new object[] { 123 };
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 myAssert.AreEqual(new object[0], target);
             }
 
-            [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+            [TestMethod, MyMemberData("TypeMismatchData")]
             public void TypeMismatchCases(string description, object target)
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -51,7 +51,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestClass]
         public class IndirectArrayAccessMethodSignature : TestBase
         {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NestedArrayTargetShouldBeReplacedWithEmptyArray()
             {
                 object target = new object[] { new object[] { 123 } };
@@ -59,7 +59,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 myAssert.AreEqual(new object[0], ((object[])target)[0]);
             }
 
-            [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+            [TestMethod, MyMemberData("TypeMismatchData")]
             public void TypeMismatchCases(string description, object value, object[] arguments)
             {
                 myAssert.Throws<TypeMismatchException>(() =>
@@ -68,7 +68,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
             }
 
-            [TestMethod, MyTheory, MyMemberData("SubscriptOutOfRangeData")]
+            [TestMethod, MyMemberData("SubscriptOutOfRangeData")]
             public void SubscriptOutOfRangeCases(string description, object value, object[] arguments)
             {
                 myAssert.Throws<SubscriptOutOfRangeException>(() =>

@@ -13,7 +13,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// into a single line C# return statement. Anything more complicated requires a temporary variable which is used to track the return value and
         /// returned from any exit point.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatement()
         {
             var source = @"
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return _.CDATE(\"2007-04-01\");",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
             //myAssert.AreEqual(
             //    expected.Select(s => s.Trim()).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// not acceptable in C# and so the argument must be stored in an alias while the second call takes place and then mapped back over the
         /// original value. As such, it can not be represented as a simple one-line return statement.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatementUnlessRefMReq() // IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatementUnlessRefAliasMappingsRequired
         {
             var source = @"
@@ -53,24 +53,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				PUBLIC FUNCTION F2(a)
 				END FUNCTION
 			";
-            var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            object a_vref3 = a;
-            try
-            {
-                F1_retVal = _.VAL(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref3, v => { a_vref3 = v; })));
-            }
-            finally { a = a_vref3; }
-            return F1_retVal;
-        }
-        public object F2(ref object a)
-        {
-            return null;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -78,7 +61,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// required when the function return value is SET - meaning that it must be an object reference (however, because it references an undeclared variable,
         /// that variable must be defined within the function scope; so the C# is no longer a one-executable-line job, but the principle remains).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfTheOnlyExecutableStatementIsSetReturnValueThenTranslateIntoSingleReturnStatement()
         {
             var source = @"
@@ -101,7 +84,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is very similar to IfTheOnlyExecutableStatementIsSetReturnValueThenTranslateIntoSingleReturnStatement except that it demonstrates the fact that
         /// if the return reference is already known to be an object type (which "Nothing" is) then it doesn't need to call the OBJ method for safety.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfTheOnlyExecutableStatementIsSetKnownObjectReturnValueThenTranslateIntoSingleReturnStatement()
         {
             var source = @"
@@ -116,7 +99,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return VBScriptConstants.Nothing;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -127,7 +110,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// another function indirectly (eg. with "a.Name") then it would not be passed to that second function ByRef and so the temporary "alias"
         /// variable would not be required.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentRequiresSpecialTreatmentIfDirectlyUsedElsewhereAsByRefArgument()
         {
             var source = @"
@@ -138,24 +121,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            object a_vref = a;
-            try
-            {
-                _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
-            }
-            finally { a = a_vref; }
-            return F1_retVal;
-        }
-        public object F2(ref object a)
-        {
-            return null;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -163,7 +129,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// a ByRef argument of the containing function is only indirectly passed into a function call as an argument that would be ByRef then the alias
         /// variable is not required.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentNeedNotBeMappedToAnAliasIfIndirectlyAccessedOutsideOfErrorTrapping()
         {
             var source = @"
@@ -174,18 +140,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected =
-                @"public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    _.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, a, ""Name""));
-                    return F1_retVal;
-                }
-                public object F2(ref object a)
-                {
-                    return null;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -194,7 +149,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// be "indirectly" accessed if it looks like an array access - we can't know until runtime whether it is an array access or whether it was a
         /// default member access, meaning that it needs to be passed inside a REF-like lambda and so is another cases where an alias is required.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentRequiresSpecialTreatmentIfDirectlyUsedElsewhereAsAnArrayAsByRefArgument()
         {
             var source = @"
@@ -205,24 +160,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            object a_vref = a;
-            try
-            {
-                _.CALLm1argp(this, _outer, ""F2"", _.ARGS.RefIfArray(a_vref, _.ARGS.Val((Int16)0)));
-            }
-            finally { a = a_vref; }
-            return F1_retVal;
-        }
-        public object F2(ref object a)
-        {
-            return null;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -232,7 +170,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// array (with no indexes specified) or a method - both of which will fail at runtime in VBScript. But the point is that the argument is not then
         /// passed on by-ref to F2 and so needs none of the special by-ref aliasing magic applying.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentRequiresNoSpecialTreatmentIfAccessAsFunctionOrArray()
         {
             var source = @"
@@ -243,18 +181,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected =
-                @"public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    _.CALLm1v1(this, _outer, ""F2"", _.CALLm0argp(this, a, _.ARGS.ForceBrackets()));
-                    return F1_retVal;
-                }
-                public object F2(ref object a)
-                {
-                    return null;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -262,7 +189,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// argument of the containing function constitues only part of a value passed into a function call as an argument that would be ByRef then the alias
         /// variable is not required.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentNeedNotBeMappedToAnAliasIfOnlyPartialArgumentValue()
         {
             var source = @"
@@ -273,18 +200,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected =
-                @"public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    _.CALLm1v1(this, _outer, ""F2"", _.CONCAT("""", a));
-                    return F1_retVal;
-                }
-                public object F2(ref object a)
-                {
-                    return null;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -292,7 +208,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// argument of the containing function is wrapped in extra brackets then it will be treated as ByVal even if otherwise it would need to be
         /// considered as ByRef when passed into another function.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentNeedNotBeMappedToAnAliasIfForcedInToByValWhenPassedToNextFunction()
         {
             var source = @"
@@ -303,18 +219,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = @"
-                public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    _.CALLm1v1(this, _outer, ""F2"", a);
-                    return F1_retVal;
-                }
-                public object F2(ref object a)
-                {
-                    return null;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -324,7 +229,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// must be used to overwrite the original function argument reference, even if the codeExpression evaluation failed (since it might have changed
         /// the value before the error occurred).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteErr() // ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteMannerWithinPotentiallyErrTrappingStmt
         {
             var source = @"
@@ -333,25 +238,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            object a_vref = a;
-            try
-            {
-                _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
-                });
-            }
-            finally { a = a_vref; }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -361,7 +248,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// alias. This would be the case if there is a ByRef argument "a" of the current function and "a.Name" is passed to another function (as a
         /// ByRef OR ByVal argument) since the "a" in "a.Name" can never be affected.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefFunctionArgumentMustBeMappedToReadOnlyAliasIfReferencedInReadOnlyMannerWithinErrStmt() // ByRefFunctionArgumentMustBeMappedToReadOnlyAliasIfReferencedInReadOnlyMannerWithinPotentiallyErrorTrappingStatement
         {
             var source = @"
@@ -370,21 +257,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a.Name
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object a)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            object a_zref = a;
-            _.HANDLEERROR(errOn, () => {
-                _.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, a_zref, ""Name""));
-            });
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -393,7 +266,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// code IsEmpty(F1) should check the current return value of F1 for Empty, it shouldn't try to call F1 as a function and pass the
         /// result into IsEmpty)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ParentFunctionNameMustBeMappedOnToReturnValueNameWhenPassedAsArgumentToOtherFunction()
         {
             var source = @"
@@ -423,7 +296,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "	return null;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -432,7 +305,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// case or not is very basic; if the target is not a single NameToken that corresponds to the function name then the short cut is
         /// not applied)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IncludingBracketsWhenSettingTheReturnValueIsTypeMismatch()
         {
             var source = @"
@@ -440,14 +313,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F1() = Null
 				END FUNCTION
 			";
-            var expected = @"
-                public object F1()
-                {
-                    object F1_retVal = null;
-                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(""'F1'"")));
-                    return F1_retVal;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         [TestMethod]

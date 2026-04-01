@@ -12,7 +12,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class NullableNUM : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullToNumber()
         {
             myAssert.AreEqual(

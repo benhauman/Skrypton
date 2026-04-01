@@ -9,17 +9,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndForTranslationTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AscendingLoopWithImplicitStep()
         {
             var source = @"
 				Dim i: For i = 1 To 5
 				Next
 			";
-            var expected = @"for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, (Int16)1))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -29,25 +26,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// and so a "loopStart" variable IS required (to determine what type to use to cover the range from (Int16)1 to 32768 - which is implicitly an
         /// Int32 (aka "int") when compiled as C#.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AscendingLoopThatRollsOverLoopVariableIntoLongType()
         {
             var source = @"
 				Dim i: For i = 1 To 32768
 				Next
 			";
-            var expected = @"var loopStart = _.NUM((Int16)1, 32768);
-                for (_outer.i = loopStart; _.StrictLTE(_outer.i, 32768); _outer.i = _.ADD(_outer.i, (Int16)1))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If the loop range is in the opposite direction to step then it will never be entered in VBScript and so there's no pointing emitting any C# code (this
         /// can only be done if the loop start, end and step are known at compile time - here the start and end are numeric and the loop is implicitly one)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DescendingLoopWithoutExplicitStepIsOptimisedOut()
         {
             var source = @"
@@ -57,56 +50,43 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffolding("", source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DescendingLoopWithExplicitNegativeStep()
         {
             var source = @"
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            var expected = @"
-                for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// A fractional step on an otherwise small integer range changes the loop variable from being a VBScript "Integer" to a "Double"
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DescendingLoopWithExplicitFractionalStep()
         {
             var source = @"
 				Dim i: For i = 1 To 5 Step 0.1
 				Next
 			";
-            var expected = @"
-                var loopStart = _.NUM((Int16)1, (Int16)5, 0.1);
-                for (_outer.i = loopStart; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, 0.1))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroStepResultsInInfiniteLoopWhenAscending()
         {
             var source = @"
 				Dim i: For i = 1 To 5 Step 0
 				Next
 			";
-            var expected = @"
-                for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5);)
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If the loop has fixed contraints that indicate a negative direction and a zero step, the loop will not be entered and can be optimised out
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroStepIsOptimisedOutForDescendingLoop()
         {
             var source = @"
@@ -119,7 +99,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// If the loop has fixed contraints that indicate a negative direction and a zero step, the loop will not be entered and can be optimised out
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FixedNegativeStepResultsInLoopBeingOptimisedOutIfItIsFixedAndPositive()
         {
             var source = @"
@@ -132,7 +112,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// If a loop is known at compile time to run in a negative direction and no step is specified then the loop is never entered and can be optimised out
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FixedNegativeLoopWithoutExplicitStepIsOptimisedOut()
         {
             var source = @"
@@ -142,32 +122,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffolding("", source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FixedAscendingLoopWithExplicitPositiveStep()
         {
             var source = @"
 				Dim i: For i = 1 To 5 Step 2
 				Next
 			";
-            var expected = @"
-                for (_outer.i = (Int16)1; _.StrictLTE(_outer.i, 5); _outer.i = _.ADD(_outer.i, (Int16)2))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FixedDescendingLoopWithExplicitNegativeStep()
         {
             var source = @"
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            var expected = @"
-                for (_outer.i = (Int16)5; _.StrictGTE(_outer.i, 1); _outer.i = _.SUBT(_outer.i, (Int16)1))
-                {
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -176,7 +148,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// non-descending loop or if there is a negative step and a descending loop. Similarly, the termination condition operator may be a less-than-
         /// or-equal-to comparison or a greater-than-or-equal-to, depending upon loop direction.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RuntimeVariableLoopBoundariesAndStep()
         {
             var source = @"
@@ -211,7 +183,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// this example, but if it had been set to "a" before the loop then it would remain set to "a") and neither the loop termination
         /// condition nor the increment work will be attempted.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RuntimeVariableLoopBoundariesWithErrorTrapping()
         {
             var source = @"
@@ -264,7 +236,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// within the loop need wrapping as well. But without any dynamic loop constraints to be evaluated, it's a lot simpler - no evaluation
         /// of contraints to trap or guard clause around the loop to worry about.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AscendingLoopWithImplicitStepAndErrorTrappingEnabled()
         {
             var source = @"
@@ -301,23 +273,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// this completely since the translated code is not executed and it would depend upon the support class implementation but it seemed like
         /// it was worth recording here to make the point, also see the NUM test "BytesWithAnInteger")
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByteLoopStartAndEndValuesWithImplicitStepWillGetAnIntegerStep()
         {
             var source = @"
 				Dim i: For i = CByte(1) To CByte(5)
 				Next
 			";
-            var expected = @"
-                var loopEnd = _.CBYTE(5);
-                var loopStart = _.NUM(_.CBYTE(1), loopEnd, (Int16)1);
-                if (_.StrictLTE(loopStart, loopEnd))
-                {
-                    for (_outer.i = loopStart; _.StrictLTE(_outer.i, loopEnd); _outer.i = _.ADD(_outer.i, (Int16)1))
-                    {
-                    }
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
 
         }
 
@@ -325,27 +288,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is the complement to ByteLoopStartAndEndValuesWithImplicitStepWillGetAnIntegerStep, it illustrates how a loop would be constructed
         /// in order to have the loop variable be of type "Byte".
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByteLoopStartAndEndAndStepValuesWillGetByteLoopVariable()
         {
             var source = @"
 				Dim i: For i = CByte(1) To CByte(5) Step CByte(1)
 				Next
 			";
-            var expected = @"
-                var loopEnd = _.CBYTE(5);
-                var loopStep = _.CBYTE(1);
-                var loopStart = _.NUM(_.CBYTE(1), loopEnd, loopStep);
-                if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))
-                || (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))
-                {
-                    for (_outer.i = loopStart;
-                        (_.StrictGTE(loopStep, 0) && _.StrictLTE(_outer.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_outer.i, loopEnd));
-                         _outer.i = _.ADD(_outer.i, loopStep))
-                    {
-                    }
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         // TODO: Various variable-ascending/descending/step combinations
@@ -355,7 +305,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// must be within the scope-defining parent. If within a function then these must be local variables. This test also covers a fix where the loop
         /// variable was not getting identified as an undeclared variable when it should have been.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredVariablesShouldNotBeFlushedAtForBlockEnd()
         {
             var source = @"
@@ -386,7 +336,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// to another function while determining the loop constraints then a ByRef mapping will be required for the F1 argument. This is because the argument will be referenced inside a
         /// lambda when passed as Ref argument and it is not legal C# to reference a ref argument within a lambda.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByRefArgumentIsRequiredForLoopAndIsPassedToAnotherFuncByRefThenByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToAnotherFunctionByRefThenByRefMappingRequired
         {
             var source = @"
@@ -399,38 +349,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F2 = value
 				End Function";
 
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            object i = null;
-            object loopEnd = 0, loopStart = 0;
-            var loopConstraintsInitialized = false;
-            object x_vref = x;
-            try
-            {
-                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
-                    loopStart = _.NUM((Int16)1);
-                    if ((loopStart is DateTime) || (loopStart is Decimal))
-                        i = loopStart;
-                    loopStart = _.NUM((Int16)1, loopEnd);
-                    loopConstraintsInitialized = true;
-            }
-            finally { x = x_vref; }
-            if (_.StrictLTE(loopStart, loopEnd))
-            {
-                for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-                {
-                }
-            }
-            return F1_retVal;
-        }
-        public object F2(ref object value)
-        {
-            return _.VAL(value);
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -438,7 +357,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// for the F1 argument if the argument is passed in ByVal (while the argument still needs to be referenced in a lambda when passed to F2 as a ByRef argument, it's not a ref argument in
         /// F1 and so we don't need to jump through any hoops to avoid illegal C#)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByValArgIsReqForLoopAndIsPassedToAnotherFuncByRefThenNoByRefAsTheFirstArgAsByVal() // IfByValArgumentIsRequiredForLoopConstraintAndIsPassedToAnotherFunctionByRefThenNoByRefMappingIsRequiredAsTheFirstArgumentWasByVal
         {
             var source = @"
@@ -459,7 +378,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// go deeply enough to realise this and presumes that F2 may take the argument ByRef - as such, it tries to pass it ByRef (just in case) and so needs to reference the F1 argument within
         /// a lambda, which would not be legal C# and so a ByRef mapping is unfortunately required.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByRefArgumentIsRequiredForLoopAndIsPassedToAnotherFuncThenByRefRequired()
         {
             var source = @"
@@ -478,7 +397,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is a companion to IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToAnotherFunctionThenByRefMappingRequired and shows that we can make things a little better by
         /// presuming that all built-in functions take arguments ByVal (which I'm fairly confident is always the case), which means that ByRef mappings may be avoided for some cases.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByRefArgumentIsReqForLoopAndIsPassedToBuiltInFuncByRefThenNoByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToBuiltInFunctionByRefThenNoByRefMappingRequired
         {
             var source = @"
@@ -494,7 +413,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// If a ByRef argument is passed to a method F1 that uses the argument when evaluating loop constraints within an error-trapping block then a ByRef mapping will be required because the
         /// ByRef argument will need to be accessed within a lambda (inside the HANDLEERROR block), which is not legal in C#.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByRefArgumentIsRequiredForKnownLoopConstraintsAndLoopWrappedErr() // IfByRefArgumentIsRequiredForKnownLoopConstraintsAndLoopWrappedInErrorTrappingThenByRefMappingRequired
         {
             var source = @"
@@ -509,58 +428,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					value = 123
 				End Function";
 
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            object i = null;
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            object loopEnd = 0, loopStart = 0;
-            var loopConstraintsInitialized = false;
-            object x_vref = x;
-            try
-            {
-                _.HANDLEERROR(errOn, () => {
-                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
-                    loopStart = _.NUM((Int16)1);
-                    if ((loopStart is DateTime) || (loopStart is Decimal))
-                        i = loopStart;
-                    loopStart = _.NUM((Int16)1, loopEnd);
-                    loopConstraintsInitialized = true;
-                });
-            }
-            finally { x = x_vref; }
-            if (_.StrictLTE(loopStart, loopEnd))
-            {
-                if (loopConstraintsInitialized)
-                    i = loopStart;
-                while (true)
-                {
-                    if (!loopConstraintsInitialized)
-                        break;
-                    var continueLoop = false;
-                    _.HANDLEERROR(errOn, () => {
-                        i = _.ADD(i, (Int16)1);
-                        continueLoop = _.StrictLTE(i, loopEnd);
-                    });
-                    if (!continueLoop)
-                        break;
-                }
-            }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-        public object F2(ref object value)
-        {
-            object F2_retVal = null;
-            F2_retVal = _.VAL(value);
-            value = (Int16)123;
-            return F2_retVal;
-        }
-";
-
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -569,7 +437,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// loop constraint evaluation, the ByRef mapping is readonly; meaning that no try..finally wrapping is required to write the byref-temp-value back over the method argument (because it
         /// is known that the temporary value will not have been manipulated).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfByRefArgumentIsRequiredForKnownReadOnlyLoopConstraintsAndLoopWrappedErr() // IfByRefArgumentIsRequiredForKnownReadOnlyLoopConstraintsAndLoopWrappedInErrorTrappingThenReadOnlyByRefMappingRequired
         {
             var source = @"
@@ -579,47 +447,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function";
 
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            object i = null;
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            object loopEnd = 0, loopStart = 0;
-            var loopConstraintsInitialized = false;
-            object x_zref = x;
-            _.HANDLEERROR(errOn, () => {
-                loopEnd = _.NUM(_.ADD(x_zref, (Int16)1));
-                loopStart = _.NUM((Int16)1);
-                if ((loopStart is DateTime) || (loopStart is Decimal))
-                    i = loopStart;
-                loopStart = _.NUM((Int16)1, loopEnd);
-                loopConstraintsInitialized = true;
-            });
-            if (_.StrictLTE(loopStart, loopEnd))
-            {
-                if (loopConstraintsInitialized)
-                    i = loopStart;
-                while (true)
-                {
-                    if (!loopConstraintsInitialized)
-                        break;
-                    var continueLoop = false;
-                    _.HANDLEERROR(errOn, () => {
-                        i = _.ADD(i, (Int16)1);
-                        continueLoop = _.StrictLTE(i, loopEnd);
-                    });
-                    if (!continueLoop)
-                        break;
-                }
-            }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-";
-
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
     }
 }

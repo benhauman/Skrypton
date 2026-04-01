@@ -13,19 +13,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 	//{
 		public class REPLACE : TestBase
     {
-			[TestMethod, MyTheory, MyMemberData("SuccessData")]
+			[TestMethod, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode, string expectedResult)
 			{
 				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode));
 			}
 
-			[TestMethod, MyTheory, MyMemberData("SuccessWithMinimumArgumentsData")]
+			[TestMethod, MyMemberData("SuccessWithMinimumArgumentsData")]
 			public void SuccessWithMinimumArgumentsCases(string description, object value, object toSearchFor, object toReplaceWith, string expectedResult)
 			{
 				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith));
 			}
 
-			[TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+			[TestMethod, MyMemberData("InvalidUseOfNullData")]
 			public void InvalidUseOfNullCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
 			{
 				myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -34,7 +34,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+			[TestMethod, MyMemberData("TypeMismatchData")]
 			public void TypeMismatchCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
@@ -43,7 +43,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+			[TestMethod, MyMemberData("ObjectVariableNotSetData")]
 			public void ObjectVariableNotSetCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+			[TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
 			public void InvalidProcedureCallOrArgumentCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
 			{
 				myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -60,7 +60,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 					DefaultRuntimeSupportClassFactoryInstance.Get().REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, compareMode);
 				});
 			}
-			[TestMethod, MyTheory, MyMemberData("OverflowData")]
+			[TestMethod, MyMemberData("OverflowData")]
 			public void OverflowCases(string description, object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements, object compareMode)
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>

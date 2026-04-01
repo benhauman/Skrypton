@@ -13,7 +13,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class DATEADD : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object interval, object number, object value, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value));
@@ -24,14 +24,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// getting rounded and precision was being lost before the DATEADD method was even being called! I'm not sure why, but I'm going to just write these separately
         /// rather than worrying about it too much.
         /// </summary>
-        [TestMethod, MyTheory, MyMemberData("PrecisionEdgeCaseData")]
+        [TestMethod, MyMemberData("PrecisionEdgeCaseData")]
         public void PrecisionEdgeCases(string description, object interval, int numberBaseValue, int numberNumberOfNines, object value, object expectedResult)
         {
             var number = Convert.ToDouble(numberBaseValue.ToString() + "." + new string('9', numberNumberOfNines));
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DATEADD(interval, number, value));
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object interval, object number, object value)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        [TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object interval, object number, object value)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object interval, object number, object value)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -58,7 +58,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object interval, object number, object value)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>

@@ -11,7 +11,7 @@ namespace Skrypton.Tests.LegacyParser
     [TestClass]
     public class StringBreakerTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VariableSetToStringContentIncludedQuotedContent()
         {
             myAssert.AreEqual(
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.LegacyParser
         /// <summary>
         /// This tests the minimum escaped-content variable name that is possible (a blank variable name, escaped by square brackets)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyContentEscapedVariableNameIsSetToNumericValue()
         {
             myAssert.AreEqual(
@@ -48,7 +48,7 @@ namespace Skrypton.Tests.LegacyParser
         /// <summary>
         /// This tests the minimum escaped-content variable name that is possible (a blank variable name, escaped by square brackets)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DeclaredEmptyContentEscapedVariableNameIsSetToNumericValue()
         {
             myAssert.AreEqual(
@@ -66,7 +66,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void InlineCommentsAreIdentifiedAsSuch()
         {
             // The StringBreaker will insert an EndOfStatementSameLineToken between the UnprocessedContentToken and InlineCommentToken
@@ -88,7 +88,7 @@ namespace Skrypton.Tests.LegacyParser
         /// This recreates a bug where if there were line returns in the unprocessed content before what should be an inline comment, it
         /// wasn't realised that these were before the line that the comment should be inline with
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void InlineCommentsAreIdentifiedAsSuchWhenAfterMultipleLinesOfContent()
         {
             // The StringBreaker will insert an EndOfStatementSameLineToken between the UnprocessedContentToken and InlineCommentToken
@@ -106,7 +106,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void REMCommentsAreIdentified()
         {
             myAssert.AreEqual(
@@ -121,7 +121,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void InlineREMCommentsAreIdentified()
         {
             myAssert.AreEqual(
@@ -142,7 +142,7 @@ namespace Skrypton.Tests.LegacyParser
         /// interpreted as unprocessed content, which must be terminated with an end-of-statement token. Instead, the content should be identified only as two
         /// comments.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonLineReturningWhiteSpaceBetweenCommentsIsIgnored()
         {
             myAssert.AreEqual(
@@ -162,7 +162,7 @@ namespace Skrypton.Tests.LegacyParser
         /// if the content before the comment was whitespace that was removed and a StringToken before that. This confirms the fix. (When a same-line end-of-
         /// statement token is inserted, the line index should not be incremented - this was included in the fix and is also demonstrated here).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void WhitespaceBetweenStringTokenAndCommentDoesNotPreventEndOfStatementBeingInserted()
         {
             myAssert.AreEqual(

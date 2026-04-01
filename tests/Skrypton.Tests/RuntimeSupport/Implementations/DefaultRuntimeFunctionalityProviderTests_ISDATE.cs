@@ -16,13 +16,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     {
         public ISDATE() : base("en-GB") { }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(TrueData))]
+        [TestMethod, MyMemberData(nameof(TrueData))]
         public void TrueCases(string description, object value)
         {
             myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().ISDATE(value));
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(FalseDataThatShouldNotResultInAnErrorBeingRecorded))]
+        [TestMethod, MyMemberData(nameof(FalseDataThatShouldNotResultInAnErrorBeingRecorded))]
         public void FalseNonErroringCases(string description, object value)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.Get();
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             myAssert.AreEqual(0, _.ERR.Number);
         }
 
-        [TestMethod, MyTheory, MyMemberData("FalseDataThatShouldResultInAnErrorBeingRecorded")]
+        [TestMethod, MyMemberData("FalseDataThatShouldResultInAnErrorBeingRecorded")]
         public void FalseAndErroringCases(string description, object value)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.Get();

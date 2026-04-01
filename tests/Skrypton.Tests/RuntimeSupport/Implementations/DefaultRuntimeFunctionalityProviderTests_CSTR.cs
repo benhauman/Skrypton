@@ -14,13 +14,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public sealed class CSTR : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object value, string expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value));
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object value)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object value)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object value)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -92,7 +92,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             public en_GB() : base("en-GB") { }
 
-            [TestMethod, MyTheory, MyMemberData("SuccessData")]
+            [TestMethod, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, string expectedResult)
             {
                 myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR(value));
@@ -116,7 +116,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public en_US() : base("en-US")
             { }
 
-            [TestMethod, MyTheory, MyMemberData("SuccessData")]
+            [TestMethod, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, string expectedResult)
             {
                 myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CSTR((DateTime)value).NormalizeUnicodeNarrowNoBreakSpace());

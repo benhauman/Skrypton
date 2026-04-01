@@ -10,7 +10,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 	//{
 		public class RANDOMIZE_and_RND : TestBase
     {
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void RandomizeSeedReturnsConsistentValuesFirstTimeItIsUsedForRuntimeSupportFactoryInstance()
 			{
 				const int seed = 123;
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				myAssert.AreEqual(value1, value2);
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void RandomizeSeedReturnsDifferentSequencesIfUsedWithinSameRuntimeSupportFactoryInstance()
 			{
 				const int seed = 123;
@@ -44,7 +44,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				myAssert.NotEqual(value1, value2);
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void CallingRndWithZeroReturnsPreviousNumber()
 			{
 				float value1, value2;
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				myAssert.AreEqual(value1, value2);
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void CallingRndWithNegativeValueSetsSeedToThatValue()
 			{
 				const int seed = -123;
@@ -73,7 +73,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 			/// The precision of the RANDOMIZE seed is limited to a Single (in VBScript parlance, which I think is equivalent to .NET) - so the extra digit on 1.1111111 does not make any
 			/// difference compared to 1.111111 (though going one smaller at 1.11111 WILL result in a different sequence being generated)
 			/// </summary>
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void RandomizeSeedValueHasLimitedPrecision()
 			{
 				// The values

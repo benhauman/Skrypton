@@ -8,7 +8,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// Since SUBs do not return values, attempting to set a return value within a SUB results in an illegal assignment error
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfReturnValueSetPresentInSubThenRaiseIllegalAssignment()
         {
             var source = @"
@@ -16,19 +16,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     F1 = Null
                 END SUB
             ";
-            var expected = @"
-                public void F1()
-                {
-                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new IllegalAssignmentException(""'F1'"")));
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If what looks like a return-value-setting statement is present within a SUB, but with brackets after the left-hand side NameToken, then it's
         /// a type mismatch error (which is the same with a FUNCTION.. but not a PROPERTY)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfReturnValueWithBracketsPresentInSubThenRaiseTypeMismatch()
         {
             var source = @"
@@ -36,12 +31,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     F1() = Null
                 END SUB
             ";
-            var expected = @"
-                public void F1()
-                {
-                    _.SETm1a0(VBScriptConstants.Null, this, _.RAISEERROR(new TypeMismatchException(""'F1'"")));
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
     }
 }

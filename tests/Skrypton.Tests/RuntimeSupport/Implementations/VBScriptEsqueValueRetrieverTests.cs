@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [TestClass]
     public class VBScriptEsqueValueRetrieverTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterNull()
         {
             myAssert.AreEqual(
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterOne()
         {
             myAssert.AreEqual(
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterOnePointOneFloat()
         {
             myAssert.AreEqual(
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterOnePointOneDouble()
         {
             myAssert.AreEqual(
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterOnePointOneDecimal()
         {
             myAssert.AreEqual(
@@ -65,7 +65,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterMinusOne()
         {
             myAssert.AreEqual(
@@ -74,7 +74,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterEmptyString()
         {
             myAssert.AreEqual(
@@ -83,7 +83,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALDoesNotAlterNonEmptyString()
         {
             myAssert.AreEqual(
@@ -92,7 +92,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALFailsOnTranslatedClassWithNoDefaultMember()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -103,7 +103,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [SourceClassName("TranslatedClassWithNoDefaultMember")]
         private class Translatedclasswithnodefaultmember { }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALFailsOnComObjectWithNoParameterlessDefaultMember()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -116,7 +116,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// This test relates to a fix just applied to GenerateSetInvoker (where an argumentsArray reference was being used instead of invokeArguments, which meant that the same set of arguments
         /// were being reused on each call)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EnsureThatOldArgumentsAreNotReusedInSubsequentIDispatchCalls()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
@@ -129,7 +129,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALFailsOnNonComVisibleNonTranslatedClasses()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -139,7 +139,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
         private class NonComVisibleNonTranslatedClass { }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALSupportsIsDefaultAttributeOnTranslatedClasses()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -154,7 +154,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public string name() { return "name!"; }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALSupportsDefaultMemberAttributeOnComVisibleNonTranslatedClasses()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -169,7 +169,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public string Name { get { return "name!"; } }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void VALSupportsToStringOnComVisibleNonTranslatedClasses()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
@@ -187,7 +187,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [ComVisible(true)]
         private class ComVisibleNonTranslatedClassWithNoDefaultMember { }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfNullIsFalse()
         {
             myAssert.False(
@@ -195,7 +195,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfZeroIsFalse()
         {
             myAssert.False(
@@ -203,7 +203,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfOneIsTrue()
         {
             myAssert.True(
@@ -211,7 +211,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfMinusOneIsTrue()
         {
             myAssert.True(
@@ -219,7 +219,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfOnePointOneIsTrue()
         {
             myAssert.True(
@@ -230,7 +230,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// <summary>
         /// VBScript doesn't round the number down to zero and find 0.1 to be false, it just checks that the number is non-zero
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfPointOneIsTrue()
         {
             myAssert.True(
@@ -238,7 +238,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFOfPointStringRepresentationOfOneIsTrue()
         {
             myAssert.True(
@@ -246,7 +246,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFThrowsExceptionForBlanksString()
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -255,7 +255,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFThrowsExceptionForNonNumericString()
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -264,7 +264,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IFIgnoresWhiteSpaceWhenParsingStrings()
         {
             myAssert.True(
@@ -272,7 +272,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NativeClassSupportsMethodCallWithArguments()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -288,7 +288,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NativeClassSupportsDefaultMethodCallWithArguments()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -304,7 +304,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
         /*
-                //lubo[TestMethod, MyFact]
+                //lubo[TestMethod]
                 public void ADORecordsetSupportsNamedFieldAccess()
                 {
                     var recordset = new ADODB.Recordset();
@@ -327,7 +327,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                     );
                 }
 
-                //lubo [TestMethod, MyFact]
+                //lubo [TestMethod]
                 public void ADORecordsetSupportsDefaultFieldAccess()
                 {
                     var recordset = new ADODB.Recordset();
@@ -356,7 +356,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 /// included in translated code if a value type is expected - any time other than when a SET statement is present as part of a
                 /// variable assignment)
                 /// </summary>
-                // lubo[TestMethod, MyFact]
+                // lubo[TestMethod]
                 public void ADORecordsetSupportsDefaultFieldValueAccess()
                 {
                     var recordset = new ADODB.Recordset();
@@ -380,7 +380,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                     );
                 }
         */
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OneDimensionalArrayAccessIsSupported()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -396,7 +396,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefArgumentIsUpdatedAfterCall()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -405,7 +405,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             myAssert.AreEqual(123, arg0);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefArgumentIsUpdatedAfterCallEvenIfExceptionIsThrown()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -418,21 +418,21 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             myAssert.AreEqual(123, arg0);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleArgumentParamsArrayMethodMayBeCalledWithZeroValues()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(0, _.CALLm1argp(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleArgumentParamsArrayMethodMayBeCalledWithSingleValue()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(1, _.CALLm1argp(context: null, target: this, member1: "GetNumberOfArgumentsPassedInParamsObjectArray", argumentProviderBuilder: _.ARGS.Val(1)));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleArgumentParamsArrayMethodMayBeCalledWithTwoValues()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -457,7 +457,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// class (a COM component, for example) then the call will fail, so the renaming must not be done at translation time. This means that the
         /// CALL implementation must support name rewriting for when the target is a translated-from-VBScript C# class.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void StringMemberAccessorValuesShouldNotBeRewrittenAtTranslationTime()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -467,7 +467,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DelegateWithIncorrectNumberOfArguments()
         {
             var parameterLessDelegate = (Func<object>)(() => "delegate result");
@@ -480,7 +480,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// <summary>
         /// In C#, it's fine to access an index within a string since a string is an array of characters. But in VBScript, it's not.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ItIsNotValidToAccessStringValueWithArguments()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -493,7 +493,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// DispId(0) is only supported when the match is unambiguous - previously, DispId(0) being specified on a property and on the getter for
         /// that property was considered an ambiguous match, but that shouldn't be the case since they both effectively refer to the same thing
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SupportDispIdoZeroBeingRepeatedOnPropertyAndOnPropertyGetterWhenDefaultMemberRequired()
         {
             var target = new DispIdZeroRepeatedOnPropertyAndItsGetter("test");
@@ -503,7 +503,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DispIdZeroPropertySettingWorksWithValueTypes()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
@@ -515,7 +515,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DispIdZeroPropertySettingWorksWithReferenceTypes()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
@@ -545,7 +545,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void CallPrivateMemberFromWithinContextOfClassShouldWork()
         {
             const string name = "test";
@@ -557,7 +557,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void CallPrivateMemberFromOutsideContextOfClassShouldThrow()
         {
             const string name = "test";
@@ -568,7 +568,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPrivatePropertyFromWithinContextOfClassShouldWork()
         {
             const string name = "test";
@@ -581,7 +581,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPrivatePropertyFromOutsideContextOfClassShouldThrow()
         {
             const string name = "test";
@@ -619,7 +619,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPrivateIndexedPropertyFromWithinContextOfClassShouldWork()
         {
             const string name = "test";
@@ -633,7 +633,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPrivateIndexedPropertyFromOutsideContextOfClassShouldThrow()
         {
             const string name = "test";
@@ -663,7 +663,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPublicIndexedPropertyFromWithinContextOfClassShouldWork()
         {
             const string name = "test";
@@ -677,7 +677,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SettingPublicIndexedPropertyFromOutsideContextOfClassShouldWork()
         {
             const string name = "test";
@@ -709,7 +709,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefIndexArgumentOnPublicPropertySetterShouldAcceptUpdatesWhenCalledOverIReflect()
         {
             object i = "123";
@@ -731,7 +731,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefIndexArgumentOnPublicPropertySetterShouldAcceptUpdatesWhenNotCalledOverIReflect()
         {
             object i = "123";
@@ -754,7 +754,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
         /*
-                //lubo[TestMethod, MyFact]
+                //lubo[TestMethod]
                 public void CallingCLRMethodsThatHaveValueTypeParametersWorksWithReferenceTypes()
                 {
                     var recordset = new ADODB.Recordset();
@@ -789,7 +789,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             return input;
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NothingShouldBeReturnedForNullForPropertyOfComVisibleType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -801,7 +801,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 #pragma warning restore CA1416 // Validate platform compatibility
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NothingShouldNotBeReturnedForNullForPropertyOfObjectType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -814,7 +814,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// VBScript has its own ideas about what constitutes a value type, so it won't get Nothing from a null property value if the property's type is string (even though
         /// string is ComVisible and not "object" and not a .NET value type)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NothingShouldNotBeReturnedForNullForPropertyOfStringType()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -840,7 +840,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// a value type, it will call the default member and pass a Missing value to the argument. The VBScriptTranslator runtime library has not previously done this - this
         /// test illustrates the issue.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void WhenLookingForParameterLessDefaultMemberOnComVisibleClassSupportOptionalArguments()
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -860,7 +860,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(ZeroArgumentBracketSuccessData))]
+        [TestMethod, MyMemberData(nameof(ZeroArgumentBracketSuccessData))]
         public void ZeroArgumentBracketSuccessCases(int testNo, string description, object target, string[] memberAccessors, bool useBracketsWhereZeroArguments, object expectedResult)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -870,7 +870,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             myAssert.AreEqual(expectedResult, _.CALL(context: null, target: target, members: memberAccessors, argumentProvider: args.GetArgs()));
         }
 
-        [TestMethod, MyTheory, MyMemberData("ZeroArgumentBracketFailData")]
+        [TestMethod, MyMemberData("ZeroArgumentBracketFailData")]
         public void ZeroArgumentBracketFailCases(string description, object target, string[] memberAccessors, bool useBracketsWhereZeroArguments, Type exceptionType)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
@@ -931,14 +931,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             public object rewritten_params { get { return "Success!"; } }
         }
 
-        [TestMethod, MyTheory, MyMemberData("AcceptableEnumerableValueData")]
+        [TestMethod, MyMemberData("AcceptableEnumerableValueData")]
         public void AcceptableEnumerableValueCases(string description, object value, IEnumerable<object> expectedResults)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;
             myAssert.AreEqual(expectedResults, _.ENUMERABLE(value).Cast<Object>()); // Cast to Object because we care about testing the contents, not the element type
         }
 
-        [TestMethod, MyTheory, MyMemberData("UnacceptableEnumerableValueData")]
+        [TestMethod, MyMemberData("UnacceptableEnumerableValueData")]
         public void UnacceptableEnumerableValueCases(string description, object value)
         {
             var _ = DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever;

@@ -13,13 +13,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class INSTR : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object startIndex, object valueToSearch, object valueToSearchFor, object compareMode, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().INSTR(startIndex, valueToSearch, valueToSearchFor, compareMode));
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+        [TestMethod, MyMemberData("InvalidUseOfNullData")]
         public void InvalidUseOfNullCases(string description, object startIndex, object valueToSearch, object valueToSearchFor, object compareMode)
         {
             myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("InvalidProcedureCallOrArgumentData")]
+        [TestMethod, MyMemberData("InvalidProcedureCallOrArgumentData")]
         public void InvalidProcedureCallOrArgumentCases(string description, object startIndex, object valueToSearch, object valueToSearchFor, object compareMode)
         {
             myAssert.Throws<InvalidProcedureCallOrArgumentException>(() =>
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object startIndex, object valueToSearch, object valueToSearchFor, object compareMode)
         {
             myAssert.Throws<TypeMismatchException>(() =>

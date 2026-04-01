@@ -14,28 +14,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is the most basic example - a single OnErrorResumeNext that applies to a single statement that follows it. Whenever any scope terminates,
         /// any error token must be released.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleErrorTrappedStatement()
         {
             var source = @"
 				On Error Resume Next
 				WScript.Echo ""Test1""
 			";
-            var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.HANDLEERROR(errOn, () => {
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
-				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If an error token is required, it will also be defined at the top of the scope, not just before the first OnErrorResumeNext (in case it is
         /// required elsewhere in the same VBScript scope but in a different C# block scope in the translated output)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FlatStatementSetWithMiddleOneErrorTrapped()
         {
             var source = @"
@@ -45,17 +38,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				On Error Goto 0
 				WScript.Echo ""Test3""
 			";
-            var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.HANDLEERROR(errOn, () => {
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test2"");
-				});
-				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test3"");
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -65,7 +48,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// error) but it is a layer of redirection that can be avoided if the translator is sure that it's not required (if there was no OnErrorResumeNext
         /// present all, for example).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ErrorTrappingLayerMustBeAddedEvenIfItWillOnlyPotentiallyBeEnabled()
         {
             var source = @"
@@ -74,20 +57,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End If
 				WScript.Echo ""Test1""
 			";
-            var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				if (_.IF(false))
-				{
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				}
-				_.HANDLEERROR(errOn, () => {
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
-				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ErrorTrappingDoesNotAffectChildScopes()
         {
             var source = @"
@@ -97,23 +70,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo ""Test1""
 				End Function
 			";
-            var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.HANDLEERROR(errOn, () => {
-					_.CALLm1v0(this, _outer, ""Func1"");
-				});
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);
-				public object Func1()
-				{
-					object Func1_retVal = null;
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
-					return Func1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ErrorTrappingDoesNotAffectParentScopes()
         {
             var source = @"
@@ -124,21 +84,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo ""Test1""
 				End Function
 			";
-            var expected = @"
-				_.CALLm1v0(this, _outer, ""Func1"");
-				_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test2"");
-				public object Func1()
-				{
-					object Func1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					_.HANDLEERROR(errOn, () => {
-						_.CALLm1v1(this, _env.WScript, ""Echo"", ""Test1"");
-					});
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return Func1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -147,7 +93,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// method so that the invalid argument count results in a runtime error rather than a compile failure (the C# will not compile if the functions are
         /// specified as being called directly but with incorrect argument counts), in order to be consistent with VBScript.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TranslateErrRaiseIntoAppropriateSupportFunction()
         {
             var source = @"
@@ -159,15 +105,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Err.Clear()
 				Err.Clear ""Bonus Argument""
 			";
-            var expected = @"
-				_.RAISEERROR(VBScriptConstants.vbObjectError);
-				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"");
-				_.RAISEERROR(VBScriptConstants.vbObjectError, ""Source"", ""Test"");
-				_.CALLm1v4(this, _, ""RAISEERROR"", VBScriptConstants.vbObjectError, ""Source"", ""Test"", ""Bonus Argument"");
-				_.CLEARANYERROR();
-				_.CLEARANYERROR();
-				_.CALLm1v1(this, _, ""CLEARANYERROR"", ""Bonus Argument"");";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -181,7 +119,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// be identified as needing to be overwritten by the alias value after the value-setting statement is processed within the lambda. This meant that
         /// the right-hand-side of the value-setting statement would be evaluated, but its return value would not be applied to the by-ref argument.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfValueSettingStatementTargetIsByRefArgumentOfContainingFunctionThenAnyByRefMappingMustBeTwoWay()
         {
             // 2016-03-09 DWR: It's important that the ON ERROR RESUME NEXT comes after the value setting statement since the translation process is not
@@ -196,23 +134,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					On Error Resume Next
 				End Function
 			";
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            object x_vref = x;
-            try
-            {
-                x_vref = VBScriptConstants.Nothing;
-            }
-            finally { x = x_vref; }
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -222,7 +144,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// was when the value setting statement existed within a scope that may require error-trapping. This test ensures that the over-aggressive
         /// aliasing is no longer applied.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ValueSettingTargetThatIsByRefFunctionArgumentShouldOnlyBeReadWriteAliasedIfWithinErrorHandling()
         {
             var source = @"
@@ -230,14 +152,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Set x = Nothing
 				End Function
 			";
-            var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					x = VBScriptConstants.Nothing;
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
             //myAssert.AreEqual(
             //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -247,7 +162,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// An IF block within a FUNCTION that has an OERN before the block must have error-trapping around its inner statements
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfBlockStatementsMustBeWrappedInErrorHandlingIfWithinFunctionWithOnErrorResumeNextBeforeIfBlock()
         {
             var source = @"
@@ -259,23 +174,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					On Error Goto 0
 				End Function
 			";
-            var expected = @"
-				public object F1(object value)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					if (_.IF(() => true, errOn))
-					{
-						_.HANDLEERROR(errOn, () => {
-							F1_retVal = _.DATEVALUE(value);
-						});
-					}
-					_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
             //myAssert.AreEqual(
             //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -287,7 +186,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// the IF block then it will not affect the IF block and so the IF block does not need to consider any error-trapping (around either its own
         /// conditional codeExpression or its inner statements)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfBlockStatementsNeedNotBeWrappedInErrorHandlingIfWithinFunctionWithOnErrorResumeNextAfterIfBlock()
         {
             var source = @"
@@ -300,25 +199,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F1 = Date()
 				End Function
 			";
-            var expected = @"
-				public object F1(object value)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					if (_.IF(true))
-					{
-						F1_retVal = _.DATEVALUE(value);
-						_.RELEASEERRORTRAPPINGTOKEN(errOn);
-						return F1_retVal;
-					}
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					_.HANDLEERROR(errOn, () => {
-						F1_retVal = _.DATE();
-					});
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -327,7 +208,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// because there is a chance that the second pass through the loop could occur with error-trapping enabled.
         /// conditional codeExpression or its inner statements)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IfBlockStatementsInErrorIfOnErrorResumeNextAfterWithin() // IfBlockStatementsNeedsToBeWrappedInErrorHandlingIfOnErrorResumeNextAfterComesAfterItWithinLoopingStructure
         {
             // The code analysis is not clever enough to realise that the FOR block will only be executed once (since it starts and ends at 1) and so it

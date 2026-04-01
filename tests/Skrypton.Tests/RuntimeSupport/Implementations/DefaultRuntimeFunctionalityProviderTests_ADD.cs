@@ -14,7 +14,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class ADD : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, object l, object r, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().ADD(l, r));
@@ -136,7 +136,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object l, object r)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -145,7 +145,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("OverflowData")]
+        [TestMethod, MyMemberData("OverflowData")]
         public void OverflowCases(string description, object l, object r)
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
@@ -154,7 +154,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object l, object r)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -163,7 +163,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
+        [TestMethod, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
         public void ObjectDoesNotSupportPropertyOrMemberCases(string description, object l, object r)
         {
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>

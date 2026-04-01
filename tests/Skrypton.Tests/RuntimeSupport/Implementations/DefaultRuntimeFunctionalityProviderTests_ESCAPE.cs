@@ -11,31 +11,31 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 	//{
 		public class ESCAPE : TestBase
     {
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void EmptyResultsInBlankString()
 			{
 				myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE(null));
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void NullResultsInNull()
 			{
 				myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE(DBNull.Value));
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void PlainString()
 			{
 				myAssert.AreEqual("test", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("test"));
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void ComplexString()
 			{
 				myAssert.AreEqual("%22T%FCst%20the%2Cth+in%252Bg%20%u0107%22", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("\"Tüst the,th+in%2Bg ć\""));
 			}
 
-			[TestMethod, MyFact]
+			[TestMethod]
 			public void NonEscapedCharacters()
 			{
 				myAssert.AreEqual("@*_+-./", DefaultRuntimeSupportClassFactoryInstance.Get().ESCAPE("@*_+-./"));

@@ -11,7 +11,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class CCUR : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void JustBeforePositiveOverflow()
         {
             myAssert.AreEqual(
@@ -20,7 +20,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PositiveOverflow()
         {
             myAssert.Throws<VBScriptOverflowException>(() =>
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void JustBeforeNegativeOverflow()
         {
             myAssert.AreEqual(
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NegativeOverflow()
         {
             myAssert.Throws<VBScriptOverflowException>(() =>

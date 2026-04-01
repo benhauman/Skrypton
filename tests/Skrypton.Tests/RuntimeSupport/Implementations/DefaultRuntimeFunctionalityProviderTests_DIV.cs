@@ -14,13 +14,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 	//{
 		public class DIV : TestBase
 		{
-			[TestMethod, MyTheory, MyMemberData("SuccessData")]
+			[TestMethod, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object l, object r, object expectedResult)
 			{
 				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().DIV(l, r));
 			}
 
-			[TestMethod, MyTheory, MyMemberData(nameof(TypeMismatchData))]
+			[TestMethod, MyMemberData(nameof(TypeMismatchData))]
 			public void TypeMismatchCases(int testNo, string description, object l, object r)
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("OverflowData")]
+			[TestMethod, MyMemberData("OverflowData")]
 			public void OverflowCases(string description, object l, object r)
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+			[TestMethod, MyMemberData("ObjectVariableNotSetData")]
 			public void ObjectVariableNotSetCases(string description, object l, object r)
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
+			[TestMethod, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
 			public void ObjectDoesNotSupportPropertyOrMemberCases(string description, object l, object r)
 			{
 				myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>

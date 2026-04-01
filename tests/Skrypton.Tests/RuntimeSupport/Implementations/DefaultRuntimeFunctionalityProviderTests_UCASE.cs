@@ -11,19 +11,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     //{
         public class UCASE : TestBase
     {
-            [TestMethod, MyFact]
+            [TestMethod]
             public void EmptyResultsInBlankString()
             {
                 myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().UCASE(null));
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void NullResultsInNull()
             {
                 myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().UCASE(DBNull.Value));
             }
 
-            [TestMethod, MyFact]
+            [TestMethod]
             public void Test()
             {
                 myAssert.AreEqual("TEST", DefaultRuntimeSupportClassFactoryInstance.Get().UCASE("Test"));

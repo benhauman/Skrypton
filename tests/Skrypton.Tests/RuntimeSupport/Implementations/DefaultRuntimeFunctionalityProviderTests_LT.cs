@@ -15,7 +15,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // by the VAL method (and once a non-object-reference value has been obtained, the same logic as illustrated below will be followed)
     public class LT : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyIsNotLessThanEmpty()
         {
             myAssert.AreEqual(
@@ -24,7 +24,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// Anything compared to Nothing will error, this is just an example case to illustrate that (if ANYTHING would get a free pass it would be DBNull.Value
         /// but not even it does)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullComparedToNothingErrors()
         {
             var nothing = VBScriptConstants.Nothing;
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NothingComparedToNothingErrors()
         {
             var nothing = VBScriptConstants.Nothing;
@@ -58,7 +58,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         // Empty appears to be treated as zero
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroIsNotLessThanEmpty()
         {
             myAssert.AreEqual(
@@ -66,7 +66,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 DefaultRuntimeSupportClassFactoryInstance.Get().LT(0, null)
             );
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyIsNotLessThanZero()
         {
             myAssert.AreEqual(
@@ -74,7 +74,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, 0)
             );
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOneIsLessThanEmpty()
         {
             myAssert.AreEqual(
@@ -82,7 +82,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 DefaultRuntimeSupportClassFactoryInstance.Get().LT(-1, null)
             );
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyIsNotLessThanMinusOne()
         {
             myAssert.AreEqual(
@@ -90,7 +90,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, -1)
             );
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyIsLessThanPlusOne()
         {
             myAssert.AreEqual(
@@ -98,7 +98,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 DefaultRuntimeSupportClassFactoryInstance.Get().LT(null, 1)
             );
         }
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PlusOneIsNotLessThanEmpty()
         {
             myAssert.AreEqual(

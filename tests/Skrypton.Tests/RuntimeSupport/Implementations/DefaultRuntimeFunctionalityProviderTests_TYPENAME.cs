@@ -22,7 +22,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         //    var entry = Data.First(static x => (string)x[0] == "Scripting Dictionary");
         //    Cases((string)entry[0], entry[1], (string)entry[2]);
         //}
-        [TestMethod, MyTheory, MyMemberData(nameof(Data))]
+        [TestMethod, MyMemberData(nameof(Data))]
         public void TYPENAMECases(string description, object value, string expectedTypeName)
         {
             Console.WriteLine($"{description} , e:{expectedTypeName}");

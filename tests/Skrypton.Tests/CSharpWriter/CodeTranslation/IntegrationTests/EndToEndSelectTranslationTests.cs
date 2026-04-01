@@ -10,7 +10,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// a StringToken whose content was a single comma characters as being an ArgumentSeparatorToken, if the type of the token is checked instead of its content
         /// then this sort of mistake will no longer occur)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void AllowSpecialCharactersToBeUsedAsStringsInSelectCases()
         {
             var source = @"

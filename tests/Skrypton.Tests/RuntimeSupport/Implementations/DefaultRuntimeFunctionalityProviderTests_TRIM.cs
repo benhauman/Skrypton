@@ -11,31 +11,31 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class TRIM : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyResultsInBlankString()
         {
             myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM(null));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullResultsInNull()
         {
             myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().TRIM(DBNull.Value));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoesNotRemoveTabs()
         {
             myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("\tValue\t"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoesNotRemoveLineReturns()
         {
             myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("\nValue\n"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RemovesMultipleLeadingAndTrailingSpaces()
         {
             myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactoryInstance.Get().TRIM("  Value   "));

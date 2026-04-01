@@ -10,7 +10,7 @@ namespace Skrypton.Tests.LegacyParser
     [TestClass]
     public class ExitHandlerTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoNotCrashIfReachEndOfContent()
         {
             var tokens = new List<IToken>

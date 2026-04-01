@@ -142,8 +142,7 @@ namespace Skrypton.Tests
         }
         protected void TestCSharpCodeTranslationWithoutScaffolding(string? expectedZ, string vbsSource, params string[] translationSuppression)
         {
-            string expectedCs = ExpectedCsCode(null);
-            TestCSharpCodeTranslationWithoutScaffoldingX(null, expectedCs, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+            TestCSharpCodeTranslationWithoutScaffoldingX(null, ExpectedCsCode(null), vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
         }
         protected void TestCSharpCodeTranslationWithoutScaffolding(int testNo, string expectedZ, string vbsSource, params string[] translationSuppression)
         {

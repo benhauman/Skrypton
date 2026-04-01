@@ -19,7 +19,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// class. There is also a "wscript" reference which is declared as an External Dependency in the translator, this will appear in the Environment
         /// References class as well (as any/all External Dependencies should).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredVariablesInTheOutermostScopeShouldBeDefinedAsAnEnvironmentVariable()
         {
             var source = @"
@@ -36,7 +36,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This code will access an undeclared variable within a function. The scope of that undeclared variable should be restricted to the function in
         /// which it is accessed and not bleed out into the outer scope.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void UndeclaredVariableWithinFunctionsShouldBeRestrictedInScopeToThatFunction()
         {
             var source = @"
@@ -63,7 +63,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is a corresponding test to DeclaredVariableWithinFunctionsShouldBeRestrictedInScopeToThatFunction but for the case where the variable is
         /// explicitly declared.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DeclaredVariableWithinFunctionsShouldBeRestrictedInScopeToThatFunction()
         {
             var source = @"
@@ -84,7 +84,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return Test1_retVal;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
             //myAssert.AreEqual(
             //    expected.Select(s => s.Trim()).ToArray(),
             //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
@@ -95,7 +95,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// This is a corresponding test to DeclaredVariableWithinFunctionsShouldBeRestrictedInScopeToThatFunction but for the case where the variable is
         /// explicitly declared.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DeclaredVariableInOutermostScopeShouldBeAccessedFromThereWhenRequiredWithinFunction()
         {
             var source = @"
@@ -115,10 +115,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return Test1_retVal;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NumericLiteralsAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func 1()";
@@ -129,7 +129,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void StringLiteralsAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func \"1\"()";
@@ -140,7 +140,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101", "SKY103"]);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BuiltinValuesAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func vbObjectError()";
@@ -151,7 +151,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ClassNameFollowedByBracketsInNewStatementResultsInCompileTimeError()
         {
             var source = "c = new C1()";
@@ -165,7 +165,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// Since runs of string concatenations are so common, an exception to the two-arguments-per-operation (apart from NOT, that only takes one) is made
         /// to allow the values to be combined in a single CONCAT call, reducing the size of the emitted code
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ConcatFunctionAllowsMoreThanTwoArguments()
         {
             var source = @"
@@ -183,7 +183,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// would have no effect on the rest of processing (since the addition operation should take precedence, there is no CONCAT-flattening that can
         /// be performed in this case)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ConcatFunctionAllowsMoreThanTwoArgumentsButDoesNotAffectNestedOperationsOfOtherTypes()
         {
             var source = @"
@@ -203,7 +203,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// for example), then trying to access its members with the name-rewritten versions will fail. This means that the CALL implementation must be able to
         /// consider the same name rewriter rules at runtime that the translator does.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MemberAccessorsInCallStatementsShouldNotBeRenamedAtTranslationTime()
         {
             // "Params" is a C# keyword, so we couldn't emit translated code with a method called "Params", but if "a" is an external reference (such as a COM
@@ -225,7 +225,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// Similar to MemberAccessorsInCallStatementsShouldNotBeRenamedAtTranslationTime, the ValueSettingStatementsTranslator has been corrected so that it
         /// won't rewrite member accessors that string arguments in a SET call
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MemberAccessorsInValueSettingsStatementsShouldNotBeRenamedAtTranslationTime()
         {
             var source = @"
@@ -242,7 +242,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// It doesn't matter if we're within a VBScript class on in the outermost scope, or within a function in the outermost scope, the "Me" reference may
         /// always be mapped directly to "this" and it will be correct
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MeReferenceMapsDirectlyOnToThis()
         {
             var source = @"
@@ -252,14 +252,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, this, ""Name"")); "
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source); TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If a CALL codeExpression has a function as its target then it needs to be rewritten so that that the owner of the function (or property) is the target
         /// and the function and one of the member accessors (since it's not valid C# to provide a delegate for an object argument)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void OutermostScopeFunctionMayNotBeTargetOfCallExpression()
         {
             var source = @"
@@ -281,7 +281,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// <summary>
         /// Very similar to OutermostScopeFunctionMayNotBeTargetOfCallExpression except that the function is within a class rather than in the outermost scope
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ClassContainedFunctionMayNotBeTargetOfCallExpression()
         {
             var source = @"
@@ -330,28 +330,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// ByRef argument is passed to another method ByRef because that will require putting a reference to the original argument in a lambda, which is not legal
         /// in C#).
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefArgumentDoesNotRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunction()
         {
             var source = @"
 				Function F1(x)
 					WScript.Echo TypeName(x)
 				End Function";
-            var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(x));
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This is a companion to ByRefArgumentDoesNotRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunction that illustrates that a ByRef mapping is
         /// required when a ByRef argument is passed to a builtin function if it is passed indirectly, via a nested function call.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefArgumentRequireByRefArgumentMappingWhenPassedIndirectlyToBuiltInFunction()
         {
             var source = @"
@@ -362,31 +355,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 					F2 = x
 				End Function";
-            var expected = @"
-public object F1(ref object x)
-{
-object F1_retVal = null;
-object x_vref = x;
-try
-{
-_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; }))));
-}
-finally { x = x_vref; }
-return F1_retVal;
-}
-public object F2(ref object x)
-{
-return _.VAL(x);
-}
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This is another companion to ByRefArgumentDoesNotRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunction - if a ByRef argument is passed to a builtin
         /// function and error-trapping may be enabled then a ByRef mapping will be required to avoid trying to reference the ref argument within the HANDLEERROR lambda
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ByRefArgumentWillRequireByRefArgMapWhenPassedDirectlyToBuiltInFuncIfErrorMayBeOn() // ByRefArgumentWillRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunctionIfErrorTrappingMayBeEnabled
         {
             var source = @"
@@ -394,49 +370,28 @@ return _.VAL(x);
 					On Error Resume Next
 					WScript.Echo TypeName(x)
 				End Function";
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            int errOn = _.GETERRORTRAPPINGTOKEN();
-            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-            object x_vref = x;
-            try
-            {
-                _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(x_vref));
-                });
-            }
-            finally { x = x_vref; }
-            _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            return F1_retVal;
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This illustrated a bug that was identified with numeric literals of the form "&H001" - the trailing zeroes were causing an exception in the
         /// parsing process
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EnsureThatHexValuesWithTrailingZeroesAreParsedCorrectly()
         {
             var source = @"
 				const SOME_CONSTANT = &H0001
                 Dim vv: vv = SOME_CONSTANT
 			";
-            var expected = @"
-                _outer.vv = _.VAL(_outer.SOME_CONSTANT);
-            ";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// This proves a bug fix around the translation of statements within with blocks, where the first token in the statement is a member accessor - the CALL that
         /// was generated was incorrectly interpreting the method name as an argument
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void WithReferenceShouldNotConfuseBracketResolution()
         {
             var source = @"
@@ -445,18 +400,10 @@ return _.VAL(x);
 						.Draw ""Test""
 					End With
 				End Function";
-            var expected = @"
-				public object Render(ref object x)
-				{
-					object Render_retVal = null;
-					var with = _.OBJ(x);
-					_.CALLm1v1(this, with, ""Draw"", ""Test"");
-					return Render_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(VariousBracketDeterminedRefValArgumentData))]
+        [TestMethod, MyMemberData(nameof(VariousBracketDeterminedRefValArgumentData))]
         public void VariousBracketDeterminedRefValArgumentCases(int testNo, string source, string expectedResult)
         {
             TestCSharpCodeTranslationWithoutScaffolding(testNo, expectedResult, source, ["SKY101"]);
@@ -494,7 +441,7 @@ return _.VAL(x);
             }
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessaryData))]
+        [TestMethod, MyMemberData(nameof(ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessaryData))]
         public void ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessary(int testNo, string source, string expectedResult)
         {
             TestCSharpCodeTranslationWithoutScaffolding(testNo, expectedResult, source, ["SKY101"]);

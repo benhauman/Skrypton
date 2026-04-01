@@ -17,13 +17,13 @@ namespace Skrypton.Tests.RuntimeSupport
     {
         public en_GB() : base("en-GB") { }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, string value, int defaultYear, DateTime expectedDate)
         {
             myAssert.AreEqual(expectedDate, DateParser.TestCreateDateParserTest(TestCulture, defaultYearOverride: defaultYear).Parse(value, TestCulture));
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(ErrorData))]
+        [TestMethod, MyMemberData(nameof(ErrorData))]
         public void ErrorCases(string description, string value, int defaultYear)
         {
             myAssert.Throws<ArgumentException>(() =>
@@ -103,7 +103,7 @@ namespace Skrypton.Tests.RuntimeSupport
     {
         public en_US() : base("en-US") { }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(string description, string value, int defaultYear, DateTime expectedDate)
         {
             myAssert.AreEqualDateTime(description, expectedDate, DateParser.TestCreateDateParserTest(TestCulture, defaultYearOverride: 2015).Parse(value, TestCulture));

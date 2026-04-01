@@ -13,7 +13,7 @@ namespace Skrypton.Tests.LegacyParser
     [TestClass]
     public class SingleStatementParsingTests : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void StatementWithMemberAccessAndDecimalValueAndUnwrappedMethodArgument()
         {
             myAssert.AreEqual(
@@ -35,7 +35,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void StatementWithMemberAccessAndDecimalValueAndWrappedMethodArgument()
         {
             myAssert.AreEqual(
@@ -59,7 +59,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleValueSetToNothing()
         {
             myAssert.AreEqual(
@@ -75,7 +75,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TwoDimensionalArrayElementSetToNumber()
         {
             myAssert.AreEqual(
@@ -100,7 +100,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TwoDimensionalArrayElementSetToNumberWithExplicitLet()
         {
             myAssert.AreEqual(
@@ -125,7 +125,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TwoDimensionalArrayElementSetToNothing()
         {
             myAssert.AreEqual(
@@ -150,7 +150,7 @@ namespace Skrypton.Tests.LegacyParser
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TwoDimensionalArrayElementWithMethodCallIndexSetToNothing()
         {
             myAssert.AreEqual(

@@ -13,19 +13,19 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class IS : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData("TrueData")]
+        [TestMethod, MyMemberData("TrueData")]
         public void TrueCases(string description, object l, object r)
         {
             myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().IS(l, r));
         }
 
-        [TestMethod, MyTheory, MyMemberData("FalseData")]
+        [TestMethod, MyMemberData("FalseData")]
         public void FalseCases(string description, object l, object r)
         {
             myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().IS(l, r));
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectRequiredData")]
+        [TestMethod, MyMemberData("ObjectRequiredData")]
         public void ObjectRequiredCases(string description, object l, object r)
         {
             myAssert.Throws<ObjectRequiredException>(() =>

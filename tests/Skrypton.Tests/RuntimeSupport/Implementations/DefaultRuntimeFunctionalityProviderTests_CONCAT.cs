@@ -17,13 +17,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     {
         public CONCAT() : base("en-GB") { }
 
-        [TestMethod, MyTheory, MyMemberData("SuccessData")]
+        [TestMethod, MyMemberData("SuccessData")]
         public void SuccessCases(string description, object l, object r, object expectedResult)
         {
             myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().CONCAT(l, r));
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+        [TestMethod, MyMemberData("ObjectVariableNotSetData")]
         public void ObjectVariableNotSetCases(string description, object l, object r)
         {
             myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -32,7 +32,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
+        [TestMethod, MyMemberData("ObjectDoesNotSupportPropertyOrMemberData")]
         public void ObjectDoesNotSupportPropertyOrMemberCases(string description, object l, object r)
         {
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() =>
@@ -41,7 +41,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+        [TestMethod, MyMemberData("TypeMismatchData")]
         public void TypeMismatchCases(string description, object l, object r)
         {
             myAssert.Throws<TypeMismatchException>(() =>
@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
         /* 2016-03-16 DWR: We need to run in 32-bit mode for some tests (such as IDispatch tests), which means that we can't run this test since we get an
          OutOfMemoryException - it's more important to sacrifice this test and have the others pass
-        [TestMethod, MyTheory, MyMemberData("OutOfStringSpaceData")]
+        [TestMethod, MyMemberData("OutOfStringSpaceData")]
         public void OutOfStringSpaceCases(string description, object l, object r)
         {
             myAssert.Throws<OutOfStringSpaceException>(() =>

@@ -10,7 +10,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// When the tokens with the content "Property" had to be classified as a MayBeKeywordOrNameToken instead of a straight KeyWordToken, some logic had to
         /// be changed in the class parsing to account for it - this test exercises that work
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EndProperty()
         {
             var source = @"
@@ -19,32 +19,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END PROPERTY
 				END CLASS
 			";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-
-					[TranslatedProperty(""Name"")]
-					public object Name()
-					{
-						return null;
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -53,7 +28,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// calls Class_Terminate (as soon as it leaves scope, rather than when a garbage collector wants to deal with it). This isn't currently taken
         /// advantage of in the generated code (as of 2014-12-15) but it might be in the future.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ClassTerminateResultsInDisposableTranslatedClass()
         {
             var source = @"
@@ -63,57 +38,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1 : IDisposable
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					private bool _disposed;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						_disposed = false;
-					}
-
-					~C1()
-					{
-						try { Dispose(false); }
-						catch(Exception e)
-						{
-							try { _.SETERROR(e); } catch { }
-						}
-					}
-
-					void IDisposable.Dispose()
-					{
-						Dispose(true);
-						GC.SuppressFinalize(this);
-					}
-
-					private void Dispose(bool disposing)
-					{
-						if (_disposed)
-							return;
-						if (disposing)
-							Class_Terminate();
-						_disposed = true;
-					}
-
-					public void Class_Terminate()
-					{
-						_.CALLm1v1(this, _env.WScript, ""Echo"", ""Gone!"");
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected,//.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //sourece//WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -121,7 +46,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// call this method in the constructor in the generated class. For strict compatibility with VBScript, any error is ignored and, while it will terminate
         /// execution of Class_Initialize, it will not prevent the calling code from continuing.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ClassInitializeResultsInConstructorCall()
         {
             var source = @"
@@ -131,36 +56,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						try { Class_Initialize(); }
-						catch(Exception e)
-						{
-							_.SETERROR(e);
-						}
-					}
-
-					public void Class_Initialize()
-					{
-						_.CALLm1v1(this, _env.WScript, ""Echo"", ""Here!"");
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ClassInitializeCallHappensAfterFieldsSetToNull()
         {
             var source = @"
@@ -171,46 +70,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-						mName = null;
-						try { Class_Initialize(); }
-						catch(Exception e)
-						{
-							_.SETERROR(e);
-						}
-					}
-
-					private object mName { get; set; }
-
-					public void Class_Initialize()
-					{
-						mName = ""Test"";
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// If a GET property just returns a value then there's no need to define a return value, set it, then return that temporary reference (this is the
         /// same as for FUNCTION but not SUB, since SUB does not return a value)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PropertyGetterThatHasSingleLineReturnsIsTranslatedIntoSingleLineReturn()
         {
             var source = @"
@@ -219,31 +86,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-					[TranslatedProperty(""Name"")]
-					public object Name()
-					{
-						return ""C1"";
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -251,7 +94,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// multiple times, depending upon the getter's implementation) and returned at the end. The logic to determine whether a no-temporary-reference
         /// short cut may be applied is very simplistic and only applies to the simplest cases.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PropertyGetterThatHasMultipleLinesFollowsStandardFormat()
         {
             var source = @"
@@ -261,41 +104,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-					[TranslatedProperty(""Name"")]
-					public object Name()
-					{
-						object Name_retVal = null;
-						_.CALLm1v1(this, _env.WScript, ""Echo"", ""get_Name"");
-						Name_retVal = ""C1"";
-						return Name_retVal;
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
         /// LET or SET properties would seem like they should error if they try to return a value (the same as a SUB would), but for some reason VBScript just
         /// ignores the sort-of-return-value setting (it evaluates the right-hand side of the statement but doesn't return anything and doesn't error)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonGetPropertyIgnoresAnyReturnValueSetting()
         {
             var source = @"
@@ -304,31 +120,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-					[TranslatedProperty(""Name"")]
-					public void Name(ref object value)
-					{
-						_.VAL(""C1"");
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+
         }
 
         /// <summary>
@@ -337,7 +130,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// an object reference type. This is nothing to with whether the property accessor is a LET or SET, it is solely down to whether the value-setting
         /// statement begins with "SET" or not.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonGetPropertyIgnoresAnyReturnValueSettingButSetSemanticsAreRespectedWhereSpecified()
         {
             var source = @"
@@ -346,31 +139,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						SET Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-					[TranslatedProperty(""Name"")]
-					public void Name(ref object value)
-					{
-						_.OBJ(""C1"");
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -378,7 +147,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// or SET property specifies the name of that property WITH brackets, then it will try to call itself (potentially infinite-looping, depending upon
         /// implementation)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonGetPropertyCallsSelfIfBracketsAreSpecifiedAroundRecursivePropertyUpdate()
         {
             var source = @"
@@ -387,28 +156,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name() = ""C1""
 					END PROPERTY
 				END CLASS";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-					[TranslatedProperty(""Name"")]
-					public void Name(ref object value)
-					{
-						_.SETm1a0(this, this, ""Name"", ""C1"");
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         /// <summary>
@@ -416,7 +164,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// will fall apart if there need to be multiple indexed properties if this is the only mechanism used) so some extra logic is layered on; the properties
         /// are translated into functions and the parent class inherits TranslatedPropertyIReflectImplementation, which does some mapping work for calling code.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void IndexedPropertiesNeedSpecialLoveAndCare()
         {
             var source = @"
@@ -425,28 +173,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END PROPERTY
 				END CLASS
 			";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1 : TranslatedPropertyIReflectImplementation
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-
-					[TranslatedProperty(""Blah"")]
-					public void Blah(object i, object j, object value)
-					{
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
 
         [TestMethod]

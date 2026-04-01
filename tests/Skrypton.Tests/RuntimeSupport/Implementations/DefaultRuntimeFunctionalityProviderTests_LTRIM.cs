@@ -11,37 +11,37 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class LTRIM : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyResultsInBlankString()
         {
             myAssert.AreEqual("", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM(null));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullResultsInNull()
         {
             myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM(DBNull.Value));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoesNotRemoveTabs()
         {
             myAssert.AreEqual("\tValue\t", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("\tValue\t"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DoesNotRemoveLineReturns()
         {
             myAssert.AreEqual("\nValue\n", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("\nValue\n"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RemovesMultipleLeadingSpaces()
         {
             myAssert.AreEqual("Value", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("  Value"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void RemovesMultipleLeadingButNotTrailingSpaces()
         {
             myAssert.AreEqual("Value   ", DefaultRuntimeSupportClassFactoryInstance.Get().LTRIM("  Value   "));

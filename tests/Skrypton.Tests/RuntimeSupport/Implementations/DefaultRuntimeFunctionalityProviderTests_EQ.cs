@@ -17,18 +17,18 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // cover the logic regarding this, we don't need to duplicate it here. The same goes for arrays - the VAL logic will handle it.
     public class EQ : TestBase
     {
-        [TestMethod, MyFact, Owner("Luben Naumov")]
+        [TestMethod, Owner("Luben Naumov")]
         public void NumericEqualNumericText()
         {
             Assert.IsTrue((bool)DefaultRuntimeSupportClassFactoryInstance.Get().EQ((object)-2, (object)"-2"));
         }
-        [TestMethod, MyFact, Owner("Luben Naumov")]
+        [TestMethod, Owner("Luben Naumov")]
         public void NumericTextEqualNumeric()
         {
             Assert.IsTrue((bool)DefaultRuntimeSupportClassFactoryInstance.Get().EQ((object)"-2", (object)-2));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyEqualsEmpty()
         {
             myAssert.AreEqual(
@@ -37,7 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -50,7 +50,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// Anything compared to Nothing will error, this is just an example case to illustrate that (if ANYTHING would get a free pass it would be DBNull.Value
         /// but not even it does)
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullComparedToNothingErrors()
         {
             var nothing = VBScriptConstants.Nothing;
@@ -60,7 +60,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NothingComparedToNothingErrors()
         {
             var nothing = VBScriptConstants.Nothing;
@@ -70,7 +70,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 });
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOneDoesNotEqualEmpty()
         {
             // Non-zero numeric values compared to Empty for equality always return false
@@ -80,7 +80,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PlusOneDoesNotEqualEmpty()
         {
             // Non-zero numeric values compared to Empty for equality always return false
@@ -90,7 +90,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroEqualsEmpty()
         {
             myAssert.AreEqual(
@@ -99,7 +99,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOneComparedToNullIsNull()
         {
             // Non-zero numeric values compared to Empty for equality always return false
@@ -109,7 +109,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PlusOneComparedToNullIsNull()
         {
             // Non-zero numeric values compared to Empty for equality always return false
@@ -119,7 +119,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -128,7 +128,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOneEqualsTrue()
         {
             // -1 and True are considered to be the same, as are 0 and False
@@ -139,7 +139,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroEqualsFalse()
         {
             myAssert.AreEqual(
@@ -148,7 +148,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOnePointOneDoesNotEqualTrue()
         {
             myAssert.AreEqual(
@@ -157,7 +157,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void MinusOnePointOneDoesNotEqualFalse()
         {
             myAssert.AreEqual(
@@ -166,7 +166,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PlusOneDoesNotEqualTrue()
         {
             myAssert.AreEqual(
@@ -175,7 +175,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void PlusOneDoesNotEqualFalse()
         {
             myAssert.AreEqual(
@@ -184,7 +184,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyStringEqualsEmpty()
         {
             myAssert.AreEqual(
@@ -193,7 +193,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyStringComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -202,7 +202,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyStringDoesNotEqualsTrue()
         {
             myAssert.AreEqual(
@@ -211,7 +211,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyStringDoesNotEqualsFalse()
         {
             myAssert.AreEqual(
@@ -220,7 +220,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void WhiteSpaceStringDoesNotEqualEmpty()
         {
             myAssert.AreEqual(
@@ -229,7 +229,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void WhiteSpaceStringComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -238,7 +238,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NumericContentStringValueDoesNotEqualNumericValue() // @lubo : this is changed due to CNC mailType compare!
         {
             // Recall that the VBScript codeExpression ("12" = 12) will return true, but if v12String = "12" and v12 = 12 then (v12String = v12) will return
@@ -250,7 +250,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void BooleanContentStringValueDoesNotEqualBooleanValue()
         {
             // See the note in NumericContentStringValueDoesNotEqualNumericValue about literals - the same applies here; while ("True" = True) will return
@@ -262,7 +262,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TrueDoesNotEqualEmpty()
         {
             myAssert.AreEqual(
@@ -271,7 +271,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FalseEqualsEmpty()
         {
             myAssert.AreEqual(
@@ -280,7 +280,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TrueComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -289,7 +289,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FalseComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -298,7 +298,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TrueEqualsMinusOne()
         {
             // Dim vTrue, vMinusOne: vTrue = True: vMinusOne = -1: If (vTrue = vMinusOne) Then ' True
@@ -308,7 +308,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void TrueEqualsDoubleMinusOne()
         {
             myAssert.AreEqual(
@@ -317,7 +317,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void FalseEqualsZero()
         {
             // Dim vFalse, vZero: vFalse = False: vZero = 0: If (vFalse = vZero) Then ' True
@@ -327,7 +327,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void DateComparedToNullIsNull()
         {
             myAssert.AreEqual(
@@ -336,7 +336,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NonZeroDateDoesNotEqualEmpty()
         {
             myAssert.AreEqual(
@@ -349,7 +349,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// The ZeroDate is returned from DateSerial(0, 0, 0) and could feasibly be found to match Empty since the sort-of zero values for booleans,
         /// numbers and strings match Empty. However, this is not the case.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroDateDoesNotEqualEmpty()
         {
             myAssert.AreEqual(
@@ -362,7 +362,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// This is explains similar logic to ZeroDateDoesNotEqualEmpty - should the minimum value that VBScript can describe (which is potentially
         /// consider zero to its internals) be found to equal Empty? No, it should not.
         /// </summary>
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EarliestPossibleDateDoesNotEqualEmpty()
         {
             myAssert.AreEqual(
@@ -371,7 +371,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroDateDoesNotEqualFalse()
         {
             myAssert.AreEqual(
@@ -380,7 +380,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroDateDoesNotEqualZero()
         {
             myAssert.AreEqual(
@@ -389,7 +389,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             );
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void ZeroDateDoesNotEqualEmptyString()
         {
             myAssert.AreEqual(

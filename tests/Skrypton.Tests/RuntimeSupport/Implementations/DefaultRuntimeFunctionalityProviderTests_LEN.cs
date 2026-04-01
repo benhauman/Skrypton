@@ -13,25 +13,25 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class LEN : TestBase
     {
-        [TestMethod, MyFact]
+        [TestMethod]
         public void EmptyResultsInZero()
         {
             myAssert.AreEqual((int)0, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(null)); // This should return an int ("Long" in VBScript parlance)
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NullResultsInNull()
         {
             myAssert.AreEqual(DBNull.Value, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(DBNull.Value));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void Test()
         {
             myAssert.AreEqual(4, DefaultRuntimeSupportClassFactoryInstance.Get().LEN("Test"));
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void NumericValue()
         {
             myAssert.AreEqual(1, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(4)); // Numbers get cast as strings, so the number 4 becomes the string "4" and so has length 1
@@ -42,7 +42,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             public en_GB() : base("en-GB") { }
 
-            [TestMethod, MyTheory, MyMemberData("SuccessData")]
+            [TestMethod, MyMemberData("SuccessData")]
             public void SuccessCases(string description, object value, int expectedResult)
             {
                 myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().LEN(value));

@@ -17,7 +17,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     [TestClass]
     public class EndToEndEraseTranslationTests : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
+        [TestMethod, MyMemberData(nameof(SuccessData))]
         public void SuccessCases(int testno, string description, string vbsSource, string expected)
         {
             TestCSharpCodeTranslationWithoutScaffolding(testno, expected, vbsSource.Trim(), ["SKY101"]);
@@ -95,26 +95,14 @@ END FUNCTION",
             }
         }
 
-        [TestMethod, MyFact]
+        [TestMethod]
         public void SingleTokenEraseTargetsRequireByRefAliasingIfTheTargetIsByRefArgumentOfTheContainingFunction()
         {
             var source = @"
                 Function F1(a)
                     ERASE a
                 End Function";
-            var expected = @"
-                public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    object byrefalias = a;
-                    try
-                    {
-                        _.ERASE(byrefalias, v => { byrefalias = v; });
-                    }
-                    finally { a = byrefalias; }
-                    return F1_retVal;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source);
         }
     }
 }
@@ -261,14 +249,6 @@ namespace Skrypton.Tests
                 }
             }
             {
-                //if ((object)expected is DateTime dt_e)
-                //{
-                //    DateTime dt_a = (DateTime)(object)actual;
-                //    AreEqual<DateTime>(dt_e, dt_a);
-                //    return;
-                //}
-            }
-            {
                 if (expected != null && actual != null && expected.GetType() != actual.GetType())
                 {
                     if (expected is IConvertible && actual is IConvertible)
@@ -383,10 +363,6 @@ namespace Skrypton.Tests
         {
             Assert.AreNotEqual(expected, actual);
         }
-    }
-    sealed class MyFactAttribute : Attribute
-    {
-
     }
 
     sealed class MyTheoryAttribute : Attribute

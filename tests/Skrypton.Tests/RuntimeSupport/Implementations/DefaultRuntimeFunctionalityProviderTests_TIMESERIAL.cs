@@ -14,13 +14,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 	//{
 		public class TIMESERIAL : TestBase
     {
-			[TestMethod, MyTheory, MyMemberData("SuccessData")]
+			[TestMethod, MyMemberData("SuccessData")]
 			public void SuccessCases(string description, object hours, object minutes, object seconds, DateTime expectedResult)
 			{
 				myAssert.AreEqual(expectedResult, DefaultRuntimeSupportClassFactoryInstance.Get().TIMESERIAL(hours, minutes, seconds));
 			}
 
-			[TestMethod, MyTheory, MyMemberData("TypeMismatchData")]
+			[TestMethod, MyMemberData("TypeMismatchData")]
 			public void TypeMismatchCases(string description, object hours, object minutes, object seconds)
 			{
 				myAssert.Throws<TypeMismatchException>(() =>
@@ -29,7 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("InvalidUseOfNullData")]
+			[TestMethod, MyMemberData("InvalidUseOfNullData")]
 			public void InvalidUseOfNullCases(string description, object hours, object minutes, object seconds)
 			{
 				myAssert.Throws<InvalidUseOfNullException>(() =>
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("ObjectVariableNotSetData")]
+			[TestMethod, MyMemberData("ObjectVariableNotSetData")]
 			public void ObjectVariableNotSetCases(string description, object hours, object minutes, object seconds)
 			{
 				myAssert.Throws<ObjectVariableNotSetException>(() =>
@@ -47,7 +47,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 				});
 			}
 
-			[TestMethod, MyTheory, MyMemberData("OverflowData")]
+			[TestMethod, MyMemberData("OverflowData")]
 			public void OverflowCases(string description, object hours, object minutes, object seconds)
 			{
 				myAssert.Throws<VBScriptOverflowException>(() =>

@@ -13,13 +13,13 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 //{
     public class ISEMPTY : TestBase
     {
-        [TestMethod, MyTheory, MyMemberData(nameof(TrueData))]
+        [TestMethod, MyMemberData(nameof(TrueData))]
         public void TrueCases(string description, object value)
         {
             myAssert.True(DefaultRuntimeSupportClassFactoryInstance.Get().ISEMPTY(value));
         }
 
-        [TestMethod, MyTheory, MyMemberData(nameof(FalseData))]
+        [TestMethod, MyMemberData(nameof(FalseData))]
         public void FalseCases(string description, object value)
         {
             myAssert.False(DefaultRuntimeSupportClassFactoryInstance.Get().ISEMPTY(value));
