@@ -154,19 +154,18 @@ namespace Skrypton.Tests
             {
                 // failed
             }
-            TestCSharpCodeTranslationCore(expectCsCode, actualCsCodeX);
+            TestCSharpCodeTranslationCore(expectCsCode, actualCsCodeX, actualCsCodeRaw);
         }
         protected void TestCSharpCodeTranslation(string csSource, string[] suppressions) // TODO remove 'WithoutScaffoldingTranslator'
         {
             string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, csSource, [], [], suppressions);
             string expectCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true) ?? "";
-            TestCSharpCodeTranslationCore(expectCs, actualCs);
+            TestCSharpCodeTranslationCore(expectCs, actualCs, null);
         }
 
-        private void TestCSharpCodeTranslationCore(string expectCs, string actualCs) // TODO remove 'WithoutScaffoldingTranslator'
+        private void TestCSharpCodeTranslationCore(string expectCs, string actualCs, string? actualRawCs) // TODO remove 'WithoutScaffoldingTranslator'
         {
             string chainName = TestName;
-            string fileSuffix = CSFileExtension;
             string workItemName = "Script";// TestContext.TestName;
             string text_e = expectCs;
             string text_a = actualCs;
@@ -199,7 +198,7 @@ namespace Skrypton.Tests
                         }
                     }
 
-                    SaveExpectedActualFiles(chainName, workItemName, chainName + fileSuffix, expectCs, actualCs);
+                    SaveExpectedActualFiles(chainName, workItemName, chainName + ".cs", expectCs, string.IsNullOrEmpty(actualRawCs) ? actualCs : actualRawCs);
 
                     string translated_cs_expected = expectCs;
                     string translated_cs_actual = actualCs;

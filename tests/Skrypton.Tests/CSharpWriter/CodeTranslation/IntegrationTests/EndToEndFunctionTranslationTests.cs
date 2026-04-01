@@ -44,7 +44,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// original value. As such, it can not be represented as a simple one-line return statement.
         /// </summary>
         [TestMethod, MyFact]
-        public void IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatementUnlessRefAliasMappingsRequired()
+        public void IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatementUnlessRefMReq() // IfTheOnlyExecutableStatementIsReturnValueThenTranslateIntoSingleReturnStatementUnlessRefAliasMappingsRequired
         {
             var source = @"
 				PUBLIC FUNCTION F1(a)
@@ -53,29 +53,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				PUBLIC FUNCTION F2(a)
 				END FUNCTION
 			";
-            var expected = new[]
+            var expected = @"
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            object a_vref3 = a;
+            try
             {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    object byrefalias3 = a;",
-                "    try",
-                "    {",
-                "        F1_retVal = _.VAL(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Ref(byrefalias3, v => { byrefalias3 = v; })));",
-                "    }",
-                "    finally { a = byrefalias3; }",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+                F1_retVal = _.VAL(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref3, v => { a_vref3 = v; })));
+            }
+            finally { a = a_vref3; }
+            return F1_retVal;
+        }
+        public object F2(ref object a)
+        {
+            return null;
+        }
+";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -143,25 +138,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
+            var expected = @"
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            object a_vref = a;
+            try
             {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    object byrefalias = a;",
-                "    try",
-                "    {",
-                "        _.CALLm1argp(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }));",
-                "    }",
-                "    finally { a = byrefalias; }",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
+            }
+            finally { a = a_vref; }
+            return F1_retVal;
+        }
+        public object F2(ref object a)
+        {
+            return null;
+        }
+";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -211,25 +205,24 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            var expected = new[]
+            var expected = @"
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            object a_vref = a;
+            try
             {
-                "public object F1(ref object a)",
-                "{",
-                "    object F1_retVal = null;",
-                "    object byrefalias = a;",
-                "    try",
-                "    {",
-                "        _.CALLm1argp(this, _outer, \"F2\", _.ARGS.RefIfArray(byrefalias, _.ARGS.Val((Int16)0)));",
-                "    }",
-                "    finally { a = byrefalias; }",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object a)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+                _.CALLm1argp(this, _outer, ""F2"", _.ARGS.RefIfArray(a_vref, _.ARGS.Val((Int16)0)));
+            }
+            finally { a = a_vref; }
+            return F1_retVal;
+        }
+        public object F2(ref object a)
+        {
+            return null;
+        }
+";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>
@@ -332,7 +325,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// the value before the error occurred).
         /// </summary>
         [TestMethod, MyFact]
-        public void ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteMannerWithinPotentiallyErrTrappingStmt()
+        public void ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteErr() // ByRefFunctionArgumentMustBeMappedToReadAndWriteAliasIfReferencedInReadAndWriteMannerWithinPotentiallyErrTrappingStmt
         {
             var source = @"
 				Function F1(a)
@@ -341,22 +334,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-                public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    int errOn = _.GETERRORTRAPPINGTOKEN();
-                    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                    object byrefalias = a;
-                    try
-                    {
-                        _.HANDLEERROR(errOn, () => {
-                            _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }));
-                        });
-                    }
-                    finally { a = byrefalias; }
-                    _.RELEASEERRORTRAPPINGTOKEN(errOn);
-                    return F1_retVal;
-                }";
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            object a_vref = a;
+            try
+            {
+                _.HANDLEERROR(errOn, () => {
+                    _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
+                });
+            }
+            finally { a = a_vref; }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
@@ -368,7 +362,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// ByRef OR ByVal argument) since the "a" in "a.Name" can never be affected.
         /// </summary>
         [TestMethod, MyFact]
-        public void ByRefFunctionArgumentMustBeMappedToReadOnlyAliasIfReferencedInReadOnlyMannerWithinPotentiallyErrorTrappingStatement()
+        public void ByRefFunctionArgumentMustBeMappedToReadOnlyAliasIfReferencedInReadOnlyMannerWithinErrStmt() // ByRefFunctionArgumentMustBeMappedToReadOnlyAliasIfReferencedInReadOnlyMannerWithinPotentiallyErrorTrappingStatement
         {
             var source = @"
 				Function F1(a)
@@ -376,22 +370,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a.Name
 				End Function
 			";
-            var expected = new[]
-            {
-                @"public object F1(ref object a)
-                {
-                    object F1_retVal = null;
-                    int errOn = _.GETERRORTRAPPINGTOKEN();
-                    _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                    object byrefalias = a;
-                    _.HANDLEERROR(errOn, () => {
-                        _.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, byrefalias, ""Name""));
-                    });
-                    _.RELEASEERRORTRAPPINGTOKEN(errOn);
-                    return F1_retVal;
-                }"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            var expected = @"
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            object a_zref = a;
+            _.HANDLEERROR(errOn, () => {
+                _.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, a_zref, ""Name""));
+            });
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         /// <summary>

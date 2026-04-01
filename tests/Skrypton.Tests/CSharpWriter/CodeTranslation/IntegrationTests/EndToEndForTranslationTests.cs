@@ -387,7 +387,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// lambda when passed as Ref argument and it is not legal C# to reference a ref argument within a lambda.
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToAnotherFunctionByRefThenByRefMappingRequired()
+        public void IfByRefArgumentIsRequiredForLoopAndIsPassedToAnotherFuncByRefThenByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToAnotherFunctionByRefThenByRefMappingRequired
         {
             var source = @"
 				Function F1(ByRef x)
@@ -400,36 +400,36 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					object i = null;
-					object loopEnd = 0, loopStart = 0;
-					var loopConstraintsInitialized = false;
-					object byrefalias = x;
-					try
-					{
-						loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
-						loopStart = _.NUM((Int16)1);
-						if ((loopStart is DateTime) || (loopStart is Decimal))
-							i = loopStart;
-						loopStart = _.NUM((Int16)1, loopEnd);
-						loopConstraintsInitialized = true;
-					}
-					finally { x = byrefalias; }
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-						{
-						}
-					}
-					return F1_retVal;
-				}
-
-				public object F2(ref object value)
-				{
-					return _.VAL(value);
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            object i = null;
+            object loopEnd = 0, loopStart = 0;
+            var loopConstraintsInitialized = false;
+            object x_vref = x;
+            try
+            {
+                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
+                    loopStart = _.NUM((Int16)1);
+                    if ((loopStart is DateTime) || (loopStart is Decimal))
+                        i = loopStart;
+                    loopStart = _.NUM((Int16)1, loopEnd);
+                    loopConstraintsInitialized = true;
+            }
+            finally { x = x_vref; }
+            if (_.StrictLTE(loopStart, loopEnd))
+            {
+                for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
+                {
+                }
+            }
+            return F1_retVal;
+        }
+        public object F2(ref object value)
+        {
+            return _.VAL(value);
+        }
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
@@ -494,36 +494,36 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					object i = null;
-					object loopEnd = 0, loopStart = 0;
-					var loopConstraintsInitialized = false;
-					object byrefalias = x;
-					try
-					{
-						loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
-						loopStart = _.NUM((Int16)1);
-						if ((loopStart is DateTime) || (loopStart is Decimal))
-							i = loopStart;
-						loopStart = _.NUM((Int16)1, loopEnd);
-						loopConstraintsInitialized = true;
-					}
-					finally { x = byrefalias; }
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-						{
-						}
-					}
-					return F1_retVal;
-				}
-
-				public object F2(object value)
-				{
-					return _.VAL(value);
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            object i = null;
+            object loopEnd = 0, loopStart = 0;
+            var loopConstraintsInitialized = false;
+            object x_vref = x;
+            try
+            {
+                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
+                    loopStart = _.NUM((Int16)1);
+                    if ((loopStart is DateTime) || (loopStart is Decimal))
+                        i = loopStart;
+                    loopStart = _.NUM((Int16)1, loopEnd);
+                    loopConstraintsInitialized = true;
+            }
+            finally { x = x_vref; }
+            if (_.StrictLTE(loopStart, loopEnd))
+            {
+                for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
+                {
+                }
+            }
+            return F1_retVal;
+        }
+        public object F2(object value)
+        {
+            return _.VAL(value);
+        }
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
@@ -563,7 +563,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// ByRef argument will need to be accessed within a lambda (inside the HANDLEERROR block), which is not legal in C#.
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByRefArgumentIsRequiredForKnownLoopConstraintsAndLoopWrappedInErrorTrappingThenByRefMappingRequired()
+        public void IfByRefArgumentIsRequiredForKnownLoopConstraintsAndLoopWrappedErr() // IfByRefArgumentIsRequiredForKnownLoopConstraintsAndLoopWrappedInErrorTrappingThenByRefMappingRequired
         {
             var source = @"
 				Function F1(ByRef x)
@@ -578,55 +578,55 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					object i = null;
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					object loopEnd = 0, loopStart = 0;
-					var loopConstraintsInitialized = false;
-					object byrefalias = x;
-					try
-					{
-						_.HANDLEERROR(errOn, () => {
-							loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
-							loopStart = _.NUM((Int16)1);
-							if ((loopStart is DateTime) || (loopStart is Decimal))
-								i = loopStart;
-							loopStart = _.NUM((Int16)1, loopEnd);
-							loopConstraintsInitialized = true;
-						});
-					}
-					finally { x = byrefalias; }
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						if (loopConstraintsInitialized)
-							i = loopStart;
-						while (true)
-						{
-							if (!loopConstraintsInitialized)
-								break;
-							var continueLoop = false;
-							_.HANDLEERROR(errOn, () => {
-								i = _.ADD(i, (Int16)1);
-								continueLoop = _.StrictLTE(i, loopEnd);
-							});
-							if (!continueLoop)
-								break;
-						}
-					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}
-
-				public object F2(ref object value)
-				{
-					object F2_retVal = null;
-					F2_retVal = _.VAL(value);
-					value = (Int16)123;
-					return F2_retVal;
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            object i = null;
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            object loopEnd = 0, loopStart = 0;
+            var loopConstraintsInitialized = false;
+            object x_vref = x;
+            try
+            {
+                _.HANDLEERROR(errOn, () => {
+                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
+                    loopStart = _.NUM((Int16)1);
+                    if ((loopStart is DateTime) || (loopStart is Decimal))
+                        i = loopStart;
+                    loopStart = _.NUM((Int16)1, loopEnd);
+                    loopConstraintsInitialized = true;
+                });
+            }
+            finally { x = x_vref; }
+            if (_.StrictLTE(loopStart, loopEnd))
+            {
+                if (loopConstraintsInitialized)
+                    i = loopStart;
+                while (true)
+                {
+                    if (!loopConstraintsInitialized)
+                        break;
+                    var continueLoop = false;
+                    _.HANDLEERROR(errOn, () => {
+                        i = _.ADD(i, (Int16)1);
+                        continueLoop = _.StrictLTE(i, loopEnd);
+                    });
+                    if (!continueLoop)
+                        break;
+                }
+            }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+        public object F2(ref object value)
+        {
+            object F2_retVal = null;
+            F2_retVal = _.VAL(value);
+            value = (Int16)123;
+            return F2_retVal;
+        }
+";
 
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
@@ -638,7 +638,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// is known that the temporary value will not have been manipulated).
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByRefArgumentIsRequiredForKnownReadOnlyLoopConstraintsAndLoopWrappedInErrorTrappingThenReadOnlyByRefMappingRequired()
+        public void IfByRefArgumentIsRequiredForKnownReadOnlyLoopConstraintsAndLoopWrappedErr() // IfByRefArgumentIsRequiredForKnownReadOnlyLoopConstraintsAndLoopWrappedInErrorTrappingThenReadOnlyByRefMappingRequired
         {
             var source = @"
 				Function F1(ByRef x)
@@ -648,43 +648,44 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function";
 
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					object i = null;
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					object loopEnd = 0, loopStart = 0;
-					var loopConstraintsInitialized = false;
-					object byrefalias = x;
-					_.HANDLEERROR(errOn, () => {
-						loopEnd = _.NUM(_.ADD(byrefalias, (Int16)1));
-						loopStart = _.NUM((Int16)1);
-						if ((loopStart is DateTime) || (loopStart is Decimal))
-							i = loopStart;
-						loopStart = _.NUM((Int16)1, loopEnd);
-						loopConstraintsInitialized = true;
-					});
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						if (loopConstraintsInitialized)
-							i = loopStart;
-						while (true)
-						{
-							if (!loopConstraintsInitialized)
-								break;
-							var continueLoop = false;
-							_.HANDLEERROR(errOn, () => {
-								i = _.ADD(i, (Int16)1);
-								continueLoop = _.StrictLTE(i, loopEnd);
-							});
-							if (!continueLoop)
-								break;
-						}
-					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            object i = null;
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            object loopEnd = 0, loopStart = 0;
+            var loopConstraintsInitialized = false;
+            object x_zref = x;
+            _.HANDLEERROR(errOn, () => {
+                loopEnd = _.NUM(_.ADD(x_zref, (Int16)1));
+                loopStart = _.NUM((Int16)1);
+                if ((loopStart is DateTime) || (loopStart is Decimal))
+                    i = loopStart;
+                loopStart = _.NUM((Int16)1, loopEnd);
+                loopConstraintsInitialized = true;
+            });
+            if (_.StrictLTE(loopStart, loopEnd))
+            {
+                if (loopConstraintsInitialized)
+                    i = loopStart;
+                while (true)
+                {
+                    if (!loopConstraintsInitialized)
+                        break;
+                    var continueLoop = false;
+                    _.HANDLEERROR(errOn, () => {
+                        i = _.ADD(i, (Int16)1);
+                        continueLoop = _.StrictLTE(i, loopEnd);
+                    });
+                    if (!continueLoop)
+                        break;
+                }
+            }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+";
 
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }

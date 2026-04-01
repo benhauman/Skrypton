@@ -197,25 +197,22 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					object byrefalias = x;
-					try
-					{
-						byrefalias = VBScriptConstants.Nothing;
-					}
-					finally { x = byrefalias; }
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            object x_vref = x;
+            try
+            {
+                x_vref = VBScriptConstants.Nothing;
+            }
+            finally { x = x_vref; }
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>

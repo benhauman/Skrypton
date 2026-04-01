@@ -103,12 +103,12 @@ namespace TranslatedProgram
             object retVal = null;
             retVal = false;
 
-            object byrefalias = mailSubject;
+            object mailSubject_vref = mailSubject;
             try
             {
-                refNumber = _.VAL(_.CALLm1argp(this, _outer, "ExtractRefNumber", _.ARGS.Ref(byrefalias, v => { byrefalias = v; })));
+                refNumber = _.VAL(_.CALLm1argp(this, _outer, "ExtractRefNumber", _.ARGS.Ref(mailSubject_vref, v => { mailSubject_vref = v; })));
             }
-            finally { mailSubject = byrefalias; }
+            finally { mailSubject = mailSubject_vref; }
             if (_.IF(_.GT(_.NullableNUM(_.LEN(refNumber)), (Int16)0)))
             {
                 _.CALLm1v1(this, _outer, "LogText", "RefNumber > 0");
@@ -140,12 +140,12 @@ namespace TranslatedProgram
             hrKeywords = _.VAL(_.CALLm1v2(this, _, "ARRAY", "[HR]", "Personal"));
 
             bool ifResult;
-            object byrefalias2 = mailSubject;
+            object mailSubject_vref2 = mailSubject;
             try
             {
-                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias2, v8 => { byrefalias2 = v8; }).Ref(rfKeywords, v9 => { rfKeywords = v9; })), true));
+                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref2, v8 => { mailSubject_vref2 = v8; }).Ref(rfKeywords, v9 => { rfKeywords = v9; })), true));
             }
-            finally { mailSubject = byrefalias2; }
+            finally { mailSubject = mailSubject_vref2; }
             if (ifResult)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "RequestFulfillment"));
@@ -153,12 +153,12 @@ namespace TranslatedProgram
                 return;
             }
             bool ifResult2;
-            object byrefalias3 = mailSubject;
+            object mailSubject_vref3 = mailSubject;
             try
             {
-                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias3, v13 => { byrefalias3 = v13; }).Ref(imKeywords, v14 => { imKeywords = v14; })), true));
+                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref3, v13 => { mailSubject_vref3 = v13; }).Ref(imKeywords, v14 => { imKeywords = v14; })), true));
             }
-            finally { mailSubject = byrefalias3; }
+            finally { mailSubject = mailSubject_vref3; }
             if (ifResult2)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "IncidentManagement"));
@@ -166,12 +166,12 @@ namespace TranslatedProgram
                 return;
             }
             bool ifResult3;
-            object byrefalias4 = mailSubject;
+            object mailSubject_vref4 = mailSubject;
             try
             {
-                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias4, v18 => { byrefalias4 = v18; }).Ref(cmKeywords, v19 => { cmKeywords = v19; })), true));
+                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref4, v18 => { mailSubject_vref4 = v18; }).Ref(cmKeywords, v19 => { cmKeywords = v19; })), true));
             }
-            finally { mailSubject = byrefalias4; }
+            finally { mailSubject = mailSubject_vref4; }
             if (ifResult3)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "ChangeManagement"));
@@ -179,12 +179,12 @@ namespace TranslatedProgram
                 return;
             }
             bool ifResult4;
-            object byrefalias5 = mailSubject;
+            object mailSubject_vref5 = mailSubject;
             try
             {
-                ifResult4 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias5, v23 => { byrefalias5 = v23; }).Ref(fmKeywords, v24 => { fmKeywords = v24; })), true));
+                ifResult4 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref5, v23 => { mailSubject_vref5 = v23; }).Ref(fmKeywords, v24 => { fmKeywords = v24; })), true));
             }
-            finally { mailSubject = byrefalias5; }
+            finally { mailSubject = mailSubject_vref5; }
             if (ifResult4)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "FacilityIncidentManagement"));
@@ -192,12 +192,12 @@ namespace TranslatedProgram
                 return;
             }
             bool ifResult5;
-            object byrefalias6 = mailSubject;
+            object mailSubject_vref6 = mailSubject;
             try
             {
-                ifResult5 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(byrefalias6, v28 => { byrefalias6 = v28; }).Ref(hrKeywords, v29 => { hrKeywords = v29; })), true));
+                ifResult5 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref6, v28 => { mailSubject_vref6 = v28; }).Ref(hrKeywords, v29 => { hrKeywords = v29; })), true));
             }
-            finally { mailSubject = byrefalias6; }
+            finally { mailSubject = mailSubject_vref6; }
             if (ifResult5)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session, "NewWorkflowFromMail", "HRRequestManagement"));

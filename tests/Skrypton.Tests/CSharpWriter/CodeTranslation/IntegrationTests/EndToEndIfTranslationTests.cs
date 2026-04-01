@@ -92,7 +92,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// argument in a lambda and it's not legal in C# to reference a ref variable within a lambda) then the second conditional was not nested correctly
         /// </summary>
         [TestMethod, MyFact]
-        public void ElseIfConditionalThatRequiresByRefArgumentRewritingMustBeWithinOwnElseBlockEvenIfFollowingConditionalThatDoesNotNeedByRefArgumentRewriting()
+        public void ElseIfConditionalThatRequiresByRefArgumentRewritingMustBeWithinOwnElseBlockEvenIfFollowing2() // ElseIfConditionalThatRequiresByRefArgumentRewritingMustBeWithinOwnElseBlockEvenIfFollowingConditionalThatDoesNotNeedByRefArgumentRewriting
         {
             var source = @"
 				Function F1(x)
@@ -104,35 +104,34 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 				End Function
 			";
-            var expected = new[]
+            var expected = @"
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            if (_.IF(true))
             {
-                "public object F1(ref object x)",
-                "{",
-                "    object F1_retVal = null;",
-                "    if (_.IF(true))",
-                "    {",
-                "    }",
-                "else",
-                "{",
-                "    bool ifResult;",
-                "    object byrefalias = x;",
-                "    try",
-                "    {",
-                "        ifResult = _.IF(_.CALLm1argp(this, _outer, \"F2\", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));",
-                "    }",
-                "    finally { x = byrefalias; }",
-                "    if (ifResult)",
-                "    {",
-                "    }",
-                "}",
-                "    return F1_retVal;",
-                "}",
-                "public object F2(ref object x)",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
+            }
+            else
+            {
+                bool ifResult;
+                object x_vref = x;
+                try
+                {
+                    ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v2 => { x_vref = v2; })));
+                }
+                finally { x = x_vref; }
+                if (ifResult)
+                {
+                }
+            }
+            return F1_retVal;
+        }
+        public object F2(ref object x)
+        {
+            return null;
+        }
+";
+            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
         [TestClass]
@@ -579,25 +578,25 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End Function
 				";
                 string expected = @"
-                    public object F1(ref object a)
-                    {
-                        object F1_retVal = null;
-                        bool ifResult;
-                        object byrefalias = a;
-                        try
-                        {
-                            ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));
-                        }
-                        finally { a = byrefalias; }
-                        if (ifResult)
-                        {
-                        }
-                        return F1_retVal;
-                    }
-                    public object F2(ref object a)
-                    {
-                        return null;
-                    }
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            bool ifResult;
+            object a_vref = a;
+            try
+            {
+                ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })));
+            }
+            finally { a = a_vref; }
+            if (ifResult)
+            {
+            }
+            return F1_retVal;
+        }
+        public object F2(ref object a)
+        {
+            return null;
+        }
                 ";
                 TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             }
@@ -658,25 +657,25 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End Function
 				";
                 var expected = @"
-                    public object F1(ref object a)
-                    {
-                        object F1_retVal = null;
-                        bool ifResult;
-                        object byrefalias = a;
-                        try
-                        {
-                            ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })));
-                        }
-                        finally { a = byrefalias; }
-                        if (ifResult)
-                        {
-                        }
-                        return F1_retVal;
-                    }
-                    public object F2(object a)
-                    {
-                        return null;
-                    }";
+public object F1(ref object a)
+{
+    object F1_retVal = null;
+    bool ifResult;
+    object a_vref = a;
+try
+{
+    ifResult = _.IF(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })));
+}
+finally { a = a_vref; }
+if (ifResult)
+{
+}
+    return F1_retVal;
+}
+public object F2(object a)
+{
+    return null;
+}";
                 TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             }
 
@@ -700,28 +699,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End Function
 				";
                 string expected = @"
-                    public object F1(ref object a)
-                    {
-                        object F1_retVal = null;
-                        int errOn = _.GETERRORTRAPPINGTOKEN();
-                        _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                        bool ifResult;
-                        object byrefalias = a;
-                        try
-                        {
-                            ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v2 => { byrefalias = v2; })), errOn);
-                        }
-                        finally { a = byrefalias; }
-                        if (ifResult)
-                        {
-                        }
-                        _.RELEASEERRORTRAPPINGTOKEN(errOn);
-                        return F1_retVal;
-                    }
-                    public object F2(object a)
-                    {
-                        return null;
-                    }
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            bool ifResult;
+            object a_vref = a;
+            try
+            {
+                ifResult = _.IF(() => _.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })), errOn);
+            }
+            finally { a = a_vref; }
+            if (ifResult)
+            {
+            }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+        public object F2(object a)
+        {
+            return null;
+        }
                 ";
                 TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             }
@@ -735,7 +734,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             /// no way for that alias to have been altered by the evaluation.
             /// </summary>
             [TestMethod, MyFact]
-            public void ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByValArgumentWhenWithinErrorTrapping()
+            public void ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByValArgumentWhenErr() // ByRefFunctionArgumentRequiresSpecialTreatmentIfUsedInConditionsAsByValArgumentWhenWithinErrorTrapping
             {
                 var source = @"
 					Function F1(a)
@@ -748,25 +747,25 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End Function
 				";
                 var expected = @"
-                    public object F1(ref object a)
-                    {
-                        object F1_retVal = null;
-                        int errOn = _.GETERRORTRAPPINGTOKEN();
-                        _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                        bool ifResult;
-                        object byrefalias = a;
-                        ifResult = _.IF(() => _.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, byrefalias, ""Name"")), errOn);
-                        if (ifResult)
-                        {
-                        }
-                        _.RELEASEERRORTRAPPINGTOKEN(errOn);
-                        return F1_retVal;
-                    }
-                    public object F2(object a)
-                    {
-                        return null;
-                    }
-                ";
+        public object F1(ref object a)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            bool ifResult;
+            object a_zref = a;
+            ifResult = _.IF(() => _.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, a_zref, ""Name"")), errOn);
+            if (ifResult)
+            {
+            }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+        public object F2(object a)
+        {
+            return null;
+        }
+";
                 TestCSharpCodeTranslationWithoutScaffolding(expected, source);
             }
         }

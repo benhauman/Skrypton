@@ -363,22 +363,22 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F2 = x
 				End Function";
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					object byrefalias = x;
-					try
-					{
-						_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(byrefalias, v => { byrefalias = v; }))));
-					}
-					finally { x = byrefalias; }
-					return F1_retVal;
-				}
-
-				public object F2(ref object x)
-				{
-					return _.VAL(x);
-				}";
+public object F1(ref object x)
+{
+object F1_retVal = null;
+object x_vref = x;
+try
+{
+_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; }))));
+}
+finally { x = x_vref; }
+return F1_retVal;
+}
+public object F2(ref object x)
+{
+return _.VAL(x);
+}
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 
@@ -387,7 +387,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// function and error-trapping may be enabled then a ByRef mapping will be required to avoid trying to reference the ref argument within the HANDLEERROR lambda
         /// </summary>
         [TestMethod, MyFact]
-        public void ByRefArgumentWillRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunctionIfErrorTrappingMayBeEnabled()
+        public void ByRefArgumentWillRequireByRefArgMapWhenPassedDirectlyToBuiltInFuncIfErrorMayBeOn() // ByRefArgumentWillRequireByRefArgumentMappingWhenPassedDirectlyToBuiltInFunctionIfErrorTrappingMayBeEnabled
         {
             var source = @"
 				Function F1(x)
@@ -395,22 +395,23 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo TypeName(x)
 				End Function";
             var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-					object byrefalias = x;
-					try
-					{
-						_.HANDLEERROR(errOn, () => {
-							_.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(byrefalias));
-						});
-					}
-					finally { x = byrefalias; }
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
+        public object F1(ref object x)
+        {
+            object F1_retVal = null;
+            int errOn = _.GETERRORTRAPPINGTOKEN();
+            _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
+            object x_vref = x;
+            try
+            {
+                _.HANDLEERROR(errOn, () => {
+                    _.CALLm1v1(this, _env.WScript, ""Echo"", _.TYPENAME(x_vref));
+                });
+            }
+            finally { x = x_vref; }
+            _.RELEASEERRORTRAPPINGTOKEN(errOn);
+            return F1_retVal;
+        }
+";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
         }
 

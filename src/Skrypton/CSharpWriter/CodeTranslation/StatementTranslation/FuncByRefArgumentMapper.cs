@@ -240,7 +240,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             // mapping that we have identified here needs to take precedence
                             if (IsAlreadyAccountedFor(rewrittenReferences, targetAsNameToken, onlyConsiderNonReadOnlyMappings: false))
                                 rewrittenReferences = RemoveMappingForNameToken(rewrittenReferences, targetAsNameToken);
-                            var rewrittenReferenceName = _tempNameGenerator(new CSharpName("byrefalias"), scopeAccessInformation);
+                            var rewrittenReferenceName = _tempNameGenerator(new CSharpName($"{targetAsNameToken.Content}_vref"), scopeAccessInformation);
                             rewrittenReferences = rewrittenReferences.Add(new FuncByRefMapping(targetAsNameToken, rewrittenReferenceName, mappedValueIsReadOnly: false));
                         }
                     }
@@ -259,7 +259,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         continue;
                     if (IsAlreadyAccountedFor(rewrittenReferences, targetAsNameToken, onlyConsiderNonReadOnlyMappings: false))
                         continue;
-                    var rewrittenReferenceName = _tempNameGenerator(new CSharpName("byrefalias"), scopeAccessInformation);
+                    var rewrittenReferenceName = _tempNameGenerator(new CSharpName($"{targetAsNameToken.Content}_zref"), scopeAccessInformation);
                     rewrittenReferences = rewrittenReferences.Add(new FuncByRefMapping(targetAsNameToken, rewrittenReferenceName, mappedValueIsReadOnly: true));
                 }
             }
