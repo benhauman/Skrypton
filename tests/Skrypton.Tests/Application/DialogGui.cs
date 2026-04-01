@@ -1344,9 +1344,9 @@ WScript.Echo xmlhttp.responseText
             }
         }
 
-        public void SetCustomerInCase(string symbol, object helpLineObject)
+        public void SetCustomerInCase(string symbol, object helpLineObject) // can be null
         {
-            Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{((HLObjectInstance)helpLineObject).GetID()}')");
+            Console.WriteLine($"[DIALOGMODEL] SetCustomerInCase(symbol:'{symbol}, helpLineObject:{((HLObjectInstance)helpLineObject)?.GetID()}')");
         }
 
 
