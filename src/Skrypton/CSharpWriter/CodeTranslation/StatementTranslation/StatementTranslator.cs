@@ -16,9 +16,8 @@ using System.Text;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
-    public sealed class StatementTranslator : ITranslateIndividualStatements
+    public sealed class StatementTranslator : StatementTranslatorBase, ITranslateIndividualStatements
     {
-        private readonly CSharpName _supportRefName, _envRefName, _outerRefName;
         private readonly VBScriptNameRewriter _nameRewriter;
         private readonly TempValueNameGenerator _tempNameGenerator;
         private readonly ILogInformation _logger;
@@ -28,11 +27,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             CSharpName outerRefName,
             VBScriptNameRewriter nameRewriter,
             TempValueNameGenerator tempNameGenerator,
-            ILogInformation logger)
+            ILogInformation logger) : base(supportRefName, envRefName, outerRefName)
         {
-            _supportRefName = supportRefName ?? throw new ArgumentNullException(nameof(supportRefName));
-            _envRefName = envRefName;
-            _outerRefName = outerRefName ?? throw new ArgumentNullException(nameof(outerRefName));
             _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
             _tempNameGenerator = tempNameGenerator ?? throw new ArgumentNullException(nameof(tempNameGenerator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -1215,9 +1211,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string nameOfTargetContainer = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);
 
             string targetAccessorName = $"{nameOfTargetContainer}{targetName}";
-            string targetNameForException = ""; //targetAccessorName;
-            if (!targetAccessorName.Contains('.') && !targetAccessorName.Contains('"'))
-                targetNameForException = targetAccessorName;
+            string targetNameForException = GetTargetNameForException(targetAccessorName);
 
             StringBuilder callExpressionContent = new StringBuilder();
             callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {targetAccessorName} ?? throw new InvalidOperationException(""Reference not set:{targetNameForException}"")");// Pass "this" as the "context" argument

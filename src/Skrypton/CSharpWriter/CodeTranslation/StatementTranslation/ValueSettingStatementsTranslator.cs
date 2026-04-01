@@ -13,9 +13,8 @@ using System.Linq;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
-    public class ValueSettingStatementsTranslator : ITranslateValueSettingsStatements
+    public class ValueSettingStatementsTranslator : StatementTranslatorBase, ITranslateValueSettingsStatements
     {
-        private readonly CSharpName _supportRefName, _envRefName, _outerRefName;
         private readonly VBScriptNameRewriter _nameRewriter;
         private readonly ITranslateIndividualStatements _statementTranslator;
         private readonly ILogInformation _logger;
@@ -25,11 +24,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             CSharpName outerRefName,
             VBScriptNameRewriter nameRewriter,
             ITranslateIndividualStatements statementTranslator,
-            ILogInformation logger)
+            ILogInformation logger) : base(supportRefName, envRefName, outerRefName)
         {
-            _supportRefName = supportRefName ?? throw new ArgumentNullException(nameof(supportRefName));
-            _envRefName = envRefName ?? throw new ArgumentNullException(nameof(envRefName));
-            _outerRefName = outerRefName ?? throw new ArgumentNullException(nameof(outerRefName));
             _nameRewriter = nameRewriter ?? throw new ArgumentNullException(nameof(nameRewriter));
             _statementTranslator = statementTranslator ?? throw new ArgumentNullException(nameof(statementTranslator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -585,9 +581,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 }
             }
-            string targetNameForException = ""; //targetAccessorName;
-            if (!targetAccessorName.Contains('.') && !targetAccessorName.Contains('"'))
-                targetNameForException = targetAccessorName;
+            string targetNameForException = GetTargetNameForException(targetAccessorName);
 
             string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
             if (optionalMemberAccessor == null && argumentsInitialization.Length == 0)
