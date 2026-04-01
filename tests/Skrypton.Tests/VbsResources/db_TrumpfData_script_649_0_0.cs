@@ -376,8 +376,8 @@ namespace TranslatedProgram
             object scriptCode = null;
             object newTaskEndTime = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref = taskDefname;
             try
             {
@@ -450,8 +450,8 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfDays_vref, v36 => { NumberOfDays_vref = v36; }));
             }
             finally { NumberOfDays = NumberOfDays_vref; }
-            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v37 => { hlSystemTask = v37; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v37 => { hlSystemTask = v37; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
             _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v39 => { hlSystemTaskDefinitionObj = v39; }));
         }
         //Entfernt einen vorhandenen SystemTask.
@@ -474,8 +474,8 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref3 = taskDefname;
             try
             {
@@ -554,8 +554,8 @@ namespace TranslatedProgram
             }
             finally { recurrencedaymask = recurrencedaymask_vref; }
 
-            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v50 => { hlSystemTask = v50; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v50 => { hlSystemTask = v50; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
             _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v52 => { hlSystemTaskDefinitionObj = v52; }));
         }
         //Festlegung der Definitionen eines SystemTasks pro Monat.
@@ -567,8 +567,8 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref5 = taskDefname;
             try
             {
@@ -646,8 +646,8 @@ namespace TranslatedProgram
             }
             finally { taskDefname = taskDefname_vref6; }
             _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v61 => { scriptCode = v61; }));
-            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v62 => { hlSystemTask = v62; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v62 => { hlSystemTask = v62; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
             _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v64 => { hlSystemTaskDefinitionObj = v64; }));
         }
         //Sub fuehrt den SystemTask einmalig aus.
@@ -660,8 +660,8 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object hlSystemTaskDefinitionObj = null;
             object errCode = null; /* Undeclared in source */
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", "0"));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateSystemTask", "0"));
             object taskDefname_vref7 = taskDefname;
             try
             {
@@ -698,8 +698,8 @@ namespace TranslatedProgram
             {
                 errCode = "#ERR_TSKMNT_002";
             }
-            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v69 => { hlSystemTask = v69; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v70 => { systemTaskDefinitionName = v70; })));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v69 => { hlSystemTask = v69; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v70 => { systemTaskDefinitionName = v70; })));
             _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v71 => { hlSystemTaskDefinitionObj = v71; }));
             _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v72 => { systemTaskDefinitionName = v72; }));
         }

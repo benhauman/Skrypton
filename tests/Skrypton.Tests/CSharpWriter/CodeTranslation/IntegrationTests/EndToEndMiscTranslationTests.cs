@@ -306,29 +306,29 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             get
             {
                 yield return new object[] { 1, "func x", @"
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Ref(_env.x, v => { _env.x = v; }));
 " };
                 yield return new object[] { 2, "func (x)", @"
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Val(_env.x));
 " };
 
                 yield return new object[] { 3, "func x, y", @"
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; }));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; }));
 " };
                 yield return new object[] { 4, "func (x), y", @"
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; }));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; }));
 " };
                 yield return new object[] { 5, "func x, (y)", @"
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Val(_env.y));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Val(_env.y));
 " };
                 yield return new object[] { 6, "z = func(x)", @"
-            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; })));
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Ref(_env.x, v => { _env.x = v; })));
 " };
                 yield return new object[] { 7, "z = func(x, y)", @"
-            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; })));
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; })));
 " };
                 yield return new object[] { 8, "z = func((x), y)", @"
-            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; })));
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:func""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; })));
 " };
             }
         }
@@ -344,20 +344,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 yield return new object[] { 1, "a = b", @"_env.a = _.VAL(_env.b);" };
                 yield return new object[] { 2, "a = b()", @"
-            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.ForceBrackets()));
+            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:b""), _.ARGS.ForceBrackets()));
 " };
                 yield return new object[] { 3, "a = b(1)", @"
-            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val((Int16)1)));
+            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:b""), _.ARGS.Val((Int16)1)));
 " };
 
                 yield return new object[] { 4, "a = b.Name", @"
-            _env.a = _.VAL(_.CALLm1v0(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name""));
+            _env.a = _.VAL(_.CALLm1v0(this, _env.b ?? throw new InvalidOperationException(""Reference not set:b""), ""Name""));
 " };
                 yield return new object[] { 5, "a = b.Name()", @"
-            _env.a = _.VAL(_.CALLm1argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name"", _.ARGS.ForceBrackets()));
+            _env.a = _.VAL(_.CALLm1argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:b""), ""Name"", _.ARGS.ForceBrackets()));
 " };
                 yield return new object[] { 6, "a = b.Name(1)", @"
-            _env.a = _.VAL(_.CALLm1v1(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name"", (Int16)1));
+            _env.a = _.VAL(_.CALLm1v1(this, _env.b ?? throw new InvalidOperationException(""Reference not set:b""), ""Name"", (Int16)1));
 " };
             }
         }

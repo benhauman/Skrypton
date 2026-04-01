@@ -8,7 +8,7 @@
             try
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1argp(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
+                    _.CALLm1argp(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.ARGS.Ref(a_vref, v => { a_vref = v; }));
                 });
             }
             finally { a = a_vref; }

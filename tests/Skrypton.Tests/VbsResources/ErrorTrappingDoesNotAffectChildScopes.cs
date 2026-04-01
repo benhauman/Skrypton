@@ -8,6 +8,6 @@
         public object Func1()
         {
             object Func1_retVal = null;
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", "Test1");
+            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Test1");
             return Func1_retVal;
         }

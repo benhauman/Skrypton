@@ -1,1 +1,1 @@
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'[number: 1]' is called like a function"))));
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException("Reference not set:func"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'[number: 1]' is called like a function"))));

@@ -89,8 +89,8 @@ END FUNCTION",
                         throw new InvalidOperationException(""Wrong number of arguments: 'Erase' (line 1)"");"
                 ];
                 yield return [12, "Member access target", "ERASE a.Name", @"
-        var invalidEraseTarget = _.CALLm1v0(this, _env.a ?? throw new InvalidOperationException(""Reference not set:""), ""Name"");
-        throw new TypeMismatchException(""'Erase' (line 1)"");
+            var invalidEraseTarget = _.CALLm1v0(this, _env.a ?? throw new InvalidOperationException(""Reference not set:a""), ""Name"");
+            throw new TypeMismatchException(""'Erase' (line 1)"");
 "];
             }
         }

@@ -55,7 +55,7 @@ namespace TranslatedProgram
             //	model.CurrentCommand.abort"OnSave"
             //End if
 
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "IsNew")), (Int16)1)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "IsNew")), (Int16)1)))
             {
 
                 sDatabaseName = "HLData";
@@ -66,7 +66,7 @@ namespace TranslatedProgram
                 oConn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 _.CALLm1argp(this, oConn ?? throw new InvalidOperationException("Reference not set:oConn"), "Open", _.ARGS.Ref(sConn, v => { sConn = v; }).Ref(sUser, v2 => { sUser = v2; }).Ref(sPassword, v3 => { sPassword = v3; }));
 
-                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
+                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
 
                 //SB Code ermitteln
                 parmname = "runScript";
@@ -81,9 +81,9 @@ namespace TranslatedProgram
                 _.CALLm1v0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Execute");
                 parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
 
-                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
+                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
 
-                rewritten_group = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                rewritten_group = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(rewritten_group), "GroupMainova"), _.EQ(_.NullableSTR(rewritten_group), "GroupHolding"))))
                 {
@@ -106,7 +106,7 @@ namespace TranslatedProgram
                 _.CALLm1v0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Execute");
                 parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
 
-                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
+                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
 
                 _.CALLm1v0(this, oConn ?? throw new InvalidOperationException("Reference not set:oConn"), "Close");
                 oConn = VBScriptConstants.Nothing;

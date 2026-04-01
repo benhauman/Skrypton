@@ -4,6 +4,6 @@
         {
             object Test1_retVal = null;
             object i = null;
-            _.CALLm1argp(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", _.ARGS.Ref(i, v => { i = v; }));
+            _.CALLm1argp(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.ARGS.Ref(i, v => { i = v; }));
             return Test1_retVal;
         }

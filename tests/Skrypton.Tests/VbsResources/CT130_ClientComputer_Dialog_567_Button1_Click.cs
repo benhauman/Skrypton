@@ -37,7 +37,7 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            URL = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
             _.CALLm1argp(this, wshShell ?? throw new InvalidOperationException("Reference not set:wshShell"), "run", _.ARGS.Ref(URL, v => { URL = v; }));

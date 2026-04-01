@@ -21,13 +21,48 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
 
-        // private readonly CSharpName _supportRefName, _envRefName, _outerRefName;
-        protected static string GetTargetNameForException(string targetAccessorName)
+        protected internal string GetTargetNameForException(string targetAccessorName)
         {
+            if (targetAccessorName == null) throw new ArgumentNullException(nameof(targetAccessorName));
             // StatementTranslator
-            if (targetAccessorName.Contains('.') || targetAccessorName.Contains('"'))
+            string[] dotTokens = targetAccessorName.Split('.');
+            if (dotTokens.Length > 1)
             {
-                return "";
+                if (dotTokens.Length == 2 && dotTokens[0] == _envRefName.Name) // _env.
+                {
+                    if (dotTokens[1].Contains('"'))
+                    {
+                        return "";
+                    }
+                    return dotTokens[1];
+                }
+                if (dotTokens.Length == 2 && dotTokens[0] == _supportRefName.Name) // _.
+                {
+                    if (dotTokens[1].Contains('"'))
+                    {
+                        return "";
+                    }
+                    return dotTokens[1];
+                }
+                if (dotTokens.Length == 2 && dotTokens[0] == _outerRefName.Name) // _outer.
+                {
+                    if (dotTokens[1].Contains('"'))
+                    {
+                        return "";
+                    }
+                    return dotTokens[1];
+                }
+                if (targetAccessorName.StartsWith($"{_supportRefName.Name}.CALL", StringComparison.Ordinal)) // _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0)
+                {
+                    return "(call result)";
+                }
+                throw new NotImplementedException(targetAccessorName);
+                //return "";
+            }
+            else if (targetAccessorName.Contains('"'))
+            {
+                throw new NotImplementedException(targetAccessorName);
+                //return "";
             }
             else
             {

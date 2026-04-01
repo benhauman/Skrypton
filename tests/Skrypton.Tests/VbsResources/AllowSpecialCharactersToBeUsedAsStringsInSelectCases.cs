@@ -1,13 +1,13 @@
 
             if (_.IF(_.EQ(_env.x, "(")))
             {
-                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", "Open");
+                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Open");
             }
             else if (_.IF(_.EQ(_env.x, ")")))
             {
-                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", "Close");
+                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Close");
             }
             else if (_.IF(_.EQ(_env.x, ",")))
             {
-                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:"), "Echo", "Split");
+                _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Split");
             }
