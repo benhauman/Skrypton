@@ -18,9 +18,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     public class EndToEndEraseTranslationTests : TestBase
     {
         [TestMethod, MyTheory, MyMemberData(nameof(SuccessData))]
-        public void SuccessCases(int testno, string description, string source, string expected)
+        public void SuccessCases(int testno, string description, string vbsSource, string expected)
         {
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(testno, expected, vbsSource.Trim(), ["SKY101"]);
         }
         public static IEnumerable<object[]> SuccessData
         {
@@ -42,30 +42,31 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 // function then it's a different error case).
                 yield return [7, "ERASE a()", "ERASE a()", "_.ERASE(_env.a);"];
 
-                yield return
-                [
-                    8,
-                    "Error if the target is known not to be a variable",
-                    "ERASE a\nFUNCTION a\nEND FUNCTION",
-                        @"var invalidEraseTarget = _.CALLm1v0(this, _outer, ""a"");
-                        throw new TypeMismatchException(""'Erase' (line 1)"");
-                        public object a()
-                        {
-                        return null;
-                        }"
-                ];
-                yield return
-                [
-                    9,
-                    "Error if the target is known not to be a variable (takes precedence over other ERASE a() error case)",
-                    "ERASE a()\nFUNCTION a\nEND FUNCTION",
-                        @"var invalidEraseTarget = _.CALLm1argp(this, _outer, ""a"", _.ARGS.ForceBrackets());
-                        throw new TypeMismatchException(""'Erase' (line 1)"");
-                        public object a()
-                        {
-                            return null;
-                        }"
-                ];
+                yield return [8, "Error if the target is known not to be a variable",
+                    @"
+ERASE a
+FUNCTION a
+END FUNCTION",
+                        @"
+            var invalidEraseTarget = _.CALLm1v0(this, _outer ?? throw new InvalidOperationException(""Reference not set:_outer""), ""a"");
+            throw new TypeMismatchException(""'Erase' (line 1)"");
+        public object a()
+        {
+            return null;
+        }
+"];
+                yield return [9, "Error if the target is known not to be a variable (takes precedence over other ERASE a() error case)",
+                    @"
+ERASE a()
+FUNCTION a
+END FUNCTION",
+                        @"            var invalidEraseTarget = _.CALLm1argp(this, _outer ?? throw new InvalidOperationException(""Reference not set:_outer""), ""a"", _.ARGS.ForceBrackets());
+            throw new TypeMismatchException(""'Erase' (line 1)"");
+        public object a()
+        {
+            return null;
+        }
+"];
 
                 // Note: When the arguments are invalid, they are still evaluated and THEN the runtime error is raised. The references are not forced into value types (if they appear valid
                 // at this point then the ERASE call must confirm at runtime that the target is an array), so the evaulation of some targets (eg. "a") will have no effect while others (eg.
@@ -87,14 +88,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         var invalidEraseTarget2 = _env.b;
                         throw new InvalidOperationException(""Wrong number of arguments: 'Erase' (line 1)"");"
                 ];
-                yield return
-                [
-                    12,
-                    "Member access target",
-                    "ERASE a.Name",
-                        @"var invalidEraseTarget = _.CALLm1v0(this, _env.a, ""Name"");
-                        throw new TypeMismatchException(""'Erase' (line 1)"");"
-                ];
+                yield return [12, "Member access target", "ERASE a.Name", @"
+        var invalidEraseTarget = _.CALLm1v0(this, _env.a ?? throw new InvalidOperationException(""Reference not set:""), ""Name"");
+        throw new TypeMismatchException(""'Erase' (line 1)"");
+"];
             }
         }
 
@@ -334,10 +331,12 @@ namespace Skrypton.Tests
             }
         }
 
-        public static void AreEqualX(string expectedTranslatedContent, IReadOnlyCollection<NameToken> expectedVariablesAccessed, TranslatedStatementContentDetails actual)
+        public static void AreEqualX(TestBaseX tst, string expectedTranslatedContent, IReadOnlyCollection<NameToken> expectedVariablesAccessed, TranslatedStatementContentDetails actual)
         {
-            if (!TranslatedStatementContentDetailsComparer.EqualsX(expectedTranslatedContent, expectedVariablesAccessed, actual))
+            string expectedCs = expectedTranslatedContent ?? tst.ExpectedCsCode(null);
+            if (!TranslatedStatementContentDetailsComparer.EqualsX(expectedCs, expectedVariablesAccessed, actual))
             {
+                string storedFile = tst.SaveExpectedActualFile(tst.TestName, "Script", tst.TestName + ".cs", actual.TranslatedContent);
                 Assert.Fail("Not Equal. Expected:" + expectedTranslatedContent + ", Actual:" + actual.TranslatedContent);
             }
         }

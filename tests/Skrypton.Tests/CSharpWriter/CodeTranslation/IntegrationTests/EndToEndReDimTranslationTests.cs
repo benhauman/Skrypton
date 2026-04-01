@@ -1,54 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skrypton.CSharpWriter;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.CSharpWriter.CodeTranslation;
-using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
-using Skrypton.CSharpWriter.Lists;
-//#using Xunit#;
-
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
     [TestClass]
     public class EndToEndReDimTranslationTests : TestBase
     {
-        //public class UndeclaredVariables
-        //{
         [TestMethod, MyFact]
-        public void NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope()
+        public void NonPreserveReDimOfUndeclaredVarInOutermostShouldDeclareTheVarInOutermost() // NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
                     ReDim a(0)
                 ";
-            string[] expected = [
-                    "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
-                ];
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
         [TestMethod, MyFact]
-        public void PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope()
+        public void PreserveReDimOfUndeclaredVarInTheOutermostShouldDeclareTheVarInOutermost() // PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
                     ReDim Preserve a(0)
                 ";
-            string[] expected = [
-                    "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
-                ];
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
         [TestMethod, MyFact]
-        public void NonPreserveReDimOfUndeclaredVariableInFunctionShouldImplicitlyDeclareTheVariableInLocalScope()
+        public void NonPreserveReDimOfUndeclaredVarInFuncShouldDeclareTheVarInLocal()
         {
             string source = @"
                     Function F1()
@@ -63,14 +39,10 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
-        public void PreserveReDimOfUndeclaredVariableInFunctionShouldImplicitlyDeclareTheVariableInLocalScope()
+        public void PreserveReDimOfUndeclaredVarInFunctShouldDeclareTheVarInLocal()
         {
             string source = @"
                     Function F1()
@@ -85,10 +57,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -106,10 +74,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -127,10 +91,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -175,15 +135,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                    }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
-        //}
-        //[TestClass]
-        //public class DeclaredVariables
-        //{
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope1()
         {
@@ -195,10 +147,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
                 ];
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -212,10 +160,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
                 ];
             TestCSharpCodeTranslationWithoutScaffoldingA(expected, source);
-            //myAssert.AreEqual(
-            //    expected,
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -235,10 +179,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyFact]
@@ -258,10 +198,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                     }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -308,10 +244,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                    }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -336,19 +268,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                       return F1_retVal;
                    }";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
-        //}
-        //[TestClass]
         /// <summary>
         /// ReDim will implicitly declare any target variable, if it has not been already declared - this means that a Dim statement that FOLLOWS a ReDim
         /// will result in a "Name redefined" compile time error in VBScript, so all of these cases should result in a translation exception
         /// </summary>
-        //public class PrecedingExplicitVariableDeclarations
-        //{
         [TestMethod, MyFact]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope2()
         {
@@ -423,11 +347,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], []);
             });
         }
-        ///}
-        ///
-        ///[TestClass]
-        ///public class EndToEndReDimTranslationTests
-        ///{
+
         /// <summary>
         /// While a REDIM statement may be interpreted as explicitly declaring a variable when its target variable has not been declared already in any accessible scope, if there IS
         /// a variable that it might be referencing in a parent scope then the REDIM should NOT be interpreted as explicitly declaring a new variable (even if the variable in the
@@ -450,14 +370,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     End Function
                 End Class";
             TestCSharpCodeTranslation(source, ["SKY101"]);
-        }
-
-        private static IEnumerable<string> SplitOnNewLinesSkipFirstLineAndTrimAll(string value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            return value.NormalizeLineEndings().SplitLines().Skip(1).Select(v => v.Trim());
         }
     }
 }

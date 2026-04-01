@@ -55,7 +55,7 @@ namespace TranslatedProgram
             //	model.CurrentCommand.abort"OnSave"
             //End if
 
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlObj, "IsNew")), (Int16)1)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "IsNew")), (Int16)1)))
             {
 
                 sDatabaseName = "HLData";
@@ -64,26 +64,26 @@ namespace TranslatedProgram
                 sPassword = "helplinedata";
                 sConn = _.CONCAT("provider=sqloledb;data source=", sServer, ";initial catalog=", sDatabaseName);
                 oConn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.CALLm1argp(this, oConn, "Open", _.ARGS.Ref(sConn, v => { sConn = v; }).Ref(sUser, v2 => { sUser = v2; }).Ref(sPassword, v3 => { sPassword = v3; }));
+                _.CALLm1argp(this, oConn ?? throw new InvalidOperationException("Reference not set:oConn"), "Open", _.ARGS.Ref(sConn, v => { sConn = v; }).Ref(sUser, v2 => { sUser = v2; }).Ref(sPassword, v3 => { sPassword = v3; }));
 
-                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _env.hlObj, "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
+                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
 
                 //SB Code ermitteln
                 parmname = "runScript";
                 adoSQLCmdParam = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with = _.OBJ(adoSQLCmdParam);
-                _.SETm1a0(this, with, "ActiveConnection", _.OBJ(oConn));
-                _.SETm1a0(this, with, "CommandText", "CreateNewSBCode");
-                _.SETm1a0(this, with, "CommandType", _.VAL(adCmdStoredProc));
-                _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1v3(this, with, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
-                _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1argp(this, with, "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
-                _.CALLm2v1(this, with, "Parameters", "Append", _.CALLm1v4(this, with, "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
-                _.CALLm1v0(this, with, "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with, "Parameters", (Int16)2), "Value"));
+                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "ActiveConnection", _.OBJ(oConn));
+                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CommandText", "CreateNewSBCode");
+                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CommandType", _.VAL(adCmdStoredProc));
+                _.CALLm2v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", "Append", _.CALLm1v3(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
+                _.CALLm2v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", "Append", _.CALLm1argp(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
+                _.CALLm2v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", "Append", _.CALLm1v4(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
+                _.CALLm1v0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Execute");
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
 
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
+                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
 
-                rewritten_group = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                rewritten_group = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(rewritten_group), "GroupMainova"), _.EQ(_.NullableSTR(rewritten_group), "GroupHolding"))))
                 {
@@ -97,18 +97,18 @@ namespace TranslatedProgram
                 //X/V Personalnummer ermitteln
                 adoSQLCmdParam2 = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with2 = _.OBJ(adoSQLCmdParam2);
-                _.SETm1a0(this, with2, "ActiveConnection", _.OBJ(oConn));
-                _.SETm1a0(this, with2, "CommandText", "CreateNewPersonalID");
-                _.SETm1a0(this, with2, "CommandType", _.VAL(adCmdStoredProc));
-                _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1v3(this, with2, "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
-                _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1argp(this, with2, "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
-                _.CALLm2v1(this, with2, "Parameters", "Append", _.CALLm1v4(this, with2, "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));
-                _.CALLm1v0(this, with2, "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2, "Parameters", (Int16)2), "Value"));
+                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "ActiveConnection", _.OBJ(oConn));
+                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CommandText", "CreateNewPersonalID");
+                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CommandType", _.VAL(adCmdStoredProc));
+                _.CALLm2v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", "Append", _.CALLm1v3(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
+                _.CALLm2v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", "Append", _.CALLm1argp(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
+                _.CALLm2v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", "Append", _.CALLm1v4(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));
+                _.CALLm1v0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Execute");
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
 
-                _.CALLm1argp(this, _env.hlObj, "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
+                _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
 
-                _.CALLm1v0(this, oConn, "Close");
+                _.CALLm1v0(this, oConn ?? throw new InvalidOperationException("Reference not set:oConn"), "Close");
                 oConn = VBScriptConstants.Nothing;
 
             }

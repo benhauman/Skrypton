@@ -53,7 +53,7 @@ namespace TranslatedProgram
         {
             object hlITIL2_retVal = null;
             hlITIL2_retVal = _.OBJ(_.CREATEOBJECT("hlStartITIL2.Global"));
-            _.CALLm2argp(this, _outer, "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
+            _.CALLm2argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
             return hlITIL2_retVal;
         }
         //----------------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace TranslatedProgram
             object text_vref = text;
             try
             {
-                _.CALLm1argp(this, hlContext, "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v2 => { text_vref = v2; }));
+                _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v2 => { text_vref = v2; }));
             }
             finally { text = text_vref; }
         }
@@ -78,56 +78,56 @@ namespace TranslatedProgram
             object Attachment = null;
             object MailAttachment = null;
 
-            Email = _.OBJ(_.CALLm1v0(this, hlContext, "CreateMail"));
+            Email = _.OBJ(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateMail"));
 
             //Falls der Parameter <SendAttachmnets> beim Aufruf "1" ist, werden Anhaenge mitversandt
             if (_.IF(_.EQ(_.CBOOL(SendAttachments), true)))
             {
                 Attachment = VBScriptConstants.Nothing;
-                AttachIDs = _.VAL(_.CALLm1v2(this, hlCase, "GetAttachmentKeys", "HLOBJECTINFO.ATTACHMENT", (Int16)0));
+                AttachIDs = _.VAL(_.CALLm1v2(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetAttachmentKeys", "HLOBJECTINFO.ATTACHMENT", (Int16)0));
                 var enumerationContent = _.ENUMERABLE(AttachIDs).GetEnumerator();
                 while (true)
                 {
                     if (!enumerationContent.MoveNext())
                         break;
                     AttachID = enumerationContent.Current;
-                    Attachment = _.OBJ(_.CALLm1argp(this, hlCase, "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v3 => { AttachID = v3; }).Val((Int16)0)));
-                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, Attachment, "Size")), (Int16)0)))
+                    Attachment = _.OBJ(_.CALLm1argp(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v3 => { AttachID = v3; }).Val((Int16)0)));
+                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Size")), (Int16)0)))
                     {
                         MailAttachment = VBScriptConstants.Nothing;
-                        MailAttachment = _.OBJ(_.CALLm1v0(this, Email, "AddAttachment"));
-                        _.SETm1a0(this, MailAttachment, "name", _.VAL(_.CALLm1v0(this, Attachment, "name")));
-                        _.SETm1a0(this, MailAttachment, "data", _.VAL(_.CALLm1v0(this, Attachment, "data")));
+                        MailAttachment = _.OBJ(_.CALLm1v0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "AddAttachment"));
+                        _.SETm1a0(this, MailAttachment ?? throw new InvalidOperationException("Reference not set:MailAttachment"), "name", _.VAL(_.CALLm1v0(this, Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "name")));
+                        _.SETm1a0(this, MailAttachment ?? throw new InvalidOperationException("Reference not set:MailAttachment"), "data", _.VAL(_.CALLm1v0(this, Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "data")));
                     }
                 }
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(MailSender), "")))
             {
-                _.SETm1a0(this, Email, "SenderMail", _.VAL(MailSender));
+                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "SenderMail", _.VAL(MailSender));
             }
-            _.SETm1a0(this, Email, "To", _.VAL(Receiver));
-            _.SETm1a0(this, Email, "Subject", _.VAL(Subject));
-            _.SETm1a0(this, Email, "Body", _.VAL(body));
+            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "To", _.VAL(Receiver));
+            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Subject", _.VAL(Subject));
+            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Body", _.VAL(body));
             if (_.IF(_.NOTEQ(_.NullableSTR(CC), "")))
             {
-                _.SETm1a0(this, Email, "CC", _.VAL(CC));
+                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "CC", _.VAL(CC));
             }
-            _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
+            _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
         }
         //----------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------
         public void CreateSubject(ref object hlContext, ref object Survey, ref object hlCaller)
         {
             object language = null;
-            language = _.VAL(_.CALLm1v5(this, hlCaller, "GetValue", "PersonGeneral.Language", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            language = _.VAL(_.CALLm1v5(this, hlCaller ?? throw new InvalidOperationException("Reference not set:hlCaller"), "GetValue", "PersonGeneral.Language", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.EQ(_.NullableSTR(language), "LanguageGerman")))
             {
-                _.CALLm1v5(this, Survey, "SetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, "Umfrage zur Service-Leistung ihres Support-Teams");
+                _.CALLm1v5(this, Survey ?? throw new InvalidOperationException("Reference not set:Survey"), "SetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, "Umfrage zur Service-Leistung ihres Support-Teams");
             }
             else
             {
-                _.CALLm1v5(this, Survey, "SetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, "Survey about the Service-Quality from your Support-Team");
+                _.CALLm1v5(this, Survey ?? throw new InvalidOperationException("Reference not set:Survey"), "SetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, "Survey about the Service-Quality from your Support-Team");
             }
         }
         //----------------------------------------------------------------------------------------------------------
@@ -155,20 +155,20 @@ namespace TranslatedProgram
             object hlCase_vref = hlCase, hlContext_vref = hlContext;
             try
             {
-                SUIDx = _.VAL(_.CALLm2argp(this, _outer, "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(hlCase_vref, v5 => { hlCase_vref = v5; }).Ref(hlContext_vref, v6 => { hlContext_vref = v6; })));
+                SUIDx = _.VAL(_.CALLm2argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(hlCase_vref, v5 => { hlCase_vref = v5; }).Ref(hlContext_vref, v6 => { hlContext_vref = v6; })));
             }
             finally { hlCase = hlCase_vref; hlContext = hlContext_vref; }
-            MailRequest = _.VAL(_.CALLm1v5(this, hlCase, "GetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            MailRequest = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.AND(_.EQ(_.NullableSTR(MailRequest), "DefaultNotificationEmail"), _.EQ(_.NullableNUM(SUIDx), (Int16)1))))
             {
                 strCRLF = _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10));
-                refnumber = _.VAL(_.CALLm1v5(this, hlCase, "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                refnumber = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 portallink = "http://localhost/helplineportal/";
-                surname = _.VAL(_.CALLm1v5(this, hlCaller, "GetValue", "PersonGeneral.PersonSurname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-                letteraddress = _.VAL(_.CALLm1v5(this, hlCaller, "GetValue", "PersonGeneral.ShortLetterAddress", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                surname = _.VAL(_.CALLm1v5(this, hlCaller ?? throw new InvalidOperationException("Reference not set:hlCaller"), "GetValue", "PersonGeneral.PersonSurname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                letteraddress = _.VAL(_.CALLm1v5(this, hlCaller ?? throw new InvalidOperationException("Reference not set:hlCaller"), "GetValue", "PersonGeneral.ShortLetterAddress", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 Anrede = "Sehr geehrte Damen und Herren,";
                 PersonAddress = "Dear Mrs./Ms. or Mr.,";
-                language = _.VAL(_.CALLm1v5(this, hlCaller, "GetValue", "PersonGeneral.Language", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                language = _.VAL(_.CALLm1v5(this, hlCaller ?? throw new InvalidOperationException("Reference not set:hlCaller"), "GetValue", "PersonGeneral.Language", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
                 if (_.IF(_.EQ(_.NullableSTR(language), "LanguageGerman")))
                 {
@@ -180,7 +180,7 @@ namespace TranslatedProgram
 
                     //Hier wird die Betreffzeile erstellt
                     //The subject field is entered here
-                    Creationdate = _.VAL(_.CALLm1v5(this, hlCase, "GetValue", "HLOBJECTINFO.CREATIONTIME", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
+                    Creationdate = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "HLOBJECTINFO.CREATIONTIME", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
                     Datum = _.VAL(_.MID(Creationdate, (Int16)1, (Int16)10));
                     Subject = "Umfrage zur Service-Leistung ihres Support-Teams";
 
@@ -218,7 +218,7 @@ namespace TranslatedProgram
 
                     //Hier wird die Betreffzeile erstellt
                     //The subject field is entered here
-                    Creationdate = _.VAL(_.CALLm1v5(this, hlCase, "GetValue", "HLOBJECTINFO.CREATIONTIME", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
+                    Creationdate = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "HLOBJECTINFO.CREATIONTIME", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
                     Datum = _.VAL(_.MID(Creationdate, (Int16)1, (Int16)10));
                     Subject = "Survey about the Service-Quality from your Support-Team";
 
@@ -247,23 +247,23 @@ namespace TranslatedProgram
                     body = _.CONCAT(body, "Yours Support Team");
                 }
 
-                Email = _.OBJ(_.CALLm1v0(this, hlContext, "CreateMail"));
+                Email = _.OBJ(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "CreateMail"));
 
                 //Ermittle die Emailadresse des Anfragers
                 //Detect email adress of requester
-                Emailadress = _.VAL(_.CALLm1v5(this, hlCaller, "GetValue", "PersonInformation.EmailAddress", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                Emailadress = _.VAL(_.CALLm1v5(this, hlCaller ?? throw new InvalidOperationException("Reference not set:hlCaller"), "GetValue", "PersonInformation.EmailAddress", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 if (_.IF(_.EQ(_.NullableSTR(Emailadress), "")))
                 {
                     Emailadress = "Username@yourcompany.com";
                     Subject = "Diese EMail konnte nicht zugestellt werden";
                     body = "Die Mail fuer die Anfragenummer ";
-                    body = _.CONCAT(body, _.CALLm1v5(this, hlCase, "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    body = _.CONCAT(body, _.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     body = _.CONCAT(body, " konnte wegen einer fehlenden E-Mail Adresse nicht zugestellt werden.");
                 }
-                _.SETm1a0(this, Email, "To", _.VAL(Emailadress));
-                _.SETm1a0(this, Email, "Subject", _.VAL(Subject));
-                _.SETm1a0(this, Email, "Body", _.VAL(body));
-                _.CALLm1argp(this, hlContext, "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
+                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "To", _.VAL(Emailadress));
+                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Subject", _.VAL(Subject));
+                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Body", _.VAL(body));
+                _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
             }
         }
         //----------------------------------------------------------------------------------------------------------
@@ -294,62 +294,62 @@ namespace TranslatedProgram
             object Assets = null;
             object Asset = null;
             object refnumber = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlObj = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetCurrentObject", _.ARGS.ForceBrackets()));
             lcid = (Int16)0;
-            lcid = _.VAL(_.CALLm1v0(this, hlContext, "GetLocaleID"));
+            lcid = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetLocaleID"));
             LangID = (Int16)0;
-            LangID = _.VAL(_.CALLm1argp(this, hlContext, "LangIDFromLCID", _.ARGS.Ref(lcid, v8 => { lcid = v8; })));
+            LangID = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "LangIDFromLCID", _.ARGS.Ref(lcid, v8 => { lcid = v8; })));
 
             //Gesetzte Daten aus dem aktuellen Task auslesen, diese werden dem zu erzeugenden Systemtask mitgegeben.
             //Read setted data of current task and take them into the created Systemtask.
-            Priority = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            TaskType = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TaskGeneral.TaskType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            Subject = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TaskGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            Description = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CaseDescription.DescriptionText", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            ExOperation = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CaseDiagnosis.DiagnosisText", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            AssignedGroup = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CaseSpecialRouting.AssignedGroup", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            AssignedPerson = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CaseSpecialRouting.AssignedPerson", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            Team = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "Keywords.KeywordOrga", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            newTask = _.OBJ(_.CALLm1v1(this, hlContext, "createobject", "Task"));
+            Priority = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            TaskType = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TaskGeneral.TaskType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Subject = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TaskGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Description = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseDescription.DescriptionText", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            ExOperation = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseDiagnosis.DiagnosisText", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            AssignedGroup = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseSpecialRouting.AssignedGroup", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            AssignedPerson = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseSpecialRouting.AssignedPerson", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Team = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "Keywords.KeywordOrga", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            newTask = _.OBJ(_.CALLm1v1(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "createobject", "Task"));
 
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Priority, v9 => { Priority = v9; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.TaskType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(TaskType, v10 => { TaskType = v10; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Subject, v11 => { Subject = v11; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v12 => { Team = v12; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("CaseClassificationAttribute.Priority").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Priority, v9 => { Priority = v9; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskGeneral.TaskType").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(TaskType, v10 => { TaskType = v10; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskGeneral.Subject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Subject, v11 => { Subject = v11; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v12 => { Team = v12; }));
 
-            hasContent = _.VAL(_.CALLm1v3(this, hlObj, "HasContent", "TaskDesignWorkflow.TaskWorkflow_CA", (Int16)0, (Int16)0));
+            hasContent = _.VAL(_.CALLm1v3(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "HasContent", "TaskDesignWorkflow.TaskWorkflow_CA", (Int16)0, (Int16)0));
             if (_.IF(_.NOTEQ(_.NullableNUM(hasContent), (Int16)0)))
             {
-                subjectWF = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TaskDesignWorkflow.FlagWorkflowSubject", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-                _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.FlagWorkflowSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(subjectWF, v13 => { subjectWF = v13; }));
-                contentIDs = _.VAL(_.CALLm1v2(this, hlObj, "GetContentIDs", "TaskDesignWorkflow.TaskWorkflow_CA", (Int16)0));
-                _.CALLm1v5(this, newTask, "SetValue", "TaskWorkflowAttribute.WorkflowStep", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
+                subjectWF = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TaskDesignWorkflow.FlagWorkflowSubject", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskDesignWorkflow.FlagWorkflowSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(subjectWF, v13 => { subjectWF = v13; }));
+                contentIDs = _.VAL(_.CALLm1v2(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetContentIDs", "TaskDesignWorkflow.TaskWorkflow_CA", (Int16)0));
+                _.CALLm1v5(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", "TaskWorkflowAttribute.WorkflowStep", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
                 var enumerationContent2 = _.ENUMERABLE(contentIDs).GetEnumerator();
                 while (true)
                 {
                     if (!enumerationContent2.MoveNext())
                         break;
                     contentID = enumerationContent2.Current;
-                    assignedGroupWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
-                    assignedPersonWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
-                    descriptionWF = _.VAL(_.CALLm1argp(this, hlObj, "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(contentID, v16 => { contentID = v16; }).Val((Int16)0).Val((Int16)0)));
-                    newContentID = _.VAL(_.CALLm1v0(this, hlObj, "GenerateContentID"));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(newContentID, v17 => { newContentID = v17; }).Val((Int16)0).Ref(assignedGroupWF, v18 => { assignedGroupWF = v18; }));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(newContentID, v19 => { newContentID = v19; }).Val((Int16)0).Ref(assignedPersonWF, v20 => { assignedPersonWF = v20; }));
-                    _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(newContentID, v21 => { newContentID = v21; }).Val((Int16)0).Ref(descriptionWF, v22 => { descriptionWF = v22; }));
+                    assignedGroupWF = _.VAL(_.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
+                    assignedPersonWF = _.VAL(_.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
+                    descriptionWF = _.VAL(_.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(contentID, v16 => { contentID = v16; }).Val((Int16)0).Val((Int16)0)));
+                    newContentID = _.VAL(_.CALLm1v0(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GenerateContentID"));
+                    _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(newContentID, v17 => { newContentID = v17; }).Val((Int16)0).Ref(assignedGroupWF, v18 => { assignedGroupWF = v18; }));
+                    _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(newContentID, v19 => { newContentID = v19; }).Val((Int16)0).Ref(assignedPersonWF, v20 => { assignedPersonWF = v20; }));
+                    _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.DescriptionText").Val((Int16)0).Ref(newContentID, v21 => { newContentID = v21; }).Val((Int16)0).Ref(descriptionWF, v22 => { descriptionWF = v22; }));
                 }
             }
 
-            Assets = _.VAL(_.CALLm1v3(this, hlObj, "GetItemsEx", (Int16)0, (Int16)0, (Int16)131));
+            Assets = _.VAL(_.CALLm1v3(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetItemsEx", (Int16)0, (Int16)0, (Int16)131));
             var enumerationContent3 = _.ENUMERABLE(Assets).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
                     break;
                 Asset = enumerationContent3.Current;
-                _.CALLm1argp(this, newTask, "AddItemEx", _.ARGS.Val((Int16)0).Ref(Asset, v23 => { Asset = v23; }).Val((Int16)0).Val((Int16)131));
+                _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "AddItemEx", _.ARGS.Val((Int16)0).Ref(Asset, v23 => { Asset = v23; }).Val((Int16)0).Val((Int16)131));
             }
-            refnumber = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            refnumber = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.EQ(_.NullableNUM(LangID), (Int16)7)))
             {
                 Description = _.CONCAT(Description, VBScriptConstants.vbNewLine, VBScriptConstants.vbNewLine, "[Diese Aufgabe wurde automatisch durch den Systemtask mit der Bezugsnummer '", refnumber, " erstellt.]");
@@ -358,13 +358,13 @@ namespace TranslatedProgram
             {
                 Description = _.CONCAT(Description, VBScriptConstants.vbNewLine, VBScriptConstants.vbNewLine, "[This Task was created automatically by Systemtask with the Reference Number '", refnumber, "'.]");
             }
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Description, v24 => { Description = v24; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(ExOperation, v25 => { ExOperation = v25; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedGroup, v26 => { AssignedGroup = v26; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedPerson, v27 => { AssignedPerson = v27; }));
-            _.CALLm1argp(this, newTask, "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v28 => { Team = v28; }));
-            _.CALLm1v1(this, hlContext, "SaveObject", newTask);
-            _.CALLm1argp(this, newTask, "Unreserve", _.ARGS.ForceBrackets());
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("CaseDescription.DescriptionText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Description, v24 => { Description = v24; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(ExOperation, v25 => { ExOperation = v25; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedGroup").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedGroup, v26 => { AssignedGroup = v26; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("CaseSpecialRouting.AssignedPerson").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(AssignedPerson, v27 => { AssignedPerson = v27; }));
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(Team, v28 => { Team = v28; }));
+            _.CALLm1v1(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "SaveObject", newTask);
+            _.CALLm1argp(this, newTask ?? throw new InvalidOperationException("Reference not set:newTask"), "Unreserve", _.ARGS.ForceBrackets());
         }
         //Festlegung der Definitionen eines SystemTasks pro Tag.
         //Determining of definitions of a SystemTask by day.
@@ -376,20 +376,20 @@ namespace TranslatedProgram
             object scriptCode = null;
             object newTaskEndTime = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref, v29 => { taskDefname_vref = v29; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref, v29 => { taskDefname_vref = v29; }));
             }
             finally { taskDefname = taskDefname_vref; }
-            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask, "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             scriptCode = "MyTask1";
             object SysTaskBeginnDate_vref = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref, v30 => { SysTaskBeginnDate_vref = v30; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref, v30 => { SysTaskBeginnDate_vref = v30; }));
             }
             finally { SysTaskBeginnDate = SysTaskBeginnDate_vref; }
             //Prueft welche Option zu Duration des SystemTasks ausgewaehlt wurde.
@@ -411,7 +411,7 @@ namespace TranslatedProgram
                 object SysTaskBeginnDate_vref2 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref2, v31 => { SysTaskBeginnDate_vref2 = v31; }));
+                    _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref2, v31 => { SysTaskBeginnDate_vref2 = v31; }));
                 }
                 finally { SysTaskBeginnDate = SysTaskBeginnDate_vref2; }
                 recurrenceEndType = "1";
@@ -423,7 +423,7 @@ namespace TranslatedProgram
                     object SysTaskEndDate_vref = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref, v32 => { SysTaskEndDate_vref = v32; }));
+                        _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref, v32 => { SysTaskEndDate_vref = v32; }));
                     }
                     finally { SysTaskEndDate = SysTaskEndDate_vref; }
                     recurrenceEndType = "1";
@@ -434,25 +434,25 @@ namespace TranslatedProgram
             object recurrenceEndType_vref = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDTYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref, v33 => { recurrenceEndType_vref = v33; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDTYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref, v33 => { recurrenceEndType_vref = v33; }));
             }
             finally { recurrenceEndType = recurrenceEndType_vref; }
             object taskDefname_vref2 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref2, v34 => { taskDefname_vref2 = v34; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref2, v34 => { taskDefname_vref2 = v34; }));
             }
             finally { taskDefname = taskDefname_vref2; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v35 => { scriptCode = v35; }));
+            _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v35 => { scriptCode = v35; }));
             object NumberOfDays_vref = NumberOfDays;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfDays_vref, v36 => { NumberOfDays_vref = v36; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfDays_vref, v36 => { NumberOfDays_vref = v36; }));
             }
             finally { NumberOfDays = NumberOfDays_vref; }
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v37 => { hlSystemTask = v37; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v39 => { hlSystemTaskDefinitionObj = v39; }));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v37 => { hlSystemTask = v37; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v38 => { systemTaskDefinitionName = v38; })));
+            _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v39 => { hlSystemTaskDefinitionObj = v39; }));
         }
         //Entfernt einen vorhandenen SystemTask.
         //Remove an existing SystemTask.
@@ -461,7 +461,7 @@ namespace TranslatedProgram
             object hlSystemTask_vref = hlSystemTask;
             try
             {
-                _.CALLm1argp(this, hlContext, "RemoveSystemTask", _.ARGS.Ref(hlSystemTask_vref, v40 => { hlSystemTask_vref = v40; }));
+                _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "RemoveSystemTask", _.ARGS.Ref(hlSystemTask_vref, v40 => { hlSystemTask_vref = v40; }));
             }
             finally { hlSystemTask = hlSystemTask_vref; }
         }
@@ -474,15 +474,15 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref3 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref3, v41 => { taskDefname_vref3 = v41; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref3, v41 => { taskDefname_vref3 = v41; }));
             }
             finally { taskDefname = taskDefname_vref3; }
-            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask, "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             scriptCode = "MyTask1";
 
             //Prueft welche Option zu Duration des SystemTasks ausgewaehlt wurde.
@@ -503,7 +503,7 @@ namespace TranslatedProgram
                 object SysTaskBeginnDate_vref3 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref3, v42 => { SysTaskBeginnDate_vref3 = v42; }));
+                    _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref3, v42 => { SysTaskBeginnDate_vref3 = v42; }));
                 }
                 finally { SysTaskBeginnDate = SysTaskBeginnDate_vref3; }
                 recurrenceEndType = "1";
@@ -515,7 +515,7 @@ namespace TranslatedProgram
                     object SysTaskEndDate_vref2 = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref2, v43 => { SysTaskEndDate_vref2 = v43; }));
+                        _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref2, v43 => { SysTaskEndDate_vref2 = v43; }));
                     }
                     finally { SysTaskEndDate = SysTaskEndDate_vref2; }
                     recurrenceEndType = "1";
@@ -525,38 +525,38 @@ namespace TranslatedProgram
             object taskDefname_vref4 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref4, v44 => { taskDefname_vref4 = v44; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref4, v44 => { taskDefname_vref4 = v44; }));
             }
             finally { taskDefname = taskDefname_vref4; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v45 => { scriptCode = v45; }));
+            _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v45 => { scriptCode = v45; }));
             object SysTaskBeginnDate_vref4 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref4, v46 => { SysTaskBeginnDate_vref4 = v46; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref4, v46 => { SysTaskBeginnDate_vref4 = v46; }));
             }
             finally { SysTaskBeginnDate = SysTaskBeginnDate_vref4; }
             object recurrenceEndType_vref2 = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref2, v47 => { recurrenceEndType_vref2 = v47; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref2, v47 => { recurrenceEndType_vref2 = v47; }));
             }
             finally { recurrenceEndType = recurrenceEndType_vref2; }
             object NumberOfWeeks_vref = NumberOfWeeks;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfWeeks_vref, v48 => { NumberOfWeeks_vref = v48; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfWeeks_vref, v48 => { NumberOfWeeks_vref = v48; }));
             }
             finally { NumberOfWeeks = NumberOfWeeks_vref; }
             object recurrencedaymask_vref = recurrencedaymask;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYMASK").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrencedaymask_vref, v49 => { recurrencedaymask_vref = v49; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYMASK").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrencedaymask_vref, v49 => { recurrencedaymask_vref = v49; }));
             }
             finally { recurrencedaymask = recurrencedaymask_vref; }
 
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v50 => { hlSystemTask = v50; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v52 => { hlSystemTaskDefinitionObj = v52; }));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v50 => { hlSystemTask = v50; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v51 => { systemTaskDefinitionName = v51; })));
+            _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v52 => { hlSystemTaskDefinitionObj = v52; }));
         }
         //Festlegung der Definitionen eines SystemTasks pro Monat.
         //Determining of definitions of a SystemTask by month.
@@ -567,15 +567,15 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object scriptCode = null;
             object hlSystemTaskDefinitionObj = null;
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", (Int16)0));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", (Int16)0));
             object taskDefname_vref5 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref5, v53 => { taskDefname_vref5 = v53; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref5, v53 => { taskDefname_vref5 = v53; }));
             }
             finally { taskDefname = taskDefname_vref5; }
-            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask, "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             scriptCode = "MyTask1";
 
             //Prueft welche Option zu Duration des SystemTasks ausgewaehlt wurde.
@@ -595,7 +595,7 @@ namespace TranslatedProgram
                 object SysTaskBeginnDate_vref5 = SysTaskBeginnDate;
                 try
                 {
-                    _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref5, v54 => { SysTaskBeginnDate_vref5 = v54; }));
+                    _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref5, v54 => { SysTaskBeginnDate_vref5 = v54; }));
                 }
                 finally { SysTaskBeginnDate = SysTaskBeginnDate_vref5; }
                 recurrenceEndType = "1";
@@ -607,7 +607,7 @@ namespace TranslatedProgram
                     object SysTaskEndDate_vref3 = SysTaskEndDate;
                     try
                     {
-                        _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref3, v55 => { SysTaskEndDate_vref3 = v55; }));
+                        _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.ENDDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskEndDate_vref3, v55 => { SysTaskEndDate_vref3 = v55; }));
                     }
                     finally { SysTaskEndDate = SysTaskEndDate_vref3; }
                     recurrenceEndType = "1";
@@ -617,38 +617,38 @@ namespace TranslatedProgram
             object recurrenceEndType_vref3 = recurrenceEndType;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref3, v56 => { recurrenceEndType_vref3 = v56; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.TYPE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(recurrenceEndType_vref3, v56 => { recurrenceEndType_vref3 = v56; }));
             }
             finally { recurrenceEndType = recurrenceEndType_vref3; }
             object DayOfMonth_vref = DayOfMonth;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYOFMONTH").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(DayOfMonth_vref, v57 => { DayOfMonth_vref = v57; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.DAYOFMONTH").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(DayOfMonth_vref, v57 => { DayOfMonth_vref = v57; }));
             }
             finally { DayOfMonth = DayOfMonth_vref; }
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.RECURRENCE.INSTANCE", (Int16)0, (Int16)0, (Int16)0, "0");
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.RECURRENCE.INSTANCE", (Int16)0, (Int16)0, (Int16)0, "0");
             object NumberOfMonths_vref = NumberOfMonths;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfMonths_vref, v58 => { NumberOfMonths_vref = v58; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.RECURRENCE.INTERVAL").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(NumberOfMonths_vref, v58 => { NumberOfMonths_vref = v58; }));
             }
             finally { NumberOfMonths = NumberOfMonths_vref; }
             object SysTaskBeginnDate_vref6 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref6, v59 => { SysTaskBeginnDate_vref6 = v59; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref6, v59 => { SysTaskBeginnDate_vref6 = v59; }));
             }
             finally { SysTaskBeginnDate = SysTaskBeginnDate_vref6; }
             object taskDefname_vref6 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref6, v60 => { taskDefname_vref6 = v60; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref6, v60 => { taskDefname_vref6 = v60; }));
             }
             finally { taskDefname = taskDefname_vref6; }
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v61 => { scriptCode = v61; }));
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v62 => { hlSystemTask = v62; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v64 => { hlSystemTaskDefinitionObj = v64; }));
+            _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v61 => { scriptCode = v61; }));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v62 => { hlSystemTask = v62; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v63 => { systemTaskDefinitionName = v63; })));
+            _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v64 => { hlSystemTaskDefinitionObj = v64; }));
         }
         //Sub fuehrt den SystemTask einmalig aus.
         //Sub execute SystemTask one-time.
@@ -660,37 +660,37 @@ namespace TranslatedProgram
             object systemTaskDefinitionName = null;
             object hlSystemTaskDefinitionObj = null;
             object errCode = null; /* Undeclared in source */
-            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetCurrentObject", _.ARGS.ForceBrackets()));
-            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext, "CreateSystemTask", "0"));
+            hlObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetCurrentObject", _.ARGS.ForceBrackets()));
+            hlSystemTask = _.OBJ(_.CALLm1v1(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "CreateSystemTask", "0"));
             object taskDefname_vref7 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref7, v65 => { taskDefname_vref7 = v65; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref7, v65 => { taskDefname_vref7 = v65; }));
             }
             finally { taskDefname = taskDefname_vref7; }
             scriptCode = "MyTask1";
 
             //Prueft welche Option zu Duration des SystemTasks ausgewaehlt wurde.
             //Check which option had been chosen in duration of the SystemTask.
-            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask, "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            systemTaskDefinitionName = _.VAL(_.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "GetValue", "SYSTASKINFO.DEFNAME", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             object taskDefname_vref8 = taskDefname;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref8, v66 => { taskDefname_vref8 = v66; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.DEFNAME").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(taskDefname_vref8, v66 => { taskDefname_vref8 = v66; }));
             }
             finally { taskDefname = taskDefname_vref8; }
             object SysTaskBeginnDate_vref7 = SysTaskBeginnDate;
             try
             {
-                _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref7, v67 => { SysTaskBeginnDate_vref7 = v67; }));
+                _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.STARTDATE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(SysTaskBeginnDate_vref7, v67 => { SysTaskBeginnDate_vref7 = v67; }));
             }
             finally { SysTaskBeginnDate = SysTaskBeginnDate_vref7; }
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.ENDDATE", (Int16)0, (Int16)0, (Int16)0, "09.09.2099 09:09:09");
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.ENDTYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.ENDCOUNT", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.RECURRENCE.TYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
-            _.CALLm1v5(this, hlSystemTask, "SetValue", "SYSTASKINFO.RECURRENCE.INTERVAL", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
-            _.CALLm1argp(this, hlSystemTask, "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v68 => { scriptCode = v68; }));
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.ENDDATE", (Int16)0, (Int16)0, (Int16)0, "09.09.2099 09:09:09");
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.ENDTYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.ENDCOUNT", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.RECURRENCE.TYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
+            _.CALLm1v5(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", "SYSTASKINFO.RECURRENCE.INTERVAL", (Int16)0, (Int16)0, (Int16)0, (Int16)1);
+            _.CALLm1argp(this, hlSystemTask ?? throw new InvalidOperationException("Reference not set:hlSystemTask"), "SetValue", _.ARGS.Val("SYSTASKINFO.SCRIPTCODE").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(scriptCode, v68 => { scriptCode = v68; }));
 
             //Wenn kein Datum angegebene wurde, muss eine Fehlermeldung angezeigt werden.
             //If no date was entered, show an error message.
@@ -698,10 +698,10 @@ namespace TranslatedProgram
             {
                 errCode = "#ERR_TSKMNT_002";
             }
-            _.CALLm1argp(this, _env.hlContext, "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v69 => { hlSystemTask = v69; }));
-            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext, "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v70 => { systemTaskDefinitionName = v70; })));
-            _.CALLm1argp(this, hlObj, "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v71 => { hlSystemTaskDefinitionObj = v71; }));
-            _.CALLm1argp(this, hlObj, "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v72 => { systemTaskDefinitionName = v72; }));
+            _.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "SaveSystemTask", _.ARGS.Ref(hlSystemTask, v69 => { hlSystemTask = v69; }));
+            hlSystemTaskDefinitionObj = _.OBJ(_.CALLm1argp(this, _env.hlContext ?? throw new InvalidOperationException("Reference not set:"), "GetSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v70 => { systemTaskDefinitionName = v70; })));
+            _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "AddSystemtask", _.ARGS.Ref(hlSystemTaskDefinitionObj, v71 => { hlSystemTaskDefinitionObj = v71; }));
+            _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "HasSystemTask", _.ARGS.Ref(systemTaskDefinitionName, v72 => { systemTaskDefinitionName = v72; }));
         }
         //----------------------------------------------------------------------------------------------------------
         public object IsValidObject(ref object obj)
@@ -721,9 +721,9 @@ namespace TranslatedProgram
             object nodeAttributes = null;
             object nodeRelations = null;
             object Filename = null;
-            objDefname = _.VAL(_.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()));
+            objDefname = _.VAL(_.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetType", _.ARGS.ForceBrackets()));
             aliasname = _.CONCAT("NewCI", objDefname);
-            NewChangeObj = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.DataToSAPAMChange", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            NewChangeObj = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.DataToSAPAMChange", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.OR(_.EQ(_.NullableSTR(NewChangeObj), "0"), _.EQ(_.NullableSTR(NewChangeObj), ""))))
             {
                 aliasname = _.VAL(aliasname);
@@ -737,14 +737,14 @@ namespace TranslatedProgram
             xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
 
             //create root element
-            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Data")));
-            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
-            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
-            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName, "Text", _.VAL(aliasname));
-            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
-            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
-            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
+            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Data")));
+            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData ?? throw new InvalidOperationException("Reference not set:nodeData"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Objects")));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects ?? throw new InvalidOperationException("Reference not set:nodeObjects"), "appendChild", _.CALLm1argp(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
+            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createAttribute", "aliasname"));
+            _.SETm1a0(this, attAliasName ?? throw new InvalidOperationException("Reference not set:attAliasName"), "Text", _.VAL(aliasname));
+            _.CALLm2argp(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
+            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Attributes")));
+            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData ?? throw new InvalidOperationException("Reference not set:nodeData"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Relations")));
             /////////////////////////////////////////////////////////////
 
             ////////////////// HLOBJECT.ID
@@ -752,92 +752,92 @@ namespace TranslatedProgram
             object hlContext_vref2 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref2, v75 => { hlContext_vref2 = v75; }).Ref(xmldoc, v76 => { xmldoc = v76; }).Ref(nodeAttributes, v77 => { nodeAttributes = v77; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1v5(this, hlObj, "GetValue", "AssetGeneral.AssetName", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref2, v75 => { hlContext_vref2 = v75; }).Ref(xmldoc, v76 => { xmldoc = v76; }).Ref(nodeAttributes, v77 => { nodeAttributes = v77; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.AssetName", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref2; } // hlObj.GetValue("AssetGeneral.AssetName", 0,0,0,0)
             object hlContext_vref3 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref3, v78 => { hlContext_vref3 = v78; }).Ref(xmldoc, v79 => { xmldoc = v79; }).Ref(nodeAttributes, v80 => { nodeAttributes = v80; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1v5(this, hlObj, "GetValue", "AccountingDetail.CostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref3, v78 => { hlContext_vref3 = v78; }).Ref(xmldoc, v79 => { xmldoc = v79; }).Ref(nodeAttributes, v80 => { nodeAttributes = v80; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AccountingDetail.CostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref3; }
             object hlContext_vref4 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref4, v81 => { hlContext_vref4 = v81; }).Ref(xmldoc, v82 => { xmldoc = v82; }).Ref(nodeAttributes, v83 => { nodeAttributes = v83; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "AssetGeneral.Serialnumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref4, v81 => { hlContext_vref4 = v81; }).Ref(xmldoc, v82 => { xmldoc = v82; }).Ref(nodeAttributes, v83 => { nodeAttributes = v83; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.Serialnumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref4; }
             object hlContext_vref5 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref5, v84 => { hlContext_vref5 = v84; }).Ref(xmldoc, v85 => { xmldoc = v85; }).Ref(nodeAttributes, v86 => { nodeAttributes = v86; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref5, v84 => { hlContext_vref5 = v84; }).Ref(xmldoc, v85 => { xmldoc = v85; }).Ref(nodeAttributes, v86 => { nodeAttributes = v86; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref5; }
             object hlContext_vref6 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref6, v87 => { hlContext_vref6 = v87; }).Ref(xmldoc, v88 => { xmldoc = v88; }).Ref(nodeAttributes, v89 => { nodeAttributes = v89; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref6, v87 => { hlContext_vref6 = v87; }).Ref(xmldoc, v88 => { xmldoc = v88; }).Ref(nodeAttributes, v89 => { nodeAttributes = v89; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref6; }
             object hlContext_vref7 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref7, v90 => { hlContext_vref7 = v90; }).Ref(xmldoc, v91 => { xmldoc = v91; }).Ref(nodeAttributes, v92 => { nodeAttributes = v92; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.OrderNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref7, v90 => { hlContext_vref7 = v90; }).Ref(xmldoc, v91 => { xmldoc = v91; }).Ref(nodeAttributes, v92 => { nodeAttributes = v92; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref7; }
             object hlContext_vref8 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref8, v93 => { hlContext_vref8 = v93; }).Ref(xmldoc, v94 => { xmldoc = v94; }).Ref(nodeAttributes, v95 => { nodeAttributes = v95; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.OrderPosition", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref8, v93 => { hlContext_vref8 = v93; }).Ref(xmldoc, v94 => { xmldoc = v94; }).Ref(nodeAttributes, v95 => { nodeAttributes = v95; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderPosition", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref8; }
             object hlContext_vref9 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref9, v96 => { hlContext_vref9 = v96; }).Ref(xmldoc, v97 => { xmldoc = v97; }).Ref(nodeAttributes, v98 => { nodeAttributes = v98; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.VendorNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref9, v96 => { hlContext_vref9 = v96; }).Ref(xmldoc, v97 => { xmldoc = v97; }).Ref(nodeAttributes, v98 => { nodeAttributes = v98; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.VendorNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref9; }
             object hlContext_vref10 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref10, v99 => { hlContext_vref10 = v99; }).Ref(xmldoc, v100 => { xmldoc = v100; }).Ref(nodeAttributes, v101 => { nodeAttributes = v101; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref10, v99 => { hlContext_vref10 = v99; }).Ref(xmldoc, v100 => { xmldoc = v100; }).Ref(nodeAttributes, v101 => { nodeAttributes = v101; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref10; }
             object hlContext_vref11 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref11, v102 => { hlContext_vref11 = v102; }).Ref(xmldoc, v103 => { xmldoc = v103; }).Ref(nodeAttributes, v104 => { nodeAttributes = v104; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref11, v102 => { hlContext_vref11 = v102; }).Ref(xmldoc, v103 => { xmldoc = v103; }).Ref(nodeAttributes, v104 => { nodeAttributes = v104; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref11; }
             object hlContext_vref12 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref12, v105 => { hlContext_vref12 = v105; }).Ref(xmldoc, v106 => { xmldoc = v106; }).Ref(nodeAttributes, v107 => { nodeAttributes = v107; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.InvestmentNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref12, v105 => { hlContext_vref12 = v105; }).Ref(xmldoc, v106 => { xmldoc = v106; }).Ref(nodeAttributes, v107 => { nodeAttributes = v107; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.InvestmentNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref12; }
             object hlContext_vref13 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref13, v108 => { hlContext_vref13 = v108; }).Ref(xmldoc, v109 => { xmldoc = v109; }).Ref(nodeAttributes, v110 => { nodeAttributes = v110; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.Manufacturer", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref13, v108 => { hlContext_vref13 = v108; }).Ref(xmldoc, v109 => { xmldoc = v109; }).Ref(nodeAttributes, v110 => { nodeAttributes = v110; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.Manufacturer", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref13; }
             object hlContext_vref14 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref14, v111 => { hlContext_vref14 = v111; }).Ref(xmldoc, v112 => { xmldoc = v112; }).Ref(nodeAttributes, v113 => { nodeAttributes = v113; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.SAPCostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref14, v111 => { hlContext_vref14 = v111; }).Ref(xmldoc, v112 => { xmldoc = v112; }).Ref(nodeAttributes, v113 => { nodeAttributes = v113; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.SAPCostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref14; }
 
             // Save to File
             if (_.IF(_.OR(_.EQ(_.NullableSTR(NewChangeObj), "0"), _.EQ(_.NullableSTR(NewChangeObj), ""))))
             {
-                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlnew", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
+                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlnew", objDefname, "_", _.CALLm1v0(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetID"), ".xml");
             }
             else
             {
-                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlchange", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
+                Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\HELPLINE_out\\c11\\hlchange", objDefname, "_", _.CALLm1v0(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetID"), ".xml");
             }
-            _.CALLm1v1(this, xmldoc, "Save", Filename);
+            _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "Save", Filename);
 
         }
         public void ExportObjectIncident(ref object hlContext, ref object hlObj)
@@ -875,13 +875,13 @@ namespace TranslatedProgram
             aliasname1 = "obj1";
             aliasname2 = "obj2";
             aliasnameSU = "objSU";
-            ElimierungsgrundDE = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetStatus.CISubStatus", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
-            ElimierungsgrundEN = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetStatus.CISubStatus", (Int16)9, (Int16)0, (Int16)0, (Int16)0));
-            Buchungskreis = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            Buchungskreis1 = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            ElimierungsgrundDE = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetStatus.CISubStatus", (Int16)7, (Int16)0, (Int16)0, (Int16)0));
+            ElimierungsgrundEN = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetStatus.CISubStatus", (Int16)9, (Int16)0, (Int16)0, (Int16)0));
+            Buchungskreis = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Buchungskreis1 = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             TeamKeyword = "";
-            Kontierungsnr = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            Kontierungstyp = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Kontierungsnr = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            Kontierungstyp = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             Beschreibung = "";
             Beschreibung = _.CONCAT("CI ist auf Status 'Elimiert' gesetzt worden. Die CI-Nummmer steht im Betreff. Der Eliminierungsgrund lautet: ", ElimierungsgrundDE);
             Beschreibung = _.CONCAT(Beschreibung, _.CHR((Int16)13), _.CHR((Int16)10), "The CI-Status is set to Eliminated. The CI-Number is displayed in the subject of the incident. The elimination reason is: ", ElimierungsgrundEN);
@@ -940,113 +940,113 @@ namespace TranslatedProgram
             }
 
             /////////////////////////////////////////////////////////////
-            cinummer = _.VAL(_.CALLm1v5(this, hlObj, "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            increqsubject = _.CONCAT("Eliminierung/Elimination: ", cinummer, " Internal helpLine-ID: ", _.CALLm1v0(this, hlObj, "GetID"));
+            cinummer = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            increqsubject = _.CONCAT("Eliminierung/Elimination: ", cinummer, " Internal helpLine-ID: ", _.CALLm1v0(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetID"));
 
             // VBScript source code
             xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
 
             //create root element
-            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Data")));
-            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Objects")));
+            nodeData = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Data")));
+            nodeObjects = _.OBJ(_.CALLm1v1(this, nodeData ?? throw new InvalidOperationException("Reference not set:nodeData"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Objects")));
 
             ////// obj1: IncidentRequest///////////////////////////////////////////////////////
 
-            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
-            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName, "Text", _.VAL(aliasname1));
-            _.CALLm2argp(this, nodeObject, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
-            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
-            nodeServiceUnits = _.OBJ(_.CALLm1v1(this, nodeObject, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnits")));
-            nodeServiceUnit = _.OBJ(_.CALLm1v1(this, nodeServiceUnits, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "ServiceUnit")));
-            attAliasNameSU = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasNameSU, "Text", _.VAL(aliasnameSU));
-            _.CALLm2argp(this, nodeServiceUnit, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
+            nodeObject = _.OBJ(_.CALLm1v1(this, nodeObjects ?? throw new InvalidOperationException("Reference not set:nodeObjects"), "appendChild", _.CALLm1argp(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
+            attAliasName = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createAttribute", "aliasname"));
+            _.SETm1a0(this, attAliasName ?? throw new InvalidOperationException("Reference not set:attAliasName"), "Text", _.VAL(aliasname1));
+            _.CALLm2argp(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
+            nodeAttributes = _.OBJ(_.CALLm1v1(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Attributes")));
+            nodeServiceUnits = _.OBJ(_.CALLm1v1(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "ServiceUnits")));
+            nodeServiceUnit = _.OBJ(_.CALLm1v1(this, nodeServiceUnits ?? throw new InvalidOperationException("Reference not set:nodeServiceUnits"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "ServiceUnit")));
+            attAliasNameSU = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createAttribute", "aliasname"));
+            _.SETm1a0(this, attAliasNameSU ?? throw new InvalidOperationException("Reference not set:attAliasNameSU"), "Text", _.VAL(aliasnameSU));
+            _.CALLm2argp(this, nodeServiceUnit ?? throw new InvalidOperationException("Reference not set:nodeServiceUnit"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
             ////////////////// HLOBJECT.ID
             //Call AppendNode(hlContext,xmldoc, nodeAttributes, True, "HLOBJECTINFO.ID", hlObj.GetValue("HLOBJECTINFO.ID", 0,0,0,0)) '
             object hlContext_vref15 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref15, v117 => { hlContext_vref15 = v117; }).Ref(xmldoc, v118 => { xmldoc = v118; }).Ref(nodeAttributes, v119 => { nodeAttributes = v119; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v120 => { increqsubject = v120; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref15, v117 => { hlContext_vref15 = v117; }).Ref(xmldoc, v118 => { xmldoc = v118; }).Ref(nodeAttributes, v119 => { nodeAttributes = v119; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v120 => { increqsubject = v120; }));
             }
             finally { hlContext = hlContext_vref15; }
             object hlContext_vref16 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref16, v121 => { hlContext_vref16 = v121; }).Ref(xmldoc, v122 => { xmldoc = v122; }).Ref(nodeAttributes, v123 => { nodeAttributes = v123; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v124 => { Beschreibung = v124; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref16, v121 => { hlContext_vref16 = v121; }).Ref(xmldoc, v122 => { xmldoc = v122; }).Ref(nodeAttributes, v123 => { nodeAttributes = v123; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v124 => { Beschreibung = v124; }));
             }
             finally { hlContext = hlContext_vref16; }
             object hlContext_vref17 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref17, v125 => { hlContext_vref17 = v125; }).Ref(xmldoc, v126 => { xmldoc = v126; }).Ref(nodeAttributes, v127 => { nodeAttributes = v127; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v128 => { TeamKeyword = v128; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref17, v125 => { hlContext_vref17 = v125; }).Ref(xmldoc, v126 => { xmldoc = v126; }).Ref(nodeAttributes, v127 => { nodeAttributes = v127; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v128 => { TeamKeyword = v128; }));
             }
             finally { hlContext = hlContext_vref17; }
             object hlContext_vref18 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref18, v129 => { hlContext_vref18 = v129; }).Ref(xmldoc, v130 => { xmldoc = v130; }).Ref(nodeAttributes, v131 => { nodeAttributes = v131; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v132 => { Buchungskreis1 = v132; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref18, v129 => { hlContext_vref18 = v129; }).Ref(xmldoc, v130 => { xmldoc = v130; }).Ref(nodeAttributes, v131 => { nodeAttributes = v131; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v132 => { Buchungskreis1 = v132; }));
             }
             finally { hlContext = hlContext_vref18; }
             object hlContext_vref19 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref19, v133 => { hlContext_vref19 = v133; }).Ref(xmldoc, v134 => { xmldoc = v134; }).Ref(nodeAttributes, v135 => { nodeAttributes = v135; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref19, v133 => { hlContext_vref19 = v133; }).Ref(xmldoc, v134 => { xmldoc = v134; }).Ref(nodeAttributes, v135 => { nodeAttributes = v135; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
             }
             finally { hlContext = hlContext_vref19; }
             object hlContext_vref20 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref20, v136 => { hlContext_vref20 = v136; }).Ref(xmldoc, v137 => { xmldoc = v137; }).Ref(nodeAttributes, v138 => { nodeAttributes = v138; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref20, v136 => { hlContext_vref20 = v136; }).Ref(xmldoc, v137 => { xmldoc = v137; }).Ref(nodeAttributes, v138 => { nodeAttributes = v138; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
             }
             finally { hlContext = hlContext_vref20; }
             object hlContext_vref21 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref21, v139 => { hlContext_vref21 = v139; }).Ref(xmldoc, v140 => { xmldoc = v140; }).Ref(nodeAttributes, v141 => { nodeAttributes = v141; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref21, v139 => { hlContext_vref21 = v139; }).Ref(xmldoc, v140 => { xmldoc = v140; }).Ref(nodeAttributes, v141 => { nodeAttributes = v141; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
             }
             finally { hlContext = hlContext_vref21; }
             object hlContext_vref22 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref22, v142 => { hlContext_vref22 = v142; }).Ref(xmldoc, v143 => { xmldoc = v143; }).Ref(nodeServiceUnit, v144 => { nodeServiceUnit = v144; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref22, v142 => { hlContext_vref22 = v142; }).Ref(xmldoc, v143 => { xmldoc = v143; }).Ref(nodeServiceUnit, v144 => { nodeServiceUnit = v144; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
             }
             finally { hlContext = hlContext_vref22; }
 
             ////// obj2: Product///////////////////////////////////////////////////////
-            nodeObject2 = _.OBJ(_.CALLm1v1(this, nodeObjects, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", _.CALLm1argp(this, hlObj, "GetType", _.ARGS.ForceBrackets()))));
-            attAliasName2 = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName2, "Text", _.VAL(aliasname2));
-            _.CALLm2argp(this, nodeObject2, "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
-            nodeAttributes2 = _.OBJ(_.CALLm1v1(this, nodeObject2, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Attributes")));
+            nodeObject2 = _.OBJ(_.CALLm1v1(this, nodeObjects ?? throw new InvalidOperationException("Reference not set:nodeObjects"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", _.CALLm1argp(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetType", _.ARGS.ForceBrackets()))));
+            attAliasName2 = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createAttribute", "aliasname"));
+            _.SETm1a0(this, attAliasName2 ?? throw new InvalidOperationException("Reference not set:attAliasName2"), "Text", _.VAL(aliasname2));
+            _.CALLm2argp(this, nodeObject2 ?? throw new InvalidOperationException("Reference not set:nodeObject2"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
+            nodeAttributes2 = _.OBJ(_.CALLm1v1(this, nodeObject2 ?? throw new InvalidOperationException("Reference not set:nodeObject2"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Attributes")));
             object hlContext_vref23 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref23, v146 => { hlContext_vref23 = v146; }).Ref(xmldoc, v147 => { xmldoc = v147; }).Ref(nodeAttributes2, v148 => { nodeAttributes2 = v148; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v149 => { cinummer = v149; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref23, v146 => { hlContext_vref23 = v146; }).Ref(xmldoc, v147 => { xmldoc = v147; }).Ref(nodeAttributes2, v148 => { nodeAttributes2 = v148; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v149 => { cinummer = v149; }));
             }
             finally { hlContext = hlContext_vref23; }
 
             ////// Relations///////////////////////////////////////////////////////
-            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Relations")));
-            nodeProduct2Case = _.OBJ(_.CALLm1v1(this, nodeRelations, "appendChild", _.CALLm1v1(this, xmldoc, "createElement", "Product2Case")));
+            nodeRelations = _.OBJ(_.CALLm1v1(this, nodeData ?? throw new InvalidOperationException("Reference not set:nodeData"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Relations")));
+            nodeProduct2Case = _.OBJ(_.CALLm1v1(this, nodeRelations ?? throw new InvalidOperationException("Reference not set:nodeRelations"), "appendChild", _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", "Product2Case")));
 
             object hlContext_vref24 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(hlContext_vref24, v150 => { hlContext_vref24 = v150; }).Ref(xmldoc, v151 => { xmldoc = v151; }).Ref(nodeProduct2Case, v152 => { nodeProduct2Case = v152; }).Val("Parent").Ref(aliasnameSU, v153 => { aliasnameSU = v153; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendTextNode", _.ARGS.Ref(hlContext_vref24, v150 => { hlContext_vref24 = v150; }).Ref(xmldoc, v151 => { xmldoc = v151; }).Ref(nodeProduct2Case, v152 => { nodeProduct2Case = v152; }).Val("Parent").Ref(aliasnameSU, v153 => { aliasnameSU = v153; }));
             }
             finally { hlContext = hlContext_vref24; }
             object hlContext_vref25 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(hlContext_vref25, v154 => { hlContext_vref25 = v154; }).Ref(xmldoc, v155 => { xmldoc = v155; }).Ref(nodeProduct2Case, v156 => { nodeProduct2Case = v156; }).Val("Child").Ref(aliasname2, v157 => { aliasname2 = v157; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendTextNode", _.ARGS.Ref(hlContext_vref25, v154 => { hlContext_vref25 = v154; }).Ref(xmldoc, v155 => { xmldoc = v155; }).Ref(nodeProduct2Case, v156 => { nodeProduct2Case = v156; }).Val("Child").Ref(aliasname2, v157 => { aliasname2 = v157; }));
             }
             finally { hlContext = hlContext_vref25; }
 
             // Save to File
-            Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\helpline_in\\c11\\", objDefname, "_", _.CALLm1v0(this, hlObj, "GetID"), ".xml");
+            Filename = _.CONCAT("\\\\srvditz1\\pi_intern\\helpline\\helpline_in\\c11\\", objDefname, "_", _.CALLm1v0(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetID"), ".xml");
 
-            _.CALLm1v1(this, xmldoc, "Save", Filename);
+            _.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "Save", Filename);
 
         }
         public void AppendNode(ref object hlContext, ref object xmldoc, ref object nodeObject, ref object iskey, ref object key, ref object value)
@@ -1057,28 +1057,28 @@ namespace TranslatedProgram
             object key_vref = key;
             try
             {
-                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(key_vref, v158 => { key_vref = v158; })));
+                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", _.ARGS.Ref(key_vref, v158 => { key_vref = v158; })));
             }
             finally { key = key_vref; }
             object value_vref = value;
             try
             {
-                cdata = _.OBJ(_.CALLm1argp(this, xmldoc, "createCDATASection", _.ARGS.Ref(value_vref, v159 => { value_vref = v159; })));
+                cdata = _.OBJ(_.CALLm1argp(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createCDATASection", _.ARGS.Ref(value_vref, v159 => { value_vref = v159; })));
             }
             finally { value = value_vref; }
-            _.CALLm1v1(this, valueNode, "appendChild", cdata);
-            _.CALLm1v1(this, nodeObject, "appendChild", valueNode);
+            _.CALLm1v1(this, valueNode ?? throw new InvalidOperationException("Reference not set:valueNode"), "appendChild", cdata);
+            _.CALLm1v1(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "appendChild", valueNode);
 
-            attIsKey = _.OBJ(_.CALLm1v1(this, xmldoc, "createAttribute", "iskey"));
+            attIsKey = _.OBJ(_.CALLm1v1(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createAttribute", "iskey"));
             if (_.IF(iskey))
             {
-                _.SETm1a0(this, attIsKey, "Text", "true");
+                _.SETm1a0(this, attIsKey ?? throw new InvalidOperationException("Reference not set:attIsKey"), "Text", "true");
             }
             else
             {
-                _.SETm1a0(this, attIsKey, "Text", "false");
+                _.SETm1a0(this, attIsKey ?? throw new InvalidOperationException("Reference not set:attIsKey"), "Text", "false");
             }
-            _.CALLm2argp(this, valueNode, "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
+            _.CALLm2argp(this, valueNode ?? throw new InvalidOperationException("Reference not set:valueNode"), "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
 
         }
         public void AppendTextNode(ref object hlContext, ref object xmldoc, ref object nodeObject, ref object key, ref object value)
@@ -1087,12 +1087,12 @@ namespace TranslatedProgram
             object key_vref2 = key;
             try
             {
-                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc, "createElement", _.ARGS.Ref(key_vref2, v161 => { key_vref2 = v161; })));
+                valueNode = _.OBJ(_.CALLm1argp(this, xmldoc ?? throw new InvalidOperationException("Reference not set:xmldoc"), "createElement", _.ARGS.Ref(key_vref2, v161 => { key_vref2 = v161; })));
             }
             finally { key = key_vref2; }
-            _.CALLm1v1(this, nodeObject, "appendChild", valueNode);
+            _.CALLm1v1(this, nodeObject ?? throw new InvalidOperationException("Reference not set:nodeObject"), "appendChild", valueNode);
 
-            _.SETm1a0(this, valueNode, "Text", _.VAL(value));
+            _.SETm1a0(this, valueNode ?? throw new InvalidOperationException("Reference not set:valueNode"), "Text", _.VAL(value));
         }
         public object DBConnectionString(ref object hlContext)
         {

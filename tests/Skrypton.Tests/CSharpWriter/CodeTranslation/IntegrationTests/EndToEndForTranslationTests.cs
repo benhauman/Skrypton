@@ -439,7 +439,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// F1 and so we don't need to jump through any hoops to avoid illegal C#)
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByValArgumentIsRequiredForLoopConstraintAndIsPassedToAnotherFunctionByRefThenNoByRefMappingIsRequiredAsTheFirstArgumentWasByVal()
+        public void IfByValArgIsReqForLoopAndIsPassedToAnotherFuncByRefThenNoByRefAsTheFirstArgAsByVal() // IfByValArgumentIsRequiredForLoopConstraintAndIsPassedToAnotherFunctionByRefThenNoByRefMappingIsRequiredAsTheFirstArgumentWasByVal
         {
             var source = @"
 				Function F1(ByVal x)
@@ -450,28 +450,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(ByRef value)
 					F2 = value
 				End Function";
-
-            var expected = @"
-				public object F1(object x)
-				{
-					object F1_retVal = null;
-					object i = null;
-					var loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x, v => { x = v; })));
-					var loopStart = _.NUM((Int16)1, loopEnd);
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-						{
-						}
-					}
-					return F1_retVal;
-				}
-
-				public object F2(ref object value)
-				{
-					return _.VAL(value);
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
         /// <summary>
@@ -481,7 +460,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// a lambda, which would not be legal C# and so a ByRef mapping is unfortunately required.
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToAnotherFunctionThenByRefMappingRequired()
+        public void IfByRefArgumentIsRequiredForLoopAndIsPassedToAnotherFuncThenByRefRequired()
         {
             var source = @"
 				Function F1(ByRef x)
@@ -492,39 +471,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(ByVal value)
 					F2 = value
 				End Function";
-
-            var expected = @"
-        public object F1(ref object x)
-        {
-            object F1_retVal = null;
-            object i = null;
-            object loopEnd = 0, loopStart = 0;
-            var loopConstraintsInitialized = false;
-            object x_vref = x;
-            try
-            {
-                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, ""F2"", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
-                    loopStart = _.NUM((Int16)1);
-                    if ((loopStart is DateTime) || (loopStart is Decimal))
-                        i = loopStart;
-                    loopStart = _.NUM((Int16)1, loopEnd);
-                    loopConstraintsInitialized = true;
-            }
-            finally { x = x_vref; }
-            if (_.StrictLTE(loopStart, loopEnd))
-            {
-                for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-                {
-                }
-            }
-            return F1_retVal;
-        }
-        public object F2(object value)
-        {
-            return _.VAL(value);
-        }
-";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
         /// <summary>
@@ -532,7 +479,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// presuming that all built-in functions take arguments ByVal (which I'm fairly confident is always the case), which means that ByRef mappings may be avoided for some cases.
         /// </summary>
         [TestMethod, MyFact]
-        public void IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToBuiltInFunctionByRefThenNoByRefMappingRequired()
+        public void IfByRefArgumentIsReqForLoopAndIsPassedToBuiltInFuncByRefThenNoByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToBuiltInFunctionByRefThenNoByRefMappingRequired
         {
             var source = @"
 				Function F1(ByRef x)
@@ -540,22 +487,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function";
 
-            var expected = @"
-				public object F1(ref object x)
-				{
-					object F1_retVal = null;
-					object i = null;
-					var loopEnd = _.UBOUND(x);
-					var loopStart = _.NUM((Int16)1, loopEnd);
-					if (_.StrictLTE(loopStart, loopEnd))
-					{
-						for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
-						{
-						}
-					}
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
 
         /// <summary>

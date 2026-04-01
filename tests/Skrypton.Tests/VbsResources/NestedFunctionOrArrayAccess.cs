@@ -1,0 +1,1 @@
+_.CALLm0argp(this, _.CALLm0argp(this, _env.a ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val((Int16)0)) ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Ref(_env.b, v0 => { _env.b = v0; }))

@@ -454,53 +454,72 @@ return _.VAL(x);
 					return Render_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    expected.SplitLinesRemoveEmptyEntries().Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         [TestMethod, MyTheory, MyMemberData(nameof(VariousBracketDeterminedRefValArgumentData))]
-        public void VariousBracketDeterminedRefValArgumentCases(int testno, string source, string expectedResult)
+        public void VariousBracketDeterminedRefValArgumentCases(int testNo, string source, string expectedResult)
         {
-            TestCSharpCodeTranslationWithoutScaffolding(expectedResult, source, ["SKY101"]);
-            //var translatedContent = WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies);
-            //myAssert.AreEqual(expectedResult, translatedContent.Select(c => c.Trim()).Single(c => c != ""));
+            TestCSharpCodeTranslationWithoutScaffolding(testNo, expectedResult, source, ["SKY101"]);
         }
 
         public static IEnumerable<object[]> VariousBracketDeterminedRefValArgumentData
         {
             get
             {
-                yield return new object[] { 1, "func x", "_.CALLm0argp(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }));" };
-                yield return new object[] { 2, "func (x)", "_.CALLm0argp(this, _env.func, _.ARGS.Val(_env.x));" };
+                yield return new object[] { 1, "func x", @"
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }));
+" };
+                yield return new object[] { 2, "func (x)", @"
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x));
+" };
 
-                yield return new object[] { 3, "func x, y", "_.CALLm0argp(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; }));" };
-                yield return new object[] { 4, "func (x), y", "_.CALLm0argp(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; }));" };
-                yield return new object[] { 5, "func x, (y)", "_.CALLm0argp(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Val(_env.y));" };
-
-                yield return new object[] { 6, "z = func(x)", "_env.z = _.VAL(_.CALLm0argp(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; })));" };
-                yield return new object[] { 7, "z = func(x, y)", "_env.z = _.VAL(_.CALLm0argp(this, _env.func, _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; })));" };
-                yield return new object[] { 8, "z = func((x), y)", "_env.z = _.VAL(_.CALLm0argp(this, _env.func, _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; })));" };
+                yield return new object[] { 3, "func x, y", @"
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; }));
+" };
+                yield return new object[] { 4, "func (x), y", @"
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; }));
+" };
+                yield return new object[] { 5, "func x, (y)", @"
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Val(_env.y));
+" };
+                yield return new object[] { 6, "z = func(x)", @"
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; })));
+" };
+                yield return new object[] { 7, "z = func(x, y)", @"
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Ref(_env.x, v => { _env.x = v; }).Ref(_env.y, v2 => { _env.y = v2; })));
+" };
+                yield return new object[] { 8, "z = func((x), y)", @"
+            _env.z = _.VAL(_.CALLm0argp(this, _env.func ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val(_env.x).Ref(_env.y, v => { _env.y = v; })));
+" };
             }
         }
 
         [TestMethod, MyTheory, MyMemberData(nameof(ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessaryData))]
-        public void ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessary(int testidx, string source, string expectedResult)
+        public void ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessary(int testNo, string source, string expectedResult)
         {
-            TestCSharpCodeTranslationWithoutScaffolding(expectedResult, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(testNo, expectedResult, source, ["SKY101"]);
         }
         public static IEnumerable<object[]> ZeroArgumentBracketsEnforcedWhereAndOnlyWhereNecessaryData
         {
             get
             {
-                yield return new object[] { 1, "a = b", "_env.a = _.VAL(_env.b);" };
-                yield return new object[] { 2, "a = b()", "_env.a = _.VAL(_.CALLm0argp(this, _env.b, _.ARGS.ForceBrackets()));" };
-                yield return new object[] { 3, "a = b(1)", "_env.a = _.VAL(_.CALLm0argp(this, _env.b, _.ARGS.Val((Int16)1)));" };
+                yield return new object[] { 1, "a = b", @"_env.a = _.VAL(_env.b);" };
+                yield return new object[] { 2, "a = b()", @"
+            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.ForceBrackets()));
+" };
+                yield return new object[] { 3, "a = b(1)", @"
+            _env.a = _.VAL(_.CALLm0argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), _.ARGS.Val((Int16)1)));
+" };
 
-                yield return new object[] { 4, "a = b.Name", "_env.a = _.VAL(_.CALLm1v0(this, _env.b, \"Name\"));" };
-                yield return new object[] { 5, "a = b.Name()", "_env.a = _.VAL(_.CALLm1argp(this, _env.b, \"Name\", _.ARGS.ForceBrackets()));" };
-                yield return new object[] { 6, "a = b.Name(1)", @"_env.a = _.VAL(_.CALLm1v1(this, _env.b, ""Name"", (Int16)1));" };
+                yield return new object[] { 4, "a = b.Name", @"
+            _env.a = _.VAL(_.CALLm1v0(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name""));
+" };
+                yield return new object[] { 5, "a = b.Name()", @"
+            _env.a = _.VAL(_.CALLm1argp(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name"", _.ARGS.ForceBrackets()));
+" };
+                yield return new object[] { 6, "a = b.Name(1)", @"
+            _env.a = _.VAL(_.CALLm1v1(this, _env.b ?? throw new InvalidOperationException(""Reference not set:""), ""Name"", (Int16)1));
+" };
             }
         }
     }

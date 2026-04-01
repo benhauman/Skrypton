@@ -138,9 +138,13 @@ namespace Skrypton.Tests.Application
             GuiScripts[scriptName] = new ScriptInfo(newCode);
         }
 
-        public TControl GetControlById<TControl>(string v) where TControl : DialogGuiControlBase
+        public TControl GetControlById<TControl>(string controlId) where TControl : DialogGuiControlBase
         {
-            return (TControl)_controls[v];
+            return (TControl)_controls[controlId];
+        }
+        public bool HasControlById(string controlId)
+        {
+            return _controls.ContainsKey(controlId);
         }
 
         private readonly Dictionary<string, ScriptInfo> GuiScripts = new Dictionary<string, ScriptInfo>(StringComparer.OrdinalIgnoreCase);

@@ -42,6 +42,17 @@ namespace Skrypton.Tests
         public abstract string TestName { get; }
         public abstract string TestRunResultsDirectory { get; }
         public abstract void AddResultFile(string filePath);
+
+        internal string ExpectedCsCode(int? testNo)
+        {
+            string testNoSuffix = testNo.HasValue ? "_" + testNo.Value.ToString() : "";
+            string? expectedCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + this.TestName + testNoSuffix + ".cs", isOptional: true);
+            if (expectedCs == null)
+            {
+                Console.WriteLine($"Expected C# code resource not found for test '{this.TestName}'. Resource name: 'Skrypton.Tests.VbsResources.{this.TestName}.cs'");
+            }
+            return expectedCs ?? "";
+        }
         internal string SaveExpectedActualFiles(string testNameX, string workItemName
                 , string fileName
                 , string expected_xml, string actual_xml
@@ -125,16 +136,24 @@ namespace Skrypton.Tests
         }
         protected void TestCSharpCodeTranslationWithoutScaffoldingA(string[] expectedLines, string vbsSource, params string[] translationSuppression)
         {
-            string expected = string.Join(NewLineNormalized, expectedLines);
-            TestCSharpCodeTranslationWithoutScaffoldingX(expected, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+            string expectedZ = string.Join(NewLineNormalized, expectedLines);
+            string expectedCs = ExpectedCsCode(null);
+            TestCSharpCodeTranslationWithoutScaffoldingX(null, expectedCs, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
         }
-        protected void TestCSharpCodeTranslationWithoutScaffolding(string expected, string vbsSource, params string[] translationSuppression)
+        protected void TestCSharpCodeTranslationWithoutScaffolding(string? expectedZ, string vbsSource, params string[] translationSuppression)
         {
-            TestCSharpCodeTranslationWithoutScaffoldingX(expected, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+            string expectedCs = ExpectedCsCode(null);
+            TestCSharpCodeTranslationWithoutScaffoldingX(null, expectedCs, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
         }
-        protected void TestCSharpCodeTranslationWithoutScaffoldingX(string expected, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, params string[] translationSuppression)
+        protected void TestCSharpCodeTranslationWithoutScaffolding(int testNo, string expectedZ, string vbsSource, params string[] translationSuppression)
         {
-            string[] expectCsLines = expected.Replace(Environment.NewLine, "\n")
+            // string expectedCs = ExpectedCsCode(testNo); // !!! ambiguous resource path
+            string expectedCs = expectedZ;
+            TestCSharpCodeTranslationWithoutScaffoldingX(testNo, expectedCs, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+        }
+        protected void TestCSharpCodeTranslationWithoutScaffoldingX(int? testNo, string expectedCs, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, params string[] translationSuppression)
+        {
+            string[] expectCsLines = expectedCs.Replace(Environment.NewLine, "\n")
                 .Split(['\n'], StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => s != "") // Empty
@@ -154,18 +173,27 @@ namespace Skrypton.Tests
             {
                 // failed
             }
-            TestCSharpCodeTranslationCore(expectCsCode, actualCsCodeX, actualCsCodeRaw);
+            TestCSharpCodeTranslationCore(testNo, expectCsCode, actualCsCodeX, actualCsCodeRaw);
         }
         protected void TestCSharpCodeTranslation(string csSource, string[] suppressions) // TODO remove 'WithoutScaffoldingTranslator'
         {
             string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, csSource, [], [], suppressions);
             string expectCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true) ?? "";
-            TestCSharpCodeTranslationCore(expectCs, actualCs, null);
+            TestCSharpCodeTranslationCore(null, expectCs, actualCs, null);
         }
 
-        private void TestCSharpCodeTranslationCore(string expectCs, string actualCs, string? actualRawCs) // TODO remove 'WithoutScaffoldingTranslator'
+        private void TestCSharpCodeTranslationCore(int? testNo, string expectCs, string actualCs, string? actualRawCs) // TODO remove 'WithoutScaffoldingTranslator'
         {
-            string chainName = TestName;
+            //string chainName = TestName + (testNo == null ? null : "_" + testNo.ToString());
+            string chainName;
+            if (testNo == null)
+            {
+                chainName = TestName;
+            }
+            else
+            {
+                chainName = $"{GetType().Name}.{TestName}_{testNo.Value}";
+            }
             string workItemName = "Script";// TestContext.TestName;
             string text_e = expectCs;
             string text_a = actualCs;

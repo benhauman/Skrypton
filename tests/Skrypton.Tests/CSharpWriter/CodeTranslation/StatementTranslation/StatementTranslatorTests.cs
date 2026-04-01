@@ -39,8 +39,9 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 )
             ]);
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
-            myAssert.AreEqualX(
-                "_.VAL(_env.o)", [new NameToken("o", lineIndex1)],
+            myAssert.AreEqualX(this,
+                null,//"_.VAL(_env.o)",
+                [new NameToken("o", lineIndex1)],
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None));
         }
 
@@ -62,7 +63,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 "o",
                 lineIndex1
             );
-            myAssert.AreEqualX("_.CALLm1v0(this, _outer, \"o\")", [new NameToken("o", lineIndex1)],
+            myAssert.AreEqualX(this, null, [new NameToken("o", lineIndex1)],
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None)
                 );
         }
@@ -93,8 +94,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 "a",
                 lineIndex1
             );
-            myAssert.AreEqualX(
-                @"_.CALLm1argp(this, _outer, ""o"", _.ARGS.Ref(_outer.a, v0 => { _outer.a = v0; }))",
+            myAssert.AreEqualX(this,
+                null,//@"_.CALLm1argp(this, _outer, ""o"", _.ARGS.Ref(_outer.a, v0 => { _outer.a = v0; }))",
                 [new NameToken("a", lineIndex1), new NameToken("o", lineIndex1)],
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None));
         }
@@ -131,8 +132,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 "a",
                 lineIndex1
             );
-            myAssert.AreEqualX(
-                @"_.CALLm1v1(this, _outer, ""o"", _outer.a)",
+            myAssert.AreEqualX(this, null,
                 [new NameToken("a", lineIndex1), new NameToken("o", lineIndex1)],
                 GetDefaultStatementTranslator().TranslateParsingExpression(expression, scopeAccessInformation, ExpressionReturnTypeOptions.None));
         }
@@ -167,10 +167,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // since "b" is a variable it has to be marked as exligible for ByRef (this will not have any effect if "a(0)" is an
             // array or if it is an object with a default function or property whose argument is marked as ByVal, but we won't
             // know that until runtime).
-            myAssert.AreEqualX(
-                "_.CALLm0argp(this, _.CALLm0argp(this, _env.a, _.ARGS.Val((Int16)0)), _.ARGS.Ref(_env.b, v0 => { _env.b = v0; }))",
-                [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)],
-                GetDefaultStatementTranslator().TranslateParsingExpression(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None));
+            myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)], GetDefaultStatementTranslator().TranslateParsingExpression(expression, GetEmptyScopeAccessInformation(), ExpressionReturnTypeOptions.None));
         }
         [TestMethod, MyFact]
         public void NestedBracketAndFurtherMemberAccessExpressionShouldBePassedByValIntoFunctions()
@@ -195,8 +192,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ])
             ]);
 
-            myAssert.AreEqualX(@"_.ARGS.Val(_.CALLm1v0(this, _.CALLm1v1(this, _env.a, ""b"", (Int16)0), ""c""))", [new NameToken("a", lineIndex1)],
-                GetDefaultStatementTranslator().TranslateAsArgumentProvider([expression], GetEmptyScopeAccessInformation(), forceAllArgumentsToBeByVal: false));
+            myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1)], GetDefaultStatementTranslator().TranslateAsArgumentProvider([expression], GetEmptyScopeAccessInformation(), forceAllArgumentsToBeByVal: false));
         }
 
         /// <summary>

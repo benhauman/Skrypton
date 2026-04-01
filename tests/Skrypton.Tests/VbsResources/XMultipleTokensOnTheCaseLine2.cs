@@ -18,15 +18,15 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(_.NUM(_outer.priority), (Int16)1)))
             {
-                _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.Priority", (Int16)101, (Int16)102, (Int16)103, "PriorityNormal");
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", "CaseGeneral.Priority", (Int16)101, (Int16)102, (Int16)103, "PriorityNormal");
             }
             else if (_.IF(_.EQ(_.NUM(_outer.priority), (Int16)2)))
             {
-                _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.Priority", (Int16)201, (Int16)202, (Int16)203, "PriorityMedium");
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", "CaseGeneral.Priority", (Int16)201, (Int16)202, (Int16)203, "PriorityMedium");
             }
             else
             {
-                _.CALLm1v5(this, _env.hlObj, "SetValue", "CaseGeneral.Priority", (Int16)901, (Int16)902, (Int16)903, "");
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "SetValue", "CaseGeneral.Priority", (Int16)901, (Int16)902, (Int16)903, "");
             }
         }
     }

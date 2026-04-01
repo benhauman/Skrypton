@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skrypton.CSharpWriter;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
-using Skrypton.CSharpWriter.Lists;
-
-//#using Xunit#;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -416,9 +409,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					}
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -457,23 +447,13 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					}
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //expected.Replace(Environment.NewLine, "\n").Split(['\n'], StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
-		[TestMethod]
-		public void ExternalFuncX() // see 'TryToGetDeclaredReferenceDetails'
+        [TestMethod]
+        public void ExternalFuncX() // see 'TryToGetDeclaredReferenceDetails'
         {
-            var source = @"Dim Person: set Person = GetPersonForAgent(123)";
-
-			//NonNullImmutableList<string> testExternalDependencies = new NonNullImmutableList<string>().Add("hlmodel");
-			List<ExternalMemberMethodInfo> externalMemberMethods = new List<ExternalMemberMethodInfo>();
-			externalMemberMethods.Add(new ExternalMemberMethodInfo("hlmodel", "GetPersonForAgent"));
-            //string actualCsCodeRaw = DefaultTranslator.TranslateWithoutScaffolding(TestCulture, source, testExternalDependencies, externalMemberMethods, []);
-			var expected = @"_outer.Person = _.OBJ(_.CALLm2v1(this, _env, ""hlmodel"", ""GetPersonForAgent"", (Int16)123));";
-			TestCSharpCodeTranslationWithoutScaffoldingX(expected, source, ["hlmodel"], externalMemberMethods, []); // SKY101
-			//Assert.Inconclusive();
+            string source = @"Dim Person: set Person = GetPersonForAgent(123)";
+            TestCSharpCodeTranslationWithoutScaffoldingX(null, ExpectedCsCode(null), source, ["hlmodel"], [new ExternalMemberMethodInfo("hlmodel", "GetPersonForAgent")], []); // SKY101
         }
     }
 }

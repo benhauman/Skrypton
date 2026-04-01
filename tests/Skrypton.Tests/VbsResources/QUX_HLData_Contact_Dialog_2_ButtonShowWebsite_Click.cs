@@ -16,9 +16,9 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             _outer.objShell = _.OBJ(_.CREATEOBJECT("Shell.Application"));
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _env.TextBoxWebsite, "Text"))), "")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _env.TextBoxWebsite ?? throw new InvalidOperationException("Reference not set:"), "Text"))), "")))
             {
-                _.CALLm1v1(this, _outer.objShell, "ShellExecute", _.CALLm1v0(this, _env.TextBoxWebsite, "Text"));
+                _.CALLm1v1(this, _outer.objShell ?? throw new InvalidOperationException("Reference not set:"), "ShellExecute", _.CALLm1v0(this, _env.TextBoxWebsite ?? throw new InvalidOperationException("Reference not set:"), "Text"));
             }
         }
     }

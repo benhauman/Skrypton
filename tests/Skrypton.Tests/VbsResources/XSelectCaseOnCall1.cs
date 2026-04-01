@@ -15,18 +15,18 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj, "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
+            object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
-                _.SETm1a0(this, _outer.CaseAttributes, "BackColor", "RGB(107,105,248)");
+                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "RGB(107,105,248)");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
-                _.SETm1a0(this, _outer.CaseAttributes, "BackColor", "RGB(119,170,251)");
+                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "RGB(119,170,251)");
             }
             else
             {
-                _.SETm1a0(this, _outer.CaseAttributes, "BackColor", "RGB(248,245,240)");
+                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "RGB(248,245,240)");
             }
         }
     }

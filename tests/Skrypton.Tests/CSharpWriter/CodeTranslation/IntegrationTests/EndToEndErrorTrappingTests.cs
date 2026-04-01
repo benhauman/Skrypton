@@ -319,10 +319,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					return F1_retVal;
 				}";
             TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
         }
 
         /// <summary>
@@ -332,7 +328,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// conditional codeExpression or its inner statements)
         /// </summary>
         [TestMethod, MyFact]
-        public void IfBlockStatementsNeedsToBeWrappedInErrorHandlingIfOnErrorResumeNextAfterComesAfterItWithinLoopingStructure()
+        public void IfBlockStatementsInErrorIfOnErrorResumeNextAfterWithin() // IfBlockStatementsNeedsToBeWrappedInErrorHandlingIfOnErrorResumeNextAfterComesAfterItWithinLoopingStructure
         {
             // The code analysis is not clever enough to realise that the FOR block will only be executed once (since it starts and ends at 1) and so it
             // presumes that it will be executed multiple times and so the IF block needs to be able to handle error-trapping
@@ -346,46 +342,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function
 			";
-            var expected = @"
-				public object F1(object value)
-				{
-					object F1_retVal = null;
-					int errOn = _.GETERRORTRAPPINGTOKEN();
-					object i = null;
-					i = (Int16)1;
-					while (true)
-					{
-						if (_.IF(() => true, errOn))
-						{
-							_.HANDLEERROR(errOn, () => {
-								F1_retVal = _.DATEVALUE(value);
-							});
-						}
-						_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-						var continueLoop = false;
-						_.HANDLEERROR(errOn, () => {
-							i = _.ADD(i, (Int16)1);
-							continueLoop = _.StrictLTE(i, 1);
-						});
-						if (!continueLoop)
-							break;
-					}
-					_.RELEASEERRORTRAPPINGTOKEN(errOn);
-					return F1_retVal;
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source);
-            //myAssert.AreEqual(
-            //    SplitOnNewLinesSkipFirstLineAndTrimAll(expected).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
-        }
-
-        private static IEnumerable<string> SplitOnNewLinesSkipFirstLineAndTrimAll(string value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            return value.NormalizeLineEndings().SplitLines().Skip(1).Select(v => v.Trim());
+            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
         }
     }
 }

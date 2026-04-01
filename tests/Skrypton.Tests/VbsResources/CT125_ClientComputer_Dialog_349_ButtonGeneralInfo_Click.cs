@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _.CALLm1v0(this, _outer, "ButtonGeneralInfo_Click");
+            _.CALLm1v0(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ButtonGeneralInfo_Click");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -63,19 +63,19 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(Suffix, " KB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " MB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1048576), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1048576), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " GB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1073741824), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1073741824), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " TB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
             }
 
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
@@ -109,267 +109,267 @@ namespace TranslatedProgram
             object xmlDoc = null; /* Undeclared in source */
             object n = null; /* Undeclared in source */
 
-            _.SETm1a0(this, _env.TabPageGeneralInfo, "ShowControl", (Int16)1);
-            _.SETm1a0(this, _env.TabPageSoftwareOSHealth, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.TabPageSecurityCompliance, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.TabPageTechnicalInfo, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.TabPageNetworkHealth, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.TabPageL1Checklist, "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.TabPageGeneralInfo ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _env.TabPageSoftwareOSHealth ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.TabPageSecurityCompliance ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.TabPageTechnicalInfo ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.TabPageNetworkHealth ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.TabPageL1Checklist ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
 
-            _.SETm1a0(this, _env.GroupBoxGeneralInfo, "ShowControl", (Int16)1);
-            _.SETm1a0(this, _env.GroupBoxTechnicalInfo, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.GroupBoxSoftwareOSHealth, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.GroupBoxSecurityCompliance, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.GroupBoxNetworkHealth, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.GroupBoxL1Checklist, "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.GroupBoxGeneralInfo ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _env.GroupBoxTechnicalInfo ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.GroupBoxSoftwareOSHealth ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.GroupBoxSecurityCompliance ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.GroupBoxNetworkHealth ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.GroupBoxL1Checklist ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
 
-            _.SETm1a0(this, _env.ButtonGeneralInfo, "BackColor", "#5b5b5b");
-            _.SETm1a0(this, _env.ButtonTechnicalInfo, "BackColor", "#1B709F");
-            _.SETm1a0(this, _env.ButtonSWHealth, "BackColor", "#1B709F");
-            _.SETm1a0(this, _env.ButtonSecurityCompliance, "BackColor", "#1B709F");
-            _.SETm1a0(this, _env.ButtonNetworkHealth, "BackColor", "#1B709F");
-            _.SETm1a0(this, _env.ButtonL1Checklist, "BackColor", "#1B709F");
+            _.SETm1a0(this, _env.ButtonGeneralInfo ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#5b5b5b");
+            _.SETm1a0(this, _env.ButtonTechnicalInfo ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#1B709F");
+            _.SETm1a0(this, _env.ButtonSWHealth ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#1B709F");
+            _.SETm1a0(this, _env.ButtonSecurityCompliance ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#1B709F");
+            _.SETm1a0(this, _env.ButtonNetworkHealth ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#1B709F");
+            _.SETm1a0(this, _env.ButtonL1Checklist ?? throw new InvalidOperationException("Reference not set:"), "BackColor", "#1B709F");
 
-            _.SETm1a0(this, _env.TabControlNexthink, "ShowControl", (Int16)1);
-            _.SETm1a0(this, _env.TabPageGeneralInfo, "RequestFocus", true);
+            _.SETm1a0(this, _env.TabControlNexthink ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _env.TabPageGeneralInfo ?? throw new InvalidOperationException("Reference not set:"), "RequestFocus", true);
 
             //Clear TextBoxes
 
-            _.SETm1a0(this, _env.TextBoxGeneralCallTime, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralHostName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralLastIP, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralGroupName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralOS, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralLastBootTime, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralLastLogon, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralDeviceType, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralCPUModel, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralCPUFreq, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralTotalRAM, "Text", "");
-            _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards, "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralCallTime ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralHostName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralLastIP ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralGroupName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralOS ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralDeviceType ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralCPUModel ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralCPUFreq ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
             // --- GroupBoxTechnicalInfo
 
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveCapNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalFreeSpaceNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveUsageNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveCapNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveFreeSpaceNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighCPUTimeNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighMemoryTimeNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighIOTimeNow, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveCap7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalFreeSpace7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveUsage7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveCap7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveFreeSpace7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighCPUTime7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighMemoryTime7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighIOTime7Days, "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveCapNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveUsageNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveCapNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighCPUTimeNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighMemoryTimeNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighIOTimeNow ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveCap7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoTotalDriveUsage7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveCap7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoSystemDriveFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighCPUTime7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighMemoryTime7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxTechnicalInfoHighIOTime7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalFreeSpaceNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpaceNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalDriveUsageNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalDriveUsageNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveCapNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveCapNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpaceNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveFreeSpaceNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighCPUTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighCPUTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighMemoryTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighMemoryTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighIOTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighIOTimeNow, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalDriveUsage7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalDriveUsage7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveCap7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveCap7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpace7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveFreeSpace7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighCPUTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighCPUTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighMemoryTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighMemoryTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighIOTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighIOTime7Days, "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalDriveUsageNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalDriveUsageNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveCapNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveCapNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveFreeSpaceNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighCPUTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighCPUTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighMemoryTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighMemoryTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighIOTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighIOTimeNow ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoTotalDriveUsage7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoTotalDriveUsage7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveCap7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveCap7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoSystemDriveFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoSystemDriveFreeSpace7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighCPUTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighCPUTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighMemoryTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighMemoryTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKTechnicalInfoHighIOTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKTechnicalInfoHighIOTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
 
             // GroupBox Software OS Health
 
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSVersionArchitecture, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWMIStatus, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthLastSystemUpdate, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWindowsUpdateStatus, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfApps, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfExes, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfBins, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSEndOfSupport, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSIE11Support, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWin10Ready, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSComplience, "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSVersionArchitecture ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWMIStatus ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthLastSystemUpdate ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWindowsUpdateStatus ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfApps ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfExes ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthNumberOfBins ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSEndOfSupport ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSIE11Support ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthWin10Ready ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSoftwareOSHealthOSComplience ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
             // GroupBox Security Compliance
 
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceInetSecuritySettings, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceUserAccountStatus, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusRTP, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusUpToDate, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusNumber, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusAll, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareRTP, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareUpToDate, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareNumber, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareAll, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallName, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallRTP, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallNumber, "Text", "");
-            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallAll, "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceInetSecuritySettings ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceUserAccountStatus ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusRTP ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusUpToDate ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusNumber ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntivirusAll ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareRTP ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareUpToDate ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareNumber ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceAntispywareAll ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallName ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallRTP ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallNumber ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxSecurityComplianceFirewallAll ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
             // GroupBox Network Health
-            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingNetTaffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingNetTaffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalNetTaffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthNetAvailLevel24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgNetResponseTime24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingWebTraffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingWebTraffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalWebTraffic24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebRequestSize24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebResponseSize24Hours, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours, "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthNetAvailLevel24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgNetResponseTime24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebRequestSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebResponseSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
-            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingNetTaffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingNetTaffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalNetTaffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthNetAvailLevel7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgNetResponseTime7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingWebTraffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingWebTraffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalWebTraffic7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebRequestSize7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebResponseSize7Days, "Text", "");
-            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio7Days, "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessNetConnectionRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthNetAvailLevel7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgNetResponseTime7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthIncomingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthOutgoingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthTotalWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgIncomingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgOutgoingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebRequestSize7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthAvgWebResponseSize7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxNetworkHealthSuccessHTTPRequestRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
-            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalNetTaffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalNetTaffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthNetAvailLevel24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthNetAvailLevel24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthNetAvailLevel7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthNetAvailLevel7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgNetResponseTime24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgNetResponseTime24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgNetResponseTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgNetResponseTime7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalWebTraffic7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebRequestSize24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebRequestSize24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebRequestSize7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebRequestSize7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebResponseSize24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebResponseSize24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebResponseSize7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebResponseSize7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio7Days, "ShowControl", (Int16)3);
-            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days, "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalNetTaffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalNetTaffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessNetConnectionRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessNetConnectionRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthNetAvailLevel24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthNetAvailLevel24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthNetAvailLevel7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthNetAvailLevel7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgNetResponseTime24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgNetResponseTime24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgNetResponseTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgNetResponseTime7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthIncomingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthIncomingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthOutgoingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthOutgoingWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthTotalWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthTotalWebTraffic7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgIncomingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgIncomingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgOutgoingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebRequestSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebRequestSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebRequestSize7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebRequestSize7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebResponseSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebResponseSize24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthAvgWebResponseSize7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthAvgWebResponseSize7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageOKNetworkHealthSuccessHTTPRequestRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _env.ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days ?? throw new InvalidOperationException("Reference not set:"), "ShowControl", (Int16)3);
 
             // GroupBox L1-Checkliste
 
-            _.SETm1a0(this, _env.TextBoxL1FreeSpace, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1OSUpToDate, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Browser, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Collaboration, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Antivirus, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Antivirus2, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Antivirus3, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Defender, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1BootLogon2, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1BootLogon3, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1CPU24, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1CPU7, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Speicher24, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Speicher7, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Bluescreen24, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1Bluescrren7, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1HardReset24, "Text", "");
-            _.SETm1a0(this, _env.TextBoxL1HardReset7, "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1FreeSpace ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1OSUpToDate ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Browser ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Collaboration ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Antivirus ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Antivirus2 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Antivirus3 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Defender ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1BootLogon2 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1BootLogon3 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1CPU24 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1CPU7 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Speicher24 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Speicher7 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Bluescreen24 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1Bluescrren7 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1HardReset24 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
+            _.SETm1a0(this, _env.TextBoxL1HardReset7 ?? throw new InvalidOperationException("Reference not set:"), "Text", "");
 
             // --- GroupBoxGeneralInfo
 
-            nexthinkBaseURL = _.CONCAT(_.CALLm1argp(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
+            nexthinkBaseURL = _.CONCAT(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
             nexthinkQuery = "&platform=windows&query=(select (name last_ip_address group_name last_logged_on_user os_version_and_architecture device_manufacturer number_of_cpus cpu_model number_of_cores logical_cpu_number cpu_frequency total_ram number_of_graphical_cards graphical_card_ram last_system_boot last_logon_time bios_serial_number device_model ) (from device (where device (eq name (string %1))) ))&format=xml";
 
             colorWarning = "#F20012";
             colorCheck = "#1B709F";
 
-            hostname = _.VAL(_.CALLm1v5(this, _env.hlobj, "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            hostname = _.VAL(_.CALLm1v5(this, _env.hlobj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             if (_.IF(_.EQ(_.NullableSTR(hostname), "")))
             {
-                _.CALLm1v1(this, _env.model, "MsgBox", "Der Computer hat keinen Hostnamen.");
+                _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", "Der Computer hat keinen Hostnamen.");
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
             }
@@ -383,30 +383,30 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCallTime, "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralCallTime ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)));
             });
 
             _.HANDLEERROR(errOn, () => {
                 xmlhttp = _.OBJ(_.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v2(this, xmlhttp, "setOption", (Int16)2, (Int16)13056);
+                _.CALLm1v2(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "setOption", (Int16)2, (Int16)13056);
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1argp(this, xmlhttp, "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v0(this, xmlhttp, "send");
+                _.CALLm1v0(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "send");
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model, "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
+                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model, "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR, "HelpContext")));
+                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -421,20 +421,20 @@ namespace TranslatedProgram
                 xmlDoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, xmlDoc, "async", "false");
+                _.SETm1a0(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "async", "false");
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v1(this, xmlDoc, "load", _.CALLm1v0(this, xmlhttp, "responseXML"));
+                _.CALLm1v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "load", _.CALLm1v0(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "responseXML"));
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model, "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model, "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR, "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR, "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR, "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR, "HelpContext")));
+                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -450,7 +450,7 @@ namespace TranslatedProgram
             });
             IEnumerator enumerationContent = null;
             _.HANDLEERROR(errOn, () => {
-                enumerationContent = _.ENUMERABLE(_.CALLm1v1(this, xmlDoc, "SelectNodes", "//table/header/*")).GetEnumerator();
+                enumerationContent = _.ENUMERABLE(_.CALLm1v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "SelectNodes", "//table/header/*")).GetEnumerator();
             });
             while (true)
             {
@@ -461,10 +461,10 @@ namespace TranslatedProgram
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {
-                    curnode = _.OBJ(_.CALLm2v1(this, xmlDoc, "documentElement", "selectSingleNode", _.CONCAT("//table/body/r/c", i)));
+                    curnode = _.OBJ(_.CALLm2v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "documentElement", "selectSingleNode", _.CONCAT("//table/body/r/c", i)));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v2(this, dict, "Add", _.CALLm1v0(this, n, "Text"), _.CALLm1v0(this, curnode, "Text"));
+                    _.CALLm1v2(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", _.CALLm1v0(this, n ?? throw new InvalidOperationException("Reference not set:n"), "Text"), _.CALLm1v0(this, curnode ?? throw new InvalidOperationException("Reference not set:curnode"), "Text"));
                 });
                 _.HANDLEERROR(errOn, () => {
                     i = _.ADD(i, (Int16)1);
@@ -474,10 +474,10 @@ namespace TranslatedProgram
             }
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR, "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model, "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:"), "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -488,59 +488,59 @@ namespace TranslatedProgram
             //fill textboxes
             //LabelNName.Text = dict.key("name")
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralHostName, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "name")));
+                _.SETm1a0(this, _env.TextBoxGeneralHostName ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastIP, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "last_ip_address")));
+                _.SETm1a0(this, _env.TextBoxGeneralLastIP ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_ip_address")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "device_manufacturer")));
+                _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "device_manufacturer")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "device_model")));
+                _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "device_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralOS, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "os_version_and_architecture")));
+                _.SETm1a0(this, _env.TextBoxGeneralOS ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "os_version_and_architecture")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralGroupName, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "group_name")));
+                _.SETm1a0(this, _env.TextBoxGeneralGroupName ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "group_name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime, "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict, "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastLogon, "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict, "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralDeviceType, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "last_logged_on_user")));
+                _.SETm1a0(this, _env.TextBoxGeneralDeviceType ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logged_on_user")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "bios_serial_number")));
+                _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "bios_serial_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCPUModel, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "cpu_model")));
+                _.SETm1a0(this, _env.TextBoxGeneralCPUModel ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "cpu_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "number_of_cpus")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_cpus")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "logical_cpu_number")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "logical_cpu_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "number_of_cores")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_cores")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCPUFreq, "Text", _.CONCAT(_.CALLm1v1(this, dict, "Item", "cpu_frequency"), " MHz"));
+                _.SETm1a0(this, _env.TextBoxGeneralCPUFreq ?? throw new InvalidOperationException("Reference not set:"), "Text", _.CONCAT(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "cpu_frequency"), " MHz"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM, "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict, "Item", "total_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "total_ram"))));
             });
 
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards, "Text", _.VAL(_.CALLm1v1(this, dict, "Item", "number_of_graphical_cards")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_graphical_cards")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM, "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict, "Item", "graphical_card_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM ?? throw new InvalidOperationException("Reference not set:"), "Text", _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "graphical_card_ram"))));
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

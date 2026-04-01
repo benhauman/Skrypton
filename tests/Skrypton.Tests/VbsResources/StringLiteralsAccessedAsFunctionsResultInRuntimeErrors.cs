@@ -1,0 +1,1 @@
+            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'[string: \"1\"]' is called like a function"))));

@@ -132,12 +132,12 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Get populated read-only Booking Requirement data From GetSharedObject, then translate into a local copy we can edit
             // (since some methods in here try to mess about with properties on it)
-            objBookingRequirement = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetSharedObject", "BookingRequirement"));
-            objBookingRequirement = _.OBJ(_.CALLm1argp(this, _outer, "GetEditableBookingRequirement", _.ARGS.Ref(objBookingRequirement, v => { objBookingRequirement = v; })));
+            objBookingRequirement = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetSharedObject", "BookingRequirement"));
+            objBookingRequirement = _.OBJ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetEditableBookingRequirement", _.ARGS.Ref(objBookingRequirement, v => { objBookingRequirement = v; })));
 
-            dStart = _.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate"));
-            iNights = _.VAL(_.CALLm1v0(this, objBookingRequirement, "Nights"));
-            intProdKey = _.VAL(_.CALLm1v0(this, objBookingRequirement, "Product"));
+            dStart = _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "VisitDate"));
+            iNights = _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Nights"));
+            intProdKey = _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Product"));
 
             // Open form and prepare to wrap content in "staySelection" container
             if (_.IF(_outer.IsExternalBooking))
@@ -149,14 +149,14 @@ namespace TranslatedProgram
                 intBookingType = _.VAL(_outer.BOOKING_Local);
             }
 
-            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v2 => { pO = v2; }).Ref(intProdKey, v3 => { intProdKey = v3; }).Ref(objRenderSettings, v4 => { objRenderSettings = v4; }).Ref(intBookingType, v5 => { intBookingType = v5; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
+            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderBookingInfoForm", _.ARGS.Ref(pO, v2 => { pO = v2; }).Ref(intProdKey, v3 => { intProdKey = v3; }).Ref(objRenderSettings, v4 => { objRenderSettings = v4; }).Ref(intBookingType, v5 => { intBookingType = v5; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
 
-            _.CALLm1v1(this, pO, "Write", "<div class=\"staySelection\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"staySelection\">");
 
             // Try to pull requirement info from Request
             iStayNum = (Int16)1;
             iThisReqmnt = (Int16)0;
-            var enumerationContent = _.ENUMERABLE(_.CALLm1v0(this, _outer.Request, "Form")).GetEnumerator();
+            var enumerationContent = _.ENUMERABLE(_.CALLm1v0(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), "Form")).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent.MoveNext())
@@ -179,12 +179,12 @@ namespace TranslatedProgram
                         iLinkedUnitKey = (Int16)0;
                     }
 
-                    iUnitQty = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request, _.ARGS.Ref(Item, v6 => { Item = v6; }))));
-                    iUnitMinOccupancy = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("minoccu_", strTemp)))));
-                    iUnitMaxCapacity = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("maxcap_", strTemp)))));
+                    iUnitQty = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Ref(Item, v6 => { Item = v6; }))));
+                    iUnitMinOccupancy = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.CONCAT("minoccu_", strTemp)))));
+                    iUnitMaxCapacity = _.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.CONCAT("maxcap_", strTemp)))));
 
-                    strUnitName = _.VAL(_.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("name_", strTemp))));
-                    strAvailClassId = _.VAL(_.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("availclass_", strTemp))));
+                    strUnitName = _.VAL(_.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.CONCAT("name_", strTemp))));
+                    strAvailClassId = _.VAL(_.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.CONCAT("availclass_", strTemp))));
                     if (_.IF(_.GT(_.NullableNUM(iUnitQty), (Int16)0)))
                     {
                         var loopEnd = _.NUM(iUnitQty);
@@ -194,12 +194,12 @@ namespace TranslatedProgram
                             for (i = loopStart; _.StrictLTE(i, loopEnd); i = _.ADD(i, (Int16)1))
                             {
                                 iThisReqmnt = _.ADD(iThisReqmnt, (Int16)1);
-                                _.CALLm1argp(this, _outer, "BookingUI_RenderNewReq_AvailCal", _.ARGS.Ref(intBookingType, v7 => { intBookingType = v7; }).Ref(iUnitKey, v8 => { iUnitKey = v8; }).Ref(strUnitName, v9 => { strUnitName = v9; }).Ref(iUnitMinOccupancy, v10 => { iUnitMinOccupancy = v10; }).Ref(iUnitMaxCapacity, v11 => { iUnitMaxCapacity = v11; }).Ref(strAvailClassId, v12 => { strAvailClassId = v12; }).Ref(iStayNum, v13 => { iStayNum = v13; }).Ref(iThisReqmnt, v14 => { iThisReqmnt = v14; }).Ref(pO, v15 => { pO = v15; }));
+                                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderNewReq_AvailCal", _.ARGS.Ref(intBookingType, v7 => { intBookingType = v7; }).Ref(iUnitKey, v8 => { iUnitKey = v8; }).Ref(strUnitName, v9 => { strUnitName = v9; }).Ref(iUnitMinOccupancy, v10 => { iUnitMinOccupancy = v10; }).Ref(iUnitMaxCapacity, v11 => { iUnitMaxCapacity = v11; }).Ref(strAvailClassId, v12 => { strAvailClassId = v12; }).Ref(iStayNum, v13 => { iStayNum = v13; }).Ref(iThisReqmnt, v14 => { iThisReqmnt = v14; }).Ref(pO, v15 => { pO = v15; }));
                             }
                         }
                         if (_.IF(_.GT(_.NullableNUM(iLinkedUnitKey), (Int16)0)))
                         {
-                            _.CALLm1v1(this, pO, "write", _.CONCAT("<input type=\"hidden\" name=\"linked_", iUnitKey, "\"  value=\"", iLinkedUnitKey, "\" />"));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", _.CONCAT("<input type=\"hidden\" name=\"linked_", iUnitKey, "\"  value=\"", iLinkedUnitKey, "\" />"));
                         }
                     }
                 }
@@ -208,31 +208,31 @@ namespace TranslatedProgram
             // If successfully received requirement data, complete form - otherwise render error
             if (_.IF(_.GT(_.NullableNUM(iThisReqmnt), (Int16)0)))
             {
-                _.CALLm1v1(this, pO, "write", _.CONCAT("<input type=\"hidden\" name=\"availcal\" value=\"", _.CALLm0argp(this, _outer.Request, _.ARGS.Val("availcal")), "\" />"));
-                _.CALLm1v1(this, pO, "write", _.CONCAT("<input type=\"hidden\" name=\"_nStays\" value=\"", iStayNum, "\" />"));
-                _.CALLm1v1(this, pO, "write", _.CONCAT("<input type=\"hidden\" name=\"_nReqs\" value=\"", iThisReqmnt, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", _.CONCAT("<input type=\"hidden\" name=\"availcal\" value=\"", _.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("availcal")), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", _.CONCAT("<input type=\"hidden\" name=\"_nStays\" value=\"", iStayNum, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", _.CONCAT("<input type=\"hidden\" name=\"_nReqs\" value=\"", iThisReqmnt, "\" />"));
 
                 // Close pnStayReqmntRslts div
-                _.CALLm1v1(this, pO, "write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", "</div>");
 
-                _.CALLm1argp(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v16 => { iStayNum = v16; }).Ref(pO, v17 => { pO = v17; }).Val(false));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v16 => { iStayNum = v16; }).Ref(pO, v17 => { pO = v17; }).Val(false));
 
                 // Close StayCandidateItem div
-                _.CALLm1v1(this, pO, "write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "write", "</div>");
             }
             else
             {
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/nounitsselectederror", "<h2>Error</h2><p class=\"error\">No units selected. Please click on the back button to return to the previous page and select the units you wish to book.</p>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/nounitsselectederror", "<h2>Error</h2><p class=\"error\">No units selected. Please click on the back button to return to the previous page and select the units you wish to book.</p>"));
             }
 
             // Close "staySelection" div and form
-            _.CALLm1v1(this, pO, "Write", "</div>");
-            _.CALLm1v1(this, pO, "Write", "</form>");
-            if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing")))
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</form>");
+            if (_.IF(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ChildPricing")))
             {
-                _.CALLm1v1(this, pO, "Write", "<script type=\"text/javascript\">");
-                _.CALLm1v1(this, pO, "Write", "NewMind.ETWP.Booking.UnitSelectionChildPricingGuests.Init();");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("</", "script>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<script type=\"text/javascript\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "NewMind.ETWP.Booking.UnitSelectionChildPricingGuests.Init();");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</", "script>"));
             }
             return BookingUI_StayMain_AvailCal_retVal;
         }
@@ -252,10 +252,10 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SETm1a0(this, objRenderSettings, "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))));
+            _.SETm1a0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement"))));
 
-            _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, objRenderSettings, "IsVBPollingEnabled"));
-            _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, objRenderSettings, "RenderAsCalendar"));
+            _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "IsVBPollingEnabled"));
+            _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "RenderAsCalendar"));
             if (_.IF(_.IS(objData, VBScriptConstants.Nothing)))
             {
                 // If couldn't retrieve product, report no availability - this will happen if the
@@ -263,20 +263,20 @@ namespace TranslatedProgram
                 object objRenderSettings_vref = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref, v18 => { objRenderSettings_vref = v18; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref, v18 => { objRenderSettings_vref = v18; }));
                 }
                 finally { objRenderSettings = objRenderSettings_vref; }
                 return BookingUI_StayMain_retVal;
             }
 
-            if (_.IF(_.CALLm1v0(this, objRenderSettings, "LegacyRender")))
+            if (_.IF(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "LegacyRender")))
             {
                 // Acco or Ticketing w/out VB Polling Enabled: Results from single Supplier (either
                 // local OR FrontDesk for Acco, only local applies for Tickets)
                 object objData_vref = objData, objRenderSettings_vref2 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_StayMain_Legacy", _.ARGS.Ref(objData_vref, v19 => { objData_vref = v19; }).Ref(objRenderSettings_vref2, v20 => { objRenderSettings_vref2 = v20; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayMain_Legacy", _.ARGS.Ref(objData_vref, v19 => { objData_vref = v19; }).Ref(objRenderSettings_vref2, v20 => { objRenderSettings_vref2 = v20; }));
                 }
                 finally { objData = objData_vref; objRenderSettings = objRenderSettings_vref2; }
             }
@@ -288,7 +288,7 @@ namespace TranslatedProgram
                 object objData_vref2 = objData, objRenderSettings_vref3 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_StayMain_Polling", _.ARGS.Ref(objData_vref2, v21 => { objData_vref2 = v21; }).Ref(objRenderSettings_vref3, v22 => { objRenderSettings_vref3 = v22; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayMain_Polling", _.ARGS.Ref(objData_vref2, v21 => { objData_vref2 = v21; }).Ref(objRenderSettings_vref3, v22 => { objRenderSettings_vref3 = v22; }));
                 }
                 finally { objData = objData_vref2; objRenderSettings = objRenderSettings_vref3; }
             }
@@ -335,18 +335,18 @@ namespace TranslatedProgram
             if (_.IF(_.OR(_.EQ(intBookingType, _outer.BOOKING_Local), _.EQ(intBookingType, _outer.BOOKING_Eviivo))))
             {
                 strNextStage = "checkout";
-                strPostUrl = _.CONCAT(_.CALLm1v1(this, _outer, "GetPostUrl", true), "/", strNextStage);
+                strPostUrl = _.CONCAT(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetPostUrl", true), "/", strNextStage);
             }
             else if (_.IF(_.EQ(intBookingType, _outer.BOOKING_Redirect)))
             {
                 //strNextStage = "redirect"
                 strNextStage = "checkout";
                 //This should stay as "checkout" until 1.4 is updated to recognise "redirect" stage
-                strPostUrl = _.VAL(_.CALLm2v1(this, _outer.Page, "PageInfo", "GetUrlFromPageID", "EXTBOOKPROMPT"));
+                strPostUrl = _.VAL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PageInfo", "GetUrlFromPageID", "EXTBOOKPROMPT"));
                 if (_.IF(_.ISNULL(strPostUrl)))
                 {
-                    _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "RenderBookingInfoForm: Unable to locate page EXTBOOKPROMPT, default to current page - is this correct behaviour??");
-                    strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page, "URL", "Real"));
+                    _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "RenderBookingInfoForm: Unable to locate page EXTBOOKPROMPT, default to current page - is this correct behaviour??");
+                    strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "URL", "Real"));
                 }
             }
             else if (_.IF(_.EQ(intBookingType, _outer.BOOKING_PollingRedirect)))
@@ -355,50 +355,50 @@ namespace TranslatedProgram
                 // the values were getting set incorrectly. SupplierEviivoName seems like the most appropriate option since it will be a text-friendly string
                 // value and so not have dots or spaces or whatever (and so be good for use in a URL).
                 strNextStage = "pollingexit";
-                strPostUrl = _.CONCAT(_.CALLm1v1(this, _outer, "GetPostUrl", false), "/pollingexit/", strSupplierEviivoName);
+                strPostUrl = _.CONCAT(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetPostUrl", false), "/pollingexit/", strSupplierEviivoName);
             }
             else
             {
                 _.RAISEERROR(VBScriptConstants.vbObjectError, "ETWP.BookingUnitSelection", _.CONCAT("RenderBookingInfoForm: Invalid intBookingType value (", intBookingType, ")"));
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<form action=\"", strPostUrl, "\" "));
-            if (_.IF(_.AND(_.NOT(_outer.IsVBPollingEnabled), _.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "FlexibleRange")), (Int16)0))))
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<form action=\"", strPostUrl, "\" "));
+            if (_.IF(_.AND(_.NOT(_outer.IsVBPollingEnabled), _.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "FlexibleRange")), (Int16)0))))
             {
                 // Can't have ids when VB Polling enabled as we might be rendering out multiple of these forms.
                 // 2008-11-10 DWR: This is similarly the case for fuzzy searching. I don't we have any working
                 // Enterprise fuzzy-searching sites, so don't need to worry about breaking styling by removing
                 // this id in this case.
-                _.CALLm1v1(this, pO, "Write", "id=\"FrmUnitOptions\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "id=\"FrmUnitOptions\" ");
             }
 
             //#MJ's Reasoning -	In order for us to jump to unit selection in a tab it must have a name, however only the first form should have this
             if (_.IF(_.NOT(_outer.bFormRendered)))
             {
-                _.CALLm1v1(this, pO, "Write", "name=\"FrmUnitOptions\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "name=\"FrmUnitOptions\" ");
                 _outer.bFormRendered = true;
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("class=\"", strFormClass, "\" method=\"post\">"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("class=\"", strFormClass, "\" method=\"post\">"));
 
             // Open container around common form values
-            _.CALLm1v1(this, pO, "Write", "<div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div>");
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"stage\" value=\"", strNextStage, "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"stage\" value=\"", strNextStage, "\" />"));
 
             // Need to override market source if viewing site via widget
-            if (_.IF(_.CALLm1v0(this, _outer.Page, "WidgetView")))
+            if (_.IF(_.CALLm1v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "WidgetView")))
             {
                 if (_.IF(_.EQ(intBookingType, _outer.BOOKING_Redirect)))
                 {
                     // External bookings visit a preliminary redirect page first, which we want to be decluttered when in a widget
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"widget_marketsource\" value=\"", _.CALLm1v0(this, _outer.Page, "WidgetMarketSource"), "\" />"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"widget_marketsource\" value=\"", _.CALLm1v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "WidgetMarketSource"), "\" />"));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm1v0(this, _outer.Page, "WidgetMarketSource"), "\" />"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm1v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "WidgetMarketSource"), "\" />"));
                 }
                 //this hidden field is to tell the checkout that weve come from a widget, and not a failed checkout validation
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"widget\" value=\"1\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"widget\" value=\"1\" />");
             }
 
             // None of this applies to VB Polling, even if it IS an external booking - we go to an
@@ -408,37 +408,37 @@ namespace TranslatedProgram
                 // NB: In "Conference Booking" mode (where OfferKey <> 0), we need to set the "channel" and "msource"
                 //     values to different values (for msource, if there is no "ConfBookingMarketSourceID" set, it will
                 //     fall back to using the site's main "MarketSourceID" source)
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"checkoutstage\" value=\"1\" />");
-                if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer")), (Int16)0)))
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"checkoutstage\" value=\"1\" />");
+                if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Offer")), (Int16)0)))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"channel\" value=\"", _.CALLm1v0(this, objRenderSettings, "Channel"), "\" />"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"channel\" value=\"", _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "Channel"), "\" />"));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"channel\" value=\"", _.CALLm1v0(this, objRenderSettings, "ConfBookingChannel"), "\" />"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"channel\" value=\"", _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "ConfBookingChannel"), "\" />"));
                 }
-                if (_.IF(_.NOT(_.CALLm1v0(this, _outer.Page, "WidgetView"))))
+                if (_.IF(_.NOT(_.CALLm1v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "WidgetView"))))
                 {
                     //Neeed to set market source override if redirecting to external site unless set above due to widgetview
-                    if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer")), (Int16)0), _.EQ(_.NullableSTR(_.CALLm2v1(this, _outer.Page, "Site", "Params", "ConfBookingMarketSourceID")), ""))))
+                    if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Offer")), (Int16)0), _.EQ(_.NullableSTR(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "ConfBookingMarketSourceID")), ""))))
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "MarketSourceID"), "\" />"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "MarketSourceID"), "\" />"));
                     }
                     else
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "ConfBookingMarketSourceID"), "\" />"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"msource\" value=\"", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "ConfBookingMarketSourceID"), "\" />"));
                     }
                 }
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"bookchannel\" value=\"", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChannelID"), "\" />"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"reposturl\" value=\"", _outer.strExtBookUrl, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"bookchannel\" value=\"", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ChannelID"), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"reposturl\" value=\"", _outer.strExtBookUrl, "\" />"));
                 // 2009-09-21 DWR: New field to pass in so that the receiving site recognises booking as having
                 // come from another site (so it can update appropriate Provider Stats)
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"ForcedExternalBooking\" value=\"1\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"ForcedExternalBooking\" value=\"1\" />");
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"product\" value=\"", intProdKey, "\" />"));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"isostartdate\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "ISODate", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), "\" />"));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"nights\" value=\"", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights"), "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"product\" value=\"", intProdKey, "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"isostartdate\" value=\"", _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ISODate", _.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")), "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"nights\" value=\"", _.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Nights"), "\" />"));
 
             // We need all this when using VB Polling, even it it is an external booking, as we aren't
             // going to leave the site yet (there's an interim stage)
@@ -448,12 +448,12 @@ namespace TranslatedProgram
                 // customer is going for a "Conference Booking" discount product.
                 // 2008-11-07 DWR: This used to referer to a "strRewriteUrl" value that was never defined.
                 // So we'll pass in blank. Pretty sure it's not used anyway.
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"preUrl\" value=\"\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"preUrl\" value=\"\" />");
                 // 2008-11-07 DWR: If we've got non-precise results from a fuzzy search, we'll render this
                 // form out and use the actual StartDate / NumNights combination that the fuzzy results
                 // offered. So we just pass these to the checkout stage, and set "fuzzy" to zero.
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"fuzzy\" value=\"0\" />");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"lng\" value=\"", _.CALLm2v0(this, _outer.Page, "Language", "LanguageCultureKey"), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"fuzzy\" value=\"0\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"lng\" value=\"", _.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Language", "LanguageCultureKey"), "\" />"));
 
                 // NB: OfferKey is required for products in the "Conference Booking" functionality as
                 // it lets the checkout object know that we should be looking for the product on the
@@ -461,12 +461,12 @@ namespace TranslatedProgram
                 // ever needed to work with the ExternalBooking, we would need to pass out the
                 // conference channel in the IsExternalBooking section above, but since this is
                 // only being supported by the internal Newmind booking, it's not an issue.
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"offer\" value=\"", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer"), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"offer\" value=\"", _.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Offer"), "\" />"));
 
                 // Pass in the current convert-to-currency value (this will have been held in the session
                 // up to this point, but we may be about to leave the site when this form is posted, so
                 // will need to send the value as a hidden input instead of relying on session)
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"CurrencyConvertTo\" value=\"", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "GetCurrencyCodeOverride", _.CALLm2v0(this, _outer.Page, "Site", "LCCurrencyKey")), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"CurrencyConvertTo\" value=\"", _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Money", "GetCurrencyCodeOverride", _.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "LCCurrencyKey")), "\" />"));
             }
 
             // If we're dealing with a VB Polling External Supplier, write out the Supplier id, name and
@@ -474,21 +474,21 @@ namespace TranslatedProgram
             // deep-linking situations)
             if (_.IF(_.EQ(intBookingType, _outer.BOOKING_PollingRedirect)))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierId\" value=\"", strSupplierId, "\" />"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierName\" value=\"", strSupplierName, "\" />"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierLogo\" value=\"", strSupplierLogo, "\" />"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierEviivoName\" value=\"", strSupplierEviivoName, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierId\" value=\"", strSupplierId, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierName\" value=\"", strSupplierName, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierLogo\" value=\"", strSupplierLogo, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierEviivoName\" value=\"", strSupplierEviivoName, "\" />"));
 
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"EviivoSearchIndustryClassification\" value=\"");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"EviivoSearchIndustryClassification\" value=\"");
                 if (_.IF(_.ISNUMERIC(intEviivoSearchIndustryClassification)))
                 {
-                    _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(intEviivoSearchIndustryClassification, v23 => { intEviivoSearchIndustryClassification = v23; }));
+                    _.CALLm1argp(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.ARGS.Ref(intEviivoSearchIndustryClassification, v23 => { intEviivoSearchIndustryClassification = v23; }));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", "0");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "0");
                 }
-                _.CALLm1v1(this, pO, "Write", "\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "\" />");
 
                 if (_.IF(_.ISNULL(strSupplierDeepLinkQuality)))
                 {
@@ -502,14 +502,14 @@ namespace TranslatedProgram
                 {
                     strSupplierDeepLinkQuality = "-1";
                 }
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierDeepLinkQuality\" value=\"", strSupplierDeepLinkQuality, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"SupplierDeepLinkQuality\" value=\"", strSupplierDeepLinkQuality, "\" />"));
             }
 
             // Append in the "Nominal Units" from Request collection or objUnitReqDictFromBookUrl (ie. "roomReq_1", "roomReq_2", etc..)
             //#MJ TODO need to call the new function
-            _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _outer, "GenerateRequirementFormData", _.CALLm1v0(this, objRenderSettings, "BookingRequirement")));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GenerateRequirementFormData", _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement")));
             // Close common form value container
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
             return RenderBookingInfoForm_retVal;
         }
@@ -525,14 +525,14 @@ namespace TranslatedProgram
             object objAccoSearchRequirement_vref = objAccoSearchRequirement;
             try
             {
-                dictKeyValues = _.OBJ(_.CALLm3argp(this, _outer.Page, "Functions", "Booking", "GenerateRequirementKeyValueData", _.ARGS.Ref(objAccoSearchRequirement_vref, v24 => { objAccoSearchRequirement_vref = v24; })));
+                dictKeyValues = _.OBJ(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Booking", "GenerateRequirementKeyValueData", _.ARGS.Ref(objAccoSearchRequirement_vref, v24 => { objAccoSearchRequirement_vref = v24; })));
             }
             finally { objAccoSearchRequirement = objAccoSearchRequirement_vref; }
             //create an array to hold our formatted data in which is the same size of the dictionary
-            aryFormattedData = _.NEWARRAY(new object[] { _.SUBT(_.CALLm1v0(this, dictKeyValues, "Count"), (Int16)1) });
+            aryFormattedData = _.NEWARRAY(new object[] { _.SUBT(_.CALLm1v0(this, dictKeyValues ?? throw new InvalidOperationException("Reference not set:dictKeyValues"), "Count"), (Int16)1) });
             //spin through our output array and add the formatted items in the format {key}={value}
             i = (Int16)0;
-            var enumerationContent2 = _.ENUMERABLE(_.CALLm1v0(this, dictKeyValues, "Keys")).GetEnumerator();
+            var enumerationContent2 = _.ENUMERABLE(_.CALLm1v0(this, dictKeyValues ?? throw new InvalidOperationException("Reference not set:dictKeyValues"), "Keys")).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
@@ -545,7 +545,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SETm0a1(this, aryFormattedData, i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues, "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf));
+                    _.SETm0a1(this, aryFormattedData ?? throw new InvalidOperationException("Reference not set:aryFormattedData"), i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues ?? throw new InvalidOperationException("Reference not set:dictKeyValues"), "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf));
                 }
                 i = _.ADD(i, (Int16)1);
             }
@@ -561,22 +561,22 @@ namespace TranslatedProgram
 
             if (_.IF(bSecure))
             {
-                strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page, "Site", "SecureHostName"));
+                strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "SecureHostName"));
             }
             else
             {
-                strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page, "URL", "FullHostName"));
+                strPostUrl = _.VAL(_.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "URL", "FullHostName"));
             }
             while (_.IF(_.EQ(_.NullableSTR(_.RIGHT(strPostUrl, (Int16)1)), "/")))
             {
                 strPostUrl = _.VAL(_.LEFT(strPostUrl, _.SUBT(_.LEN(strPostUrl), (Int16)1)));
             }
 
-            strUrl = _.VAL(_.CALLm2v1(this, _outer.Page, "PageInfo", "GetUrlFromPageID", "BOOKONLINE"));
+            strUrl = _.VAL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PageInfo", "GetUrlFromPageID", "BOOKONLINE"));
             if (_.IF(_.ISNULL(strUrl)))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "GetPostUrl: Unable to locate page BOOKONLINE, default to current page - is this correct behaviour??");
-                strUrl = _.VAL(_.CALLm2v0(this, _outer.Page, "URL", "Real"));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "GetPostUrl: Unable to locate page BOOKONLINE, default to current page - is this correct behaviour??");
+                strUrl = _.VAL(_.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "URL", "Real"));
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(_.LEFT(strUrl, (Int16)1)), "/")))
@@ -615,15 +615,15 @@ namespace TranslatedProgram
 
             if (_.IF(_.GT(_.NullableNUM(aiThisReqmnt), (Int16)1)))
             {
-                _.CALLm1v1(this, pO, "Write", "</div></div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div></div>");
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnStayReqmnt\">", VBScriptConstants.vbCrLf));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnStayReqmntTtl\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnStayReqmnt\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnStayReqmntTtl\">", VBScriptConstants.vbCrLf));
             object asAvailClassId_vref = asAvailClassId;
             try
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<div Class=\"pnStayReqmntRoom\">Room ", aiThisReqmnt, " - ", strUnitName, _.CALLm1argp(this, _outer, "BookingUI_AvailClassIcon", _.ARGS.Ref(asAvailClassId_vref, v28 => { asAvailClassId_vref = v28; })), " <br/></div>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div Class=\"pnStayReqmntRoom\">Room ", aiThisReqmnt, " - ", strUnitName, _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", _.ARGS.Ref(asAvailClassId_vref, v28 => { asAvailClassId_vref = v28; })), " <br/></div>"));
             }
             finally { asAvailClassId = asAvailClassId_vref; }
 
@@ -632,37 +632,37 @@ namespace TranslatedProgram
                 iUnitMinOccupancy = (Int16)1;
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div Class=\"pnStayReqmntGuests\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div Class=\"pnStayReqmntGuests\">", VBScriptConstants.vbCrLf));
             if (_.IF(_.EQ(iUnitMaxCapacity, iUnitMinOccupancy)))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("For ", iUnitMaxCapacity, " guests <input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iUnitMaxCapacity, "\"/>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("For ", iUnitMaxCapacity, " guests <input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iUnitMaxCapacity, "\"/>"));
             }
             else
             {
-                strGuestsFor = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/for", "for"));
+                strGuestsFor = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/for", "for"));
                 //alas child pricing is different
-                if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing")))
+                if (_.IF(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ChildPricing")))
                 {
 
-                    strAdultsTitle = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/adults/selecttitle", "Please specify the number of adults in this room."));
-                    strAdults = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/adults/adult(s)", "adult(s)"));
+                    strAdultsTitle = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/adults/selecttitle", "Please specify the number of adults in this room."));
+                    strAdults = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/adults/adult(s)", "adult(s)"));
 
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(strGuestsFor, " <select class=\"adults\" name=\"roomReq_", aiThisReqmnt, "_adults\" title=\"", strAdultsTitle, "\"> "));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(strGuestsFor, " <select class=\"adults\" name=\"roomReq_", aiThisReqmnt, "_adults\" title=\"", strAdultsTitle, "\"> "));
                     var loopEnd2 = _.NUM(iUnitMaxCapacity);
                     var loopStart2 = _.NUM(iUnitMinOccupancy, loopEnd2, (Int16)1);
                     if (_.StrictLTE(loopStart2, loopEnd2))
                     {
                         for (iGuest = loopStart2; _.StrictLTE(iGuest, loopEnd2); iGuest = _.ADD(iGuest, (Int16)1))
                         {
-                            _.CALLm1v1(this, pO, "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
                         }
                     }
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("</select> ", strAdults));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</select> ", strAdults));
 
-                    strChildrenTitle = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/children/selecttitle", "Please specify the number of children in this room."));
-                    strChildren = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/children/children", "children"));
-                    strGuestsAnd = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "and", "and"));
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(" ", strGuestsAnd, " <select class=\"children\" name=\"roomReq_", aiThisReqmnt, "_children\" title=\"", strChildrenTitle, "\"> "));
+                    strChildrenTitle = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/children/selecttitle", "Please specify the number of children in this room."));
+                    strChildren = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/children/children", "children"));
+                    strGuestsAnd = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "and", "and"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(" ", strGuestsAnd, " <select class=\"children\" name=\"roomReq_", aiThisReqmnt, "_children\" title=\"", strChildrenTitle, "\"> "));
 
                     var loopEnd3 = _.NUM(_.SUBT(iUnitMaxCapacity, (Int16)1));
                     var loopStart3 = _.NUM((Int16)0, loopEnd3, (Int16)1);
@@ -670,13 +670,13 @@ namespace TranslatedProgram
                     {
                         for (iGuest = loopStart3; _.StrictLTE(iGuest, loopEnd3); iGuest = _.ADD(iGuest, (Int16)1))
                         {
-                            _.CALLm1v1(this, pO, "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
                         }
                     }
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("</select> ", strChildren));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</select> ", strChildren));
 
-                    _.CALLm1v1(this, pO, "WriteLine", "<span class=\"label childrenageslabel\">Child Ages</span>");
-                    _.CALLm1v1(this, pO, "WriteLine", "<span class=\"field childrenagesfield\">");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", "<span class=\"label childrenageslabel\">Child Ages</span>");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", "<span class=\"field childrenagesfield\">");
 
                     var loopEnd4 = _.NUM(_.SUBT(iUnitMaxCapacity, (Int16)1));
                     var loopStart4 = _.NUM((Int16)0, loopEnd4, (Int16)1);
@@ -684,48 +684,48 @@ namespace TranslatedProgram
                     {
                         for (iCount = loopStart4; _.StrictLTE(iCount, loopEnd4); iCount = _.ADD(iCount, (Int16)1))
                         {
-                            _.CALLm1v1(this, pO, "WriteLine", "<span class=\"childageWrapper\">");
-                            _.CALLm1v1(this, pO, "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "<span class=\"label childagelabel\">Child Age ", _.ADD(iCount, (Int16)1), "</span>"));
-                            _.CALLm1v1(this, pO, "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "<span class=\"field childagefield\">"));
-                            _.CALLm1v1(this, pO, "Write", _.CONCAT("<select class=\"\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iCount, "\">"));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", "<span class=\"childageWrapper\">");
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "<span class=\"label childagelabel\">Child Age ", _.ADD(iCount, (Int16)1), "</span>"));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "<span class=\"field childagefield\">"));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<select class=\"\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iCount, "\">"));
                             for (iGuest = (Int16)0; _.StrictLTE(iGuest, 18); iGuest = _.ADD(iGuest, (Int16)1))
                             {
-                                _.CALLm1v1(this, pO, "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
+                                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
                             }
-                            _.CALLm1v1(this, pO, "Write", "</select> ");
-                            _.CALLm1v1(this, pO, "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "</span>"));
-                            _.CALLm1v1(this, pO, "WriteLine", "</span>");
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</select> ");
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", _.CONCAT(VBScriptConstants.vbTab, "</span>"));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", "</span>");
                         }
                     }
-                    _.CALLm1v1(this, pO, "WriteLine", "</span>");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "WriteLine", "</span>");
                 }
                 else
                 {
-                    strGuestsTitle = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/selecttitle", "Please specify the number of guests in this room."));
-                    strGuests = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guestrequirement/guest(s)", "guest(s)"));
+                    strGuestsTitle = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/selecttitle", "Please specify the number of guests in this room."));
+                    strGuests = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guestrequirement/guest(s)", "guest(s)"));
 
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(strGuestsFor, " <select name=\"roomReq_", aiThisReqmnt, "\" title=\"", strGuestsTitle, "\"> "));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(strGuestsFor, " <select name=\"roomReq_", aiThisReqmnt, "\" title=\"", strGuestsTitle, "\"> "));
                     var loopEnd5 = _.NUM(iUnitMaxCapacity);
                     var loopStart5 = _.NUM(iUnitMinOccupancy, loopEnd5, (Int16)1);
                     if (_.StrictLTE(loopStart5, loopEnd5))
                     {
                         for (iGuest = loopStart5; _.StrictLTE(iGuest, loopEnd5); iGuest = _.ADD(iGuest, (Int16)1))
                         {
-                            _.CALLm1v1(this, pO, "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<option value=\"", iGuest, "\">", iGuest, "</option> "));
                         }
                     }
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("</select> ", strGuests));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</select> ", strGuests));
                 }
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
 
             if (_.IF(_.EQ(_.NullableSTR(intBookingType), "ticketing")))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"unit_", iUnitKey, "\"  value=\"", aiThisReqmnt, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"unit_", iUnitKey, "\"  value=\"", aiThisReqmnt, "\" />"));
             }
             else
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"unit_", aiStayNum, "_", aiThisReqmnt, "\"  value=\"", iUnitKey, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"unit_", aiStayNum, "_", aiThisReqmnt, "\"  value=\"", iUnitKey, "\" />"));
             }
             return BookingUI_RenderNewReq_AvailCal_retVal;
         }
@@ -743,8 +743,8 @@ namespace TranslatedProgram
             strClassMonth = "MonthWrapper";
             if (_.IF(_.NOT(bStarted)))
             {
-                _.CALLm1v1(this, sbCalendars, "AppendLine", "<div class=\"CalendarsWrapper\">");
-                _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<div class=\"instruction\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/instruction", "Please select an available stay from the calendars below. Clicking on a highlighted start day for a stay will show the stay details such as the units available, price, etc."), "</div>"));
+                _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<div class=\"CalendarsWrapper\">");
+                _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<div class=\"instruction\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/instruction", "Please select an available stay from the calendars below. Clicking on a highlighted start day for a stay will show the stay details such as the units available, price, etc."), "</div>"));
                 strClassMonth = _.CONCAT(strClassMonth, " currentmonth");
             }
             else
@@ -752,10 +752,10 @@ namespace TranslatedProgram
                 strClassMonth = _.CONCAT(strClassMonth, " nextmonth");
             }
 
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, objDictAvaiStays, "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), "Count")), (Int16)0)))
             {
-                aryAvailStaysKeys = _.VAL(_.CALLm1v0(this, objDictAvaiStays, "Keys"));
-                dStart1 = _.REPLACE(_.CALLm0argp(this, aryAvailStaysKeys, _.ARGS.Val((Int16)0)), "sd_", "");
+                aryAvailStaysKeys = _.VAL(_.CALLm1v0(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), "Keys"));
+                dStart1 = _.REPLACE(_.CALLm0argp(this, aryAvailStaysKeys ?? throw new InvalidOperationException("Reference not set:aryAvailStaysKeys"), _.ARGS.Val((Int16)0)), "sd_", "");
                 _.ERASE(aryAvailStaysKeys, v30 => { aryAvailStaysKeys = v30; });
             }
             else
@@ -766,7 +766,7 @@ namespace TranslatedProgram
             object sbCalendars_vref = sbCalendars, objDictAvaiStays_vref = objDictAvaiStays;
             try
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(sbCalendars_vref, v31 => { sbCalendars_vref = v31; }).Ref(dStart1, v32 => { dStart1 = v32; }).Ref(strClassMonth, v33 => { strClassMonth = v33; }).Ref(objDictAvaiStays_vref, v34 => { objDictAvaiStays_vref = v34; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(sbCalendars_vref, v31 => { sbCalendars_vref = v31; }).Ref(dStart1, v32 => { dStart1 = v32; }).Ref(strClassMonth, v33 => { strClassMonth = v33; }).Ref(objDictAvaiStays_vref, v34 => { objDictAvaiStays_vref = v34; }));
             }
             finally { sbCalendars = sbCalendars_vref; objDictAvaiStays = objDictAvaiStays_vref; }
 
@@ -775,12 +775,12 @@ namespace TranslatedProgram
             _outer.g_iNumberOfCalendarsRendered = _.ADD(_outer.g_iNumberOfCalendarsRendered, (Int16)1);
 
             //Check if we have stays left and render then as another calendar
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, objDictAvaiStays, "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), "Count")), (Int16)0)))
             {
                 object sbCalendars_vref2 = sbCalendars, objDictAvaiStays_vref2 = objDictAvaiStays;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(sbCalendars_vref2, v35 => { sbCalendars_vref2 = v35; }).Ref(objDictAvaiStays_vref2, v36 => { objDictAvaiStays_vref2 = v36; }).Val(true));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCal", _.ARGS.Ref(sbCalendars_vref2, v35 => { sbCalendars_vref2 = v35; }).Ref(objDictAvaiStays_vref2, v36 => { objDictAvaiStays_vref2 = v36; }).Val(true));
                 }
                 finally { sbCalendars = sbCalendars_vref2; objDictAvaiStays = objDictAvaiStays_vref2; }
             }
@@ -790,16 +790,16 @@ namespace TranslatedProgram
                 object sbCalendars_vref3 = sbCalendars;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Ref(dStart1, v37 => { dStart1 = v37; }).Ref(sbCalendars_vref3, v38 => { sbCalendars_vref3 = v38; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalLinks", _.ARGS.Ref(dStart1, v37 => { dStart1 = v37; }).Ref(sbCalendars_vref3, v38 => { sbCalendars_vref3 = v38; }));
                 }
                 finally { sbCalendars = sbCalendars_vref3; }
                 object sbCalendars_vref4 = sbCalendars;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(sbCalendars_vref4, v39 => { sbCalendars_vref4 = v39; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalKey", _.ARGS.Ref(sbCalendars_vref4, v39 => { sbCalendars_vref4 = v39; }));
                 }
                 finally { sbCalendars = sbCalendars_vref4; }
-                _.CALLm1v1(this, sbCalendars, "AppendLine", "</div>");
+                _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</div>");
 
             }
 
@@ -811,7 +811,7 @@ namespace TranslatedProgram
             object sbCalendars_vref5 = sbCalendars;
             try
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(sbCalendars_vref5, v40 => { sbCalendars_vref5 = v40; }).Ref(dFirstDayOfMonth, v41 => { dFirstDayOfMonth = v41; }).Ref(strWrapperClass, v42 => { strWrapperClass = v42; }).Val(VBScriptConstants.Nothing));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderCalendarMonthWithAvailability", _.ARGS.Ref(sbCalendars_vref5, v40 => { sbCalendars_vref5 = v40; }).Ref(dFirstDayOfMonth, v41 => { dFirstDayOfMonth = v41; }).Ref(strWrapperClass, v42 => { strWrapperClass = v42; }).Val(VBScriptConstants.Nothing));
             }
             finally { sbCalendars = sbCalendars_vref5; }
             return BookingUI_RenderCalendarMonth_retVal;
@@ -850,17 +850,17 @@ namespace TranslatedProgram
             iWeekDayCalStart = _.MOD(_.ADD(iWeekStartDay, (Int16)1), (Int16)7);
             iWeekDayCalEnd = _.MOD(iWeekStartDay, (Int16)7);
 
-            dCalStart = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v43 => { dFirstDayOfMonth = v43; })));
-            dCalEnd = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v44 => { dFirstDayOfMonth = v44; })));
-            strThisMonthYear = _.CONCAT(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetMonthNameAbbr", _.MONTH(dCalStart)), " ", _.YEAR(dCalStart));
-            strTableSummary = _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/availabilitycalendarfor", "Availability calendar for"), " ", strThisMonthYear);
+            dCalStart = _.VAL(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v43 => { dFirstDayOfMonth = v43; })));
+            dCalEnd = _.VAL(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetLastDateOfMonth", _.ARGS.Ref(dFirstDayOfMonth, v44 => { dFirstDayOfMonth = v44; })));
+            strThisMonthYear = _.CONCAT(_.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "GetMonthNameAbbr", _.MONTH(dCalStart)), " ", _.YEAR(dCalStart));
+            strTableSummary = _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/availabilitycalendarfor", "Availability calendar for"), " ", strThisMonthYear);
 
-            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<div id=\"Cal_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v45 => { dCalStart = v45; })), "\" class=\"", strWrapperClass, "\">"));
-            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<table id=\"Tbl_", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v47 => { dCalStart = v47; })), "\" class=\"availabilityCalendar\" summary=\"", strTableSummary, "\" >"));
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "<thead>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "<tr>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<th colspan=\"8\">", strThisMonthYear, "</th>"));
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</tr>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<div id=\"Cal_", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v45 => { dCalStart = v45; })), "\" class=\"", strWrapperClass, "\">"));
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<table id=\"Tbl_", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStart, v47 => { dCalStart = v47; })), "\" class=\"availabilityCalendar\" summary=\"", strTableSummary, "\" >"));
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<thead>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<tr>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<th colspan=\"8\">", strThisMonthYear, "</th>"));
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</tr>");
 
             strHeaderCellClass = "";
             var loopEnd6 = _.NUM(_.ADD(iWeekStartDay, (Int16)6));
@@ -873,13 +873,13 @@ namespace TranslatedProgram
                     {
                         strHeaderCellClass = " class=\"we\"";
                     }
-                    _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<th", strHeaderCellClass, ">", _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "GetDayNameAbbr", _.WEEKDAY(_.MOD(_.ADD(i, (Int16)1), (Int16)7))), "</th>"));
+                    _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<th", strHeaderCellClass, ">", _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "GetDayNameAbbr", _.WEEKDAY(_.MOD(_.ADD(i, (Int16)1), (Int16)7))), "</th>"));
                 }
             }
 
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</tr>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</thead>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "<tbody>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</tr>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</thead>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<tbody>");
 
             iCellCount = (Int16)0;
             bFirstCell = true;
@@ -897,7 +897,7 @@ namespace TranslatedProgram
 
                     if (_.IF(bFirstCell))
                     {
-                        iPrePadding = _.VAL(_.DATEDIFF("d", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfWeek", _.ARGS.Val(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dCalStart, v49 => { dCalStart = v49; }))).Ref(iWeekDayCalStart, v50 => { iWeekDayCalStart = v50; })), dCalStart));
+                        iPrePadding = _.VAL(_.DATEDIFF("d", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetFirstDateOfWeek", _.ARGS.Val(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetFirstDateOfMonth", _.ARGS.Ref(dCalStart, v49 => { dCalStart = v49; }))).Ref(iWeekDayCalStart, v50 => { iWeekDayCalStart = v50; })), dCalStart));
                         if (_.IF(_.GT(_.NullableNUM(iPrePadding), (Int16)0)))
                         {
                             var loopEnd8 = _.NUM(iPrePadding);
@@ -906,7 +906,7 @@ namespace TranslatedProgram
                             {
                                 for (j = loopStart8; _.StrictLTE(j, loopEnd8); j = _.ADD(j, (Int16)1))
                                 {
-                                    _.CALLm1v1(this, sbCalendars, "AppendLine", "<td></td>");
+                                    _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<td></td>");
                                     iCellCount = _.ADD(iCellCount, (Int16)1);
                                 }
                             }
@@ -919,14 +919,14 @@ namespace TranslatedProgram
 
                     if (_.IF(_.NOT(_.IS(objDictAvailStays, VBScriptConstants.Nothing))))
                     {
-                        if (_.IF(_.CALLm1v1(this, objDictAvailStays, "Exists", _.CONCAT("sd_", dDate))))
+                        if (_.IF(_.CALLm1v1(this, objDictAvailStays ?? throw new InvalidOperationException("Reference not set:objDictAvailStays"), "Exists", _.CONCAT("sd_", dDate))))
                         {
                             bStartNewStay = true;
                             //we expect value in the format [stayNo]_[indicative]
-                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvailStays, _.ARGS.Val(_.CONCAT("sd_", dDate))), "_");
-                            strStayNumber = _.VAL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)0)));
-                            bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)1)));
-                            _.CALLm1v1(this, objDictAvailStays, "Remove", _.CONCAT("sd_", dDate));
+                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvailStays ?? throw new InvalidOperationException("Reference not set:objDictAvailStays"), _.ARGS.Val(_.CONCAT("sd_", dDate))), "_");
+                            strStayNumber = _.VAL(_.CALLm0argp(this, aryStay ?? throw new InvalidOperationException("Reference not set:aryStay"), _.ARGS.Val((Int16)0)));
+                            bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay ?? throw new InvalidOperationException("Reference not set:aryStay"), _.ARGS.Val((Int16)1)));
+                            _.CALLm1v1(this, objDictAvailStays ?? throw new InvalidOperationException("Reference not set:objDictAvailStays"), "Remove", _.CONCAT("sd_", dDate));
                             _.ERASE(aryStay, v51 => { aryStay = v51; });
                         }
                     }
@@ -948,14 +948,14 @@ namespace TranslatedProgram
                             if (_.IF(bStayIndicative))
                             {
                                 strDayCellClass = "i";
-                                strAvailType = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/unconfirmedavailability", "Unconfirmed Availability"));
-                                strIndicativeIcon = _.CONCAT("<img src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/icons/indicative", "/images/icon_indicative.gif"), "\" alt=\"", strAvailType, "\" class=\"icon\"/>");
+                                strAvailType = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/unconfirmedavailability", "Unconfirmed Availability"));
+                                strIndicativeIcon = _.CONCAT("<img src=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/icons/indicative", "/images/icon_indicative.gif"), "\" alt=\"", strAvailType, "\" class=\"icon\"/>");
                             }
                             else
                             {
                                 strDayCellClass = "a";
-                                strAvailType = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/confirmedavailability", "Confirmed Availability"));
-                                strIndicativeIcon = _.CONCAT("<img src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/icons/allocated", "/images/icon_allocated.gif"), "\" alt=\"", strAvailType, "\" class=\"icon\"/>");
+                                strAvailType = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/confirmedavailability", "Confirmed Availability"));
+                                strIndicativeIcon = _.CONCAT("<img src=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/icons/allocated", "/images/icon_allocated.gif"), "\" alt=\"", strAvailType, "\" class=\"icon\"/>");
                             }
 
                             strDisplayText = _.CONCAT("<a href=\"#stay_", strStayNumber, "\" class=\"calavailstay\" id=\"stay_", strStayNumber, "\">", _.DAY(dDate), "</a>", strIndicativeIcon);
@@ -969,7 +969,7 @@ namespace TranslatedProgram
                         strDayCellClass = _.CONCAT(strDayCellClass, " we");
                     }
 
-                    _.CALLm1v1(this, sbCalendars, "AppendLine", _.CONCAT("<td class=\"", strDayCellClass, "\"><div>", strDisplayText, "</div></td>"));
+                    _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", _.CONCAT("<td class=\"", strDayCellClass, "\"><div>", strDisplayText, "</div></td>"));
 
                     iCellCount = _.ADD(iCellCount, (Int16)1);
 
@@ -981,7 +981,7 @@ namespace TranslatedProgram
                     // This is for when the last day of the month is not the last day of the week and empty cells are put in place to fill the calendar days
                     if (_.IF(bLastCell))
                     {
-                        iPostPadding = _.VAL(_.DATEDIFF("d", dCalEnd, _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfWeek", _.ARGS.Ref(dCalEnd, v52 => { dCalEnd = v52; }).Ref(iWeekDayCalEnd, v53 => { iWeekDayCalEnd = v53; }))));
+                        iPostPadding = _.VAL(_.DATEDIFF("d", dCalEnd, _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetLastDateOfWeek", _.ARGS.Ref(dCalEnd, v52 => { dCalEnd = v52; }).Ref(iWeekDayCalEnd, v53 => { iWeekDayCalEnd = v53; }))));
                         if (_.IF(_.AND(_.GT(_.NullableNUM(iPostPadding), (Int16)0), _.LT(_.NullableNUM(iPostPadding), (Int16)7))))
                         {
                             var loopEnd9 = _.NUM(iPostPadding);
@@ -990,7 +990,7 @@ namespace TranslatedProgram
                             {
                                 for (k = loopStart9; _.StrictLTE(k, loopEnd9); k = _.ADD(k, (Int16)1))
                                 {
-                                    _.CALLm1v1(this, sbCalendars, "AppendLine", "<td></td>");
+                                    _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "<td></td>");
                                     iCellCount = _.ADD(iCellCount, (Int16)1);
                                 }
                             }
@@ -1001,16 +1001,16 @@ namespace TranslatedProgram
 
                     if (_.IF(_.EQ(_.NullableNUM(_.MOD(iCellCount, (Int16)7)), (Int16)0)))
                     {
-                        _.CALLm1v1(this, sbCalendars, "AppendLine", "</tr>");
+                        _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</tr>");
                     }
 
                     dDate = _.VAL(_.DATEADD("d", 1, dDate));
                 }
             }
 
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</tbody>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</table>");
-            _.CALLm1v1(this, sbCalendars, "AppendLine", "</div>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</tbody>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</table>");
+            _.CALLm1v1(this, sbCalendars ?? throw new InvalidOperationException("Reference not set:sbCalendars"), "AppendLine", "</div>");
 
             return BookingUI_RenderCalendarMonthWithAvailability_retVal;
         }
@@ -1018,10 +1018,10 @@ namespace TranslatedProgram
         {
             object BookingUI_RenderAvailCalKey_retVal = null;
             object strCalKey = null;
-            strCalKey = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/calkey", ""));
+            strCalKey = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/calkey", ""));
             if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(strCalKey)), "")))
             {
-                _.CALLm1v1(this, sb, "AppendLine", _.CONCAT("<div class=\"CalKey\">", strCalKey, "</div>"));
+                _.CALLm1v1(this, sb ?? throw new InvalidOperationException("Reference not set:sb"), "AppendLine", _.CONCAT("<div class=\"CalKey\">", strCalKey, "</div>"));
             }
             return BookingUI_RenderAvailCalKey_retVal;
         }
@@ -1050,16 +1050,16 @@ namespace TranslatedProgram
                 iNegativeMonthAdjustment = (Int16)(-1);
             }
 
-            dCalStartPrev = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iNegativeMonthAdjustment, dStart)));
-            strTitlePrev = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/previousmonth", "&lt;&lt; Previous Month"));
+            dCalStartPrev = _.VAL(_.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iNegativeMonthAdjustment, dStart)));
+            strTitlePrev = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/previousmonth", "&lt;&lt; Previous Month"));
 
-            dCalStartNext = _.VAL(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iPositiveMonthAdjustment, dStart)));
-            strTitleNext = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/availcalendar/nextmonth", "Next Month &gt;&gt;"));
+            dCalStartNext = _.VAL(_.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetFirstDateOfMonth", _.DATEADD("m", iPositiveMonthAdjustment, dStart)));
+            strTitleNext = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/availcalendar/nextmonth", "Next Month &gt;&gt;"));
 
-            _.CALLm1v1(this, sb, "AppendLine", "<div class=\"CalNavLinks\">");
-            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartPrev, v54 => { dCalStartPrev = v54; }).Ref(strTitlePrev, v55 => { strTitlePrev = v55; }).Val("prev")));
-            _.CALLm1v1(this, sb, "AppendLine", _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartNext, v56 => { dCalStartNext = v56; }).Ref(strTitleNext, v57 => { strTitleNext = v57; }).Val("next")));
-            _.CALLm1v1(this, sb, "AppendLine", "</div>");
+            _.CALLm1v1(this, sb ?? throw new InvalidOperationException("Reference not set:sb"), "AppendLine", "<div class=\"CalNavLinks\">");
+            _.CALLm1v1(this, sb ?? throw new InvalidOperationException("Reference not set:sb"), "AppendLine", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartPrev, v54 => { dCalStartPrev = v54; }).Ref(strTitlePrev, v55 => { strTitlePrev = v55; }).Val("prev")));
+            _.CALLm1v1(this, sb ?? throw new InvalidOperationException("Reference not set:sb"), "AppendLine", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalLink", _.ARGS.Ref(dCalStartNext, v56 => { dCalStartNext = v56; }).Ref(strTitleNext, v57 => { strTitleNext = v57; }).Val("next")));
+            _.CALLm1v1(this, sb ?? throw new InvalidOperationException("Reference not set:sb"), "AppendLine", "</div>");
 
             return BookingUI_RenderAvailCalLinks_retVal;
         }
@@ -1073,7 +1073,7 @@ namespace TranslatedProgram
 
             bFound = false;
 
-            var enumerationContent3 = _.ENUMERABLE(_.CALLm1v0(this, _outer.Request, "QueryString")).GetEnumerator();
+            var enumerationContent3 = _.ENUMERABLE(_.CALLm1v0(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), "QueryString")).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
@@ -1085,16 +1085,16 @@ namespace TranslatedProgram
                     object dCalStartDate_vref = dCalStartDate;
                     try
                     {
-                        sValue = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStartDate_vref, v58 => { dCalStartDate_vref = v58; })));
+                        sValue = _.VAL(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStartDate_vref, v58 => { dCalStartDate_vref = v58; })));
                     }
                     finally { dCalStartDate = dCalStartDate_vref; }
                     bFound = true;
                 }
                 else
                 {
-                    sValue = _.VAL(_.CALLm1argp(this, _outer.Request, "QueryString", _.ARGS.Ref(itm, v59 => { itm = v59; })));
+                    sValue = _.VAL(_.CALLm1argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), "QueryString", _.ARGS.Ref(itm, v59 => { itm = v59; })));
                 }
-                strLink = _.CONCAT(strLink, "&amp;", itm, "=", _.CALLm1argp(this, _outer.Server, "UrlEncode", _.ARGS.Ref(sValue, v60 => { sValue = v60; })));
+                strLink = _.CONCAT(strLink, "&amp;", itm, "=", _.CALLm1argp(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "UrlEncode", _.ARGS.Ref(sValue, v60 => { sValue = v60; })));
             }
 
             if (_.IF(_.NOT(bFound)))
@@ -1102,7 +1102,7 @@ namespace TranslatedProgram
                 object dCalStartDate_vref2 = dCalStartDate;
                 try
                 {
-                    strLink = _.CONCAT(strLink, "&amp;isostartdate=", _.CALLm1v1(this, _outer.Server, "UrlEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStartDate_vref2, v62 => { dCalStartDate_vref2 = v62; }))));
+                    strLink = _.CONCAT(strLink, "&amp;isostartdate=", _.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "UrlEncode", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ISODate", _.ARGS.Ref(dCalStartDate_vref2, v62 => { dCalStartDate_vref2 = v62; }))));
                 }
                 finally { dCalStartDate = dCalStartDate_vref2; }
             }
@@ -1158,33 +1158,33 @@ namespace TranslatedProgram
             object ReqDictTemp = null;
             object BookingType = null; /* Undeclared in source */
 
-            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings, "OutputWriter"));
-            dStartNight = _.VAL(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate"));
-            iNights = _.VAL(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights"));
+            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "OutputWriter"));
+            dStartNight = _.VAL(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate"));
+            iNights = _.VAL(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Nights"));
 
             // This is new, VB Polling approach (only supports accommodation, but handles results from
             // multiple providers)
-            objAvail = _.OBJ(_.CALLm1v0(this, objData, "Availability"));
-            intProdKey = _.VAL(_.CALLm1v0(this, objData, "Product_Key"));
-            bIsTeleBooking = _.VAL(_.CALLm1v0(this, objData, "IsOnTeleBookingChannel"));
+            objAvail = _.OBJ(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Availability"));
+            intProdKey = _.VAL(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Product_Key"));
+            bIsTeleBooking = _.VAL(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "IsOnTeleBookingChannel"));
 
-            objDictAvaiStays = _.OBJ(_.CALLm1v1(this, _outer.Server, "CreateObject", "Scripting.Dictionary"));
+            objDictAvaiStays = _.OBJ(_.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "CreateObject", "Scripting.Dictionary"));
 
             // Quick situation assertion
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, objRenderSettings, "BookingType")), "accommodation")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingType")), "accommodation")))
             {
                 _.RAISEERROR(VBScriptConstants.vbObjectError, "ETWP.BookingUnitSelection", _.CONCAT("BookingUI_StayMain_Polling: BookingType not supported (\"", BookingType, "\")"));
             }
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Offer")), (Int16)0)))
             {
-                _.RAISEERROR(VBScriptConstants.vbObjectError, "ETWP.BookingUnitSelection", _.CONCAT("BookingUI_StayMain_Polling: Not supported with Conference Bookings (OfferKey = ", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Offer"), ")"));
+                _.RAISEERROR(VBScriptConstants.vbObjectError, "ETWP.BookingUnitSelection", _.CONCAT("BookingUI_StayMain_Polling: Not supported with Conference Bookings (OfferKey = ", _.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Offer"), ")"));
             }
 
             // Grab hold of the data for the stay(s) - ensure we've got some availability
-            objFuzzyStayOptions = _.OBJ(_.CALLm1argp(this, objAvail, "GetUniqueFuzzyCombinations", _.ARGS.ForceBrackets()));
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objFuzzyStayOptions, "Count")), (Int16)0)))
+            objFuzzyStayOptions = _.OBJ(_.CALLm1argp(this, objAvail ?? throw new InvalidOperationException("Reference not set:objAvail"), "GetUniqueFuzzyCombinations", _.ARGS.ForceBrackets()));
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "Count")), (Int16)0)))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "objAvail.GetUniqueFuzzyCombinations reported zero stay options");
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "objAvail.GetUniqueFuzzyCombinations reported zero stay options");
                 bNoResults = true;
             }
             else
@@ -1193,31 +1193,31 @@ namespace TranslatedProgram
                 // data returned that doesn't have avail data
 
                 bNoResults = false;
-                var loopEnd10 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions, "Count"), (Int16)1));
+                var loopEnd10 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "Count"), (Int16)1));
                 var loopStart10 = _.NUM((Int16)0, loopEnd10, (Int16)1);
                 if (_.StrictLTE(loopStart10, loopEnd10))
                 {
                     for (intIndex = loopStart10; _.StrictLTE(intIndex, loopEnd10); intIndex = _.ADD(intIndex, (Int16)1))
                     {
-                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v64 => { intIndex = v64; })));
-                        objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail, "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay, "StartDate"), _.CALLm1v0(this, objFuzzyStay, "Nights")));
-                        if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objSuppliersForStay, "Count")), (Int16)0)))
+                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "GetItem", _.ARGS.Ref(intIndex, v64 => { intIndex = v64; })));
+                        objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail ?? throw new InvalidOperationException("Reference not set:objAvail"), "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
+                        if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "Count")), (Int16)0)))
                         {
-                            _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", _.CONCAT("Stay (", _.CALLm1v0(this, objFuzzyStay, "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay, "Nights"), ") reported zero suppliers"));
+                            _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", _.CONCAT("Stay (", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), ") reported zero suppliers"));
                             bNoResults = true;
                         }
                         else
                         {
-                            var loopEnd11 = _.NUM(_.SUBT(_.CALLm1v0(this, objSuppliersForStay, "Count"), (Int16)1));
+                            var loopEnd11 = _.NUM(_.SUBT(_.CALLm1v0(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "Count"), (Int16)1));
                             var loopStart11 = _.NUM((Int16)0, loopEnd11, (Int16)1);
                             if (_.StrictLTE(loopStart11, loopEnd11))
                             {
                                 for (intIndexSupplier = loopStart11; _.StrictLTE(intIndexSupplier, loopEnd11); intIndexSupplier = _.ADD(intIndexSupplier, (Int16)1))
                                 {
-                                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v65 => { intIndexSupplier = v65; })));
-                                    if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objSupplier, "Units", "Count")), (Int16)0)))
+                                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "GetItem", _.ARGS.Ref(intIndexSupplier, v65 => { intIndexSupplier = v65; })));
+                                    if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Units", "Count")), (Int16)0)))
                                     {
-                                        _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", _.CONCAT("Supplier ", _.CALLm1v0(this, objSupplier, "Name"), " for Stay (", _.CALLm1v0(this, objFuzzyStay, "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay, "Nights"), ") reported zero units"));
+                                        _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", _.CONCAT("Supplier ", _.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Name"), " for Stay (", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), ") reported zero units"));
                                         bNoResults = true;
                                     }
                                 }
@@ -1235,7 +1235,7 @@ namespace TranslatedProgram
                 object objRenderSettings_vref4 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref4, v66 => { objRenderSettings_vref4 = v66; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref4, v66 => { objRenderSettings_vref4 = v66; }));
                 }
                 finally { objRenderSettings = objRenderSettings_vref4; }
                 _outer.bProdHasAvail = false; // This is exposed through the WSC's public property "ProdHasAvail"
@@ -1249,34 +1249,34 @@ namespace TranslatedProgram
             if (_.IF(_outer.bRenderAsCalendar))
             {
 
-                var loopEnd12 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions, "Count"), (Int16)1));
+                var loopEnd12 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "Count"), (Int16)1));
                 var loopStart12 = _.NUM((Int16)0, loopEnd12, (Int16)1);
                 if (_.StrictLTE(loopStart12, loopEnd12))
                 {
                     for (intIndex = loopStart12; _.StrictLTE(intIndex, loopEnd12); intIndex = _.ADD(intIndex, (Int16)1))
                     {
-                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v67 => { intIndex = v67; })));
+                        objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "GetItem", _.ARGS.Ref(intIndex, v67 => { intIndex = v67; })));
 
-                        strAvailStayKey = _.CONCAT("sd_", _.CALLm1v0(this, objFuzzyStay, "StartDate"));
-                        if (_.IF(_.CALLm1argp(this, objDictAvaiStays, "Exists", _.ARGS.Ref(strAvailStayKey, v68 => { strAvailStayKey = v68; }))))
+                        strAvailStayKey = _.CONCAT("sd_", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"));
+                        if (_.IF(_.CALLm1argp(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), "Exists", _.ARGS.Ref(strAvailStayKey, v68 => { strAvailStayKey = v68; }))))
                         {
 
                             // We expect value in the format [stayNo]_[indicative]
-                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvaiStays, _.ARGS.Ref(strAvailStayKey, v69 => { strAvailStayKey = v69; })), "_");
-                            sStayNo = _.VAL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)0)));
+                            aryStay = _.SPLIT(_.CALLm0argp(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), _.ARGS.Ref(strAvailStayKey, v69 => { strAvailStayKey = v69; })), "_");
+                            sStayNo = _.VAL(_.CALLm0argp(this, aryStay ?? throw new InvalidOperationException("Reference not set:aryStay"), _.ARGS.Val((Int16)0)));
                             sStayNo = _.CONCAT(sStayNo, "-", intIndex);
 
-                            bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay, _.ARGS.Val((Int16)1)));
-                            if (_.IF(_.AND(_.NOT(bStayIndicative), _.CALLm1v0(this, objFuzzyStay, "Indicative"))))
+                            bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay ?? throw new InvalidOperationException("Reference not set:aryStay"), _.ARGS.Val((Int16)1)));
+                            if (_.IF(_.AND(_.NOT(bStayIndicative), _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative"))))
                             {
-                                bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay, "Indicative"));
+                                bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative"));
                             }
-                            _.SETm0a1(this, objDictAvaiStays, strAvailStayKey, _.CONCAT(sStayNo, "_", bStayIndicative));
+                            _.SETm0a1(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), strAvailStayKey, _.CONCAT(sStayNo, "_", bStayIndicative));
                             _.ERASE(aryStay, v71 => { aryStay = v71; });
                         }
                         else
                         {
-                            _.CALLm1v2(this, objDictAvaiStays, "Add", _.CONCAT("sd_", _.CALLm1v0(this, objFuzzyStay, "StartDate")), _.CONCAT(_.ADD(intIndex, (Int16)1), "_", _.CALLm1v0(this, objFuzzyStay, "Indicative")));
+                            _.CALLm1v2(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), "Add", _.CONCAT("sd_", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.CONCAT(_.ADD(intIndex, (Int16)1), "_", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative")));
                         }
 
                     }
@@ -1286,7 +1286,7 @@ namespace TranslatedProgram
 
             bRenderedInitialStay = false;
             // - For unit selections: If we have a perfect match stay, don't bother with the fuzzy options
-            var loopEnd13 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions, "Count"), (Int16)1));
+            var loopEnd13 = _.NUM(_.SUBT(_.CALLm1v0(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "Count"), (Int16)1));
             var loopStart13 = _.NUM((Int16)0, loopEnd13, (Int16)1);
             if (_.StrictLTE(loopStart13, loopEnd13))
             {
@@ -1295,11 +1295,11 @@ namespace TranslatedProgram
                     // 2010-11-03 TB: Stay numbers are 1-based so add 1 to zero-based index
                     iStayNum = _.ADD(intIndex, (Int16)1);
 
-                    objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions, "GetItem", _.ARGS.Ref(intIndex, v72 => { intIndex = v72; })));
+                    objFuzzyStay = _.OBJ(_.CALLm1argp(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "GetItem", _.ARGS.Ref(intIndex, v72 => { intIndex = v72; })));
 
                     // 2010-01-29 DWR: Need to use DateValue here since dStartNight might be a string
                     // which will cause the comparison to fail when they represent the same date
-                    bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay, "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay, "Nights"), iNights));
+                    bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights));
 
                     // 2010-01-29 DWR: In cases where we have a precise match and we're not rendering a calendar
                     // then we want to just display that stay and get out! If we DON'T have a precise match and
@@ -1309,7 +1309,7 @@ namespace TranslatedProgram
                     // on the data being in the markup for it to swap around.
                     if (_.IF(_.OR(_outer.bRenderAsCalendar, _.NOT(bPreciseMatch))))
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"PollingFuzzySetWrapper\" id=\"stay_", iStayNum, "\">"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"PollingFuzzySetWrapper\" id=\"stay_", iStayNum, "\">"));
                     }
 
                     // we only render the first stay when initially loading the unitselection
@@ -1321,7 +1321,7 @@ namespace TranslatedProgram
                         object objRenderSettings_vref5 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "RenderStay", _.ARGS.Ref(objFuzzyStay, v73 => { objFuzzyStay = v73; }).Ref(objAvail, v74 => { objAvail = v74; }).Ref(iStayNum, v75 => { iStayNum = v75; }).Ref(objRenderSettings_vref5, v76 => { objRenderSettings_vref5 = v76; }).Ref(bIsTeleBooking, v77 => { bIsTeleBooking = v77; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Val(_.CALLm1v0(this, objData, "Units")));
+                            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderStay", _.ARGS.Ref(objFuzzyStay, v73 => { objFuzzyStay = v73; }).Ref(objAvail, v74 => { objAvail = v74; }).Ref(iStayNum, v75 => { iStayNum = v75; }).Ref(objRenderSettings_vref5, v76 => { objRenderSettings_vref5 = v76; }).Ref(bIsTeleBooking, v77 => { bIsTeleBooking = v77; }).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "bookingweb")).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "EviivoId")).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Units")));
                         }
                         finally { objRenderSettings = objRenderSettings_vref5; }
                     }
@@ -1335,7 +1335,7 @@ namespace TranslatedProgram
                     // 2010-01-29: See earlier comment about this..
                     if (_.IF(_.OR(_outer.bRenderAsCalendar, _.NOT(bPreciseMatch))))
                     {
-                        _.CALLm1v1(this, pO, "Write", "</div>");
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
                     }
 
                     // If these options were a perfect match, drop out
@@ -1352,39 +1352,39 @@ namespace TranslatedProgram
             if (_.IF(_outer.bRenderAsCalendar))
             {
 
-                ReqDictTemp = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "RequestDict"));
-                _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "AsyncAction", "unitselection");
-                _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "PartialRenderControlList", _.CALLm1v0(this, _outer.Context, "PageControlKey"));
-                _.CALLm1v2(this, ReqDictTemp, "ForceAdd", "Silent", "1");
-                _.CALLm1v1(this, ReqDictTemp, "Remove", "Debug");
-                _.CALLm1v1(this, ReqDictTemp, "Remove", "PartialRenderType");
-                _.CALLm1v1(this, ReqDictTemp, "Remove", "Trace");
+                ReqDictTemp = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "RequestDict"));
+                _.CALLm1v2(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "ForceAdd", "AsyncAction", "unitselection");
+                _.CALLm1v2(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "ForceAdd", "PartialRenderControlList", _.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "PageControlKey"));
+                _.CALLm1v2(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "ForceAdd", "Silent", "1");
+                _.CALLm1v1(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Remove", "Debug");
+                _.CALLm1v1(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Remove", "PartialRenderType");
+                _.CALLm1v1(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Remove", "Trace");
 
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - start");
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCal", _.ARGS.Ref(pO, v78 => { pO = v78; }).Ref(objDictAvaiStays, v79 => { objDictAvaiStays = v79; }).Val(false));
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - end");
-                _.CALLm1v1(this, pO, "Write", "<script type=\"text/javascript\">");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("NewMind.ETWP.ControlData[", _.CALLm1v0(this, _outer.Context, "PageControlKey"), "] = { "));
-                _.CALLm1v1(this, pO, "Write", "UnitSelPartialRenderLink: '");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsJSON"), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp, "Querystring"))));
-                _.CALLm1v1(this, pO, "Write", "'");
-                _.CALLm1v1(this, pO, "Write", " };");
-                _.CALLm1v1(this, pO, "Write", "NewMind.ETWP.Booking.InitUnitSel();");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("</", "script>"));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - start");
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCal", _.ARGS.Ref(pO, v78 => { pO = v78; }).Ref(objDictAvaiStays, v79 => { objDictAvaiStays = v79; }).Val(false));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", "BookingUI_StayMain_Polling: Render available stays as calendars - end");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<script type=\"text/javascript\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("NewMind.ETWP.ControlData[", _.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "PageControlKey"), "] = { "));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "UnitSelPartialRenderLink: '");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsJSON") ?? throw new InvalidOperationException("Reference not set:"), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Querystring"))));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "'");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " };");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "NewMind.ETWP.Booking.InitUnitSel();");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</", "script>"));
 
             }
 
             // Kick off the show / hide script for fuzzy result sets now that we've rendered out all
             // the content rather than waiting for page load - hopefully we can remove some of the
             // flicker that occurs otherwise
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<script type=\"text/javascript\">NewMind.ETWP.Booking.InitPollingUnitSel();</", "script>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<script type=\"text/javascript\">NewMind.ETWP.Booking.InitPollingUnitSel();</", "script>"));
 
             return BookingUI_StayMain_Polling_retVal;
         }
         public object RenderNotRequiredDateWarning(ref object pO)
         {
             object RenderNotRequiredDateWarning_retVal = null;
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<p class=\"fuzzyWarning\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/notrequireddates", "Sorry, we don't have any availability for the dates you requested. These are the nearest available dates for your room and duration requirements."), "</p>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<p class=\"fuzzyWarning\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/notrequireddates", "Sorry, we don't have any availability for the dates you requested. These are the nearest available dates for your room and duration requirements."), "</p>"));
             return RenderNotRequiredDateWarning_retVal;
         }
         public object RenderStay(ref object objFuzzyStay, ref object objAvail, ref object intIndex, ref object objRenderSettings, ref object bIsTeleBooking, object strProductBookingWebIfAny, object strEviivoIdIfAny, object objAllUnits)
@@ -1413,18 +1413,18 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SETm1a0(this, objRenderSettings, "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings, "BookingRequirement"))));
+            _.SETm1a0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetEditableBookingRequirement", _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement"))));
 
-            objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail, "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay, "StartDate"), _.CALLm1v0(this, objFuzzyStay, "Nights")));
+            objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail ?? throw new InvalidOperationException("Reference not set:objAvail"), "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
 
-            intProdKey = _.VAL(_.CALLm1v0(this, objRenderSettings, "ProductKey"));
-            dStartNight = _.VAL(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate"));
-            iNights = _.VAL(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights"));
-            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings, "OutputWriter"));
+            intProdKey = _.VAL(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "ProductKey"));
+            dStartNight = _.VAL(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate"));
+            iNights = _.VAL(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Nights"));
+            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "OutputWriter"));
 
             //just need to set these here as we may be coming in direct from partial render request
-            _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, objRenderSettings, "RenderAsCalendar"));
-            _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, objRenderSettings, "IsVBPollingEnabled"));
+            _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "RenderAsCalendar"));
+            _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "IsVBPollingEnabled"));
 
             // Loop through each supplier and render their units
             // - Suppliers will be ordered NewMind, FrontDesk, Other
@@ -1437,9 +1437,9 @@ namespace TranslatedProgram
             intExtSuppliersShown = (Int16)0;
             bRenderedStaySummary = false;
 
-            bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay, "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay, "Nights"), iNights));
+            bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights));
 
-            var loopEnd14 = _.NUM(_.SUBT(_.CALLm1v0(this, objSuppliersForStay, "Count"), (Int16)1));
+            var loopEnd14 = _.NUM(_.SUBT(_.CALLm1v0(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "Count"), (Int16)1));
             var loopStart14 = _.NUM((Int16)0, loopEnd14, (Int16)1);
             if (_.StrictLTE(loopStart14, loopEnd14))
             {
@@ -1447,15 +1447,15 @@ namespace TranslatedProgram
                 {
 
                     // Get basic supplier data - count FrontDesk as "Other" if ForceExternal enabled
-                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay, "GetItem", _.ARGS.Ref(intIndexSupplier, v80 => { intIndexSupplier = v80; })));
-                    if (_.IF(_.CALLm1v0(this, objSupplier, "IsLocal")))
+                    objSupplier = _.OBJ(_.CALLm1argp(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "GetItem", _.ARGS.Ref(intIndexSupplier, v80 => { intIndexSupplier = v80; })));
+                    if (_.IF(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsLocal")))
                     {
                         bStayHasLocalAvail = true;
                     }
-                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier, "IsExternal"), _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal"))));
+                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsExternal"), _.AND(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote"), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ForceExternal"))));
 
                     // Don't render FrontDesk if got local avail for this stay and not enabled ForceExternal
-                    bSkipSupplier = _.VAL(_.AND(bStayHasLocalAvail, _.AND(_.CALLm1v0(this, objSupplier, "IsRemote"), _.NOT(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal")))));
+                    bSkipSupplier = _.VAL(_.AND(bStayHasLocalAvail, _.AND(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote"), _.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ForceExternal")))));
                     if (_.IF(_.NOT(bSkipSupplier)))
                     {
 
@@ -1465,7 +1465,7 @@ namespace TranslatedProgram
                         {
                             if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                             {
-                                _.CALLm1argp(this, _outer, "BookingUI_StaySummary", _.ARGS.Ref(dStartNight, v81 => { dStartNight = v81; }).Ref(iNights, v82 => { iNights = v82; }).Val(_.CALLm1v0(this, objFuzzyStay, "StartDate")).Val(_.CALLm1v0(this, objFuzzyStay, "Nights")).Ref(pO, v83 => { pO = v83; }));
+                                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StaySummary", _.ARGS.Ref(dStartNight, v81 => { dStartNight = v81; }).Ref(iNights, v82 => { iNights = v82; }).Val(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")).Val(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")).Ref(pO, v83 => { pO = v83; }));
                             }
                             bRenderedStaySummary = true;
                         }
@@ -1481,10 +1481,10 @@ namespace TranslatedProgram
                         // form fields
                         if (_.IF(bExternalSupplier))
                         {
-                            strSupplierId = _.VAL(_.CALLm1v0(this, objSupplier, "ID"));
-                            strSupplierName = _.VAL(_.CALLm1v0(this, objSupplier, "DisplayName"));
-                            strSupplierQuality = _.VAL(_.CALLm1v0(this, objSupplier, "Quality"));
-                            strSupplierEviivoName = _.VAL(_.CALLm1v0(this, objSupplier, "Name"));
+                            strSupplierId = _.VAL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "ID"));
+                            strSupplierName = _.VAL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "DisplayName"));
+                            strSupplierQuality = _.VAL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Quality"));
+                            strSupplierEviivoName = _.VAL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Name"));
                         }
                         else
                         {
@@ -1495,24 +1495,24 @@ namespace TranslatedProgram
                         }
 
                         // Render the actual options (wrap in the standard form tag)
-                        if (_.IF(_.CALLm1v0(this, objSupplier, "IsLocal")))
+                        if (_.IF(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsLocal")))
                         {
                             if (_.IF(_.ISEMPTY(_outer.IsExternalBooking)))
                             {
-                                _.CALLm1argp(this, _outer, "InitExternalBookingSettings", _.ARGS.ForceBrackets());
+                                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "InitExternalBookingSettings", _.ARGS.ForceBrackets());
                             }
                             if (_.IF(_outer.IsExternalBooking))
                             {
                                 intBookingType = _.VAL(_outer.BOOKING_Redirect);
-                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v84 => { intProdKey = v84; })));
-                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v85 => { _outer.strProductEstateID = v85; })));
+                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS ?? throw new InvalidOperationException("Reference not set:"), "GetProductEstateID", _.ARGS.Ref(intProdKey, v84 => { intProdKey = v84; })));
+                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v85 => { _outer.strProductEstateID = v85; })));
                             }
                             else
                             {
                                 intBookingType = _.VAL(_outer.BOOKING_Local);
                             }
                         }
-                        else if (_.IF(_.CALLm1v0(this, objSupplier, "IsExternal")))
+                        else if (_.IF(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsExternal")))
                         {
                             // 2011-07-20 DWR: We don't need to call InitExternalBookingSettings if dealing with an VB Polling product as
                             // the next page should always be the Polling Exit (no point redirecting to another site which will then - if
@@ -1523,13 +1523,13 @@ namespace TranslatedProgram
                         {
                             if (_.IF(_.ISEMPTY(_outer.IsExternalBooking)))
                             {
-                                _.CALLm1argp(this, _outer, "InitExternalBookingSettings", _.ARGS.ForceBrackets());
+                                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "InitExternalBookingSettings", _.ARGS.ForceBrackets());
                             }
                             if (_.IF(_outer.IsExternalBooking))
                             {
                                 intBookingType = _.VAL(_outer.BOOKING_Redirect);
-                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS, "GetProductEstateID", _.ARGS.Ref(intProdKey, v86 => { intProdKey = v86; })));
-                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer, "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v87 => { _outer.strProductEstateID = v87; })));
+                                _outer.strProductEstateID = _.VAL(_.CALLm1argp(this, _outer.DMS ?? throw new InvalidOperationException("Reference not set:"), "GetProductEstateID", _.ARGS.Ref(intProdKey, v86 => { intProdKey = v86; })));
+                                _outer.strExtBookUrl = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetExtBookUrlFromProductEstate", _.ARGS.Ref(_outer.strProductEstateID, v87 => { _outer.strProductEstateID = v87; })));
                             }
                             else
                             {
@@ -1542,9 +1542,9 @@ namespace TranslatedProgram
                         // PW - 	moved this out of BookingUI_StayDetails_PollingHeader
                         //		we can now pass it to the hidden form fields
                         //		for use on the polling exit page
-                        if (_.IF(_.CALLm1v0(this, objSupplier, "IsExternal")))
+                        if (_.IF(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsExternal")))
                         {
-                            strSupplierLogo = _.VAL(_.CALLm1v0(this, objSupplier, "Logo"));
+                            strSupplierLogo = _.VAL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Logo"));
                             if (_.IF(_.EQ(_.NullableSTR(_.TRIM(_.CONCAT("", strSupplierName))), "")))
                             {
                                 strSupplierName = "Unnamed Supplier";
@@ -1557,7 +1557,7 @@ namespace TranslatedProgram
                                 // this case).
                                 if (_.IF(_.EQ(_.NullableSTR(strSupplierName), "Eviivo")))
                                 {
-                                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/unitselection/polling/eviivo", "/engine/shared_gfx/eviiopollingresult.jpg"));
+                                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/unitselection/polling/eviivo", "/engine/shared_gfx/eviiopollingresult.jpg"));
                                 }
                                 else
                                 {
@@ -1578,29 +1578,29 @@ namespace TranslatedProgram
                             strSupplierName = "";
                             if (_.IF(_outer.IsExternalBooking))
                             {
-                                strSupplierName = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", _outer.strProductEstateID, "/name"), ""));
+                                strSupplierName = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", _outer.strProductEstateID, "/name"), ""));
                             }
                             if (_.IF(_.EQ(_.NullableSTR(strSupplierName), "")))
                             {
                                 //#MJ -	the resource manage is the same for both main sites and channel sites
                                 //		therefore we can never use Page.Site.Name as an alternative value as this would be cached wrongly by the ResourceManager
                                 //		so try to pull one from there, if not fall back to the site name
-                                strSupplierName = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/polling/localsupplier/name", ""));
+                                strSupplierName = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/polling/localsupplier/name", ""));
                                 if (_.IF(_.EQ(_.NullableSTR(strSupplierName), "")))
                                 {
-                                    strSupplierName = _.VAL(_.CALLm2v0(this, _outer.Page, "Site", "Name"));
+                                    strSupplierName = _.VAL(_.CALLm2v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Name"));
                                 }
                             }
                             // - Supplier Logo
-                            strSupplierLogo = _.VAL(_.CALLm1argp(this, _outer, "GetSupplierLogo", _.ARGS.Ref(_outer.strProductEstateID, v88 => { _outer.strProductEstateID = v88; })));
+                            strSupplierLogo = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "GetSupplierLogo", _.ARGS.Ref(_outer.strProductEstateID, v88 => { _outer.strProductEstateID = v88; })));
 
                         }
 
                         // 2013-02-05 TB: objRenderSettings is used by RenderBookingInfoForm to populate some hidden stay information
                         // For fuzzy stays, both nights and startdate may differ from the original requirements.
                         // For FogBugz case 7594 I added the second line below which wasn't present.
-                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "VisitDate", _.VAL(_.CALLm1v0(this, objFuzzyStay, "StartDate")));
-                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings, "BookingRequirement"), "Nights", _.VAL(_.CALLm1v0(this, objFuzzyStay, "Nights")));
+                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:"), "VisitDate", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")));
+                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:"), "Nights", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
 
                         // 2014-03-12 DWR: We need to pass the Search Industry Classification into the form rendering code for VB Polling Products so that the
                         // Polling Exist can generate the deep link correctly. An Eviivo Configset can be set up with zero, meaning support either 1 OR 9. The
@@ -1612,11 +1612,11 @@ namespace TranslatedProgram
                         object objRenderSettings_vref6 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v89 => { pO = v89; }).Ref(intProdKey, v90 => { intProdKey = v90; }).Ref(objRenderSettings_vref6, v91 => { objRenderSettings_vref6 = v91; }).Ref(intBookingType, v92 => { intBookingType = v92; }).Ref(strSupplierId, v93 => { strSupplierId = v93; }).Ref(strSupplierName, v94 => { strSupplierName = v94; }).Ref(strSupplierEviivoName, v95 => { strSupplierEviivoName = v95; }).Ref(strSupplierQuality, v96 => { strSupplierQuality = v96; }).Ref(strSupplierLogo, v97 => { strSupplierLogo = v97; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier, "Units", "GetItem", (Int16)0), "IndustryClassification")));
+                            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderBookingInfoForm", _.ARGS.Ref(pO, v89 => { pO = v89; }).Ref(intProdKey, v90 => { intProdKey = v90; }).Ref(objRenderSettings_vref6, v91 => { objRenderSettings_vref6 = v91; }).Ref(intBookingType, v92 => { intBookingType = v92; }).Ref(strSupplierId, v93 => { strSupplierId = v93; }).Ref(strSupplierName, v94 => { strSupplierName = v94; }).Ref(strSupplierEviivoName, v95 => { strSupplierEviivoName = v95; }).Ref(strSupplierQuality, v96 => { strSupplierQuality = v96; }).Ref(strSupplierLogo, v97 => { strSupplierLogo = v97; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Units", "GetItem", (Int16)0) ?? throw new InvalidOperationException("Reference not set:"), "IndustryClassification")));
                         }
                         finally { objRenderSettings = objRenderSettings_vref6; }
 
-                        _.CALLm1argp(this, _outer, "BookingUI_StayDetails_PollingHeader", _.ARGS.Ref(objSupplier, v98 => { objSupplier = v98; }).Ref(pO, v99 => { pO = v99; }).Ref(strSupplierLogo, v100 => { strSupplierLogo = v100; }).Ref(strSupplierName, v101 => { strSupplierName = v101; }));
+                        _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayDetails_PollingHeader", _.ARGS.Ref(objSupplier, v98 => { objSupplier = v98; }).Ref(pO, v99 => { pO = v99; }).Ref(strSupplierLogo, v100 => { strSupplierLogo = v100; }).Ref(strSupplierName, v101 => { strSupplierName = v101; }));
 
                         // 2009-09-14 DWR: Forcing iStayNum to "1" every time - since we are clearly only having
                         // one stay per form (since we open the form above - in RenderBookingInfoForm - and we
@@ -1628,11 +1628,11 @@ namespace TranslatedProgram
                         object intIndex_vref = intIndex, bIsTeleBooking_vref = bIsTeleBooking;
                         try
                         {
-                            _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objSupplier, v102 => { objSupplier = v102; }).Ref(intIndex_vref, v103 => { intIndex_vref = v103; }).Ref(dStartNight, v104 => { dStartNight = v104; }).Ref(iNights, v105 => { iNights = v105; }).Ref(bIsTeleBooking_vref, v106 => { bIsTeleBooking_vref = v106; }).Ref(strProductBookingWebIfAny, v107 => { strProductBookingWebIfAny = v107; }).Ref(strEviivoIdIfAny, v108 => { strEviivoIdIfAny = v108; }).Val(_.CALLm1v0(this, objRenderSettings, "ProductKey")).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Ref(objAllUnits, v109 => { objAllUnits = v109; }).Val(VBScriptConstants.Nothing).Ref(pO, v110 => { pO = v110; }).Val(false));
+                            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayDetails", _.ARGS.Ref(objSupplier, v102 => { objSupplier = v102; }).Ref(intIndex_vref, v103 => { intIndex_vref = v103; }).Ref(dStartNight, v104 => { dStartNight = v104; }).Ref(iNights, v105 => { iNights = v105; }).Ref(bIsTeleBooking_vref, v106 => { bIsTeleBooking_vref = v106; }).Ref(strProductBookingWebIfAny, v107 => { strProductBookingWebIfAny = v107; }).Ref(strEviivoIdIfAny, v108 => { strEviivoIdIfAny = v108; }).Val(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "ProductKey")).Val(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "Channel")).Val(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "HasInvalidIndicative"))).Ref(objAllUnits, v109 => { objAllUnits = v109; }).Val(VBScriptConstants.Nothing).Ref(pO, v110 => { pO = v110; }).Val(false));
                         }
                         finally { intIndex = intIndex_vref; bIsTeleBooking = bIsTeleBooking_vref; } //we can't render the maximum available units for polling
 
-                        _.CALLm1v1(this, pO, "Write", "</form>");
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</form>");
 
                     }
 
@@ -1647,30 +1647,30 @@ namespace TranslatedProgram
             object pO = null;
             object strClassMonth = null;
 
-            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings, "OutputWriter"));
-            _.CALLm1v1(this, pO, "Write", "<div class=\"pnNoAvail\">");
-            _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/noavailability", "<p>No availability for this product for the specified date. This may occur if the accommodation is booked prior to your arrival at this page.</p>"));
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "OutputWriter"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnNoAvail\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/noavailability", "<p>No availability for this product for the specified date. This may occur if the accommodation is booked prior to your arrival at this page.</p>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
-            if (_.IF(_.CALLm1v0(this, objRenderSettings, "RenderAsCalendar")))
+            if (_.IF(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "RenderAsCalendar")))
             {
 
                 strClassMonth = "MonthWrapper";
 
-                _.CALLm1v1(this, pO, "Write", "<div class=\"CalendarsWrapper\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"CalendarsWrapper\">");
                 //
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v111 => { pO = v111; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CONCAT(strClassMonth, " currentmonth")));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v111 => { pO = v111; }).Val(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")).Val(_.CONCAT(strClassMonth, " currentmonth")));
                 //					' last day + 1 to get the first day of the next month for the calendar
-                _.CALLm1argp(this, _outer, "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v112 => { pO = v112; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page, "Functions", "Dates", "fn_GetLastDateOfMonth", _.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderCalendarMonth", _.ARGS.Ref(pO, v112 => { pO = v112; }).Val(_.ADD(_.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "fn_GetLastDateOfMonth", _.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")), (Int16)1)).Val(_.CONCAT(strClassMonth, " nextmonth")));
 
                 // global count used to track how many calendars have been added to the output for the prev/next buttons
                 _outer.g_iNumberOfCalendarsRendered = (Int16)2;
 
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalLinks", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v113 => { pO = v113; }));
-                _.CALLm1argp(this, _outer, "BookingUI_RenderAvailCalKey", _.ARGS.Ref(pO, v114 => { pO = v114; }));
-                _.CALLm1v1(this, pO, "Write", "</div>");
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalLinks", _.ARGS.Val(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")).Ref(pO, v113 => { pO = v113; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderAvailCalKey", _.ARGS.Ref(pO, v114 => { pO = v114; }));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<script type=\"text/javascript\">NewMind.ETWP.Booking.UpdateCalLinks();</", "script>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<script type=\"text/javascript\">NewMind.ETWP.Booking.UpdateCalLinks();</", "script>"));
             }
 
             return RenderNoAvailElement_retVal;
@@ -1694,19 +1694,19 @@ namespace TranslatedProgram
             object bIsTeleBooking = null;
             // This is the non-VB-Polling approach (supports EITHER FrontDesk OR local availability for accommodation)
             //reset the output variable to our OutputWriter
-            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings, "OutputWriter"));
+            pO = _.OBJ(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "OutputWriter"));
 
-            objAvail = _.OBJ(_.CALLm1v0(this, objData, "Availability"));
-            intProdKey = _.VAL(_.CALLm1v0(this, objData, "Product_Key"));
+            objAvail = _.OBJ(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Availability"));
+            intProdKey = _.VAL(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Product_Key"));
 
-            bIsTeleBooking = _.VAL(_.CALLm1v0(this, objData, "IsOnTeleBookingChannel"));
+            bIsTeleBooking = _.VAL(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "IsOnTeleBookingChannel"));
 
             // Grab hold of the data (in this method, there should only ever be zero or one fuzzy
             // stay options, as the BookingUI_StayMain_Legacy method handle fuzzy availability)
-            objFuzzyStayOptions = _.OBJ(_.CALLm1argp(this, objAvail, "GetUniqueFuzzyCombinations", _.ARGS.ForceBrackets()));
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objFuzzyStayOptions, "Count")), (Int16)0)))
+            objFuzzyStayOptions = _.OBJ(_.CALLm1argp(this, objAvail ?? throw new InvalidOperationException("Reference not set:objAvail"), "GetUniqueFuzzyCombinations", _.ARGS.ForceBrackets()));
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "Count")), (Int16)0)))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "objAvail.GetUniqueFuzzyCombinations reported zero stay options");
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "objAvail.GetUniqueFuzzyCombinations reported zero stay options");
                 bNoResults = true;
             }
             else
@@ -1714,17 +1714,17 @@ namespace TranslatedProgram
                 // Any suppliers returned here will be sorted with Local / NewMind first, then FrontDesk
                 // second (if we have both) - if there are multiple, it should always be the first one
                 // that we want
-                objFuzzyStay = _.OBJ(_.CALLm1v1(this, objFuzzyStayOptions, "GetItem", (Int16)0));
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", _.CONCAT("BookingUI_StayMain_Legacy: Get data for stay - ", _.CALLm1v0(this, objFuzzyStay, "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay, "Nights")));
-                objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail, "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay, "StartDate"), _.CALLm1v0(this, objFuzzyStay, "Nights")));
-                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objSuppliersForStay, "Count")), (Int16)0)))
+                objFuzzyStay = _.OBJ(_.CALLm1v1(this, objFuzzyStayOptions ?? throw new InvalidOperationException("Reference not set:objFuzzyStayOptions"), "GetItem", (Int16)0));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", _.CONCAT("BookingUI_StayMain_Legacy: Get data for stay - ", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), ", ", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
+                objSuppliersForStay = _.OBJ(_.CALLm1v2(this, objAvail ?? throw new InvalidOperationException("Reference not set:objAvail"), "GetSupplierUnitDataForStay", _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate"), _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
+                if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "Count")), (Int16)0)))
                 {
-                    _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "objAvail.GetSupplierUnitDataForStay reported zero suppliers");
+                    _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "objAvail.GetSupplierUnitDataForStay reported zero suppliers");
                     bNoResults = true;
                 }
                 else
                 {
-                    objAvailEntry = _.OBJ(_.CALLm1v1(this, objSuppliersForStay, "GetItem", (Int16)0));
+                    objAvailEntry = _.OBJ(_.CALLm1v1(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "GetItem", (Int16)0));
                     bNoResults = false;
                 }
             }
@@ -1742,11 +1742,11 @@ namespace TranslatedProgram
             object objRenderSettings_vref7 = objRenderSettings;
             try
             {
-                _.CALLm1argp(this, _outer, "RenderBookingInfoForm", _.ARGS.Ref(pO, v115 => { pO = v115; }).Ref(intProdKey, v116 => { intProdKey = v116; }).Ref(objRenderSettings_vref7, v117 => { objRenderSettings_vref7 = v117; }).Ref(intBookingType, v118 => { intBookingType = v118; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderBookingInfoForm", _.ARGS.Ref(pO, v115 => { pO = v115; }).Ref(intProdKey, v116 => { intProdKey = v116; }).Ref(objRenderSettings_vref7, v117 => { objRenderSettings_vref7 = v117; }).Ref(intBookingType, v118 => { intBookingType = v118; }).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null).Val(VBScriptConstants.Null));
             }
             finally { objRenderSettings = objRenderSettings_vref7; }
 
-            _.CALLm1v1(this, pO, "Write", "<div class=\"staySelection\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"staySelection\">");
 
             // Render info (or display warning if no availability)
             if (_.IF(bNoResults))
@@ -1754,7 +1754,7 @@ namespace TranslatedProgram
                 object objRenderSettings_vref8 = objRenderSettings;
                 try
                 {
-                    _.CALLm1argp(this, _outer, "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref8, v119 => { objRenderSettings_vref8 = v119; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderNoAvailElement", _.ARGS.Ref(objRenderSettings_vref8, v119 => { objRenderSettings_vref8 = v119; }));
                 }
                 finally { objRenderSettings = objRenderSettings_vref8; }
                 _outer.bProdHasAvail = false; // This is exposed through the WSC's public property "ProdHasAvail"
@@ -1762,7 +1762,7 @@ namespace TranslatedProgram
             else
             {
                 _outer.bProdHasAvail = true; // This is exposed through the WSC's public property "ProdHasAvail"
-                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, objRenderSettings, "BookingType")), "accommodation")))
+                if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingType")), "accommodation")))
                 {
 
                     // Retrieve any unit selections that have been passed in through the querystring
@@ -1772,23 +1772,23 @@ namespace TranslatedProgram
                     // are zero-based, so the UnitKey for ReqNo 1 = lsUnitSelections(0). If there was no
                     // selection made for a ReqNo, the lsUnitSelections value will be zero.
                     // NB: This value might be Nothing if no selections are passed in on querystring.
-                    lsRemoteUnitSelections = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetOptionsRemoteSelected", _.ARGS.Ref(objAvailEntry, v120 => { objAvailEntry = v120; })));
+                    lsRemoteUnitSelections = _.OBJ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_UnitSel_GetOptionsRemoteSelected", _.ARGS.Ref(objAvailEntry, v120 => { objAvailEntry = v120; })));
 
                     // Render the unit selection options (pass "1" as iStayNum parameter - we'll only
                     // be rendering a single stay option here, since fuzzy isn't supported in this
                     // configuration..)
-                    _.CALLm1argp(this, _outer, "BookingUI_StayDetails", _.ARGS.Ref(objAvailEntry, v121 => { objAvailEntry = v121; }).Val((Int16)1).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "Nights")).Ref(bIsTeleBooking, v122 => { bIsTeleBooking = v122; }).Val(_.CALLm1v0(this, objData, "bookingweb")).Val(_.CALLm1v0(this, objData, "EviivoId")).Ref(intProdKey, v123 => { intProdKey = v123; }).Val(_.CALLm1v0(this, objRenderSettings, "Channel")).Val(_.CALLm1v0(this, objFuzzyStay, "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay, "HasInvalidIndicative"))).Val(_.CALLm1v0(this, objData, "Units")).Ref(lsRemoteUnitSelections, v124 => { lsRemoteUnitSelections = v124; }).Ref(pO, v125 => { pO = v125; }).Val(_.CALLm1v0(this, objRenderSettings, "RenderMaximumUnitsAvailable")));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayDetails", _.ARGS.Ref(objAvailEntry, v121 => { objAvailEntry = v121; }).Val((Int16)1).Val(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")).Val(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "Nights")).Ref(bIsTeleBooking, v122 => { bIsTeleBooking = v122; }).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "bookingweb")).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "EviivoId")).Ref(intProdKey, v123 => { intProdKey = v123; }).Val(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "Channel")).Val(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative")).Val(_.NOT(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "HasInvalidIndicative"))).Val(_.CALLm1v0(this, objData ?? throw new InvalidOperationException("Reference not set:objData"), "Units")).Ref(lsRemoteUnitSelections, v124 => { lsRemoteUnitSelections = v124; }).Ref(pO, v125 => { pO = v125; }).Val(_.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "RenderMaximumUnitsAvailable")));
 
                 }
                 else
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_TicketsSummary", _.ARGS.Ref(objAvailEntry, v126 => { objAvailEntry = v126; }).Val(_.CALLm2v0(this, objRenderSettings, "BookingRequirement", "VisitDate")).Ref(pO, v127 => { pO = v127; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_TicketsSummary", _.ARGS.Ref(objAvailEntry, v126 => { objAvailEntry = v126; }).Val(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "VisitDate")).Ref(pO, v127 => { pO = v127; }));
                 }
             }
 
             // Close "staySelection" div and form
-            _.CALLm1v1(this, pO, "Write", "</div>");
-            _.CALLm1v1(this, pO, "Write", "</form>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</form>");
             return BookingUI_StayMain_Legacy_retVal;
         }
         // SUMMARY: prepare a list of UnitKey selections for each ReqNo is availability recordset
@@ -1812,15 +1812,15 @@ namespace TranslatedProgram
             //    > Units (list of integers)
             // - We're going to loop through the availability recordset, so must remember
             //   to return it back to the beginning when we're done
-            arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
-            var loopEnd15 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry, "Units", "Count"), (Int16)1));
+            arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
+            var loopEnd15 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "Count"), (Int16)1));
             var loopStart15 = _.NUM((Int16)0, loopEnd15, (Int16)1);
             if (_.StrictLTE(loopStart15, loopEnd15))
             {
                 for (intIndex = loopStart15; _.StrictLTE(intIndex, loopEnd15); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndex, v128 => { intIndex = v128; })));
-                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitOption", _.ARGS.Ref(arrReqUnitOptions, v129 => { arrReqUnitOptions = v129; }).Val(_.CALLm1v0(this, objUnit, "ReqNo")).Val(_.CALLm1v0(this, objUnit, "ReqSize")).Val(_.CALLm1v0(this, objUnit, "UnitKey")));
+                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "GetItem", _.ARGS.Ref(intIndex, v128 => { intIndex = v128; })));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_UnitSel_AddReqUnitOption", _.ARGS.Ref(arrReqUnitOptions, v129 => { arrReqUnitOptions = v129; }).Val(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ReqNo")).Val(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ReqSize")).Val(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey")));
                     //BookingUI_UnitSel_AddReqUnitOption arrReqUnitOptions, objUnit.ReqNo, objUnit.UnitCount, objUnit.UnitKey
                 }
             }
@@ -1833,13 +1833,13 @@ namespace TranslatedProgram
             //       = list of ReqNo values that this may be
             //         a user selection for
             intUnitSel = (Int16)0;
-            arrReqUnitSelections = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
+            arrReqUnitSelections = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
             while (true)
             {
                 intUnitSel = _.ADD(intUnitSel, (Int16)1);
-                if (_.IF(_.GT(_.NullableNUM(_.LEN(_.CALLm0argp(this, _outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))))), (Int16)0)))
+                if (_.IF(_.GT(_.NullableNUM(_.LEN(_.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val(_.CONCAT("URslt", intUnitSel))))), (Int16)0)))
                 {
-                    _.CALLm1argp(this, _outer, "BookingUI_UnitSel_AddReqUnitSelection", _.ARGS.Ref(arrReqUnitSelections, v130 => { arrReqUnitSelections = v130; }).RefIfArray(_outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))).Ref(arrReqUnitOptions, v131 => { arrReqUnitOptions = v131; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_UnitSel_AddReqUnitSelection", _.ARGS.Ref(arrReqUnitSelections, v130 => { arrReqUnitSelections = v130; }).RefIfArray(_outer.Request, _.ARGS.Val(_.CONCAT("URslt", intUnitSel))).Ref(arrReqUnitOptions, v131 => { arrReqUnitOptions = v131; }));
                 }
                 else
                 {
@@ -1848,7 +1848,7 @@ namespace TranslatedProgram
             }
 
             // If there were no selections passed in like this, return Nothing
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitSelections, "Count")), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), "Count")), (Int16)0)))
             {
                 BookingUI_UnitSel_GetOptionSelected = VBScriptConstants.Nothing;
             }
@@ -1856,7 +1856,7 @@ namespace TranslatedProgram
             // Now try to return matched unit options / selections
             // - Get back a list of unit keys, one key per requirement
             //   (If failed to get a perfect match, some of these values may be zero)
-            BookingUI_UnitSel_GetOptionsRemoteSelected_retVal = _.OBJ(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_GetMatchedReqUnitSelection", _.ARGS.Ref(arrReqUnitOptions, v132 => { arrReqUnitOptions = v132; }).Ref(arrReqUnitSelections, v133 => { arrReqUnitSelections = v133; })));
+            BookingUI_UnitSel_GetOptionsRemoteSelected_retVal = _.OBJ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_UnitSel_GetMatchedReqUnitSelection", _.ARGS.Ref(arrReqUnitOptions, v132 => { arrReqUnitOptions = v132; }).Ref(arrReqUnitSelections, v133 => { arrReqUnitSelections = v133; })));
 
             return BookingUI_UnitSel_GetOptionsRemoteSelected_retVal;
         }
@@ -1869,20 +1869,20 @@ namespace TranslatedProgram
             // Input list SHOULD be initialised as an empty list, but just in case..
             if (_.IF(_.OR(_.ISEMPTY(arrReqUnitOptions), _.ISNULL(arrReqUnitOptions))))
             {
-                arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
+                arrReqUnitOptions = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
             }
 
             // If we've already got list items, check whether we're still working on the same
             // ReqNo as the previous entry. If so, add to that entry's unit list.
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions, "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Count")), (Int16)0)))
             {
-                objEntryPrev = _.OBJ(_.CALLm0argp(this, arrReqUnitOptions, _.ARGS.Val(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions, "Count"), (Int16)1))));
-                if (_.IF(_.EQ(_.CALLm0argp(this, objEntryPrev, _.ARGS.Val("ReqNo")), intReqNo)))
+                objEntryPrev = _.OBJ(_.CALLm0argp(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), _.ARGS.Val(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Count"), (Int16)1))));
+                if (_.IF(_.EQ(_.CALLm0argp(this, objEntryPrev ?? throw new InvalidOperationException("Reference not set:objEntryPrev"), _.ARGS.Val("ReqNo")), intReqNo)))
                 {
                     object intUnitKey_vref = intUnitKey;
                     try
                     {
-                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(intUnitKey_vref, v134 => { intUnitKey_vref = v134; }));
+                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev ?? throw new InvalidOperationException("Reference not set:objEntryPrev"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:"), "Add", _.ARGS.Ref(intUnitKey_vref, v134 => { intUnitKey_vref = v134; }));
                     }
                     finally { intUnitKey = intUnitKey_vref; }
                     return BookingUI_UnitSel_AddReqUnitOption_retVal;
@@ -1890,17 +1890,17 @@ namespace TranslatedProgram
             }
 
             // Need to create a new entry
-            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm0a1(this, objEntry, "ReqNo", _.VAL(intReqNo));
-            _.SETm0a1(this, objEntry, "NumPeople", _.VAL(intNumPeople));
-            _.SETm0a1(this, objEntry, "Units", _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")));
+            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsValueBag"));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "ReqNo", _.VAL(intReqNo));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "NumPeople", _.VAL(intNumPeople));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "Units", _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList")));
             object intUnitKey_vref2 = intUnitKey;
             try
             {
-                _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("Units")), "Add", _.ARGS.Ref(intUnitKey_vref2, v135 => { intUnitKey_vref2 = v135; }));
+                _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:"), "Add", _.ARGS.Ref(intUnitKey_vref2, v135 => { intUnitKey_vref2 = v135; }));
             }
             finally { intUnitKey = intUnitKey_vref2; }
-            _.CALLm1argp(this, arrReqUnitOptions, "Add", _.ARGS.Ref(objEntry, v136 => { objEntry = v136; }));
+            _.CALLm1argp(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Add", _.ARGS.Ref(objEntry, v136 => { objEntry = v136; }));
 
             return BookingUI_UnitSel_AddReqUnitOption_retVal;
         }
@@ -1929,7 +1929,7 @@ namespace TranslatedProgram
                 object arrReqUnitSelections_vref2 = arrReqUnitSelections;
                 try
                 {
-                    arrReqUnitSelections_vref2 = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
+                    arrReqUnitSelections_vref2 = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
                 }
                 finally { arrReqUnitSelections = arrReqUnitSelections_vref2; }
             }
@@ -1951,7 +1951,7 @@ namespace TranslatedProgram
             // Ensure entries in string are numeric (exit if not)
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
             _.HANDLEERROR(errOn, () => {
-                intUnitKey = _.CLNG(_.CALLm0argp(this, arrSegments, _.ARGS.Val((Int16)0)));
+                intUnitKey = _.CLNG(_.CALLm0argp(this, arrSegments ?? throw new InvalidOperationException("Reference not set:arrSegments"), _.ARGS.Val((Int16)0)));
             });
             if (_.IF(() => _.ERR, errOn))
             {
@@ -1959,7 +1959,7 @@ namespace TranslatedProgram
                 return BookingUI_UnitSel_AddReqUnitSelection_retVal;
             }
             _.HANDLEERROR(errOn, () => {
-                intNumAdults = _.CLNG(_.CALLm0argp(this, arrSegments, _.ARGS.Val((Int16)1)));
+                intNumAdults = _.CLNG(_.CALLm0argp(this, arrSegments ?? throw new InvalidOperationException("Reference not set:arrSegments"), _.ARGS.Val((Int16)1)));
             });
             if (_.IF(() => _.ERR, errOn))
             {
@@ -1967,7 +1967,7 @@ namespace TranslatedProgram
                 return BookingUI_UnitSel_AddReqUnitSelection_retVal;
             }
             _.HANDLEERROR(errOn, () => {
-                intNumChildren = _.CLNG(_.CALLm0argp(this, arrSegments, _.ARGS.Val((Int16)2)));
+                intNumChildren = _.CLNG(_.CALLm0argp(this, arrSegments ?? throw new InvalidOperationException("Reference not set:arrSegments"), _.ARGS.Val((Int16)2)));
             });
             if (_.IF(() => _.ERR, errOn))
             {
@@ -1984,10 +1984,10 @@ namespace TranslatedProgram
             }
 
             // Preparer new entry
-            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm0a1(this, objEntry, "NumPeople", _.ADD(intNumAdults, intNumChildren));
-            _.SETm0a1(this, objEntry, "UnitKey", _.VAL(intUnitKey));
-            _.SETm0a1(this, objEntry, "PossReqNos", _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList")));
+            objEntry = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsValueBag"));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "NumPeople", _.ADD(intNumAdults, intNumChildren));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "UnitKey", _.VAL(intUnitKey));
+            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "PossReqNos", _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList")));
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
@@ -1997,14 +1997,14 @@ namespace TranslatedProgram
             //   later on.
             bool ifResult2;
             object arrReqUnitOptions_zref = arrReqUnitOptions;
-            ifResult2 = _.IF(() => _.GT(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions_zref, "Count")), (Int16)0), errOn);
+            ifResult2 = _.IF(() => _.GT(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions_zref ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref"), "Count")), (Int16)0), errOn);
             if (ifResult2)
             {
                 object loopEnd16 = 0, loopStart16 = 0;
                 var loopConstraintsInitialized = false;
                 object arrReqUnitOptions_zref2 = arrReqUnitOptions;
                 _.HANDLEERROR(errOn, () => {
-                    loopEnd16 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions_zref2, "Count"), (Int16)1));
+                    loopEnd16 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions_zref2 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref2"), "Count"), (Int16)1));
                     loopStart16 = _.NUM((Int16)0);
                     if ((loopStart16 is DateTime) || (loopStart16 is Decimal))
                         intIndex = loopStart16;
@@ -2021,11 +2021,11 @@ namespace TranslatedProgram
                         // UnitKey, then we've got a possible match
                         bool ifResult3;
                         object arrReqUnitOptions_zref3 = arrReqUnitOptions;
-                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3, _.ARGS.Ref(intIndex, v139 => { intIndex = v139; })), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry, _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3, _.ARGS.Ref(intIndex, v140 => { intIndex = v140; })), _.ARGS.Val("Units")), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
+                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v139 => { intIndex = v139; })) ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v140 => { intIndex = v140; })) ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:"), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
                         if (ifResult3)
                         {
                             object arrReqUnitOptions_zref4 = arrReqUnitOptions;
-                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("PossReqNos")), "Add", _.ARGS.RefIfArray(arrReqUnitOptions_zref4, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; }), _.ARGS.Val("ReqNo")));
+                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:"), "Add", _.ARGS.RefIfArray(arrReqUnitOptions_zref4, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; }), _.ARGS.Val("ReqNo")));
                         }
                         if (!loopConstraintsInitialized)
                             break;
@@ -2042,10 +2042,10 @@ namespace TranslatedProgram
 
             // If there is at least one possible requirement match, add entry to list
             // (Otherwise, we can't do anything with the selection so don't bother with it)
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.CALLm0argp(this, objEntry, _.ARGS.Val("PossReqNos")), "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:"), "Count")), (Int16)0)))
             {
                 object arrReqUnitSelections_zref = arrReqUnitSelections;
-                _.CALLm1argp(this, arrReqUnitSelections_zref, "Add", _.ARGS.Ref(objEntry, v142 => { objEntry = v142; }));
+                _.CALLm1argp(this, arrReqUnitSelections_zref ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections_zref"), "Add", _.ARGS.Ref(objEntry, v142 => { objEntry = v142; }));
             }
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
@@ -2076,7 +2076,7 @@ namespace TranslatedProgram
             {
                 GetMatchedReqUnitSelection = VBScriptConstants.Nothing;
             }
-            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions, "Count")), (Int16)0), _.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitSelections, "Count")), (Int16)0))))
+            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Count")), (Int16)0), _.EQ(_.NullableNUM(_.CALLm1v0(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), "Count")), (Int16)0))))
             {
                 GetMatchedReqUnitSelection = VBScriptConstants.Nothing;
             }
@@ -2088,25 +2088,25 @@ namespace TranslatedProgram
             //      maps Selection 1 -> Option 2
             //           Selection 2 -> Option 3
             //           Selection 3 -> Option 1
-            lsPermutations = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
-            var loopEnd17 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitSelections, "Count"), (Int16)1));
+            lsPermutations = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
+            var loopEnd17 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), "Count"), (Int16)1));
             var loopStart17 = _.NUM((Int16)0, loopEnd17, (Int16)1);
             if (_.StrictLTE(loopStart17, loopEnd17))
             {
                 for (intIndexSel = loopStart17; _.StrictLTE(intIndexSel, loopEnd17); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v143 => { intIndexSel = v143; })), _.ARGS.Val("PossReqNos")));
-                    if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, lsPermutations, "Count")), (Int16)0)))
+                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v143 => { intIndexSel = v143; })) ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("PossReqNos")));
+                    if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Count")), (Int16)0)))
                     {
                         // This is the first pass, so initialise the permutations list with
                         // the possible matches from this first ReqUnitSelection
-                        var loopEnd18 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPossReqNos, "Count"), (Int16)1));
+                        var loopEnd18 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPossReqNos ?? throw new InvalidOperationException("Reference not set:lsPossReqNos"), "Count"), (Int16)1));
                         var loopStart18 = _.NUM((Int16)0, loopEnd18, (Int16)1);
                         if (_.StrictLTE(loopStart18, loopEnd18))
                         {
                             for (intIndexPoss = loopStart18; _.StrictLTE(intIndexPoss, loopEnd18); intIndexPoss = _.ADD(intIndexPoss, (Int16)1))
                             {
-                                _.CALLm1argp(this, lsPermutations, "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v144 => { intIndexPoss = v144; })));
+                                _.CALLm1argp(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Add", _.ARGS.RefIfArray(lsPossReqNos, _.ARGS.Ref(intIndexPoss, v144 => { intIndexPoss = v144; })));
                             }
                         }
                     }
@@ -2115,32 +2115,32 @@ namespace TranslatedProgram
                         // We want to take our whatever permutation strings we have so far and expand
                         // them to include the possibilities for this ReqUnitSelection
                         // - Make a copy of lsPermutations thus far
-                        lsTemp = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
-                        var loopEnd19 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPermutations, "Count"), (Int16)1));
+                        lsTemp = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
+                        var loopEnd19 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Count"), (Int16)1));
                         var loopStart19 = _.NUM((Int16)0, loopEnd19, (Int16)1);
                         if (_.StrictLTE(loopStart19, loopEnd19))
                         {
                             for (intIndexPerm = loopStart19; _.StrictLTE(intIndexPerm, loopEnd19); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                             {
-                                _.CALLm1argp(this, lsTemp, "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v145 => { intIndexPerm = v145; })));
+                                _.CALLm1argp(this, lsTemp ?? throw new InvalidOperationException("Reference not set:lsTemp"), "Add", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndexPerm, v145 => { intIndexPerm = v145; })));
                             }
                         }
                         // - Clear out permutation list
-                        _.CALLm1v0(this, lsPermutations, "Clear");
+                        _.CALLm1v0(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Clear");
                         // - Re-create new list using previous values with new combinations
-                        var loopEnd20 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPossReqNos, "Count"), (Int16)1));
+                        var loopEnd20 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPossReqNos ?? throw new InvalidOperationException("Reference not set:lsPossReqNos"), "Count"), (Int16)1));
                         var loopStart20 = _.NUM((Int16)0, loopEnd20, (Int16)1);
                         if (_.StrictLTE(loopStart20, loopEnd20))
                         {
                             for (intIndexPoss = loopStart20; _.StrictLTE(intIndexPoss, loopEnd20); intIndexPoss = _.ADD(intIndexPoss, (Int16)1))
                             {
-                                var loopEnd21 = _.NUM(_.SUBT(_.CALLm1v0(this, lsTemp, "Count"), (Int16)1));
+                                var loopEnd21 = _.NUM(_.SUBT(_.CALLm1v0(this, lsTemp ?? throw new InvalidOperationException("Reference not set:lsTemp"), "Count"), (Int16)1));
                                 var loopStart21 = _.NUM((Int16)0, loopEnd21, (Int16)1);
                                 if (_.StrictLTE(loopStart21, loopEnd21))
                                 {
                                     for (intIndexPerm = loopStart21; _.StrictLTE(intIndexPerm, loopEnd21); intIndexPerm = _.ADD(intIndexPerm, (Int16)1))
                                     {
-                                        _.CALLm1v1(this, lsPermutations, "Add", _.CONCAT(_.CALLm0argp(this, lsTemp, _.ARGS.Ref(intIndexPerm, v146 => { intIndexPerm = v146; })), ",", _.CALLm0argp(this, lsPossReqNos, _.ARGS.Ref(intIndexPoss, v147 => { intIndexPoss = v147; }))));
+                                        _.CALLm1v1(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Add", _.CONCAT(_.CALLm0argp(this, lsTemp ?? throw new InvalidOperationException("Reference not set:lsTemp"), _.ARGS.Ref(intIndexPerm, v146 => { intIndexPerm = v146; })), ",", _.CALLm0argp(this, lsPossReqNos ?? throw new InvalidOperationException("Reference not set:lsPossReqNos"), _.ARGS.Ref(intIndexPoss, v147 => { intIndexPoss = v147; }))));
                                     }
                                 }
                             }
@@ -2151,17 +2151,17 @@ namespace TranslatedProgram
 
             // Now determine which arrangement matches the most selection / options pairs
             intBestScore = (Int16)(-1);
-            var loopEnd22 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPermutations, "Count"), (Int16)1));
+            var loopEnd22 = _.NUM(_.SUBT(_.CALLm1v0(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Count"), (Int16)1));
             var loopStart22 = _.NUM((Int16)0, loopEnd22, (Int16)1);
             if (_.StrictLTE(loopStart22, loopEnd22))
             {
                 for (intIndex = loopStart22; _.StrictLTE(intIndex, loopEnd22); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    intScore = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v150 => { intIndex = v150; }))));
+                    intScore = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_UnitSel_ScoreUnitSelPermutation", _.ARGS.RefIfArray(lsPermutations, _.ARGS.Ref(intIndex, v150 => { intIndex = v150; }))));
                     if (_.IF(_.GT(intScore, intBestScore)))
                     {
                         intBestScore = _.VAL(intScore);
-                        strBestPermutation = _.VAL(_.CALLm0argp(this, lsPermutations, _.ARGS.Ref(intIndex, v151 => { intIndex = v151; })));
+                        strBestPermutation = _.VAL(_.CALLm0argp(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), _.ARGS.Ref(intIndex, v151 => { intIndex = v151; })));
                     }
                 }
             }
@@ -2170,14 +2170,14 @@ namespace TranslatedProgram
             // option which don't have a selection matched to them)
             // - Start off with a full-size list (matching size of arrReqUnitOptions) with
             //   with all zero values
-            lsUnitKeys = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
-            var loopEnd23 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions, "Count"), (Int16)1));
+            lsUnitKeys = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
+            var loopEnd23 = _.NUM(_.SUBT(_.CALLm1v0(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Count"), (Int16)1));
             var loopStart23 = _.NUM((Int16)0, loopEnd23, (Int16)1);
             if (_.StrictLTE(loopStart23, loopEnd23))
             {
                 for (intIndex = loopStart23; _.StrictLTE(intIndex, loopEnd23); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    _.CALLm1v1(this, lsUnitKeys, "Add", (Int16)0);
+                    _.CALLm1v1(this, lsUnitKeys ?? throw new InvalidOperationException("Reference not set:lsUnitKeys"), "Add", (Int16)0);
                 }
             }
 
@@ -2194,9 +2194,9 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart24; _.StrictLTE(intIndexSel, loopEnd24); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches, _.ARGS.Ref(intIndexSel, v152 => { intIndexSel = v152; })), (Int16)1);
-                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections, _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })), _.ARGS.Val("UnitKey")));
-                    _.SETm0a1(this, lsUnitKeys, intIndexOption, _.VAL(intUnitKey));
+                    intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches ?? throw new InvalidOperationException("Reference not set:arrMatches"), _.ARGS.Ref(intIndexSel, v152 => { intIndexSel = v152; })), (Int16)1);
+                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })) ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("UnitKey")));
+                    _.SETm0a1(this, lsUnitKeys ?? throw new InvalidOperationException("Reference not set:lsUnitKeys"), intIndexOption, _.VAL(intUnitKey));
                 }
             }
 
@@ -2217,7 +2217,7 @@ namespace TranslatedProgram
             // Determine a score for the Unit Selection / Option permutations calculated above.
             // Basically, give a score of one for each non-duplicated match.
 
-            lsReqNos = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "clsList"));
+            lsReqNos = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "clsList"));
             arrValues = _.SPLIT(strPermutation, ",");
             intScore = (Int16)0;
             var loopEnd25 = _.UBOUND(arrValues);
@@ -2226,10 +2226,10 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart25; _.StrictLTE(intIndex, loopEnd25); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.NOT(_.CALLm1argp(this, lsReqNos, "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v155 => { intIndex = v155; }))))))
+                    if (_.IF(_.NOT(_.CALLm1argp(this, lsReqNos ?? throw new InvalidOperationException("Reference not set:lsReqNos"), "Contains", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v155 => { intIndex = v155; }))))))
                     {
                         intScore = _.ADD(intScore, (Int16)1);
-                        _.CALLm1argp(this, lsReqNos, "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v156 => { intIndex = v156; })));
+                        _.CALLm1argp(this, lsReqNos ?? throw new InvalidOperationException("Reference not set:lsReqNos"), "Add", _.ARGS.RefIfArray(arrValues, _.ARGS.Ref(intIndex, v156 => { intIndex = v156; })));
                     }
                 }
             }
@@ -2251,35 +2251,35 @@ namespace TranslatedProgram
 
             // Render each stay result with link to further details
             // - 2009-08-10 DWR: Why do we not render this if "_stay" is in the querystring???
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _outer.Request, _.ARGS.Val("_stay"))), "")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("_stay"))), "")))
             {
                 return BookingUI_StaySummary_retVal;
             }
 
-            _.CALLm1v1(this, pO, "Write", "<div class=\"StayCandidateList\">");
-            _.CALLm1v1(this, pO, "Write", "<div class=\"StayCandidatesTtl\">");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/flexiblesearchresults", "Flexible Search Results"), "</p>"));
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"StayCandidateList\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"StayCandidatesTtl\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<p>", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/flexiblesearchresults", "Flexible Search Results"), "</p>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
             if (_.IF(_.OR(_.NOTEQ(dtStayFirstNight, dtReqFirstNight), _.NOTEQ(iReqNights, iStayNights))))
             {
-                _.CALLm1v1(this, pO, "Write", "<div class=\"cell\">");
-                _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayTtl\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"cell\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayTtl\">");
                 object dtStayFirstNight_vref = dtStayFirstNight, iStayNights_vref = iStayNights;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayTtl", _.ARGS.Ref(dtStayFirstNight_vref, v157 => { dtStayFirstNight_vref = v157; }).Ref(iStayNights_vref, v158 => { iStayNights_vref = v158; })));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayTtl", _.ARGS.Ref(dtStayFirstNight_vref, v157 => { dtStayFirstNight_vref = v157; }).Ref(iStayNights_vref, v158 => { iStayNights_vref = v158; })));
                 }
                 finally { dtStayFirstNight = dtStayFirstNight_vref; iStayNights = iStayNights_vref; }
-                _.CALLm1v1(this, pO, "Write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
                 object dtReqFirstNight_vref = dtReqFirstNight, dtStayFirstNight_vref2 = dtStayFirstNight, iReqNights_vref = iReqNights, iStayNights_vref2 = iStayNights;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(dtReqFirstNight_vref, v159 => { dtReqFirstNight_vref = v159; }).Ref(dtStayFirstNight_vref2, v160 => { dtStayFirstNight_vref2 = v160; }).Ref(iReqNights_vref, v161 => { iReqNights_vref = v161; }).Ref(iStayNights_vref2, v162 => { iStayNights_vref2 = v162; })));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayDiff", _.ARGS.Ref(dtReqFirstNight_vref, v159 => { dtReqFirstNight_vref = v159; }).Ref(dtStayFirstNight_vref2, v160 => { dtStayFirstNight_vref2 = v160; }).Ref(iReqNights_vref, v161 => { iReqNights_vref = v161; }).Ref(iStayNights_vref2, v162 => { iStayNights_vref2 = v162; })));
                 }
                 finally { dtReqFirstNight = dtReqFirstNight_vref; dtStayFirstNight = dtStayFirstNight_vref2; iReqNights = iReqNights_vref; iStayNights = iStayNights_vref2; }
-                _.CALLm1v1(this, pO, "Write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
             }
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
             return BookingUI_StaySummary_retVal;
         }
@@ -2315,14 +2315,14 @@ namespace TranslatedProgram
             object bHasNonBookableUnits = null;
 
             // Ensure we've actually got some availability (we should if we've got here!)
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objAvailEntry, "Units", "Count")), (Int16)0)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm2v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "Count")), (Int16)0)))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "BookingUI_StayDetails: No units in objAvailEntry");
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "BookingUI_StayDetails: No units in objAvailEntry");
                 return BookingUI_StayDetails_retVal;
             }
 
             // This method opens a new div - we'll need to close it later
-            _.CALLm1argp(this, _outer, "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v163 => { objAvailEntry = v163; }).Ref(iStayNum, v164 => { iStayNum = v164; }).Ref(adtStartNight, v165 => { adtStartNight = v165; }).Ref(aiReqNights, v166 => { aiReqNights = v166; }).Ref(pO, v167 => { pO = v167; }));
+            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderNewStay", _.ARGS.Ref(objAvailEntry, v163 => { objAvailEntry = v163; }).Ref(iStayNum, v164 => { iStayNum = v164; }).Ref(adtStartNight, v165 => { adtStartNight = v165; }).Ref(aiReqNights, v166 => { aiReqNights = v166; }).Ref(pO, v167 => { pO = v167; }));
 
             iMaxRq = (Int16)0;
             iLastReqmnt = (Int16)0;
@@ -2330,21 +2330,21 @@ namespace TranslatedProgram
             bGotOpenReqContainer = false;
             bHasBookableUnits = false;
             bHasNonBookableUnits = false;
-            var loopEnd26 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry, "Units", "Count"), (Int16)1));
+            var loopEnd26 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "Count"), (Int16)1));
             var loopStart26 = _.NUM((Int16)0, loopEnd26, (Int16)1);
             if (_.StrictLTE(loopStart26, loopEnd26))
             {
                 for (intIndexUnit = loopStart26; _.StrictLTE(intIndexUnit, loopEnd26); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                 {
-                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v168 => { intIndexUnit = v168; })));
+                    objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v168 => { intIndexUnit = v168; })));
 
-                    iThisReqmnt = _.VAL(_.CALLm1v0(this, objUnit, "ReqNo"));
+                    iThisReqmnt = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ReqNo"));
                     if (_.IF(_.GT(iThisReqmnt, iMaxRq)))
                     {
                         // Moved on to next requirement, get key of pre-selected unit - iRemoteUnitKey
                         // will be zero if no selection has been passed in (applies to deep-linking)
                         iMaxRq = _.VAL(iThisReqmnt);
-                        iRemoteUnitKey = _.VAL(_.CALLm1argp(this, _outer, "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v169 => { lsRemoteUnitSelections = v169; }).Ref(iThisReqmnt, v170 => { iThisReqmnt = v170; })));
+                        iRemoteUnitKey = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_GetPreSelectedUnitKey", _.ARGS.Ref(lsRemoteUnitSelections, v169 => { lsRemoteUnitSelections = v169; }).Ref(iThisReqmnt, v170 => { iThisReqmnt = v170; })));
                     }
 
                     // Check whether we're moving into a new requirement (if so, default to having
@@ -2356,9 +2356,9 @@ namespace TranslatedProgram
                         // If we've already got one of these containers open, close its tags
                         if (_.IF(bGotOpenReqContainer))
                         {
-                            _.CALLm1v1(this, pO, "Write", "</div></div>");
+                            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div></div>");
                         }
-                        _.CALLm1argp(this, _outer, "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v171 => { objUnit = v171; }).Ref(iStayNum, v172 => { iStayNum = v172; }).Ref(iThisReqmnt, v173 => { iThisReqmnt = v173; }).Val(_.NOT(_.CALLm1v0(this, objAvailEntry, "IsLocal"))).Ref(pO, v174 => { pO = v174; }));
+                        _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderNewReq", _.ARGS.Ref(objUnit, v171 => { objUnit = v171; }).Ref(iStayNum, v172 => { iStayNum = v172; }).Ref(iThisReqmnt, v173 => { iThisReqmnt = v173; }).Val(_.NOT(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsLocal"))).Ref(pO, v174 => { pO = v174; }));
                         bGotOpenReqContainer = true;
 
                         bSelected = true;
@@ -2372,7 +2372,7 @@ namespace TranslatedProgram
                     // .. however, if there was a pre-selected unit key passed in, this should override which
                     // unit appears selected (this only applies when iRemoteUnitKey is not zero, meaning that
                     // a unit selection exists - note: eviivo units always appear with unit key zero)
-                    iUnitKey = _.VAL(_.CALLm1v0(this, objUnit, "UnitKey"));
+                    iUnitKey = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"));
                     if (_.IF(_.NOTEQ(_.NullableNUM(iRemoteUnitKey), (Int16)0)))
                     {
                         bSelected = _.VAL(_.EQ(iUnitKey, iRemoteUnitKey));
@@ -2381,7 +2381,7 @@ namespace TranslatedProgram
                     // build up a list of invalid indicative or telephone booking
                     // units, this is used later by javascript when we have a mixture of allocated and indicative
                     // availability
-                    if (_.IF(_.OR(_.AND(_.CALLm1v0(this, objUnit, "Indicative"), _.NOT(bIndicativeValid)), bTeleBooking)))
+                    if (_.IF(_.OR(_.AND(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "Indicative"), _.NOT(bIndicativeValid)), bTeleBooking)))
                     {
                         bHasNonBookableUnits = true;
                         if (_.IF(_.GT(_.NullableNUM(_.LEN(strNonBookableUnits)), (Int16)0)))
@@ -2392,7 +2392,7 @@ namespace TranslatedProgram
                         //MJ - 	the stay num is no longer part of this data, it is part of each array's name
                         //		look at TB's other changes to see the reasoning behind this
                         strNonBookableUnits = _.CONCAT(strNonBookableUnits, iUnitKey);
-                        _.CALLm1v1(this, _outer.Page, "PrintTrace", _.CONCAT("strNonBookableUnits", strNonBookableUnits));
+                        _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", _.CONCAT("strNonBookableUnits", strNonBookableUnits));
                     }
                     else
                     {
@@ -2403,7 +2403,7 @@ namespace TranslatedProgram
                     // state of the whole stay - this was causing all units to be rendered as indicative if any
                     // one of them was, now we take the indicative state from each unit (but keep the indicative
                     // "validity" from the whole stay, where required)
-                    _.CALLm1argp(this, _outer, "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v175 => { iStayNum = v175; }).Ref(iThisReqmnt, v176 => { iThisReqmnt = v176; }).Ref(bSelected, v177 => { bSelected = v177; }).Ref(objAvailEntry, v178 => { objAvailEntry = v178; }).Ref(objUnit, v179 => { objUnit = v179; }).Ref(objAllUnits, v180 => { objAllUnits = v180; }).Val(_.CALLm1argp(this, _outer, "BookingUI_AvailClassName", _.ARGS.Val(_.CALLm1v0(this, objUnit, "Indicative")).Ref(bIndicativeValid, v181 => { bIndicativeValid = v181; }).Ref(bTeleBooking, v182 => { bTeleBooking = v182; }))).Ref(pO, v183 => { pO = v183; }).Ref(bRenderMaximumUnitsAvailable, v184 => { bRenderMaximumUnitsAvailable = v184; }));
+                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderUnit", _.ARGS.Ref(iStayNum, v175 => { iStayNum = v175; }).Ref(iThisReqmnt, v176 => { iThisReqmnt = v176; }).Ref(bSelected, v177 => { bSelected = v177; }).Ref(objAvailEntry, v178 => { objAvailEntry = v178; }).Ref(objUnit, v179 => { objUnit = v179; }).Ref(objAllUnits, v180 => { objAllUnits = v180; }).Val(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassName", _.ARGS.Val(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "Indicative")).Ref(bIndicativeValid, v181 => { bIndicativeValid = v181; }).Ref(bTeleBooking, v182 => { bTeleBooking = v182; }))).Ref(pO, v183 => { pO = v183; }).Ref(bRenderMaximumUnitsAvailable, v184 => { bRenderMaximumUnitsAvailable = v184; }));
 
                 }
             }
@@ -2411,26 +2411,26 @@ namespace TranslatedProgram
             // Ensure any open req container (eg. "Room 1 - for 1 Guest" section) is closed
             if (_.IF(bGotOpenReqContainer))
             {
-                _.CALLm1v1(this, pO, "Write", "</div></div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div></div>");
                 bGotOpenReqContainer = false;
             }
 
             // Close the BookingUI_RenderNewStay containing div
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
             // Wrap these hidden inputs in a div for html validity
-            _.CALLm1v1(this, pO, "Write", "<div>");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"_nStays\" value=\"", iStayNum, "\" />"));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"_nReqs\" value=\"", iMaxRq, "\" />"));
-            if (_.IF(_.NOT(_.CALLm1v0(this, objAvailEntry, "IsLocal"))))
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"_nStays\" value=\"", iStayNum, "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"_nReqs\" value=\"", iMaxRq, "\" />"));
+            if (_.IF(_.NOT(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsLocal"))))
             {
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" name=\"IsEviivoBooking\" value=\"yes\" />");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" name=\"IsEviivoBooking\" value=\"yes\" />");
                 if (_.IF(_outer.IsExternalBooking))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"eviivoconf\" value=\"", _.CLNG(_.CONCAT("0", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Integration_Eviivo_ConfigSet"))), "\" />"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"eviivoconf\" value=\"", _.CLNG(_.CONCAT("0", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Integration_Eviivo_ConfigSet"))), "\" />"));
                 }
             }
-            _.CALLm1v1(this, pO, "Write", "</div>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
 
             // 2014-06-25 DWR: For sites that use the legacy "eviivo external" booking integration (meaning sites where VB Polling is not enabled - the new implementation
             // results in Eviivo results being reported as Polling results and the user being sent through the Polling Exit with a fully-populated deep link), the Book
@@ -2440,9 +2440,9 @@ namespace TranslatedProgram
             // Product List or Detail Control, which would be better avoided. A much better solution is to enable VB Polling and avoid this legacy mechanism entirely.
             // Note: We could potentially render the button for Local Avail and not for Eviivo but I think that that's more confusing than helpful, particularly since
             // it's inconsistent with the Product List / Detail implementation (which bases its decision upon whether the Product has an Eviivo Id).
-            if (_.IF(_.AND(_.AND(_.NOT(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnablePolling")), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Integration_Eviivo_ExtBooking_Enable"))))
+            if (_.IF(_.AND(_.AND(_.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_EnablePolling")), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Integration_Eviivo_ExtBooking_Enable"))))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "Not rendering any Book buttons for Unit Selection since the legacy Eviivo External Booking configuration is enabled (the recommended alternative is to use the deep-link-supporting Eviivo External Booking configuration, this may be done by enabling VB Polling)");
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "Not rendering any Book buttons for Unit Selection since the legacy Eviivo External Booking configuration is enabled (the recommended alternative is to use the deep-link-supporting Eviivo External Booking configuration, this may be done by enabling VB Polling)");
                 return BookingUI_StayDetails_retVal;
             }
 
@@ -2452,15 +2452,15 @@ namespace TranslatedProgram
             // website, but that is understood and how it works - see FogBugz 10367). I've tried to make the markup for this button reminiscent of
             // that in Product List and Detail to try to make any additional styling requirements as low as possible.
             strProductBookingWebIfAny = _.VAL(_.TRIM(_.CONCAT("", strProductBookingWebIfAny)));
-            if (_.IF(_.AND(_.AND(_.AND(bTeleBooking, _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnableByPhone")), _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_AllowOffSiteTelephoneBookings")), _.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), ""))))
+            if (_.IF(_.AND(_.AND(_.AND(bTeleBooking, _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_EnableByPhone")), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_AllowOffSiteTelephoneBookings")), _.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), ""))))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", "Since this is a Telephone Booking Product with a Booking Website and the 'Allow Offsite Booking Web Booking for Telephone Bookings' parameter is enabled, a button to the Booking Website is being rendered");
-                _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayButtons\">");
-                _.CALLm1v1(this, pO, "Write", "<p class=\"bookonline\">");
-                _.CALLm1v1(this, pO, "Write", "<a href=\"");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v185 => { strProductBookingWebIfAny = v185; })));
-                _.CALLm1v1(this, pO, "Write", "\"");
-                if (_.IF(_.OR(_.CALLm1v0(this, _outer.Page, "IsPartialRender"), _.EQ(_.NullableSTR(_.CALLm0argp(this, _outer.Request, _.ARGS.Val("PartialRenderType"))), "html"))))
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", "Since this is a Telephone Booking Product with a Booking Website and the 'Allow Offsite Booking Web Booking for Telephone Bookings' parameter is enabled, a button to the Booking Website is being rendered");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayButtons\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<p class=\"bookonline\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<a href=\"");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1argp(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HtmlEncode", _.ARGS.Ref(strProductBookingWebIfAny, v185 => { strProductBookingWebIfAny = v185; })));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "\"");
+                if (_.IF(_.OR(_.CALLm1v0(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "IsPartialRender"), _.EQ(_.NullableSTR(_.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("PartialRenderType"))), "html"))))
                 {
                     // If in Partial Render then set target="_blank" instead of rel="external" (we only do the latter for strict adherence to standards and then
                     // use javascript to transform after rendering - when requesting additional content through javascript this transformation won't be performed
@@ -2468,30 +2468,30 @@ namespace TranslatedProgram
                     // 2014-06-12 DWR: The partial render requests for this data are commonly made as "html" meaning that Page.IsPartialRender will be false
                     // (the logic being that Controls should render entirely as standard when in html partial render mode) so I've added an additional check
                     // for the a "PartialRenderType" value of "html" to ensure that the new-window logic is maintained correctly.
-                    _.CALLm1v1(this, pO, "Write", " target=\"_blank\"");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " target=\"_blank\"");
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", " rel=\"external\"");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " rel=\"external\"");
                 }
-                _.CALLm1v1(this, pO, "Write", " class=\"ProvClickCustom\" name=\"PROBWEBREF|");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " class=\"ProvClickCustom\" name=\"PROBWEBREF|");
                 // This is the "Provider Booking Website Referral" statistic, as required by the SharePoint document for FogBugz 10367
-                _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer.Server, "HtmlEncode", _.ARGS.Ref(strChannel, v186 => { strChannel = v186; })));
-                _.CALLm1v1(this, pO, "Write", "|");
-                _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(intProductKey, v187 => { intProductKey = v187; }));
-                _.CALLm1v1(this, pO, "Write", "\"");
-                _.CALLm1v1(this, pO, "Write", ">");
-                _.CALLm1v1(this, pO, "Write", "<img src=\"");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/btn/book", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/book.gif")));
-                _.CALLm1v1(this, pO, "Write", "\" alt=\"");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"));
-                _.CALLm1v1(this, pO, "Write", " (");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "productdetail/bookonline/opensinanewwindow", "opens in a new window"));
-                _.CALLm1v1(this, pO, "Write", ")\" ");
-                _.CALLm1v1(this, pO, "Write", "/>");
-                _.CALLm1v1(this, pO, "Write", "</a>");
-                _.CALLm1v1(this, pO, "Write", "</p>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1argp(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HtmlEncode", _.ARGS.Ref(strChannel, v186 => { strChannel = v186; })));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "|");
+                _.CALLm1argp(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.ARGS.Ref(intProductKey, v187 => { intProductKey = v187; }));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "\"");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", ">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<img src=\"");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/btn/book", _.CONCAT(_.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "ImageDir"), "booking/book.gif")));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "\" alt=\"");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/btn/book", "Book"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " (");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "productdetail/bookonline/opensinanewwindow", "opens in a new window"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", ")\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "/>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</a>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</p>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
                 return BookingUI_StayDetails_retVal;
             }
 
@@ -2500,7 +2500,7 @@ namespace TranslatedProgram
             // period has passed) then there's no point even rendering the button.
             if (_.IF(bHasBookableUnits))
             {
-                _.CALLm1argp(this, _outer, "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v188 => { iStayNum = v188; }).Ref(pO, v189 => { pO = v189; }).Val(_.CALLm1v0(this, objAvailEntry, "IsExternal")));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_RenderButtons", _.ARGS.Ref(iStayNum, v188 => { iStayNum = v188; }).Ref(pO, v189 => { pO = v189; }).Val(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsExternal")));
             }
 
             // if we have an invalid indicative unit or telephone unit then
@@ -2514,22 +2514,22 @@ namespace TranslatedProgram
                 // or rendering the relevant warning message if it isn't
                 // 2010-10-21 TB: augmenting Gary with stay key. This is to allow for multiple stays
                 // in which this JS is executed on a per stay basis via a partial render.
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<script type=\"text/javascript\">", VBScriptConstants.vbCrLf));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT(" var aryNonBookableUnits_", iStayNum, " = [", strNonBookableUnits, "]; ", VBScriptConstants.vbCrLf));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT(" var iTotalNonBookableUnits = ", iThisReqmnt, ";", VBScriptConstants.vbCrLf));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("</", "script>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<script type=\"text/javascript\">", VBScriptConstants.vbCrLf));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(" var aryNonBookableUnits_", iStayNum, " = [", strNonBookableUnits, "]; ", VBScriptConstants.vbCrLf));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(" var iTotalNonBookableUnits = ", iThisReqmnt, ";", VBScriptConstants.vbCrLf));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</", "script>"));
 
                 // Render relevant offline booking message
-                _.CALLm1v1(this, pO, "Write", "<div id=\"pnTeleBook_PromptCall\">");
-                if (_.IF(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_EnableByPhone")))
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div id=\"pnTeleBook_PromptCall\">");
+                if (_.IF(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_EnableByPhone")))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/telebook/prompt", "One or more of the units you have selected must be booked via telephone. Please ring #bookingtelephone# to continue this booking."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/telebook/prompt", "One or more of the units you have selected must be booked via telephone. Please ring #bookingtelephone# to continue this booking."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/indtelebook/prompt", "Although available, some of the units you have selected cannot be booked online. Alternatively, select different units with online booking only."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<p>", _.REPLACE(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/indtelebook/prompt", "Although available, some of the units you have selected cannot be booked online. Alternatively, select different units with online booking only."), "#bookingtelephone#", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_TelephoneNumber")), "</p>"));
                 }
-                _.CALLm1v1(this, pO, "Write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
             }
 
             return BookingUI_StayDetails_retVal;
@@ -2545,9 +2545,9 @@ namespace TranslatedProgram
             {
                 // Get unit selection passed in (may be zero if invalid request was made)
                 // Note: lsRemoteUnitSelections has zero-based index, iReqNo is one-based
-                if (_.IF(_.AND(_.GTE(_.NullableNUM(iReqNo), (Int16)1), _.LTE(iReqNo, _.CALLm1v0(this, lsRemoteUnitSelections, "Count")))))
+                if (_.IF(_.AND(_.GTE(_.NullableNUM(iReqNo), (Int16)1), _.LTE(iReqNo, _.CALLm1v0(this, lsRemoteUnitSelections ?? throw new InvalidOperationException("Reference not set:lsRemoteUnitSelections"), "Count")))))
                 {
-                    BookingUI_GetPreSelectedUnitKey_retVal = _.VAL(_.CALLm0argp(this, lsRemoteUnitSelections, _.ARGS.Val(_.SUBT(iReqNo, (Int16)1))));
+                    BookingUI_GetPreSelectedUnitKey_retVal = _.VAL(_.CALLm0argp(this, lsRemoteUnitSelections ?? throw new InvalidOperationException("Reference not set:lsRemoteUnitSelections"), _.ARGS.Val(_.SUBT(iReqNo, (Int16)1))));
                     return BookingUI_GetPreSelectedUnitKey_retVal;
                 }
             }
@@ -2563,26 +2563,26 @@ namespace TranslatedProgram
             // Render header content (icon, if specified) and supplier name
             // 2008-12-18 DWR: Add a style to indicate whether supplier is Local, FrontDesk or External (this will
             // allow a custom logo to be used for Local or FrontDesk, for example)
-            _.CALLm1v1(this, pO, "Write", "<div class=\"StayCandidateItemHeader ");
-            if (_.IF(_.CALLm1v0(this, objAvailEntry, "IsLocal")))
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"StayCandidateItemHeader ");
+            if (_.IF(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsLocal")))
             {
-                _.CALLm1v1(this, pO, "Write", " AvailLocal");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " AvailLocal");
             }
-            else if (_.IF(_.CALLm1v0(this, objAvailEntry, "IsRemote")))
+            else if (_.IF(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsRemote")))
             {
-                _.CALLm1v1(this, pO, "Write", " AvailFrontDesk");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " AvailFrontDesk");
             }
             else
             {
-                _.CALLm1v1(this, pO, "Write", " AvailExternal");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " AvailExternal");
             }
-            _.CALLm1v1(this, pO, "Write", "\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "\">");
             if (_.IF(_.NOTEQ(_.NullableSTR(strSupplierLogo), "")))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<img src=\"", strSupplierLogo, "\" alt=\"", strSupplierName, "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<img src=\"", strSupplierLogo, "\" alt=\"", strSupplierName, "\" />"));
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<h2>", strSupplierName, "</h2>"));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<h2>", strSupplierName, "</h2>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
             return BookingUI_StayDetails_PollingHeader_retVal;
         }
         //tries to get a supplier logo for us
@@ -2593,25 +2593,25 @@ namespace TranslatedProgram
             strSupplierLogo = "";
             if (_.IF(_outer.IsExternalBooking))
             {
-                strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page, "ImageResource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", strProductEstateID, "/logo"), ""));
+                strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", strProductEstateID, "/logo"), ""));
                 if (_.IF(_.EQ(_.NullableSTR(strSupplierLogo), "")))
                 {
-                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", strProductEstateID, "/logo"), ""));
+                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", _.CONCAT("bookonline/unitselection/polling/localsupplier/estate_", strProductEstateID, "/logo"), ""));
                     if (_.IF(_.NOTEQ(_.NullableSTR(strSupplierLogo), "")))
                     {
-                        _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file");
+                        _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file");
                     }
                 }
             }
             if (_.IF(_.EQ(_.NullableSTR(strSupplierLogo), "")))
             {
-                strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/unitselection/polling/localsupplier/logo", ""));
+                strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/unitselection/polling/localsupplier/logo", ""));
                 if (_.IF(_.EQ(_.NullableSTR(strSupplierLogo), "")))
                 {
-                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/polling/localsupplier/logo", ""));
+                    strSupplierLogo = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/polling/localsupplier/logo", ""));
                     if (_.IF(_.NOTEQ(_.NullableSTR(strSupplierLogo), "")))
                     {
-                        _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file");
+                        _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", "Loaded estate scoped supplier logo from a deprecated location - please move it to the image resources language file");
                     }
                 }
             }
@@ -2631,7 +2631,7 @@ namespace TranslatedProgram
             object iRight = null; /* Undeclared in source */
 
             // get current URL. Prepare [stay] variable to be appended to URL
-            sUrl = _.VAL(_.CALLm1v1(this, _outer.Request, "ServerVariables", "HTTP_X_REWRITE_URL"));
+            sUrl = _.VAL(_.CALLm1v1(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), "ServerVariables", "HTTP_X_REWRITE_URL"));
             if (_.IF(_.GT(_.NullableNUM(aiStay), (Int16)0)))
             {
                 sStay = _.CONCAT("&_stay=", aiStay);
@@ -2671,13 +2671,13 @@ namespace TranslatedProgram
             // Render slightly differently if got a precise match
             // - Also render differently when VB Polling enabled, since we have to render
             //   more of these sections than otherwise
-            bExactMatch = _.VAL(_.AND(_.EQ(_.CALLm1v0(this, objAvailEntry, "StartDate"), adtStartNight), _.EQ(_.CALLm1v0(this, objAvailEntry, "Nights"), aiReqNights)));
+            bExactMatch = _.VAL(_.AND(_.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "StartDate"), adtStartNight), _.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights"), aiReqNights)));
             if (_.IF(_.OR(bExactMatch, _outer.IsVBPollingEnabled)))
             {
                 bPrecise = true;
                 sPostfix = "1";
             }
-            else if (_.IF(_.EQ(_.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request, _.ARGS.Val("_stay")))), aiStayNum)))
+            else if (_.IF(_.EQ(_.CLNG(_.CONCAT("0", _.CALLm0argp(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), _.ARGS.Val("_stay")))), aiStayNum)))
             {
                 sPostfix = "1";
             }
@@ -2689,21 +2689,21 @@ namespace TranslatedProgram
             // If not exact match then render a warning as well as the date difference later
             if (_.IF(_.NOT(bExactMatch)))
             {
-                _.CALLm1argp(this, _outer, "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v190 => { pO = v190; }));
+                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderNotRequiredDateWarning", _.ARGS.Ref(pO, v190 => { pO = v190; }));
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"StayCandidateItem", sPostfix, "\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"StayCandidateItem", sPostfix, "\">", VBScriptConstants.vbCrLf));
 
             if (_.IF(_.NOT(bExactMatch)))
             {
-                _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayTtl\">");
-                _.CALLm1v1(this, pO, "Write", "<p>");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer, "BookingUI_StayTtl", _.CALLm1v0(this, objAvailEntry, "StartDate"), _.CALLm1v0(this, objAvailEntry, "Nights")));
-                _.CALLm1v1(this, pO, "Write", "</p>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayTtl\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<p>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayTtl", _.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "StartDate"), _.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights")));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</p>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
                 if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1argp(this, _outer, "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v191 => { adtStartNight = v191; }).Val(_.CALLm1v0(this, objAvailEntry, "StartDate")).Ref(aiReqNights, v192 => { aiReqNights = v192; }).Val(_.CALLm1v0(this, objAvailEntry, "Nights"))));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_StayDiff", _.ARGS.Ref(adtStartNight, v191 => { adtStartNight = v191; }).Val(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "StartDate")).Ref(aiReqNights, v192 => { aiReqNights = v192; }).Val(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights"))));
                 }
             }
             return BookingUI_RenderNewStay_retVal;
@@ -2718,11 +2718,11 @@ namespace TranslatedProgram
             object BookingUI_StayTtl_retVal = null;
             if (_.IF(_.EQ(_.NullableNUM(aiNights), (Int16)1)))
             {
-                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightstart", " night, start "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v193 => { adtFirstNight = v193; })));
+                BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/nightstart", " night, start "), _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v193 => { adtFirstNight = v193; })));
                 return BookingUI_StayTtl_retVal;
             }
 
-            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v195 => { adtFirstNight = v195; })), _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page, "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
+            BookingUI_StayTtl_retVal = _.CONCAT(aiNights, _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/nightsfrom", " nights, from "), _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "ShortDate", _.ARGS.Ref(adtFirstNight, v195 => { adtFirstNight = v195; })), _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/to", " to "), _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "Shortdate", _.DATEADD("d", aiNights, adtFirstNight)));
             return BookingUI_StayTtl_retVal;
         }
         // SUMMARY: describe difference between THIS DATE and REQUESTED stay date
@@ -2738,7 +2738,7 @@ namespace TranslatedProgram
 
             iDateDiff = _.VAL(_.DATEDIFF("d", adtReqDate, adtThisDate));
             iDurDiff = _.SUBT(aiResultNights, aiReqNights);
-            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v197 => { iDateDiff = v197; }).Ref(iDurDiff, v198 => { iDurDiff = v198; }).Ref(aiReqNights, v199 => { aiReqNights = v199; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
+            BookingUI_StayDiff_retVal = _.CONCAT("<div class=\"pnStayDiff\">", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Booking", "Booking_MatchQual", _.ARGS.Val((Int16)0).Ref(iDateDiff, v197 => { iDateDiff = v197; }).Ref(iDurDiff, v198 => { iDurDiff = v198; }).Ref(aiReqNights, v199 => { aiReqNights = v199; }).Val((Int16)2)), "</div>", VBScriptConstants.vbCrLf);
             return BookingUI_StayDiff_retVal;
         }
         // SUMMARY: render new requirement UI - WARNING: this doesn't close all of the elements it opens!
@@ -2757,63 +2757,63 @@ namespace TranslatedProgram
             object aryChildAges = null;
             object iChildAgeIndex = null;
 
-            iSz = _.VAL(_.CALLm1v0(this, objUnit, "ReqSize"));
+            iSz = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ReqSize"));
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnStayReqmnt\">", VBScriptConstants.vbCrLf));
-            _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayReqmntTtl\">");
-            _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/room", "Room"));
-            _.CALLm1v1(this, pO, "Write", " ");
-            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(aiThisReqmnt, v203 => { aiThisReqmnt = v203; }));
-            _.CALLm1v1(this, pO, "Write", " - ");
-            _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/for", "for"));
-            _.CALLm1v1(this, pO, "Write", " ");
-            _.CALLm1argp(this, pO, "Write", _.ARGS.Ref(iSz, v204 => { iSz = v204; }));
-            _.CALLm1v1(this, pO, "Write", " ");
-            _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/guest(s)", "guest(s)"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnStayReqmnt\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayReqmntTtl\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/room", "Room"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " ");
+            _.CALLm1argp(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.ARGS.Ref(aiThisReqmnt, v203 => { aiThisReqmnt = v203; }));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " - ");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/for", "for"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " ");
+            _.CALLm1argp(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.ARGS.Ref(iSz, v204 => { iSz = v204; }));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " ");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/guest(s)", "guest(s)"));
 
             //#MJ -	We can only render our room requirement data based upon the recieved dat, not the requirement we passed in, as it may have been fulfilled in a different order
             //2012-03-29 NP: Here we render the requirements that are linked to the unit stay details in the response from the Avail Component
             // we do NOT want to render the original request against each unit that is rendered because they may not order up
             // Example: Request roomReq_1 = 2; roomReq_2 = 1; Response may come back in a different order
             // i.e. unit_1 with ReqSize = 1, unit_2 with ReqSize = 2 so roomReq_1 = 1, roomReq= 2; they end up swapped around
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iSz, "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iSz, "\" />"));
 
             //#MJ - need to check with Rich if we want to indicate who's going into what room
-            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ChildPricing"), _.GT(_.NullableNUM(_.CALLm1v0(this, objUnit, "ChildrenRequirement")), (Int16)0))))
+            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ChildPricing"), _.GT(_.NullableNUM(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenRequirement")), (Int16)0))))
             {
-                _.CALLm1v1(this, pO, "Write", " - (");
-                _.CALLm1v1(this, pO, "Write", "<span class=\"ReqmntDetails\">");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "adults", "Adults"));
-                _.CALLm1v1(this, pO, "Write", ": ");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v0(this, objUnit, "AdultsRequirement"));
-                _.CALLm1v1(this, pO, "Write", " ");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v2(this, _outer.Page, "Resource", "children", "Children"));
-                _.CALLm1v1(this, pO, "Write", ": ");
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v0(this, objUnit, "ChildrenRequirement"));
-                _.CALLm1v1(this, pO, "Write", ") ");
-                _.CALLm1v1(this, pO, "Write", "</span>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " - (");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<span class=\"ReqmntDetails\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "adults", "Adults"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", ": ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "AdultsRequirement"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "children", "Children"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", ": ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenRequirement"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", ") ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</span>");
                 // NP 2012-03-01: Child pricing requirements were not previously being posted to the checkout
                 // Adult & Child Requirement amount is needed by the RequirementSummary control and the child ages are
                 // needed by the checkout for creating the correct requirement record with the relevant discount values
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_adults\" value=\"", _.CALLm1v0(this, objUnit, "AdultsRequirement"), "\" />"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children\" value=\"", _.CALLm1v0(this, objUnit, "ChildrenRequirement"), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_adults\" value=\"", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "AdultsRequirement"), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children\" value=\"", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenRequirement"), "\" />"));
 
                 // ChildrenAges is a comma separated list of ages or "", Split will give an empty array if this property is ever Empty
-                aryChildAges = _.SPLIT(_.CALLm1v0(this, objUnit, "ChildrenAges"), ",");
+                aryChildAges = _.SPLIT(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenAges"), ",");
                 var loopEnd27 = _.UBOUND(aryChildAges);
                 var loopStart27 = _.NUM((Int16)0, loopEnd27, (Int16)1);
                 if (_.StrictLTE(loopStart27, loopEnd27))
                 {
                     for (iChildAgeIndex = loopStart27; _.StrictLTE(iChildAgeIndex, loopEnd27); iChildAgeIndex = _.ADD(iChildAgeIndex, (Int16)1))
                     {
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALLm0argp(this, aryChildAges, _.ARGS.Ref(iChildAgeIndex, v205 => { iChildAgeIndex = v205; })), "\" />"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "_children_childage", iChildAgeIndex, "\" value=\"", _.CALLm0argp(this, aryChildAges ?? throw new InvalidOperationException("Reference not set:aryChildAges"), _.ARGS.Ref(iChildAgeIndex, v205 => { iChildAgeIndex = v205; })), "\" />"));
                     }
                 }
 
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnStayReqmntRslts\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnStayReqmntRslts\">", VBScriptConstants.vbCrLf));
 
             return BookingUI_RenderNewReq_retVal;
         }
@@ -2842,51 +2842,51 @@ namespace TranslatedProgram
             object iMaxUnitsAvailable = null;
             object UnitCostPerPerson = null; /* Undeclared in source */
 
-            mUnitStayTotal = _.VAL(_.CALLm1v0(this, objUnit, "StayTotalPayable"));
-            mUnitStayTotalPayableBasedOnGuidePrice = _.VAL(_.CALLm1v0(this, objUnit, "StayTotalPayableBasedOnGuidePrice"));
-            iNumNights = _.VAL(_.CALLm1v0(this, objAvailEntry, "Nights"));
+            mUnitStayTotal = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayable"));
+            mUnitStayTotalPayableBasedOnGuidePrice = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayableBasedOnGuidePrice"));
+            iNumNights = _.VAL(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights"));
             mUnitPerNight = _.DIV(mUnitStayTotal, iNumNights);
-            bPerPerson = _.VAL(_.CALLm1v0(this, objUnit, "Perperson"));
-            iNumPeople = _.VAL(_.CALLm1v0(this, objUnit, "ReqSize"));
+            bPerPerson = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "Perperson"));
+            iNumPeople = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ReqSize"));
 
-            iDaysBreakfast = _.VAL(_.CALLm1v0(this, objUnit, "DaysBreakfast"));
-            bDiscountApplied = _.VAL(_.CALLm1v0(this, objUnit, "IncludesChildDiscount"));
+            iDaysBreakfast = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "DaysBreakfast"));
+            bDiscountApplied = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "IncludesChildDiscount"));
 
-            iMaxUnitsAvailable = _.VAL(_.CALLm1v0(this, objUnit, "MaximumQuantityAvailable"));
+            iMaxUnitsAvailable = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "MaximumQuantityAvailable"));
 
             // We need an id so we can set the label's "for" attribute, but if VB Polling is enabled,
             // we might end up with id duplication - so in that case we append a random suffix
-            strIptId = _.CONCAT("unit_", aiStayNum, "_", aiThisReqmnt, "_", _.CALLm1v0(this, objUnit, "UnitKey"));
+            strIptId = _.CONCAT("unit_", aiStayNum, "_", aiThisReqmnt, "_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"));
             if (_.IF(_outer.IsVBPollingEnabled))
             {
                 strIptId = _.CONCAT(strIptId, "_", _.INT(_.MULT(_.RND(), 100000)));
             }
 
-            _.CALLm1v1(this, pO, "Write", "<div class=\"pnUnitOption\">");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"radio\" name=\"unit_", aiStayNum, "_", aiThisReqmnt, "\" ", "id=\"", strIptId, "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnUnitOption\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"radio\" name=\"unit_", aiStayNum, "_", aiThisReqmnt, "\" ", "id=\"", strIptId, "\" "));
             if (_.IF(_.NOT(_outer.IsVBPollingEnabled)))
             {
                 // Not sure this onclick is even required without VB Polling.. (?)
-                _.CALLm1v1(this, pO, "Write", "onclick=\"BookingUI_UnitSelect(this);\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "onclick=\"BookingUI_UnitSelect(this);\" ");
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("value=\"", _.CALLm1v0(this, objUnit, "UnitKey"), "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("value=\"", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"), "\" "));
             if (_.IF(bSelected))
             {
-                _.CALLm1v1(this, pO, "Write", "checked=\"checked\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "checked=\"checked\" ");
             }
-            _.CALLm1v1(this, pO, "Write", "/>");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<label for=\"", strIptId, "\"> "));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v0(this, objUnit, "UnitName"), " - ", _.CALLm1argp(this, _outer, "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v207 => { mUnitStayTotal = v207; })), " ", asAvailClassName));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "/>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<label for=\"", strIptId, "\"> "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitName"), " - ", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_NicePrice", _.ARGS.Ref(mUnitStayTotal, v207 => { mUnitStayTotal = v207; })), " ", asAvailClassName));
 
             //if we have child pricing discount applied show the icon
             if (_.IF(bDiscountApplied))
             {
-                _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _outer, "BookingUI_AvailClassIcon", "DISCOUNT"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", "DISCOUNT"));
             }
 
-            _.CALLm1v1(this, pO, "Write", "</label>");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnPriceBase\">", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</label>");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnPriceBase\">", VBScriptConstants.vbCrLf));
 
             //#MJ 29/04/2010 -	decision made not to show the price basis as the per person figure was always a guestimate, child pricing messes with the price so per person doesn't apply
             //					also we now always deal with total stay prices
@@ -2899,47 +2899,47 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(iDaysBreakfast, iNumNights)))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/breakfastincluded", "Breakfast included"), ". "));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/breakfastincluded", "Breakfast included"), ". "));
             }
             else if (_.IF(_.GT(_.NullableNUM(iDaysBreakfast), (Int16)0)))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/breakfastincludedon", "Breakfast included on "), iDaysBreakfast, " ", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/day(s)", "day(s)"), ". "));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/breakfastincludedon", "Breakfast included on "), iDaysBreakfast, " ", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/day(s)", "day(s)"), ". "));
             }
 
-            if (_.IF(_.LT(iNumPeople, _.CALLm1v0(this, objUnit, "MinOcc"))))
+            if (_.IF(_.LT(iNumPeople, _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "MinOcc"))))
             {
                 if (_.IF(bPerPerson))
                 {
-                    _.CALLm1v1(this, pO, "Write", "<br />");
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/priceperpersonincludes", "Price Per Person includes"), " "));
-                    _.CALLm1v1(this, pO, "Write", _.CALLm1v1(this, _outer, "BookingUI_NicePrice", _.SUBT(mPersonPerNight, _.DIV(UnitCostPerPerson, iNumNights))));
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/minimumoccupancysupplement", " minimum occupancy supplement"), ". "));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<br />");
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/priceperpersonincludes", "Price Per Person includes"), " "));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_NicePrice", _.SUBT(mPersonPerNight, _.DIV(UnitCostPerPerson, iNumNights))));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/minimumoccupancysupplement", " minimum occupancy supplement"), ". "));
                 }
                 else
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/minoccupancyof", "Min. occupancy of"), " ", _.CALLm1v0(this, objUnit, "MinOcc"), ". "));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/minoccupancyof", "Min. occupancy of"), " ", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "MinOcc"), ". "));
                 }
             }
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("<div class=\"pnLinkedUnit\">", _.CALLm1argp(this, _outer, "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v209 => { objUnit = v209; }).Ref(objAllUnits, v210 => { objAllUnits = v210; })), "</div>"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<div class=\"pnLinkedUnit\">", _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_LinkedUnitDesc", _.ARGS.Ref(objUnit, v209 => { objUnit = v209; }).Ref(objAllUnits, v210 => { objAllUnits = v210; })), "</div>"));
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
 
-            if (_.IF(_.NOT(_.CALLm1v0(this, objAvailEntry, "IsLocal"))))
+            if (_.IF(_.NOT(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "IsLocal"))))
             {
-                _.CALLm1v1(this, pO, "Write", "<input type=\"hidden\" ");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("name=\"uxml_", aiStayNum, "_", aiThisReqmnt, "_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" "));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("value=\"", _.CALLm1v1(this, _outer.Server, "HtmlEncode", _.CALLm1v0(this, objUnit, "EviivoMetaData")), "\" />"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input type=\"hidden\" ");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("name=\"uxml_", aiStayNum, "_", aiThisReqmnt, "_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"), "\" "));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("value=\"", _.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HtmlEncode", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "EviivoMetaData")), "\" />"));
             }
 
             if (_.IF(bRenderMaximumUnitsAvailable))
             {
-                _.CALLm1v1(this, pO, "Write", "<div class=\"maxAvailUnits\">");
-                _.CALLm1v1(this, pO, "Write", "<p>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<span class=\"maxAvailUnitsLabelPrefix\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/maxiumunitsavailableprefix", "Only "), "</span>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<span class=\"maxAvailUnitsValue\">", _.CALLm1v0(this, objUnit, "MaximumQuantityAvailable"), "</span>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<span class=\"maxAvailUnitsLabelSuffix\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/maxiumunitsavailablesuffix", " Rooms Remaining"), "</span>"));
-                _.CALLm1v1(this, pO, "Write", "</p>");
-                _.CALLm1v1(this, pO, "Write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"maxAvailUnits\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<p>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<span class=\"maxAvailUnitsLabelPrefix\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/maxiumunitsavailableprefix", "Only "), "</span>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<span class=\"maxAvailUnitsValue\">", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "MaximumQuantityAvailable"), "</span>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<span class=\"maxAvailUnitsLabelSuffix\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/maxiumunitsavailablesuffix", " Rooms Remaining"), "</span>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</p>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
             }
 
             return BookingUI_RenderUnit_retVal;
@@ -2962,23 +2962,23 @@ namespace TranslatedProgram
                 strClass = _.CONCAT(strClass, " redirect");
             }
 
-            _.CALLm1v1(this, pO, "Write", "<div class=\"pnStayButtons\">");
-            _.CALLm1v1(this, pO, "Write", "<input ");
-            _.CALLm1v1(this, pO, "Write", "type=\"image\" ");
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("class=\"", strClass, "\" "));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("name=\"bookstay_", aiStayNum, "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayButtons\">");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<input ");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "type=\"image\" ");
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("class=\"", strClass, "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("name=\"bookstay_", aiStayNum, "\" "));
 
             // Not using ids with VB Polling layout
             if (_.IF(_.NOT(_outer.IsVBPollingEnabled)))
             {
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("id=\"bookstay_", aiStayNum, "\" "));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("id=\"bookstay_", aiStayNum, "\" "));
             }
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("value=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" "));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/btn/book", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/book.gif")), "\" "));
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("alt=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" />"));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("value=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/btn/book", "Book"), "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("src=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/btn/book", _.CONCAT(_.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "ImageDir"), "booking/book.gif")), "\" "));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("alt=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/btn/book", "Book"), "\" />"));
 
-            _.CALLm1v1(this, pO, "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
+            _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("</div>", VBScriptConstants.vbCrLf));
 
             return BookingUI_RenderButtons_retVal;
         }
@@ -2997,25 +2997,25 @@ namespace TranslatedProgram
             // If telephone booking, there's only one option
             if (_.IF(abTeleBook))
             {
-                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer, "BookingUI_AvailClassIcon", "TELE"));
+                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", "TELE"));
                 return BookingUI_AvailClassName_retVal;
             }
 
             // If not telephone and not indicative, must be allocated
             if (_.IF(_.NOT(abIndicative)))
             {
-                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer, "BookingUI_AvailClassIcon", "ALLOC"));
+                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", "ALLOC"));
                 return BookingUI_AvailClassName_retVal;
             }
 
             // Otherwise, get appropriate indicative option
             if (_.IF(abIndicValid))
             {
-                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer, "BookingUI_AvailClassIcon", "INDIC"));
+                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", "INDIC"));
             }
             else
             {
-                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer, "BookingUI_AvailClassIcon", "TELE"));
+                BookingUI_AvailClassName_retVal = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "BookingUI_AvailClassIcon", "TELE"));
             }
             return BookingUI_AvailClassName_retVal;
         }
@@ -3049,7 +3049,7 @@ namespace TranslatedProgram
             //		sTxt=Page.Resource("bookonline/btn/submitbookingenquiry","Submit a Booking Enquiry")
             //End Select
 
-            sImg = _.VAL(_.CALLm1v2(this, _outer.Page, "ImageResource", _.CONCAT("bookonline/icons/", sIcon), _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/", sIcon, ".gif")));
+            sImg = _.VAL(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", _.CONCAT("bookonline/icons/", sIcon), _.CONCAT(_.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "ImageDir"), "booking/", sIcon, ".gif")));
             BookingUI_AvailClassIcon_retVal = _.CONCAT("<img src=\"", sImg, "\" style=\"vertical-align:middle;\" alt=\"", sTxt, "\" />");
             return BookingUI_AvailClassIcon_retVal;
         }
@@ -3069,7 +3069,7 @@ namespace TranslatedProgram
             object amPrice_vref = amPrice;
             try
             {
-                strPrice = _.VAL(_.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(amPrice_vref, v213 => { amPrice_vref = v213; })));
+                strPrice = _.VAL(_.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Money", "MakePrice", _.ARGS.Ref(amPrice_vref, v213 => { amPrice_vref = v213; })));
             }
             finally { amPrice = amPrice_vref; }
 
@@ -3085,7 +3085,7 @@ namespace TranslatedProgram
             }
 
             // Return string ready for display
-            BookingUI_NicePrice_retVal = _.VAL(_.CALLm1argp(this, _outer.Server, "HTMLEncode", _.ARGS.Ref(strPrice, v214 => { strPrice = v214; })));
+            BookingUI_NicePrice_retVal = _.VAL(_.CALLm1argp(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HTMLEncode", _.ARGS.Ref(strPrice, v214 => { strPrice = v214; })));
             return BookingUI_NicePrice_retVal;
         }
         // ====================================================================================================
@@ -3102,8 +3102,8 @@ namespace TranslatedProgram
             object intIndex = null;
 
             // If either UnitName of LinkedUnitName absent, return blank
-            sUnitName = _.VAL(_.CALLm1v0(this, objUnit, "UnitName"));
-            sLinkedUnitName = _.VAL(_.CALLm1v0(this, objUnit, "LinkUnitName"));
+            sUnitName = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitName"));
+            sLinkedUnitName = _.VAL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "LinkUnitName"));
             if (_.IF(_.OR(_.OR(_.OR(_.ISNULL(sUnitName), _.EQ(_.NullableSTR(sUnitName), "")), _.ISNULL(sLinkedUnitName)), _.EQ(_.NullableSTR(sLinkedUnitName), ""))))
             {
                 BookingUI_LinkedUnitDesc_retVal = "";
@@ -3114,27 +3114,27 @@ namespace TranslatedProgram
             // data from TOv2 since it is not included in the data from the Availability Component. It is why the "all units" data must be passed into
             // this method. This change addresses FogBugz 12998.
             objParentUnit = VBScriptConstants.Nothing;
-            var loopEnd28 = _.NUM(_.SUBT(_.CALLm1v0(this, objAllUnits, "Count"), (Int16)1));
+            var loopEnd28 = _.NUM(_.SUBT(_.CALLm1v0(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "Count"), (Int16)1));
             var loopStart28 = _.NUM((Int16)0, loopEnd28, (Int16)1);
             if (_.StrictLTE(loopStart28, loopEnd28))
             {
                 for (intIndex = loopStart28; _.StrictLTE(intIndex, loopEnd28); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v215 => { intIndex = v215; })), "Key"), _.CALLm1v0(this, objUnit, "LinkUnitKey"))))
+                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "getItem", _.ARGS.Ref(intIndex, v215 => { intIndex = v215; })) ?? throw new InvalidOperationException("Reference not set:"), "Key"), _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "LinkUnitKey"))))
                     {
-                        objParentUnit = _.OBJ(_.CALLm1argp(this, objAllUnits, "getItem", _.ARGS.Ref(intIndex, v216 => { intIndex = v216; })));
+                        objParentUnit = _.OBJ(_.CALLm1argp(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "getItem", _.ARGS.Ref(intIndex, v216 => { intIndex = v216; })));
                         break;
                     }
                 }
             }
             if (_.IF(_.IS(objParentUnit, VBScriptConstants.Nothing)))
             {
-                _.CALLm1v1(this, _outer.Page, "PrintTraceWarning", _.CONCAT("Unable to locate parent unit (", _.CALLm1v0(this, objUnit, "LinkUnitKey"), ") for linked unit ", _.CALLm1v0(this, objUnit, "UnitKey")));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTraceWarning", _.CONCAT("Unable to locate parent unit (", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "LinkUnitKey"), ") for linked unit ", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey")));
                 BookingUI_LinkedUnitDesc_retVal = "";
                 return BookingUI_LinkedUnitDesc_retVal;
             }
 
-            BookingUI_LinkedUnitDesc_retVal = _.REPLACE(_.REPLACE(_.REPLACE(_.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/alsosoldaswithpersoncapacity", "(<i>#linkedunitname#</i> sold as #unitname# with #linkunitsize# person capacity)"), "#linkedunitname#", sLinkedUnitName), "#unitname#", sUnitName), "#linkunitsize#", _.CALLm1v0(this, objParentUnit, "Capacity"));
+            BookingUI_LinkedUnitDesc_retVal = _.REPLACE(_.REPLACE(_.REPLACE(_.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/alsosoldaswithpersoncapacity", "(<i>#linkedunitname#</i> sold as #unitname# with #linkunitsize# person capacity)"), "#linkedunitname#", sLinkedUnitName), "#unitname#", sUnitName), "#linkunitsize#", _.CALLm1v0(this, objParentUnit ?? throw new InvalidOperationException("Reference not set:objParentUnit"), "Capacity"));
             return BookingUI_LinkedUnitDesc_retVal;
         }
         // ====================================================================================================
@@ -3151,44 +3151,44 @@ namespace TranslatedProgram
             object objUnit = null;
             object strPriceBasis = null;
 
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm2v0(this, objAvailEntry, "Units", "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm2v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "Count")), (Int16)0)))
             {
-                _.CALLm1v1(this, pO, "Write", "<div id=\"availabilityCalendarTableWrapper\">");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<h3>", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/ticketsavailable", "Tickets Available:"), "</h3>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<table id=\"availabilityCalendarTable\" summary=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/ticketsavailable", "Tickets Available"), "\" border=\"1\">"));
-                _.CALLm1v1(this, pO, "Write", "<thead>");
-                _.CALLm1v1(this, pO, "Write", "<tr class=\"heading\">");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"unit\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/tickets", "Tickets"), "</th>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"select\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/selection", "Selection"), "</th>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"date\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/date", "Date"), "</th>"));
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"total\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/total", "Total"), "</th>"));
-                _.CALLm1v1(this, pO, "Write", "</tr>");
-                _.CALLm1v1(this, pO, "Write", "<tr>");
-                _.CALLm1v1(this, pO, "Write", "<th></th>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"number\">", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/nooftickets", "No.Tickets"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div id=\"availabilityCalendarTableWrapper\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<h3>", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/ticketsavailable", "Tickets Available:"), "</h3>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<table id=\"availabilityCalendarTable\" summary=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/ticketsavailable", "Tickets Available"), "\" border=\"1\">"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<thead>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<tr class=\"heading\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"unit\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/tickets", "Tickets"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"select\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/selection", "Selection"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"date\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/date", "Date"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"total\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/total", "Total"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</tr>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<tr>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<th></th>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"number\">", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/nooftickets", "No.Tickets"), "</th>"));
                 object adtStartNight_vref = adtStartNight;
                 try
                 {
-                    _.CALLm1v1(this, pO, "Write", _.CONCAT("<th class=\"staydate\">", _.CALLm3argp(this, _outer.Page, "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(adtStartNight_vref, v217 => { adtStartNight_vref = v217; }).Val(true).Val(true)), "</th>"));
+                    _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th class=\"staydate\">", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Dates", "NiceDateGuts", _.ARGS.Ref(adtStartNight_vref, v217 => { adtStartNight_vref = v217; }).Val(true).Val(true)), "</th>"));
                 }
                 finally { adtStartNight = adtStartNight_vref; }
-                _.CALLm1v1(this, pO, "Write", "<th class=\"total\"></th>");
-                _.CALLm1v1(this, pO, "Write", "</tr>");
-                _.CALLm1v1(this, pO, "Write", "</thead>");
-                _.CALLm1v1(this, pO, "Write", "<tbody>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<th class=\"total\"></th>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</tr>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</thead>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<tbody>");
                 iTotal = (Int16)0;
 
-                var loopEnd29 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry, "Units", "Count"), (Int16)1));
+                var loopEnd29 = _.NUM(_.SUBT(_.CALLm2v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "Count"), (Int16)1));
                 var loopStart29 = _.NUM((Int16)0, loopEnd29, (Int16)1);
                 if (_.StrictLTE(loopStart29, loopEnd29))
                 {
                     for (intIndexUnit = loopStart29; _.StrictLTE(intIndexUnit, loopEnd29); intIndexUnit = _.ADD(intIndexUnit, (Int16)1))
                     {
-                        objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry, "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v219 => { intIndexUnit = v219; })));
+                        objUnit = _.OBJ(_.CALLm2argp(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Units", "GetItem", _.ARGS.Ref(intIndexUnit, v219 => { intIndexUnit = v219; })));
 
-                        iSelectedQty = _.CLNG(_.CALLm1v1(this, _outer.Request, "Form", _.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))));
+                        iSelectedQty = _.CLNG(_.CALLm1v1(this, _outer.Request ?? throw new InvalidOperationException("Reference not set:"), "Form", _.CONCAT("unit_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"))));
 
-                        if (_.IF(_.CALLm1v0(this, objUnit, "PerPerson")))
+                        if (_.IF(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "PerPerson")))
                         {
                             strPriceBasis = "per per";
                         }
@@ -3197,31 +3197,31 @@ namespace TranslatedProgram
                             strPriceBasis = "per tic";
                         }
 
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<tr id=\"row_", _.CALLm1v0(this, objUnit, "UnitKey"), "\">"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"unit\">", _.CALLm1v0(this, objUnit, "UnitName"), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"select\">", _.CALLm3argp(this, _outer.Page, "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALLm1v0(this, objUnit, "UnitKey"))).Val((Int16)0).Val(_.CALLm1v0(this, objUnit, "UnitCount")).Ref(iSelectedQty, v220 => { iSelectedQty = v220; })), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"price\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.CALLm1v0(this, objUnit, "StayTotalPayable"))), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", _.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" id=\"data_", _.CALLm1v0(this, objUnit, "UnitKey"), "\" value=\"", _.CALLm1v0(this, objUnit, "UnitCount"), ",", _.CALLm1v0(this, objUnit, "MinOcc"), ",", _.CALLm1v0(this, objUnit, "UnitSize"), ",", strPriceBasis, ",", _.CALLm1v0(this, objUnit, "StayTotalPayable"), "\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3v1(this, _outer.Page, "Functions", "Money", "MakePrice", _.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty))), "</td>"));
-                        _.CALLm1v1(this, pO, "Write", "</tr>");
-                        iTotal = _.ADD(iTotal, _.MULT(_.CALLm1v0(this, objUnit, "StayTotalPayable"), iSelectedQty));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<tr id=\"row_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"), "\">"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td class=\"unit\">", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitName"), "</td>"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td class=\"select\">", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Booking", "DrawSelectRange", _.ARGS.Val(_.CONCAT("unit_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"))).Val((Int16)0).Val(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitCount")).Ref(iSelectedQty, v220 => { iSelectedQty = v220; })), "</td>"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td class=\"price\">", _.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HTMLEncode", _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Money", "MakePrice", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayable"))), "</td>"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td class=\"total\">", "<input type=\"hidden\" name=\"data_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"), "\" id=\"data_", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitKey"), "\" value=\"", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitCount"), ",", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "MinOcc"), ",", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "UnitSize"), ",", strPriceBasis, ",", _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayable"), "\">", _.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HTMLEncode", _.CALLm3v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Money", "MakePrice", _.MULT(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayable"), iSelectedQty))), "</td>"));
+                        _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</tr>");
+                        iTotal = _.ADD(iTotal, _.MULT(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "StayTotalPayable"), iSelectedQty));
 
                     }
                 }
                 iSubTotal = _.ADD(iSubTotal, iTotal);
 
-                _.CALLm1v1(this, pO, "Write", "</tbody>");
-                _.CALLm1v1(this, pO, "Write", "</table>");
-                _.CALLm1v1(this, pO, "Write", "</div>");
-                _.CALLm1v1(this, pO, "Write", "<table id=\"availabilityTotals\" summary=\"Totals\" border=\"1\">");
-                _.CALLm1v1(this, pO, "Write", "<tr>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<th>", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/unitselection/grandtotal", "Grand Total"), "</th>"));
-                _.CALLm1v1(this, pO, "Write", "<noscript>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<td><input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/unitselection/recalculate", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/bookrecalculate.gif")), "\" name=\"recalculate\" value=\"recalculate\" class=\"submit\"/></td>"));
-                _.CALLm1v1(this, pO, "Write", "</noscript>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<td id=\"AvCalTotal\">", _.CALLm1v1(this, _outer.Server, "HTMLEncode", _.CALLm3argp(this, _outer.Page, "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v222 => { iSubTotal = v222; }))), "</td>"));
-                _.CALLm1v1(this, pO, "Write", "</tr>");
-                _.CALLm1v1(this, pO, "Write", "</table>");
-                _.CALLm1v1(this, pO, "Write", _.CONCAT("<input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page, "ImageResource", "bookonline/btn/bookticketing", _.CONCAT(_.CALLm1v0(this, _outer.Context, "ImageDir"), "booking/bookticketing.gif")), "\" name=\"bookit\" value=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" alt=\"", _.CALLm1v2(this, _outer.Page, "Resource", "bookonline/btn/book", "Book"), "\" class=\"submit\"/>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</tbody>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</table>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</div>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<table id=\"availabilityTotals\" summary=\"Totals\" border=\"1\">");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<tr>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<th>", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/unitselection/grandtotal", "Grand Total"), "</th>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<noscript>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td><input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/unitselection/recalculate", _.CONCAT(_.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "ImageDir"), "booking/bookrecalculate.gif")), "\" name=\"recalculate\" value=\"recalculate\" class=\"submit\"/></td>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</noscript>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<td id=\"AvCalTotal\">", _.CALLm1v1(this, _outer.Server ?? throw new InvalidOperationException("Reference not set:"), "HTMLEncode", _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "Money", "MakePrice", _.ARGS.Ref(iSubTotal, v222 => { iSubTotal = v222; }))), "</td>"));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</tr>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "</table>");
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"image\" src=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "ImageResource", "bookonline/btn/bookticketing", _.CONCAT(_.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:"), "ImageDir"), "booking/bookticketing.gif")), "\" name=\"bookit\" value=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/btn/book", "Book"), "\" alt=\"", _.CALLm1v2(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Resource", "bookonline/btn/book", "Book"), "\" class=\"submit\"/>"));
             }
             return BookingUI_TicketsSummary_retVal;
         }
@@ -3241,20 +3241,20 @@ namespace TranslatedProgram
             object i = null;
             // 2009-02-13 DWR: Can't remove spaces from content here because estate ids can have
             // spaces in (eg. "Arun DC" in TSE)
-            aryExtBookEstate = _.SPLIT(_.REPLACE(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ExtBookEstateMapping"))), VBScriptConstants.vbCrLf, ""), ",");
+            aryExtBookEstate = _.SPLIT(_.REPLACE(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ExtBookEstateMapping"))), VBScriptConstants.vbCrLf, ""), ",");
             var loopEnd30 = _.NUM(_.SUBT(_.UBOUND(aryExtBookEstate), (Int16)1));
             var loopStart30 = _.NUM((Int16)0, loopEnd30, (Int16)2);
             if (_.StrictLTE(loopStart30, loopEnd30))
             {
                 for (i = loopStart30; _.StrictLTE(i, loopEnd30); i = _.ADD(i, (Int16)2))
                 {
-                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v224 => { i = v224; }))))), "DEFAULT")))
+                    if (_.IF(_.EQ(_.NullableSTR(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate ?? throw new InvalidOperationException("Reference not set:aryExtBookEstate"), _.ARGS.Ref(i, v224 => { i = v224; }))))), "DEFAULT")))
                     {
-                        strPostUrl_ExtDflt = _.VAL(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
+                        strPostUrl_ExtDflt = _.VAL(_.CALLm0argp(this, aryExtBookEstate ?? throw new InvalidOperationException("Reference not set:aryExtBookEstate"), _.ARGS.Val(_.ADD(i, (Int16)1))));
                     }
-                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Ref(i, v225 => { i = v225; })))), _.UCASE(_.TRIM(asEstateID)))))
+                    else if (_.IF(_.EQ(_.UCASE(_.TRIM(_.CALLm0argp(this, aryExtBookEstate ?? throw new InvalidOperationException("Reference not set:aryExtBookEstate"), _.ARGS.Ref(i, v225 => { i = v225; })))), _.UCASE(_.TRIM(asEstateID)))))
                     {
-                        strPostUrl_Ext = _.VAL(_.CALLm0argp(this, aryExtBookEstate, _.ARGS.Val(_.ADD(i, (Int16)1))));
+                        strPostUrl_Ext = _.VAL(_.CALLm0argp(this, aryExtBookEstate ?? throw new InvalidOperationException("Reference not set:aryExtBookEstate"), _.ARGS.Val(_.ADD(i, (Int16)1))));
                         break;
                     }
                 }
@@ -3263,12 +3263,12 @@ namespace TranslatedProgram
             if (_.IF(_.NOTEQ(_.NullableSTR(strPostUrl_Ext), "")))
             {
                 GetExtBookUrlFromProductEstate_retVal = _.VAL(strPostUrl_Ext);
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", _.CONCAT("GetExtBookUrlFromProductEstate: Product Estate ID = ", asEstateID, ", External Book Url = ", strPostUrl_Ext));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", _.CONCAT("GetExtBookUrlFromProductEstate: Product Estate ID = ", asEstateID, ", External Book Url = ", strPostUrl_Ext));
             }
             else if (_.IF(_.NOTEQ(_.NullableSTR(strPostUrl_ExtDflt), "")))
             {
                 GetExtBookUrlFromProductEstate_retVal = _.VAL(strPostUrl_ExtDflt);
-                _.CALLm1v1(this, _outer.Page, "PrintTrace", _.CONCAT("GetExtBookUrlFromProductEstate: Product Estate ID = ", asEstateID, ", Using Default External Book Url = ", strPostUrl_ExtDflt));
+                _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "PrintTrace", _.CONCAT("GetExtBookUrlFromProductEstate: Product Estate ID = ", asEstateID, ", Using Default External Book Url = ", strPostUrl_ExtDflt));
             }
             else
             {
@@ -3280,7 +3280,7 @@ namespace TranslatedProgram
         public object InitExternalBookingSettings()
         {
             object InitExternalBookingSettings_retVal = null;
-            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ForceExternal"), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page, "Site", "Params", "Booking_ExtBookEstateMapping")))), ""))))
+            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ForceExternal"), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Site", "Params", "Booking_ExtBookEstateMapping")))), ""))))
             {
                 _outer.IsExternalBooking = true;
             }
@@ -3300,28 +3300,28 @@ namespace TranslatedProgram
             object GetEditableBookingRequirement_retVal = null;
             object objBookingRequirementNew = null;
 
-            objBookingRequirementNew = _.OBJ(_.CALLm2v1(this, _outer.Page, "Functions", "GetNewObject", "BookingRequirement"));
+            objBookingRequirementNew = _.OBJ(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:"), "Functions", "GetNewObject", "BookingRequirement"));
             var with = _.OBJ(objBookingRequirementNew);
-            _.SETm1a0(this, with, "VisitDate", _.VAL(_.CALLm1v0(this, objBookingRequirement, "VisitDate")));
-            _.SETm1a0(this, with, "Nights", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Nights")));
-            _.SETm1a0(this, with, "FlexibleRange", _.VAL(_.CALLm1v0(this, objBookingRequirement, "FlexibleRange")));
-            _.SETm1a0(this, with, "Adults", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Adults")));
-            _.SETm1a0(this, with, "Children", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Children")));
-            _.SETm1a0(this, with, "ChildAges", _.VAL(_.CALLm1v0(this, objBookingRequirement, "ChildAges")));
-            _.SETm1a0(this, with, "IsEviivoBooking", _.VAL(_.CALLm1v0(this, objBookingRequirement, "IsEviivoBooking")));
-            _.SETm1a0(this, with, "Consumer", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Consumer")));
-            _.SETm1a0(this, with, "Offer", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Offer")));
-            _.SETm1a0(this, with, "BookingPassword", _.VAL(_.CALLm1v0(this, objBookingRequirement, "BookingPassword")));
-            _.SETm1a0(this, with, "Product", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Product")));
-            _.SETm1a0(this, with, "Requirement", _.VAL(_.CALLm1v0(this, objBookingRequirement, "Requirement")));
-            _.SETm1a0(this, with, "RequirementRef", _.VAL(_.CALLm1v0(this, objBookingRequirement, "RequirementRef")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "VisitDate", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "VisitDate")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Nights", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Nights")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "FlexibleRange", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "FlexibleRange")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Adults", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Adults")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Children", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Children")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "ChildAges", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "ChildAges")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "IsEviivoBooking", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "IsEviivoBooking")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Consumer", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Consumer")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Offer", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Offer")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "BookingPassword", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "BookingPassword")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Product", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Product")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Requirement", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "Requirement")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "RequirementRef", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "RequirementRef")));
             // NP 2012-03-12: RoomRequirements are needed
             // See GenerateRequirementFormData and Page.Functions.Booking.GenerateRequirementKeyValueData
             // the "NumRoomReq" value is part of the RoomRequirement, if it is not available then GenerateRequirementKeyValueData
             // sets default values for the adult and number of room requirements both to 1.
             // Requirements are not being passed to the RequirementSummary control correctly because the BookingRequestDictionary
             // is being overwritten with these incorrect default values.
-            _.SETm1a0(this, with, "RoomRequirements", _.VAL(_.CALLm1v0(this, objBookingRequirement, "RoomRequirements")));
+            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "RoomRequirements", _.VAL(_.CALLm1v0(this, objBookingRequirement ?? throw new InvalidOperationException("Reference not set:objBookingRequirement"), "RoomRequirements")));
             GetEditableBookingRequirement_retVal = _.OBJ(objBookingRequirementNew);
             return GetEditableBookingRequirement_retVal;
         }

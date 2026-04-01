@@ -37,12 +37,12 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALLm1v5(this, _env.hlObj, "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            URL = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:"), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
-            _.CALLm1argp(this, wshShell, "run", _.ARGS.Ref(URL, v => { URL = v; }));
+            _.CALLm1argp(this, wshShell ?? throw new InvalidOperationException("Reference not set:wshShell"), "run", _.ARGS.Ref(URL, v => { URL = v; }));
 
-            Processes = _.OBJ(_.CALLm1v1(this, _.GETOBJECT("winmgmts:"), "InstancesOf", "Win32_Process"));
+            Processes = _.OBJ(_.CALLm1v1(this, _.GETOBJECT("winmgmts:") ?? throw new InvalidOperationException("Reference not set:"), "InstancesOf", "Win32_Process"));
 
             intProcessId = "";
             var enumerationContent = _.ENUMERABLE(Processes).GetEnumerator();
@@ -51,9 +51,9 @@ namespace TranslatedProgram
                 if (!enumerationContent.MoveNext())
                     break;
                 Process = enumerationContent.Current;
-                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v0(this, Process, "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
+                if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v0(this, Process ?? throw new InvalidOperationException("Reference not set:Process"), "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
                 {
-                    intProcessId = _.VAL(_.CALLm1v0(this, Process, "ProcessId"));
+                    intProcessId = _.VAL(_.CALLm1v0(this, Process ?? throw new InvalidOperationException("Reference not set:Process"), "ProcessId"));
                     break;
                 }
             }
@@ -61,7 +61,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(_.LEN(intProcessId)), (Int16)0)))
             {
                 var with = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
-                _.CALLm1argp(this, with, "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
+                _.CALLm1argp(this, with ?? throw new InvalidOperationException("Reference not set:with"), "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
 
             }
         }
