@@ -79,7 +79,7 @@ namespace TranslatedProgram
                 _.CALLm2v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", "Append", _.CALLm1argp(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
                 _.CALLm2v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", "Append", _.CALLm1v4(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
                 _.CALLm1v0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Value"));
 
                 _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
 
@@ -104,7 +104,7 @@ namespace TranslatedProgram
                 _.CALLm2v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", "Append", _.CALLm1argp(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
                 _.CALLm2v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", "Append", _.CALLm1v4(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));
                 _.CALLm1v0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:"), "Value"));
+                parmval = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "Parameters", (Int16)2) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Value"));
 
                 _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
 

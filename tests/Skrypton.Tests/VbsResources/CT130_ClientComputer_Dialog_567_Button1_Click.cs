@@ -42,7 +42,7 @@ namespace TranslatedProgram
             wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
             _.CALLm1argp(this, wshShell ?? throw new InvalidOperationException("Reference not set:wshShell"), "run", _.ARGS.Ref(URL, v => { URL = v; }));
 
-            Processes = _.OBJ(_.CALLm1v1(this, _.GETOBJECT("winmgmts:") ?? throw new InvalidOperationException("Reference not set:"), "InstancesOf", "Win32_Process"));
+            Processes = _.OBJ(_.CALLm1v1(this, _.GETOBJECT("winmgmts:") ?? throw new InvalidOperationException("Reference not set:(GetObject result)"), "InstancesOf", "Win32_Process"));
 
             intProcessId = "";
             var enumerationContent = _.ENUMERABLE(Processes).GetEnumerator();

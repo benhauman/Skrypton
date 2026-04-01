@@ -1091,10 +1091,10 @@ namespace TranslatedProgram
             object nodeActState = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "CreateInstanceRq"));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_adddevice");
@@ -1102,64 +1102,64 @@ namespace TranslatedProgram
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ObserverKey"));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
             _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ContextData"));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeAddDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:AddDeviceActualParams"));
+            nodeAddDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:AddDeviceActualParams"));
             _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeAddDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceIdentification"));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceName"));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
             _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:CompanyName"));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CompanyName"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeCmpyName);
             _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CompanyName"))));
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:Domain"));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
             _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:CostCenter"));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CostCenter"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeCostCenter);
             _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CostCenter"))));
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:MACAddress"));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:MACAddress"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeMACAddress);
             _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("MACAddress"))));
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:SubnetMask"));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:SubnetMask"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeSubnetMask);
             _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SubnetMask"))));
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:HwTypeId"));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:HwTypeId"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeHWType);
             _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("HwTypeId"))));
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:OsTypeId"));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:OsTypeId"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeOSType);
             _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("OsTypeId"))));
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:ActivationState"));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ActivationState"));
             _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeActState);
             _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ActivationState"))));
 
@@ -1186,10 +1186,10 @@ namespace TranslatedProgram
             object nodeActState = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "CreateInstanceRq"));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_chgdevice");
@@ -1197,64 +1197,64 @@ namespace TranslatedProgram
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ObserverKey"));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
             _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ContextData"));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeChgDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:ChangeDeviceActualParams"));
+            nodeChgDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ChangeDeviceActualParams"));
             _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeChgDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceIdentification"));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceName"));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
             _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:Domain"));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
             _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:CompanyName"));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CompanyName"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeCmpyName);
             _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CompanyName"))));
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:CostCenter"));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CostCenter"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeCostCenter);
             _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CostCenter"))));
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:MACAddress"));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:MACAddress"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeMACAddress);
             _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("MACAddress"))));
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:SubnetMask"));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:SubnetMask"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeSubnetMask);
             _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SubnetMask"))));
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:HwTypeId"));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:HwTypeId"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeHWType);
             _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("HwTypeId"))));
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:OsTypeId"));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:OsTypeId"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeOSType);
             _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("OsTypeId"))));
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:ActivationState"));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ActivationState"));
             _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeActState);
             _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ActivationState"))));
 
@@ -1274,10 +1274,10 @@ namespace TranslatedProgram
             object nodeDomain = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "CreateInstanceRq"));
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
             _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_removedevice");
@@ -1285,24 +1285,24 @@ namespace TranslatedProgram
             _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ObserverKey"));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
             _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "ContextData"));
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
             _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:RemoveDeviceActualParams"));
+            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:RemoveDeviceActualParams"));
             _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeRemoveDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceIdentification"));
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
             _.CALLm1v1(this, nodeRemoveDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeRemoveDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:DeviceName"));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
             _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
 
@@ -1312,7 +1312,7 @@ namespace TranslatedProgram
             //nodeCmpyName.Text = pDict("CompanyName")
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateElement", "dt:Domain"));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
             _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
             _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
 

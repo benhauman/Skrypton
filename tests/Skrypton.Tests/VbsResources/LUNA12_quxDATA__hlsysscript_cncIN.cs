@@ -137,7 +137,7 @@ namespace TranslatedProgram
 
             _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "SetCaseAttributes");
 
-            oScripter = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateScriptEngine"));
+            oScripter = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateScriptEngine"));
 
             object hlcase_vref = hlcase;
             try
@@ -152,7 +152,7 @@ namespace TranslatedProgram
             }
             finally { mail = mail_vref; }
 
-            _.CALLm1argp(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "ExecuteScript", _.ARGS.Ref(oScripter, v12 => { oScripter = v12; }).Ref(_env.session, v13 => { _env.session = v13; }).Val("receive"));
+            _.CALLm1argp(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "ExecuteScript", _.ARGS.Ref(oScripter, v12 => { oScripter = v12; }).Ref(_env.session, v13 => { _env.session = v13; }).Val("receive"));
 
         }
         public object IsAdhocMail(ref object oMailRequest)
@@ -178,10 +178,10 @@ namespace TranslatedProgram
                 if (!enumerationContent2.MoveNext())
                     break;
                 oCaseType = enumerationContent2.Current;
-                if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1v1(this, oCaseType ?? throw new InvalidOperationException("Reference not set:oCaseType"), "GetValue", "type") ?? throw new InvalidOperationException("Reference not set:"), "data"), _.CALLm1v0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype"))))
+                if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1v1(this, oCaseType ?? throw new InvalidOperationException("Reference not set:oCaseType"), "GetValue", "type") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "data"), _.CALLm1v0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype"))))
                 {
                     oCaseCfg = _.OBJ(oCaseType);
-                    _.SETm1a0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "type") ?? throw new InvalidOperationException("Reference not set:"), "data")));
+                    _.SETm1a0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "type") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "data")));
                     bRegisteredMailType = true;
                     break;
                 }
@@ -199,7 +199,7 @@ namespace TranslatedProgram
             //
             // Suche die Objektdefinition anhand des Betreffs in der E-Mail
             //
-            var enumerationContent3 = _.ENUMERABLE(_.CALLm1v0(this, _.CALLm1v1(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("config")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "GetGroup", "subject") ?? throw new InvalidOperationException("Reference not set:(call result)"), "values")).GetEnumerator();
+            var enumerationContent3 = _.ENUMERABLE(_.CALLm1v0(this, _.CALLm1v1(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("config")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "GetGroup", "subject") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "values")).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
@@ -230,7 +230,7 @@ namespace TranslatedProgram
 
             _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "SetSUAttributes");
 
-            oScripter = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "CreateScriptEngine"));
+            oScripter = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateScriptEngine"));
 
             object hlcase_vref2 = hlcase;
             try
@@ -245,7 +245,7 @@ namespace TranslatedProgram
             }
             finally { mail = mail_vref2; }
 
-            _.CALLm1argp(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "ExecuteScript", _.ARGS.Ref(oScripter, v19 => { oScripter = v19; }).Ref(_env.session, v20 => { _env.session = v20; }).Val("extend"));
+            _.CALLm1argp(this, _.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("worker")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "ExecuteScript", _.ARGS.Ref(oScripter, v19 => { oScripter = v19; }).Ref(_env.session, v20 => { _env.session = v20; }).Val("extend"));
 
         }
         public void AssociateSenderToCase(ref object oMailRequest, ref object oCaseCfg, ref object oHLServer, ref object oCase)
@@ -257,7 +257,7 @@ namespace TranslatedProgram
             //
             // Suche
             //
-            sMailAttributeKey = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "MailAttributeKey") ?? throw new InvalidOperationException("Reference not set:"), "data"));
+            sMailAttributeKey = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "MailAttributeKey") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "data"));
             sSearchConditionPersons = _.CONCAT(sMailAttributeKey, "= \"", _.CALLm1v0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "SenderMail"), "\"");
 
             _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.CONCAT("SearchCondition = ", sSearchConditionPersons));
@@ -305,7 +305,7 @@ namespace TranslatedProgram
             //	Erzeuge einen Vorgang
             //
 
-            sCaseType = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "CaseType") ?? throw new InvalidOperationException("Reference not set:"), "data"));
+            sCaseType = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, oCaseCfg ?? throw new InvalidOperationException("Reference not set:oCaseCfg"), "GetValue", "CaseType") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "data"));
             oCase = _.OBJ(_.CALLm1argp(this, oHLServer ?? throw new InvalidOperationException("Reference not set:oHLServer"), "CreateCase", _.ARGS.Ref(sCaseType, v25 => { sCaseType = v25; })));
             oHLCase = _.OBJ(_.CALLm1v0(this, oCase ?? throw new InvalidOperationException("Reference not set:oCase"), "GetHLObject"));
 

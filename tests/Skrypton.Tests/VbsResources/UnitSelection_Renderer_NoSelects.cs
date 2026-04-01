@@ -1366,7 +1366,7 @@ namespace TranslatedProgram
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<script type=\"text/javascript\">");
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("NewMind.ETWP.ControlData[", _.CALLm1v0(this, _outer.Context ?? throw new InvalidOperationException("Reference not set:Context"), "PageControlKey"), "] = { "));
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "UnitSelPartialRenderLink: '");
-                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Functions", "GetNewObject", "clsJSON") ?? throw new InvalidOperationException("Reference not set:(call result)"), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Querystring"))));
+                _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CALLm1v1(this, _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Functions", "GetNewObject", "clsJSON") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "EscapeJSON", _.CONCAT("?", _.CALLm1v0(this, ReqDictTemp ?? throw new InvalidOperationException("Reference not set:ReqDictTemp"), "Querystring"))));
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "'");
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " };");
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "NewMind.ETWP.Booking.InitUnitSel();");
@@ -1599,8 +1599,8 @@ namespace TranslatedProgram
                         // 2013-02-05 TB: objRenderSettings is used by RenderBookingInfoForm to populate some hidden stay information
                         // For fuzzy stays, both nights and startdate may differ from the original requirements.
                         // For FogBugz case 7594 I added the second line below which wasn't present.
-                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:"), "VisitDate", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")));
-                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:"), "Nights", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
+                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "VisitDate", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")));
+                        _.SETm1a0(this, _.CALLm1v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Nights", _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights")));
 
                         // 2014-03-12 DWR: We need to pass the Search Industry Classification into the form rendering code for VB Polling Products so that the
                         // Polling Exist can generate the deep link correctly. An Eviivo Configset can be set up with zero, meaning support either 1 OR 9. The
@@ -1612,7 +1612,7 @@ namespace TranslatedProgram
                         object objRenderSettings_vref6 = objRenderSettings;
                         try
                         {
-                            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderBookingInfoForm", _.ARGS.Ref(pO, v89 => { pO = v89; }).Ref(intProdKey, v90 => { intProdKey = v90; }).Ref(objRenderSettings_vref6, v91 => { objRenderSettings_vref6 = v91; }).Ref(intBookingType, v92 => { intBookingType = v92; }).Ref(strSupplierId, v93 => { strSupplierId = v93; }).Ref(strSupplierName, v94 => { strSupplierName = v94; }).Ref(strSupplierEviivoName, v95 => { strSupplierEviivoName = v95; }).Ref(strSupplierQuality, v96 => { strSupplierQuality = v96; }).Ref(strSupplierLogo, v97 => { strSupplierLogo = v97; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Units", "GetItem", (Int16)0) ?? throw new InvalidOperationException("Reference not set:"), "IndustryClassification")));
+                            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "RenderBookingInfoForm", _.ARGS.Ref(pO, v89 => { pO = v89; }).Ref(intProdKey, v90 => { intProdKey = v90; }).Ref(objRenderSettings_vref6, v91 => { objRenderSettings_vref6 = v91; }).Ref(intBookingType, v92 => { intBookingType = v92; }).Ref(strSupplierId, v93 => { strSupplierId = v93; }).Ref(strSupplierName, v94 => { strSupplierName = v94; }).Ref(strSupplierEviivoName, v95 => { strSupplierEviivoName = v95; }).Ref(strSupplierQuality, v96 => { strSupplierQuality = v96; }).Ref(strSupplierLogo, v97 => { strSupplierLogo = v97; }).Val(_.CALLm1v0(this, _.CALLm2v1(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "Units", "GetItem", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "IndustryClassification")));
                         }
                         finally { objRenderSettings = objRenderSettings_vref6; }
 
@@ -1882,7 +1882,7 @@ namespace TranslatedProgram
                     object intUnitKey_vref = intUnitKey;
                     try
                     {
-                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev ?? throw new InvalidOperationException("Reference not set:objEntryPrev"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Add", _.ARGS.Ref(intUnitKey_vref, v134 => { intUnitKey_vref = v134; }));
+                        _.CALLm1argp(this, _.CALLm0argp(this, objEntryPrev ?? throw new InvalidOperationException("Reference not set:objEntryPrev"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Add", _.ARGS.Ref(intUnitKey_vref, v134 => { intUnitKey_vref = v134; }));
                     }
                     finally { intUnitKey = intUnitKey_vref; }
                     return BookingUI_UnitSel_AddReqUnitOption_retVal;
@@ -1897,7 +1897,7 @@ namespace TranslatedProgram
             object intUnitKey_vref2 = intUnitKey;
             try
             {
-                _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Add", _.ARGS.Ref(intUnitKey_vref2, v135 => { intUnitKey_vref2 = v135; }));
+                _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Add", _.ARGS.Ref(intUnitKey_vref2, v135 => { intUnitKey_vref2 = v135; }));
             }
             finally { intUnitKey = intUnitKey_vref2; }
             _.CALLm1argp(this, arrReqUnitOptions ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions"), "Add", _.ARGS.Ref(objEntry, v136 => { objEntry = v136; }));
@@ -2021,11 +2021,11 @@ namespace TranslatedProgram
                         // UnitKey, then we've got a possible match
                         bool ifResult3;
                         object arrReqUnitOptions_zref3 = arrReqUnitOptions;
-                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v139 => { intIndex = v139; })) ?? throw new InvalidOperationException("Reference not set:(call result)"), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v140 => { intIndex = v140; })) ?? throw new InvalidOperationException("Reference not set:(call result)"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
+                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v139 => { intIndex = v139; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v140 => { intIndex = v140; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
                         if (ifResult3)
                         {
                             object arrReqUnitOptions_zref4 = arrReqUnitOptions;
-                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Add", _.ARGS.RefIfArray(arrReqUnitOptions_zref4, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; }), _.ARGS.Val("ReqNo")));
+                            _.CALLm1argp(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Add", _.ARGS.RefIfArray(arrReqUnitOptions_zref4, _.ARGS.Ref(intIndex, v141 => { intIndex = v141; }), _.ARGS.Val("ReqNo")));
                         }
                         if (!loopConstraintsInitialized)
                             break;
@@ -2042,7 +2042,7 @@ namespace TranslatedProgram
 
             // If there is at least one possible requirement match, add entry to list
             // (Otherwise, we can't do anything with the selection so don't bother with it)
-            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Count")), (Int16)0)))
+            if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("PossReqNos")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Count")), (Int16)0)))
             {
                 object arrReqUnitSelections_zref = arrReqUnitSelections;
                 _.CALLm1argp(this, arrReqUnitSelections_zref ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections_zref"), "Add", _.ARGS.Ref(objEntry, v142 => { objEntry = v142; }));
@@ -2095,7 +2095,7 @@ namespace TranslatedProgram
             {
                 for (intIndexSel = loopStart17; _.StrictLTE(intIndexSel, loopEnd17); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
-                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v143 => { intIndexSel = v143; })) ?? throw new InvalidOperationException("Reference not set:(call result)"), _.ARGS.Val("PossReqNos")));
+                    lsPossReqNos = _.OBJ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v143 => { intIndexSel = v143; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("PossReqNos")));
                     if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, lsPermutations ?? throw new InvalidOperationException("Reference not set:lsPermutations"), "Count")), (Int16)0)))
                     {
                         // This is the first pass, so initialise the permutations list with
@@ -2195,7 +2195,7 @@ namespace TranslatedProgram
                 for (intIndexSel = loopStart24; _.StrictLTE(intIndexSel, loopEnd24); intIndexSel = _.ADD(intIndexSel, (Int16)1))
                 {
                     intIndexOption = _.SUBT(_.CALLm0argp(this, arrMatches ?? throw new InvalidOperationException("Reference not set:arrMatches"), _.ARGS.Ref(intIndexSel, v152 => { intIndexSel = v152; })), (Int16)1);
-                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })) ?? throw new InvalidOperationException("Reference not set:(call result)"), _.ARGS.Val("UnitKey")));
+                    intUnitKey = _.VAL(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitSelections ?? throw new InvalidOperationException("Reference not set:arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v153 => { intIndexSel = v153; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("UnitKey")));
                     _.SETm0a1(this, lsUnitKeys ?? throw new InvalidOperationException("Reference not set:lsUnitKeys"), intIndexOption, _.VAL(intUnitKey));
                 }
             }
@@ -3120,7 +3120,7 @@ namespace TranslatedProgram
             {
                 for (intIndex = loopStart28; _.StrictLTE(intIndex, loopEnd28); intIndex = _.ADD(intIndex, (Int16)1))
                 {
-                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "getItem", _.ARGS.Ref(intIndex, v215 => { intIndex = v215; })) ?? throw new InvalidOperationException("Reference not set:(call result)"), "Key"), _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "LinkUnitKey"))))
+                    if (_.IF(_.EQ(_.CALLm1v0(this, _.CALLm1argp(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "getItem", _.ARGS.Ref(intIndex, v215 => { intIndex = v215; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Key"), _.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "LinkUnitKey"))))
                     {
                         objParentUnit = _.OBJ(_.CALLm1argp(this, objAllUnits ?? throw new InvalidOperationException("Reference not set:objAllUnits"), "getItem", _.ARGS.Ref(intIndex, v216 => { intIndex = v216; })));
                         break;

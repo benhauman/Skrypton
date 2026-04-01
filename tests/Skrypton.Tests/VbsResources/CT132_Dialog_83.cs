@@ -962,7 +962,7 @@ namespace TranslatedProgram
                 //Ditzingen oder TG auslesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_resp = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
-                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "fields", "responsibility") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "fields", "responsibility") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "close");
 
                 //Keyword einlesen
@@ -974,7 +974,7 @@ namespace TranslatedProgram
                     rs_kwkwo = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                         _.CALLm1v0(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
@@ -1071,9 +1071,9 @@ namespace TranslatedProgram
                     //Teamname auslesen
                     rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_team = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname,Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
-                    teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                    teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                    agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                    teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                    teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                    agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                     _.CALLm1v0(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "close");
 
                     //Abfrage ob Speicherung als persönliches oder als Teamtemplate gewünscht wird
@@ -1139,35 +1139,35 @@ namespace TranslatedProgram
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select * from templater where template_id = ", templateid)));
 
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "Requesttype") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "Requesttype") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseDescription.DescriptionText", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), "")))
                 {
-                    _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseDescription.DescriptionText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "descriptiontext") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                    _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseDescription.DescriptionText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "descriptiontext") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 }
                 else
                 {
                 }
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseDiagnosis.DiagnosisText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "diagnosistext") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseSolution.SolutionText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "solutiontext") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "Keywords.Keyword", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "keyword") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "Keywords.KeywordOrga", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.EscalationLevel", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EscalationLevel") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "Impact") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "FunctionalRange") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "ProductionalRelevance") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailCaller") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "IncidentStatus") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "DefaultNotification") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.Convenience", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "PCAssoziated") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailBodytext") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailBodyRawtext") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseDiagnosis.DiagnosisText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "diagnosistext") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseSolution.SolutionText", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "solutiontext") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "Keywords.Keyword", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "keyword") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "Keywords.KeywordOrga", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.EscalationLevel", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EscalationLevel") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "Impact") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "FunctionalRange") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "ProductionalRelevance") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailCaller") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "IncidentStatus") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "DefaultNotification") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "IncidentAttribute.Convenience", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "PCAssoziated") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailBodytext") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailBodyRawtext") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 //hlObj.SetValue "EmailSUAttribute.EmailTo",0,0,0,rs.fields("EmailTo").value
-                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailCC", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailCC") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailCC", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailCC") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 strSubject = _.VAL(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseGeneral.Subject", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v18 => { strSubject = v18; }));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), "")))
                 {
-                    _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailSubject") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                    _.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "EmailSubject") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 }
 
                 //Subject Setzen
@@ -1340,13 +1340,13 @@ namespace TranslatedProgram
                 //Recordset anlegen und templatenamen auslesen
                 rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select templatename,editor from templater where template_id = ", _.CSTR(templateid))));
-                templatename = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "editor") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                templatename = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "editor") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
-                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "close");
 
                 //Nur wenn Agent = Editor überschreiben, sonst Abbruch
@@ -1426,8 +1426,8 @@ namespace TranslatedProgram
                 //Teamname auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
-                teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-                teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+                teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "close");
 
                 //Für Agent Templates ID bestimmen und selektierten Wert in Label schreiben
@@ -1441,7 +1441,7 @@ namespace TranslatedProgram
                 while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1v1(this, _env.cb_template_load ?? throw new InvalidOperationException("Reference not set:cb_template_load"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                        _.CALLm1v1(this, _env.cb_template_load ?? throw new InvalidOperationException("Reference not set:cb_template_load"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_agent_templates = _.ADD(anzahl_agent_templates, (Int16)1);
@@ -1473,7 +1473,7 @@ namespace TranslatedProgram
                 while (_.IF(() => _.IF(_.NOT(_.CALLm1v0(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "eof"))), errOn))
                 {
                     _.HANDLEERROR(errOn, () => {
-                        _.CALLm1v1(this, _env.cb_template_load ?? throw new InvalidOperationException("Reference not set:cb_template_load"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                        _.CALLm1v1(this, _env.cb_template_load ?? throw new InvalidOperationException("Reference not set:cb_template_load"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", "templatename") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                     });
                     _.HANDLEERROR(errOn, () => {
                         anzahl_team_templates = _.ADD(anzahl_team_templates, (Int16)1);
@@ -1540,13 +1540,13 @@ namespace TranslatedProgram
                 //Editor bestimmen
                 rs_editor = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_editor = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select editor from templater where template_id = ", _.CSTR(templateid))));
-                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_editor ?? throw new InvalidOperationException("Reference not set:rs_editor"), "fields", "editor") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                editor = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_editor ?? throw new InvalidOperationException("Reference not set:rs_editor"), "fields", "editor") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_editor ?? throw new InvalidOperationException("Reference not set:rs_editor"), "close");
 
                 //Agent Name auslesen
                 rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_team = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
-                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                agent_displayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "Agent_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "close");
 
                 if (_.IF(_.NOTEQ(editor, _.CSTR(agent))))
@@ -1620,8 +1620,8 @@ namespace TranslatedProgram
             //Teamname auslesen
             rs_teamid = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
             rs_teamid = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
-            teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid ?? throw new InvalidOperationException("Reference not set:rs_teamid"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
-            teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid ?? throw new InvalidOperationException("Reference not set:rs_teamid"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+            teamDisplayname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid ?? throw new InvalidOperationException("Reference not set:rs_teamid"), "fields", "AgentTeam_Displayname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
+            teamID = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_teamid ?? throw new InvalidOperationException("Reference not set:rs_teamid"), "fields", "AgentTeam_ID") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
             _.CALLm1v0(this, rs_teamid ?? throw new InvalidOperationException("Reference not set:rs_teamid"), "close");
 
             //Anzahl der Agenten-Templates bestimmen
@@ -1675,7 +1675,7 @@ namespace TranslatedProgram
                     while (true)
                     {
                         _.HANDLEERROR(errOn2, () => {
-                            _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_agent ?? throw new InvalidOperationException("Reference not set:rs_agent"), "fields", "template_id") ?? throw new InvalidOperationException("Reference not set:"), "value")));
+                            _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_agent ?? throw new InvalidOperationException("Reference not set:rs_agent"), "fields", "template_id") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value")));
                         });
                         _.HANDLEERROR(errOn2, () => {
                             _.CALLm1v0(this, rs_agent ?? throw new InvalidOperationException("Reference not set:rs_agent"), "MoveNext");
@@ -1742,7 +1742,7 @@ namespace TranslatedProgram
                         while (true)
                         {
                             _.HANDLEERROR(errOn2, () => {
-                                _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "template_id") ?? throw new InvalidOperationException("Reference not set:"), "value")));
+                                _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "fields", "template_id") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value")));
                             });
                             _.HANDLEERROR(errOn2, () => {
                                 _.CALLm1v0(this, rs_team ?? throw new InvalidOperationException("Reference not set:rs_team"), "MoveNext");
@@ -1809,7 +1809,7 @@ namespace TranslatedProgram
                         //Command lin for calling On Command Remote Master
                         //Command1="""%programfiles%"\smsadmin\bin\i386\remote.exe 2 "" & host
                         _.HANDLEERROR(errOn3, () => {
-                            OsType = _.VAL(_.CALLm1v0(this, _.GETOBJECT("winmgmts:root\\cimv2:Win32_Processor='cpu0'") ?? throw new InvalidOperationException("Reference not set:"), "AddressWidth"));
+                            OsType = _.VAL(_.CALLm1v0(this, _.GETOBJECT("winmgmts:root\\cimv2:Win32_Processor='cpu0'") ?? throw new InvalidOperationException("Reference not set:(GetObject result)"), "AddressWidth"));
                         });
                         if (_.IF(() => _.EQ(_.NullableNUM(OsType), (Int16)32), errOn3))
                         {
@@ -2121,10 +2121,10 @@ namespace TranslatedProgram
                 {
                     //In Variable schreiben
                     i = _.ADD(i, (Int16)1);
-                    _.CALLm1v1(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                    _.CALLm1v1(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "AddItem", _.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                     if (_.IF(_.EQ(_.NullableNUM(i), (Int16)1)))
                     {
-                        _.SETm1a0(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:"), "value")));
+                        _.SETm1a0(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "Text", _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value")));
                     }
                     _.CALLm1v0(this, rs2 ?? throw new InvalidOperationException("Reference not set:rs2"), "movenext");
                 }
@@ -2238,7 +2238,7 @@ namespace TranslatedProgram
                 //Teamname auslesen
                 rs_kwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_kwo = _.OBJ(_.CALLm1v1(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", _.CONCAT("Select name,internalname from vw_agent_to_first_keywordorga where agentid = ", _.CSTR(agent))));
-                internalname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwo ?? throw new InvalidOperationException("Reference not set:rs_kwo"), "fields", "internalname") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                internalname = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwo ?? throw new InvalidOperationException("Reference not set:rs_kwo"), "fields", "internalname") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
 
                 //Wert in Schlagwort schreiben
                 _.CALLm1argp(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "SetValue", _.ARGS.Val("Keywords.KeywordOrga").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(internalname, v36 => { internalname = v36; }));
@@ -2283,7 +2283,7 @@ namespace TranslatedProgram
                 //Teamname auslesen
                 rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_kw = _.OBJ(_.CALLm1v1(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "Execute", _.CONCAT("Select keywordid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
-                keywordid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kw ?? throw new InvalidOperationException("Reference not set:rs_kw"), "fields", "keywordid") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                keywordid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kw ?? throw new InvalidOperationException("Reference not set:rs_kw"), "fields", "keywordid") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_kw ?? throw new InvalidOperationException("Reference not set:rs_kw"), "close");
 
                 //Wert in Schlagwort schreiben
@@ -2294,7 +2294,7 @@ namespace TranslatedProgram
                 //Responsibility - Ditzingen oder TG - einlesen
                 rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                 rs_resp = _.OBJ(_.CALLm1v1(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
-                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "fields", "responsibility") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                responsibility = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "fields", "responsibility") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                 _.CALLm1v0(this, rs_resp ?? throw new InvalidOperationException("Reference not set:rs_resp"), "close");
 
                 //Keyword einlesen
@@ -2306,7 +2306,7 @@ namespace TranslatedProgram
                     rs_kwkwo = _.OBJ(_.CALLm1v1(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "EOF"))))
                     {
-                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                        kwo = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "fields", "keywordorga") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                         _.CALLm1v0(this, rs_kwkwo ?? throw new InvalidOperationException("Reference not set:rs_kwkwo"), "MoveNext");
                     }
                     if (_.IF(_.NOT(_.EQ(_.NullableSTR(kwo), ""))))
@@ -2748,7 +2748,7 @@ namespace TranslatedProgram
                     //Personid über AgentID ermitteln
                     rs_person = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                     rs_person = _.OBJ(_.CALLm1v1(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "Execute", _.CONCAT("Select personid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
-                    personid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_person ?? throw new InvalidOperationException("Reference not set:rs_person"), "fields", "personid") ?? throw new InvalidOperationException("Reference not set:"), "value"));
+                    personid = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, rs_person ?? throw new InvalidOperationException("Reference not set:rs_person"), "fields", "personid") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                     _.CALLm1v0(this, rs_person ?? throw new InvalidOperationException("Reference not set:rs_person"), "close");
 
                     //Datenbankverbindung zu helpline_data

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Skrypton.RuntimeSupport;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
@@ -21,53 +22,58 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
 
-        protected internal string GetTargetNameForException(string targetAccessorName)
+        protected string GetTargetNameForException(string targetAccessorName)
         {
             if (targetAccessorName == null) throw new ArgumentNullException(nameof(targetAccessorName));
-            // StatementTranslator
+
             string[] dotTokens = targetAccessorName.Split('.');
             if (dotTokens.Length > 1)
             {
-                if (dotTokens.Length == 2 && dotTokens[0] == _envRefName.Name) // _env.
+                if (dotTokens.Length >= 2 && dotTokens[0] == _envRefName.Name) // _env.
                 {
-                    if (dotTokens[1].Contains('"'))
-                    {
-                        return "";
-                    }
-                    return dotTokens[1];
+                    return GetTargetChainTokenAsText(dotTokens, targetAccessorName, "e");
                 }
-                if (dotTokens.Length == 2 && dotTokens[0] == _supportRefName.Name) // _.
+                if (dotTokens.Length >= 2 && dotTokens[0] == _supportRefName.Name) // _.
                 {
-                    if (dotTokens[1].Contains('"'))
-                    {
-                        return "";
-                    }
-                    return dotTokens[1];
+                    return GetTargetChainTokenAsText(dotTokens, targetAccessorName, "_");
                 }
-                if (dotTokens.Length == 2 && dotTokens[0] == _outerRefName.Name) // _outer.
+                if (dotTokens.Length >= 2 && dotTokens[0] == _outerRefName.Name) // _outer.
                 {
-                    if (dotTokens[1].Contains('"'))
-                    {
-                        return "";
-                    }
-                    return dotTokens[1];
-                }
-                if (targetAccessorName.StartsWith($"{_supportRefName.Name}.CALL", StringComparison.Ordinal)) // _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0)
-                {
-                    return "(call result)";
+                    return GetTargetChainTokenAsText(dotTokens, targetAccessorName, "o");
                 }
                 throw new NotImplementedException(targetAccessorName);
-                //return "";
             }
             else if (targetAccessorName.Contains('"'))
             {
                 throw new NotImplementedException(targetAccessorName);
-                //return "";
             }
             else
             {
                 return targetAccessorName;
             }
+        }
+
+        private string GetTargetChainTokenAsText(string[] dotTokens, string targetAccessorName, string alias0)
+        {
+            string token0 = dotTokens[0];
+            if (dotTokens[1].Contains('"') || targetAccessorName.Contains('"'))
+            {
+                // test: InvalidFunctionSettingMustCompileThoughFailAtRunTime
+                if (targetAccessorName.StartsWith($"{token0}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR)}(", StringComparison.Ordinal)) // _.RAISEERROR(new Illegal
+                {
+                    return "(error result)";
+                }
+                if (targetAccessorName.StartsWith($"{token0}.CALL", StringComparison.Ordinal)) // _.CALLm1v1(this, oCaseType
+                {
+                    return $"({alias0}.call result)";
+                }
+                if (targetAccessorName.StartsWith($"{token0}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT)}", StringComparison.Ordinal)) // _.CALLm1v1(this, oCaseType
+                {
+                    return "(GetObject result)";
+                }
+                throw new NotImplementedException(targetAccessorName);
+            }
+            return dotTokens[1];
         }
     }
 }

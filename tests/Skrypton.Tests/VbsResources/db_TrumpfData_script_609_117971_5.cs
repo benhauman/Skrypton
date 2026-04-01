@@ -260,7 +260,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT desktop FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET desktop = desktop+1");
 
@@ -378,7 +378,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT notebook FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET notebook = notebook+1");
 
@@ -493,7 +493,7 @@ namespace TranslatedProgram
                         _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                         _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT softwarelic FROM _cinumbers"));
                         //In Variable schreiben
-                        _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                        _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                         //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                         _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET softwarelic = softwarelic+1");
 
@@ -610,7 +610,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT printer FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET printer = printer+1");
 
@@ -728,7 +728,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT copydevice FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET copydevice = copydevice+1");
 
@@ -846,7 +846,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT multifunctiondevice FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET multifunctiondevice = multifunctiondevice+1");
 
@@ -964,7 +964,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT scanner FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET scanner = scanner+1");
 
@@ -1082,7 +1082,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT handys FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET handys = handys+1");
 
@@ -1200,7 +1200,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT simcard FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET simcard = simcard+1");
 
@@ -1318,7 +1318,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT umtscard FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET umtscard = umtscard+1");
 
@@ -1436,7 +1436,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT pda FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET pda = pda+1");
 
@@ -1554,7 +1554,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT blackberry FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET blackberry = blackberry+1");
 
@@ -1671,7 +1671,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT monitor FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET monitor = monitor+1");
 
@@ -1789,7 +1789,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT beamer FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET beamer = beamer+1");
 
@@ -1907,7 +1907,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT videoconference FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET videoconference = videoconference+1");
 
@@ -2025,7 +2025,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT mediatechnic FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET mediatechnic = mediatechnic+1");
 
@@ -2143,7 +2143,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT diktiersystem FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET diktiersystem = diktiersystem+1");
 
@@ -2261,7 +2261,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT usv FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET usv = usv+1");
 
@@ -2379,7 +2379,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT controlcam FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET controlcam = controlcam+1");
 
@@ -2497,7 +2497,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT bde FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET bde = bde+1");
 
@@ -2615,7 +2615,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT spacemouse FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET spacemouse = spacemouse+1");
 
@@ -2733,7 +2733,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT networkcomponent FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET networkcomponent = networkcomponent+1");
 
@@ -2850,7 +2850,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT homeofficerouter FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET homeofficerouter = homeofficerouter+1");
 
@@ -2968,7 +2968,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT headset FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET headset = headset+1");
 
@@ -3087,7 +3087,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT conferencephone FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET conferencephone = conferencephone+1");
 
@@ -3205,7 +3205,7 @@ namespace TranslatedProgram
                                 _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "Execute", "SELECT server FROM _cinumbers"));
                                 //In Variable schreiben
-                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(call result)"), "value"));
+                                _outer.CINumber = _.VAL(_.CALLm1v0(this, _.CALLm1v1(this, _outer.rs ?? throw new InvalidOperationException("Reference not set:rs"), "fields", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "value"));
                                 //CI-Nummer in der Datenbank um den Wert 1 erhoehen und zurueckschreiben
                                 _.CALLm1v1(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "execute", "UPDATE _cinumbers SET server = server+1");
 
