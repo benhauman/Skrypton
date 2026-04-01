@@ -19,7 +19,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END PROPERTY
 				END CLASS
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END SUB
 				END CLASS
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
 
         }
 
@@ -139,7 +139,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						SET Name = ""C1""
 					END PROPERTY
 				END CLASS";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						Name() = ""C1""
 					END PROPERTY
 				END CLASS";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					END PROPERTY
 				END CLASS
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]

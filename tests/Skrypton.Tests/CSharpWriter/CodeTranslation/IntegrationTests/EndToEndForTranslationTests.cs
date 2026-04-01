@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-//#using Xunit#;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 {
@@ -16,7 +12,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -33,7 +29,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 32768
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding("", source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -57,7 +53,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -70,7 +66,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step 0.1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -80,7 +76,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step 0
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -93,7 +89,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1 Step 0
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding("", source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -106,7 +102,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step - 1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding("", source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -119,7 +115,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding("", source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -129,7 +125,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 1 To 5 Step 2
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -139,7 +135,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = 5 To 1 Step -1
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -155,21 +151,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For i = a To b Step c
 				Next
 			";
-            var expected = @"
-                var loopEnd = _.NUM(_env.b);
-                var loopStep = _.NUM(_env.c);
-                var loopStart = _.NUM(_env.a, loopEnd, loopStep);
-                if ((_.StrictLTE(loopStart, loopEnd) && _.StrictGTE(loopStep, 0))
-                || (_.StrictGT(loopStart, loopEnd) && _.StrictLT(loopStep, 0)))
-                {
-                    for (_env.i = loopStart;
-                        (_.StrictGTE(loopStep, 0) && _.StrictLTE(_env.i, loopEnd)) || (_.StrictLT(loopStep, 0) && _.StrictGTE(_env.i, loopEnd));
-                         _env.i = _.ADD(_env.i, loopStep))
-                    {
-                    }
-                }";
-
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -192,42 +174,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo i
 				Next
 			";
-            var expected = @"
-                int errOn = _.GETERRORTRAPPINGTOKEN();
-                _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                object loopEnd = 0, loopStart = 0;
-                var loopConstraintsInitialized = false;
-                _.HANDLEERROR(errOn, () => {
-                   loopEnd = _.NUM(_env.b);
-                   loopStart = _.NUM(_env.a);
-                   if ((loopStart is DateTime) || (loopStart is Decimal))
-                       _env.i = loopStart;
-                   loopStart = _.NUM(_env.a, loopEnd, (Int16)1);
-                   loopConstraintsInitialized = true;
-                });
-                if (_.StrictLTE(loopStart, loopEnd))
-                {
-                   if (loopConstraintsInitialized)
-                       _env.i = loopStart;
-                   while (true)
-                   {
-                       _.HANDLEERROR(errOn, () => {
-                           _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.i, v => { _env.i = v; }));
-                       });
-                       if (!loopConstraintsInitialized)
-                           break;
-                       var continueLoop = false;
-                       _.HANDLEERROR(errOn, () => {
-                           _env.i = _.ADD(_env.i, (Int16)1);
-                           continueLoop = _.StrictLTE(_env.i, loopEnd);
-                       });
-                       if (!continueLoop)
-                           break;
-                   }
-                }
-                _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            ";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY104"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY104"]);
         }
 
         /// <summary>
@@ -245,26 +192,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo i
 				Next
 			";
-            var expected = @"
-                int errOn = _.GETERRORTRAPPINGTOKEN();
-                _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-                _env.i = (Int16)1;
-                while (true)
-                {
-                   _.HANDLEERROR(errOn, () => {
-                       _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.i, v => { _env.i = v; }));
-                   });
-                   var continueLoop = false;
-                   _.HANDLEERROR(errOn, () => {
-                       _env.i = _.ADD(_env.i, (Int16)1);
-                       continueLoop = _.StrictLTE(_env.i, 10);
-                   });
-                   if (!continueLoop)
-                       break;
-                }
-                _.RELEASEERRORTRAPPINGTOKEN(errOn);
-            ";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY104"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY104"]);
         }
 
         /// <summary>
@@ -280,7 +208,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = CByte(1) To CByte(5)
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
 
         }
 
@@ -295,7 +223,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Dim i: For i = CByte(1) To CByte(5) Step CByte(1)
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         // TODO: Various variable-ascending/descending/step combinations
@@ -315,19 +243,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function
 			";
-            var expected = @"
-                public object F1()
-                {
-                    object F1_retVal = null;
-                    object j = null; /* Undeclared in source */
-                    object i = null; /* Undeclared in source */
-                    for (i = (Int16)1; _.StrictLTE(i, 5); i = _.ADD(i, (Int16)1))
-                    {
-                        _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(j, v => { j = v; }));
-                    }
-                    return F1_retVal;
-                }";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY103", "SKY104"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY103", "SKY104"]);
 
         }
 
@@ -349,7 +265,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F2 = value
 				End Function";
 
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -358,7 +274,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// F1 and so we don't need to jump through any hoops to avoid illegal C#)
         /// </summary>
         [TestMethod]
-        public void IfByValArgIsReqForLoopAndIsPassedToAnotherFuncByRefThenNoByRefAsTheFirstArgAsByVal() // IfByValArgumentIsRequiredForLoopConstraintAndIsPassedToAnotherFunctionByRefThenNoByRefMappingIsRequiredAsTheFirstArgumentWasByVal
+        public void IfByValArgIsReqForLoopAndIsPassedToAnotherFuncByRefThenNoByRefAsFirstVal() // IfByValArgumentIsRequiredForLoopConstraintAndIsPassedToAnotherFunctionByRefThenNoByRefMappingIsRequiredAsTheFirstArgumentWasByVal
         {
             var source = @"
 				Function F1(ByVal x)
@@ -369,7 +285,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(ByRef value)
 					F2 = value
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -379,7 +295,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// a lambda, which would not be legal C# and so a ByRef mapping is unfortunately required.
         /// </summary>
         [TestMethod]
-        public void IfByRefArgumentIsRequiredForLoopAndIsPassedToAnotherFuncThenByRefRequired()
+        public void IfByRefArgIsRequiredForLoopAndIsPassedToAnotherFuncThenByRefRequired()
         {
             var source = @"
 				Function F1(ByRef x)
@@ -390,7 +306,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(ByVal value)
 					F2 = value
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -398,7 +314,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         /// presuming that all built-in functions take arguments ByVal (which I'm fairly confident is always the case), which means that ByRef mappings may be avoided for some cases.
         /// </summary>
         [TestMethod]
-        public void IfByRefArgumentIsReqForLoopAndIsPassedToBuiltInFuncByRefThenNoByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToBuiltInFunctionByRefThenNoByRefMappingRequired
+        public void IfByRefArgIsReqForLoopAndIsPassedToBuiltInFuncByRefThenNoByRef() // IfByRefArgumentIsRequiredForLoopConstraintsAndIsPassedToBuiltInFunctionByRefThenNoByRefMappingRequired
         {
             var source = @"
 				Function F1(ByRef x)
@@ -406,7 +322,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function";
 
-            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -428,7 +344,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					value = 123
 				End Function";
 
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -447,7 +363,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Next
 				End Function";
 
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
     }
 }

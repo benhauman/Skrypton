@@ -12,7 +12,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101", "SKY105"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>
@@ -36,29 +36,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-			var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				IEnumerator enumerationContent = null;
-				_.HANDLEERROR(errOn, () => {
-                    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();
-				});
-				while (true)
-				{
-                    if (enumerationContent != null)
-				    {
-				        if (!enumerationContent.MoveNext())
-				            break;
-				        _env.value = enumerationContent.Current;
-				    }
-				    _.HANDLEERROR(errOn, () => {
-                        _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
-				    });
-				    if (enumerationContent == null)
-				        break;
-				}
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY105"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>
@@ -79,28 +57,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-			var expected = @"
-				int errOn = _.GETERRORTRAPPINGTOKEN();
-				_.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
-				_.STOPERRORTRAPPINGANDCLEARANYERROR(errOn);
-				IEnumerator enumerationContent = null;
-				_.HANDLEERROR(errOn, () => {
-				    enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();
-				});
-				while (true)
-				{
-				    if (enumerationContent != null)
-				    {
-				        if (!enumerationContent.MoveNext())
-				            break;
-				        _env.value = enumerationContent.Current;
-				    }
-                    _.CALLm1argp(this, _env.WScript, ""Echo"", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
-				    if (enumerationContent == null)
-				        break;
-				}
-				_.RELEASEERRORTRAPPINGTOKEN(errOn);";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101", "SKY105"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>

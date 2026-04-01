@@ -25,11 +25,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				WScript.Echo i
 			";
-            var expected = new[]
-            {
-                "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -45,18 +41,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo i
 				End Function
 			";
-            var expected = new[]
-            {
-                "_.CALLm1v0(this, _outer, \"Test1\");",
-                "public object Test1()",
-                "{",
-                "    object Test1_retVal = null;",
-                "    object i = null; /* Undeclared in source */",
-                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
-                "    return Test1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY103"]);
         }
 
         /// <summary>
@@ -73,22 +58,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo i
 				End Function
 			";
-            var expected = new[]
-            {
-                "_.CALLm1v0(this, _outer, \"Test1\");",
-                "public object Test1()",
-                "{",
-                "    object Test1_retVal = null;",
-                "    object i = null;",
-                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(i, v => { i = v; }));",
-                "    return Test1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -105,50 +75,28 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo i
 				End Function
 			";
-            var expected = new[]
-            {
-                "_.CALLm1v0(this, _outer, \"Test1\");",
-                "public object Test1()",
-                "{",
-                "    object Test1_retVal = null;",
-                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_outer.i, v => { _outer.i = v; }));",
-                "    return Test1_retVal;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
         public void NumericLiteralsAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func 1()";
-            var expected = new[]
-            {
-                "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'[number: 1]' is called like a function\"))));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         [TestMethod]
         public void StringLiteralsAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func \"1\"()";
-            var expected = new[]
-            {
-                "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'[string: \\\"1\\\"]' is called like a function\"))));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101", "SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101", "SKY103"]);
         }
 
         [TestMethod]
         public void BuiltinValuesAccessedAsFunctionsResultInRuntimeErrors()
         {
             var source = "func vbObjectError()";
-            var expected = new[]
-            {
-                "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'vbObjectError' is called like a function\"))));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         [TestMethod]
@@ -157,7 +105,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = "c = new C1()";
             myAssert.Throws<InvalidOperationException>(() =>
             {
-                TestCSharpCodeTranslationWithoutScaffolding("", source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             });
         }
 
@@ -171,11 +119,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				WScript.Echo a & b & c & d
 			";
-            var expected = new[]
-            {
-               @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _env.b, _env.c, _env.d));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -189,11 +133,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				WScript.Echo a & 1 + 2 & c & d
 			";
-            var expected = new[]
-            {
-                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d));"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -214,11 +154,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				WScript.Echo a.Params
 			";
-            var expected = new[]
-            {
-                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, _env.a, ""Params"")); "
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -231,11 +167,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				a.Name.Length = 1
 			";
-            var expected = new[]
-            {
-                "_.SETm1a0(this, _.CALLm1v0(this, _env.a, \"Name\"), \"Length\", (Int16)1);"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -248,11 +180,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             var source = @"
 				WScript.Echo Me.Name
 			";
-            var expected = new[]
-            {
-                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, this, ""Name"")); "
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source); TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source); TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -267,15 +195,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function GetSomething()
 				End Function
 			";
-            var expected = new[]
-            {
-                "_env.a = _.OBJ(_.CALLm2v0(this, _outer, \"GetSomething\", \"Name\"));",
-                "public object GetSomething()",
-                "{",
-                "    return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
         /// <summary>
@@ -292,35 +212,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function GetSomething()
 					End Function
 				End Class";
-            var expected = @"
-				[ComVisible(true)]
-				[ClassInterface(ClassInterfaceType.AutoDispatch)]
-				[SourceClassName(nameof(C1))]
-				public sealed class C1
-				{
-					private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
-					private readonly EnvironmentReferences _env;
-					private readonly GlobalReferences _outer;
-					public C1(IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer, EnvironmentReferences env, GlobalReferences outer)
-					{
-						_ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
-						_env = env ?? throw new ArgumentNullException(nameof(env));
-						_outer = outer ?? throw new ArgumentNullException(nameof(outer));
-					}
-
-					public object Go()
-					{
-						object Go_retVal = null;
-						object a = null; /* Undeclared in source */
-						a = _.OBJ(_.CALLm2v0(this, this, ""GetSomething"", ""Name""));
-						return Go_retVal;
-					}
-					public object GetSomething()
-					{
-						return null;
-					}
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY103"]);
         }
 
         /// <summary>
@@ -337,7 +229,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F1(x)
 					WScript.Echo TypeName(x)
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -355,7 +247,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 					F2 = x
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -370,7 +262,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					On Error Resume Next
 					WScript.Echo TypeName(x)
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -384,7 +276,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				const SOME_CONSTANT = &H0001
                 Dim vv: vv = SOME_CONSTANT
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -400,7 +292,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						.Draw ""Test""
 					End With
 				End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod, MyMemberData(nameof(VariousBracketDeterminedRefValArgumentData))]

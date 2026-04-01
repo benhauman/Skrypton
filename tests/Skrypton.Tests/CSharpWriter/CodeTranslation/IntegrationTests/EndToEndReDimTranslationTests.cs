@@ -6,21 +6,21 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     public class EndToEndReDimTranslationTests : TestBase
     {
         [TestMethod]
-        public void NonPreserveReDimOfUndeclaredVarInOutermostShouldDeclareTheVarInOutermost() // NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
+        public void NonPreserveReDimOfUndeclaredVarInOutermost() // NonPreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
                     ReDim a(0)
                 ";
-            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
-        public void PreserveReDimOfUndeclaredVarInTheOutermostShouldDeclareTheVarInOutermost() // PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
+        public void PreserveReDimOfUndeclaredVarInTheOutermost() // PreserveReDimOfUndeclaredVariableInTheOutermostScopeShouldImplicitlyDeclareTheVariableInOutermostScope
         {
             string source = @"
                     ReDim Preserve a(0)
                 ";
-            TestCSharpCodeTranslationWithoutScaffolding(null, ExpectedCsCode(null), source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Function F1()
                         ReDim a(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Function F1()
                         ReDim Preserve a(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Function F1()
                         ReDim F1(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                     Function F1()
                         ReDim Preserve F1(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
         [TestMethod]
         public void NonPreserveReDimOfDeclaredVariableInTheOutermostScope1()
@@ -106,7 +106,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string[] expected = [
                     "_outer.a = _.NEWARRAY(new object[] { (Int16)0 });"
                 ];
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             string[] expected = [
                     "_outer.a = _.RESIZEARRAY(_outer.a, new object[] { (Int16)0 });"
                 ];
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a
                         ReDim a(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a
                         ReDim Preserve a(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim a(1)
                         ReDim a(2)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         Dim a()
                         ReDim a(0)
                     End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
         /// <summary>
         /// ReDim will implicitly declare any target variable, if it has not been already declared - this means that a Dim statement that FOLLOWS a ReDim

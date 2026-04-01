@@ -22,19 +22,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F1 = CDate(""2007-04-01"")
 				END FUNCTION
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "    // Test simple-return-format functions",
-                "    return _.CDATE(\"2007-04-01\");",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -53,7 +41,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				PUBLIC FUNCTION F2(a)
 				END FUNCTION
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -69,15 +57,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Set F1 = a
 				END FUNCTION
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "    object a = null; /* Undeclared in source */",
-                "    return _.OBJ(a);",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY103"]);
         }
 
         /// <summary>
@@ -92,14 +72,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Set F1 = Nothing
 				END FUNCTION
 			";
-            var expected = new[]
-            {
-                "public object F1()",
-                "{",
-                "    return VBScriptConstants.Nothing;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -121,7 +94,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -140,7 +113,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -160,7 +133,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -181,7 +154,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -200,7 +173,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -219,7 +192,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(a)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -238,7 +211,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -257,7 +230,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo a.Name
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -280,23 +253,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 				End Function
 			";
-            var expected = new[]
-            {
-                "public object F1(ref object x)",
-                "{",
-                "	object F1_retVal = null;",
-                "	if (_.IF(_.ISEMPTY(F1_retVal)))",
-                "	{",
-                "		F1_retVal = true;",
-                "	}",
-                "	return F1_retVal;",
-                "}",
-                "public object F2(ref object x)",
-                "{",
-                "	return null;",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -313,7 +270,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					F1() = Null
 				END FUNCTION
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]

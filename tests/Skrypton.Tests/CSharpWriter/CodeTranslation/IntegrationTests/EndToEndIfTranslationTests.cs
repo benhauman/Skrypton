@@ -17,7 +17,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Else
 				End If
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -30,13 +30,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				If True Then 'Comment
 				End If
 			";
-            var expected = new[]
-            {
-                "if (_.IF(true)) //Comment",
-                "{",
-                "}",
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -46,14 +40,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         public void DoNotGetConfusedByCommentsInLineWithConditionsInSingleLineIfStatements()
         {
             var source = "If True Then WScript.Echo True 'Comment";
-            var expected = new[]
-            {
-                @"if (_.IF(true))
-                {
-                _.CALLm1v1(this, _env.WScript, ""Echo"", true); //Comment
-                }"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -67,13 +54,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				If True Then
 				End If
 			";
-            var expected = new[]
-            {
-                "if (_.IF(true))",
-                "{",
-                "}"
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -96,7 +77,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				Function F2(x)
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestClass]
@@ -119,13 +100,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = 1) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableNUM(_env.i), (Int16)1)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -138,13 +113,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = -1) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_env.i, (Int16)(-1))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -160,17 +129,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (1 = 2) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ((Int16)1, (Int16)2)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -185,13 +144,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = vbNull) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_env.i, VBScriptConstants.vbNull)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -205,17 +158,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (False = 1) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableNUM(false), (Int16)1)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -230,13 +173,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = (1+0)) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_env.i, _.ADD((Int16)1, (Int16)0))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -251,17 +188,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = (1)) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableNUM(_env.i), (Int16)1)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -279,17 +206,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""12"" = --12) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(\"12\", _.NullableSTR((Int16)12))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -304,17 +221,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""12"" = +12) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(\"12\", _.NullableSTR((Int16)12))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -328,17 +235,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (1 = #1 1#) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ((Int16)1, _.NullableNUM(_.DateLiteralParser.Parse(\"1 1\")))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
         }
@@ -361,13 +258,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = ""1"") Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableSTR(_env.i), \"1\")))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
 
             /// <summary>
@@ -380,13 +271,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""1"" = ""2"") Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(\"1\", \"2\")))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -400,17 +285,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""aa"" = 1) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableNUM(\"aa\"), (Int16)1)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -424,17 +299,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""aa"" = #1 1#) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_.NullableDATE(\"aa\"), _.DateLiteralParser.Parse(\"1 1\"))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -448,17 +313,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (""True"" = True) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(\"True\", _.NullableSTR(true))))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
-                //myAssert.AreEqual(
-                //    expected.Select(s => s.Trim()).ToArray(),
-                //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-                //);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
         }
 
@@ -475,13 +330,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					If (i = True) Then
 					End If
 				";
-                var expected = new[]
-                {
-                    "if (_.IF(_.EQ(_env.i, true)))",
-                    "{",
-                    "}"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
+                TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
             }
         }
 
@@ -498,20 +347,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					End If
 				End If
 			";
-            var expected = new[]
-            {
-                "if (_.IF(true))",
-                "{",
-                "  if (_.IF(true))",
-                "  {",
-                "  }",
-                "}",
-            };
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
-            //myAssert.AreEqual(
-            //    expected.Select(s => s.Trim()).ToArray(),
-            //    WithoutScaffoldingTranslator.GetTranslatedStatements(TestCulture, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies)
-            //);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestClass]
@@ -534,7 +370,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(a)
 					End Function
 				";
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -554,22 +390,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(a)
 					End Function
 				";
-                var expected = new[]
-                {
-                    @"public object F1(ref object a)
-                    {
-                        object F1_retVal = null;
-                        if (_.IF(_.CALLm1v1(this, _outer, ""F2"", _.CALLm1v0(this, a, ""Name""))))
-                        {
-                        }
-                        return F1_retVal;
-                    }
-                    public object F2(ref object a)
-                    {
-                        return null;
-                    }"
-                };
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -592,7 +413,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(ByVal a)
 					End Function
 				";
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -614,7 +435,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(ByVal a)
 					End Function
 				";
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
 
             /// <summary>
@@ -638,7 +459,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					Function F2(ByVal a)
 					End Function
 				";
-                TestCSharpCodeTranslationWithoutScaffolding(null, source);
+                TestCSharpCodeTranslationWithoutScaffolding(source);
             }
         }
     }

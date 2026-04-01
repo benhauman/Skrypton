@@ -102,7 +102,7 @@ END FUNCTION",
                 Function F1(a)
                     ERASE a
                 End Function";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
     }
 }

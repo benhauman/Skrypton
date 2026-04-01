@@ -134,13 +134,11 @@ namespace Skrypton.Tests
                 return _defaultRuntimeSupportClassFactoryInstance;
             }
         }
-        protected void TestCSharpCodeTranslationWithoutScaffoldingA(string[] expectedLines, string vbsSource, params string[] translationSuppression)
+        protected void TestCSharpCodeTranslationWithoutScaffolding(string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, params string[] translationSuppression)
         {
-            string expectedZ = string.Join(NewLineNormalized, expectedLines);
-            string expectedCs = ExpectedCsCode(null);
-            TestCSharpCodeTranslationWithoutScaffoldingX(null, expectedCs, vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
+            TestCSharpCodeTranslationWithoutScaffoldingX(null, ExpectedCsCode(null), vbsSource, externalDependencies, externalMemberMethods, translationSuppression);
         }
-        protected void TestCSharpCodeTranslationWithoutScaffolding(string? expectedZ, string vbsSource, params string[] translationSuppression)
+        protected void TestCSharpCodeTranslationWithoutScaffolding(string vbsSource, params string[] translationSuppression)
         {
             TestCSharpCodeTranslationWithoutScaffoldingX(null, ExpectedCsCode(null), vbsSource, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], translationSuppression);
         }

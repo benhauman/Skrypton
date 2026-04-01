@@ -75,7 +75,7 @@ sub test
     ReDim a(1)
 end sub
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         [TestMethod]
@@ -89,7 +89,7 @@ end sub
                     F1 = a
 				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ end sub
                 Function F1(a)
                 End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ sub func
     msgbox name
 end sub
                 ";
-            TestCSharpCodeTranslationWithoutScaffolding(null, source);
+            TestCSharpCodeTranslationWithoutScaffolding(source);
         }
     }
 }

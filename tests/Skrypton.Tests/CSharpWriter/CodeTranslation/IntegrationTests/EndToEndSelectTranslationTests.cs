@@ -23,20 +23,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 						WScript.Echo ""Split""
 				End Select";
 
-            var expected = @"
-				if (_.IF(_.EQ(_env.x, ""("")))
-				{
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Open"");
-				}
-				else if (_.IF(_.EQ(_env.x, "")"")))
-				{
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Close"");
-				}
-				else if (_.IF(_.EQ(_env.x, "","")))
-				{
-					_.CALLm1v1(this, _env.WScript, ""Echo"", ""Split"");
-				}";
-            TestCSharpCodeTranslationWithoutScaffolding(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(source, ["SKY101"]);
         }
 
 		[TestMethod]
