@@ -310,6 +310,12 @@ namespace Skrypton.Tests.Application.Controls
             get { return _allowModify; }
             set { _allowModify = value; }
         }
+
+        public string Text
+        {
+            get;
+            set;
+        }
     }
 
     public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
