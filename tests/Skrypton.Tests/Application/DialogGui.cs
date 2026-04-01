@@ -816,10 +816,10 @@ WScript.Echo xmlhttp.responseText
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.DialogGui, dialog.ExternalReferences, isOptionalAssert: false, suppressions: ["SKY102", "SKY104", "SKY105", "SKY106", "SKY107", "SKY109"]);
             //}
 
-            TestDialogHandlers(this, rsp, dialog, skipUnusedScript: (s) => null, s => true);
+            TestDialogHandlers(this, rsp, dialog, skipUnusedScript: (s) => null, s => true, (ex, s) => false);
         }
 
-        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript, Func<string, bool> doInvokeScript)
+        public static void TestDialogHandlers(TestBaseX tst, TestScriptResponse rsp, DialogBase dialog, Func<string, bool?> skipUnusedScript, Func<string, bool> doInvokeScript, Func<Exception, string, bool> shouldContinueOnError)
         {
             DoDialogGui(tst, rsp.TranslatedCsCode, dialog, (GlobalReferencesBase gr) =>
             {
@@ -891,7 +891,21 @@ WScript.Echo xmlhttp.responseText
                         {
                             Console.WriteLine($"[{scriptNames.Length}/{ixSearch + 1}] {usedBy} Invoke:{scriptName}");
                             //Assert.Inconclusive(); // last issue: 'IOMode' = 0 invalid argument count in 'ButtonEmailPreview_Click'
-                            ScriptControlClass.RunProcedure(gr, scriptName, []);
+                            try
+                            {
+                                ScriptControlClass.RunProcedure(gr, scriptName, []);
+                            }
+                            catch (Exception ex)
+                            {
+                                if (shouldContinueOnError.Invoke(ex, scriptName))
+                                {
+
+                                }
+                                else
+                                {
+                                    throw;
+                                }
+                            }
                         }
 
                         ixSearch++;
