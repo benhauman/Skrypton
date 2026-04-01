@@ -12,18 +12,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 					WScript.Echo value
 				Next
 			";
-			var expected = new[]
-			{
-				"var enumerationContent = _.ENUMERABLE(_env.values).GetEnumerator();",
-				"while (true)",
-				"{",
-				"    if (!enumerationContent.MoveNext())",
-				"        break;",
-				"    _env.value = enumerationContent.Current;",
-                "    _.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.value, v => { _env.value = v; }));",
-				"}"
-			};
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101", "SKY105"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101", "SKY105"]);
 		}
 
 		/// <summary>

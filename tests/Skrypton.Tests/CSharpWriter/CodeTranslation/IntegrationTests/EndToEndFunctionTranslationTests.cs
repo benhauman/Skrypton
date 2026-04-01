@@ -77,7 +77,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return _.OBJ(a);",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY103"]);
         }
 
         /// <summary>

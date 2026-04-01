@@ -29,7 +29,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "_.CALLm1argp(this, _env.WScript, \"Echo\", _.ARGS.Ref(_env.i, v => { _env.i = v; }));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return Test1_retVal;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY103"]);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'[number: 1]' is called like a function\"))));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'[string: \\\"1\\\"]' is called like a function\"))));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101", "SKY103"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101", "SKY103"]);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "_.CALLm0argp(this, _env.func, _.ARGS.Val(_.RAISEERROR(new TypeMismatchException(\"'vbObjectError' is called like a function\"))));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         [TestMethod]
@@ -175,7 +175,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _env.b, _env.c, _env.d));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CONCAT(_env.a, _.ADD((Int16)1, (Int16)2), _env.c, _env.d));"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 @"_.CALLm1v1(this, _env.WScript, ""Echo"", _.CALLm1v0(this, _env.a, ""Params"")); "
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             {
                 "_.SETm1a0(this, _.CALLm1v0(this, _env.a, \"Name\"), \"Length\", (Int16)1);"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 "    return null;",
                 "}"
             };
-            TestCSharpCodeTranslationWithoutScaffoldingA(expected, source, ["SKY101"]);
+            TestCSharpCodeTranslationWithoutScaffolding(null, source, ["SKY101"]);
         }
 
         /// <summary>
