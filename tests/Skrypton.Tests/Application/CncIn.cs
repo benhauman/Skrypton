@@ -90,7 +90,7 @@ namespace Skrypton.Tests.Application
         internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
-            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, []);
+            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, tst.CreateScriptControlConfiguration(false, []));
 
             scriptControlClass.TestSetDefaultRuntimeFunctionalityProviderSetup((x) => SetupDefaultRuntimeFunctionalityProvider(x, hostServices, tst.TestCulture));
 

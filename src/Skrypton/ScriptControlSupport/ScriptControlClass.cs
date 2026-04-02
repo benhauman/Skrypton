@@ -285,8 +285,18 @@ namespace Skrypton.ScriptControlSupport
             {
                 Console.WriteLine(warningMessageText);
             }));
+
+            if (_config.TempEnabled)
+            {
+                _config.TempFileWriteAllText($"ProgramName", $"ProgramSource.vbs", scriptContent);
+            }
+
             string[] suppressions = _config._translationSuppression;
             string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions), warningLogger);
+            if (_config.TempEnabled)
+            {
+                _config.TempFileWriteAllText($"ProgramName", $"TranslatedCode.cs", csCode);
+            }
             return csCode;
         }
         private const char NewLineNormalized = '\n';

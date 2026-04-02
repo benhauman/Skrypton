@@ -320,9 +320,13 @@ namespace Skrypton.Tests
             return new WindowsFileSystem();
         }
 
-        internal ScriptControlClass CreateScriptControlClass(IRuntimeHost runtimeHost, string[] translationSuppression)
+        public virtual ScriptControlConfiguration CreateScriptControlConfiguration(bool tempEnabled, string[] translationSuppression)
         {
-            ScriptControlConfiguration controlConfig = new TestScriptControlConfiguration(this, translationSuppression);
+            return new TestScriptControlConfiguration(this, tempEnabled, translationSuppression);
+
+        }
+        internal ScriptControlClass CreateScriptControlClass(IRuntimeHost runtimeHost, ScriptControlConfiguration controlConfig)
+        {
             ScriptControlClass scriptengineClass = new ScriptControlClass(runtimeHost, RuntimeLogger, TestCulture, controlConfig);
             IScriptControl scriptengine = scriptengineClass;
             scriptengine.Language = "VBScript";

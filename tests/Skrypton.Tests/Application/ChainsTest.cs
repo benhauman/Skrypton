@@ -73,7 +73,7 @@ namespace Skrypton.Tests.Application
             {
             }
 
-            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices), suppressions);
+            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices), tst.CreateScriptControlConfiguration(false, suppressions));
             scriptengineClass.TestTranslatedStatement("tstpg", rsp.TranslatedCsCode, [
                 "CS0219", // error CS0219: The variable 'ForWriting' is assigned but its value is never used
                 ], doRun: false, gr => { });

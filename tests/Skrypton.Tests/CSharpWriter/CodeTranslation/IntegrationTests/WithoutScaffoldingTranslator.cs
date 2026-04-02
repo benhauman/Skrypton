@@ -40,7 +40,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalDependencies,
             string[] translationSuppression)
         {
-            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), translationSuppression);
+            var scriptengineConfig = tst.CreateScriptControlConfiguration(false, translationSuppression);
+            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), scriptengineConfig);
             IScriptControl scriptengine = scriptengineClass;
             foreach (var externalDependencyInfo in externalDependencies)
             {
