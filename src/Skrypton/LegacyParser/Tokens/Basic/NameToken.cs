@@ -38,6 +38,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                     if (recognisedType is BuiltInFunctionToken binFun && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE)
                     {
                         // 'Space' is used as a Dim
+                        // see 'TranslateCallExpressionSegment'
                     }
                     else
                     {

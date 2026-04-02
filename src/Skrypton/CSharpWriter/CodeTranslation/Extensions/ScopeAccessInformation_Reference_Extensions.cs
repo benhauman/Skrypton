@@ -31,7 +31,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// </summary>
         public static CSharpName? GetNameOfTargetContainerIfAnyRequired(
             this ScopeAccessInformation scopeAccessInformation,
-            NameToken target,
+            AtomToken target,
             CSharpName envRefName,
             CSharpName outerRefName,
             VBScriptNameRewriter nameRewriter)
@@ -57,7 +57,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (target is ProcessedNameToken)
                 return null;
 
-            var rewrittenTargetName = nameRewriter.RewriteVBScriptName(target).Name;
+            var rewrittenTargetName = target is NameToken targetNameToken ? nameRewriter.RewriteVBScriptName(targetNameToken).Name : nameRewriter.RewriteVBScriptFunctionName((BuiltInFunctionToken)target).Name;
             var targetReferenceDetailsIfAvailable = scopeAccessInformation.TryToGetDeclaredReferenceDetails(target, nameRewriter);
             if (targetReferenceDetailsIfAvailable == null)
             {

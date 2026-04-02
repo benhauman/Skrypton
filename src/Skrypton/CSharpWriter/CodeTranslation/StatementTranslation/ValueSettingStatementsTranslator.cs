@@ -52,8 +52,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 _logger.Warning
             );
 
-            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.SetText,
-                assignmentFormatDetails.AssignmentFormat(translatedExpressionContentDetails.TranslatedContent),
+            string formattedAssignmentCsCode = assignmentFormatDetails.AssignmentFormat(translatedExpressionContentDetails.TranslatedContent); // _.VAL(_outer.CharCode);
+
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.SetText, formattedAssignmentCsCode,
                 assignmentFormatDetails.VariablesAccessed.Concat(translatedExpressionContentDetails.VariablesAccessed).ToArray()
             );
         }
@@ -157,14 +158,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             rewrittenFirstMemberAccessor = targetContainerIfRequired.Name + "." + rewrittenFirstMemberAccessor;
                         }
 
-                        return new ValueSettingStatementAssignmentFormatDetails(
-                            translatedExpression => string.Format(CultureInfo.InvariantCulture,
-                                "{0} = {1}",
-                                isSingleTokenSettingParentScopeReturnValue
-                                    ? scopeAccessInformation.ParentReturnValueNameIfAny!.Name
-                                    : rewrittenFirstMemberAccessor,
-                                translatedExpression
-                            ),
+                        string leftExpressionText = isSingleTokenSettingParentScopeReturnValue
+                            ? scopeAccessInformation.ParentReturnValueNameIfAny!.Name
+                            : rewrittenFirstMemberAccessor;
+
+                        return new ValueSettingStatementAssignmentFormatDetails(translatedExpression =>
+                            {
+                                return $"{leftExpressionText} = {translatedExpression}";
+                            },
                             new NonNullImmutableList<NameToken>(new[] { singleTokenAsName })
                         );
                     }

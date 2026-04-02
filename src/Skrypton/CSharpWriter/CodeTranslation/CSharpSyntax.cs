@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -15,6 +16,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
     }
 
+    [DebuggerDisplay("Builder:{_kind}")]
     internal abstract class CSharpCodeBuilder
     {
         private readonly TranslatedStatementKind _kind;
@@ -324,6 +326,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
     }
 
+    [DebuggerDisplay("BuilderWrap:{_statement._content}")]
     internal sealed class CSharpCodeBuilderWrap(TranslatedStatement statement) : CSharpCodeBuilder(TranslatedStatementKind.RawText)
     {
         private readonly TranslatedStatement _statement = statement;
@@ -336,6 +339,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         internal override bool HasContent => _statement.HasContent;
     }
 
+    [DebuggerDisplay("BuilderRawText:{_statement}")]
     internal sealed class CSharpCodeBuilderRawText(string statement) : CSharpCodeBuilder(TranslatedStatementKind.RawText)
     {
         private readonly string _statement = statement;

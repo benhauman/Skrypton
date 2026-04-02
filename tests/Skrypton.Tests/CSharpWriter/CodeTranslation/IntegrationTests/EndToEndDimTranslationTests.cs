@@ -31,11 +31,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         [TestMethod]
-        [Ignore]
-        public void DimSpace() // CT98_GlobalScript
+        //[Ignore]
+        public void DimSpaceX() // CT98_GlobalScript
         {
             var source = @"Dim i, CharCode, Char, Space, URLEncode
 				Space = ""+""
+                URLEncode = Space
                 URLEncode = Space & ""x"" & Space
                 URLEncode = ""y"" & Space
                 URLEncode = Space & ""z""
@@ -43,6 +44,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 URLEncode = F2(Space)
                 URLEncode = F3(Space)
                 URLEncode = F4(Space)
+                URLEncode = F5(Space)
                 Function F1()
 					Dim spaCe
 				End Function
@@ -55,12 +57,61 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                 Function F4(ByVal SPACE)
 					F4 = space
 				End Function
+                Function F5(ByRef txt)
+					F5 = txt & SPACE(77)
+				End Function
 			";
-            TestCSharpCodeTranslation(source, []);
+            TestCSharpCodeTranslationWithoutScaffolding(source, []);
 
-            Assert.Inconclusive("Argument not valid");
+            //Assert.Inconclusive("Argument not valid");
             // actual: _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _, "SPACE"), "x", _.CALLm1v0(this, _, "SPACE"));
             // expect: _outer.URLEncode = _.CONCAT( ..._outer.Space
+        }
+        [TestMethod]
+        public void DimSpace1() // see 'TranslateCallExpressionSegment'
+        {
+            var source = @"Dim CharCode, Space, URLEncode
+                URLEncode = Space
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, []);
+        }
+        [TestMethod]
+        public void DimSpace2() // see 'TranslateCallExpressionSegment'
+        {
+            var source = @"Dim CharCode, Space, URLEncode
+                URLEncode = Space & CharCode
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, []);
+        }
+        [TestMethod]
+        public void DimSpace3() // see 'TranslateCallExpressionSegment'
+        {
+            var source = @"Dim CharCode, Space, URLEncode
+                Function F5(ByRef txt)
+					F5 = txt & SPACE(77)
+				End Function
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, []);
+        }
+        [TestMethod]
+        public void DimSpace4() // see 'TranslateCallExpressionSegment'
+        {
+            var source = @"Dim txt
+txt = Space(10)
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, [], [], []);
+        }
+        [TestMethod]
+        public void DimSpace5() // see 'TranslateCallExpressionSegment'
+        {
+            var source = @"Dim URLEncode
+                URLEncode = Space(10)
+                Function F5(ByRef txt)
+                    Dim Space: Space = ""__""
+					F5 = txt & Space
+				End Function
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, [], [], []);
         }
     }
 }

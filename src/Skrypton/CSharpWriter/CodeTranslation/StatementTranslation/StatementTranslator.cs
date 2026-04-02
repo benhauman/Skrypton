@@ -650,52 +650,66 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
             }
 
-            BuiltInFunctionToken? targetBuiltInFunction = firstMemberAccessToken as BuiltInFunctionToken;
-            if (targetBuiltInFunction != null)
+            if (firstMemberAccessToken is AtomToken aTkn)
             {
-                BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count);
-                IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
-                    .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
+                BuiltInFunctionToken? targetBuiltInFunction = firstMemberAccessToken as BuiltInFunctionToken;
 
-                // If the call codeExpression is a single-argument call to "CDbl" and the argument is a numeric literal that VBScript would declare as "Double",
-                // we can skip the call entirely. Likewise for "CInt" / "Integer" and "CLng" / "Long". The OperatorCombiner identifies some cases where what
-                // appear to be numeric literals must not be treated as numeric literal later on in the process, so it wraps them in a "CInt" / "CLng" / "CDbl"
-                // call (whichever is appropriate) - this code allows us to remove those injected functions right at the very last minute without changing the
-                // meaning of the translate code. (Note: It is elsewhere in this class where it is important whether tokens should be given "special treatment"
-                // as number literals in comparisons or not).
-                if ((callExpressionSegment.Arguments.Count == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
+                bool builtInFunctionIsOverwrittenAsVariable = false;
+                if (targetBuiltInFunction != null)
                 {
-                    IExpressionSegment? singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
-                    NumericValueExpressionSegment? singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
-                    if ((singleArgumentSegmentAsNumericValue != null) && singleArgumentSegmentAsNumericValue.Token.IsSafeToUnwrapFrom(targetBuiltInFunction))
+                    DeclaredReferenceDetails? targetReferenceDetailsZ = scopeAccessInformation.TryToGetDeclaredReferenceDetails(aTkn, _nameRewriter);
+                    if (targetReferenceDetailsZ != null && targetReferenceDetailsZ.ReferenceType == ReferenceTypeOptions.Variable && targetBuiltInFunction.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE)
                     {
-                        return TranslateNonOperatorSegment(singleArgumentSegmentAsNumericValue, scopeAccessInformation);
+                        // the BuiltIn-Function has been overwritten. VBScript: Dim space
+                        builtInFunctionIsOverwrittenAsVariable = true;
                     }
                 }
-
-                // If supportFunctionDetails.DesiredNumberOfArgumentsMatchedAgainst is not null then there is a support function that has the same number of
-                // arguments as this callExpressionSegment, all of which as not output parameters and not ref parameters and all of which are of type "object".
-                // This means that we can express this more directly, without relying upon an "argument provider" - eg.
-                //   _.CDate(value)
-                // instead of
-                //   _.CALL(this, _, "CDate", _.ARGS.VAL(value))
-                // If these conditions are not met then we have to use the argument provider - if, for example, the support function requires a string parameter
-                // then we can't be sure that the argument we have at this point is a string. If there is no support function that matches the segment's number
-                // of arguments then this must fail at runtime, not compile time, and so the "CALL" method approach is required.
-                if (supportFunctionDetails.DesiredNumberOfArgumentsMatchedAgainst != null)
+                if (targetBuiltInFunction != null && !builtInFunctionIsOverwrittenAsVariable)
                 {
-                    return TranslateAsDirectSupportFunctionCall(supportFunctionDetails, callExpressionSegment.Arguments, scopeAccessInformation);
-                }
+                    BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count);
+                    IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
+                        .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
 
-                return TranslateCallExpressionSegment(
-                    new DoNotRenameNameToken(_supportRefName.Name.ToUpperX(), firstMemberAccessToken.LineIndex),
-                    rewrittenMemberAccessTokens,
-                    callExpressionSegment.Arguments,
-                    callExpressionSegment.ZeroArgumentBracketsPresence,
-                    scopeAccessInformation,
-                    indexInCallSet: 0, // Since this is a single CallExpressionSegment the indexInCallSet value to pass is always zero
-                    targetIsKnownToBeBuiltInFunction: true
-                );
+                    // If the call codeExpression is a single-argument call to "CDbl" and the argument is a numeric literal that VBScript would declare as "Double",
+                    // we can skip the call entirely. Likewise for "CInt" / "Integer" and "CLng" / "Long". The OperatorCombiner identifies some cases where what
+                    // appear to be numeric literals must not be treated as numeric literal later on in the process, so it wraps them in a "CInt" / "CLng" / "CDbl"
+                    // call (whichever is appropriate) - this code allows us to remove those injected functions right at the very last minute without changing the
+                    // meaning of the translate code. (Note: It is elsewhere in this class where it is important whether tokens should be given "special treatment"
+                    // as number literals in comparisons or not).
+                    if ((callExpressionSegment.Arguments.Count == 1) && (callExpressionSegment.Arguments.Single().Segments.Count == 1))
+                    {
+                        IExpressionSegment? singleArgumentSegment = callExpressionSegment.Arguments.Single().Segments.Single();
+                        NumericValueExpressionSegment? singleArgumentSegmentAsNumericValue = singleArgumentSegment as NumericValueExpressionSegment;
+                        if ((singleArgumentSegmentAsNumericValue != null) && singleArgumentSegmentAsNumericValue.Token.IsSafeToUnwrapFrom(targetBuiltInFunction))
+                        {
+                            return TranslateNonOperatorSegment(singleArgumentSegmentAsNumericValue, scopeAccessInformation);
+                        }
+                    }
+
+                    // If supportFunctionDetails.DesiredNumberOfArgumentsMatchedAgainst is not null then there is a support function that has the same number of
+                    // arguments as this callExpressionSegment, all of which as not output parameters and not ref parameters and all of which are of type "object".
+                    // This means that we can express this more directly, without relying upon an "argument provider" - eg.
+                    //   _.CDate(value)
+                    // instead of
+                    //   _.CALL(this, _, "CDate", _.ARGS.VAL(value))
+                    // If these conditions are not met then we have to use the argument provider - if, for example, the support function requires a string parameter
+                    // then we can't be sure that the argument we have at this point is a string. If there is no support function that matches the segment's number
+                    // of arguments then this must fail at runtime, not compile time, and so the "CALL" method approach is required.
+                    if (supportFunctionDetails.DesiredNumberOfArgumentsMatchedAgainst != null)
+                    {
+                        return TranslateAsDirectSupportFunctionCall(supportFunctionDetails, callExpressionSegment.Arguments, scopeAccessInformation);
+                    }
+
+                    return TranslateCallExpressionSegment(
+                        new DoNotRenameNameToken(_supportRefName.Name.ToUpperX(), firstMemberAccessToken.LineIndex),
+                        rewrittenMemberAccessTokens,
+                        callExpressionSegment.Arguments,
+                        callExpressionSegment.ZeroArgumentBracketsPresence,
+                        scopeAccessInformation,
+                        indexInCallSet: 0, // Since this is a single CallExpressionSegment the indexInCallSet value to pass is always zero
+                        targetIsKnownToBeBuiltInFunction: true
+                    );
+                }
             }
 
             // The only BuiltInValueToken that is acceptable here is "Err", since it is the only one that has members that may be accessed. If any other builtin
@@ -708,7 +722,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // then it may be mapped directly onto the support function (either 1, 2 or 3 arguments must be present). If a different number of arguments are present
             // then the target still needs rewriting from "Err.Raise" to "_.RAISEERROR", but it will have to go through the CALL function. Same goes for "Err.Clear".
             TranslatedStatementContentDetailsWithContentType? specialErrorHandlingFunctionStatementIfApplicable;
-            NameToken target;
+            AtomToken target;
             IToken[] memberAccessors = callExpressionSegment.MemberAccessTokens.Skip(1).ToArray();
             if (targetIsErrReference)
             {
@@ -760,7 +774,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 // Since the CallExpressionSegment's MemberAccessTokens property is documented as only containing BuiltInFunctionToken, BuiltInValueToken, KeyWordToken and
                 // NameToken values, it's safe to assume that it is a NameToken in this case since the other possibilities should have been accounted for by this point.
-                target = (NameToken)firstMemberAccessToken;
+                target = (AtomToken)firstMemberAccessToken;
                 specialErrorHandlingFunctionStatementIfApplicable = null;
             }
 
@@ -806,7 +820,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     //    throw new InvalidOperationException($"Owner '{target}' of method '{targetReferenceDetails.OwnerName}' could not be found.");
                     //}
 
-                    memberAccessors = new NameToken[] { ownerTkn, target }.Concat(memberAccessors).ToArray();
+                    memberAccessors = new AtomToken[] { ownerTkn, target }.Concat(memberAccessors).ToArray();
                     target = new ProcessedNameToken(_envRefName.Name.ToUpperX(), target.LineIndex);
                 }
             }
@@ -883,7 +897,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         private TranslatedStatementContentDetailsWithContentType TranslateCallExpressionSegment(
-            NameToken target,
+            AtomToken target,
             IEnumerable<IToken> targetMemberAccessTokens,
             IEnumerable<ParsingExpression> arguments,
             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence,
@@ -1070,12 +1084,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // applied - only if there are no arguments and no brackets may the value be returned unwrapped.
             if (targetMemberAccessTokensArray.Length == 0 && argumentsArray.Length == 0 && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
             {
-                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
-                    string.Format(CultureInfo.InvariantCulture,
-                        "{0}{1}",
-                        (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name),
-                        targetName
-                    ),
+                string targetContainerText = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);
+                return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText, $"{targetContainerText}{targetName}",
                     ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type
                     new NonNullImmutableList<NameToken>()
                 );

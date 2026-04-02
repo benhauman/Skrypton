@@ -71,11 +71,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new InvalidOperationException("Ended up with unexpected DimType value!");
         }
 
-        internal static bool CanBeHandledAsDimToken(List<IToken> tokens)
-        {
-            return checkAtomTokenPattern(tokens, "DIM", false);
-        }
-
         /// <summary>
         /// Does it look like we can work with the token stream? If so, return some data
         /// regarding what statement type it is, and how many tokens were required to
