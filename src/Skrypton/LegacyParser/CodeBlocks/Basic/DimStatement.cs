@@ -9,7 +9,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class DimStatement : BaseDimStatement // cannot be sealed due to 'PrivateVariableStatement'
     {
-        public DimStatement(IReadOnlyCollection<DimVariable> variables) : base(variables)
+        public DimStatement(int lineIndex, IReadOnlyCollection<DimVariable> variables) : base(lineIndex, variables)
         {
             // Dim statements (like Private and Public class member declarations and unlike ReDim statements) may only have integer constant array
             // dimensions specified, otherwise a compile error will be raised (on that On Error Resume Next can not bury). The integer constant
@@ -65,7 +65,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     public sealed class ConstantNonNegativeArrayDimensionDimVariable : DimVariable
     {
         public ConstantNonNegativeArrayDimensionDimVariable(NameToken name, IEnumerable<NumericValueToken>? dimensions)
-            : base(name, (dimensions == null) ? null : dimensions.Select(d => new CodeExpression(new[] { d })))
+            : base(name, (dimensions == null) ? null : dimensions.Select(d => new CodeExpression(new[] { d })).ToArray())
         {
             if (base.Dimensions != null)
             {

@@ -259,7 +259,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                             VariableDeclarationScopeOptions.Private,
                             null, // Not declared as an array
                             isConst: null,
-                            initializationValue: null // return
+                            initializationValue: null, // return
+                            inlineCommentIfAny: null
                         ),
                         ScopeLocationOptions.WithinFunctionOrPropertyOrWith,
                         asUnreferencedVar: false,

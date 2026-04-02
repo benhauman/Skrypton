@@ -33,7 +33,7 @@ namespace TranslatedProgram
         public object F1()
         {
             object F1_retVal = null;
-            _env.a = _.NEWARRAY(new object[] { (Int16)2 }); // This refers to the implicitly-declared variable "a" in the outermost scope
+            _env.a = _.NEWARRAY(new object[] { (Int16)2 });
             return F1_retVal;
         }
     }
@@ -60,10 +60,10 @@ namespace TranslatedProgram
         public object CF1()
         {
             object CF1_retVal = null;
-            object b = null;
-            _env.a = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the implicitly-declared variable "a" in the outermost scope
-            b = _.NEWARRAY(new object[] { (Int16)3 }); // There is no reference for this to relate to, so it acts as new explicit variable declaration
-            c = _.NEWARRAY(new object[] { (Int16)3 }); // This refers to the explicitly-declared variable "c" in the containing class
+            object b = null; // There is no reference for this to relate to, so it acts as new explicit variable declaration
+            _env.a = _.NEWARRAY(new object[] { (Int16)3 });
+            b = _.NEWARRAY(new object[] { (Int16)3 });
+            c = _.NEWARRAY(new object[] { (Int16)3 });
             return CF1_retVal;
         }
     }

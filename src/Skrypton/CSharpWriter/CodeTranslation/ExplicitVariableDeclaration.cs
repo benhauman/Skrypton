@@ -9,7 +9,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 {
     public sealed class VariableDeclaration
     {
-        internal VariableDeclaration(NameToken name, VariableDeclarationScopeOptions scope, IEnumerable<uint>? constantDimensionsIfAny, ConstStatement.ConstValueInitialisation? isConst, IToken? initializationValue)
+        internal VariableDeclaration(NameToken name, VariableDeclarationScopeOptions scope, IEnumerable<uint>? constantDimensionsIfAny, ConstStatement.ConstValueInitialisation? isConst, IToken? initializationValue, string? inlineCommentIfAny)
         {
             if (!Enum.IsDefined(typeof(VariableDeclarationScopeOptions), scope))
                 throw new ArgumentOutOfRangeException(nameof(scope));
@@ -40,6 +40,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             Scope = scope;
             ConstantDimensionsIfAny = (constantDimensionsIfAny == null) ? null : constantDimensionsIfAny.ToList().AsReadOnly();
             IsConstant = isConst != null;
+            InlineCommentIfAny = inlineCommentIfAny;
         }
 
         /// <summary>
@@ -60,5 +61,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public IToken? InitializationValue { get; private set; }
 
         public bool IsConstant { get; private set; }
+
+        public string? InlineCommentIfAny { get; }
     }
 }

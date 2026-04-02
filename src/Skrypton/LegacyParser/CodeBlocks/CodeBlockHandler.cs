@@ -1,4 +1,5 @@
-﻿using Skrypton.LegacyParser.CodeBlocks.Handlers;
+﻿using Skrypton.LegacyParser.CodeBlocks.Basic;
+using Skrypton.LegacyParser.CodeBlocks.Handlers;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
@@ -98,7 +99,21 @@ namespace Skrypton.LegacyParser.CodeBlocks
                     codeBlock = handler.Process(tokens);
                     if (codeBlock != null)
                     {
-                        codeBlocks.Add(codeBlock);
+                        bool blockConsumed = false;
+                        if (codeBlock is InlineCommentStatement inlineComment && codeBlocks.Count > 0)
+                        {
+                            var lastBlock = codeBlocks[codeBlocks.Count - 1];
+                            if (lastBlock is BaseDimStatement lastStatement)
+                            {
+                                //see 'TranslatedStatement'
+                                lastStatement.AppendDimInlineComment(inlineComment.Content, inlineComment.LineIndex);
+                                blockConsumed = true;
+                            }
+                        }
+                        if (!blockConsumed)
+                        {
+                            codeBlocks.Add(codeBlock);
+                        }
                         break;
                     }
                 }

@@ -167,7 +167,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 if ((lastTranslatedStatement != null))// && (lastTranslatedStatement.HasContent))
                 {
                     // see 'ReDimsWithinFunctionCanPointToImplicitlyDeclaredOuterMostScopeVariables'
-                    lastTranslatedStatement.AppendInlineComment(commentBlock.Content);
+                    lastTranslatedStatement.AppendInlineComment(commentBlock.Content, commentBlock.LineIndex);
                     return translationResult;
                 }
             }
@@ -248,7 +248,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     VariableDeclarationScopeOptions.Public, // There are no private CONST statements so this is public by default
                     constantDimensionsIfAny: null, // This does not apply to CONST statements, they may never be arrays
                     isConst: v,
-                    initializationValue: v.Value
+                    initializationValue: v.Value,
+                    inlineCommentIfAny: null
                 ))
                 .ToArray()
             );
@@ -311,7 +312,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     (explicitVariableDeclarationBlock is PrivateVariableStatement) ? VariableDeclarationScopeOptions.Private : VariableDeclarationScopeOptions.Public,
                     (v.Dimensions == null) ? null : CollectDimensionsAsNumericValueToken(v).Select(d => (uint)d.Value),
                     isConst: null,
-                    initializationValue: null // ConstantNonNegativeArrayDimensionDimVariable
+                    initializationValue: null, // ConstantNonNegativeArrayDimensionDimVariable
+                    inlineCommentIfAny: v.InlineCommentIfAny
                 )).ToArray()
             );
         }
@@ -784,7 +786,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         VariableDeclarationScopeOptions.Private,
                         null,
                         isConst: null,
-                        initializationValue: null // DimVariable
+                        initializationValue: null, // DimVariable
+                        inlineCommentIfAny: v.InlineCommentIfAny
                     )
                 })
                 .Where(newVariable => !scopeAccessInformation.IsDeclaredReference(newVariable.SourceName, _nameRewriter))
@@ -1151,6 +1154,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // the upper bound).
             // ? #pragma warning disable CS0219
             string rewrittenName = variableAccessTokenName;// _nameRewriter.GetMemberAccessTokenName(variableDeclaration.Name);
+            string inlineCommentText = (variableDeclaration.InlineCommentIfAny != null) ? $" //{variableDeclaration.InlineCommentIfAny}" : "";
             if (variableDeclaration.ConstantDimensionsIfAny == null)
             {
                 return RenderBlockCS0219(variableDeclaration, scopeLocation, asUnreferencedVar, indentationDepth, () =>
@@ -1182,23 +1186,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
                     string constText = variableDeclaration.IsConstant ? "const " : "";
                     string locText = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? $"{constText}{typeText} " : "";
-                    return $"{locText}{rewrittenName} = {initText};";
+                    return $"{locText}{rewrittenName} = {initText};{inlineCommentText}";
                 });
             }
             else if (!variableDeclaration.ConstantDimensionsIfAny.Any())
             {
-                return string.Format(CultureInfo.InvariantCulture,
-                    "{0}{1} = (object[])null;",
-                    (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
-                    rewrittenName
-                );
+                string xleft0 = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "";
+                return $"{xleft0}{rewrittenName} = (object[])null;{inlineCommentText}";
             }
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0}{1} = new object[{2}];",
-                (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "",
-                rewrittenName,
-                string.Join(", ", variableDeclaration.ConstantDimensionsIfAny.Select(d => d + 1))
-            );
+
+            string left0 = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "";
+            string right2 = string.Join(", ", variableDeclaration.ConstantDimensionsIfAny.Select(d => d + 1));
+            return $"{left0}{rewrittenName} = new object[{right2}];{inlineCommentText}";
         }
 
         private static string RenderBlockCS0219(VariableDeclaration variableDeclaration, ScopeLocationOptions scopeLocation, bool asUnreferencedVar, int indentationDepth, Func<string> renderer)
@@ -1310,7 +1309,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 uniqueVariables.Add(
                     new VariableDeclaration(undeclaredVariable, VariableDeclarationScopeOptions.Private, null,
                         isConst: null,
-                        initializationValue: null // VariableDeclaration
+                        initializationValue: null, // VariableDeclaration
+                        inlineCommentIfAny: null
                         )
                 );
                 rewrittenNamesAccountedFor.Add(rewrittenName);

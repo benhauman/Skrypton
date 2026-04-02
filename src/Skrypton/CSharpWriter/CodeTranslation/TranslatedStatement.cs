@@ -58,10 +58,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         public int LineIndexOfStatementStartInSource { get; }
 
         private string? _inlineCommentIfAny;
-        internal void AppendInlineComment(string translatedCommentContent)
+        internal void AppendInlineComment(string translatedCommentContent, int lineIndexOfInlineComment)
         {
             if (_inlineCommentIfAny != null)
-                throw new InvalidOperationException("Inline comment already set;");
+                throw new InvalidOperationException($"Inline comment already set. Line:{LineIndexOfStatementStartInSource} x:{lineIndexOfInlineComment}");
             _inlineCommentIfAny = translatedCommentContent;
         }
 

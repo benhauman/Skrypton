@@ -35,6 +35,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (tokens.Count == tokensConsumed)
                 throw new ArgumentException("DimHandler recognises opening AtomToken(s), but there is no following content");
 
+            int statementLineIndex = tokens[0].LineIndex;
             // Get raw variable content (one token if just variable, three tokens if array
             // without dimensions, four tokens if 1D array, etc..)
             List<List<IToken>> variablesData = getEntryList(tokens, tokensConsumed, new EndOfStatementNewLineToken(tokens[tokensConsumed - 1].LineIndex));
@@ -58,17 +59,17 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
             // Return final object
             if (dimType == DimType.Dim)
-                return new DimStatement(variables);
+                return new DimStatement(statementLineIndex, variables);
             else if (dimType == DimType.ReDim)
-                return new ReDimStatement(false, variables);
+                return new ReDimStatement(statementLineIndex, false, variables);
             else if (dimType == DimType.ReDimPreserve)
-                return new ReDimStatement(true, variables);
+                return new ReDimStatement(statementLineIndex, true, variables);
             else if (dimType == DimType.Public)
-                return new PublicVariableStatement(variables);
+                return new PublicVariableStatement(statementLineIndex, variables);
             else if (dimType == DimType.Private)
-                return new PrivateVariableStatement(variables);
+                return new PrivateVariableStatement(statementLineIndex, variables);
             else
-                throw new InvalidOperationException("Ended up with unexpected DimType value!");
+                throw new InvalidOperationException($"Ended up with unexpected DimType value! Line:{statementLineIndex}");
         }
 
         /// <summary>

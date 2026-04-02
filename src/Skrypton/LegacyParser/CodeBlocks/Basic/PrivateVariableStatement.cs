@@ -10,7 +10,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        public PrivateVariableStatement(IReadOnlyCollection<DimVariable> variables) : base(variables) { }
+        public PrivateVariableStatement(int lineIndex, IReadOnlyCollection<DimVariable> variables) : base(lineIndex, variables) { }
 
         // =======================================================================================
         // VBScript BASE SOURCE RE-GENERATION

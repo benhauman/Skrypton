@@ -10,13 +10,16 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public abstract class BaseDimStatement : IHaveNonNestedExpressions
     {
+        private readonly int _lineIndex;
+
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        protected BaseDimStatement(IEnumerable<DimVariable> variables)
+        protected BaseDimStatement(int lineIndex, IReadOnlyCollection<DimVariable> variables)
         {
             if (variables == null)
                 throw new ArgumentNullException(nameof(variables));
+            _lineIndex = lineIndex;
 
             Variables = variables.ToList().AsReadOnly();
             if (Variables.Any(v => v == null))
@@ -74,7 +77,13 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                 if (indexedVariable.Index < (numberOfVariables - 1))
                     output.Append(", ");
             }
+
             return output.ToString();
+        }
+
+        internal void AppendDimInlineComment(string translatedCommentContent, int lineIndexOfInlineComment)
+        {
+            Variables.Last().AppendDimInlineComment(translatedCommentContent, lineIndexOfInlineComment);
         }
     }
 
@@ -84,7 +93,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public class DimVariable // cannot be abstract due to 'translateRawVariableData'
     {
-        public DimVariable(NameToken name, IEnumerable<CodeExpression>? dimensions)
+        public DimVariable(NameToken name, IReadOnlyCollection<CodeExpression>? dimensions)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             if (dimensions == null)
@@ -115,6 +124,14 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public override string ToString()
         {
             return base.ToString() + ":" + Name;
+        }
+        private string? _inlineCommentIfAny { get; set; }
+        internal string? InlineCommentIfAny => _inlineCommentIfAny;
+        public void AppendDimInlineComment(string translatedCommentContent, int lineIndexOfInlineComment)
+        {
+            if (_inlineCommentIfAny != null)
+                throw new InvalidOperationException($"Inline comment already set. Line:{Name.Content} x:{lineIndexOfInlineComment}");
+            _inlineCommentIfAny = translatedCommentContent;
         }
     }
 }

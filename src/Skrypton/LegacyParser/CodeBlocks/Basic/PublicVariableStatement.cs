@@ -11,7 +11,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // CLASS INITIALISATION
         // =======================================================================================
 #pragma warning disable CA1002 // Do not expose generic lists
-        public PublicVariableStatement(List<DimVariable> variables) : base(variables) { }
+        public PublicVariableStatement(int lineIndex, List<DimVariable> variables) : base(lineIndex, variables) { }
 #pragma warning restore CA1002 // Do not expose generic lists
 
         // =======================================================================================

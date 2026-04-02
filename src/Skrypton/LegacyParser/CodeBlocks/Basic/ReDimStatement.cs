@@ -17,7 +17,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
-        public ReDimStatement(bool preserve, IEnumerable<DimVariable> variables) : base(variables)
+        public ReDimStatement(int lineIndex, bool preserve, IReadOnlyCollection<DimVariable> variables) : base(lineIndex, variables)
         {
             // Ensure that all variables have at least one dimension (VBScript code will not compile if this is not the case and the assumption
             // is that we're dealing with valid code - it would be a compile time error, not a runtime error that could be masked with On Error

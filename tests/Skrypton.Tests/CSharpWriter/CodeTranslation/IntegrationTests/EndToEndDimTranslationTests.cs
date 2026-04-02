@@ -113,5 +113,28 @@ txt = Space(10)
 			";
             TestCSharpCodeTranslationWithoutScaffolding(source, [], [], []);
         }
+        [TestMethod]
+        public void XInlineComments1()
+        {
+            var source = @"SUB Test
+	Dim var1 'Text1 
+	Dim var2 'Text2
+	Dim var3 'Text3
+	Dim var4 'Text4
+    Dim var5, var6 'Text56
+    Dim var7, var8 'Text78
+    var3 = 33
+END SUB
+			";
+            TestCSharpCodeTranslationWithoutScaffolding(source, []);
+        }
     }
+
+    /*
+TODO:
+       Dim varA, _   ' TextA
+           varB, _   ' TextB
+           varC      ' TextC
+
+     */
 }
