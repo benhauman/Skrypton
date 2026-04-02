@@ -1211,10 +1211,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string nameOfTargetContainer = (nameOfTargetContainerIfRequired == null) ? "" : string.Format(CultureInfo.InvariantCulture, "{0}.", nameOfTargetContainerIfRequired.Name);
 
             string targetAccessorName = $"{nameOfTargetContainer}{targetName}";
-            string targetNameForException = GetTargetNameForException(targetAccessorName);
 
             StringBuilder callExpressionContent = new StringBuilder();
-            callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {targetAccessorName} ?? throw new InvalidOperationException(""Reference not set:{targetNameForException}"")");// Pass "this" as the "context" argument
+            callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}");// Pass "this" as the "context" argument
 
             if (targetMemberAccessTokensArray.Length > 0)
             {

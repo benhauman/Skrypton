@@ -11,7 +11,7 @@
             try
             {
                 _.HANDLEERROR(errOn, () => {
-                    loopEnd = _.NUM(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F2", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
+                    loopEnd = _.NUM(_.CALLm1argp(this, _outer, "F2", _.ARGS.Ref(x_vref, v => { x_vref = v; })));
                     loopStart = _.NUM((Int16)1);
                     if ((loopStart is DateTime) || (loopStart is Decimal))
                         i = loopStart;

@@ -5,7 +5,7 @@
             object a_vref = a;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F2", _.ARGS.RefIfArray(a_vref, _.ARGS.Val((Int16)0)));
+                _.CALLm1argp(this, _outer, "F2", _.ARGS.RefIfArray(a_vref, _.ARGS.Val((Int16)0)));
             }
             finally { a = a_vref; }
             return F1_retVal;

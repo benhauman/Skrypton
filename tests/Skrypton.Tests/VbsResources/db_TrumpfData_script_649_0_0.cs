@@ -53,7 +53,7 @@ namespace TranslatedProgram
         {
             object hlITIL2_retVal = null;
             hlITIL2_retVal = _.OBJ(_.CREATEOBJECT("hlStartITIL2.Global"));
-            _.CALLm2argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
+            _.CALLm2argp(this, _outer, "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
             return hlITIL2_retVal;
         }
         //----------------------------------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ namespace TranslatedProgram
             object hlCase_vref = hlCase, hlContext_vref = hlContext;
             try
             {
-                SUIDx = _.VAL(_.CALLm2argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(hlCase_vref, v5 => { hlCase_vref = v5; }).Ref(hlContext_vref, v6 => { hlContext_vref = v6; })));
+                SUIDx = _.VAL(_.CALLm2argp(this, _outer, "hlITIL2", "GetLastSUIdx", _.ARGS.Ref(hlCase_vref, v5 => { hlCase_vref = v5; }).Ref(hlContext_vref, v6 => { hlContext_vref = v6; })));
             }
             finally { hlCase = hlCase_vref; hlContext = hlContext_vref; }
             MailRequest = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
@@ -752,79 +752,79 @@ namespace TranslatedProgram
             object hlContext_vref2 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref2, v75 => { hlContext_vref2 = v75; }).Ref(xmldoc, v76 => { xmldoc = v76; }).Ref(nodeAttributes, v77 => { nodeAttributes = v77; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.AssetName", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref2, v75 => { hlContext_vref2 = v75; }).Ref(xmldoc, v76 => { xmldoc = v76; }).Ref(nodeAttributes, v77 => { nodeAttributes = v77; }).Val(false).Val("AssetGeneral.AssetName").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.AssetName", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref2; } // hlObj.GetValue("AssetGeneral.AssetName", 0,0,0,0)
             object hlContext_vref3 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref3, v78 => { hlContext_vref3 = v78; }).Ref(xmldoc, v79 => { xmldoc = v79; }).Ref(nodeAttributes, v80 => { nodeAttributes = v80; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AccountingDetail.CostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref3, v78 => { hlContext_vref3 = v78; }).Ref(xmldoc, v79 => { xmldoc = v79; }).Ref(nodeAttributes, v80 => { nodeAttributes = v80; }).Val(false).Val("AccountingDetail.CostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AccountingDetail.CostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref3; }
             object hlContext_vref4 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref4, v81 => { hlContext_vref4 = v81; }).Ref(xmldoc, v82 => { xmldoc = v82; }).Ref(nodeAttributes, v83 => { nodeAttributes = v83; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.Serialnumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref4, v81 => { hlContext_vref4 = v81; }).Ref(xmldoc, v82 => { xmldoc = v82; }).Ref(nodeAttributes, v83 => { nodeAttributes = v83; }).Val(false).Val("AssetGeneral.Serialnumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "AssetGeneral.Serialnumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref4; }
             object hlContext_vref5 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref5, v84 => { hlContext_vref5 = v84; }).Ref(xmldoc, v85 => { xmldoc = v85; }).Ref(nodeAttributes, v86 => { nodeAttributes = v86; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref5, v84 => { hlContext_vref5 = v84; }).Ref(xmldoc, v85 => { xmldoc = v85; }).Ref(nodeAttributes, v86 => { nodeAttributes = v86; }).Val(false).Val("ProcurementDetail.AllocationNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref5; }
             object hlContext_vref6 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref6, v87 => { hlContext_vref6 = v87; }).Ref(xmldoc, v88 => { xmldoc = v88; }).Ref(nodeAttributes, v89 => { nodeAttributes = v89; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref6, v87 => { hlContext_vref6 = v87; }).Ref(xmldoc, v88 => { xmldoc = v88; }).Ref(nodeAttributes, v89 => { nodeAttributes = v89; }).Val(false).Val("ProcurementDetail.AllocationType").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.AllocationType", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref6; }
             object hlContext_vref7 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref7, v90 => { hlContext_vref7 = v90; }).Ref(xmldoc, v91 => { xmldoc = v91; }).Ref(nodeAttributes, v92 => { nodeAttributes = v92; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref7, v90 => { hlContext_vref7 = v90; }).Ref(xmldoc, v91 => { xmldoc = v91; }).Ref(nodeAttributes, v92 => { nodeAttributes = v92; }).Val(false).Val("ProcurementDetail.OrderNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref7; }
             object hlContext_vref8 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref8, v93 => { hlContext_vref8 = v93; }).Ref(xmldoc, v94 => { xmldoc = v94; }).Ref(nodeAttributes, v95 => { nodeAttributes = v95; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderPosition", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref8, v93 => { hlContext_vref8 = v93; }).Ref(xmldoc, v94 => { xmldoc = v94; }).Ref(nodeAttributes, v95 => { nodeAttributes = v95; }).Val(false).Val("ProcurementDetail.OrderPosition").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.OrderPosition", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref8; }
             object hlContext_vref9 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref9, v96 => { hlContext_vref9 = v96; }).Ref(xmldoc, v97 => { xmldoc = v97; }).Ref(nodeAttributes, v98 => { nodeAttributes = v98; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.VendorNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref9, v96 => { hlContext_vref9 = v96; }).Ref(xmldoc, v97 => { xmldoc = v97; }).Ref(nodeAttributes, v98 => { nodeAttributes = v98; }).Val(false).Val("ProcurementDetail.VendorNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ProcurementDetail.VendorNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref9; }
             object hlContext_vref10 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref10, v99 => { hlContext_vref10 = v99; }).Ref(xmldoc, v100 => { xmldoc = v100; }).Ref(nodeAttributes, v101 => { nodeAttributes = v101; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref10, v99 => { hlContext_vref10 = v99; }).Ref(xmldoc, v100 => { xmldoc = v100; }).Ref(nodeAttributes, v101 => { nodeAttributes = v101; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CINumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref10; }
             object hlContext_vref11 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref11, v102 => { hlContext_vref11 = v102; }).Ref(xmldoc, v103 => { xmldoc = v103; }).Ref(nodeAttributes, v104 => { nodeAttributes = v104; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref11, v102 => { hlContext_vref11 = v102; }).Ref(xmldoc, v103 => { xmldoc = v103; }).Ref(nodeAttributes, v104 => { nodeAttributes = v104; }).Val(false).Val("TrumpfAssetGeneral.CompanyCode").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.CompanyCode", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref11; }
             object hlContext_vref12 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref12, v105 => { hlContext_vref12 = v105; }).Ref(xmldoc, v106 => { xmldoc = v106; }).Ref(nodeAttributes, v107 => { nodeAttributes = v107; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.InvestmentNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref12, v105 => { hlContext_vref12 = v105; }).Ref(xmldoc, v106 => { xmldoc = v106; }).Ref(nodeAttributes, v107 => { nodeAttributes = v107; }).Val(false).Val("TrumpfAssetGeneral.InvestmentNumber").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.InvestmentNumber", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref12; }
             object hlContext_vref13 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref13, v108 => { hlContext_vref13 = v108; }).Ref(xmldoc, v109 => { xmldoc = v109; }).Ref(nodeAttributes, v110 => { nodeAttributes = v110; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.Manufacturer", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref13, v108 => { hlContext_vref13 = v108; }).Ref(xmldoc, v109 => { xmldoc = v109; }).Ref(nodeAttributes, v110 => { nodeAttributes = v110; }).Val(false).Val("TrumpfAssetGeneral.Manufacturer").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.Manufacturer", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref13; }
             object hlContext_vref14 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref14, v111 => { hlContext_vref14 = v111; }).Ref(xmldoc, v112 => { xmldoc = v112; }).Ref(nodeAttributes, v113 => { nodeAttributes = v113; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.SAPCostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref14, v111 => { hlContext_vref14 = v111; }).Ref(xmldoc, v112 => { xmldoc = v112; }).Ref(nodeAttributes, v113 => { nodeAttributes = v113; }).Val(false).Val("TrumpfAssetGeneral.SAPCostCenter").Val(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "TrumpfAssetGeneral.SAPCostCenter", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
             }
             finally { hlContext = hlContext_vref14; }
 
@@ -967,49 +967,49 @@ namespace TranslatedProgram
             object hlContext_vref15 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref15, v117 => { hlContext_vref15 = v117; }).Ref(xmldoc, v118 => { xmldoc = v118; }).Ref(nodeAttributes, v119 => { nodeAttributes = v119; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v120 => { increqsubject = v120; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref15, v117 => { hlContext_vref15 = v117; }).Ref(xmldoc, v118 => { xmldoc = v118; }).Ref(nodeAttributes, v119 => { nodeAttributes = v119; }).Val(true).Val("CaseGeneral.Subject").Ref(increqsubject, v120 => { increqsubject = v120; }));
             }
             finally { hlContext = hlContext_vref15; }
             object hlContext_vref16 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref16, v121 => { hlContext_vref16 = v121; }).Ref(xmldoc, v122 => { xmldoc = v122; }).Ref(nodeAttributes, v123 => { nodeAttributes = v123; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v124 => { Beschreibung = v124; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref16, v121 => { hlContext_vref16 = v121; }).Ref(xmldoc, v122 => { xmldoc = v122; }).Ref(nodeAttributes, v123 => { nodeAttributes = v123; }).Val(false).Val("CaseDescription.DescriptionText").Ref(Beschreibung, v124 => { Beschreibung = v124; }));
             }
             finally { hlContext = hlContext_vref16; }
             object hlContext_vref17 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref17, v125 => { hlContext_vref17 = v125; }).Ref(xmldoc, v126 => { xmldoc = v126; }).Ref(nodeAttributes, v127 => { nodeAttributes = v127; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v128 => { TeamKeyword = v128; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref17, v125 => { hlContext_vref17 = v125; }).Ref(xmldoc, v126 => { xmldoc = v126; }).Ref(nodeAttributes, v127 => { nodeAttributes = v127; }).Val(false).Val("Keywords.KeywordOrga").Ref(TeamKeyword, v128 => { TeamKeyword = v128; }));
             }
             finally { hlContext = hlContext_vref17; }
             object hlContext_vref18 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref18, v129 => { hlContext_vref18 = v129; }).Ref(xmldoc, v130 => { xmldoc = v130; }).Ref(nodeAttributes, v131 => { nodeAttributes = v131; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v132 => { Buchungskreis1 = v132; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref18, v129 => { hlContext_vref18 = v129; }).Ref(xmldoc, v130 => { xmldoc = v130; }).Ref(nodeAttributes, v131 => { nodeAttributes = v131; }).Val(false).Val("CaseGeneral.CompanyCode").Ref(Buchungskreis1, v132 => { Buchungskreis1 = v132; }));
             }
             finally { hlContext = hlContext_vref18; }
             object hlContext_vref19 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref19, v133 => { hlContext_vref19 = v133; }).Ref(xmldoc, v134 => { xmldoc = v134; }).Ref(nodeAttributes, v135 => { nodeAttributes = v135; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref19, v133 => { hlContext_vref19 = v133; }).Ref(xmldoc, v134 => { xmldoc = v134; }).Ref(nodeAttributes, v135 => { nodeAttributes = v135; }).Val(false).Val("Keywords.Keyword").Val("KWStdSWhelplineInterfaceAM"));
             }
             finally { hlContext = hlContext_vref19; }
             object hlContext_vref20 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref20, v136 => { hlContext_vref20 = v136; }).Ref(xmldoc, v137 => { xmldoc = v137; }).Ref(nodeAttributes, v138 => { nodeAttributes = v138; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref20, v136 => { hlContext_vref20 = v136; }).Ref(xmldoc, v137 => { xmldoc = v137; }).Ref(nodeAttributes, v138 => { nodeAttributes = v138; }).Val(false).Val("IncidentAttribute.IncidentStatus").Val("IncidentStatusNew"));
             }
             finally { hlContext = hlContext_vref20; }
             object hlContext_vref21 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref21, v139 => { hlContext_vref21 = v139; }).Ref(xmldoc, v140 => { xmldoc = v140; }).Ref(nodeAttributes, v141 => { nodeAttributes = v141; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref21, v139 => { hlContext_vref21 = v139; }).Ref(xmldoc, v140 => { xmldoc = v140; }).Ref(nodeAttributes, v141 => { nodeAttributes = v141; }).Val(false).Val("IncidentAttribute.RequestType").Val("RequestTypeService"));
             }
             finally { hlContext = hlContext_vref21; }
             object hlContext_vref22 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref22, v142 => { hlContext_vref22 = v142; }).Ref(xmldoc, v143 => { xmldoc = v143; }).Ref(nodeServiceUnit, v144 => { nodeServiceUnit = v144; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref22, v142 => { hlContext_vref22 = v142; }).Ref(xmldoc, v143 => { xmldoc = v143; }).Ref(nodeServiceUnit, v144 => { nodeServiceUnit = v144; }).Val(true).Val("IncidentSUAttribute.IncidentOperation").Val("IncidentOperation"));
             }
             finally { hlContext = hlContext_vref22; }
 
@@ -1022,7 +1022,7 @@ namespace TranslatedProgram
             object hlContext_vref23 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendNode", _.ARGS.Ref(hlContext_vref23, v146 => { hlContext_vref23 = v146; }).Ref(xmldoc, v147 => { xmldoc = v147; }).Ref(nodeAttributes2, v148 => { nodeAttributes2 = v148; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v149 => { cinummer = v149; }));
+                _.CALLm1argp(this, _outer, "AppendNode", _.ARGS.Ref(hlContext_vref23, v146 => { hlContext_vref23 = v146; }).Ref(xmldoc, v147 => { xmldoc = v147; }).Ref(nodeAttributes2, v148 => { nodeAttributes2 = v148; }).Val(true).Val("TrumpfAssetGeneral.CINumber").Ref(cinummer, v149 => { cinummer = v149; }));
             }
             finally { hlContext = hlContext_vref23; }
 
@@ -1033,13 +1033,13 @@ namespace TranslatedProgram
             object hlContext_vref24 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendTextNode", _.ARGS.Ref(hlContext_vref24, v150 => { hlContext_vref24 = v150; }).Ref(xmldoc, v151 => { xmldoc = v151; }).Ref(nodeProduct2Case, v152 => { nodeProduct2Case = v152; }).Val("Parent").Ref(aliasnameSU, v153 => { aliasnameSU = v153; }));
+                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(hlContext_vref24, v150 => { hlContext_vref24 = v150; }).Ref(xmldoc, v151 => { xmldoc = v151; }).Ref(nodeProduct2Case, v152 => { nodeProduct2Case = v152; }).Val("Parent").Ref(aliasnameSU, v153 => { aliasnameSU = v153; }));
             }
             finally { hlContext = hlContext_vref24; }
             object hlContext_vref25 = hlContext;
             try
             {
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "AppendTextNode", _.ARGS.Ref(hlContext_vref25, v154 => { hlContext_vref25 = v154; }).Ref(xmldoc, v155 => { xmldoc = v155; }).Ref(nodeProduct2Case, v156 => { nodeProduct2Case = v156; }).Val("Child").Ref(aliasname2, v157 => { aliasname2 = v157; }));
+                _.CALLm1argp(this, _outer, "AppendTextNode", _.ARGS.Ref(hlContext_vref25, v154 => { hlContext_vref25 = v154; }).Ref(xmldoc, v155 => { xmldoc = v155; }).Ref(nodeProduct2Case, v156 => { nodeProduct2Case = v156; }).Val("Child").Ref(aliasname2, v157 => { aliasname2 = v157; }));
             }
             finally { hlContext = hlContext_vref25; }
 

@@ -3,7 +3,7 @@
         {
             object F1_retVal = null;
             object i = null;
-            var loopEnd = _.NUM(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F2", _.ARGS.Ref(x, v => { x = v; })));
+            var loopEnd = _.NUM(_.CALLm1argp(this, _outer, "F2", _.ARGS.Ref(x, v => { x = v; })));
             var loopStart = _.NUM((Int16)1, loopEnd);
             if (_.StrictLTE(loopStart, loopEnd))
             {

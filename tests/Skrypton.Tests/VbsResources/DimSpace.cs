@@ -16,13 +16,13 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             _outer.Space = "+";
-            _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"), "x", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"));
-            _outer.URLEncode = _.CONCAT("y", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"));
-            _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"), "z");
-            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F1", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE")));
-            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F2", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE")));
-            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F3", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE")));
-            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F4", _.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE")));
+            _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _, "SPACE"), "x", _.CALLm1v0(this, _, "SPACE"));
+            _outer.URLEncode = _.CONCAT("y", _.CALLm1v0(this, _, "SPACE"));
+            _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _, "SPACE"), "z");
+            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer, "F1", _.CALLm1v0(this, _, "SPACE")));
+            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer, "F2", _.CALLm1v0(this, _, "SPACE")));
+            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer, "F3", _.CALLm1v0(this, _, "SPACE")));
+            _outer.URLEncode = _.VAL(_.CALLm1v1(this, _outer, "F4", _.CALLm1v0(this, _, "SPACE")));
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -54,15 +54,15 @@ namespace TranslatedProgram
         }
         public object F2(ref object Space)
         {
-            return _.VAL(_.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"));
+            return _.VAL(_.CALLm1v0(this, _, "SPACE"));
         }
         public object F3(ref object Space)
         {
-            return _.VAL(_.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"));
+            return _.VAL(_.CALLm1v0(this, _, "SPACE"));
         }
         public object F4(object Space)
         {
-            return _.VAL(_.CALLm1v0(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "SPACE"));
+            return _.VAL(_.CALLm1v0(this, _, "SPACE"));
         }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase

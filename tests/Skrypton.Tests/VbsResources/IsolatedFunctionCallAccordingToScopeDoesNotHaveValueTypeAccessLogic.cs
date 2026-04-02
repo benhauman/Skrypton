@@ -1,1 +1,1 @@
-_.CALLm1v0(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "o")
+_.CALLm1v0(this, _outer, "o")

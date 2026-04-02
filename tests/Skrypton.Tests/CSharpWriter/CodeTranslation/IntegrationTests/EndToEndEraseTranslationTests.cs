@@ -48,7 +48,7 @@ ERASE a
 FUNCTION a
 END FUNCTION",
                         @"
-            var invalidEraseTarget = _.CALLm1v0(this, _outer ?? throw new InvalidOperationException(""Reference not set:_outer""), ""a"");
+            var invalidEraseTarget = _.CALLm1v0(this, _outer, ""a"");
             throw new TypeMismatchException(""'Erase' (line 1)"");
         public object a()
         {
@@ -60,7 +60,7 @@ END FUNCTION",
 ERASE a()
 FUNCTION a
 END FUNCTION",
-                        @"            var invalidEraseTarget = _.CALLm1argp(this, _outer ?? throw new InvalidOperationException(""Reference not set:_outer""), ""a"", _.ARGS.ForceBrackets());
+                        @"            var invalidEraseTarget = _.CALLm1argp(this, _outer, ""a"", _.ARGS.ForceBrackets());
             throw new TypeMismatchException(""'Erase' (line 1)"");
         public object a()
         {

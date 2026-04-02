@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _.CALLm1v0(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ButtonGeneralInfo_Click");
+            _.CALLm1v0(this, _outer, "ButtonGeneralInfo_Click");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -63,19 +63,19 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(Suffix, " KB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " MB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1048576), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1048576), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " GB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1073741824), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1073741824), (Int16)2));
             }
             else if (_.IF(_.EQ(Suffix, " TB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
+                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
             }
 
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
@@ -359,7 +359,7 @@ namespace TranslatedProgram
 
             // --- GroupBoxGeneralInfo
 
-            nexthinkBaseURL = _.CONCAT(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
+            nexthinkBaseURL = _.CONCAT(_.CALLm1argp(this, _outer, "getNexthinkBaseURL", _.ARGS.ForceBrackets()), "query?p1=");
             nexthinkQuery = "&platform=windows&query=(select (name last_ip_address group_name last_logged_on_user os_version_and_architecture device_manufacturer number_of_cpus cpu_model number_of_cores logical_cpu_number cpu_frequency total_ram number_of_graphical_cards graphical_card_ram last_system_boot last_logon_time bios_serial_number device_model ) (from device (where device (eq name (string %1))) ))&format=xml";
 
             colorWarning = "#F20012";
@@ -383,7 +383,7 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCallTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCallTime"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralCallTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCallTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)));
             });
 
             _.HANDLEERROR(errOn, () => {
@@ -393,7 +393,7 @@ namespace TranslatedProgram
                 _.CALLm1v2(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "setOption", (Int16)2, (Int16)13056);
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1argp(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "getNexthinkPassword", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
                 _.CALLm1v0(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "send");
@@ -506,10 +506,10 @@ namespace TranslatedProgram
                 _.SETm1a0(this, _env.TextBoxGeneralGroupName ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGroupName"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "group_name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastBootTime"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastBootTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastLogon"), "Text", _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastLogon"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
                 _.SETm1a0(this, _env.TextBoxGeneralDeviceType ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralDeviceType"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logged_on_user")));
@@ -533,14 +533,14 @@ namespace TranslatedProgram
                 _.SETm1a0(this, _env.TextBoxGeneralCPUFreq ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCPUFreq"), "Text", _.CONCAT(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "cpu_frequency"), " MHz"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralTotalRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "total_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralTotalRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "total_ram"))));
             });
 
             _.HANDLEERROR(errOn, () => {
                 _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfGraphCards"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_graphical_cards")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGraphCardRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "graphical_card_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGraphCardRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "graphical_card_ram"))));
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

@@ -17,7 +17,7 @@ namespace TranslatedProgram
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
             //---------------------------------------------------------------------------------------- main ---
-            _.CALLm1v0(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ProcessIn");
+            _.CALLm1v0(this, _outer, "ProcessIn");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -36,38 +36,38 @@ namespace TranslatedProgram
         {
             object mailRequest = null;
             object extendCaseSuccess = null;
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "ProcessRequestMail start.");
+            _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail start.");
 
             mailRequest = _.OBJ(_.CALLm0argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), _.ARGS.Val("mailrequest")));
 
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.CONCAT("mail subject: ", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "subject")));
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.CONCAT("mail To: ", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To")));
+            _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail subject: ", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "subject")));
+            _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail To: ", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To")));
 
-            if (_.IF(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsAutoReplyMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"))))
+            if (_.IF(_.CALLm1v1(this, _outer, "IsAutoReplyMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"))))
             {
-                _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "Out of Office AutoReply");
+                _.CALLm1v1(this, _outer, "LogText", "Out of Office AutoReply");
                 return;
             }
 
-            extendCaseSuccess = _.VAL(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "TryExtendCase", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject")));
+            extendCaseSuccess = _.VAL(_.CALLm1v1(this, _outer, "TryExtendCase", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject")));
             if (_.IF(_.EQ(extendCaseSuccess, false)))
             {
-                _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "Extend case failed. Start new process");
-                if (_.IF(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsFMMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To"))))
+                _.CALLm1v1(this, _outer, "LogText", "Extend case failed. Start new process");
+                if (_.IF(_.CALLm1v1(this, _outer, "IsFMMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To"))))
                 {
-                    _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "StartNewFMWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
+                    _.CALLm1v1(this, _outer, "StartNewFMWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
                 }
-                else if (_.IF(_.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsHRMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To"))))
+                else if (_.IF(_.CALLm1v1(this, _outer, "IsHRMail", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "To"))))
                 {
-                    _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "StartNewHRWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
+                    _.CALLm1v1(this, _outer, "StartNewHRWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
                 }
                 else
                 {
-                    _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "StartNewWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
+                    _.CALLm1v1(this, _outer, "StartNewWorkflow", _.CALLm1v0(this, mailRequest ?? throw new InvalidOperationException("Reference not set:mailRequest"), "Subject"));
                 }
             }
 
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "ProcessRequestMail end.");
+            _.CALLm1v1(this, _outer, "LogText", "ProcessRequestMail end.");
         }
         //--------------------------------------------------------------------------------------- IsAutoReplyMail ---
         public object IsAutoReplyMail(ref object mailSubject)
@@ -77,7 +77,7 @@ namespace TranslatedProgram
             object item = null;
             object retVal = null;
             retVal = false;
-            autoReplyList = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "Out of Office:", "Abwesend:"));
+            autoReplyList = _.VAL(_.CALLm1v2(this, _, "ARRAY", "Out of Office:", "Abwesend:"));
 
             var enumerationContent = _.ENUMERABLE(autoReplyList).GetEnumerator();
             while (true)
@@ -106,18 +106,18 @@ namespace TranslatedProgram
             object mailSubject_vref = mailSubject;
             try
             {
-                refNumber = _.VAL(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "ExtractRefNumber", _.ARGS.Ref(mailSubject_vref, v => { mailSubject_vref = v; })));
+                refNumber = _.VAL(_.CALLm1argp(this, _outer, "ExtractRefNumber", _.ARGS.Ref(mailSubject_vref, v => { mailSubject_vref = v; })));
             }
             finally { mailSubject = mailSubject_vref; }
             if (_.IF(_.GT(_.NullableNUM(_.LEN(refNumber)), (Int16)0)))
             {
-                _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "RefNumber > 0");
+                _.CALLm1v1(this, _outer, "LogText", "RefNumber > 0");
                 caseToExtend = _.OBJ(_.CALLm1argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "GetCaseByReferenceNumber", _.ARGS.Ref(refNumber, v2 => { refNumber = v2; })));
                 if (_.IF(_.CALLm1argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "CanExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v3 => { caseToExtend = v3; }))))
                 {
-                    _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "CanExtend");
+                    _.CALLm1v1(this, _outer, "LogText", "CanExtend");
                     reportText = _.VAL(_.CALLm1argp(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "DoExtendWorkflowCase", _.ARGS.Ref(caseToExtend, v4 => { caseToExtend = v4; })));
-                    _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v5 => { reportText = v5; }));
+                    _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v5 => { reportText = v5; }));
                     retVal = true;
                 }
             }
@@ -133,79 +133,79 @@ namespace TranslatedProgram
             object fmKeywords = null;
             object hrKeywords = null;
             object reportText = null;
-            rfKeywords = _.VAL(_.CALLm1v5(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "[ServiceRequest]", "Anfrage", "request", "Frage", "question"));
-            imKeywords = _.VAL(_.CALLm1v5(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "[Incident]", "Incident", "Störung", "Hilfe", "help"));
-            cmKeywords = _.VAL(_.CALLm1v3(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "[RFC]", "Änderung", "Change"));
-            fmKeywords = _.VAL(_.CALLm1v3(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "[Facility]", "Haustechnik", "FM"));
-            hrKeywords = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ARRAY", "[HR]", "Personal"));
+            rfKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[ServiceRequest]", "Anfrage", "request", "Frage", "question"));
+            imKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[Incident]", "Incident", "Störung", "Hilfe", "help"));
+            cmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[RFC]", "Änderung", "Change"));
+            fmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[Facility]", "Haustechnik", "FM"));
+            hrKeywords = _.VAL(_.CALLm1v2(this, _, "ARRAY", "[HR]", "Personal"));
 
             bool ifResult;
             object mailSubject_vref2 = mailSubject;
             try
             {
-                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsWFEmail", _.ARGS.Ref(mailSubject_vref2, v8 => { mailSubject_vref2 = v8; }).Ref(rfKeywords, v9 => { rfKeywords = v9; })), true));
+                ifResult = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref2, v8 => { mailSubject_vref2 = v8; }).Ref(rfKeywords, v9 => { rfKeywords = v9; })), true));
             }
             finally { mailSubject = mailSubject_vref2; }
             if (ifResult)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "RequestFulfillment"));
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v10 => { reportText = v10; }));
+                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v10 => { reportText = v10; }));
                 return;
             }
             bool ifResult2;
             object mailSubject_vref3 = mailSubject;
             try
             {
-                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsWFEmail", _.ARGS.Ref(mailSubject_vref3, v13 => { mailSubject_vref3 = v13; }).Ref(imKeywords, v14 => { imKeywords = v14; })), true));
+                ifResult2 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref3, v13 => { mailSubject_vref3 = v13; }).Ref(imKeywords, v14 => { imKeywords = v14; })), true));
             }
             finally { mailSubject = mailSubject_vref3; }
             if (ifResult2)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "IncidentManagement"));
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v15 => { reportText = v15; }));
+                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v15 => { reportText = v15; }));
                 return;
             }
             bool ifResult3;
             object mailSubject_vref4 = mailSubject;
             try
             {
-                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsWFEmail", _.ARGS.Ref(mailSubject_vref4, v18 => { mailSubject_vref4 = v18; }).Ref(cmKeywords, v19 => { cmKeywords = v19; })), true));
+                ifResult3 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref4, v18 => { mailSubject_vref4 = v18; }).Ref(cmKeywords, v19 => { cmKeywords = v19; })), true));
             }
             finally { mailSubject = mailSubject_vref4; }
             if (ifResult3)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "ChangeManagement"));
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v20 => { reportText = v20; }));
+                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v20 => { reportText = v20; }));
                 return;
             }
             bool ifResult4;
             object mailSubject_vref5 = mailSubject;
             try
             {
-                ifResult4 = _.IF(_.EQ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsWFEmail", _.ARGS.Ref(mailSubject_vref5, v23 => { mailSubject_vref5 = v23; }).Ref(fmKeywords, v24 => { fmKeywords = v24; })), true));
+                ifResult4 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref5, v23 => { mailSubject_vref5 = v23; }).Ref(fmKeywords, v24 => { fmKeywords = v24; })), true));
             }
             finally { mailSubject = mailSubject_vref5; }
             if (ifResult4)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "FacilityIncidentManagement"));
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v25 => { reportText = v25; }));
+                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v25 => { reportText = v25; }));
                 return;
             }
             bool ifResult5;
             object mailSubject_vref6 = mailSubject;
             try
             {
-                ifResult5 = _.IF(_.EQ(_.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "IsWFEmail", _.ARGS.Ref(mailSubject_vref6, v28 => { mailSubject_vref6 = v28; }).Ref(hrKeywords, v29 => { hrKeywords = v29; })), true));
+                ifResult5 = _.IF(_.EQ(_.CALLm1argp(this, _outer, "IsWFEmail", _.ARGS.Ref(mailSubject_vref6, v28 => { mailSubject_vref6 = v28; }).Ref(hrKeywords, v29 => { hrKeywords = v29; })), true));
             }
             finally { mailSubject = mailSubject_vref6; }
             if (ifResult5)
             {
                 reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "HRRequestManagement"));
-                _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v30 => { reportText = v30; }));
+                _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v30 => { reportText = v30; }));
                 return;
             }
             reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "Request"));
-            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v31 => { reportText = v31; }));
+            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v31 => { reportText = v31; }));
         }
         //--------------------------------------------------------------------------------------- StartNewFMWorkflow ---
         public void StartNewFMWorkflow(ref object mailSubject)
@@ -213,7 +213,7 @@ namespace TranslatedProgram
             object reportText = null;
 
             reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "FacilityIncidentManagement"));
-            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v32 => { reportText = v32; }));
+            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v32 => { reportText = v32; }));
         }
         //--------------------------------------------------------------------------------------- StartNewHRWorkflow ---
         public void StartNewHRWorkflow(ref object mailSubject)
@@ -221,7 +221,7 @@ namespace TranslatedProgram
             object reportText = null;
 
             reportText = _.VAL(_.CALLm1v1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "NewWorkflowFromMail", "HRRequestManagement"));
-            _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.ARGS.Ref(reportText, v33 => { reportText = v33; }));
+            _.CALLm1argp(this, _outer, "LogText", _.ARGS.Ref(reportText, v33 => { reportText = v33; }));
         }
         //--------------------------------------------------------------------------------------- LogText ---
         public void LogText(ref object sText)
@@ -256,7 +256,7 @@ namespace TranslatedProgram
         {
             object IsFMMail_retVal = null;
             object retVal = null;
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "IsFMMail called");
+            _.CALLm1v1(this, _outer, "LogText", "IsFMMail called");
             retVal = false;
             if (_.IF(_.EQ(_.NullableSTR(mailTo), "haustechnik@helplinedemo.de")))
             {
@@ -271,7 +271,7 @@ namespace TranslatedProgram
         {
             object IsHRMail_retVal = null;
             object retVal = null;
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "IsHRMail called");
+            _.CALLm1v1(this, _outer, "LogText", "IsHRMail called");
             retVal = false;
             if (_.IF(_.EQ(_.NullableSTR(mailTo), "personal@helplinedemo.de")))
             {
@@ -287,7 +287,7 @@ namespace TranslatedProgram
             object IsWFEmail_retVal = null;
             object item = null;
             object retVal = null;
-            _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", "IsWFEmail called");
+            _.CALLm1v1(this, _outer, "LogText", "IsWFEmail called");
             retVal = false;
 
             var enumerationContent2 = _.ENUMERABLE(keywordList).GetEnumerator();
@@ -298,7 +298,7 @@ namespace TranslatedProgram
                 item = enumerationContent2.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {
-                    _.CALLm1v1(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "LogText", _.CONCAT("IsWFEmail - ", item));
+                    _.CALLm1v1(this, _outer, "LogText", _.CONCAT("IsWFEmail - ", item));
                     retVal = true;
                     break;
                 }

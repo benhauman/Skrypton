@@ -1,1 +1,1 @@
-_env.a = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "CDATE", _env.a, _env.b))
+_env.a = _.VAL(_.CALLm1v2(this, _, "CDATE", _env.a, _env.b))

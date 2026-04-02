@@ -20,11 +20,11 @@ namespace TranslatedProgram
             _env.Suffix = " B";
             if (_.IF(_.EQ(_env.Suffix, " KB")))
             {
-                _outer.Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(_outer.Size, (Int16)1024), (Int16)2));
+                _outer.Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(_outer.Size, (Int16)1024), (Int16)2));
             }
             else if (_.IF(_.EQ(_env.Suffix, " MB")))
             {
-                _outer.Size = _.VAL(_.CALLm1v2(this, _ ?? throw new InvalidOperationException("Reference not set:_"), "ROUND", _.DIV(_outer.Size, 1048576), (Int16)2));
+                _outer.Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(_outer.Size, 1048576), (Int16)2));
             }
         }
     }

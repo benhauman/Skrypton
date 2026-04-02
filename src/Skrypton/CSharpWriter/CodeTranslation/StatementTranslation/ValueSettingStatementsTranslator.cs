@@ -589,20 +589,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a0);
                 }
             }
-            string targetNameForException = GetTargetNameForException(targetAccessorName);
 
             string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
             if (optionalMemberAccessor == null && argumentsInitialization.Length == 0)
             {
                 return new ValueSettingStatementAssignmentFormatDetails(
-                    translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName} ?? throw new InvalidOperationException(""Reference not set:{targetNameForException}""), {translatedExpression})", // Pass "this" as the "context" argument
+                    translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {translatedExpression})", // Pass "this" as the "context" argument
                     variablesAccessed
                 );
             }
             else
             {
                 return new ValueSettingStatementAssignmentFormatDetails(
-                    translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName} ?? throw new InvalidOperationException(""Reference not set:{targetNameForException}""), {memberAccessorText}{argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
+                    translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}{argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
                     variablesAccessed
                 );
             }

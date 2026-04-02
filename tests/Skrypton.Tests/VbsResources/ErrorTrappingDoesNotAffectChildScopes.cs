@@ -2,7 +2,7 @@
 
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v0(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "Func1");
+                _.CALLm1v0(this, _outer, "Func1");
             });
             _.RELEASEERRORTRAPPINGTOKEN(errOn);
         public object Func1()

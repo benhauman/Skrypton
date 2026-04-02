@@ -8,7 +8,7 @@
             object a_vref = a;
             try
             {
-                ifResult = _.IF(() => _.CALLm1argp(this, _outer ?? throw new InvalidOperationException("Reference not set:_outer"), "F2", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })), errOn);
+                ifResult = _.IF(() => _.CALLm1argp(this, _outer, "F2", _.ARGS.Ref(a_vref, v2 => { a_vref = v2; })), errOn);
             }
             finally { a = a_vref; }
             if (ifResult)
