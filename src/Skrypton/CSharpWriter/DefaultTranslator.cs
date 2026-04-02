@@ -252,5 +252,9 @@ namespace Skrypton.CSharpWriter
         {
             return RewriteNameX(name.Content, name.LineIndex).Item2;
         }
+        public override CSharpName RewriteVBScriptFunctionName(BuiltInFunctionToken name)
+        {
+            return RewriteNameX(name.Content, name.LineIndex).Item2;
+        }
     }
 }

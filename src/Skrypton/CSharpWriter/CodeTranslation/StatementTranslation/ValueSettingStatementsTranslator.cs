@@ -95,15 +95,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             CallExpressionSegment? callExpressionSegment = expressionSegment as CallExpressionSegment;
             if ((callExpressionSegment != null) && (callExpressionSegment.MemberAccessTokens.Take(2).Count() < 2) && callExpressionSegment.Arguments.Count == 0)
             {
-                NameToken? singleTokenAsName = callExpressionSegment.MemberAccessTokens.Single() as NameToken;
+                IToken memberAccessToken0 = callExpressionSegment.MemberAccessTokens.Single();
+                NameToken? singleTokenAsName = memberAccessToken0 as NameToken;
                 if (singleTokenAsName == null)
                 {
-                    throw new ArgumentException("Where a ValueSettingStatement's ValueToSet codeExpression is a single codeExpression with a single CallExpressionSegment with one token, that token must be a NameToken");
+                    if (memberAccessToken0 is BuiltInFunctionToken binFun && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE)
+                    {
+                        singleTokenAsName = new NameToken(false, binFun.ContentUpperX(), binFun.LineIndex);
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Where a ValueSettingStatement's ValueToSet codeExpression is a single codeExpression with a single CallExpressionSegment with one token, that token must be a NameToken. Line:{memberAccessToken0.LineIndex}. ({memberAccessToken0.GetType().Name}):{memberAccessToken0.Content}");
+                    }
                 }
 
                 // If this single token is the function name (if we're in a function or property) then we need to make the ParentReturnValueNameIfAny
                 // replacement so that the return value reference is updated.
-                string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(singleTokenAsName);
+                string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(memberAccessToken0);
                 bool isSingleTokenSettingParentScopeReturnValue = (
                     (scopeAccessInformation.ParentReturnValueNameIfAny != null) &&
                     rewrittenFirstMemberAccessor == _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name)

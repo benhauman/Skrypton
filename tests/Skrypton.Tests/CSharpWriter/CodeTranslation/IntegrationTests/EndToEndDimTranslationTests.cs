@@ -31,13 +31,31 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         [TestMethod]
-        [Ignore]
         public void DimSpace() // CT98_GlobalScript
         {
-            var source = @"Dim i, CharCode, Char, Space
+            var source = @"Dim i, CharCode, Char, Space, URLEncode
 				Space = ""+""
+                URLEncode = Space & ""x"" & Space
+                URLEncode = ""y"" & Space
+                URLEncode = Space & ""z""
+                URLEncode = F1(Space)
+                URLEncode = F2(Space)
+                URLEncode = F3(Space)
+                URLEncode = F4(Space)
+                Function F1()
+					Dim spaCe
+				End Function
+                Function F2(SPace)
+					F2 = space
+				End Function
+                Function F3(ByRef SPace)
+					F3 = space
+				End Function
+                Function F4(ByVal SPACE)
+					F4 = space
+				End Function
 			";
-            TestCSharpCodeTranslationWithoutScaffolding(source);
+            TestCSharpCodeTranslation(source, []);
         }
     }
 }

@@ -35,11 +35,11 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 IToken? recognisedType = TryToGetAsRecognisedType(contentUpper, hasLeadingWhiteSpace: false, lineIndex);
                 if ((recognisedType != null) && !(recognisedType is NameToken))
                 {
-                    //if (recognisedType is BuiltInFunctionToken binFun && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE)
-                    //{
-                    //    //
-                    //}
-                    //else
+                    if (recognisedType is BuiltInFunctionToken binFun && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE)
+                    {
+                        // 'Space' is used as a Dim
+                    }
+                    else
                     {
                         throw new ArgumentException($"Invalid content for a NameToken. Line:{recognisedType.LineIndex}. Type '{recognisedType.GetType().Name}': {recognisedType.Content}");
                     }

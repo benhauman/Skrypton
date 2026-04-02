@@ -88,7 +88,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
         /// </summary>
         public static DeclaredReferenceDetails? TryToGetDeclaredReferenceDetails(
             this ScopeAccessInformation scopeInformation,
-            NameToken target,
+            AtomToken target, // NameToken or BuiltInFunctionToken
             VBScriptNameRewriter nameRewriter)
         {
             if (scopeInformation == null)
@@ -97,13 +97,14 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 throw new ArgumentNullException(nameof(target));
             if (nameRewriter == null)
                 throw new ArgumentNullException(nameof(nameRewriter));
+            NameToken? targetNameToken = target as NameToken;
 
             // If the target corresponds to the containing "WITH" reference (if any) then use that ("WITH a: .Go: END WITH" is translated
             // approximately into "var w123 = a; w123.Go();" where the "w123" is the DirectedWithReferenceIfAny and so we don't need to
             // check for other variables or functions that may apply, it's the local variable WITH construct target.
             var rewrittenTargetName = target is DoNotRenameNameToken doNotRename && doNotRename.ContentUpperX().UpperText == "_.ERR"
                 ? "_ERR"
-                : nameRewriter.RewriteVBScriptName(target).Name;
+                : targetNameToken != null ? nameRewriter.RewriteVBScriptName(targetNameToken).Name : nameRewriter.RewriteVBScriptFunctionName((BuiltInFunctionToken)target).Name;
             if (scopeInformation.DirectedWithReferenceIfAny != null)
             {
                 // Note that WithinFunctionOrPropertyOrWith is always specified here for the scope location since the WITH target should

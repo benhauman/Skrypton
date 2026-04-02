@@ -10,6 +10,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     public abstract class VBScriptNameRewriter
     {
         public abstract CSharpName RewriteVBScriptName(NameToken name);
+        public abstract CSharpName RewriteVBScriptFunctionName(BuiltInFunctionToken name);
     }
     /// <summary>
     /// During translation, temporary variables may be required. This delegate is responsible for returning names that are guaranteed to be unique. The
