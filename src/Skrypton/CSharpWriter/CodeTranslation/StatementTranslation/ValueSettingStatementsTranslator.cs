@@ -76,7 +76,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // so has been removed.
             //NameToken? directedWithReferenceTokenIfAny = (scopeAccessInformation.DirectedWithReferenceIfAny == null) ? null :  scopeAccessInformation.DirectedWithReferenceIfAny.AsToken();
             WithStatementInformation? directedWithReferenceTokenIfAny = WithStatementInformation.TryGet(scopeAccessInformation);
-            ParsingExpression[] targetExpression = ExpressionGenerator.GenerateExpressions(valueSettingStatement.ValueToSet.Tokens, directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
+            ParsingExpression[] targetExpression = ExpressionGenerator.GenerateExpressions(1, 1, valueSettingStatement.ValueToSet.Tokens.ToArray(), directedWithReferenceTokenIfAny, _logger.Warning).ToArray();
             if (targetExpression.Length != 1)
             {
                 throw new ArgumentException("The ValueToSet should always be described by a single codeExpression");

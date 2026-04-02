@@ -29,10 +29,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("Test", lineIndex1))
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
-                    [
-                        new NameToken("Test", lineIndex1)
-                    ],
+                ExpressionGenerator.GenerateExpressions(1, 1, [new NameToken("Test", lineIndex1)],
                     directedWithReferenceIfAny: null,
                     warningLogger: warning => { }
                 ),
@@ -50,7 +47,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("Test", lineIndex1), CallExpressionSegment.ArgumentBracketPresenceOptions.Present)
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -75,7 +72,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -100,7 +97,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -128,7 +125,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -156,7 +153,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -191,7 +188,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("Test", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -228,7 +225,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -262,7 +259,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -298,7 +295,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions([
+                ExpressionGenerator.GenerateExpressions(1, 1, [
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
                         new NumericValueToken("0", lineIndex1),
@@ -333,7 +330,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OpenBrace(lineIndex1),
@@ -370,7 +367,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("c", lineIndex1))
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -404,7 +401,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -438,7 +435,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -482,7 +479,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("d", lineIndex1))
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -521,7 +518,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -558,7 +555,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("d", lineIndex1))
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -596,7 +593,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new ComparisonOperatorToken(OperatorKind.Equal, "=", lineIndex1),
@@ -647,7 +644,7 @@ namespace Skrypton.Tests.StageTwoParser
                         CALL(new NameToken("f", lineIndex1))
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("+", lineIndex1),
@@ -694,7 +691,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new OperatorToken("*", lineIndex1),
@@ -726,7 +723,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new LogicalOperatorToken("AND", lineIndex1),
@@ -761,7 +758,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("a", lineIndex1),
                         new LogicalOperatorToken("AND", lineIndex1),
@@ -795,7 +792,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new LogicalOperatorToken("NOT", lineIndex1),
                         new NameToken("a", lineIndex1),
@@ -819,7 +816,7 @@ namespace Skrypton.Tests.StageTwoParser
                         NEW("Test", lineIndex1)
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new KeyWordToken("new", lineIndex1),
                         new NameToken("Test", lineIndex1)
@@ -851,7 +848,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                         [
                             new NameToken("Test", lineIndex1),
                             new OpenBrace(lineIndex1),
@@ -879,7 +876,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
                         new NameToken("Test", lineIndex1)
@@ -910,7 +907,7 @@ namespace Skrypton.Tests.StageTwoParser
             // and so we need to insert brackets around the "1.a" argument even though they would not necessarily be present in the source code
             myAssert.Throws<ArgumentException>(() =>
             {
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -935,7 +932,7 @@ namespace Skrypton.Tests.StageTwoParser
             // and so we need to insert brackets around the "a.1" argument even though they would not necessarily be present in the source code
             myAssert.Throws<ArgumentException>(() =>
             {
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -960,7 +957,7 @@ namespace Skrypton.Tests.StageTwoParser
             // and so we need to insert brackets around the "1.a()" argument even though they would not necessarily be present in the source code
             myAssert.Throws<ArgumentException>(() =>
             {
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -1000,7 +997,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -1026,7 +1023,7 @@ namespace Skrypton.Tests.StageTwoParser
             // and so we need to insert brackets around the "1.a(b)" argument even though they would not necessarily be present in the source code
             myAssert.Throws<ArgumentException>(() =>
              {
-                 ExpressionGenerator.GenerateExpressions(
+                 ExpressionGenerator.GenerateExpressions(1, 1,
                      [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -1064,7 +1061,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -1103,7 +1100,7 @@ namespace Skrypton.Tests.StageTwoParser
                         )
                     )
                 ],
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),
@@ -1129,7 +1126,7 @@ namespace Skrypton.Tests.StageTwoParser
             // and so we need to insert brackets around the "\1\.a(b)" argument even though they would not necessarily be present in the source code
             myAssert.Throws<ArgumentException>(() =>
             {
-                ExpressionGenerator.GenerateExpressions(
+                ExpressionGenerator.GenerateExpressions(1, 1,
                     [
                         new NameToken("wscript", lineIndex1),
                         new MemberAccessorToken(hasLeadingWhiteSpace: false, lineIndex1),

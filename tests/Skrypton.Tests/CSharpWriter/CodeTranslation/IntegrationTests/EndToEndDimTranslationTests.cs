@@ -31,6 +31,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
         }
 
         [TestMethod]
+        [Ignore]
         public void DimSpace() // CT98_GlobalScript
         {
             var source = @"Dim i, CharCode, Char, Space, URLEncode

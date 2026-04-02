@@ -773,7 +773,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 
             var byRefArgumentMapper = new FuncByRefArgumentMapper(_nameRewriter, _tempNameGenerator, _logger);
             var mappings = byRefArgumentMapper.GetByRefArgumentsThatNeedRewriting(
-                ExpressionGenerator.GenerateExpressions(new[] { loopVar }, directedWithReferenceIfAny: null, warningLogger: _logger.Warning).Single(),
+                ExpressionGenerator.GenerateExpressions(0, 1, new[] { loopVar }, directedWithReferenceIfAny: null, warningLogger: _logger.Warning).Single(),
                 scopeAccessInformation,
                 new NonNullImmutableList<FuncByRefMapping>()
             );
@@ -826,8 +826,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
             ParsingExpression[] expressions =
-                  ExpressionGenerator.GenerateExpressions(
-                      codeExpression.Tokens,
+                  ExpressionGenerator.GenerateExpressions(1, 1,
+                      codeExpression.Tokens.ToArray(),
                       WithStatementInformation.TryGet(scopeAccessInformation),
                       _logger.Warning
                   );

@@ -16,14 +16,19 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         /// present the terms will be bracketed up to apply the max-one-operator restriction and to enforce VBScript operator precedence. This will
         /// never return null nor a set containing any nulls, it will raise an exception for a null token set or a set containing any nulls.
         /// </summary>
-        public static ParsingExpression[] GenerateExpressions(IEnumerable<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
+        public static ParsingExpression[] GenerateExpressions(int minCount, int maxCount, IReadOnlyCollection<IToken> tokens, WithStatementInformation? directedWithReferenceIfAny, Action<string> warningLogger)
         {
             if (tokens == null)
                 throw new ArgumentNullException(nameof(tokens));
             if (warningLogger == null)
                 throw new ArgumentNullException(nameof(warningLogger));
 
-            return GenerateCore(new TokenNavigator(tokens), 0, directedWithReferenceIfAny, warningLogger, []);
+            ParsingExpression[] resultExpressions = GenerateCore(new TokenNavigator(tokens), 0, directedWithReferenceIfAny, warningLogger, []);
+            if (resultExpressions.Length < minCount)
+                throw new ArgumentException($"Expected min {minCount} codeExpression(s) to be generated but only {resultExpressions.Length} were");
+            if (resultExpressions.Length > maxCount)
+                throw new ArgumentException($"Expected max {maxCount} codeExpression(s) to be generated but {resultExpressions.Length} were");
+            return resultExpressions;
         }
 
         /// <summary>
