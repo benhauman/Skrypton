@@ -216,7 +216,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             ]);
             var expressionToSetTo = new CodeExpression(
             [
-                new BuiltInFunctionToken("CDate", lineIndex1),
+                BuiltInFunctionToken.TestCreateBuiltInFunctionTokenTest("CDate", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NameToken("a", lineIndex1),
                 new CloseBrace(lineIndex1)
@@ -249,7 +249,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             ]);
             var expressionToSetTo = new CodeExpression(
             [
-                new BuiltInFunctionToken("CDate", lineIndex1),
+                BuiltInFunctionToken.TestCreateBuiltInFunctionTokenTest("CDate", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NameToken("a", lineIndex1),
                 new ArgumentSeparatorToken(lineIndex1),

@@ -140,7 +140,7 @@ namespace Skrypton.ScriptControlSupport
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(1000)]
-            [return: MarshalAs(UnmanagedType.IDispatch)]
+            //[return: MarshalAs(UnmanagedType.IDispatch)]
             get;
         }
 
@@ -162,7 +162,7 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2500)]
-        void AddObject([In][MarshalAs(UnmanagedType.BStr)] string Name, [In][MarshalAs(UnmanagedType.IDispatch)] object objectInstance, [In] bool AddMembers = false);
+        void AddObject([In][MarshalAs(UnmanagedType.BStr)] string Name, [In] object objectInstance, [In] bool AddMembers = false);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2501)]
@@ -174,7 +174,6 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2001)]
-        [return: MarshalAs(UnmanagedType.Struct)]
         object Eval([In][MarshalAs(UnmanagedType.BStr)] string Expression);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -183,8 +182,7 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2003)]
-        [return: MarshalAs(UnmanagedType.Struct)]
-        object Run([In][MarshalAs(UnmanagedType.BStr)] string ProcedureName, [In][MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] Parameters);
+        object Run([In][MarshalAs(UnmanagedType.BStr)] string ProcedureName, [In]ref object[] Parameters);
     }
     public enum ScriptControlStates
     {
@@ -329,7 +327,7 @@ namespace Skrypton.ScriptControlSupport
         new System.Collections.IEnumerator GetEnumerator();
 
         [DispId(0)]
-        Procedure this[[In][MarshalAs(UnmanagedType.Struct)] object Index]
+        Procedure this[[In]object Index]
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(0)]
@@ -374,7 +372,6 @@ namespace Skrypton.ScriptControlSupport
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(1000)]
-            [return: MarshalAs(UnmanagedType.IDispatch)]
             get;
         }
 
@@ -393,7 +390,6 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2001)]
-        [return: MarshalAs(UnmanagedType.Struct)]
         object Eval([In][MarshalAs(UnmanagedType.BStr)] string Expression);
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -402,8 +398,7 @@ namespace Skrypton.ScriptControlSupport
 
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2003)]
-        [return: MarshalAs(UnmanagedType.Struct)]
-        object Run([In][MarshalAs(UnmanagedType.BStr)] string ProcedureName, [In][MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] Parameters);
+        object Run([In][MarshalAs(UnmanagedType.BStr)] string ProcedureName, [In]ref object[] Parameters);
     }
     //[ComImport]
     //[Guid("70841C70-067D-11D0-95D8-00A02463AB28")]
@@ -423,11 +418,11 @@ namespace Skrypton.ScriptControlSupport
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(-4)]
         [TypeLibFunc(64)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler, CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+        //[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler, CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
         new System.Collections.IEnumerator GetEnumerator();
 
         [DispId(0)]
-        Module this[[In][MarshalAs(UnmanagedType.Struct)] object Index]
+        Module this[[In]object Index]
         {
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             [DispId(0)]
@@ -446,7 +441,7 @@ namespace Skrypton.ScriptControlSupport
         [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(2)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        Module Add([In][MarshalAs(UnmanagedType.BStr)] string Name, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object objectInstance);
+        Module Add([In][MarshalAs(UnmanagedType.BStr)] string Name, [Optional][In]ref object objectInstance);
     }
     //[ComImport(t)]
     //[Guid("70841C6F-067D-11D0-95D8-00A02463AB28")]

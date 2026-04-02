@@ -139,4 +139,36 @@ namespace Skrypton.RuntimeSupport
         public static Decimal MinCurrencyValue { get { return -922337203685477.5625099999999m; } }
         public static Decimal MaxCurrencyValue { get { return 922337203685477.5625099999999m; } }
     }
+
+    public sealed class ScriptDispatchWrapper
+    {
+        // Parameters:
+        //   obj:
+        //     The object to be wrapped and converted to System.Runtime.InteropServices.VarEnum.VT_DISPATCH.
+        //
+        //
+        // Exceptions:
+        //   T:System.ArgumentException:
+        //     obj is not a class or an array. -or- obj does not support IDispatch.
+        //
+        //   T:System.InvalidOperationException:
+        //     The obj parameter was marked with a System.Runtime.InteropServices.ComVisibleAttribute
+        //     attribute that was passed a value of false. -or- The obj parameter inherits from
+        //     a type marked with a System.Runtime.InteropServices.ComVisibleAttribute attribute
+        //     that was passed a value of false.
+        public ScriptDispatchWrapper(object? obj)
+        {
+            _ = nameof(DispatchWrapper);
+            WrappedObject = obj;
+        }
+
+        //
+        // Summary:
+        //     Gets the object wrapped by the System.Runtime.InteropServices.DispatchWrapper.
+        //
+        //
+        // Returns:
+        //     The object wrapped by the System.Runtime.InteropServices.DispatchWrapper.
+        public object? WrappedObject { get; }
+    }
 }

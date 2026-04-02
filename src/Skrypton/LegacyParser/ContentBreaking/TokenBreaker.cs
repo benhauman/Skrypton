@@ -3,6 +3,7 @@ using Skrypton.LegacyParser.Tokens.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skrypton.LegacyParser.CodeBlocks.Handlers;
 
 namespace Skrypton.LegacyParser.ContentBreaking
 {
@@ -85,7 +86,13 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         // unlike with whitespace breaks), then do similar to above.
                         if (buffer != "")
                         {
-                            tokens.Add(AtomToken.GetNewToken(buffer.ToUpperX(), last_chr0IsWhitespace ?? false, lineIndex));
+                            bool canBeDimToken = DimHandler.CanBeHandledAsDimToken(tokens);
+                            IToken newTkn = AtomToken.GetNewToken(buffer.ToUpperX(), last_chr0IsWhitespace ?? false, lineIndex);
+                            if (canBeDimToken && newTkn is BuiltInFunctionToken binFun && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionSPACE) // VBScript:  "Dim Space : Space = 1" is valid, so "Space" in this context should be treated as a NameToken, not a BuiltInFunctionToken
+                            {
+                                newTkn = new NameToken(false, newTkn.ContentUpperX(), newTkn.LineIndex);
+                            }
+                            tokens.Add(newTkn);
                         }
 
                         bool hasLeadingWhiteSpace;

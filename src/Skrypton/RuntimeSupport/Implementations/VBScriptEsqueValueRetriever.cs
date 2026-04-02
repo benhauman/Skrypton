@@ -2400,7 +2400,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             // From https://github.com/mosa/Mono-Class-Libraries/blob/master/mcs/class/CustomMarshalers/System.Runtime.InteropServices.CustomMarshalers/EnumeratorToEnumVariantMarshaler.cs
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-            void Next(int celt, [MarshalAs(UnmanagedType.Struct)] out object rgvar, out uint pceltFetched);
+            void Next(int celt, out object rgvar, out uint pceltFetched);
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
             void Skip(uint celt);
             [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

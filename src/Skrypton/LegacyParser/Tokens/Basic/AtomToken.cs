@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (!(IsMustHandleKeyWord(x_Content_Upper) == IsMustHandleKeyWord(y_Content_Upper)))
                 return 3;
 
-            if (!(isVBScriptFunctionUpper(x_Content_Upper) == isVBScriptFunctionUpper(y_Content_Upper)))
+            if (!(isVBScriptFunctionUpper(x_Content_Upper, out _) == isVBScriptFunctionUpper(y_Content_Upper, out _)))
                 return 4;
 
             if (!(IsVBScriptSymbolUpper(x_Content_Upper) == IsVBScriptSymbolUpper(y_Content_Upper)))
@@ -89,7 +89,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
 
             return GetNewTokenCore(contentUpper, hasLeadingWhiteSpace, lineIndex);
         }
-        public static IToken GetNewToken(KnownTextContent content, bool hasLeadingWhiteSpace, int lineIndex)
+        internal static IToken GetNewToken(KnownTextContent content, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
             return GetNewTokenCore(content.TheContentUpper, hasLeadingWhiteSpace, lineIndex);
@@ -121,7 +121,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// separator or numeric value. If unable to match its type then it will return null - this should indicate the name of a function, property,
         /// variable, etc.. defined in the source code being processed.
         /// </summary>
-        protected static IToken? TryToGetAsRecognisedType(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex)
+        protected internal static IToken? TryToGetAsRecognisedType(StringUpper contentUpper, bool hasLeadingWhiteSpace, int lineIndex)
         {
             if (contentUpper == null) throw new ArgumentNullException(nameof(contentUpper));
             if (lineIndex < 0)
@@ -141,7 +141,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 return new KeyWordToken(contentUpper, lineIndex);
             if (isContextDependentKeywordUpper(contentUpper))
                 return new MayBeKeywordOrNameToken(contentUpper, lineIndex);
-            if (isVBScriptFunctionUpper(contentUpper))
+            if (isVBScriptFunctionUpper(contentUpper, out _))
                 return new BuiltInFunctionToken(contentUpper, lineIndex);
             if (isVBScriptValueUpper(contentUpper))
                 return new BuiltInValueToken(contentUpper, lineIndex);
@@ -326,9 +326,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// Does the content appear to represent a VBScript function - eg. the "ISNULL" method.
         /// An exception will be raised for null, blank or whitespace-containing input.
         /// </summary>
-        internal static bool isVBScriptFunctionUpper(StringUpper atomContent)
+        internal static bool isVBScriptFunctionUpper(StringUpper atomContent, out BuiltInFunctionInfo? functionInfo)
         {
-            return KnownTextResolver.isVBScriptFunctionUpper(atomContent);
+            return KnownTextResolver.isVBScriptFunctionUpper(atomContent, out functionInfo);
         }
 
         /// <summary>
@@ -338,7 +338,8 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         /// </summary>
         internal static bool isVBScriptFunctionThatAlwaysReturnsNumericContentUpper(StringUpper atomContent)
         {
-            return KnownTextResolver.isVBScriptFunctionThatAlwaysReturnsNumericContentUpper(atomContent);
+            // These must ONLY include those that will never return null
+            return KnownTextResolver.isVBScriptFunctionUpper(atomContent, out var func) && func!.AlwaysReturnsNumeric;
             ///// These must ONLY include those that will never return null
             /// return isType(
 			/// 	atomContent,
@@ -397,7 +398,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                     isArgumentSeparatorUpper(ContentUpper) ||
                     isOpenBraceUpper(ContentUpper) ||
                     isCloseBraceUpper(ContentUpper) ||
-                    isVBScriptFunctionUpper(ContentUpper) ||
+                    isVBScriptFunctionUpper(ContentUpper, out _) ||
                     isVBScriptValueUpper(ContentUpper);
             }
         }

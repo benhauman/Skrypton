@@ -63,7 +63,7 @@ namespace Skrypton.Tests.StageTwoParser
                 [
                     new NumericValueToken("1", lineIndex1),
                     new OperatorToken("*", lineIndex1),
-                    new BuiltInFunctionToken("CInt", lineIndex1),
+                    BuiltInFunctionToken.TestCreateBuiltInFunctionTokenTest("CInt", lineIndex1),
                     new OpenBrace(lineIndex1),
                     new NumericValueToken("1", lineIndex1),
                     new CloseBrace(lineIndex1)

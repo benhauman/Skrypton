@@ -309,7 +309,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return CommonErrors.Unknown;
         }
 
-        internal static VarEnum GetVariantType(object value)
+        internal static MyVarEnum GetVariantType(object value)
         {
             /*
                     if (value == null)
@@ -354,7 +354,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Read the vt field (first 2 bytes)
                 short vt = Marshal.ReadInt16(ptr);
 
-                return (VarEnum)vt;
+                return (MyVarEnum)vt;
             }
             finally
             {
@@ -560,7 +560,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
         public static readonly int MarshalSizeOf = 24; // Marshal.SizeOf<VARIANT>(); // 24 and not 16 because of the 8-byte alignment of the largest field (long/double) in the struct, which causes padding in the native layout.
 
-        internal VarEnum VariantTypeEnum => (VarEnum)vt;
+        internal MyVarEnum VariantTypeEnum => (MyVarEnum)vt;
 
         // The VARTYPE (2 bytes)
         [FieldOffset(0)]
@@ -601,5 +601,185 @@ namespace Skrypton.RuntimeSupport.Implementations
         [FieldOffset(8)]
         public IntPtr ptr;                 // BSTR, IDispatch*, IUnknown*, arrays, etc.
 #pragma warning restore CA1720 // Identifier contains type name
+    }
+
+    internal enum MyVarEnum
+    {
+        //
+        // Summary:
+        //     Indicates that a value was not specified.
+        VT_EMPTY = 0,
+        //
+        // Summary:
+        //     Indicates a null value, similar to a null value in SQL.
+        VT_NULL = 1,
+        //
+        // Summary:
+        //     Indicates a short integer.
+        VT_I2 = 2,
+        //
+        // Summary:
+        //     Indicates a long integer.
+        VT_I4 = 3,
+        //
+        // Summary:
+        //     Indicates a float value.
+        VT_R4 = 4,
+        //
+        // Summary:
+        //     Indicates a double value.
+        VT_R8 = 5,
+        //
+        // Summary:
+        //     Indicates a currency value.
+        VT_CY = 6,
+        //
+        // Summary:
+        //     Indicates a DATE value.
+        VT_DATE = 7,
+        //
+        // Summary:
+        //     Indicates a BSTR string.
+        VT_BSTR = 8,
+        //
+        // Summary:
+        //     Indicates an IDispatch pointer.
+        VT_DISPATCH = 9,
+        //
+        // Summary:
+        //     Indicates an SCODE.
+        VT_ERROR = 10,
+        //
+        // Summary:
+        //     Indicates a Boolean value.
+        VT_BOOL = 11,
+        //
+        // Summary:
+        //     Indicates a VARIANT far pointer.
+        VT_VARIANT = 12,
+        //
+        // Summary:
+        //     Indicates an IUnknown pointer.
+        VT_UNKNOWN = 13,
+        //
+        // Summary:
+        //     Indicates a decimal value.
+        VT_DECIMAL = 14,
+        //
+        // Summary:
+        //     Indicates a char value.
+        VT_I1 = 16,
+        //
+        // Summary:
+        //     Indicates a byte.
+        VT_UI1 = 17,
+        //
+        // Summary:
+        //     Indicates an unsignedshort.
+        VT_UI2 = 18,
+        //
+        // Summary:
+        //     Indicates an unsignedlong.
+        VT_UI4 = 19,
+        //
+        // Summary:
+        //     Indicates a 64-bit integer.
+        VT_I8 = 20,
+        //
+        // Summary:
+        //     Indicates an 64-bit unsigned integer.
+        VT_UI8 = 21,
+        //
+        // Summary:
+        //     Indicates an integer value.
+        VT_INT = 22,
+        //
+        // Summary:
+        //     Indicates an unsigned integer value.
+        VT_UINT = 23,
+        //
+        // Summary:
+        //     Indicates a C style void.
+        VT_VOID = 24,
+        //
+        // Summary:
+        //     Indicates an HRESULT.
+        VT_HRESULT = 25,
+        //
+        // Summary:
+        //     Indicates a pointer type.
+        VT_PTR = 26,
+        //
+        // Summary:
+        //     Indicates a SAFEARRAY. Not valid in a VARIANT.
+        VT_SAFEARRAY = 27,
+        //
+        // Summary:
+        //     Indicates a C style array.
+        VT_CARRAY = 28,
+        //
+        // Summary:
+        //     Indicates a user defined type.
+        VT_USERDEFINED = 29,
+        //
+        // Summary:
+        //     Indicates a null-terminated string.
+        VT_LPSTR = 30,
+        //
+        // Summary:
+        //     Indicates a wide string terminated by null.
+        VT_LPWSTR = 31,
+        //
+        // Summary:
+        //     Indicates a user defined type.
+        VT_RECORD = 36,
+        //
+        // Summary:
+        //     Indicates a FILETIME value.
+        VT_FILETIME = 64,
+        //
+        // Summary:
+        //     Indicates length prefixed bytes.
+        VT_BLOB = 65,
+        //
+        // Summary:
+        //     Indicates that the name of a stream follows.
+        VT_STREAM = 66,
+        //
+        // Summary:
+        //     Indicates that the name of a storage follows.
+        VT_STORAGE = 67,
+        //
+        // Summary:
+        //     Indicates that a stream contains an object.
+        VT_STREAMED_OBJECT = 68,
+        //
+        // Summary:
+        //     Indicates that a storage contains an object.
+        VT_STORED_OBJECT = 69,
+        //
+        // Summary:
+        //     Indicates that a blob contains an object.
+        VT_BLOB_OBJECT = 70,
+        //
+        // Summary:
+        //     Indicates the clipboard format.
+        VT_CF = 71,
+        //
+        // Summary:
+        //     Indicates a class ID.
+        VT_CLSID = 72,
+        //
+        // Summary:
+        //     Indicates a simple, counted array.
+        VT_VECTOR = 4096,
+        //
+        // Summary:
+        //     Indicates a SAFEARRAY pointer.
+        VT_ARRAY = 8192,
+        //
+        // Summary:
+        //     Indicates that a value is a reference.
+        VT_BYREF = 16384
     }
 }

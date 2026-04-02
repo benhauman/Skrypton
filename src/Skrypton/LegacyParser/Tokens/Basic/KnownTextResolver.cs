@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Transactions;
 
 namespace Skrypton.LegacyParser.Tokens.Basic;
 
@@ -435,12 +437,12 @@ internal static class KnownTextResolver
     /// Does the content appear to represent a VBScript function - eg. the "ISNULL" method.
     /// An exception will be raised for null, blank or whitespace-containing input.
     /// </summary>
-    private static readonly KnownTextContent[] k_VBScriptFunction = StringContentCollectionCreate(
+    /*private static readonly KnownTextContent[] xk_VBScriptFunction = StringContentCollectionCreate(
         new string[]
         {
             // Note: Some of these functions sound like they would be returned by isVBScriptFunctionThatAlwaysReturnsNumericContent but they
             // return null in some cases and so are not applicable - eg. "INT" will return Null if Null is passed in
-            "ISEMPTY", "ISNULL", "ISOBJECT", "ISNUMERIC", "ISDATE", "ISEMPTY", "ISNULL", "ISARRAY",
+            "ISEMPTY", "ISNULL", "ISOBJECT", "ISNUMERIC", "ISDATE", "ISARRAY",
             "VARTYPE", "TYPENAME",
             "CREATEOBJECT", "GETOBJECT",
             "CBOOL", "CSTR",
@@ -464,43 +466,169 @@ internal static class KnownTextResolver
             "SCRIPTENGINE",
             "ESCAPE", "UNESCAPE"
         }
-    ).ToArray();
-
-    internal static bool isVBScriptFunctionUpper(StringUpper atomContent)
+    ).ToArray();*/
+    //private static readonly KnownTextContent[] k_VBScriptFunction = InitializeBuiltInFunctionRegistration().Contents;
+    private static readonly BuiltInFunctionRegistration k_VBScriptFunction = InitializeBuiltInFunctionRegistration();
+    private static BuiltInFunctionRegistration InitializeBuiltInFunctionRegistration()
     {
-        if (isVBScriptFunctionThatAlwaysReturnsNumericContentUpper(atomContent))
+        // Note: Some of these functions sound like they would be returned by isVBScriptFunctionThatAlwaysReturnsNumericContent but they
+        // return null in some cases and so are not applicable - eg. "INT" will return Null if Null is passed in
+        return new BuiltInFunctionRegistration()
+        .AddS(BuiltInFunctionId.BuiltInFunctionISEMPTY, "ISEMPTY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISNULL, "ISNULL")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISOBJECT, "ISOBJECT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISNUMERIC, "ISNUMERIC")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISDATE, "ISDATE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISARRAY, "ISARRAY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionVARTYPE, "VARTYPE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionTYPENAME, "TYPENAME")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, "CREATEOBJECT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, "GETOBJECT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCBOOL, "CBOOL")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCSTR, "CSTR")
+        .AddS(BuiltInFunctionId.BuiltInFunctionDATEVALUE, "DATEVALUE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionTIMEVALUE, "TIMEVALUE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionDAY, "DAY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMONTH, "MONTH")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMONTHNAME, "MONTHNAME")
+        .AddS(BuiltInFunctionId.BuiltInFunctionYEAR, "YEAR")
+        .AddS(BuiltInFunctionId.BuiltInFunctionWEEKDAY, "WEEKDAY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionWEEKDAYNAME, "WEEKDAYNAME")
+        .AddS(BuiltInFunctionId.BuiltInFunctionHOUR, "HOUR")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMINUTE, "MINUTE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSECOND, "SECOND")
+        .AddS(BuiltInFunctionId.BuiltInFunctionDATEDIFF, "DATEDIFF")
+        .AddS(BuiltInFunctionId.BuiltInFunctionDATEPART, "DATEPART")
+        .AddS(BuiltInFunctionId.BuiltInFunctionABS, "ABS")
+        //.AddS(BuiltInFunctionId.BuiltInFunctionHEX, "HEX") numeric
+        //.AddS(BuiltInFunctionId.BuiltInFunctionOCT, "OCT") numeric
+        //.AddS(BuiltInFunctionId.BuiltInFunctionFIX, "FIX") numeric
+        //.AddS(BuiltInFunctionId.BuiltInFunctionINT, "INT") numeric
+        .AddS(BuiltInFunctionId.BuiltInFunctionCHR, "CHR")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCHRB, "CHRB")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCHRW, "CHRW")
+        .AddS(BuiltInFunctionId.BuiltInFunctionINSTR, "INSTR")
+        .AddS(BuiltInFunctionId.BuiltInFunctionINSTRREV, "INSTRREV")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLEN, "LEN")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLENB, "LENB")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLCASE, "LCASE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionUCASE, "UCASE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLEFT, "LEFT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLEFTB, "LEFTB")
+        .AddS(BuiltInFunctionId.BuiltInFunctionRIGHT, "RIGHT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionRIGHTB, "RIGHTB")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSPACE, "SPACE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionREPLACE, "REPLACE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSTRCOMP, "STRCOMP")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSTRING, "STRING")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLTRIM, "LTRIM")
+        .AddS(BuiltInFunctionId.BuiltInFunctionRTRIM, "RTRIM")
+        .AddS(BuiltInFunctionId.BuiltInFunctionTRIM, "TRIM")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSPLIT, "SPLIT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionARRAY, "ARRAY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionJOIN, "JOIN")
+        .AddS(BuiltInFunctionId.BuiltInFunctionEVAL, "EVAL")
+        .AddS(BuiltInFunctionId.BuiltInFunctionEXECUTE, "EXECUTE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionEXECUTEGLOBAL, "EXECUTEGLOBAL")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATCURRENCY, "FORMATCURRENCY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATDATETIME, "FORMATDATETIME")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATNUMBER, "FORMATNUMBER")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATPERCENT, "FORMATPERCENT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFILTER, "FILTER")
+        .AddS(BuiltInFunctionId.BuiltInFunctionGETLOCALE, "GETLOCALE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionGETREF, "GETREF")
+        .AddS(BuiltInFunctionId.BuiltInFunctionINPUTBOX, "INPUTBOX")
+        .AddS(BuiltInFunctionId.BuiltInFunctionLOADPICTURE, "LOADPICTURE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMID, "MID")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMSGBOX, "MSGBOX")
+        .AddS(BuiltInFunctionId.BuiltInFunctionRGB, "RGB")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSETLOCALE, "SETLOCALE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSGN, "SGN")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSTRREVERSE, "STRREVERSE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSCRIPTENGINE, "SCRIPTENGINE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionESCAPE, "ESCAPE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionUNESCAPE, "UNESCAPE")
+        //
+        .AddN(BuiltInFunctionId.BuiltInFunctionLBOUND, "LBOUND")
+        .AddN(BuiltInFunctionId.BuiltInFunctionUBOUND, "UBOUND")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCBYTE, "CBYTE")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCCUR, "CCUR")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCINT, "CINT")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCLNG, "CLNG")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCSNG, "CSNG")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCDBL, "CDBL")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCDATE, "CDATE")
+        .AddN(BuiltInFunctionId.BuiltInFunctionDATEADD, "DATEADD")
+        .AddN(BuiltInFunctionId.BuiltInFunctionDATESERIAL, "DATESERIAL")
+        .AddN(BuiltInFunctionId.BuiltInFunctionTIMESERIAL, "TIMESERIAL")
+        .AddN(BuiltInFunctionId.BuiltInFunctionNOW, "NOW")
+        .AddN(BuiltInFunctionId.BuiltInFunctionDATE, "DATE")
+        .AddN(BuiltInFunctionId.BuiltInFunctionTIME, "TIME")
+        .AddN(BuiltInFunctionId.BuiltInFunctionATN, "ATN")
+        .AddN(BuiltInFunctionId.BuiltInFunctionCOS, "COS")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSIN, "SIN")
+        .AddN(BuiltInFunctionId.BuiltInFunctionTAN, "TAN")
+        .AddN(BuiltInFunctionId.BuiltInFunctionEXP, "EXP")
+        .AddN(BuiltInFunctionId.BuiltInFunctionLOG, "LOG")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSQR, "SQR")
+        .AddN(BuiltInFunctionId.BuiltInFunctionRND, "RND")
+        .AddN(BuiltInFunctionId.BuiltInFunctionROUND, "ROUND")
+        .AddN(BuiltInFunctionId.BuiltInFunctionHEX, "HEX")
+        .AddN(BuiltInFunctionId.BuiltInFunctionOCT, "OCT")
+        .AddN(BuiltInFunctionId.BuiltInFunctionFIX, "FIX")
+        .AddN(BuiltInFunctionId.BuiltInFunctionINT, "INT")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSNG, "SNG")
+        .AddN(BuiltInFunctionId.BuiltInFunctionASC, "ASC")
+        .AddN(BuiltInFunctionId.BuiltInFunctionASCB, "ASCB")
+        .AddN(BuiltInFunctionId.BuiltInFunctionASCW, "ASCW")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSCRIPTENGINEBUILDVERSION, "SCRIPTENGINEBUILDVERSION")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSCRIPTENGINEMAJORVERSION, "SCRIPTENGINEMAJORVERSION")
+        .AddN(BuiltInFunctionId.BuiltInFunctionSCRIPTENGINEMINORVERSION, "SCRIPTENGINEMINORVERSION")
+        .AddN(BuiltInFunctionId.BuiltInFunctionTIMER, "TIMER")
+        .Build();
+    }
+
+    internal static bool isVBScriptFunctionUpper(StringUpper atomContent, out BuiltInFunctionInfo? functionInfo)
+    {
+        if (isTypeUpperF(atomContent, k_VBScriptFunction.FunctionInfos, out functionInfo))
         {
             return true;
         }
-
-        return isTypeUpper(atomContent, k_VBScriptFunction) != null;
+        return false;
     }
 
+    private sealed class BuiltInFunctionRegistration
+    {
+        private readonly Dictionary<string, BuiltInFunctionInfo> _registry = new Dictionary<string, BuiltInFunctionInfo>();
+        internal IReadOnlyDictionary<string, BuiltInFunctionInfo> FunctionInfos { get; private set; } = new Dictionary<string, BuiltInFunctionInfo>();
+        internal KnownTextContent[] FunctionContents { get; private set; } = [];
+
+        public BuiltInFunctionRegistration AddN(BuiltInFunctionId functionId, string name) => AddS(functionId, name, alwaysReturnsNumeric: true);
+        public BuiltInFunctionRegistration AddS(BuiltInFunctionId functionId, string name, bool alwaysReturnsNumeric = false)
+        {
+            if ((!Enum.TryParse<BuiltInFunctionId>("BuiltInFunction" + name, out BuiltInFunctionId enumItem) || (enumItem != functionId)))
+            {
+                throw new InvalidOperationException($"The functionId {functionId} does not match the expected enum item name of BuiltInFunction{name}");
+            }
+            _registry.Add(name, new BuiltInFunctionInfo(functionId, alwaysReturnsNumeric, new KnownTextContent(name, false, false, null)));
+            return this;
+        }
+
+        public BuiltInFunctionRegistration Build()
+        {
+            FunctionInfos = _registry.ToDictionary(x => x.Key, x => x.Value);
+            FunctionContents = FunctionInfos.Values.Select(x => x.Content).ToArray();
+
+            return this;
+        }
+    }
     /// <summary>
     /// Does the content appear to represent a VBScript function that is guaranteed to return a numeric value - eg. the "CDBL" method. This does
     /// not include functions that will ever return Null (such as ABS, which returns Null if Null is provided as the argument). An exception will
     /// be raised for null, blank or whitespace-containing input.
+    /*
     /// </summary>
-    /// protected static bool isVBScriptFunctionThatAlwaysReturnsNumericContent(string atomContent)
-    /// {
-    /// 	// These must ONLY include those that will never return null
-    /// 	return isType(
-    /// 		atomContent,
-    /// 		new string[]
-    /// 		{
-    /// 			"LBOUND", "UBOUND",
-    /// 			"CBYTE", "CCUR", "CINT", "CLNG", "CSNG", "CDBL", "CDATE",
-    /// 			"DATEADD", "DATESERIAL", "TIMESERIAL",
-    /// 			"NOW", "DATE", "TIME",
-    /// 			"ATN", "COS", "SIN", "TAN", "EXP", "LOG", "SQR", "RND", "ROUND",
-    /// 			"HEX", "OCT", "FIX", "INT", "SNG",
-    /// 			"ASC", "ASCB", "ASCW",
-    /// 			"SCRIPTENGINEBUILDVERSION", "SCRIPTENGINEMAJORVERSION", "SCRIPTENGINEMINORVERSION",
-    /// 			"TIMER"
-    /// 		}
-    /// 	);
-    /// }
-    private static readonly KnownTextContent[] k_VBScriptFunctionThatAlwaysReturnsNumericContent = StringContentCollectionCreate(
+    private static readonly KnownTextContent[] x_VBScriptFunctionThatAlwaysReturnsNumericContent = StringContentCollectionCreate(
         new string[]
         {
             "LBOUND", "UBOUND",
@@ -514,37 +642,8 @@ internal static class KnownTextResolver
             "TIMER"
         }
     ).ToArray();
+*/
 
-    internal static bool isVBScriptFunctionThatAlwaysReturnsNumericContentUpper(StringUpper atomContent)
-    {
-        // These must ONLY include those that will never return null
-        return isTypeUpper(atomContent, k_VBScriptFunctionThatAlwaysReturnsNumericContent) != null;
-    }
-    /// private static bool isType(string atomContent, IEnumerable<string> keyWords)
-    /// {
-    /// 	if (atomContent == null)
-    /// 		throw new ArgumentNullException("token");
-    /// 	if (atomContent == "")
-    /// 		throw new ArgumentException("Blank content specified - invalid");
-    /// 	if (containsWhiteSpace(atomContent))
-    /// 		throw new ArgumentException("Whitespace encountered in atomContent - invalid");
-    /// 	if (keyWords == null)
-    /// 		throw new ArgumentNullException("keyWords");
-    /// 	foreach (var keyWord in keyWords)
-    /// 	{
-    /// 		if ((keyWord ?? "").Trim() == "")
-    /// 			throw new ArgumentException("Null / blank keyWord specified");
-    /// 		if (containsWhiteSpace(keyWord))
-    /// 			throw new ArgumentException("keyWord specified containing whitespce - invalid");
-    /// 		if (atomContent.Equals(keyWord, StringComparison.InvariantCultureIgnoreCase))
-    /// 			return true;
-    /// 	}
-    /// 	return false;
-    /// }
-    //private static string WhiteSpaceChars = new string(
-    //    Enumerable.Range((int)char.MinValue, (int)char.MaxValue).Select(v => (char)v).Where(c => char.IsWhiteSpace(c)).ToArray()
-    //);
-    //
     internal static bool containsWhiteSpace(string content)
     {
         if (content == null)
@@ -592,6 +691,39 @@ internal static class KnownTextResolver
             throw new ArgumentException("Whitespace encountered in atomContent - invalid");
         }
         return null;
+    }
+    private static bool isTypeUpperF(StringUpper atomContent, IReadOnlyDictionary<string, BuiltInFunctionInfo> keyWords, out BuiltInFunctionInfo? result)
+    {
+        if (atomContent == null)
+        {
+            throw new ArgumentNullException(nameof(atomContent));
+        }
+
+        if (atomContent.Length == 0)
+        {
+            throw new ArgumentException("Blank content specified - invalid");
+        }
+
+        if (keyWords == null)
+        {
+            throw new ArgumentNullException(nameof(keyWords));
+        }
+
+        foreach (var kw in keyWords)
+        {
+            if (kw.Value.Content.EqualsCaseUpper(atomContent))
+            {
+                result = kw.Value;
+                return true;
+            }
+        }
+
+        if (atomContent.containsWhiteSpace())
+        {
+            throw new ArgumentException("Whitespace encountered in atomContent - invalid");
+        }
+        result = default(BuiltInFunctionInfo);
+        return false;
     }
 }
 
@@ -719,5 +851,142 @@ static class StringExtensionUpper
             throw new ArgumentNullException(nameof(content));
 
         return new StringUpper(content);
+    }
+}
+
+#pragma warning disable SA1602 // Enumeration items should be documented
+internal enum BuiltInFunctionId
+{
+    Unknown,
+    BuiltInFunctionISEMPTY,
+    BuiltInFunctionISNULL,
+    BuiltInFunctionISOBJECT,
+    BuiltInFunctionISNUMERIC,
+    BuiltInFunctionISDATE,
+    BuiltInFunctionISARRAY,
+    BuiltInFunctionVARTYPE,
+    BuiltInFunctionTYPENAME,
+    BuiltInFunctionCREATEOBJECT,
+    BuiltInFunctionGETOBJECT,
+    BuiltInFunctionCBOOL,
+    BuiltInFunctionCSTR,
+    BuiltInFunctionDATEVALUE,
+    BuiltInFunctionTIMEVALUE,
+    BuiltInFunctionDAY,
+    BuiltInFunctionMONTH,
+    BuiltInFunctionMONTHNAME,
+    BuiltInFunctionYEAR,
+    BuiltInFunctionWEEKDAY,
+    BuiltInFunctionWEEKDAYNAME,
+    BuiltInFunctionHOUR,
+    BuiltInFunctionMINUTE,
+    BuiltInFunctionSECOND,
+    BuiltInFunctionDATEDIFF,
+    BuiltInFunctionDATEPART,
+    BuiltInFunctionABS,
+    //BuiltInFunctionHEX, numeric
+    //BuiltInFunctionOCT, numeric
+    //BuiltInFunctionFIX, numeric
+    //BuiltInFunctionINT, numeric
+    BuiltInFunctionCHR,
+    BuiltInFunctionCHRB,
+    BuiltInFunctionCHRW,
+    BuiltInFunctionINSTR,
+    BuiltInFunctionINSTRREV,
+    BuiltInFunctionLEN,
+    BuiltInFunctionLENB,
+    BuiltInFunctionLCASE,
+    BuiltInFunctionUCASE,
+    BuiltInFunctionLEFT,
+    BuiltInFunctionLEFTB,
+    BuiltInFunctionRIGHT,
+    BuiltInFunctionRIGHTB,
+    BuiltInFunctionSPACE,
+    BuiltInFunctionREPLACE,
+    BuiltInFunctionSTRCOMP,
+    BuiltInFunctionSTRING,
+    BuiltInFunctionLTRIM,
+    BuiltInFunctionRTRIM,
+    BuiltInFunctionTRIM,
+    BuiltInFunctionSPLIT,
+    BuiltInFunctionARRAY,
+    BuiltInFunctionJOIN,
+    BuiltInFunctionEVAL,
+    BuiltInFunctionEXECUTE,
+    BuiltInFunctionEXECUTEGLOBAL,
+    BuiltInFunctionFORMATCURRENCY,
+    BuiltInFunctionFORMATDATETIME,
+    BuiltInFunctionFORMATNUMBER,
+    BuiltInFunctionFORMATPERCENT,
+    BuiltInFunctionFILTER,
+    BuiltInFunctionGETLOCALE,
+    BuiltInFunctionGETREF,
+    BuiltInFunctionINPUTBOX,
+    BuiltInFunctionLOADPICTURE,
+    BuiltInFunctionMID,
+    BuiltInFunctionMSGBOX,
+    BuiltInFunctionRGB,
+    BuiltInFunctionSETLOCALE,
+    BuiltInFunctionSGN,
+    BuiltInFunctionSTRREVERSE,
+    BuiltInFunctionSCRIPTENGINE,
+    BuiltInFunctionESCAPE,
+    BuiltInFunctionUNESCAPE,
+
+    //
+    BuiltInFunctionLBOUND,
+    BuiltInFunctionUBOUND,
+    BuiltInFunctionCBYTE,
+    BuiltInFunctionCCUR,
+    BuiltInFunctionCINT,
+    BuiltInFunctionCLNG,
+    BuiltInFunctionCSNG,
+    BuiltInFunctionCDBL,
+    BuiltInFunctionCDATE,
+    BuiltInFunctionDATEADD,
+    BuiltInFunctionDATESERIAL,
+    BuiltInFunctionTIMESERIAL,
+    BuiltInFunctionNOW,
+    BuiltInFunctionDATE,
+    BuiltInFunctionTIME,
+    BuiltInFunctionATN,
+    BuiltInFunctionCOS,
+    BuiltInFunctionSIN,
+    BuiltInFunctionTAN,
+    BuiltInFunctionEXP,
+    BuiltInFunctionLOG,
+    BuiltInFunctionSQR,
+    BuiltInFunctionRND,
+    BuiltInFunctionROUND,
+    BuiltInFunctionHEX,
+    BuiltInFunctionOCT,
+    BuiltInFunctionFIX,
+    BuiltInFunctionINT,
+    BuiltInFunctionSNG,
+    BuiltInFunctionASC,
+    BuiltInFunctionASCB,
+    BuiltInFunctionASCW,
+    BuiltInFunctionSCRIPTENGINEBUILDVERSION,
+    BuiltInFunctionSCRIPTENGINEMAJORVERSION,
+    BuiltInFunctionSCRIPTENGINEMINORVERSION,
+    BuiltInFunctionTIMER,
+}
+#pragma warning restore SA1602 // Enumeration items should be documented
+[DebuggerDisplay("{Content.TheContent} {FunctionId}")]
+internal sealed class BuiltInFunctionInfo
+{
+    public BuiltInFunctionId FunctionId { get; }
+
+    /// Does the content appear to represent a VBScript function that is guaranteed to return a numeric value - eg. the "CDBL" method. This does
+    /// not include functions that will ever return Null (such as ABS, which returns Null if Null is provided as the argument). An exception will
+    /// be raised for null, blank or whitespace-containing input.
+    public bool AlwaysReturnsNumeric { get; } // These must ONLY include those that will never return null
+    public KnownTextContent Content { get; }
+
+    public BuiltInFunctionInfo(BuiltInFunctionId functionId, bool alwaysReturnsNumeric, KnownTextContent content)
+    {
+        FunctionId = functionId;
+        AlwaysReturnsNumeric = alwaysReturnsNumeric;
+        Content = content;
     }
 }

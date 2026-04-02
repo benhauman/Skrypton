@@ -71,6 +71,11 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 throw new InvalidOperationException("Ended up with unexpected DimType value!");
         }
 
+        internal static bool CanBeHandledAsDimToken(List<IToken> tokens)
+        {
+            return checkAtomTokenPattern(tokens, "DIM", false);
+        }
+
         /// <summary>
         /// Does it look like we can work with the token stream? If so, return some data
         /// regarding what statement type it is, and how many tokens were required to
@@ -126,7 +131,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             return false;
         }
 
-        private enum DimType
+        internal enum DimType
         {
             Unknown,
             Dim,
@@ -154,6 +159,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             var nameToken = tokens[0];
             if (tokens.Count == 1)
             {
+                //IToken? recognisedType = NameToken.TryToGetAsRecognisedType(nameToken.ContentUpperX(), false, nameToken.LineIndex);
+                //bool skipRecognition = (recognisedType != null) && (recognisedType is BuiltInFunctionToken binFun) && binFun.ContentUpperX().UpperText == "SPACE";
                 return new DimVariable(new NameToken(false, nameToken.ContentUpperX(), nameToken.LineIndex), null);
             }
 
