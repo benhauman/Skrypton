@@ -278,7 +278,7 @@ namespace Skrypton.ScriptControlSupport
     }
     //[ComImport]
     //[Guid("70841C73-067D-11D0-95D8-00A02463AB28")]
-    [DefaultMember("Name")]
+    [DefaultMember("Name")] // +[DispId(0)] +[IsDefault]
     //[TypeLibType(4304)]
     public interface IScriptProcedure
     {
@@ -353,7 +353,7 @@ namespace Skrypton.ScriptControlSupport
     }
 
     //[ComImport]
-    [DefaultMember("Name")]
+    [DefaultMember("Name")] // +[DispId(0)] +[IsDefault]
     //[TypeLibType(4304)]
     //[Guid("70841C70-067D-11D0-95D8-00A02463AB28")]
     public interface IScriptModule

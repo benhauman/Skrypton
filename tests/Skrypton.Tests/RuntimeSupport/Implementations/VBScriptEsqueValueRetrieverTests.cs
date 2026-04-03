@@ -163,7 +163,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         [ComVisible(true)]
-        [DefaultMember("Name")]
+        [DefaultMember("Name")] // +[DispId(0)] +[IsDefault]
         private class ComVisibleNonTranslatedClassWithDefaultMember
         {
             public string Name { get { return "name!"; } }

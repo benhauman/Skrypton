@@ -9,7 +9,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [SourceClassName("Dictionary")] // for TYPENAME(CreateObject("Scripting.Dictionary"))
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [DefaultMember("Item")]
+    [DefaultMember("Item")] // +[DispId(0)] +[IsDefault]
     internal sealed class MyScriptingDictionaryCpuAny : System.Collections.IEnumerable//, IDispatch  // lubo: Type.GetTypeFromProgID("Scripting.Dictionary")
     {
         // Name → DISPID map

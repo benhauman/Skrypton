@@ -1,4 +1,5 @@
-﻿using Skrypton.RuntimeSupport.Attributes;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Exceptions;
 using System;
 using System.Collections;
@@ -2167,7 +2168,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             MyComProxy prx = MyComProxy.CreateComProxy(classProgId, comType);
             return prx._comInstance;
         }
+        public object GETOBJECT(object path, object value)
+        {
+            return GETOBJECTCore(path, value);
+        }
         public object GETOBJECT(object value)
+        {
+            return GETOBJECTCore(null, value);
+        }
+        private object GETOBJECTCore(object? unused, object value)
         {
             // Retrieves an existing instance of a running object, or loads from a file
             // => Set obj = GetObject(, "Excel.Application") → attaches to an already running Excel
@@ -2206,7 +2215,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (valueText.StartsWith("\\", StringComparison.Ordinal)) // \\192.01.01.01\sharedfiles\
                 throw new InvalidOperationException("Shared file moniker not supported:" + valueText);
 
-            string progid = ResolveMonikerName(tokens[0]);
+            string? progid = TryResolveMonikerName(tokens[0]);
+            if (progid == null)
+            {
+                return CREATEOBJECTCore(valueText, null);
+                //throw new InvalidOperationException($"Unsupported moniker name: '{tokens[0]}'");
+            }
 
             string optionalMonikerValues = valueText.Substring(tokens.Length + 1);
             IMyMoniker moniker = (IMyMoniker)CREATEOBJECTCore(progid, optionalMonikerValues);
@@ -2228,9 +2242,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         private static FrozenDictionary<string, string> _monikerToProgIdMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
             { "winmgmts", "WbemScripting.SWbemLocator"}
         }.ToFrozenDictionary();
-        private static string ResolveMonikerName(string monikerName)
+        private static string? TryResolveMonikerName(string monikerName)
         {
-            return _monikerToProgIdMap.TryGetValue(monikerName, out string? progid) ? progid : throw new InvalidOperationException($"Unsupported moniker name: '{monikerName}'");
+            return _monikerToProgIdMap.TryGetValue(monikerName, out string? progid) ? progid : null;
         }
 
 

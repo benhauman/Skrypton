@@ -134,7 +134,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     }
 
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
-    [DefaultMember("Item")]
+    [DefaultMember("Item")] // +[DispId(0)] +[IsDefault]
     internal sealed class MyXMLDOMNodeList : IEnumerable
     {
         private readonly XmlNodeList _nodes;

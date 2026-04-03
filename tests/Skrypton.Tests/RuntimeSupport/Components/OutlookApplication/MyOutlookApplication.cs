@@ -11,6 +11,11 @@ namespace Skrypton.Tests.RuntimeSupport.Components.OutlookApplication;
 public sealed class MyOutlookApplicationClass : IReflectOnClrType
 {
     // "Interop.Microsoft.Office.Interop.Outlook.dll"  <Guid>00062fff-0000-0000-c000-000000000046</Guid>
+    // In the Outlook COM type library (OUTL.TLB)
+    // use VisualStudio [command prompt] or
+    // c:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools>OleView.exe
+    // => Go to 'Type Libraries', Scroll down to 'Microsoft Outlook x.x Object Library' - DoubleClick
+    // As Administrator : "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\oleview.exe"
     private readonly IRuntimeHost _runtimeHost;
 
     public MyOutlookApplicationClass(IRuntimeHost runtimeHost)
@@ -18,12 +23,24 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
         _runtimeHost = runtimeHost ?? throw new ArgumentNullException(nameof(runtimeHost));
     }
 
+    //[DispId(266)]
+    //public object CreateItem()
+    //{
+    //    return CreateItem(OlItemType.olMailItem);
+    //}
+
     [DispId(266)]
-    public object CreateItem([In] OlItemType ItemType)
+    public object CreateItem([In] object item)
     {
+        OlItemType ItemType = (OlItemType)Enum.ToObject(typeof(OlItemType), item);
+        //OlItemType ItemType = (OlItemType)item;
         if (ItemType == OlItemType.olContactItem)
         {
             return new MyOutlookContactItemClass();
+        }
+        if (ItemType == OlItemType.olMailItem)
+        {
+            return new MyOutlookMailItemClass();
         }
         throw new NotImplementedException($"ItemType:{ItemType}");
     }
@@ -36,6 +53,27 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
             return new MyOutlookMAPISession();
         }
         throw new NotImplementedException($"Type:{Type}");
+    }
+}
+
+internal sealed class MyOutlookMailItemClass : IReflectOnClrType
+{
+    internal MyOutlookMailItemClass()
+    {
+    }
+    [DispId(55)]
+    public string Subject { get; set; }
+
+    [DispId(3587)]
+    public string CC { get; set; }
+    [DispId(3588)]
+    public string To { get; set; }
+
+
+    [DispId(61606)]
+    public void Display()
+    {
+
     }
 }
 

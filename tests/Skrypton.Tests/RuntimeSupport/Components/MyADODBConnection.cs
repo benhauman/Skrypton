@@ -280,14 +280,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
 
     //[ComImport]
     //[Guid("00001550-0000-0010-8000-00AA006D2EA4")]
-    [DefaultMember("ConnectionString")]
+    [DefaultMember("ConnectionString")] // +[DispId(0)] +[IsDefault]
     //[TypeLibType(4160)]
     internal interface _Connection : Connection15
     {
     }
 
     //[ComImport]
-    [DefaultMember("ConnectionString")]
+    [DefaultMember("ConnectionString")] // +[DispId(0)] +[IsDefault]
     //[Guid("00001515-0000-0010-8000-00AA006D2EA4")]
     //[TypeLibType(4176)]
     internal interface Connection15 //: _ADO
@@ -331,14 +331,14 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
     //[ComImport]
     //[Guid("0000154E-0000-0010-8000-00AA006D2EA4")]
     //[TypeLibType(4304)]
-    [DefaultMember("Parameters")]
+    [DefaultMember("Parameters")] // +[DispId(0)] +[IsDefault]
     internal interface Command25 : Command15
     {
     }
 
     //[ComImport]
     //[Guid("00001508-0000-0010-8000-00AA006D2EA4")]
-    [DefaultMember("Parameters")]
+    [DefaultMember("Parameters")] // +[DispId(0)] +[IsDefault]
     //[TypeLibType(4304)]
     internal interface Command15 //: _ADO
     {
@@ -600,7 +600,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
     //[ComImport]
     //[TypeLibType(4304)]
     //[Guid("0000150E-0000-0010-8000-00AA006D2EA4")]
-    [DefaultMember("Fields")]
+    [DefaultMember("Fields")] // +[DispId(0)] +[IsDefault]
     internal interface Recordset15 //: _ADO
     {
         /*
@@ -1071,7 +1071,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
     [SourceClassName("Recordset")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [DefaultMember("Fields")]
+    [DefaultMember("Fields")] // +[DispId(0)] +[IsDefault]
     internal sealed class MyADODBRecordSet : IReflectOnClrType, Recordset
     {
         private readonly MyADODBFields _fields;
@@ -1155,7 +1155,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
         public object Value { get; }
     }
 
-    [DefaultMember("Value")]
+    [DefaultMember("Value")] // +[DispId(0)] +[IsDefault]
     internal interface Field : Field20
     {
     }

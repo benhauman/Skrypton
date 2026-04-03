@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.Tests.RuntimeSupport.Components;
@@ -16,6 +17,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     internal sealed class MyFileSystemObject : IReflectOnClrType, IFileSystem
     {
         /* COM:"Microsoft Scripting Runtime" => 'Interop.Scripting.dll' => C:\Windows\System32\scrrun.dll */
+        // D:\projects.ToDelete\ConsoleApp2\bin\Debug\net10.0\Interop.Scripting.dll
 
         private readonly IHostFileSystemHostService _hostFileSystem;
         public MyFileSystemObject(IHostFileSystemHostService hostFileSystemService)
@@ -119,12 +121,26 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         {
             return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: overwrite, overwriteIfExists: true, false), IOMode.ForWriting, unicode);
         }
+
+        [DispId(10014)]
+        public IFolder GetSpecialFolder([In] object SpecialFolder)
+        {
+            SpecialFolderConst specialFolderX = (SpecialFolderConst)Enum.ToObject(typeof(SpecialFolderConst), SpecialFolder);
+            if (specialFolderX == SpecialFolderConst.TemporaryFolder)
+            {
+                HostFileSystemDirectoryInfo nfo = _hostFileSystem.GetSpecialFolderTemp();
+                return new MyFolder(_hostFileSystem, nfo);
+            }
+            throw new NotImplementedException($"SpecialFolder:{SpecialFolder}");
+        }
     }
+
+    [DefaultMember("Path")] // +[DispId(0)] +[IsDefault]
     internal sealed class MyFolder : IFolder
     {
         private readonly IHostFileSystemHostService _hostFileSystem;
         private readonly HostFileSystemDirectoryInfo _info;
-        public string Path => _info.Path;
+        [DispId(0)] [IsDefault] public string Path => _info.Path;
         public string Name => _info.Name;
 
         public MyFolder(IHostFileSystemHostService hostFileSystemService, HostFileSystemDirectoryInfo info)
@@ -326,7 +342,18 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         bool FileExists(string path);
         bool FolderExists(string path);
         bool DriveExists(string path);
+
+        [DispId(10014)]
+        IFolder GetSpecialFolder([In]object SpecialFolder);
     }
+
+    public enum SpecialFolderConst
+    {
+        WindowsFolder,
+        SystemFolder,
+        TemporaryFolder
+    }
+
 
     //[ComImport]
     //[Guid("0D43FE05-F093-11CF-8940-00A0C9054228")]

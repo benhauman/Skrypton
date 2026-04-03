@@ -23,6 +23,7 @@ public interface IHostFileSystemHostService
     HostFileSystemDirectoryInfo GetDirectoryInfo(string path);
     HostFileSystemFileInfo GetFileInfo(string path);
     void CopyDirectory(string sourcePath, string newPath, bool overwrite);
+    HostFileSystemDirectoryInfo GetSpecialFolderTemp();
 }
 public sealed class HostFileSystemDirectoryInfo
 {

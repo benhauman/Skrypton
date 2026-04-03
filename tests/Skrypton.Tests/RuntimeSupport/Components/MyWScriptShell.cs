@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Skrypton.RuntimeSupport.Attributes;
@@ -73,6 +74,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
         public bool AppActivate([MarshalAs(UnmanagedType.Struct)] object App, [MarshalAs(UnmanagedType.Struct), Optional, DefaultParameterValue(null)] object Wait)
         {
+            if (App is IReflect)
+                return false;//MyOutlookApplicationClass
             int processId = Convert.ToInt32(App);
             var svc = _hostServices.GetRequiredService<IHostProcessControlHostService>();
             return svc.ProcessActivate(processId);// Process.GetProcessesByName("notepad"); SetForegroundWindow(processes[0].MainWindowHandle);

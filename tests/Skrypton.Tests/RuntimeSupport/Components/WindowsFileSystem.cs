@@ -103,6 +103,15 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
                 File.Copy(file, dest, overwrite);
             }
         }
+
+        public HostFileSystemDirectoryInfo GetSpecialFolderTemp()
+        {
+            string path = Path.GetTempPath();
+            DirectoryInfo nfo = new DirectoryInfo(path);
+            if (!nfo.Exists)
+                throw new System.IO.DirectoryNotFoundException(path);
+            return new HostFileSystemDirectoryInfo(path, nfo.Name, nfo.Exists);
+        }
     }
 
     internal sealed class LinuxFileSystem : HostFileSystemHostServiceBase, IHostFileSystemHostService
@@ -197,6 +206,14 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
                 File.Copy(file, dest, overwrite);
             }
         }
+        public HostFileSystemDirectoryInfo GetSpecialFolderTemp()
+        {
+            string path = Path.GetTempPath();
+            DirectoryInfo nfo = new DirectoryInfo(path);
+            if (!nfo.Exists)
+                throw new System.IO.DirectoryNotFoundException(path);
+            return new HostFileSystemDirectoryInfo(path, nfo.Name, nfo.Exists);
+        }
     }
 
     public sealed class TestFileSystem : IHostFileSystemHostService
@@ -210,6 +227,11 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         void IHostFileSystemHostService.CopyDirectory(string sourcePath, string newPath, bool overwrite)
         {
             throw new NotImplementedException();
+        }
+
+        public HostFileSystemDirectoryInfo GetSpecialFolderTemp()
+        {
+            return new HostFileSystemDirectoryInfo("tst", "tmp", true);
         }
 
         void IHostFileSystemHostService.CopyFile(string src, string dst, bool overwrite)
