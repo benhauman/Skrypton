@@ -1,3 +1,2 @@
-Dim oShell
-Set oShell = CreateObject("WScript.Shell")
-oShell.Run "test.txt",, False
+Dim Outlook
+Set Outlook = GetObject(, "Outlook.Application")

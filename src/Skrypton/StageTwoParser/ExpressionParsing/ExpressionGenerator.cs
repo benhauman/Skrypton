@@ -216,12 +216,19 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                             // "Missing value for optional parameter"
                             // C# cannot use “empty commas”, but it can pass Type.Missing or default for optional COM parameters.
                             // null → Missing.Value
-                            // test:XCallDefaultParamVal1
+                            // test:XCallDefaultParamVal2
                             expressionSegments.Add(new MissingValueExpressionSegment(argumentSeparator));
                         }
                         else
                         {
-                            throw new ArgumentException($"Unexpected ArgumentSeparatorToken - invalid content. Line:{token.LineIndex}:{token.Content}");
+                            // VBScript: Set Outlook = GetObject(, "Outlook.Application")
+                            // "Missing value for optional parameter"
+                            // C# cannot use “empty commas”, but it can pass Type.Missing or default for optional COM parameters.
+                            // null → Missing.Value
+                            // test:XCallDefaultParamVal1
+
+                            //throw new ArgumentException($"Unexpected ArgumentSeparatorToken - invalid content. Line:{token.LineIndex}:{token.Content}");
+                            expressionSegments.Add(new MissingValueExpressionSegment(argumentSeparator));
                         }
                     }
 

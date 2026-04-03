@@ -15,7 +15,8 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.Outlook = _.OBJ(_.CALLm1v2(this, _, "GETOBJECT", System.Reflection.Missing.Value, "Outlook.Application"));
+            _outer.oShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
+            _.CALLm1v3(this, _outer.oShell ?? throw new InvalidOperationException("Reference not set:oShell"), "Run", "test.txt", System.Reflection.Missing.Value, false);
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -28,9 +29,9 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            Outlook = null;
+            oShell = null;
         }
-        internal object Outlook { get; set; }
+        internal object oShell { get; set; }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {
