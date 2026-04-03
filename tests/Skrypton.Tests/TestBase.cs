@@ -387,7 +387,7 @@ namespace Skrypton.Tests
             throw new NotSupportedException($"Service '{serviceType.FullName}' not registered.");
         }
     }
-    internal sealed class TestHostObjectFactoryHostService : IHostObjectFactoryHostService
+    public sealed class TestHostObjectFactoryHostService : IHostObjectFactoryHostService
     {
         public TestHostObjectFactoryHostService()
         {
@@ -395,7 +395,7 @@ namespace Skrypton.Tests
         }
 
         private readonly Dictionary<string, Func<IRuntimeHost, object>> _factories = new Dictionary<string, Func<IRuntimeHost, object>>(StringComparer.OrdinalIgnoreCase);
-        internal TestHostObjectFactoryHostService RegisterObjectFactory<T>(string progId, Func<IRuntimeHost, T> factory)
+        public TestHostObjectFactoryHostService RegisterObjectFactory<T>(string progId, Func<IRuntimeHost, T> factory)
         {
             _factories.Add(progId, (h) => factory(h)!);
             return this;

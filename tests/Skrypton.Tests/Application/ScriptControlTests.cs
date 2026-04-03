@@ -44,8 +44,8 @@ namespace Skrypton.Tests.Application
         [TestMethod]
         public void Outlook1() => DoScriptControlTest<object>(null, [], [], [], services =>
         {
-            services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
-                .RegisterObjectFactory<object>("Outlook.Application", (h) => new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(h))
+            services.RegisterHostService<IHostObjectFactoryHostService>(() => DialogGui.CreateTestHostObjectFactoryHostService()
+                .RegisterObjectFactory<object>("Outlook.Application", (h) => DialogGui.CreateMyOutlookApplicationClass(h))
             );
             services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
         }, (x) => { });

@@ -682,7 +682,14 @@ WScript.Echo xmlhttp.responseText
                 ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
             });
         }
-
+        public static object CreateMyOutlookApplicationClass(IRuntimeHost runtimeHost)
+        {
+            return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);
+        }
+        public static TestHostObjectFactoryHostService CreateTestHostObjectFactoryHostService()
+        {
+            return new TestHostObjectFactoryHostService();
+        }
         public static IHostMessageBoxHostService CreateHostMessageBoxHostService()
         {
             return new TestMessageBoxHostService();
@@ -1197,7 +1204,10 @@ WScript.Echo xmlhttp.responseText
         {
             Console.WriteLine($"MsgBox('{message}')");
         }
-
+        public void MsgBox(string message, short buttons, string title)
+        {
+            Console.WriteLine($"MsgBox('{message}', {buttons}, title:'{title}')");
+        }
         public object GetClientContext()
         {
             return null;
