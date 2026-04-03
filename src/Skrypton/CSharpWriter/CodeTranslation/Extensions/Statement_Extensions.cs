@@ -34,7 +34,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             IReadOnlyCollection<IToken> xTokens = (returnRequirements == ExpressionReturnTypeOptions.None) ? statement.GetBracketStandardisedTokens(scopeAccessInformation.DirectedWithReferenceIfAny?.AsToken()) : statement.Tokens.ToArray();
             ParsingExpression[] expressions = ExpressionGenerator.GenerateExpressions(1, 1, xTokens, WithStatementInformation.TryGet(scopeAccessInformation), warningLogger);
             if (expressions.Length != 1)
-                throw new ArgumentException("Statement translation should always result in a single codeExpression being generated");
+                throw new ArgumentException($"Statement translation should always result in a single codeExpression being generated:{expressions.Length}");
             return expressions[0];
         }
     }

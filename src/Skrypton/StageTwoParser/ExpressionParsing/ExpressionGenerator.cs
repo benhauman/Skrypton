@@ -187,8 +187,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                 }
                 else if (token is ArgumentSeparatorToken)
                 {
-                    if (depth == 0)
-                        throw new ArgumentException("Encountered ArgumentSeparatorToken in top-level content - invalid");
+                    //if (depth == 0)
+                    //    throw new ArgumentException($"Encountered ArgumentSeparatorToken in top-level content - invalid. Line:{token.LineIndex}:{token.Content}");
 
                     if (accessorBuffer.Count != 0)
                     {
