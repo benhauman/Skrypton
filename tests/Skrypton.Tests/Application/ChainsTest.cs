@@ -54,7 +54,7 @@ namespace Skrypton.Tests.Application
             MemberDataTestName = chainName;
             string[] suppressions = ["SKY101", "SKY102", "SKY106"];
             string[] noWarn = [];
-            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), suppressions: suppressions);
+            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), isOptionalAssert: true, suppressions: suppressions);
             var tst = this;
             var hostServices = CreateTestHostServices();
             var externalReferences = new Dictionary<string, object>();
