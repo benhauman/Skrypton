@@ -110,7 +110,17 @@ namespace Skrypton.Tests.Application
             Console.WriteLine($"{_traceName}GetItems(flags:{flags}, nfirst:{nfirst}, nlast:{nlast}, assocdef:{assocdef})");
             if (flags == 0x10000)
             {
-                if (_associatedItemsA.TryGetValue((string)assocdef, out var items))
+                string assocDefName;
+                if (assocdef is int)
+                {
+                    assocDefName = "<TODO>";
+                }
+                else
+                {
+                    assocDefName = (string)assocdef;
+                }
+
+                if (_associatedItemsA.TryGetValue(assocDefName, out var items))
                     return items.Values.Select(x => (object)x).ToArray();
                 return [];
             }
@@ -215,7 +225,12 @@ namespace Skrypton.Tests.Application
             Console.WriteLine($"{_traceName}AddItem(flags:{flags}, val:{val}', assocdef:{assocdef})");
             //AddItemEx(flags, val, 0, assocdef);
         }
-
+        public int[] GetValueIDs(object key, int contentid, int suidx)
+        {
+            Console.WriteLine($"{_traceName}GetValueIDs(key:{key}, contentid:{contentid}', suidx:{suidx})");
+            int[] arr = [];
+            return arr;
+        }
 
         public void Reserve()
         {
