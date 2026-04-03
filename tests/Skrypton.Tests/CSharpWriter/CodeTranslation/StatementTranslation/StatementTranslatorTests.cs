@@ -32,7 +32,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // "o" (where there is no function or property in scope called "o")
             var expression = new ParsingExpression(
             [
-                new CallExpressionSegment(
+                new CallExpressionSegment(1,
                     [new NameToken("o", lineIndex1)],
                     [],
                     CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -51,7 +51,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // "o" (where there is a function in scope called "o")
             var expression = new ParsingExpression(
             [
-                new CallExpressionSegment(
+                new CallExpressionSegment(1,
                     [new NameToken("o", lineIndex1)],
                     [],
                     CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -74,11 +74,11 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // "o(a)" (where there is a function in scope called "o" and a variable "a")
             var expression = new ParsingExpression(
             [
-                new CallExpressionSegment(
+                new CallExpressionSegment(1,
                     [new NameToken("o", lineIndex1)],
                     [
                         new ParsingExpression([
-                            new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+                            new CallExpressionSegment(1, [new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
                         ])
                     ],
                     null
@@ -110,12 +110,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             // "o((a))" (where there is a function in scope called "o" and a variable "a")
             var expression = new ParsingExpression(
             [
-                new CallExpressionSegment(
+                new CallExpressionSegment(1,
                     [new NameToken("o", lineIndex1)],
                     [
                         new ParsingExpression([
                             new BracketedExpressionSegment([
-                                new CallExpressionSegment([new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
+                                new CallExpressionSegment(1, [new NameToken("a", lineIndex1)], [], CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent)
                             ])
                         ])
                     ],
@@ -145,14 +145,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new CallSetExpressionSegment(
                 [
-                    new CallSetItemExpressionSegment(
+                    new CallSetItemExpressionSegment(1,
                         [new NameToken("a", lineIndex1)],
                         [new ParsingExpression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         null
                     ),
-                    new CallSetItemExpressionSegment(
+                    new CallSetItemExpressionSegment(1,
                         [],
-                        [ new ParsingExpression([ new CallExpressionSegment(
+                        [ new ParsingExpression([ new CallExpressionSegment(1,
                             [new NameToken("b", lineIndex1)],
                             [],
                             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -179,12 +179,12 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             [
                 new CallSetExpressionSegment(
                 [
-                    new CallSetItemExpressionSegment(
+                    new CallSetItemExpressionSegment(1,
                         [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)],
                         [new ParsingExpression([new NumericValueExpressionSegment(new NumericValueToken("0", lineIndex1))])],
                         zeroArgumentBracketsPresence: null
                     ),
-                    new CallSetItemExpressionSegment(
+                    new CallSetItemExpressionSegment(1,
                         [new NameToken("c", lineIndex1)],
                         [],
                         CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent

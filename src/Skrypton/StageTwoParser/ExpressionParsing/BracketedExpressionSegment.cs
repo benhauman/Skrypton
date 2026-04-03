@@ -38,6 +38,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
 		/// </summary>
 		public IReadOnlyCollection<IExpressionSegment> Segments { get; private set; }
 
+        public int LineIndex => Segments.First().LineIndex;
         /// <summary>
         /// This will never be null, empty or contain any null references
         /// </summary>

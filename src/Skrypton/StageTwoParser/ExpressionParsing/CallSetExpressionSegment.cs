@@ -25,7 +25,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             if (CallExpressionSegments.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in callExpressionSegments set");
         }
-
+        public int LineIndex => CallExpressionSegments.First().LineIndex;
         /// <summary>
         /// This will never be null, empty (it will always have at least two entries otherwise a single CallExpressionSegment would be appropriate
         /// rather than a CallSetExpressionSegment) or contain any null references. The first segment will always have at least Member Access

@@ -29,6 +29,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             get { return "#" + Token.Content + "#"; }
         }
 
+        public int LineIndex => Token.LineIndex;
+
         public override string ToString()
         {
             return base.ToString() + ":" + RenderedContent;

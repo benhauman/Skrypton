@@ -10,8 +10,8 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     /// </summary>
     public sealed class CallExpressionSegment : CallSetItemExpressionSegment
     {
-        public CallExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
-            : base(memberAccessTokens, arguments, zeroArgumentBracketsPresence)
+        public CallExpressionSegment(int lineIndex, IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+            : base(lineIndex, memberAccessTokens, arguments, zeroArgumentBracketsPresence)
         {
             if (base.MemberAccessTokens.Count == 0)
                 throw new ArgumentException("The memberAccessTokens set may not be empty");

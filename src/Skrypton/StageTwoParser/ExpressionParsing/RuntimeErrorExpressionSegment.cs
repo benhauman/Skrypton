@@ -42,6 +42,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             ExceptionType = exceptionType;
             Message = message;
         }
+        public int LineIndex => AllTokens.First().LineIndex;
 
         /// <summary>
         /// This will never be null or blank

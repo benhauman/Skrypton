@@ -640,7 +640,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         scopeAccessInformation.ParentReturnValueNameIfAny.Name.ToUpperX(),
                         firstMemberAccessToken.LineIndex
                     );
-                    callExpressionSegment = new CallExpressionSegment(
+                    callExpressionSegment = new CallExpressionSegment(firstMemberAccessToken.LineIndex,
                         new[] { parentReturnValueNameToken }.Concat(callExpressionSegment.MemberAccessTokens.Skip(1)).ToArray(),
                         [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -1553,7 +1553,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
 
                 possibleByRefTarget = TranslateCallExpressionSegment(
-                    new CallExpressionSegment(
+                    new CallExpressionSegment(possibleByRefCallExpressionSegment.LineIndex,
                         possibleByRefCallExpressionSegment.MemberAccessTokens,
                         [],
                         CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -1564,8 +1564,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                CallSetExpressionSegment? possibleByRefCallSetExpressionSegment = argumentValue.Segments.Single() as CallSetExpressionSegment;
-                if (possibleByRefCallSetExpressionSegment != null)
+                IExpressionSegment argSegment = argumentValue.Segments.Single();
+                if (argSegment is CallSetExpressionSegment possibleByRefCallSetExpressionSegment )
                 {
                     if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count > 2)
                     {
@@ -1579,7 +1579,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                     // Note: Specify CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent for the same reason as explain in the logic above
                     possibleByRefTarget = TranslateCallExpressionSegment(
-                        new CallExpressionSegment(
+                        new CallExpressionSegment(possibleByRefCallSetExpressionSegment.LineIndex,
                             possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens,
                             [],
                             CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -1590,7 +1590,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                 {
-                    throw new NotSupportedException("Unexpected argumentValue content, unable to translate");
+                    throw new NotSupportedException($"Unexpected argumentValue content, unable to translate. ({argSegment.GetType().Name}):{argSegment.RenderedContent}");
                 }
             }
 
@@ -1790,7 +1790,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // CallExpressionSegment must always have at least one - however, the first segment in a CallSetExpressionSegment will
                     // always have at least one as well)
                     translatedContent = TranslateCallExpressionSegment(
-                        new CallExpressionSegment(
+                        new CallExpressionSegment(callSetItemExpression.LineIndex,
                             callSetItemExpression.MemberAccessTokens,
                             callSetItemExpression.Arguments,
                             callSetItemExpression.ZeroArgumentBracketsPresence

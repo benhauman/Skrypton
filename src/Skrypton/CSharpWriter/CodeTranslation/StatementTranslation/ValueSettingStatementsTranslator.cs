@@ -263,17 +263,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             int numberOfMemberAccessTokensInLastCallExpressionSegment = callExpressionSegments.Last().MemberAccessTokens.Count;
             if (numberOfMemberAccessTokensInLastCallExpressionSegment > 2)
             {
-                CallSetItemExpressionSegment? lastCallExpressionSegments = callExpressionSegments.Last();
+                CallSetItemExpressionSegment lastCallExpressionSegments = callExpressionSegments.Last();
                 callExpressionSegments.RemoveAt(callExpressionSegments.Count - 1);
                 callExpressionSegments.Add(
-                    new CallExpressionSegment(
+                    new CallExpressionSegment(lastCallExpressionSegments.LineIndex,
                         lastCallExpressionSegments.MemberAccessTokens.Take(numberOfMemberAccessTokensInLastCallExpressionSegment - 1).ToArray(),
                         [],
                         CallExpressionSegment.ArgumentBracketPresenceOptions.Absent // Can't be any brackets as we're splitting a CallExpressionSegment in two
                     )
                 );
                 callExpressionSegments.Add(
-                    new CallExpressionSegment(
+                    new CallExpressionSegment(callExpressionSegments.Last().LineIndex,
                         new[] { lastCallExpressionSegments.MemberAccessTokens.Last() },
                         lastCallExpressionSegments.Arguments,
                         lastCallExpressionSegments.ZeroArgumentBracketsPresence
@@ -383,7 +383,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             // be translated into "_.SET(1, _.CALL(this, _outer, "a"), "Name", _.ARGS.Val(0))" and not require any special messing around.
                             IExpressionSegment[] targetAccessCallExpressionSegments = new IExpressionSegment[]
                             {
-                                new CallExpressionSegment(
+                                new CallExpressionSegment(callExpressionSegments.Single().LineIndex,
                                     callExpressionSegments.Single().MemberAccessTokens.Take(1).ToArray(),
                                     [],
                                     CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent
@@ -454,7 +454,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 IExpressionSegment expressionToAnalyseForVariablesAccessed;
                 if (callExpressionSegments.Count == 1)
                 {
-                    expressionToAnalyseForVariablesAccessed = new CallExpressionSegment(
+                    expressionToAnalyseForVariablesAccessed = new CallExpressionSegment(callExpressionSegments[0].LineIndex,
                         callExpressionSegments.First().MemberAccessTokens,
                         callExpressionSegments.First().Arguments,
                         callExpressionSegments.First().ZeroArgumentBracketsPresence

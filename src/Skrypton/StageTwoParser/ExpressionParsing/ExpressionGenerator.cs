@@ -6,6 +6,7 @@ using Skrypton.RuntimeSupport.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Skrypton.StageTwoParser.ExpressionParsing
 {
@@ -139,7 +140,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                             // be considered a continuation of the call (these segments will later be grouped into a single
                             // CallSetExpression)
                             expressionSegments.Add(
-                                new CallSetItemExpressionSegment(
+                                new CallSetItemExpressionSegment(token.LineIndex,
                                     [],
                                     bracketedExpressions,
                                     null // ArgumentBracketPresenceOptions
@@ -185,7 +186,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         }
                     }
                 }
-                else if (token is ArgumentSeparatorToken)
+                else if (token is ArgumentSeparatorToken argumentSeparator)
                 {
                     if (depth == 0)
                     {
@@ -208,7 +209,21 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         accessorBuffer.Clear();
                     }
                     if (expressionSegments.Count == 0)
-                        throw new ArgumentException($"Unexpected ArgumentSeparatorToken - invalid content. Line:{token.LineIndex}:{token.Content}");
+                    {
+                        if (expressions.Count > 0)
+                        {
+                            // VBScript: oShell.Run "test.txt" , , False
+                            // "Missing value for optional parameter"
+                            // C# cannot use “empty commas”, but it can pass Type.Missing or default for optional COM parameters.
+                            // null → Missing.Value
+                            // test:XCallDefaultParamVal1
+                            expressionSegments.Add(new MissingValueExpressionSegment(argumentSeparator));
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"Unexpected ArgumentSeparatorToken - invalid content. Line:{token.LineIndex}:{token.Content}");
+                        }
+                    }
 
                     expressions.Add(GetExpression(expressionSegments));
                     expressionSegments.Clear();
@@ -649,7 +664,7 @@ Part2: 'Close'
                 zeroArgumentBracketsPresence = CallExpressionSegment.ArgumentBracketPresenceOptions.Present;
             else
                 zeroArgumentBracketsPresence = CallExpressionSegment.ArgumentBracketPresenceOptions.Absent;
-            return new CallExpressionSegment(
+            return new CallExpressionSegment(tokens.First().LineIndex,
                 tokensList.Where(t => !(t is MemberAccessorOrDecimalPointToken)).ToArray(),
                 arguments,
                 zeroArgumentBracketsPresence
@@ -708,7 +723,7 @@ Part2: 'Close'
 
             List<CallSetItemExpressionSegment> callSetItemExpressionSegmentBuffer = new List<CallSetItemExpressionSegment>();
             List<IExpressionSegment> expressionSegments = new List<IExpressionSegment>();
-            foreach (IExpressionSegment? segment in segments)
+            foreach (IExpressionSegment segment in segments)
             {
                 if (segment == null)
                     throw new ArgumentException("Null reference encountered in segments set");
@@ -736,11 +751,11 @@ Part2: 'Close'
                 {
                     // A CallSetItemExpressionSegment should never exist in isolation, so if there is only one segment here it should
                     // be promoted to a CallExpressionSegment (if it wasn't one already)
-                    CallSetItemExpressionSegment? callExpressionSegment = callSetItemExpressionSegmentBuffer[0];
+                    CallSetItemExpressionSegment callExpressionSegment = callSetItemExpressionSegmentBuffer[0];
                     if (callExpressionSegment.MemberAccessTokens.Count == 0)
                         throw new ArgumentException("Encountered individual CallSetItemExpressionSegment with no Member Access Tokens, zero Member Access Tokens are only allowable with segments are part of a CallSetExpressionSegment (so long as it's not the first segment in that set's content)");
                     expressionSegments.Add(
-                        new CallExpressionSegment(
+                        new CallExpressionSegment(callExpressionSegment.LineIndex,
                             callExpressionSegment.MemberAccessTokens,
                             callExpressionSegment.Arguments,
                             callExpressionSegment.ZeroArgumentBracketsPresence

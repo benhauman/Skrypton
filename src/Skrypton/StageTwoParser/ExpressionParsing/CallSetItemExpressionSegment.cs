@@ -29,13 +29,14 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
             //typeof(WhiteSpaceToken)
         };
 
-        public CallSetItemExpressionSegment(IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
+        public CallSetItemExpressionSegment(int lineIndex, IReadOnlyCollection<IToken> memberAccessTokens, IReadOnlyCollection<ParsingExpression> arguments, ArgumentBracketPresenceOptions? zeroArgumentBracketsPresence)
         {
             if (memberAccessTokens == null)
                 throw new ArgumentNullException(nameof(memberAccessTokens));
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
+            LineIndex = lineIndex;
             MemberAccessTokens = memberAccessTokens.ToList().AsReadOnly();
             if (MemberAccessTokens.Any(t => t == null))
                 throw new ArgumentException("Null reference encountered in memberAccessTokens set");
@@ -61,6 +62,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
 
             ZeroArgumentBracketsPresence = zeroArgumentBracketsPresence;
         }
+        public int LineIndex { get; }
 
         public enum ArgumentBracketPresenceOptions
         {

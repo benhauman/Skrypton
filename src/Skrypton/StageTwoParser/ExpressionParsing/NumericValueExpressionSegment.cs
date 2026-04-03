@@ -11,7 +11,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
         {
             Token = token ?? throw new ArgumentNullException(nameof(token));
         }
-
+        public int LineIndex => Token.LineIndex;
         /// <summary>
         /// This will never be null
         /// </summary>

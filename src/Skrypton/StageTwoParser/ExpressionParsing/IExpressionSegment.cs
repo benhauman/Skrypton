@@ -6,6 +6,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
     public interface IExpressionSegment
     {
         string RenderedContent { get; }
+        int LineIndex { get; }
 
         /// <summary>
         /// This will never be null, empty or contain any null references
