@@ -59,5 +59,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         ValueDateFromParse,
         ValueNum,
         ValueString,
+        MissingArgValue
     }
 }

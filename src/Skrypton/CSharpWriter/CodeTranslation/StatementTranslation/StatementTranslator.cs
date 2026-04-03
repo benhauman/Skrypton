@@ -134,7 +134,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         result.TranslatedContent,
                         result.ContentType,
                         returnRequirements,
-                        segments[0].AllTokens.First().LineIndex
+                        segments[0].LineIndex
                     ),
                     result.VariablesAccessed
                 );
@@ -142,12 +142,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (segments.Length == 2)
             {
                 TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
+                string fnName = GetSupportFunctionName(operatorSegmentWithIndex!.Segment!.Token);
                 return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                     ApplyReturnTypeGuarantee(
                         string.Format(CultureInfo.InvariantCulture,
                             "{0}.{1}({2})",
                             _supportRefName.Name,
-                            GetSupportFunctionName(operatorSegmentWithIndex!.Segment!.Token),
+                            fnName,
                             result.TranslatedContent
                         ),
                         ExpressionReturnTypeOptions.Value, // This will be a negation operation and so will always return a numeric value
@@ -491,8 +492,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 return TranslateRuntimeErrorExpressionSegment(runtimeErrorExpressionSegment);
             }
-
+            if (segment is MissingValueExpressionSegment mveSegment)
+            {
+                // test: 'XCallDefaultParamVal1'
+                return TranslateMissingValueExpressionSegment(mveSegment);
+            }
             throw new NotSupportedException("Unsupported segment type: " + segment.GetType());
+        }
+
+        private static TranslatedStatementContentDetailsWithContentType TranslateMissingValueExpressionSegment(MissingValueExpressionSegment mveSegment)
+        {
+            return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.MissingArgValue,
+                $"{typeof(Missing).FullName}.{nameof(Missing.Value)}",
+                ExpressionReturnTypeOptions.NotSpecified,
+                []
+            );
         }
 
         private TranslatedStatementContentDetailsWithContentType TranslateBracketedExpressionSegment(BracketedExpressionSegment bracketedExpressionSegment, ScopeAccessInformation scopeAccessInformation)
@@ -1662,7 +1676,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             || (singleSegment is StringValueExpressionSegment)
             || (singleSegment is BuiltInValueExpressionSegment)
             || (singleSegment is NewInstanceExpressionSegment)
-            || (singleSegment is RuntimeErrorExpressionSegment))
+            || (singleSegment is RuntimeErrorExpressionSegment)
+            || (singleSegment is MissingValueExpressionSegment)
+            )
             {
                 return true;
             }
