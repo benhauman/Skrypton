@@ -15,8 +15,9 @@ using Skrypton.CSharpWriter;
 using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application;
-using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 using System.Collections.Immutable;
+using Skrypton.Tests.RuntimeSupport.Components;
+using Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport;
 
 namespace Skrypton.Tests
 {
@@ -315,7 +316,7 @@ namespace Skrypton.Tests
             return container;
         }
 
-        public IHostFileSystemHostService CreateTestFileSystem()
+        public IHostFileSystemHostService CreateWindowsFileSystem()
         {
             return new WindowsFileSystem();
         }

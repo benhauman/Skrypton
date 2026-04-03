@@ -18,8 +18,9 @@ using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application.Controls;
 using Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests;
+using Skrypton.Tests.RuntimeSupport.Components;
+using Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport;
 using Skrypton.Tests.RuntimeSupport.Implementations;
-using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
 
 namespace Skrypton.Tests.Application
 {
@@ -682,6 +683,13 @@ WScript.Echo xmlhttp.responseText
                 ScriptControlClass.RunProcedure(gr, "ButtonShowWebsite_Click", []);
             });
         }
+
+        public static IHostFileSystemHostService CreateTestHostFileSystemHostService(Action<TestFileSystem> setup)
+        {
+            var fs = new TestFileSystem();
+            setup(fs);
+            return fs;
+        }
         public static object CreateMyOutlookApplicationClass(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);
@@ -804,8 +812,9 @@ WScript.Echo xmlhttp.responseText
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
                 services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
                 services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
-                services.RegisterHostService<RuntimeSupport.Implementations.FileSystemSupport.IHostFileSystemHostService>(() => new TestFileSystem()
-                    .AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1")
+                services.RegisterHostService<RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs => {
+                    fs.AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1");
+                })
 
                 );
 

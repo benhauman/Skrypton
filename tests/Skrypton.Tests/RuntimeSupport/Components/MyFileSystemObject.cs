@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
+using Skrypton.Tests.RuntimeSupport.Components;
+using Skrypton.Tests.RuntimeSupport.Implementations;
 
-namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
+namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 {
     [SourceClassName("Dictionary")] // for TYPENAME(CreateObject("Scripting.Dictionary"))
     [ComVisible(true)]

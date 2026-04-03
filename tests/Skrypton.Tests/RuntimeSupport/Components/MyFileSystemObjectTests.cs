@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport;
+using Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
@@ -36,7 +36,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void CreateFolder_ShouldCreateDirectory()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             string folderPath = Path.Combine(root.RootPath, "SubFolder");
 
             var folder = fso.CreateFolder(folderPath);
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void FileExists_ShouldReturnTrue_WhenFileExists()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             string filePath = Path.Combine(root.RootPath, "test.txt");
             File.WriteAllText(filePath, "Hello");
 
@@ -61,7 +61,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void GetFile_ShouldReturnCorrectFile()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             string filePath = Path.Combine(root.RootPath, "data.txt");
             File.WriteAllText(filePath, "ABC");
 
@@ -75,7 +75,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void CreateTextFile_ShouldCreateAndWrite()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             string filePath = Path.Combine(root.RootPath, "newfile.txt");
 
             {
@@ -99,7 +99,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void OpenTextFile_ForReadingAfterWriting_ShouldReadBack()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             string filePath = Path.Combine(root.RootPath, "open.txt");
 
             {
@@ -141,7 +141,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             File.WriteAllText(Path.Combine(root.RootPath, "a.txt"), "A");
             File.WriteAllText(Path.Combine(root.RootPath, "b.txt"), "BB");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var folder = fso.GetFolder(root.RootPath);
             var files = folder.Files;
 
@@ -157,7 +157,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(Path.Combine(root.RootPath, "A"));
             Directory.CreateDirectory(Path.Combine(root.RootPath, "B"));
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var folder = fso.GetFolder(root.RootPath);
             var subs = folder.SubFolders;
 
@@ -174,7 +174,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(Path.Combine(root.RootPath, "src"));
             File.WriteAllText(Path.Combine(root.RootPath, "src", "source.txt"), "X");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var src = fso.GetFolder(Path.Combine(root.RootPath, "src"));
             //var src = new MyFolder();
             string dst = Path.Combine(root.RootPath, "dst");
@@ -197,7 +197,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(from);
             File.WriteAllText(Path.Combine(from, "f.txt"), "x");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var folder = fso.GetFolder(from);
 
             // Act
@@ -217,7 +217,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(dir);
             File.WriteAllText(Path.Combine(dir, "x.txt"), "x");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var folder = fso.GetFolder(dir);
             folder.Delete(force: true);
 
@@ -233,7 +233,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "info.txt");
             File.WriteAllText(filePath, "1234");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var f = fso.GetFile(filePath);
 
             Assert.AreEqual("info.txt", f.Name);
@@ -248,7 +248,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "move.txt");
             File.WriteAllText(filePath, "Data");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var f = fso.GetFile(filePath);
 
             string newPath = Path.Combine(root.RootPath, "moved.txt");
@@ -266,7 +266,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "copy.txt");
             File.WriteAllText(filePath, "OK");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var f = fso.GetFile(filePath);
 
             string dest = Path.Combine(root.RootPath, "copy2.txt");
@@ -283,7 +283,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "del.txt");
             File.WriteAllText(filePath, "del");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             var f = fso.GetFile(filePath);
             f.Delete(force: true);
 
@@ -297,7 +297,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var root = EnsureRootPath();
             string filePath = Path.Combine(root.RootPath, "ts.txt");
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
 
             {
                 var ts = fso.OpenTextFile(filePath, IOMode.ForWriting, create: true);
@@ -336,7 +336,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string file = Path.Combine(root.RootPath, "lines.txt");
             File.WriteAllLines(file, new[] { "A", "B", "C" });
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             {
                 var ts = fso.OpenTextFile(file, IOMode.ForReading);
                 try
@@ -360,7 +360,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string file = Path.Combine(root.RootPath, "append.txt");
             File.WriteAllText(file, "X");
 
-            var fso = new MyFileSystemObject(CreateTestFileSystem());
+            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
             {
                 var ts = fso.OpenTextFile(file, IOMode.ForAppending);
                 try

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Skrypton.Tests.RuntimeSupport.Components;
 
-namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
+namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 {
 
     internal sealed class WindowsFileSystem : HostFileSystemHostServiceBase, IHostFileSystemHostService
@@ -198,7 +199,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.FileSystemSupport
         }
     }
 
-    internal sealed class TestFileSystem : IHostFileSystemHostService
+    public sealed class TestFileSystem : IHostFileSystemHostService
     {
         private readonly Dictionary<string, StringBuilder> _allfiles = new Dictionary<string, StringBuilder>(StringComparer.OrdinalIgnoreCase);
 
