@@ -1,18 +1,11 @@
 SUB Test
-	Dim responsiblity, requesttype
-	responsiblity = "Rs"
-	requesttype = "Qq"
-	
-	Select Case responsiblity
-		Case "EditorTypeConsulting"
-			Select Case requesttype
-				Case "RequestTypeService", "RequestTypeBug", "RequestTypeExtra", "RequestTypeInformation", "RequestTypeRegulier"
-					hlObj.SetValue "IncidentAttribute.SLAControl",7,0,0,"SLAControlCons1"
-				Case "RequestTypeDefect"
-					hlObj.SetValue "IncidentAttribute.SLAControl",7,0,0,"SLAControlCons1"
+	Select Case "a"
+		Case "b"
+			Select Case "c"
+				Case "r1", "r2", "r3", "r4", "r5"
+					MsgBox "x"
+				Case "e"
+					MsgBox "y"
 			End Select
-			
 	End Select
-	
-	
 END SUB
