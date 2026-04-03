@@ -124,7 +124,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     tokens.RemoveRange(0, 1);
                     // - Remove the exprValues tokens
                     bool doRemoveEofToken = true;
-                    bool doRemoveFromTokens = false;
+                    bool doRemoveFromTokens = true;
                     for (int exprValueIndex = 0; exprValueIndex < exprValues.Count; exprValueIndex++)
                     {
                         List<IToken> valueTokens = exprValues[exprValueIndex];

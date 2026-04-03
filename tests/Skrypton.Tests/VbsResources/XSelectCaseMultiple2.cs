@@ -15,6 +15,14 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
+            if (_.IF(_.EQ("a", "r1"))
+            || (_.IF(_.EQ("a", "r2")))
+            || (_.IF(_.EQ("a", "r3")))
+            || (_.IF(_.EQ("a", "r4")))
+            || (_.IF(_.EQ("a", "r5"))))
+            {
+                _.MSGBOX("x");
+            }
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>
@@ -27,17 +35,6 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-        }
-        public void Test()
-        {
-            if (_.IF(_.EQ("a", "r1"))
-            || (_.IF(_.EQ("a", "r2")))
-            || (_.IF(_.EQ("a", "r3")))
-            || (_.IF(_.EQ("a", "r4")))
-            || (_.IF(_.EQ("a", "r5"))))
-            {
-                _.MSGBOX("x");
-            }
         }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase

@@ -31,12 +31,12 @@ namespace Skrypton.Tests.Application
                 return; // explicit test exists
             if (typeof(ScriptControlTests).GetMethod(chainName) != null)
                 return; // explicit test exists
-            if (chainName == "XSelectCaseMultiple1")
+            if (chainName == ".XSelectCaseMultiple1")
             {
                 Assert.Inconclusive();
                 return;
             }
-            if (chainName == "XSelectCaseMultiple2")
+            if (chainName == ".XSelectCaseMultiple2")
             {
                 Assert.Inconclusive();
                 return;
@@ -54,7 +54,7 @@ namespace Skrypton.Tests.Application
             MemberDataTestName = chainName;
             string[] suppressions = ["SKY101", "SKY102", "SKY106"];
             string[] noWarn = [];
-            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), isOptionalAssert: true, suppressions: suppressions);
+            TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), isOptionalAssert: false, suppressions: suppressions);
             var tst = this;
             var hostServices = CreateTestHostServices();
             var externalReferences = new Dictionary<string, object>();
