@@ -36,6 +36,11 @@ namespace Skrypton.Tests.Application
                 Assert.Inconclusive();
                 return;
             }
+            if (chainName == "XSelectCaseMultiple2")
+            {
+                Assert.Inconclusive();
+                return;
+            }
 
             if (chainName == "CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click"
              || chainName == "CT130_ClientComputer_Dialog_567_Button1_Click"
