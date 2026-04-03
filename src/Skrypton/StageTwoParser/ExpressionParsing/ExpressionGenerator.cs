@@ -208,7 +208,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                         accessorBuffer.Clear();
                     }
                     if (expressionSegments.Count == 0)
-                        throw new ArgumentException("Unexpected ArgumentSeparatorToken - invalid content");
+                        throw new ArgumentException($"Unexpected ArgumentSeparatorToken - invalid content. Line:{token.LineIndex}:{token.Content}");
 
                     expressions.Add(GetExpression(expressionSegments));
                     expressionSegments.Clear();
