@@ -19,7 +19,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
     }
     internal static class DefaultCSharpTranslation
     {
-        internal static string GetTranslatedProgramCode(TestBaseX tst, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, string[] translationSuppression)
+        internal static string GetTranslatedProgramCode(TestBaseX tst, string vbsSource, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, string[] translationSuppression, string[] noWarn)
         {
             Dictionary<string, ScriptExternalReferenceInfo> xr = new Dictionary<string, ScriptExternalReferenceInfo>();
             foreach (string externalDependencyName in externalDependencies)
@@ -34,13 +34,14 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             //            g => g.Key,
             //            g => g.Select(x => x.MethodName).ToArray());
 
-            return GetTranslatedProgramCodeX(tst, vbsSource, xr, translationSuppression);
+            return GetTranslatedProgramCodeX(tst, vbsSource, xr, translationSuppression, noWarn);
         }
         internal static string GetTranslatedProgramCodeX(TestBaseX tst, string vbsSource,
             IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalDependencies,
-            string[] translationSuppression)
+            string[] translationSuppression,
+            string[] noWarn)
         {
-            var scriptengineConfig = tst.CreateScriptControlConfiguration(false, translationSuppression);
+            var scriptengineConfig = tst.CreateScriptControlConfiguration(false, translationSuppression, noWarn);
             var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), scriptengineConfig);
             IScriptControl scriptengine = scriptengineClass;
             foreach (var externalDependencyInfo in externalDependencies)

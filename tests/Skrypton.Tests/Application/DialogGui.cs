@@ -531,14 +531,14 @@ WScript.Echo xmlhttp.responseText
             DoDialogGui(this, rsp.TranslatedCsCode, dialog, gr => { });
         }
 
-        private void DoDialogGui(DialogBase dialog, string[] suppressions, Action<GlobalReferencesBase> dialogHandler)
+        private void DoDialogGui(DialogBase dialog, string[] suppressions, string[] noWarn, Action<GlobalReferencesBase> dialogHandler)
         {
             string translated_cs = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true);
             if (translated_cs == null)
             {
                 Console.WriteLine("translating...");
                 string scriptContent = dialog.CompleteScriptCode();
-                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCodeX(this, scriptContent, dialog.ExternalReferences, suppressions);
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCodeX(this, scriptContent, dialog.ExternalReferences, suppressions, noWarn);
             }
 
             DoDialogGui(this, translated_cs, dialog, dialogHandler);
@@ -959,7 +959,8 @@ WScript.Echo xmlhttp.responseText
 
             //Assert.Inconclusive(); // Compilation failed.(505,319): error CS0131: The left-hand side of an assignment must be a variable, property or indexer
             string[] suppressions = ["SKY103", "SKY104", "SKY105", "SKY106"];
-            DoDialogGui(dialog, suppressions, (GlobalReferencesBase gr) =>
+            string[] noWarn = [];
+            DoDialogGui(dialog, suppressions, noWarn, (GlobalReferencesBase gr) =>
             {
             });
         }

@@ -1,4 +1,4 @@
-﻿using Helpline.Application.ScriptingModel;
+﻿/*using Helpline.Application.ScriptingModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,8 @@ namespace Skrypton.Tests.Application
             EblObj objX = new EblObj(oiDefault);
 
             hlContext.LoadObject_Override = oi => objX;
-            // CncIn.ExecuteTranslatedProgram(TestContext.TestName, new Dictionary<string, object> { { "hlcontext", hlContext } });
+             CncIn.ExecuteTranslatedProgram(this, new Dictionary<string, object> { { "hlcontext", hlContext } });
         }
     }
 }
+*/

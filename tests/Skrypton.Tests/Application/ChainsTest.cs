@@ -43,6 +43,7 @@ namespace Skrypton.Tests.Application
             }
             MemberDataTestName = chainName;
             string[] suppressions = ["SKY101", "SKY102", "SKY106"];
+            string[] noWarn = [];
             TestScriptResponse rsp = TestScriptChain(this, scriptUsage, externalRefs: CollectExternalRefs(scriptUsage), suppressions: suppressions);
             var tst = this;
             var hostServices = CreateTestHostServices();
@@ -73,7 +74,7 @@ namespace Skrypton.Tests.Application
             {
             }
 
-            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices), tst.CreateScriptControlConfiguration(false, suppressions));
+            var scriptengineClass = CreateScriptControlClass(new TestRuntimeHost(hostServices), tst.CreateScriptControlConfiguration(false, suppressions, noWarn));
             scriptengineClass.TestTranslatedStatement("tstpg", rsp.TranslatedCsCode, [
                 "CS0219", // error CS0219: The variable 'ForWriting' is assigned but its value is never used
                 ], doRun: false, gr => { });
@@ -219,7 +220,8 @@ namespace Skrypton.Tests.Application
                 string xml_expected,
                 IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalRefs,
                 bool isOptionalAssert = false,
-                params string[] suppressions)
+                string[] suppressions = null,
+                string[] noWarn = null)
         {
             if (externalRefs == null) throw new ArgumentNullException(nameof(externalRefs));
 
@@ -263,7 +265,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCodeX(tst, completeVbsScript, externalRefs, suppressions ?? []);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCodeX(tst, completeVbsScript, externalRefs, suppressions ?? [], noWarn ?? []);
 
             if (translated_cs_expected != null)
             {

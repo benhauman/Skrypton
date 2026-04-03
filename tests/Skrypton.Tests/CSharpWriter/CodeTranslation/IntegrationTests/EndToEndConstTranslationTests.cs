@@ -17,7 +17,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				CONST a = 2
 			";
             myAssert.Throws<NameRedefinedException>(() =>
-                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [])
+                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [], [])
             );
         }
 
@@ -28,7 +28,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				CONST a = 1
 				DIM a
 			";
-            myAssert.Throws<NameRedefinedException>(() => DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], []));
+            myAssert.Throws<NameRedefinedException>(() => DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [], []));
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				CONST a = 1
 			";
             myAssert.Throws<NameRedefinedException>(() =>
-                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [])
+                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [], [])
             );
         }
 
@@ -57,7 +57,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				CONST a = 1
 			";
             myAssert.Throws<NameRedefinedException>(() =>
-                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [])
+                DefaultCSharpTranslation.GetTranslatedProgramCode(this, source, WithoutScaffoldingTranslator.DefaultConsoleExternalDependencies, [], [], [])
             );
         }
 

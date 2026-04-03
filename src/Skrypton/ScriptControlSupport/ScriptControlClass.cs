@@ -178,7 +178,7 @@ namespace Skrypton.ScriptControlSupport
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             Interlocked.Increment(ref _lastExecNumber); // threadsafe
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: _lastExecNumber, csCode, []);
+            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: _lastExecNumber, csCode, _config.NoWarn);
             //WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
             try
             {
@@ -323,12 +323,15 @@ namespace Skrypton.ScriptControlSupport
         public bool TempEnabled { get; }
         protected string TempDirectoryPath { get; }
 
-        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression)
+        internal readonly string[] NoWarn;
+
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression, string[] noWarn)
         {
             _translationSuppression = translationSuppression ?? throw new ArgumentNullException(nameof(translationSuppression));
             TempEnabled = tempEnabled;
             TempDirectoryPath = tempDirectoryPath ?? "";
             EnabledLoadFromDisk = enabledLoadFromDisk;
+            NoWarn = noWarn ?? throw new ArgumentNullException(nameof(noWarn));
         }
 
         internal bool EnabledLoadFromDisk { get; }

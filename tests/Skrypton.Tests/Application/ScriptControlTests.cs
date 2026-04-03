@@ -4,6 +4,7 @@ using System.IO;
 using Helpline.Application.ScriptingModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 
 namespace Skrypton.Tests.Application
@@ -11,43 +12,57 @@ namespace Skrypton.Tests.Application
     [TestClass]
     public sealed class ScriptControlTests : TestBase
     {
-        [TestMethod] public void CT98__hlsysscript_cncIN() => DoScriptControlTest();
-        [TestMethod] public void DC_DATA__hlsysscript_cncIN() => DoScriptControlTest();
-        [TestMethod] public void LUNA12_quxDATA__hlsysscript_cncIN() => DoScriptControlTest();
+        [TestMethod] public void CT98__hlsysscript_cncIN() => DoCncInScriptControlTest();
+        [TestMethod] public void DC_DATA__hlsysscript_cncIN() => DoCncInScriptControlTest();
+        [TestMethod] public void LUNA12_quxDATA__hlsysscript_cncIN() => DoCncInScriptControlTest();
+        private void DoCncInScriptControlTest()
+        {
+            CncInState state = new CncInState();
+            DoScriptControlTest(state, state.CncInObjects, ["SKY102", "SKY106"], [], _ => { }, _ => { });
+            Assert.IsNotNull(state.DoExtendWorkflowCaseIdentity, nameof(CncInState.DoExtendWorkflowCaseIdentity));
+        }
+        private sealed class CncInState
+        {
+            internal readonly Dictionary<string, object> CncInObjects;
+            internal CncObj DoExtendWorkflowCaseIdentity = null;
+            public CncInState()
+            {
+                Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext = Helpline.Application.ScriptingModel.ApplicationTestContext.Create(ctx =>
+                {
+                    ctx.HandlerMergeSUs = (obj) => { };
+                });
+                var session = Skrypton.Tests.Application.CncIn.CreateSampleConnectivityJob(cncTestContext);
+                session.DoExtendWorkflowCaseOverride = (oi) =>
+                {
+                    DoExtendWorkflowCaseIdentity = (CncObj)oi;
+                };
 
+                CncInObjects = new Dictionary<string, object>() { { "session", session } };
+            }
+        }
 
-        private void DoScriptControlTest() // see 'ExecuteScriptByNameAsync'
+        [TestMethod]
+        public void Outlook1() => DoScriptControlTest<object>(null, [], [], [], services =>
+        {
+            services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
+                .RegisterObjectFactory<object>("Outlook.Application", (h) => new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(h))
+            );
+            services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
+        }, (x) => { });
+
+        // see 'ExecuteScriptByNameAsync'
+        private void DoScriptControlTest<TState>(TState state, Dictionary<string, object> externalReferences, string[] translationSuppressions, string[] noWarn, Action<TestHostServices> setupHostServices, Action<TState> assertProgramOutput)
         {
             string chainName = TestName;
 
-            //bool mergeSU_called = false;
-            Helpline.Application.ScriptingModel.IApplicationTestContext cncTestContext = Helpline.Application.ScriptingModel.ApplicationTestContext.Create(ctx =>
-            {
-                ctx.HandlerMergeSUs = (obj) =>
-                {
-                    //mergeSU_called = true;
-                };
-            });
-            var session = Skrypton.Tests.Application.CncIn.CreateSampleConnectivityJob(cncTestContext);
-            CncObj DoExtendWorkflowCaseIdentity = null;
-            session.DoExtendWorkflowCaseOverride = (oi) =>
-            {
-                DoExtendWorkflowCaseIdentity = (CncObj)oi;
-            };
-
-            //ExecuteTranslatedProgram(TestCulture, TestContext.TestName, new Dictionary<string, object> { { "session", session } });
-
             string scriptContent = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + chainName + ".vbs");
 
-            ScriptControlConfiguration controlConfig = CreateScriptControlConfiguration(false, ["SKY102", "SKY106"]);
-
-            IScriptControl scriptengine = new ScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture, controlConfig);
-            scriptengine.Language = "VBScript";
-            scriptengine.AllowUI = false;
-            scriptengine.Timeout = -1;//MSScriptControl::NoTimeout;
-
-            //scriptengine.AddObject(it.Key, objIDispatch, false); // https://jeffpar.github.io/kbarchive/kb/185/Q185697/
-            scriptengine.AddObject("session", session);
+            ScriptControlConfiguration controlConfig = CreateScriptControlConfiguration(false, translationSuppressions, noWarn);
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices(setupHostServices)), controlConfig);
+            foreach (var externalReference in externalReferences)
+            {
+                scriptengine.AddObject(externalReference.Key, externalReference.Value); // https://jeffpar.github.io/kbarchive/kb/185/Q185697/
+            }
 
             try
             {
@@ -59,28 +74,7 @@ namespace Skrypton.Tests.Application
                 throw;
             }
 
-            /*
-object[] args = new object[0];
-string tmp = ScriptEnginePrefix + scriptName;
-scriptControl.Run(tmp, args);//scriptControl.Run(ScriptEnginePrefix + scriptName, ref args);
-             */
-
-            Assert.IsNotNull(DoExtendWorkflowCaseIdentity, nameof(DoExtendWorkflowCaseIdentity));
-        }
-    }
-
-    internal sealed class TestScriptControlConfiguration : ScriptControlConfiguration
-    {
-        private readonly TestBaseX _tst;
-
-        public TestScriptControlConfiguration(TestBaseX tst, bool tempEnabled, string[] translationSuppression) : base(tempEnabled, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression)
-        {
-            _tst = tst ?? throw new ArgumentNullException(nameof(tst));
-        }
-
-        protected override void OnTempFileAdd(string filePath)
-        {
-            _tst.AddResultFile(filePath);
+            assertProgramOutput(state);
         }
     }
 

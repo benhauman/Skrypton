@@ -60,7 +60,6 @@ namespace Skrypton.Tests.Application
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, externalRefs: ChainsTest.CollectExternalRefs(ScriptUsageKind.Connectivity));
             DoCncInTest(rsp);
         }
-
         private void DoCncInTest(TestScriptResponse rsp)
         {
             bool mergeSU_called = false;
@@ -90,7 +89,7 @@ namespace Skrypton.Tests.Application
         internal static void ExecuteTranslatedProgram(TestBaseX tst, string translatedCsCode, IServiceProvider hostServices, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalReferences, Action<GlobalReferencesBase> dialogHandler)
         {
             IRuntimeHost runtimeHost = new TestRuntimeHost(hostServices);
-            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, tst.CreateScriptControlConfiguration(false, []));
+            var scriptControlClass = tst.CreateScriptControlClass(runtimeHost, tst.CreateScriptControlConfiguration(false, [], []));
 
             scriptControlClass.TestSetDefaultRuntimeFunctionalityProviderSetup((x) => SetupDefaultRuntimeFunctionalityProvider(x, hostServices, tst.TestCulture));
 
