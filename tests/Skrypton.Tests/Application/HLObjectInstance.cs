@@ -108,35 +108,62 @@ namespace Skrypton.Tests.Application
         public object[] GetItems(int flags, int nfirst, int nlast, object assocdef)
         {
             Console.WriteLine($"{_traceName}GetItems(flags:{flags}, nfirst:{nfirst}, nlast:{nlast}, assocdef:{assocdef})");
+            if (nfirst == -1 || nlast == -1)
+                return GetItemsEx(flags, 0, assocdef);
+            if (nlast < nfirst)
+                throw new ArgumentException("nlast has to be greater or equal to nfirst");
+            return (GetItemsEx(flags, 0, assocdef) as object[])
+                .Skip(nfirst)
+                .Take(nlast - nfirst + 1)
+                .ToArray();
+        }
+        public object[] GetItemsEx(int flags, int suidx, object assocdef)
+        {
+            return GetItemsExCore(flags, suidx, assocdef);
+        }
+        private object[] GetItemsExCore(int flags, int suidx, object assocdef)
+        {
+            string assocDefName;
+            if (assocdef is int assocdefid)
+            {
+                assocDefName = assocdefid.ToString();//"<TODO>";
+            }
+            else
+            {
+                assocDefName = (string)assocdef;
+            }
+
             if (flags == 0x10000)
             {
-                string assocDefName;
-                if (assocdef is int)
-                {
-                    assocDefName = "<TODO>";
-                }
-                else
-                {
-                    assocDefName = (string)assocdef;
-                }
-
                 if (_associatedItemsA.TryGetValue(assocDefName, out var items))
                     return items.Values.Select(x => (object)x).ToArray();
                 return [];
             }
             else
             {
-                object[] hlObjects = [];
-                return hlObjects;
+                if (_associatedItemsB.TryGetValue(assocDefName, out var items))
+                    return items.Values.Select(x => (object)x).ToArray();
+                return [];
             }
         }
         private Dictionary<string, Dictionary<int, HLObjectInstance>> _associatedItemsA = new Dictionary<string, Dictionary<int, HLObjectInstance>>();
+        private Dictionary<string, Dictionary<int, HLObjectInstance>> _associatedItemsB = new Dictionary<string, Dictionary<int, HLObjectInstance>>();
         public HLObjectInstance TestRegisterAssociateItemA(string assocdef, HLObjectInstance item)
         {
             if (!_associatedItemsA.TryGetValue(assocdef, out var items))
             {
                 items = new Dictionary<int, HLObjectInstance>();
                 _associatedItemsA.Add(assocdef, items);
+            }
+            items.Add(item._objectId!.Value, item);
+            return this;
+        }
+        public HLObjectInstance TestRegisterAssociateItemB(string assocdef, HLObjectInstance item)
+        {
+            if (!_associatedItemsB.TryGetValue(assocdef, out var items))
+            {
+                items = new Dictionary<int, HLObjectInstance>();
+                _associatedItemsB.Add(assocdef, items);
             }
             items.Add(item._objectId!.Value, item);
             return this;

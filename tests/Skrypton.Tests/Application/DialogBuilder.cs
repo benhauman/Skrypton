@@ -35,7 +35,10 @@ namespace Skrypton.Tests.Application
             _globalScriptCode = dialogGlobalScriptCode ?? throw new ArgumentNullException(nameof(dialogGlobalScriptCode));
             return this;
         }
-
+        public string GetGlobalScriptCode()
+        {
+            return _globalScriptCode;
+        }
         public DialogBase BuildDialog(bool gui = true)
         {
             List<string> scriptNames = new List<string>();
