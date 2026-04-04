@@ -108,17 +108,17 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineWebControl", () => new DialogGuiWebControl() },
             { "HelpLineImageControl", () => new DialogGuiImageControl() },
             { "HelpLineTimeControl", () => new DialogGuiTimeControl() },
+            { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() },
 #pragma warning disable SA1028
             // see 'SetCustomControlType'
-            //            { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() }, 
-            //            { "HelpLineListControl", () => new DialogGuiListControl() }, 
-            //            { "HelpLineTreeControl", () => new DialogGuiTreeControl() }, 
-            //            { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() }, 
-            //            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() }, 
-            //            { "HelpLineCommunicationFeed", () => new DialogGuiCommunicationFeedControl() }, 
-            //            { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() }, 
-            //            { "HelpLineHistory", () => new DialogGuiHistoryControl() }, 
-            //            { "HelpLineServiceCatalogItemOverview", () => new DialogGuiServiceCatalogItemOverviewControl() }, 
+            //            { "HelpLineListControl", () => new DialogGuiListControl() },
+            //            { "HelpLineTreeControl", () => new DialogGuiTreeControl() },
+            //            { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() },
+            //            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() },
+            //            { "HelpLineCommunicationFeed", () => new DialogGuiCommunicationFeedControl() },
+            //            { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
+            //            { "HelpLineHistory", () => new DialogGuiHistoryControl() },
+            //            { "HelpLineServiceCatalogItemOverview", () => new DialogGuiServiceCatalogItemOverviewControl() },
 #pragma warning restore SA1028
         };
 
@@ -194,6 +194,9 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiHyperlinkControl : DialogGuiControlBase
+    {
+    }
     public sealed class DialogGuiTimeControl : DialogGuiControlBase
     {
     }

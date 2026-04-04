@@ -1192,7 +1192,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v1), // test: CT74_
                         2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v2), // test: db_TrumpfData_script_649_0_0
                         //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3),
-                        //4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4),
+                        4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4), // CT98_dialog276
                         //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
                         _ => throw new NotSupportedException($"Overload 'CALLm2v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
                     };
