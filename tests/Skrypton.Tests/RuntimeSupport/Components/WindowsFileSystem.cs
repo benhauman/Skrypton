@@ -316,7 +316,13 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
             {
                 return new StringStream(content);
             }
-
+            // [FS].OpenTextFileWrite(path:'tst\HtmlPreview.html', createIfNotExists:True, overwriteIfExists:True, append:False)
+            if (createIfNotExists)
+            {
+                content = new StringBuilder();
+                _allfiles[path] = content;
+                return new StringStream(content);
+            }
             throw new NotImplementedException($"[FS].OpenTextFileWrite(path:'{path}', createIfNotExists:{createIfNotExists}, overwriteIfExists:{overwriteIfExists}, append:{append})");
         }
 

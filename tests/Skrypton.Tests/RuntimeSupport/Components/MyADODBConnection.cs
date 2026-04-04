@@ -1175,4 +1175,82 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
         int Count { get; }
     }
 
+    [ComVisible(true)]
+    internal sealed class MyADODBStream
+    {
+        public MyADODBStream()
+        {
+
+        }
+        [DispId(10)]
+        public void Open()
+        {
+            OpenCore(null, ConnectModeEnum.adModeUnknown, StreamOpenOptionsEnum.adOpenStreamUnspecified);
+        }
+        private void OpenCore([Optional][In] object Source, [In] ConnectModeEnum Mode = ConnectModeEnum.adModeUnknown, [In] StreamOpenOptionsEnum Options = StreamOpenOptionsEnum.adOpenStreamUnspecified, [In][MarshalAs(UnmanagedType.BStr)] string UserName = "", [In][MarshalAs(UnmanagedType.BStr)] string Password = "")
+        {
+
+        }
+
+        [DispId(4)]
+        public StreamTypeEnum Type
+        {
+            get;
+            set;
+        }
+
+        [DispId(13)]
+        public void Write([In] object Buffer)
+        {
+
+        }
+
+        [DispId(17)]
+        public void SaveToFile([In] string FileName, [In] object Options)
+        {
+            SaveToFileCore(FileName, (SaveOptionsEnum)Enum.ToObject(typeof(SaveOptionsEnum), Options));
+        }
+        private void SaveToFileCore([In] string FileName, [In] SaveOptionsEnum Options = SaveOptionsEnum.adSaveCreateNotExist)
+        {
+
+        }
+        [DispId(11)]
+        public void Close()
+        {
+
+        }
+
+    }
+    public enum SaveOptionsEnum
+    {
+        adSaveCreateNotExist = 1,
+        adSaveCreateOverWrite
+    }
+
+    public enum StreamTypeEnum
+    {
+        adTypeBinary = 1,
+        adTypeText
+    }
+
+
+    public enum ConnectModeEnum
+    {
+        adModeUnknown = 0,
+        adModeRead = 1,
+        adModeWrite = 2,
+        adModeReadWrite = 3,
+        adModeShareDenyRead = 4,
+        adModeShareDenyWrite = 8,
+        adModeShareExclusive = 12,
+        adModeShareDenyNone = 16,
+        adModeRecursive = 4194304
+    }
+    public enum StreamOpenOptionsEnum
+    {
+        adOpenStreamUnspecified = -1,
+        adOpenStreamAsync = 1,
+        adOpenStreamFromRecord = 4
+    }
+
 }

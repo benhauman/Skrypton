@@ -388,7 +388,13 @@ namespace Skrypton.Tests.Application.Controls
 
         public int GetItemsCount()
         {
+            Console.WriteLine($"[ComboBox]({ID}).GetItemsCount()");
             return 0;
+        }
+
+        public void DeleteItem(int index)
+        {
+            Console.WriteLine($"[ComboBox]({ID}).DeleteItem('{index}')");
         }
     }
 

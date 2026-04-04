@@ -10,7 +10,7 @@ namespace Skrypton.Tests.Application
 {
 
     [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
+    //[ClassInterface(ClassInterfaceType.None)]
     //[ComDefaultInterface(typeof(IScriptingHelplineObject))]
     public sealed class HLObjectInstance : IReflectOnClrType // see 'EblObjectWrite' // see /Core/Common/Client/RuntimeObject/HelplineObject.cs
     {
@@ -257,6 +257,18 @@ namespace Skrypton.Tests.Application
             int[] attachmentIds = [101111, 102222];
             return attachmentIds;
         }
+        public HLAttachmentInstance GetAttachment(object key, int identifier, int suidx)
+        {
+            string attributeKey = (string)key;
+            if (attributeKey != "HLOBJECTINFO.ATTACHMENT" && attributeKey != "SUINFO.ATTACHMENT")
+                throw new ArgumentException($"Invalid attribute key:{key}");
+            if (identifier == 101111)
+                return new HLAttachmentInstance("Attachment1#x.txt", "text/plain", new byte[] { 0x01, 0x02, 0x03 });
+            if (identifier == 102222)
+                return new HLAttachmentInstance("Attachment2#y.txt", "text/plain", new byte[] { 0x01, 0x02, 0x03 });
+            throw new ArgumentException($"Invalid attachment id:{identifier}");
+        }
+
 
         internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)
         {
