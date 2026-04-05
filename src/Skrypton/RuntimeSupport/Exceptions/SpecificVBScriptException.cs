@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Skrypton.RuntimeSupport.Exceptions
+namespace Skrypton.RuntimeSupport
 {
     [Serializable]
     public abstract class SpecificVBScriptException : Exception

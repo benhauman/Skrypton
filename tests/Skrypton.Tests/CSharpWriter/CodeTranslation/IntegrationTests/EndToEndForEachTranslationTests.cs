@@ -70,7 +70,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				For Each value In Array(1, 2)
 				Next
 			";
-			TestCSharpCodeTranslation(source, []);
+			TestCSharpCodeTranslation(source, [], []);
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Skrypton.RuntimeSupport.Exceptions;
 
-namespace Skrypton.RuntimeSupport.Exceptions
+namespace Skrypton.RuntimeSupport
 {
     /// <summary>
     /// This occurs when a value-setting statement has an invalid target - a constant, for example
@@ -12,7 +13,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
         private const string BASIC_ERROR_DESCRIPTION = "Illegal assignment";
 
         [Obsolete("do not use it")] public IllegalAssignmentException() { }
-        [Obsolete("do not use it")] private IllegalAssignmentException(string message) : base(message) { }
+        public IllegalAssignmentException(string additionalInformationIfAny) : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, null) { } // use by generated .cs code! CAUTION: Namespace and Arguments!
         public IllegalAssignmentException(string additionalInformationIfAny, Exception innerException)
             : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
 

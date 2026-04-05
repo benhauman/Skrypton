@@ -342,7 +342,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(this, "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'a'\")))",
+            myAssert.AreEqualX(this, @"_.SETm1a0((Int16)1, this, _.RAISEERROR(new Skrypton.RuntimeSupport.TypeMismatchException(""'a"")))",
                 [new NameToken("a", lineIndex1)],
                 actual);
         }
@@ -373,7 +373,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(this, "_.SETm1a0((Int16)1, this, _.RAISEERROR(new TypeMismatchException(\"'F1'\")))",
+            myAssert.AreEqualX(this, @"_.SETm1a0((Int16)1, this, _.RAISEERROR(new Skrypton.RuntimeSupport.TypeMismatchException(""'F1"")))",
                 [new NameToken("F1", lineIndex1)],
                 actual);
         }

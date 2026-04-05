@@ -31,6 +31,8 @@ namespace Skrypton.Tests.Application
                 return; // explicit test exists
             if (typeof(ScriptControlTests).GetMethod(chainName) != null)
                 return; // explicit test exists
+            if (typeof(CncIn).GetMethod(chainName) != null)
+                return; // explicit test exists
             if (chainName == ".XCallDefaultParamVal1")
             {
                 Assert.Inconclusive();

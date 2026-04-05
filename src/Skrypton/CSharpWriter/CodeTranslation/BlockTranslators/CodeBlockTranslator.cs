@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Skrypton.RuntimeSupport;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
@@ -818,7 +819,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             {
                 var rewrittenVariableName = _nameRewriter.GetMemberAccessTokenName(variable.Name);
                 string targetReference;
-                bool isKnownIllegalAssignment;
+                string? isKnownIllegalAssignment = null; // 'null' means 'false'
                 if ((scopeAccessInformation.ParentReturnValueNameIfAny != null)
                 && (rewrittenVariableName == _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name)))
                 {
@@ -833,7 +834,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // value (the ScopeAccessInformation class will always have a non-null references for the ScopeDefiningParent and
                     // should have one for the and ParentReturnValueNameIfAny if the ScopeLocation is WithinFunctionOrProperty).
                     targetReference = scopeAccessInformation.ParentReturnValueNameIfAny.Name;
-                    isKnownIllegalAssignment = false;
+                    isKnownIllegalAssignment = null;
                 }
                 else
                 {
@@ -852,7 +853,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     // Note: If the target is a CONST then an "Illegal assignment" runtime error must be raised after any evaluation of
                     // REDIM arguments has been processed
                     var targetReferenceDetails = scopeAccessInformation.TryToGetDeclaredReferenceDetails(variable.Name, _nameRewriter);
-                    isKnownIllegalAssignment = (targetReferenceDetails != null) && (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Constant);
+                    if ((targetReferenceDetails != null) && (targetReferenceDetails.ReferenceType == ReferenceTypeOptions.Constant))
+                    {
+                        isKnownIllegalAssignment = "The left-hand side of an assignment must be a variable, property or indexer and not <constant>";
+                    }
+                    else
+                    {
+                        isKnownIllegalAssignment = null;
+                    }
+
                 }
 
                 var mayRequireErrorWrapping = scopeAccessInformation.MayRequireErrorWrapping(block);
@@ -874,10 +883,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 // - Note: It is for similar reasons that the original-array-value is the last argument in a RESIZEARRAY call, since
                 //   the new dimension sizes must be evaluated before a resize is attempted (meaning that the dimension sizes must
                 //   be evaluated before the original array is checked for validity)
-                var translatedContentFormat = (reDimStatement.Preserve && !isKnownIllegalAssignment)
+                var translatedContentFormat = (reDimStatement.Preserve && (isKnownIllegalAssignment == null))
                     ? "{1}.RESIZEARRAY({0}, new object[] {{ {2} }});"
                     : "{1}.NEWARRAY(new object[] {{ {2} }});";
-                if (!isKnownIllegalAssignment)
+                if (isKnownIllegalAssignment == null)
                     translatedContentFormat = "{0} = " + translatedContentFormat;
 
                 var translatedArguments = new List<string>();
@@ -918,11 +927,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         )
                     );
                 }
-                if (isKnownIllegalAssignment)
+                if (isKnownIllegalAssignment != null)
                 {
+                    string exceptionText = ("'" + variable.Name.Content + "'" + " : " + isKnownIllegalAssignment).ToLiteral();
                     translatedReDimStatements = translatedReDimStatements.Add(
-                        new TranslatedStatement(TranslatedStatementKind.RawText,
-                            string.Format(CultureInfo.InvariantCulture, "_.RAISEERROR(new IllegalAssignmentException({0}));", ("'" + variable.Name.Content + "'").ToLiteral()),
+                        new TranslatedStatement(TranslatedStatementKind.RawText, $"_.RAISEERROR(new {typeof(IllegalAssignmentException).FullName}({exceptionText}));",
                             indentationDepth,
                             variable.Name.LineIndex
                         )

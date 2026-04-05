@@ -295,7 +295,20 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
                         ReDim c(3) ' This refers to the explicitly-declared variable ""c"" in the containing class
                     End Function
                 End Class";
-            TestCSharpCodeTranslation(source, ["SKY101"]);
+            TestCSharpCodeTranslation(source, [], ["SKY101"]);
         }
+
+//        [TestMethod]
+//        public void XDimFunc1()
+//        {
+//            string source = @"
+//Sub h1
+//		ButtonCreate.Disabled = true
+//End Sub
+//SUB ButtonCreate()
+//END SUB
+//";
+//            TestCSharpCodeTranslation(source, ["ButtonCreate"], []);
+//        }
     }
 }

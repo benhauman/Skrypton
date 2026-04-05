@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Skrypton.RuntimeSupport.Exceptions
+namespace Skrypton.RuntimeSupport
 {
     /// <summary>
     /// This occurs when a conversion from one type to another is attempted that fails (eg. passing "a" to CDl)

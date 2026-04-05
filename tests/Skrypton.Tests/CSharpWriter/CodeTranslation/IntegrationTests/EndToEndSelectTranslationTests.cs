@@ -37,7 +37,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 		Case "" MB""	Size = Round(Size / 1048576, 2) 
 	End Select
 ";
-            base.TestCSharpCodeTranslation(source, ["SKY101"]);
+            base.TestCSharpCodeTranslation(source, [], ["SKY101"]);
         }
 
 
@@ -96,7 +96,7 @@ SUB PriorityMatrix()
 END SUB
 ";
 
-            TestCSharpCodeTranslation(source, ["SKY102", "SKY107"]);
+            TestCSharpCodeTranslation(source, [], ["SKY102", "SKY107"]);
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ END SUB
 	End Select
 ";
 
-            TestCSharpCodeTranslation(source, ["SKY101", "SKY102", "SKY107"]);
+            TestCSharpCodeTranslation(source, [], ["SKY101", "SKY102", "SKY107"]);
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ END SUB
 	End Select
 ";
 
-            TestCSharpCodeTranslation(source, ["SKY101", "SKY102", "SKY107"]);
+            TestCSharpCodeTranslation(source, [], ["SKY101", "SKY102", "SKY107"]);
         }
     }
 }

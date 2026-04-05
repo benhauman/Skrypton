@@ -173,9 +173,9 @@ namespace Skrypton.Tests
             }
             TestCSharpCodeTranslationCore(testNo, expectCsCode, actualCsCodeX, actualCsCodeRaw);
         }
-        protected void TestCSharpCodeTranslation(string csSource, string[] suppressions) // TODO remove 'WithoutScaffoldingTranslator'
+        protected void TestCSharpCodeTranslation(string csSource, string[] externalDependencies, string[] suppressions) // TODO remove 'WithoutScaffoldingTranslator'
         {
-            string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, csSource, [], [], suppressions, []);
+            string actualCs = DefaultCSharpTranslation.GetTranslatedProgramCode(this, csSource, externalDependencies, [], suppressions, []);
             string expectCs = TextResourceHelper.LoadResourceText<TestBase>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension, isOptional: true) ?? "";
             TestCSharpCodeTranslationCore(null, expectCs, actualCs, null);
         }

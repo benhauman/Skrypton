@@ -60,6 +60,7 @@ namespace Skrypton.Tests.Application
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Connectivity, externalRefs: ChainsTest.CollectExternalRefs(ScriptUsageKind.Connectivity));
             DoCncInTest(rsp);
         }
+
         private void DoCncInTest(TestScriptResponse rsp)
         {
             bool mergeSU_called = false;
@@ -78,7 +79,7 @@ namespace Skrypton.Tests.Application
             };
             var hostServices = CreateTestHostServices();
             //string translated_cs_expected = rsp.TranslatedCsCode;// TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + CSFileExtension);
-            ExecuteTranslatedProgram(this, rsp.TranslatedCsCode, hostServices, new Dictionary<string, ScriptExternalReferenceInfo> { { "session", new ScriptExternalReferenceInfo(session, [])} }, gr => { });
+            ExecuteTranslatedProgram(this, rsp.TranslatedCsCode, hostServices, new Dictionary<string, ScriptExternalReferenceInfo> { { "session", new ScriptExternalReferenceInfo(session, []) } }, gr => { });
 
             // assert
             Assert.IsFalse(mergeSU_called, "mergeSU_called");
@@ -97,7 +98,7 @@ namespace Skrypton.Tests.Application
             foreach (KeyValuePair<string, ScriptExternalReferenceInfo> externalReferencesEntry in externalReferences)
             {
                 string externalReferenceName = externalReferencesEntry.Key;
-                ScriptExternalReferenceInfo nfo  = externalReferencesEntry.Value;
+                ScriptExternalReferenceInfo nfo = externalReferencesEntry.Value;
                 object externalReferenceInstance = nfo.Instance;
                 IScriptControl scriptControl = scriptControlClass;
                 scriptControl.AddObject(externalReferenceName, externalReferenceInstance, nfo.AddMembers);

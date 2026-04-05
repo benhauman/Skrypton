@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Skrypton.RuntimeSupport.Exceptions;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
@@ -310,7 +311,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     if (callExpressionSegment!.ZeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
                     {
                         // If an undeclared variable is accessed like a function - eg. "a() = 1" - then it's a type mismatch
-                        targetAccessorName = TranslateIntoErrorRaise("TypeMismatchException", targetAccessor);
+                        targetAccessorName = TranslateIntoErrorRaise(typeof(TypeMismatchException), TranslateIntoErrorTextMessage(targetAccessor, null));
                     }
                     else if (scopeAccessInformation.ScopeDefiningParent.Scope != ScopeLocationOptions.WithinFunctionOrPropertyOrWith)
                     {
@@ -346,7 +347,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
                     if (invalidZeroArgumentBracketsArePresent)
                     {
-                        targetAccessorName = TranslateIntoErrorRaise("TypeMismatchException", targetAccessor);
+                        targetAccessorName = TranslateIntoErrorRaise(typeof(TypeMismatchException), TranslateIntoErrorTextMessage(targetAccessor, null));
                     }
                     else if ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Constant)
                              || ((targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Function) && !isSingleTokenSettingParentScopeReturnValue))
@@ -357,7 +358,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         // statement is within that function - obviously when outside it, trying to set a value to that function would be invalid but
                         // when INSIDE it, it's invalid too. If within a property getter, it is NOT invalid to use argument-less brackets (which is
                         // not very consistent).
-                        targetAccessorName = TranslateIntoErrorRaise("IllegalAssignmentException", targetAccessor);
+                        string errorInfoText = (targetReferenceDetailsIfAvailable.ReferenceType == ReferenceTypeOptions.Constant)
+                            ? "The left-hand side of an assignment cannot be a constant."
+                            : "The left-hand side of an assignment cannot be a function.";
+                        targetAccessorName = TranslateIntoErrorRaise(typeof(IllegalAssignmentException), TranslateIntoErrorTextMessage(targetAccessor, errorInfoText));
                     }
                     else
                     {
@@ -608,21 +612,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
         }
 
-        private string TranslateIntoErrorRaise(string exceptionClassName, IToken target)
+        private static string TranslateIntoErrorTextMessage(IToken target, string? additionalInfo)
         {
-            if (string.IsNullOrWhiteSpace(exceptionClassName))
-                throw new ArgumentException("Null/blank exceptionClassName specified");
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (target.Content == null)
                 throw new ArgumentException("Null target.Content value");
-
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0}.RAISEERROR(new {1}({2}))",
-                _supportRefName.Name,
-                exceptionClassName,
-                ("'" + target.Content + "'").ToLiteral()
-            );
+            return additionalInfo != null ? ("'" + target.Content + $"' (line {target.LineIndex}) : " + additionalInfo).ToLiteral() : ("'" + target.Content).ToLiteral();
+        }
+        private string TranslateIntoErrorRaise(Type exceptionClass, string contentLiteral)
+        {
+            if (exceptionClass == null)
+                throw new ArgumentException("Null/blank exceptionClassName specified");
+            return $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR)}(new {exceptionClass.FullName}({contentLiteral}))";
         }
 
         private sealed class ValueSettingStatementAssignmentFormatDetails

@@ -12,6 +12,8 @@ using Skrypton.StageTwoParser.Tokens;
 using Skrypton.Tests.Shared.Comparers;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 using Skrypton.LegacyParser.CodeBlocks;
+using Skrypton.RuntimeSupport;
+
 //#using Xunit#;
 
 namespace Skrypton.Tests.StageTwoParser

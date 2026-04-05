@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Helpline.Application.ScriptingModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,6 +50,25 @@ namespace Skrypton.Tests.Application
             );
             services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
         }, (x) => { });
+
+        [TestMethod]
+        public void CT98_dialog276_OnLoad_ButtonCreate()
+        {
+            string source = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + ".vbs");
+            Dictionary<string, ScriptExternalReferenceInfo> externalRefs = new Dictionary<string, ScriptExternalReferenceInfo> { { "ButtonCreate", new ScriptExternalReferenceInfo(new object(), []) } };
+            TestCSharpCodeTranslation(source, ["ButtonCreate"], []);
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: externalRefs);
+            //CncIn.DoCncInTest(rsp);
+
+            var externalReferences = externalRefs.ToDictionary(x => x.Key, v => v.Value.Instance);
+            DoScriptControlTest<object>(null, externalReferences, [], [], services =>
+            {
+                //services.RegisterHostService<IHostObjectFactoryHostService>(() => DialogGui.CreateTestHostObjectFactoryHostService()
+                //    .RegisterObjectFactory<object>("Outlook.Application", (h) => DialogGui.CreateMyOutlookApplicationClass(h))
+                //);
+                //services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
+            }, (x) => { });
+        }
 
         // see 'ExecuteScriptByNameAsync'
         private void DoScriptControlTest<TState>(TState state, Dictionary<string, object> externalReferences, string[] translationSuppressions, string[] noWarn, Action<TestHostServices> setupHostServices, Action<TState> assertProgramOutput)
