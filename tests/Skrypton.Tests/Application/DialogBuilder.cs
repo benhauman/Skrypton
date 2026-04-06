@@ -174,7 +174,7 @@ namespace Skrypton.Tests.Application
 
     public sealed class DialogGuiRoot : DialogGuiControlBase
     {
-
+        public bool AllowAddNewSu { get => model.AllowAddNewSu; set => model.AllowAddNewSu = value; }
     }
 
     public class DialogGuiButtonControl : DialogGuiControlBase

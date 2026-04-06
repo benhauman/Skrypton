@@ -287,6 +287,14 @@ namespace Skrypton.Tests.Application.Controls
 
         public void ShowNext() { }
         public void ShowPrev() { }
+
+        private int _ocId;
+        public int OCID
+        {
+            get { return _ocId; }
+            set { _ocId = value; }
+        }
+
     }
 
     public enum CompoundControlViewMode
