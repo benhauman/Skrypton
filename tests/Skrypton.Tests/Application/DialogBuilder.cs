@@ -136,9 +136,14 @@ namespace Skrypton.Tests.Application
         {
             return GuiScripts[scriptName].Code;
         }
-        public void FixScriptCode(string scriptName, string newCode)
+        internal DialogBuilder FixScriptCode(string scriptName, Func<string, string> fixHandler)
         {
+            string originalCode = GuiScripts[scriptName].Code;
+            string newCode = fixHandler(originalCode);
+            if (newCode == originalCode)
+                throw new InvalidOperationException("Nothing has been changed.");
             GuiScripts[scriptName] = new ScriptInfo(newCode);
+            return this;
         }
 
         public TControl GetControlById<TControl>(string controlId) where TControl : DialogGuiControlBase

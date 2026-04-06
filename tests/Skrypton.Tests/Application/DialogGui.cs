@@ -817,7 +817,8 @@ WScript.Echo xmlhttp.responseText
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
                 services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
                 services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
-                services.RegisterHostService<RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs => {
+                services.RegisterHostService<RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs =>
+                {
                     fs.AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1");
                 })
 
@@ -1138,14 +1139,9 @@ WScript.Echo xmlhttp.responseText
             return new ComboBoxHelplineSearch();
         }
 
-        internal static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
+        public static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
         {
-            string originalCode = builder.GetScriptCode(scriptName);
-            string newCode = originalCode.Replace(originalText, newText);
-            if (newCode == originalCode)
-                throw new InvalidOperationException("Nothing has been changed.");
-            builder.FixScriptCode(scriptName, newCode);
-            return builder;
+            return builder.FixScriptCode(scriptName, (originalCode) => originalCode.Replace(originalText, newText));
         }
     }
 
