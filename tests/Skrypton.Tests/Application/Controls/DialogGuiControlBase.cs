@@ -110,13 +110,13 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTimeControl", () => new DialogGuiTimeControl() },
             { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() },
             { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() },
+            { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
 #pragma warning disable SA1028
             // see 'SetCustomControlType'
             //            { "HelpLineListControl", () => new DialogGuiListControl() },
             //            { "HelpLineTreeControl", () => new DialogGuiTreeControl() },
             //            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() },
             //            { "HelpLineCommunicationFeed", () => new DialogGuiCommunicationFeedControl() },
-            //            { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
             //            { "HelpLineHistory", () => new DialogGuiHistoryControl() },
             //            { "HelpLineServiceCatalogItemOverview", () => new DialogGuiServiceCatalogItemOverviewControl() },
 #pragma warning restore SA1028
@@ -194,6 +194,9 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiSimpleObjectSearchControl : DialogGuiControlBase
+    {
+    }
     public sealed class DialogGuiCompoundPanelGroupBoxControl : DialogGuiControlBase
     {
     }

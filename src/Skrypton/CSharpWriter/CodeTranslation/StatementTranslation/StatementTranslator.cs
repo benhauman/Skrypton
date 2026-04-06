@@ -1180,6 +1180,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v0); // '_.CALLxxx_m2_argp0_zabpAbsentX(this, oAssociationChange, "EndB", "GetID")'
                 callNameResolved = true;
             }
+            else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length == 0 && zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp); // VBScript: objTable.Rows.Add()
+                callNameResolved = true;
+            }
             else if (targetMemberAccessTokensArray.Length == 2 && argumentsArray.Length > 0 && zeroArgumentBracketsPresence == null)
             {
                 //callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp);
@@ -1307,6 +1312,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
+                // force using a method instead of a property (same name/dispid)
                 callExpressionContent.AppendFormat(CultureInfo.InvariantCulture,
                     ", {0}.ARGS.ForceBrackets()",
                     _supportRefName.Name
@@ -1579,7 +1585,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else
             {
                 IExpressionSegment argSegment = argumentValue.Segments.Single();
-                if (argSegment is CallSetExpressionSegment possibleByRefCallSetExpressionSegment )
+                if (argSegment is CallSetExpressionSegment possibleByRefCallSetExpressionSegment)
                 {
                     if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count > 2)
                     {
