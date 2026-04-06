@@ -11,8 +11,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [SourceClassName("WshShell")] // for TYPENAME(CreateObject("WScript.Shell"))
     //"WScript.Shell"; 'Windows Script Host Shell object'; WshShell COM object
     // CLSID: 72C24DD5-D70A-438B-8A42-98424B88AFB8, HKEY_CLASSES_ROOT\WScript.Shell, %SystemRoot%\System32\wshom.ocx -> Interop.IWshRuntimeLibrary.dll
-    [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
-    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    //[ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
+    //[ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class MyWScriptShell : IReflectOnClrType, IWshShell3
     {
         private readonly IServiceProvider _hostServices;
@@ -85,6 +85,17 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             // The Exec method returns a WshScriptExec object, which provides status and error information about a script run with Exec along with access to the StdIn, StdOut, and StdErr channels.The Exec method allows the execution of command line applications only. The Exec method cannot be used to run remote scripts. Do not confuse the Exec method with the Execute method (of the WshRemote object).
             return new MyWshScriptExec((string)strCommand);
+        }
+
+        [DispId(1006)]
+        public string ExpandEnvironmentStrings([In] string src)
+        {
+            Console.WriteLine($"[WSCRIPT].ExpandEnvironmentStrings('{src}')"); // VBScript: tempPath = oShell.ExpandEnvironmentStrings("%TEMP%")
+            // for c# (both work on Linux but Linux does not have %TEMP% or a TEMP variable by default.) :
+            //      string tempPath = Environment.GetEnvironmentVariable("TEMP");'
+            //  or  string tempPath = Path.GetTempPath(); *** Cross-platform safe ***
+            //  or  string tempPath = Environment.ExpandEnvironmentVariables("%TEMP%"); -- But won't return anything meaningful, because "%TEMP%" is a Windows‑style variable.
+            return null;
         }
     }
 

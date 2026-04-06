@@ -690,6 +690,11 @@ WScript.Echo xmlhttp.responseText
             setup(fs);
             return fs;
         }
+
+        public static object CreateMyInternetExplorerApplication(IRuntimeHost runtimeHost)
+        {
+            return new RuntimeSupport.Components.InternetExplorerApplication.MyInternetExplorerApplicationClass(runtimeHost);
+        }
         public static object CreateMyOutlookApplicationClass(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);

@@ -32,6 +32,7 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
     [DispId(266)]
     public object CreateItem([In] object item)
     {
+        if (item == null) throw new ArgumentNullException(nameof(item), "Parameter must be 0:olMailItem or 2:olContactItem");
         OlItemType ItemType = (OlItemType)Enum.ToObject(typeof(OlItemType), item);
         //OlItemType ItemType = (OlItemType)item;
         if (ItemType == OlItemType.olContactItem)
@@ -56,7 +57,7 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
     }
 }
 
-internal sealed class MyOutlookMailItemClass : IReflectOnClrType
+internal sealed class MyOutlookMailItemClass : IReflectOnClrType // see interface _MailItem
 {
     internal MyOutlookMailItemClass()
     {
@@ -69,6 +70,8 @@ internal sealed class MyOutlookMailItemClass : IReflectOnClrType
     [DispId(3588)]
     public string To { get; set; }
 
+    [DispId(62468)]
+    public string HTMLBody { get; set; }
 
     [DispId(61606)]
     public void Display()

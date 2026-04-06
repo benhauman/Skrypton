@@ -23,24 +23,31 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
      */
 
     [SourceClassName("Shell")] // for TYPENAME(CreateObject("Shell.Application"))
-    [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
-    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    //[ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
+    //[ClassInterface(ClassInterfaceType.AutoDispatch)]
     //[DefaultMember("Item")]
-    internal sealed class MyShellApplication
+    internal sealed class MyShellApplication : IReflectOnClrType
     {
-/*
-- Type library:
-   - Shell.Application is defined in the Shell type library (Shell32.dll).
-   - You can inspect it with tools like OLE/COM Object Viewer (oleview.exe) or tlbimp.exe (Type Library Importer).
-   - ProgID: "Shell.Application" → CLSID {13709620-C279-11CE-A49E-444553540000}.
-   - IDL / Header files:
-   - The automation interfaces (IShellDispatch, IShellDispatch2, … up to IShellDispatch6) are declared in the Windows SDK headers:
-   - <shldisp.h> → contains the COM interface definitions for Shell Dispatch objects.
-   - <exdisp.h> → contains Explorer-related COM interfaces.
-   - These headers are included with the Windows SDK (e.g., in C:\Program Files (x86)\Windows Kits\10\Include\<version>\um\).
- */
+        /*
+        - Type library:
+           - Shell.Application is defined in the Shell type library (Shell32.dll).
+           - You can inspect it with tools like OLE/COM Object Viewer (oleview.exe) or tlbimp.exe (Type Library Importer).
+           - ProgID: "Shell.Application" → CLSID {13709620-C279-11CE-A49E-444553540000}.
+           - IDL / Header files:
+           - The automation interfaces (IShellDispatch, IShellDispatch2, … up to IShellDispatch6) are declared in the Windows SDK headers:
+           - <shldisp.h> → contains the COM interface definitions for Shell Dispatch objects.
+           - <exdisp.h> → contains Explorer-related COM interfaces.
+           - These headers are included with the Windows SDK (e.g., in C:\Program Files (x86)\Windows Kits\10\Include\<version>\um\).
+         */
 
         // - It’s a fire‑and‑forget call — it launches the program or document but doesn’t give you a process handle or exit code.
+        public void ShellExecute(
+            object file,        // Required: the file or program to run
+            object arguments   // Optional: command-line arguments
+            )
+        {
+            // VBScript: objShell.ShellExecute "explorer.exe", url
+        }
         public void ShellExecute(
             object file        // Required: the file or program to run
         //Arguments,   ' Optional: command-line arguments
