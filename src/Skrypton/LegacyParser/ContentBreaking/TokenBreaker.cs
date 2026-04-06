@@ -51,7 +51,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                 else
                 {
                     bool characterIsTokenBreaker;
-                    if (TokenBreakChars.IndexOf(chr, StringComparison.Ordinal) != -1)
+                    if (TokenBreakChars.Contains(chr, StringComparison.Ordinal))
                     {
                         characterIsTokenBreaker = true;
                     }
@@ -75,7 +75,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         {
                             var chrNext = content.Substring(index + 1, 1);
                             var chrNextNext = content.Substring(index + 2, 1);
-                            if (chrNext.Equals("H", StringComparison.OrdinalIgnoreCase) && ("0123456789".IndexOf(chrNextNext, StringComparison.Ordinal) != -1))
+                            if (chrNext.Equals("H", StringComparison.OrdinalIgnoreCase) && ("0123456789".Contains(chrNextNext, StringComparison.Ordinal)))
                             {
                                 buffer += chr;
                                 continue;

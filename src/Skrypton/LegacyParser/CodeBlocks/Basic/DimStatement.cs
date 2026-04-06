@@ -37,7 +37,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                                 isValidValue = false;
                             else
                             {
-                                if (numericValueToken.Content.Contains(".") || (numericValueToken.Value < 0))
+                                if (numericValueToken.Content.Contains('.', StringComparison.Ordinal) || (numericValueToken.Value < 0))
                                     isValidValue = false;
                                 else
                                 {
@@ -71,7 +71,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             {
                 if (base.Dimensions.Any(d =>
                     (d.Tokens.Count() != 1) ||
-                    d.Tokens.Single().Content.Contains('.') ||
+                    d.Tokens.Single().Content.Contains('.', StringComparison.Ordinal) ||
                     !(d.Tokens.Single() is NumericValueToken) ||
                     (((NumericValueToken)d.Tokens.Single()).Value < 0)))
                 {

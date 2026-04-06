@@ -605,7 +605,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private static decimal? TryToCoerceIntoCurrency(object? value)
         {
-            if (value != null && value is CurrencyWrapper currencyWrapper)
+            if (value != null && value is ScriptCurrencyWrapper currencyWrapper)
                 return currencyWrapper.WrappedObject;
             return TryToCoerceInto<decimal>(value);
         }

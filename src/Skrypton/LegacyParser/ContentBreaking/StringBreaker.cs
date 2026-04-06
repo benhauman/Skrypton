@@ -46,7 +46,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
             DateParser limitedDateParser = CreateLimitedDateParser(culture);
 
             // Normalise line returns
-            scriptContent = scriptContent.Replace("\r\n", "\n").Replace('\r', '\n');
+            scriptContent = scriptContent.Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n');
 
             int index = 0;
             string tokenContent = "";
@@ -108,7 +108,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                     //   was Unprocessed, we only need end-of-statement if the content didn't end with a line-return)
                     lineIndexForStartOfContent = lineIndex;
                     index++;
-                    int breakPoint = scriptContent.IndexOf("\n", index, StringComparison.Ordinal);
+                    int breakPoint = scriptContent.IndexOf('\n', index);
                     if (breakPoint == -1)
                     {
                         breakPoint = scriptContent.Length;
@@ -120,7 +120,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         if (prevToken is UnprocessedContentToken)
                         {
                             // UnprocessedContentToken MAY conclude with end-of-statement content, we'll need to check
-                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith("\n", StringComparison.Ordinal))
+                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith('\n'))
                             {
                                 tokens.RemoveAt(tokens.Count - 1);
                                 string unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');

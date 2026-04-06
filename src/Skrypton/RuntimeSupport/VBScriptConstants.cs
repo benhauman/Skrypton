@@ -20,7 +20,7 @@ namespace Skrypton.RuntimeSupport
         /// COM component then it will appear as a .net null. This is expected and consistent behaviour with a Nothing reference generated
         /// natively in VBScript. See http://www.informit.com/articles/article.aspx?p=27219&amp;seqNum=8 for more about the DispatchWrapper.
         /// </summary>
-        public static object Nothing { get { return new DispatchWrapper(null); } }
+        public static object Nothing { get { return new ScriptDispatchWrapper(null); } }
 
         // VarType Constants (http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs57.htm)
         public static int vbEmpty { get { return 0; } }
@@ -158,7 +158,7 @@ namespace Skrypton.RuntimeSupport
         //     that was passed a value of false.
         public ScriptDispatchWrapper(object? obj)
         {
-            _ = nameof(DispatchWrapper);
+            //_ = nameof(DispatchWrapper);
             WrappedObject = obj;
         }
 
@@ -170,5 +170,21 @@ namespace Skrypton.RuntimeSupport
         // Returns:
         //     The object wrapped by the System.Runtime.InteropServices.DispatchWrapper.
         public object? WrappedObject { get; }
+    }
+
+#pragma warning disable CA1812
+    internal sealed class ScriptCurrencyWrapper
+#pragma warning restore CA1812
+    {
+        public ScriptCurrencyWrapper(decimal? value)
+        {
+            //_ = nameof(CurrencyWrapper);
+            WrappedObject = value;
+        }
+        //public ScriptCurrencyWrapper(object value)
+        //{
+        //    _ = nameof(CurrencyWrapper);
+        //}
+        public decimal? WrappedObject { get; }
     }
 }

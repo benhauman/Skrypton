@@ -1268,7 +1268,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Real work (2017-08-10 DWR: This loops has been rewritten to use a string builder to try to reduce the string allocations - inspired by https://stackoverflow.com/a/244933/3813189)
             StringBuilder sb = new StringBuilder();
             if (startIndexNumber > 1)
-                sb.Append(valueString.Substring(0, startIndexNumber - 1));
+                sb.Append(valueString.AsSpan(0, startIndexNumber - 1));
             int indexToStartAt = startIndexNumber - 1;
             StringComparison comparison = (compareModeNumber == 0) ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
             while ((maxNumberOfReplacementsNumber == -1) || (maxNumberOfReplacementsNumber > 0))
@@ -1277,7 +1277,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (index == -1)
                     break;
 
-                sb.Append(valueString.Substring(indexToStartAt, index - indexToStartAt));
+                sb.Append(valueString.AsSpan(indexToStartAt, index - indexToStartAt));
                 sb.Append(toReplaceWithString);
                 index += toSearchForString.Length;
 
@@ -1285,7 +1285,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (maxNumberOfReplacementsNumber != -1)
                     maxNumberOfReplacementsNumber--;
             }
-            sb.Append(valueString.Substring(indexToStartAt));
+            sb.Append(valueString.AsSpan(indexToStartAt));
             return sb.ToString();
         }
         public object SPACE(object value)
@@ -1413,7 +1413,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             StringBuilder sb = new StringBuilder();
             foreach (char c in valueString)
             {
-                if (NonEscapedChars.IndexOf(c) != -1)
+                if (NonEscapedChars.Contains(c, StringComparison.Ordinal))
                 {
                     sb.Append(c);
                 }
@@ -1555,7 +1555,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 bool parameterLessDefaultMemberWasAvailable;
                 if (!_valueRetriever.TryVAL(value, out parameterLessDefaultMemberWasAvailable, out object? valueVal))
                 {
-                    if (value is DispatchWrapper dw)
+                    if (value is ScriptDispatchWrapper dw)
                     {
                         return false;//return dw.WrappedObject == null; // value is an object variable containing Nothing, not Empty, BUT lubo checks for null :-))
                     }
@@ -1674,7 +1674,9 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object VARTYPE(object value)
         {
-            return (short)IDispatchAccess.GetVariantType(value);
+            if (value == null)
+                return MyVarEnum.VT_EMPTY;
+            return (short)IDispatchAccess.GetVariantType(value!);
         }
 
         // - Array functions
@@ -2212,7 +2214,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (tokens[0].Length == 1) // C:\\
                 throw new InvalidOperationException("Local file moniker not supported:" + valueText);
 
-            if (valueText.StartsWith("\\", StringComparison.Ordinal)) // \\192.01.01.01\sharedfiles\
+            if (valueText.StartsWith('\\')) // \\192.01.01.01\sharedfiles\
                 throw new InvalidOperationException("Shared file moniker not supported:" + valueText);
 
             string? progid = TryResolveMonikerName(tokens[0]);
@@ -2759,7 +2761,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private static bool IsVBScriptNothing(object? o)
         {
-            return o != null && ((o is DispatchWrapper) && ((DispatchWrapper)o).WrappedObject == null);
+            return o != null && ((o is ScriptDispatchWrapper) && ((ScriptDispatchWrapper)o).WrappedObject == null);
         }
 
         private static double DateToDouble(DateTime value)

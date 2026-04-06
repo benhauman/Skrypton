@@ -19,17 +19,17 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // and after the decimal point (eg. "1.2"). However, VBScript throws another curve ball and supports numbers with a decimal point with no digits
             // after it (eg. "1."). This is not valid in C# ("Identifier expected") so we have to slap a zero on the end (making it "1.0", which will be
             // defined as a double). Note that there is no such issue when leading with the decimal point (".1" is valid VBScript AND C# code).
-            if (token.Content.Contains("."))
+            if (token.Content.Contains('.', StringComparison.Ordinal))
             {
                 typeText = "double";
-                return token.Content + (token.Content.EndsWith(".", StringComparison.Ordinal) ? "0" : "");
+                return token.Content + (token.Content.EndsWith('.') ? "0" : "");
             }
 
             // C# will default to int (Int32) for integers, we need to override this for smaller values
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
             {
                 typeText = "Int16";
-                if (token.Content.StartsWith("-", StringComparison.Ordinal))
+                if (token.Content.StartsWith('-'))
                     return "(Int16)(-" + token.Content.Substring(1) + ")";
                 return "(Int16)" + token.Content;
             }
@@ -56,7 +56,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            return !token.Content.Contains(".") && (token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue);
+            return !token.Content.Contains('.', StringComparison.Ordinal) && (token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 throw new ArgumentNullException(nameof(function));
 
             // This basically takes the rules from AsCSharpValue() and inverts them
-            if (token.Content.Contains(".") && function.Content.Equals("CDbl", StringComparison.OrdinalIgnoreCase))
+            if (token.Content.Contains('.', StringComparison.Ordinal) && function.Content.Equals("CDbl", StringComparison.OrdinalIgnoreCase))
                 return true;
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue) && function.Content.Equals("CInt", StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -99,7 +99,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 throw new ArgumentNullException(nameof(token));
 
             // If it's a decimal then we need to use CDbl
-            if (token.Content.Contains("."))
+            if (token.Content.Contains('.', StringComparison.Ordinal))
                 return "CDbl";
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
                 return "CInt";
@@ -113,7 +113,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            if (token.Content.StartsWith("-", StringComparison.Ordinal))
+            if (token.Content.StartsWith('-'))
                 return new NumericValueToken(token.Content.Substring(1).ToUpperX(), token.LineIndex);
             return new NumericValueToken(("-" + token.Content).ToUpperX(), token.LineIndex);
         }

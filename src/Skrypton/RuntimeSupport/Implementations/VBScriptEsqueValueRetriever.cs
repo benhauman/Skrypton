@@ -223,7 +223,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         public bool IsVBScriptValueType(object? o)
         {
-            return ((o == null) || (o == DBNull.Value) || (o is ValueType) || (o is CurrencyWrapper) || (o is string) || (o.GetType().IsArray));
+            return ((o == null) || (o == DBNull.Value) || (o is ValueType) || (o is ScriptCurrencyWrapper) || (o is string) || (o.GetType().IsArray));
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private static bool IsVBScriptNothing(object? o)
         {
-            return o != null && o is DispatchWrapper dw && dw.WrappedObject == null;
+            return o != null && o is ScriptDispatchWrapper dw && dw.WrappedObject == null;
         }
 
         /// <summary>
@@ -636,8 +636,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return (bool)value ? (Int16)(-1) : (Int16)0; // Return an "Integer" for True / False
             if (value is DateTime)
                 return DateToDouble((DateTime)value);
-            if (value is CurrencyWrapper)
-                return ((CurrencyWrapper)value).WrappedObject;
+            if (value is ScriptCurrencyWrapper)
+                return ((ScriptCurrencyWrapper)value).WrappedObject;
             return null;
         }
 
@@ -666,7 +666,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // o = VAL(o);
             // return (o == DBNull.Value) ? "" : STR(o);
 
-            if (o != null && o is DispatchWrapper dw)
+            if (o != null && o is ScriptDispatchWrapper dw)
             //if (IsVBScriptNothing(o))
             {
                 if (dw.WrappedObject == null)
@@ -953,7 +953,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     targetDescription = "[undefined]"; // This is what VBScript shows for "Empty.ToString()"
                 else if (target == DBNull.Value)
                     targetDescription = "Null";
-                else if (target is DispatchWrapper)
+                else if (target is ScriptDispatchWrapper)
                     targetDescription = "[nothing]";
                 else
                     targetDescription = STR(target);
@@ -1081,7 +1081,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// The arguments set must be an array since its contents may be mutated if the call target has "ref" parameters
         /// </summary>
-        private object? InvokeGetter(object target, string? optionalName, object[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private object? InvokeGetter(object target, string? optionalName, object?[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1095,14 +1095,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 invoker = GenerateGetInvoker(target, optionalName, arguments, allowPrivateAccess, onlyConsiderMethods);
                 _getInvokerCache.TryAdd(cacheKey, invoker);
             }
-            if (arguments.Any(x => x is DispatchWrapper))
+            if (arguments.Any(x => x is ScriptDispatchWrapper))
             {
-                arguments = arguments.Select(x => x is DispatchWrapper dw ? dw.WrappedObject : x).ToArray();
+                arguments = arguments.Select(x => x is ScriptDispatchWrapper dw ? dw.WrappedObject : x).ToArray();
             }
             object resultValue = invoker.DelegateFunc(target, arguments);
             if (invoker.UsesIReflect)
             {
-                if (resultValue != null && resultValue is DispatchWrapper dw)
+                if (resultValue != null && resultValue is ScriptDispatchWrapper dw)
                 {
                     return dw.WrappedObject;
                 }
@@ -1114,11 +1114,11 @@ namespace Skrypton.RuntimeSupport.Implementations
         private sealed class GetterInfo
         {
             internal readonly bool UsesIReflect;
-            internal readonly Func<object, object[], object> DelegateFunc;
+            internal readonly Func<object, object?[], object> DelegateFunc;
             private readonly string _debugInfo;
             internal readonly MemberInfo? _member;
 
-            public GetterInfo(Func<object, object[], object> delegateFunc, string debugInfo, MemberInfo? method, bool usesIReflect)
+            public GetterInfo(Func<object, object?[], object> delegateFunc, string debugInfo, MemberInfo? method, bool usesIReflect)
             {
                 UsesIReflect = usesIReflect;
                 DelegateFunc = delegateFunc ?? throw new ArgumentNullException(nameof(delegateFunc));
@@ -1126,14 +1126,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 _member = method;
             }
         }
-        private GetterInfo GenerateGetInvoker(object target, string? optionalName, IEnumerable<object> arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
+        private GetterInfo GenerateGetInvoker(object target, string? optionalName, object?[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
-            object[] argumentsArray = arguments.ToArray();
+            object?[] argumentsArray = arguments;//.ToArray();
             Type targetType = target.GetType();
             if (targetType.IsArray)
             {
@@ -1143,7 +1143,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ParameterExpression arrayTargetParameter = Expression.Parameter(typeof(object), "target");
                 ParameterExpression indexesParameter = Expression.Parameter(typeof(object[]), "arguments");
                 ParameterExpression arrayAccessExceptionParameter = Expression.Parameter(typeof(Exception), "e");
-                var getterFunc = Expression.Lambda<Func<object, object[], object>>(
+                var getterFunc = Expression.Lambda<Func<object, object?[], object>>(
                     Expression.TryCatch(
                         Expression.Convert(
                             Expression.ArrayAccess(
@@ -1179,7 +1179,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             if (IDispatchAccess.ImplementsIDispatch(target, out IDispatchAccess.IDispatch? targetDispatch))
             {
-                Func<object, object[], object> getterFunc = (invokeTarget, invokeArguments) =>
+                Func<object, object?[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
                     // As above, don't try to wrap any errors here
                     int dispId;
@@ -1242,7 +1242,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
                 }
                 MethodInfo? ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
-                Func<object, object[], object> getterFunc = (invokeTarget, invokeArguments) =>
+                Func<object, object?[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
                     return (targetIReflect).InvokeMember(
                         optionalName ?? "[DISPID=0]", // IReflect can receive a member name like "[DISPID=0]", but it will not treat it as a normal identifier.
@@ -1527,7 +1527,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 );
             }
             IEnumerable<ParameterExpression> variablesToDeclare = variablesToDeclareForHandlingOfArguments.Concat(new[] { resultVariable });
-            var getterFunc = Expression.Lambda<Func<object, object[], object>>(
+            var getterFunc = Expression.Lambda<Func<object, object?[], object>>(
                 Expression.Block(
                     variablesToDeclare,
                     Expression.Block(
@@ -1785,7 +1785,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             string? byRefFullName = byRefType.FullName;
             string nonByRefFullName = byRefFullName.Substring(0, byRefFullName.Length - 1);
             return Type.GetType(
-                byRefType.AssemblyQualifiedName.Replace(byRefFullName, nonByRefFullName),
+                byRefType.AssemblyQualifiedName.Replace(byRefFullName, nonByRefFullName, StringComparison.Ordinal),
                 true
             );
         }
@@ -2282,7 +2282,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     _hashCode = (int)2166136261;
                     _hashCode = (_hashCode * 16777619) ^ TargetType.GetHashCode();
-                    _hashCode = (_hashCode * 16777619) ^ ((OptionalName == null) ? 0 : OptionalName.GetHashCode());
+                    _hashCode = (_hashCode * 16777619) ^ ((OptionalName == null) ? 0 : OptionalName.GetHashCode(StringComparison.Ordinal));
                     _hashCode = (_hashCode * 16777619) ^ NumberOfArguments;
                     _hashCode = (_hashCode * 16777619) ^ AllowPrivateAccess.GetHashCode();
                     _hashCode = (_hashCode * 16777619) ^ OnlyConsiderMethods.GetHashCode();

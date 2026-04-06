@@ -138,7 +138,7 @@ namespace Skrypton.StageTwoParser.ExpressionParsing
                     "",
                     ((IExpressionSegment)this).AllTokens.Select(t =>
                         (t is StringToken)
-                            ? ("\"" + t.Content.Replace("\"", "\"\"") + "\"")
+                            ? ("\"" + t.Content.Replace("\"", "\"\"", StringComparison.Ordinal) + "\"")
                             : (t is DateLiteralToken) ? ("#" + t.Content + "#") : t.Content
                     )
                 );

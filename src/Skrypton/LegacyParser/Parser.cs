@@ -25,7 +25,7 @@ namespace Skrypton.LegacyParser
 
             // Break down content into String, Comment and UnprocessedContent tokens
             var tokens = StringBreaker.SegmentString(culture,
-                scriptContent.Replace("\r\n", "\n")
+                scriptContent.Replace("\r\n", "\n", StringComparison.Ordinal)
             );
 
             // Break down further into String, Comment, Atom and AbstractEndOfStatement tokens

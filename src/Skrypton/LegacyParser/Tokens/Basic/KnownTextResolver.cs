@@ -790,7 +790,7 @@ public sealed class KnownTextContent
     {
         if (this.length != atomContent.Length)
             return false;
-        var hc = atomContent.UpperText.GetHashCode();
+        var hc = atomContent.UpperText.GetHashCode(StringComparison.Ordinal);
         if (this.theContentUpperHashCode == hc)
         {
             if (!string.Equals(theContentUpper, atomContent.UpperText, StringComparison.Ordinal))

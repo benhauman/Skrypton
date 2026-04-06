@@ -103,9 +103,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (recognisedType != null)
                 return recognisedType;
 
-            if (contentUpper.Original.StartsWith("[", StringComparison.Ordinal))
+            if (contentUpper.Original.StartsWith('['))
             {
-                if (!contentUpper.Original.EndsWith("]", StringComparison.Ordinal))
+                if (!contentUpper.Original.EndsWith(']'))
                     throw new ArgumentException("If content starts with a square bracket then it must have a closing bracket to indicate an escaped-name variable");
                 return new EscapedNameToken(contentUpper, lineIndex);
             }
@@ -168,7 +168,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (contentUpper.Original.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase))
             {
                 int numericHexValue;
-                if (int.TryParse(contentUpper.Original.Substring(2), NumberStyles.HexNumber, null, out numericHexValue))
+                if (int.TryParse(contentUpper.Original.AsSpan(2), NumberStyles.HexNumber, null, out numericHexValue))
                     return new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
             }
 

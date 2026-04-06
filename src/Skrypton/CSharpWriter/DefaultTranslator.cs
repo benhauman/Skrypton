@@ -132,7 +132,7 @@ namespace Skrypton.CSharpWriter
             public void Warning(string content)
             {
                 if (!string.IsNullOrWhiteSpace(content))
-                    content = "/* " + content.Replace("*/", "*") + " */";
+                    content = "/* " + content.Replace("*/", "*", StringComparison.Ordinal) + " */";
                 _logger.Warning(content);
             }
         }

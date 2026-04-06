@@ -469,7 +469,7 @@ namespace Skrypton.RuntimeSupport
                     }
                     nums.Add(n);
                 }
-                bool useISOymd = input.IndexOf('-') > 0; // // This uses hyphens, which VBScript treats as an ISO‑like format
+                bool useISOymd = input.IndexOf('-', StringComparison.Ordinal) > 0; // // This uses hyphens, which VBScript treats as an ISO‑like format
                 bool useFormatDayMonth = !useISOymd && DetermineUseFormatDayMonth(culture);
                 result = null;
                 return nums.Count switch
@@ -486,13 +486,13 @@ namespace Skrypton.RuntimeSupport
                 // 'en-US':M/d/yyyy, 'en-GB':dd/MM/yyyy
                 if (culture.DateTimeFormat.ShortDatePattern == null)
                     return true;// default
-                int ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('d');
+                int ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('d', StringComparison.Ordinal);
                 if (ixDay < 0)
-                    ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('D');
+                    ixDay = culture.DateTimeFormat.ShortDatePattern.IndexOf('D', StringComparison.Ordinal);
 
-                int ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('m');
+                int ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('m', StringComparison.Ordinal);
                 if (ixMonth < 0)
-                    ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
+                    ixMonth = culture.DateTimeFormat.ShortDatePattern.IndexOf('M', StringComparison.Ordinal);
 
                 if (ixDay < 0 && ixMonth < 0)
                 {

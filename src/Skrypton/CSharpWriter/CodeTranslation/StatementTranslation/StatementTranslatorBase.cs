@@ -61,7 +61,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 throw new NotImplementedException(targetAccessorName);
             }
-            else if (targetAccessorName.Contains('"'))
+            else if (targetAccessorName.Contains('"', StringComparison.Ordinal))
             {
                 throw new NotImplementedException(targetAccessorName);
             }
@@ -74,7 +74,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private string GetTargetChainTokenAsText(string[] dotTokens, string targetAccessorName, string alias0)
         {
             string token0 = dotTokens[0];
-            if (dotTokens[1].Contains('"') || targetAccessorName.Contains('"'))
+            if (dotTokens[1].Contains('"', StringComparison.Ordinal) || targetAccessorName.Contains('"', StringComparison.Ordinal))
             {
                 // test: InvalidFunctionSettingMustCompileThoughFailAtRunTime
                 if (targetAccessorName.StartsWith($"{token0}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR)}(", StringComparison.Ordinal)) // _.RAISEERROR(new Illegal

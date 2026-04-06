@@ -138,9 +138,9 @@ namespace Skrypton.ScriptControlSupport
 
             foreach (string nowarnItem in nowarn)
             {
-                if (!specificDiagnosticOptions.ContainsKey(nowarnItem))
+                if (!specificDiagnosticOptions.TryAdd(nowarnItem, ReportDiagnostic.Suppress))
                 {
-                    specificDiagnosticOptions.Add(nowarnItem, ReportDiagnostic.Suppress);
+                    //specificDiagnosticOptions.Add(nowarnItem, ReportDiagnostic.Suppress);
                 }
             }
             string codeName = $"InMemDynAsmKey{codeNumber}";

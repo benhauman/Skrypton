@@ -13,7 +13,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
-            if (content.Contains("\n"))
+            if (content.Contains('\n', StringComparison.Ordinal))
                 throw new ArgumentException("The content may not include any line returns");
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));

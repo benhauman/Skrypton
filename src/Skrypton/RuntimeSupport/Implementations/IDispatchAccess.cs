@@ -129,7 +129,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return rgDispId[0];
         }
 
-        public static T Invoke<T>(object source, InvokeFlags invokeFlags, string? memberName, int dispId, params object[] args)
+        public static T Invoke<T>(object source, InvokeFlags invokeFlags, string? memberName, int dispId, params object?[] args)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -196,7 +196,11 @@ namespace Skrypton.RuntimeSupport.Implementations
                     var pVariant = new IntPtr(
                         rgvarg.ToInt64() + (SizeOfNativeVariant * index)
                     );
-                    Marshal.GetNativeVariantForObject(arg, pVariant);
+                    ////////////////////////////////////
+                    //Marshal.GetNativeVariantForObject(arg, pVariant);
+                    if (pVariant != null)
+                        throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
+                    ////////////////////////////////////
                     variantsToClear.Add(pVariant);
                 }
             }
@@ -248,8 +252,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                         message += " [" + errorType.ToString() + "]";
                     if (args.Length > 0)
                     {
+                        ////////////////////////////////////
+                        //Marshal.GetNativeVariantForObject(arg, pVariant);
+                        if (args.GetType() != null)
+                            throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
+                        ////////////////////////////////////
+
 #pragma warning disable CA1031 // Do not catch general exception types
-                        try { Marshal.GetObjectsForNativeVariants(rgvarg, args.Length); }
+                        try
+                        {
+                            //lubo:Marshal.GetObjectsForNativeVariants(rgvarg, args.Length);
+                        }
                         catch (Exception exx)
                         {
                             message += " - " + exx.Message;
@@ -309,7 +322,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             return CommonErrors.Unknown;
         }
 
-        internal static MyVarEnum GetVariantType(object value)
+        internal static MyVarEnum GetVariantType(object? value)
         {
             /*
                     if (value == null)
@@ -344,12 +357,16 @@ namespace Skrypton.RuntimeSupport.Implementations
                }
 
              */
+            ////////////////////////////////////////////////
+            //Marshal.GetNativeVariantForObject(arg, pVariant);
+            if (value!.GetType() != null)
+                throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
+            ////////////////////////////////////
             IntPtr ptr = Marshal.AllocCoTaskMem(24); // VARIANT is 16 bytes on Windows
-
             try
             {
                 // Write the object into a native VARIANT
-                Marshal.GetNativeVariantForObject(value, ptr);
+                //Marshal.GetNativeVariantForObject(value, ptr);
 
                 // Read the vt field (first 2 bytes)
                 short vt = Marshal.ReadInt16(ptr);

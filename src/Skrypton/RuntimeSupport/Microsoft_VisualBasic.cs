@@ -87,7 +87,7 @@ namespace Skrypton.RuntimeSupport
                             text = Information.LegacyTypeNameOfCOMObject(VarName, true);
                         }
                     }
-                    int num = text.IndexOf('+');
+                    int num = text.IndexOf('+', StringComparison.Ordinal);
                     if (num >= 0)
                     {
                         text = text.Substring(num + 1);
@@ -121,7 +121,7 @@ namespace Skrypton.RuntimeSupport
                 int num = typename.Length - 1;
                 if (typename[num] == ']')
                 {
-                    int num2 = typename.IndexOf('[');
+                    int num2 = typename.IndexOf('[', StringComparison.Ordinal);
                     if (num2 + 1 == num)
                     {
                         text = "()";

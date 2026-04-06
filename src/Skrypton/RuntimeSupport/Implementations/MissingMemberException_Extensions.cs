@@ -17,7 +17,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // If a request is made through a Type.InvokeMember call then the blank string may be replaced with the member identified by the DefaultMemberAttribute that
             // the type has (if it has one) - eg. typeof(string) will specify "Chars" as the target member (since that is what the DefaultMemberAttribute specifies).
             // - So first, try the simplest match case, where there is no funny business
-            if (source.Message.Contains("'" + type.FullName + "." + memberNameIfAny + "'"))
+            if (source.Message.Contains("'" + type.FullName + "." + memberNameIfAny + "'", StringComparison.Ordinal))
                 return true;
 
             // If that doesn't succeed, and it looks like the request was for the default member, then try the various default member options
@@ -28,9 +28,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     // TODO: I don't even know if this is correct any more
                     return
-                        source.Message.Contains("'" + type.FullName + "." + defaultMemberNameOfTargetType.MemberName + "'") ||
-                        source.Message.Contains("'" + type.FullName + ".[DISPID=0]'") ||
-                        source.Message.Contains("'" + type.FullName + ".'");
+                        source.Message.Contains("'" + type.FullName + "." + defaultMemberNameOfTargetType.MemberName + "'", StringComparison.Ordinal) ||
+                        source.Message.Contains("'" + type.FullName + ".[DISPID=0]'", StringComparison.Ordinal) ||
+                        source.Message.Contains("'" + type.FullName + ".'", StringComparison.Ordinal);
                 }
             }
             return false;
