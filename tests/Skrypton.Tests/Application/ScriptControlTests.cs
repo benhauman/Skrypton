@@ -52,6 +52,15 @@ namespace Skrypton.Tests.Application
         }, (x) => { });
 
         [TestMethod]
+        public void Word1() => DoScriptControlTest<object>(null, [], [], [], services =>
+        {
+            services.RegisterHostService<IHostObjectFactoryHostService>(() => DialogGui.CreateTestHostObjectFactoryHostService()
+                .RegisterObjectFactory<object>("Word.Application", (h) => DialogGui.CreateMyWordApplicationClass(h))
+            );
+            //services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
+        }, (x) => { });
+
+        [TestMethod]
         public void CT98_dialog276_OnLoad_ButtonCreate()
         {
             string source = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + ".vbs");

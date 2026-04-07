@@ -1606,7 +1606,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     int dispId;
                     if (optionalMemberAccessor == null)
+                    {
                         dispId = 0;
+                    }
                     else
                     {
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
@@ -1629,7 +1631,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.IgnoreCase;
                     if (allowPrivateAccess)
+                    {
                         invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
+                    }
+
                     object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
                     ((IReflect)invokeTarget).InvokeMember(
                         name: optionalMemberAccessor ?? "[DISPID=0]",

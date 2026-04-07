@@ -691,6 +691,10 @@ WScript.Echo xmlhttp.responseText
             return fs;
         }
 
+        public static object CreateMyWordApplicationClass(IRuntimeHost runtimeHost)
+        {
+            return new RuntimeSupport.Components.WordApplication.MyWordApplicationClass(runtimeHost);
+        }
         public static object CreateMyInternetExplorerApplication(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.InternetExplorerApplication.MyInternetExplorerApplicationClass(runtimeHost);
