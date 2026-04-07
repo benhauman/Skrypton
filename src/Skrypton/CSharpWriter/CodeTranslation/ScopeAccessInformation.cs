@@ -13,6 +13,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
     public sealed class ScopeAccessInformation
     {
         public ScopeAccessInformation(
+            ScopeAccessInformation? parentScope,
             IHaveNestedContent parent,
             IDefineScope? scopeDefiningParent,
             CSharpName? parentReturnValueNameIfAny,
@@ -27,6 +28,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             NonNullImmutableList<ScopedNameToken> variables,
             NonNullImmutableList<ExitableNonScopeDefiningConstructDetails> structureExitPoints)
         {
+            ParentScope = parentScope;
             Parent = parent ?? throw new ArgumentNullException(nameof(parent));
             ScopeDefiningParent = scopeDefiningParent ?? throw new ArgumentNullException(nameof(scopeDefiningParent));
             ParentReturnValueNameIfAny = parentReturnValueNameIfAny;
@@ -46,6 +48,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 if (parent is WithBlock wb)
                 {
                     // ok
+                }
+                else if (parent is IfBlock ifb)
+                {
+                    // CT98_dialog296, line:1358
                 }
                 else
                 {
@@ -83,7 +89,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
             // This prepares the empty template for the primary instance..
             var outermostScope = new OutermostScope(outermostScopeWrapperName, blocks);
-            var initialScope = new ScopeAccessInformation(
+            var initialScope = new ScopeAccessInformation(parentScope: null, // outermostScope
                 outermostScope, // parent
                 outermostScope, // scope-defining parent
                 null, // parentReturnValueNameIfAny
@@ -93,7 +99,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 externalMemberMethods,
                 new NonNullImmutableList<ScopedNameToken>(), // classes
                                                              new NonNullImmutableList<ScopedNameToken>(), // functions,
-                //externalAddedFunctions.ToNonNullImmutableList(),
+                                                                                                          //externalAddedFunctions.ToNonNullImmutableList(),
                 new NonNullImmutableList<ScopedNameToken>(), // properties,
                 new NonNullImmutableList<ScopedNameToken>(), // constants
                 new NonNullImmutableList<ScopedNameToken>(), // variables
@@ -106,11 +112,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             return initialScope.Extend(outermostScope, blocks);
         }
 
+        internal ScopeAccessInformation? ParentScope { get; }
         /// <summary>
         /// This will never be null - if this is a statement within the outermost scope, there should be a construct to identify this (the OuterMostScope
         /// class is intended to be used for this purposes)
         /// </summary>
-		public IHaveNestedContent Parent { get; private set; }
+        public IHaveNestedContent Parent { get; private set; }
 
         /// <summary>
         /// This will never be null - if this is a statement within the outermost scope, there should be a construct to identify this (the OuterMostScope

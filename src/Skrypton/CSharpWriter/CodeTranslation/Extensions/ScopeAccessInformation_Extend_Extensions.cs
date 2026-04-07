@@ -63,7 +63,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                     .ToArray()
             );
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeInformation,
                 parent,
                 scopeDefiningParent,
                 parentReturnValueNameIfAny,
@@ -157,7 +157,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (externalDependencies == null)
                 throw new ArgumentNullException(nameof(externalDependencies));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeInformation,
                 scopeInformation.Parent,
                 scopeInformation.ScopeDefiningParent,
                 scopeInformation.ParentReturnValueNameIfAny,
@@ -181,7 +181,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (variables == null)
                 throw new ArgumentNullException(nameof(variables));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeInformation,
                 scopeInformation.Parent,
                 scopeInformation.ScopeDefiningParent,
                 scopeInformation.ParentReturnValueNameIfAny,
@@ -227,7 +227,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (!Enum.IsDefined(typeof(ScopeAccessInformation.ExitableNonScopeDefiningConstructOptions), structureExitType))
                 throw new ArgumentOutOfRangeException(nameof(structureExitType));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeInformation,
                 scopeInformation.Parent,
                 scopeInformation.ScopeDefiningParent,
                 scopeInformation.ParentReturnValueNameIfAny,
@@ -260,7 +260,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
                 // The parent must either be the current ScopeDefiningParent or be one of the descendant blocks, otherwise the structure will be invalid
                 throw new ArgumentException("The parent must either be the current ScopeDefiningParent or be one of the descendant blocks");
             }
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeInformation,
                 parent,
                 scopeInformation.ScopeDefiningParent,
                 scopeInformation.ParentReturnValueNameIfAny,

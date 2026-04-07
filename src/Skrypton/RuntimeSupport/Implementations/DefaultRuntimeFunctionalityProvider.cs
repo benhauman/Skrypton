@@ -1004,7 +1004,18 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return dt.ToString("g", _culture); // short date + short time (closest)
             }
         }
-        public object FORMATNUMBER(object value) { throw new NotImplementedException(); }
+        public object FORMATNUMBER(object expression, object numDigitsAfterDecimal) => FORMATNUMBERCore(expression, numDigitsAfterDecimal);
+        public object FORMATNUMBER(object expression) => FORMATNUMBERCore(expression, _culture.NumberFormat.NumberDecimalDigits);
+        private string FORMATNUMBERCore(object expression, object numDigitsAfterDecimal) // FormatNumber(Expression, NumDigitsAfterDecimal [, IncludeLeadingDigit [, UseParensForNegativeNumbers [, GroupDigits ]]])
+        {
+            var expressionV = _valueRetriever.VAL(expression, "'FORMATNUMBER'");
+            double expressionNum = GetAsNumber<double>(expressionV, "'FORMATNUMBER'", Convert.ToDouble);
+
+            int decimals = GetAsNumber<int>(numDigitsAfterDecimal, "'FORMATNUMBER'", Convert.ToInt32);
+
+            string result = expressionNum.ToString($"F{decimals}", _culture);
+            return result;
+        }
         public object FORMATPERCENT(object value) { throw new NotImplementedException(); }
         public object HEX(object? value)
         {

@@ -99,6 +99,14 @@ namespace Skrypton.Tests.Application
         {
             return AddControlCore(controlId, new DialogGuiTextControl() { });
         }
+        public DialogBuilder AddNumericTextBoxControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiNumericTextBoxControl() { });
+        }
+        public DialogBuilder AddHyperlinkControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiHyperlinkControl() { });
+        }
         public DialogBuilder AddLabelControl(string controlId)
         {
             return AddControlCore(controlId, new DialogGuiLabelControl() { });

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
@@ -324,39 +326,42 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         internal static MyVarEnum GetVariantType(object? value)
         {
+            if (value == null)
+                return MyVarEnum.VT_EMPTY;
+
+            switch (value)
+            {
+                case bool _: return MyVarEnum.VT_BOOL;
+                case byte _: return MyVarEnum.VT_UI1;
+                case sbyte _: return MyVarEnum.VT_I1;
+                case short _: return MyVarEnum.VT_I2;
+                case ushort _: return MyVarEnum.VT_UI2;
+                case int _: return MyVarEnum.VT_I4;
+                case uint _: return MyVarEnum.VT_UI4;
+                case long _: return MyVarEnum.VT_I8;
+                case ulong _: return MyVarEnum.VT_UI8;
+                case float _: return MyVarEnum.VT_R4;   // System.Single
+                case double _: return MyVarEnum.VT_R8;
+                case decimal _: return MyVarEnum.VT_DECIMAL;
+                case string _: return MyVarEnum.VT_BSTR;
+                case DateTime _: return MyVarEnum.VT_DATE;
+                case DBNull _: return MyVarEnum.VT_NULL;
+
+                // Arrays
+                case Array _: return MyVarEnum.VT_ARRAY | MyVarEnum.VT_VARIANT;
+                // COM objects
+                //case object _: return MyVarEnum.VT_DISPATCH;
+                //default:
+                //    return MyVarEnum.VT_VARIANT;
+            }
+            if (value is IReflect r)
+                return MyVarEnum.VT_DISPATCH;
+            ComVisibleAttribute? comVisibleAttributeIfAny = value.GetType().GetCustomAttributes(typeof(ComVisibleAttribute), inherit: false).OfType<ComVisibleAttribute>().FirstOrDefault();
+            if (comVisibleAttributeIfAny != null)
+                return MyVarEnum.VT_DISPATCH;
+
+            throw new NotSupportedException($"({value.GetType().FullName}):{value}");//lubo 'Marshal.GetNativeVariantForObject'
             /*
-                    if (value == null)
-                   return VarEnum.VT_EMPTY;
-
-               switch (value)
-               {
-                   case bool _:               return VarEnum.VT_BOOL;
-                   case byte _:               return VarEnum.VT_UI1;
-                   case sbyte _:              return VarEnum.VT_I1;
-                   case short _:              return VarEnum.VT_I2;
-                   case ushort _:             return VarEnum.VT_UI2;
-                   case int _:                return VarEnum.VT_I4;
-                   case uint _:               return VarEnum.VT_UI4;
-                   case long _:               return VarEnum.VT_I8;
-                   case ulong _:              return VarEnum.VT_UI8;
-                   case float _:              return VarEnum.VT_R4;   // System.Single
-                   case double _:             return VarEnum.VT_R8;
-                   case decimal _:            return VarEnum.VT_DECIMAL;
-                   case string _:             return VarEnum.VT_BSTR;
-                   case DateTime _:           return VarEnum.VT_DATE;
-                   case DBNull _:             return VarEnum.VT_NULL;
-
-                   // COM objects
-                   case System.__ComObject _: return VarEnum.VT_DISPATCH;
-
-                   // Arrays
-                   case Array _:              return VarEnum.VT_ARRAY | VarEnum.VT_VARIANT;
-
-                   default:
-                       return VarEnum.VT_VARIANT;
-               }
-
-             */
             ////////////////////////////////////////////////
             //Marshal.GetNativeVariantForObject(arg, pVariant);
             if (value!.GetType() != null)
@@ -378,7 +383,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Free the VARIANT
                 Marshal.FreeCoTaskMem(ptr);
             }
-
+            */
         }
 
         // http://blogs.msdn.com/b/eldar/archive/2007/04/03/a-lot-of-hresult-codes.aspx

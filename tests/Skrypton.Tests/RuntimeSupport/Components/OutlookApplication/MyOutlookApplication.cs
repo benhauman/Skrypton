@@ -170,13 +170,14 @@ public interface _NameSpace
 internal sealed class MyOutlookMAPISession : IReflectOnClrType, _NameSpace
 {
     [DispId(8459)]
-    public MAPIFolder GetDefaultFolder([In] OlDefaultFolders FolderType)
+    public MAPIFolder GetDefaultFolder([In] object folderType)
     {
-        if (FolderType == OlDefaultFolders.olFolderContacts)
+        OlDefaultFolders xFolderType = (OlDefaultFolders)Enum.ToObject(typeof(OlDefaultFolders), folderType);
+        if (xFolderType == OlDefaultFolders.olFolderContacts)
         {
             return new MyOutlookMAPIFolderContacts();
         }
-        throw new NotImplementedException($"FolderType:{FolderType}");
+        throw new NotImplementedException($"FolderType:{folderType}");
     }
 }
 

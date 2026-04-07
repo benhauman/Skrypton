@@ -12,7 +12,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.Extensions
             if (scopeAccessInformation == null)
                 throw new ArgumentNullException(nameof(scopeAccessInformation));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeAccessInformation,
                 scopeAccessInformation.Parent,
                 scopeAccessInformation.ScopeDefiningParent,
                 scopeAccessInformation.ParentReturnValueNameIfAny,

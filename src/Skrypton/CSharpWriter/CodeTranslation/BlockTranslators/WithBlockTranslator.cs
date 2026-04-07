@@ -49,7 +49,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             var targetName = base._tempNameGenerator(new CSharpName("with"), scopeAccessInformation);
             var withBlockContentTranslationResult = Translate(
                 withBlock.Content.ToNonNullImmutableList(),
-                new ScopeAccessInformation(
+                new ScopeAccessInformation(parentScope: scopeAccessInformation,
                     withBlock,
                     scopeAccessInformation.ScopeDefiningParent,
                     scopeAccessInformation.ParentReturnValueNameIfAny,

@@ -299,7 +299,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             );
 
             var scopeAccessInformation = GetEmptyScopeAccessInformation();
-            scopeAccessInformation = new ScopeAccessInformation(
+            scopeAccessInformation = new ScopeAccessInformation(parentScope: null,
                 containingFunction, // parent
                 containingFunction, // scopeDefiningParent
                 new CSharpName("F1"), // parentReturnValueName
@@ -456,7 +456,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeAccessInformation,
                 scopeAccessInformation.Parent,
                 scopeAccessInformation.ScopeDefiningParent,
                 scopeAccessInformation.ParentReturnValueNameIfAny,
@@ -486,7 +486,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeAccessInformation,
                 scopeAccessInformation.Parent,
                 scopeAccessInformation.ScopeDefiningParent,
                 scopeAccessInformation.ParentReturnValueNameIfAny,
@@ -516,7 +516,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
             if (lineIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(lineIndex));
 
-            return new ScopeAccessInformation(
+            return new ScopeAccessInformation(parentScope: scopeAccessInformation,
                 scopeAccessInformation.Parent,
                 scopeAccessInformation.ScopeDefiningParent,
                 scopeAccessInformation.ParentReturnValueNameIfAny,

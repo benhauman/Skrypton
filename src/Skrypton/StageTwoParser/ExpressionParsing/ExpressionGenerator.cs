@@ -555,17 +555,17 @@ Part2: 'Close'
             // If the first segment in a call codeExpression and the first token is a "." then directedWithReferenceIfAny must be non-null (meaning this statement is
             // found within a "WITH x" construct) or the statement is invalid. The statement "a(0).Name" is broken down into two segments; "a(0)" and ".Name" -
             // clearly starting with a "." is acceptable (mandatory, in fact!) for ".Name" but would only be in the first segment if found within a WITH.
-            if (tokensList[0] is MemberAccessorOrDecimalPointToken)
+            if (tokensList[0] is MemberAccessorOrDecimalPointToken madpToken)
             {
                 if (willBeFirstSegmentInCallExpression)
                 {
                     if (directedWithReferenceIfAny == null)
-                        throw new ArgumentException("The first token in the first segment of an codeExpression can not be a MemberAccessorOrDecimalPointToken unless the statement is found within a WITH construct");
+                        throw new ArgumentException($"The first token in the first segment of an codeExpression can not be a MemberAccessorOrDecimalPointToken unless the statement is found within a WITH construct. Line:{madpToken.LineIndex}:{madpToken.Content}");
                     tokensList.Insert(0, directedWithReferenceIfAny.WithTokenRef);
                 }
             }
             else if (!willBeFirstSegmentInCallExpression)
-                throw new ArgumentException("All segments in a call codeExpression after the first must start with a MemberAccessorOrDecimalPointToken");
+                throw new ArgumentException($"All segments in a call codeExpression after the first must start with a MemberAccessorOrDecimalPointToken. Line:{tokensList[0].LineIndex}:{tokensList[0].Content}");
 
             // Any member access involving a numeric literal will result in a compile time error - eg.
             //   WScript.Echo a.1
@@ -871,18 +871,29 @@ Part2: 'Close'
 
     public sealed class WithStatementInformation
     {
-        private readonly WithBlock _withBlockContent;
+        private readonly IHaveNestedContent _withBlockContent;
         internal readonly IToken WithTokenRef;
-        internal Skrypton.LegacyParser.CodeBlocks.Basic.CodeExpression WithTarget => _withBlockContent.Target;
+        internal Skrypton.LegacyParser.CodeBlocks.Basic.CodeExpression WithTarget { get; }// => _withBlockContent.Target;
         public WithStatementInformation(WithBlock withBlockContent, IToken directedWithReference)
         {
             _withBlockContent = withBlockContent ?? throw new ArgumentNullException(nameof(withBlockContent));
             WithTokenRef = directedWithReference ?? throw new ArgumentNullException(nameof(directedWithReference));
+            WithTarget = withBlockContent.Target;
         }
+        //public WithStatementInformation(IfBlock withBlockContent, IToken directedWithReference)
+        //{
+        //    _withBlockContent = withBlockContent ?? throw new ArgumentNullException(nameof(withBlockContent));
+        //    WithTokenRef = directedWithReference ?? throw new ArgumentNullException(nameof(directedWithReference));
+        //    WithTarget = withBlockContent.target;
+        //}
 
         internal static WithStatementInformation? TryGet(CSharpWriter.CodeTranslation.ScopeAccessInformation scopeAccessInformation)
         {
-            return scopeAccessInformation.DirectedWithReferenceIfAny == null ? null : new WithStatementInformation((WithBlock)scopeAccessInformation.Parent, scopeAccessInformation.DirectedWithReferenceIfAny!.AsToken());
+            if (scopeAccessInformation.DirectedWithReferenceIfAny == null)
+                return null;
+            if (scopeAccessInformation.Parent is IfBlock ifb)
+                return scopeAccessInformation.ParentScope == null ? null : TryGet(scopeAccessInformation.ParentScope);
+            return new WithStatementInformation((WithBlock)scopeAccessInformation.Parent, scopeAccessInformation.DirectedWithReferenceIfAny!.AsToken());
         }
 
         public static WithStatementInformation CreateForTest(WithBlock withBlockContent, IToken directedWithReference) => new WithStatementInformation(withBlockContent, directedWithReference);

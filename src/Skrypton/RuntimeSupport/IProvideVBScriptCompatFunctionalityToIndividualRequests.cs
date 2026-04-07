@@ -148,7 +148,8 @@ namespace Skrypton.RuntimeSupport
         object ESCAPE(object value);
         object FORMATCURRENCY(object value);
         object FORMATDATETIME(object value);
-        object FORMATNUMBER(object value); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/53112.aspx
+        object FORMATNUMBER(object expression); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/53112.aspx
+        object FORMATNUMBER(object expression, object numDigitsAfterDecimal);
         object FORMATPERCENT(object value);
         object FILTER(object value);
         object HEX(object value);
