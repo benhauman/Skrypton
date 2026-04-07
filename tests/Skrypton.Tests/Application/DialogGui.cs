@@ -1396,6 +1396,29 @@ WScript.Echo xmlhttp.responseText
         {
             Console.WriteLine($"[DIALOGMODEL] SaveAndRelease(close:{close}, release:{release})");
         }
+
+        public object[] GetSearchItems(object objectDefinitions, string searchCondition, object attributeKeys, int sortColumn, int maximumNumberOfRows)
+        {
+            string[] sObjectDefinitions = new string[0];
+            int[] objectDefinitionIds = new int[0];
+            string[] sAttributeKeys = new string[0];
+
+            if (objectDefinitions != null && objectDefinitions is object[])
+            {
+                //sObjectDefinitions = (from x in (object[])objectDefinitions
+                //    select (string)x).ToArray();
+                //objectDefinitionIds = (from x in (object[])objectDefinitions
+                //    //select MetaDataContainer.Instance.GetObjectIdByName((string)x)).ToArray();
+            }
+            if (attributeKeys != null && attributeKeys is object[])
+            {
+                sAttributeKeys = (from x in (object[])attributeKeys
+                    select (string)x).ToArray();
+            }
+
+            object[] result = Array.Empty<object>();
+            return result;
+        }
     }
 
     [ComVisible(true)]

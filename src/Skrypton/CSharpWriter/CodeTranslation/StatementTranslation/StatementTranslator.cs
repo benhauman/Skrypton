@@ -142,15 +142,24 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (segments.Length == 2)
             {
                 TranslatedStatementContentDetailsWithContentType result = TranslateNonOperatorSegment(segments[1], scopeAccessInformation);
-                string fnName = GetSupportFunctionName(operatorSegmentWithIndex!.Segment!.Token);
+                string fnName1 = GetSupportFunctionName(operatorSegmentWithIndex!.Segment!.Token);
+                string translateContentAND1;
+                if (fnName1 == nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND))
+                {
+                    translateContentAND1 = BuildContentAND(1, result, null, null, null);
+                }
+                else
+                {
+                    translateContentAND1 = string.Format(CultureInfo.InvariantCulture,
+                        "{0}.{1}({2})",
+                        _supportRefName.Name,
+                        fnName1,
+                        result.TranslatedContent
+                    );
+                }
                 return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                     ApplyReturnTypeGuarantee(
-                        string.Format(CultureInfo.InvariantCulture,
-                            "{0}.{1}({2})",
-                            _supportRefName.Name,
-                            fnName,
-                            result.TranslatedContent
-                        ),
+                        translateContentAND1,
                         ExpressionReturnTypeOptions.Value, // This will be a negation operation and so will always return a numeric value
                         returnRequirements,
                         segments[0].AllTokens.First().LineIndex
@@ -326,15 +335,25 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 resultRight = WrapTranslatedResultInStringConversion(resultRight);
             }
 
+            string fnName2 = GetSupportFunctionName(operatorSegmentWithIndex.Segment.Token);
+            string translateContentAND2;
+            if (fnName2 == nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND))
+            {
+                translateContentAND2 = BuildContentAND(2, null, resultLeft, resultRight, null);
+            }
+            else
+            {
+                translateContentAND2 = string.Format(CultureInfo.InvariantCulture,
+                    "{0}.{1}({2}, {3})",
+                    _supportRefName.Name,
+                    fnName2,
+                    resultLeft.TranslatedContent,
+                    resultRight.TranslatedContent
+                );
+            }
             return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
                 ApplyReturnTypeGuarantee(
-                    string.Format(CultureInfo.InvariantCulture,
-                        "{0}.{1}({2}, {3})",
-                        _supportRefName.Name,
-                        GetSupportFunctionName(operatorSegmentWithIndex.Segment.Token),
-                        resultLeft.TranslatedContent,
-                        resultRight.TranslatedContent
-                    ),
+                    translateContentAND2,
                     ExpressionReturnTypeOptions.Value, // All VBScript operators return numeric (or boolean, which are also numeric in VBScript) values
                     returnRequirements,
                     segments[0].AllTokens.First().LineIndex
@@ -1938,7 +1957,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 // Logical operators
                 case "NOT": return "NOT";
-                case "AND": return "AND";
+                case "AND": return nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND);
                 case "OR": return "OR";
                 case "XOR": return "XOR";
 
@@ -2177,21 +2196,63 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return null;
             }
 
-            IEnumerable<TranslatedStatementContentDetailsWithContentType> translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation));
-            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
-                ApplyReturnTypeGuarantee(
-                    string.Format(CultureInfo.InvariantCulture,
+            TranslatedStatementContentDetailsWithContentType[] translatedNonOperatorSegments = evenSegments.Select(segment => TranslateNonOperatorSegment(segment, scopeAccessInformation)).ToArray();
+            string fnName3 = GetSupportFunctionName(((OperationExpressionSegment)oddSegments.First()).Token);
+            string translateContentAND3;
+            if (fnName3 == nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND))
+            {
+                translateContentAND3 = BuildContentAND(3, null, null, null, translatedNonOperatorSegments);
+            }
+            else
+            {
+                translateContentAND3 = string.Format(CultureInfo.InvariantCulture,
                         "{0}.{1}({2})",
                         _supportRefName.Name,
-                        GetSupportFunctionName(((OperationExpressionSegment)oddSegments.First()).Token),
+                        fnName3,
                         string.Join(", ", translatedNonOperatorSegments.Select(c => c.TranslatedContent))
-                    ),
+                    );
+            }
+            return new TranslatedStatementContentDetails(TranslatedStatementContentDetailsKind.ReturnType,
+                ApplyReturnTypeGuarantee(
+                    translateContentAND3,
                     ExpressionReturnTypeOptions.Value, // All VBScript operators return numeric (or boolean, which are also numeric in VBScript) values
                     returnRequirements,
                     expressionSegmentsArray[0].AllTokens.First().LineIndex
                 ),
                 translatedNonOperatorSegments.SelectMany(c => c.VariablesAccessed).ToArray()
             );
+        }
+
+        private string BuildContentAND(int useCaseNo, TranslatedStatementContentDetailsWithContentType? result1,
+                        TranslatedStatementContentDetailsWithContentType? resultLeft, TranslatedStatementContentDetailsWithContentType? resultRight, TranslatedStatementContentDetailsWithContentType[]? translatedNonOperatorSegments)
+        {
+            string fnName = nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND);
+            string translatedContent = useCaseNo switch
+            {
+                1 => string.Format(CultureInfo.InvariantCulture,
+                    "{0}.{1}({2})",
+                    _supportRefName.Name,
+                    fnName,
+                    result1!.TranslatedContent
+                ),
+                2 => string.Format(CultureInfo.InvariantCulture,
+                    "{0}.{1}({2}, {3})",
+                    _supportRefName.Name,
+                    fnName,
+                    resultLeft!.TranslatedContent,
+                    resultRight!.TranslatedContent
+                ),
+                3 => string.Format(CultureInfo.InvariantCulture,
+                    "{0}.{1}({2})",
+                    _supportRefName.Name,
+                    fnName,
+                    string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))
+                ),
+                _ => throw new NotSupportedException()
+            };
+
+
+            return translatedContent;
         }
 
         private sealed class TranslatedStatementContentDetailsWithContentType : TranslatedStatementContentDetails

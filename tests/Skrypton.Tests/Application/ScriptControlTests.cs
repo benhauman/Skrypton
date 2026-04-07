@@ -79,6 +79,14 @@ namespace Skrypton.Tests.Application
             }, (x) => { });
         }
 
+        [TestMethod]
+        [Ignore] // System.ArgumentException: Error accessing array with specified indexes (likely a non-numeric array index/argument or index-out-of-bounds): System.IndexOutOfRangeException: Index was outside the bounds of the array.
+        public void XAndEmptyArray1()
+        {
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>());
+            DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
+        }
+
         // see 'ExecuteScriptByNameAsync'
         private void DoScriptControlTest<TState>(TState state, Dictionary<string, object> externalReferences, string[] translationSuppressions, string[] noWarn, Action<TestHostServices> setupHostServices, Action<TState> assertProgramOutput)
         {
