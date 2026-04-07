@@ -32,12 +32,16 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
     [DispId(266)]
     public object CreateItem([In] object item)
     {
-        if (item == null) throw new ArgumentNullException(nameof(item), "Parameter must be 0:olMailItem or 2:olContactItem");
+        if (item == null) throw new ArgumentNullException(nameof(item), "Parameter must be 0:olMailItem, 1:olAppointmentItem or 2:olContactItem");
         OlItemType ItemType = (OlItemType)Enum.ToObject(typeof(OlItemType), item);
         //OlItemType ItemType = (OlItemType)item;
         if (ItemType == OlItemType.olContactItem)
         {
             return new MyOutlookContactItemClass();
+        }
+        if (ItemType == OlItemType.olAppointmentItem)
+        {
+            return new MyOutlookAppointmentItemClass();
         }
         if (ItemType == OlItemType.olMailItem)
         {
@@ -212,4 +216,29 @@ internal sealed class MyOutlookMAPIFolderContacts : IReflectOnClrType, MAPIFolde
             return null;
         }
     }
+}
+
+internal sealed class MyOutlookAppointmentItemClass : IReflectOnClrType
+{
+    public MyOutlookAppointmentItemClass()
+    {
+
+    }
+
+    [DispId(61606)]
+    public void Display() // see CT98_dialog287_ButtonOutlook_Click
+    {
+
+    }
+
+
+    [DispId(33293)] public object Start { get; set; }
+    [DispId(55)] public string Subject { get; set; }
+    [DispId(37120)] public string Body { get; set; }
+    [DispId(33288)] public string Location { get; set; }
+    [DispId(33299)] public object Duration { get; set; }
+    [DispId(34049)] public int ReminderMinutesBeforeStart { get; set; }
+    [DispId(34078)] public bool ReminderPlaySound { get; set; }
+    [DispId(34051)] public bool ReminderSet { get; set; }
+    //[DispId(61512)] public void Save() { }
 }

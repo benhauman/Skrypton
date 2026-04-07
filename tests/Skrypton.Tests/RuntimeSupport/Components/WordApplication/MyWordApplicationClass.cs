@@ -186,23 +186,9 @@ namespace Skrypton.Tests.RuntimeSupport.Components.WordApplication
 
         }
 
+        [DispId(0)] public Skrypton.Tests.RuntimeSupport.Components.WordApplication.Range Range => _range;
         [DispId(101)] public Rows Rows() => new MyWordTableRowsClass(_rows);
         [DispId(101)] public Row Rows(object index) => new MyWordTableRowsClass(_rows).GetRowByIndex(index);
-
-        [DispId(0)]
-        public Skrypton.Tests.RuntimeSupport.Components.WordApplication.Range Range
-        {
-            get => _range;
-            //set => _range = (MyWordRange)value;
-        }
-
-        //[DispId(0)] public Skrypton.Tests.RuntimeSupport.Components.WordApplication.Range GetRange() => _range;
-        //[DispId(0)]
-        //public Skrypton.Tests.RuntimeSupport.Components.WordApplication.Range GetRange(object value)
-        //{
-        //    _range.Text = value;
-        //    return _range;
-        //}
     }
 
     [DefaultMember("Text")]

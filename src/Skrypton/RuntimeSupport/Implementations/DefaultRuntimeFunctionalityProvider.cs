@@ -1885,7 +1885,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 default:
                     throw new NotSupportedException($"Unsupported interval: '{interval}'"); // This will be a different exception type once all VBScript-support interval strings are supported
-
+                case "n": // minutes (Ignores seconds => Truncates both dates down to the minute)
+                    DateTime dtx1 = new DateTime(d1.Year, d1.Month, d1.Day, d1.Hour, d1.Minute, 0); // Truncate to minute precision
+                    DateTime dtx2 = new DateTime(d2.Year, d2.Month, d2.Day, d2.Hour, d2.Minute, 0); // Truncate to minute precision
+                    return (int)(dtx2 - dtx1).TotalMinutes;
                 case "d":
                     /*
     VBScript: DateDiff("d", "2024-01-01 12:00", "2024-01-02 11:00") == 0
@@ -1895,7 +1898,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                      */
                     //return (int)(d2 - d1).TotalDays; //return (int)Math.Ceiling(difference.TotalDays);
                     return (int)Math.Ceiling(difference.TotalDays);
-                case "m":
+                case "m": // months
                     int yearDifference = d2.Year - d1.Year;
                     int monthDifference = d2.Month - d1.Month;
                     return (yearDifference * 12) + monthDifference;
