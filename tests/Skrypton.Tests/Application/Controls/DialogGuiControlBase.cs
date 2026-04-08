@@ -111,6 +111,7 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() },
             { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() },
             { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
+            { "HelpLineForm", () => new DialogGuiHelpLineFormControl() },
 #pragma warning disable SA1028
             // see 'SetCustomControlType'
             //            { "HelpLineListControl", () => new DialogGuiListControl() },
@@ -192,6 +193,10 @@ namespace Skrypton.Tests.Application.Controls
         {
             Console.WriteLine($"[TreeSel]({ID}).SelectTreeItem({treeItem})");
         }
+    }
+
+    public sealed class DialogGuiHelpLineFormControl : DialogGuiControlBase // CT98_dialog386
+    {
     }
 
     public sealed class DialogGuiSimpleObjectSearchControl : DialogGuiControlBase

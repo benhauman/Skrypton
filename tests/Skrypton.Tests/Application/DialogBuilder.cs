@@ -112,6 +112,11 @@ namespace Skrypton.Tests.Application
             return AddControlCore(controlId, new DialogGuiLabelControl() { });
         }
 
+        public DialogBuilder AddDateTimeControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiDateTimeControl() { });
+        }
+
         public DialogBuilder AddGroupBox(string controlId)
         {
             return AddControlCore(controlId, new DialogGuiGroupBoxControl() { });
