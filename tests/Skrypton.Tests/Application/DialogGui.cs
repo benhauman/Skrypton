@@ -289,7 +289,7 @@ WScript.Echo xmlhttp.responseText
             //Test_IDispatch_Invoke(); //works only on windows
 
             var hlobj = new HLObjectInstance()
-                    .RegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
+                    .TestRegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
                 ;
             var model = new DialogGuidModel(TestCulture);
 
@@ -623,7 +623,7 @@ WScript.Echo xmlhttp.responseText
         public void CT130_ClientComputer_Dialog_567_Button1_Click() // select content_uncompressed from hlsysdialog where dbname = '_CustomerTest_Tamedia' and dialogid = 567; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Tamedia';
         {
             var hlobj = new HLObjectInstance()
-                    .RegisterValueKey<string>("vRealize.LansweeperURL", 0, 0, "hst-X_1")
+                    .TestRegisterValueKey<string>("vRealize.LansweeperURL", 0, 0, "hst-X_1")
                 ;
             var model = new DialogGuidModel(TestCulture);
 
@@ -653,11 +653,11 @@ WScript.Echo xmlhttp.responseText
         public void CT74_ClientComputer_Dialog_2_ButtonShowWebsite_Click() // select * from hlsysdialog where dbname = '_CustomerTest_Mainova' and dialogid = 2; select * from hlsysdialogglobalscript where dbname = '_CustomerTest_Mainova';
         {
             var hlobj = new HLObjectInstance().InitializeObjectInstance(isNew: true, TestCulture)
-                    .RegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
-                    .RegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
-                    .RegisterValueKey<string>("PersonGeneral.Name", 0, 0, "Kuku-Muku")
-                    .RegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
-                    .RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                    .TestRegisterValueKey<string>("PersonBilling.CostCenter_CA", 0, 0, "hst-X_1")
+                    .TestRegisterValueKey<string>("PersonInformation.SBCode", 0, 0, "hst-X_1")
+                    .TestRegisterValueKey<string>("PersonGeneral.Name", 0, 0, "Kuku-Muku")
+                    .TestRegisterValueKey<string>("PersonGeneral.Group", 0, 0, "g-x1")
+                    .TestRegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
                 ;
             var model = new DialogGuidModel(TestCulture);
 
@@ -751,64 +751,64 @@ WScript.Echo xmlhttp.responseText
             var hlSession = new DialogGuiSession(TestCulture, agentId: 30022);
 
             var hlobj = new HLObjectInstance("symbol_hlobj").InitializeObjectInstance(isNew: true, TestCulture)
-                    .RegisterValueKey<string>("CASEINFO.REFERENCENUMBER", 0, 0, "20260101-0001")
-                    .RegisterValueKey<int>("CASEINFO.RESERVEDBY", 0, 0, 0)
-                    .RegisterValueKey<string>("CaseClassificationAttribute.Impact", 0, 0, "")
-                    .RegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
-                    .RegisterValueKey<string>("CaseDescription.DescriptionText", 0, 0, "")
-                    .RegisterValueKey<string>("CaseDiagnosis.DiagnosisText", 0, 0, "")
-                    .RegisterValueKey<string>("CaseGeneral.CostCenter", 0, 0, "cstcntr1")
-                    .RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
-                    .RegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
-                    .RegisterValueKey<string>("CaseSolution.SolutionText", 0, 0, "")
-                    .RegisterValueKey<string>("IncidentAttribute.Convenience", 0, 0, "")
-                    .RegisterValueKey<string>("IncidentAttribute.EscalationLevel", 0, 0, "")
-                    .RegisterValueKey<string>("IncidentAttribute.FunctionalRange", 0, 0, "")
-                    .RegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
-                    .RegisterValueKey<string>("IncidentAttribute.ProductionalRelevanz", 0, 0, "")
-                    .RegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
-                    .RegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailCaller", 0, 0, "")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailSearchName", 0, 0, "emsn1")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailSearchResult", 0, 0, "emsr1")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailTo", 0, 0, "emto1")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailCC", 0, 0, "emcc1")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailSubject", 0, 0, "")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.TEXTVALUE", 0, 0, "")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.RAWTEXT", 0, 0, "")
-                    .RegisterValueKey<string>("EmailSUAttribute.EmailBody.Rawtext", 0, 0, "")
-                    .RegisterValueKey<int>("Keywords.Keyword", 0, 0, 0)
-                   //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                   //.RegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
-                   //.RegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
-                   .RegisterValueKey<string>("Keywords.KeywordOrga", 0, 0, "")
-                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 0, 2) // last su
+                    .TestRegisterValueKey<string>("CASEINFO.REFERENCENUMBER", 0, 0, "20260101-0001")
+                    .TestRegisterValueKey<int>("CASEINFO.RESERVEDBY", 0, 0, 0)
+                    .TestRegisterValueKey<string>("CaseClassificationAttribute.Impact", 0, 0, "")
+                    .TestRegisterValueKey<string>("CaseClassificationAttribute.Priority", 0, 0, "Priority1")
+                    .TestRegisterValueKey<string>("CaseDescription.DescriptionText", 0, 0, "")
+                    .TestRegisterValueKey<string>("CaseDiagnosis.DiagnosisText", 0, 0, "")
+                    .TestRegisterValueKey<string>("CaseGeneral.CostCenter", 0, 0, "cstcntr1")
+                    .TestRegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "zz1")
+                    .TestRegisterValueKey<string>("CaseGeneral.Subject", 0, 0, "Kuku-Muku")
+                    .TestRegisterValueKey<string>("CaseSolution.SolutionText", 0, 0, "")
+                    .TestRegisterValueKey<string>("IncidentAttribute.Convenience", 0, 0, "")
+                    .TestRegisterValueKey<string>("IncidentAttribute.EscalationLevel", 0, 0, "")
+                    .TestRegisterValueKey<string>("IncidentAttribute.FunctionalRange", 0, 0, "")
+                    .TestRegisterValueKey<string>("IncidentAttribute.IncidentStatus", 0, 0, "IncidentStatusToProof")
+                    .TestRegisterValueKey<string>("IncidentAttribute.ProductionalRelevanz", 0, 0, "")
+                    .TestRegisterValueKey<string>("IncidentAttribute.RequestType", 0, 0, "RequestTypeIncident")
+                    .TestRegisterValueKey<string>("IncidentAttribute.Responsibility", 0, 0, "zz2")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailCaller", 0, 0, "")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailSearchName", 0, 0, "emsn1")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailSearchResult", 0, 0, "emsr1")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailTo", 0, 0, "emto1")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailCC", 0, 0, "emcc1")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailSubject", 0, 0, "")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailBody.TEXTVALUE", 0, 0, "")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailBody.RAWTEXT", 0, 0, "")
+                    .TestRegisterValueKey<string>("EmailSUAttribute.EmailBody.Rawtext", 0, 0, "")
+                    .TestRegisterValueKey<int>("Keywords.Keyword", 0, 0, 0)
+                   //.TestRegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                   //.TestRegisterValueKey<string>("CaseGeneral.DefaultNotification", 0, 0, "")
+                   //.TestRegisterValueKey<string>("PersonGeneral.PersonalID", 0, 0, "prsnid-x1")
+                   .TestRegisterValueKey<string>("Keywords.KeywordOrga", 0, 0, "")
+                    .TestRegisterValueKey<int>("SUINFO.INDEX", 0, 0, 2) // last su
 
                 .RegisterServiceUnitIndex(1)
-                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 1, 1)
-                    .RegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
+                    .TestRegisterValueKey<int>("SUINFO.INDEX", 0, 1, 1)
+                    .TestRegisterValueKey<int>("SUINFO.EDITOR", 0, 1, 1530)
 
 
                 .RegisterServiceUnitIndex(2)
-                    .RegisterValueKey<int>("SUINFO.INDEX", 0, 2, 2)
-                    .RegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
+                    .TestRegisterValueKey<int>("SUINFO.INDEX", 0, 2, 2)
+                    .TestRegisterValueKey<int>("SUINFO.EDITOR", 0, 2, 710)
                 ;
             var hlcaller = new HLObjectInstance("symbol_caller").InitializeObjectInstance(isNew: false, culture: TestCulture, objectId: 101301, objectDefName: "MyPersonDef")
-                    .RegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
-                    .RegisterValueKey<string>("PersonInformation.EmailAddress", 0, 0, "zz2@svr.com")
-                    .RegisterValueKey<string>("PersonGeneral.PersonSurname", 0, 0, "psn1")
-                    .RegisterValueKey<string>("PersonGeneral.PersonGivenName", 0, 0, "pgn1")
-                    .RegisterValueKey<string>("PersonInformation.PersonOrganisation", 0, 0, "pou1")
-                    .RegisterValueKey<string>("PersonInformation.PhoneNumber", 0, 0, "ptel1")
+                    .TestRegisterValueKey<string>("PersonGeneral.VIPLevel", 0, 0, "VIPLevelVIP")
+                    .TestRegisterValueKey<string>("PersonInformation.EmailAddress", 0, 0, "zz2@svr.com")
+                    .TestRegisterValueKey<string>("PersonGeneral.PersonSurname", 0, 0, "psn1")
+                    .TestRegisterValueKey<string>("PersonGeneral.PersonGivenName", 0, 0, "pgn1")
+                    .TestRegisterValueKey<string>("PersonInformation.PersonOrganisation", 0, 0, "pou1")
+                    .TestRegisterValueKey<string>("PersonInformation.PhoneNumber", 0, 0, "ptel1")
                 ;
             var hlProduct = new HLObjectInstance("hlProduct").InitializeObjectInstance(isNew: false, culture: TestCulture, objectId: null, objectDefName: "DesktopComputer")
-                    .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
+                    .TestRegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
                 ;
 
             var symbol_product = new HLObjectInstance("symbol_product").InitializeObjectInstance(isNew: false, culture: TestCulture)
-                    .RegisterValueKey<string>("AssetGeneral.AssetName", 0, 0, "MyAN1")
-                    .RegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
-                    .RegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
+                    .TestRegisterValueKey<string>("AssetGeneral.AssetName", 0, 0, "MyAN1")
+                    .TestRegisterValueKey<string>("AssetGeneral.Hostname", 0, 0, "MyAN1")
+                    .TestRegisterValueKey<string>("TrumpfAssetGeneral.CINumber", 0, 0, "MyCINum1")
                 ;
             model.RegisterSymbolObjectProvider("Default", () => hlobj);
             model.RegisterSymbolObjectProvider("product", () => symbol_product);

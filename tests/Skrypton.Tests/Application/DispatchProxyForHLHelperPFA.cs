@@ -21,7 +21,7 @@ internal sealed class DispatchProxyForHLHelperPFA : IReflectOnClrType
         if (agentId == 710)
         {
             return new HLObjectInstance().InitializeObjectInstance(isNew: false, _culture)
-                .RegisterValueKey<string>("PersonGeneralTrumpf.Responsibility", 0, 0, "ResponsibilityBSZDitzingen")
+                .TestRegisterValueKey<string>("PersonGeneralTrumpf.Responsibility", 0, 0, "ResponsibilityBSZDitzingen")
                 ;
             //return new AgentPerson(agentId);
         }

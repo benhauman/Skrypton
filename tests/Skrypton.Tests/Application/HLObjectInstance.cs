@@ -53,7 +53,6 @@ namespace Skrypton.Tests.Application
         public object IsNew { get; private set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GetValue")]
-        [return: MarshalAs(UnmanagedType.Struct)]
         public object GetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
         {
             Console.WriteLine($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
@@ -223,6 +222,12 @@ namespace Skrypton.Tests.Application
         {
             return _sus.Count;
         }
+
+        public void ResetContent(object key, int suidx)
+        {
+            Console.WriteLine($"{_traceName}ResetContent(key:{key}, suidx:{suidx}')");
+        }
+
         public int[] GetContentIDs(object key, int suidx)
         {
             Console.WriteLine($"{_traceName}GetContentIDs(key:{key}, suidx:{suidx}')");
@@ -297,7 +302,7 @@ namespace Skrypton.Tests.Application
         }
 
 
-        internal HLObjectInstance RegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)
+        public HLObjectInstance TestRegisterValueKey<TValue>(string key, int contentId, int suidx, TValue value)
         {
             _values.Add(new ObjectValueKey(key, contentId, suidx), new ObjectValueData(typeof(TValue)).InitializeValue(value));
             return this;
