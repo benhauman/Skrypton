@@ -251,7 +251,10 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         void IHostFileSystemHostService.DeleteFile(string path)
         {
-            throw new NotImplementedException();
+            if (!_allfiles.Remove(path))
+            {
+                throw new FileNotFoundException("Could not be found.", fileName: path);
+            }
         }
 
         bool IHostFileSystemHostService.DirectoryExists(string path)
@@ -282,7 +285,12 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         HostFileSystemFileInfo IHostFileSystemHostService.GetFileInfo(string path)
         {
-            throw new NotImplementedException();
+            if (_allfiles.TryGetValue(path, out _))
+            {
+                string name = Path.GetFileName(path);
+                return new HostFileSystemFileInfo(path, name, exists: true);
+            }
+            throw new FileNotFoundException("Could not be found.", fileName: path);
         }
 
         IEnumerable<HostFileSystemFileInfo> IHostFileSystemHostService.GetFiles(string directory)

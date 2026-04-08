@@ -192,7 +192,10 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         {
             _hostFileSystem.DeleteFile(_nfo.Path);
         }
-
+        public void Delete()
+        {
+            _hostFileSystem.DeleteFile(_nfo.Path);
+        }
         public void Move(string newPath)
         {
             _hostFileSystem.MoveFile(Path, newPath);

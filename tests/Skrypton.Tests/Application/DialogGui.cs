@@ -1418,7 +1418,7 @@ WScript.Echo xmlhttp.responseText
             if (attributeKeys != null && attributeKeys is object[])
             {
                 sAttributeKeys = (from x in (object[])attributeKeys
-                    select (string)x).ToArray();
+                                  select (string)x).ToArray();
             }
 
             object[] result = Array.Empty<object>();
@@ -1431,6 +1431,15 @@ WScript.Echo xmlhttp.responseText
         public void ExecuteToolbarCommand(string command)
         {
             Console.WriteLine($"[DIALOGMODEL] ExecuteToolbarCommand('{command}')");
+        }
+
+        public int GetActiveCasesByCaller()
+        {
+            return 44;
+        }
+        public int GetActiveCasesByOrgUnit()
+        {
+            return 657;
         }
     }
 
