@@ -114,7 +114,7 @@ namespace Skrypton.Tests.Application
 
         public DialogBuilder AddGroupBox(string controlId)
         {
-            return AddControlCore(controlId, new DialogGuiGroupBox() { });
+            return AddControlCore(controlId, new DialogGuiGroupBoxControl() { });
         }
         public DialogBuilder AddButton(string controlId)
         {
@@ -199,9 +199,10 @@ namespace Skrypton.Tests.Application
     {
     }
 
-    public class DialogGuiGroupBox : DialogGuiControlBase
+    public class DialogGuiGroupBoxControl : DialogGuiControlBase
     {
         public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+        public string TitleTextColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
 
     public sealed class DialogBase

@@ -18,5 +18,7 @@ namespace Skrypton.Tests.Application.Controls
         {
             return _valueText;
         }
+
+        public string ValidationExpression { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
 }

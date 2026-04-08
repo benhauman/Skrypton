@@ -691,6 +691,11 @@ WScript.Echo xmlhttp.responseText
             return fs;
         }
 
+        public static object CreateMyHTMLDocumentClass(IRuntimeHost runtimeHost)
+        {
+            return new RuntimeSupport.Components.HTMLObjectLibrary.MyHTMLDocumentClass(runtimeHost);
+        }
+
         public static object CreateMyWordApplicationClass(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.WordApplication.MyWordApplicationClass(runtimeHost);
@@ -1058,7 +1063,7 @@ WScript.Echo xmlhttp.responseText
                 string ControlTypeName = xControl.Elements().Single(x => x.Name.LocalName == "ControlName").Value;
 
                 //Console.WriteLine($"Read '{ControlTypeName}'");
-                DialogGuiControlBase controlBase = DialogGuiControlBase.ControlFactoryCreateDialogControl(ControlTypeName); // DialogGuiGroupBox
+                DialogGuiControlBase controlBase = DialogGuiControlBase.ControlFactoryCreateDialogControl(ControlTypeName); // DialogGuiGroupBoxControl
 
                 var xControlProperties = xControl.Elements().Single(x => x.Name.LocalName == "Properties");
                 //Dictionary<string, object> controlProperties = new Dictionary<string, object>();
@@ -1419,6 +1424,14 @@ WScript.Echo xmlhttp.responseText
             object[] result = Array.Empty<object>();
             return result;
         }
+
+        public bool IsCreatedByCTI => true;
+
+
+        public void ExecuteToolbarCommand(string command)
+        {
+            Console.WriteLine($"[DIALOGMODEL] ExecuteToolbarCommand('{command}')");
+        }
     }
 
     [ComVisible(true)]
@@ -1449,6 +1462,7 @@ WScript.Echo xmlhttp.responseText
 
         public void Add(string key, object value)
         {
+            if (value == null) return;
             if (value == null || (value.GetType() != typeof(string) && value.GetType() != typeof(Int32)))
             {
                 throw new Exception(String.Format("Invalid value or type given for key \"{0}\" (value: {1}, type: {2})", key, value == null ? "null" : value, value == null ? "null" : value.GetType().ToString()));

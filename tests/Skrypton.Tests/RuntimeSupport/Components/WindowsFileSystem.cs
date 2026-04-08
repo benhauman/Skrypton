@@ -266,7 +266,8 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         bool IHostFileSystemHostService.FileExists(string path)
         {
-            throw new NotImplementedException();
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            return _allfiles.TryGetValue(path, out _);
         }
 
         IEnumerable<HostFileSystemDirectoryInfo> IHostFileSystemHostService.GetDirectories(string directory)

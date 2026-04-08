@@ -82,7 +82,7 @@ namespace Skrypton.Tests.Application.Controls
 
         private static readonly Dictionary<string, Func<DialogGuiControlBase>> ControlFactories = new Dictionary<string, Func<DialogGuiControlBase>>() {
             { "HelpLineDialogControl", () => new DialogGuiRoot() },
-            { "HelpLineGroupBox", () => new DialogGuiGroupBox() },
+            { "HelpLineGroupBox", () => new DialogGuiGroupBoxControl() },
             { "HelpLineTabControl", () => new DialogGuiTabPage() },
             { "HelpLineTextBox", () => new DialogGuiTextControl() },
             { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
