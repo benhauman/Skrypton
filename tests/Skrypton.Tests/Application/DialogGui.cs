@@ -684,7 +684,7 @@ WScript.Echo xmlhttp.responseText
             });
         }
 
-        public static IHostFileSystemHostService CreateTestHostFileSystemHostService(Action<TestFileSystem> setup)
+        public static TestFileSystem CreateTestHostFileSystemHostService(Action<TestFileSystem> setup)
         {
             var fs = new TestFileSystem();
             setup(fs);

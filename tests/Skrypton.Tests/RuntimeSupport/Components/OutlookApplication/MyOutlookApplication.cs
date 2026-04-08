@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Implementations;
@@ -79,6 +81,60 @@ internal sealed class MyOutlookMailItemClass : IReflectOnClrType // see interfac
 
     [DispId(61606)]
     public void Display()
+    {
+
+    }
+
+    private MyOutlookAttachmentsClass _attachments;
+
+    [DispId(63509)]
+    public Attachments Attachments
+    {
+        get
+        {
+            if (_attachments == null)
+            {
+                _attachments = new MyOutlookAttachmentsClass();
+            }
+            return _attachments;
+        }
+    }
+}
+
+internal interface Attachments : IEnumerable
+{
+
+}
+
+internal interface Attachment
+{
+
+}
+
+internal sealed class MyOutlookAttachmentsClass : IReflectOnClrType, Attachments
+{
+    private List<MyOutlookAttachmentClass> _attachments = new List<MyOutlookAttachmentClass>();
+    public MyOutlookAttachmentsClass()
+    {
+
+    }
+    public IEnumerator GetEnumerator()
+    {
+        return _attachments.GetEnumerator();
+    }
+
+    public Attachment Add(object source, object attachmentType, object attachmentPosition, object attachmentDisplayName)
+    {
+        string sourceS = (string)source;
+        var attachment = new MyOutlookAttachmentClass();
+        _attachments.Add(attachment);
+        return attachment;
+    }
+}
+
+internal sealed class MyOutlookAttachmentClass : IReflectOnClrType, Attachment
+{
+    public MyOutlookAttachmentClass()
     {
 
     }
