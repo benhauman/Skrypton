@@ -12,7 +12,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         public SelectBlock(
             CodeExpression codeExpression,
             IEnumerable<CommentStatement> openingComments,
-            IEnumerable<CaseBlockSegment> content)
+            IReadOnlyCollection<CaseBlockSegment> content)
         {
             if (openingComments == null)
                 throw new ArgumentNullException(nameof(openingComments));
@@ -30,7 +30,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             if (firstUnsupportedContentSegment != null)
                 throw new ArgumentException("Unrecognised content element: " + firstUnsupportedContentSegment.GetType());
             if (((IEnumerable<CaseBlockSegment>)Content).Reverse().Skip(1).Any(c => c is CaseBlockElseSegment))
-                throw new ArgumentException("Only the last content segment may be a CaseBlockElseSegment");
+                throw new ArgumentException($"Only the last content segment may be a CaseBlockElseSegment. Line:{codeExpression?.Tokens.FirstOrDefault()?.LineIndex}"); // 'Case Else' must be the last one (after Case(se))
 
             Expression = codeExpression ?? throw new ArgumentNullException(nameof(codeExpression));
         }

@@ -3,6 +3,7 @@ using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 {
@@ -109,7 +110,8 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             tokens.RemoveRange(0, openingComments.Count + tokensIgnored.Count);
 
             // Unless we hit "END SELECT" straight away, process CASE blocks
-            List<SelectBlock.CaseBlockSegment> content = new List<SelectBlock.CaseBlockSegment>();
+            SelectBlock.CaseBlockElseSegment? caseElseContent = null;
+            List <SelectBlock.CaseBlockSegment> content = new List<SelectBlock.CaseBlockSegment>();
             if (!tokens[0].Content.Equals("END", StringComparison.OrdinalIgnoreCase))
             {
                 string[]? endSequenceMet;
@@ -250,7 +252,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     // Add to CASE block list
                     if (caseElse)
                     {
-                        content.Add(new SelectBlock.CaseBlockElseSegment(blockContent));
+                        // keep it for later . try recover from 'not last' see 'XSelectCaseEnd1'
+                        if (caseElseContent == null)
+                        {
+                            caseElseContent = new SelectBlock.CaseBlockElseSegment(blockContent);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"CASE ELSE already specified. Line:{tokens.FirstOrDefault()?.LineIndex}");
+                        }
                     }
                     else
                     {
@@ -284,6 +294,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
 
                 }
             }
+
+            if (caseElseContent != null)
+            {
+                content.Add(caseElseContent);
+            }
+
 
             // All done!
             return new SelectBlock(new CodeExpression(expressionTokens), openingComments, content);
