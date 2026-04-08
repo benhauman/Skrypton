@@ -34,6 +34,8 @@ namespace Skrypton.RuntimeSupport
 #pragma warning disable CA1716 // Identifiers should not match keywords
         object NOT(object o);
         object AND(object l, object r);
+        //object ANDe2(object l, Func<object> rp);object ANDe2(object l, Func<object> rp);
+        bool ANDe2(bool evaluationResult);
         object OR(object l, object r);
         object XOR(object l, object r);
 #pragma warning restore CA1716 // Identifiers should not match keywords

@@ -363,7 +363,7 @@ namespace TranslatedProgram
             }
 
             _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<form action=\"", strPostUrl, "\" "));
-            if (_.IF(_.AND(_.NOT(_outer.IsVBPollingEnabled), _.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "FlexibleRange")), (Int16)0))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.NOT(_outer.IsVBPollingEnabled)) && _.CBOOL(_.EQ(_.NullableNUM(_.CALLm2v0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", "FlexibleRange")), (Int16)0)))))
             {
                 // Can't have ids when VB Polling enabled as we might be rendering out multiple of these forms.
                 // 2008-11-10 DWR: This is similarly the case for fuzzy searching. I don't we have any working
@@ -585,7 +585,7 @@ namespace TranslatedProgram
             }
 
             strPostUrl = _.CONCAT(strPostUrl, strUrl);
-            if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.UCASE(_.LEFT(strPostUrl, (Int16)7))), "HTTP://"), _.NOTEQ(_.NullableSTR(_.UCASE(_.LEFT(strPostUrl, (Int16)8))), "HTTPS://"))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.UCASE(_.LEFT(strPostUrl, (Int16)7))), "HTTP://")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.UCASE(_.LEFT(strPostUrl, (Int16)8))), "HTTPS://")))))
             {
                 strPostUrl = _.CONCAT("http://", strPostUrl);
             }
@@ -982,7 +982,7 @@ namespace TranslatedProgram
                     if (_.IF(bLastCell))
                     {
                         iPostPadding = _.VAL(_.DATEDIFF("d", dCalEnd, _.CALLm3argp(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Functions", "Dates", "fn_GetLastDateOfWeek", _.ARGS.Ref(dCalEnd, v48 => { dCalEnd = v48; }).Ref(iWeekDayCalEnd, v49 => { iWeekDayCalEnd = v49; }))));
-                        if (_.IF(_.AND(_.GT(_.NullableNUM(iPostPadding), (Int16)0), _.LT(_.NullableNUM(iPostPadding), (Int16)7))))
+                        if (_.IF(_.ANDe2(_.CBOOL(_.GT(_.NullableNUM(iPostPadding), (Int16)0)) && _.CBOOL(_.LT(_.NullableNUM(iPostPadding), (Int16)7)))))
                         {
                             var loopEnd9 = _.NUM(iPostPadding);
                             var loopStart9 = _.NUM((Int16)1, loopEnd9);
@@ -1267,7 +1267,7 @@ namespace TranslatedProgram
                             sStayNo = _.CONCAT(sStayNo, "-", intIndex);
 
                             bStayIndicative = _.CBOOL(_.CALLm0argp(this, aryStay ?? throw new InvalidOperationException("Reference not set:aryStay"), _.ARGS.Val((Int16)1)));
-                            if (_.IF(_.AND(_.NOT(bStayIndicative), _.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative"))))
+                            if (_.IF(_.ANDe2(_.CBOOL(_.NOT(bStayIndicative)) && _.CBOOL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative")))))
                             {
                                 bStayIndicative = _.VAL(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Indicative"));
                             }
@@ -1299,7 +1299,7 @@ namespace TranslatedProgram
 
                     // 2010-01-29 DWR: Need to use DateValue here since dStartNight might be a string
                     // which will cause the comparison to fail when they represent the same date
-                    bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights));
+                    bPreciseMatch = _.ANDe2(_.CBOOL(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight))) && _.CBOOL(_.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights)));
 
                     // 2010-01-29 DWR: In cases where we have a precise match and we're not rendering a calendar
                     // then we want to just display that stay and get out! If we DON'T have a precise match and
@@ -1341,7 +1341,7 @@ namespace TranslatedProgram
                     // If these options were a perfect match, drop out
                     // 2010-01-29 DWR: Unless we're rendering the calendar! In this case client-side javascript
                     // will look after showing one fuzzy stay at a time, but it needs all data present.
-                    if (_.IF(_.AND(bPreciseMatch, _.NOT(_outer.bRenderAsCalendar))))
+                    if (_.IF(_.ANDe2(_.CBOOL(bPreciseMatch) && _.CBOOL(_.NOT(_outer.bRenderAsCalendar)))))
                     {
                         break;
                     }
@@ -1437,7 +1437,7 @@ namespace TranslatedProgram
             intExtSuppliersShown = (Int16)0;
             bRenderedStaySummary = false;
 
-            bPreciseMatch = _.AND(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight)), _.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights));
+            bPreciseMatch = _.ANDe2(_.CBOOL(_.EQ(_.DATEVALUE(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "StartDate")), _.DATEVALUE(dStartNight))) && _.CBOOL(_.EQ(_.CALLm1v0(this, objFuzzyStay ?? throw new InvalidOperationException("Reference not set:objFuzzyStay"), "Nights"), iNights)));
 
             var loopEnd14 = _.NUM(_.SUBT(_.CALLm1v0(this, objSuppliersForStay ?? throw new InvalidOperationException("Reference not set:objSuppliersForStay"), "Count"), (Int16)1));
             var loopStart14 = _.NUM((Int16)0, loopEnd14, (Int16)1);
@@ -1452,16 +1452,16 @@ namespace TranslatedProgram
                     {
                         bStayHasLocalAvail = true;
                     }
-                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsExternal"), _.AND(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote"), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal"))));
+                    bExternalSupplier = _.VAL(_.OR(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsExternal"), _.ANDe2(_.CBOOL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote")) && _.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal")))));
 
                     // Don't render FrontDesk if got local avail for this stay and not enabled ForceExternal
-                    bSkipSupplier = _.VAL(_.AND(bStayHasLocalAvail, _.AND(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote"), _.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal")))));
+                    bSkipSupplier = _.VAL(_.ANDe2(_.CBOOL(bStayHasLocalAvail) && _.CBOOL(_.ANDe2(_.CBOOL(_.CALLm1v0(this, objSupplier ?? throw new InvalidOperationException("Reference not set:objSupplier"), "IsRemote")) && _.CBOOL(_.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal")))))));
                     if (_.IF(_.NOT(bSkipSupplier)))
                     {
 
                         // Don't bother rendering stay summary title if we've got a perfect match, as we
                         // won't be showing any fuzzy content if there's a spot-on option
-                        if (_.IF(_.AND(_.NOT(bPreciseMatch), _.NOT(bRenderedStaySummary))))
+                        if (_.IF(_.ANDe2(_.CBOOL(_.NOT(bPreciseMatch)) && _.CBOOL(_.NOT(bRenderedStaySummary)))))
                         {
                             if (_.IF(_.NOT(_outer.bRenderAsCalendar)))
                             {
@@ -2021,7 +2021,7 @@ namespace TranslatedProgram
                         // UnitKey, then we've got a possible match
                         bool ifResult3;
                         object arrReqUnitOptions_zref3 = arrReqUnitOptions;
-                        ifResult3 = _.IF(() => _.AND(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v133 => { intIndex = v133; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("NumPeople"))), _.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v134 => { intIndex = v134; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey")))), errOn);
+                        ifResult3 = _.IF(() => _.ANDe2(_.CBOOL(_.EQ(_.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v133 => { intIndex = v133; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("NumPeople")), _.CALLm0argp(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), _.ARGS.Val("NumPeople")))) && _.CBOOL(_.CALLm1argp(this, _.CALLm0argp(this, _.CALLm0argp(this, arrReqUnitOptions_zref3 ?? throw new InvalidOperationException("Reference not set:arrReqUnitOptions_zref3"), _.ARGS.Ref(intIndex, v134 => { intIndex = v134; })) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val("Units")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Contains", _.ARGS.RefIfArray(objEntry, _.ARGS.Val("UnitKey"))))), errOn);
                         if (ifResult3)
                         {
                             object arrReqUnitOptions_zref4 = arrReqUnitOptions;
@@ -2381,7 +2381,7 @@ namespace TranslatedProgram
                     // build up a list of invalid indicative or telephone booking
                     // units, this is used later by javascript when we have a mixture of allocated and indicative
                     // availability
-                    if (_.IF(_.OR(_.AND(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "Indicative"), _.NOT(bIndicativeValid)), bTeleBooking)))
+                    if (_.IF(_.OR(_.ANDe2(_.CBOOL(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "Indicative")) && _.CBOOL(_.NOT(bIndicativeValid))), bTeleBooking)))
                     {
                         bHasNonBookableUnits = true;
                         if (_.IF(_.GT(_.NullableNUM(_.LEN(strNonBookableUnits)), (Int16)0)))
@@ -2440,7 +2440,7 @@ namespace TranslatedProgram
             // Product List or Detail Control, which would be better avoided. A much better solution is to enable VB Polling and avoid this legacy mechanism entirely.
             // Note: We could potentially render the button for Local Avail and not for Eviivo but I think that that's more confusing than helpful, particularly since
             // it's inconsistent with the Product List / Detail implementation (which bases its decision upon whether the Product has an Eviivo Id).
-            if (_.IF(_.AND(_.AND(_.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_EnablePolling")), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Integration_Eviivo_ExtBooking_Enable"))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.ANDe2(_.CBOOL(_.NOT(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_EnablePolling"))) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", strEviivoIdIfAny))), "")))) && _.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Integration_Eviivo_ExtBooking_Enable")))))
             {
                 _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "PrintTraceWarning", "Not rendering any Book buttons for Unit Selection since the legacy Eviivo External Booking configuration is enabled (the recommended alternative is to use the deep-link-supporting Eviivo External Booking configuration, this may be done by enabling VB Polling)");
                 return BookingUI_StayDetails_retVal;
@@ -2452,7 +2452,7 @@ namespace TranslatedProgram
             // website, but that is understood and how it works - see FogBugz 10367). I've tried to make the markup for this button reminiscent of
             // that in Product List and Detail to try to make any additional styling requirements as low as possible.
             strProductBookingWebIfAny = _.VAL(_.TRIM(_.CONCAT("", strProductBookingWebIfAny)));
-            if (_.IF(_.AND(_.AND(_.AND(bTeleBooking, _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_EnableByPhone")), _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_AllowOffSiteTelephoneBookings")), _.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), ""))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.ANDe2(_.CBOOL(_.ANDe2(_.CBOOL(bTeleBooking) && _.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_EnableByPhone")))) && _.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_AllowOffSiteTelephoneBookings")))) && _.CBOOL(_.NOTEQ(_.NullableSTR(strProductBookingWebIfAny), "")))))
             {
                 _.CALLm1v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "PrintTrace", "Since this is a Telephone Booking Product with a Booking Website and the 'Allow Offsite Booking Web Booking for Telephone Bookings' parameter is enabled, a button to the Booking Website is being rendered");
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<div class=\"pnStayButtons\">");
@@ -2545,7 +2545,7 @@ namespace TranslatedProgram
             {
                 // Get unit selection passed in (may be zero if invalid request was made)
                 // Note: lsRemoteUnitSelections has zero-based index, iReqNo is one-based
-                if (_.IF(_.AND(_.GTE(_.NullableNUM(iReqNo), (Int16)1), _.LTE(iReqNo, _.CALLm1v0(this, lsRemoteUnitSelections ?? throw new InvalidOperationException("Reference not set:lsRemoteUnitSelections"), "Count")))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.GTE(_.NullableNUM(iReqNo), (Int16)1)) && _.CBOOL(_.LTE(iReqNo, _.CALLm1v0(this, lsRemoteUnitSelections ?? throw new InvalidOperationException("Reference not set:lsRemoteUnitSelections"), "Count"))))))
                 {
                     BookingUI_GetPreSelectedUnitKey_retVal = _.VAL(_.CALLm0argp(this, lsRemoteUnitSelections ?? throw new InvalidOperationException("Reference not set:lsRemoteUnitSelections"), _.ARGS.Val(_.SUBT(iReqNo, (Int16)1))));
                     return BookingUI_GetPreSelectedUnitKey_retVal;
@@ -2671,7 +2671,7 @@ namespace TranslatedProgram
             // Render slightly differently if got a precise match
             // - Also render differently when VB Polling enabled, since we have to render
             //   more of these sections than otherwise
-            bExactMatch = _.VAL(_.AND(_.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "StartDate"), adtStartNight), _.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights"), aiReqNights)));
+            bExactMatch = _.VAL(_.ANDe2(_.CBOOL(_.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "StartDate"), adtStartNight)) && _.CBOOL(_.EQ(_.CALLm1v0(this, objAvailEntry ?? throw new InvalidOperationException("Reference not set:objAvailEntry"), "Nights"), aiReqNights))));
             if (_.IF(_.OR(bExactMatch, _outer.IsVBPollingEnabled)))
             {
                 bPrecise = true;
@@ -2779,7 +2779,7 @@ namespace TranslatedProgram
             _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", _.CONCAT("<input type=\"hidden\" name=\"roomReq_", aiThisReqmnt, "\" value=\"", iSz, "\" />"));
 
             //#MJ - need to check with Rich if we want to indicate who's going into what room
-            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ChildPricing"), _.GT(_.NullableNUM(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenRequirement")), (Int16)0))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ChildPricing")) && _.CBOOL(_.GT(_.NullableNUM(_.CALLm1v0(this, objUnit ?? throw new InvalidOperationException("Reference not set:objUnit"), "ChildrenRequirement")), (Int16)0)))))
             {
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", " - (");
                 _.CALLm1v1(this, pO ?? throw new InvalidOperationException("Reference not set:pO"), "Write", "<span class=\"ReqmntDetails\">");
@@ -3280,7 +3280,7 @@ namespace TranslatedProgram
         public object InitExternalBookingSettings()
         {
             object InitExternalBookingSettings_retVal = null;
-            if (_.IF(_.AND(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal"), _.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ExtBookEstateMapping")))), ""))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ForceExternal")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.TRIM(_.CONCAT("", _.CALLm2v1(this, _outer.Page ?? throw new InvalidOperationException("Reference not set:Page"), "Site", "Params", "Booking_ExtBookEstateMapping")))), "")))))
             {
                 _outer.IsExternalBooking = true;
             }

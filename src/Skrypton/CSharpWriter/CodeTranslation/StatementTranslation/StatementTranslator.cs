@@ -2226,31 +2226,18 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         private string BuildContentAND(int useCaseNo, TranslatedStatementContentDetailsWithContentType? result1,
                         TranslatedStatementContentDetailsWithContentType? resultLeft, TranslatedStatementContentDetailsWithContentType? resultRight, TranslatedStatementContentDetailsWithContentType[]? translatedNonOperatorSegments)
         {
-            string fnName = nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND);
             string translatedContent = useCaseNo switch
             {
-                1 => string.Format(CultureInfo.InvariantCulture,
-                    "{0}.{1}({2})",
-                    _supportRefName.Name,
-                    fnName,
-                    result1!.TranslatedContent
-                ),
-                2 => string.Format(CultureInfo.InvariantCulture,
-                    "{0}.{1}({2}, {3})",
-                    _supportRefName.Name,
-                    fnName,
-                    resultLeft!.TranslatedContent,
-                    resultRight!.TranslatedContent
-                ),
-                3 => string.Format(CultureInfo.InvariantCulture,
-                    "{0}.{1}({2})",
-                    _supportRefName.Name,
-                    fnName,
-                    string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))
-                ),
-                _ => throw new NotSupportedException()
-            };
+                1 => throw new NotSupportedException(result1!.TranslatedContent),
+                10 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({result1!.TranslatedContent})",
 
+                2 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ANDe2)}({_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CBOOL)}({resultLeft!.TranslatedContent}) && {_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CBOOL)}({resultRight!.TranslatedContent}))",
+
+                3 => throw new NotSupportedException(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))),
+                30 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent)))})",
+
+                _ => throw new NotSupportedException(result1!.TranslatedContent)
+            };
 
             return translatedContent;
         }

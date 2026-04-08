@@ -53,7 +53,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Anfrager Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Caller object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlCaller), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSurname ?? throw new InvalidOperationException("Reference not set:EditSurname"), "Text")), ""))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.EQ(_.ISOBJECT(_env.hlCaller), true)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditSurname ?? throw new InvalidOperationException("Reference not set:EditSurname"), "Text")), "")))))
             {
                 NoPerson = false;
             }
@@ -103,7 +103,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Produkt Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Product object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text")), ""))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.EQ(_.ISOBJECT(_env.hlProduct), true)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text")), "")))))
             {
                 NoAsset = false;
             }
@@ -419,7 +419,7 @@ namespace TranslatedProgram
 
             //Prüft ob ein Anfrager Objekt vorhanden ist und ob dieses auch angezeigt wird
             //Check wether the Caller object exist
-            if (_.IF(_.AND(_.EQ(_.ISOBJECT(_env.hlProduct), true), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditHostname ?? throw new InvalidOperationException("Reference not set:EditHostname"), "Text")), ""))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.EQ(_.ISOBJECT(_env.hlProduct), true)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _env.EditHostname ?? throw new InvalidOperationException("Reference not set:EditHostname"), "Text")), "")))))
             {
                 NoProduct = false;
             }

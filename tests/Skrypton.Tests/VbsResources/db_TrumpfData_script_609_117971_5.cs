@@ -143,7 +143,7 @@ namespace TranslatedProgram
                 _outer.CreateCI = _.VAL(_.CALLm1argp(this, _outer.hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CreateCI").Val((Int16)0).Ref(_outer.PosID, v10 => { _outer.PosID = v10; }).Val((Int16)0).Val((Int16)0)));
                 //Pruefen ob CI bereits erzeugt wurde
                 _outer.CIisCreated = _.VAL(_.CALLm1argp(this, _outer.hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIisCreated").Val((Int16)0).Ref(_outer.PosID, v11 => { _outer.PosID = v11; }).Val((Int16)0).Val((Int16)0)));
-                if (_.IF(_.AND(_.AND(_.EQ(_.NullableSTR(_outer.CreateCI), "1"), _.NOTEQ(_.NullableSTR(_outer.CIisCreated), "1")), _.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusOrdered"))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.ANDe2(_.CBOOL(_.EQ(_.NullableSTR(_outer.CreateCI), "1")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_outer.CIisCreated), "1")))) && _.CBOOL(_.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusOrdered")))))
                 {
                     //CI-Typ ermitteln
                     _outer.CIType = _.VAL(_.CALLm1argp(this, _outer.hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CIType").Val((Int16)0).Ref(_outer.PosID, v12 => { _outer.PosID = v12; }).Val((Int16)0).Val((Int16)0)));
@@ -3306,7 +3306,7 @@ namespace TranslatedProgram
                 //Bestellmenge abfragen
                 _outer.CIQuantity = _.VAL(_.CALLm1argp(this, _outer.hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.PurchaseOrderQuantity").Val((Int16)0).Ref(_outer.PosID, v736 => { _outer.PosID = v736; }).Val((Int16)0).Val((Int16)0)));
                 //Auf Eliminierung pruefen
-                if (_.IF(_.AND(_.AND(_.EQ(_.NullableSTR(_outer.CreateCI), "1"), _.EQ(_.NullableSTR(_outer.CIisCreated), "1")), _.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusChangedStorno"))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.ANDe2(_.CBOOL(_.EQ(_.NullableSTR(_outer.CreateCI), "1")) && _.CBOOL(_.EQ(_.NullableSTR(_outer.CIisCreated), "1")))) && _.CBOOL(_.EQ(_.NullableSTR(_outer.strOrdReqStatus), "OrderRequestStatusChangedStorno")))))
                 {
                     //Anzahl assoziierte CIs ermitteln
                     _outer.objs = _.VAL(_.CALLm1v4(this, _outer.hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), 119155));

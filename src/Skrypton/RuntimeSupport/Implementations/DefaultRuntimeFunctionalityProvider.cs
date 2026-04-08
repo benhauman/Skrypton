@@ -208,7 +208,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         // - Read http://blogs.msdn.com/b/ericlippert/archive/2004/07/15/184431.aspx
         public object NOT(object o)
         {
-            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Not'", o);
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValues = GetForBitwiseOperations("'Not'", o);
             int? valueToNot = bitwiseOperationValues.Item1.Single();
             if (valueToNot == null)
             {
@@ -220,7 +220,43 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object AND(object l, object r)
         {
-            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'And'", l, r);
+            return ANDCore(l, () => r);
+        }
+        public bool ANDe2(bool evaluationResult) => evaluationResult;
+        public object ANDe2z(object l, Func<object> rp)
+        {
+            if (rp == null) throw new ArgumentNullException(nameof(rp));
+            return ANDCore(l, rp);
+        }
+        private object ANDCore(object l, Func<object> rp)
+        {
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValuesL = GetForBitwiseOperations("'And'", l);
+            int? left = bitwiseOperationValuesL.Item1.First();
+            if (left == null)
+            {
+                // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
+                // values are Null then Null is returned.
+                return DBNull.Value;
+            }
+
+            //if (left.Value ==)
+
+
+            object r = rp();
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValuesR = GetForBitwiseOperations("'And'", r);
+            int? right = bitwiseOperationValuesR.Item1.First();
+            if (right == null)
+            {
+                // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
+                // values are Null then Null is returned.
+                return DBNull.Value;
+            }
+
+            return bitwiseOperationValuesR.Item2(left.Value & right.Value);
+        }
+        private object ANDCoreOld(object l, object r)
+        {
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValues = GetForBitwiseOperations("'And'", l, r);
             int? left = bitwiseOperationValues.Item1.First();
             int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) || (right == null))
@@ -233,7 +269,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object OR(object? l, object? r)
         {
-            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Or'", l, r);
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValues = GetForBitwiseOperations("'Or'", l, r);
             int? left = bitwiseOperationValues.Item1.First();
             int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) && (right == null))
@@ -250,7 +286,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object XOR(object l, object r)
         {
-            Tuple<IEnumerable<int?>, Func<int, object>> bitwiseOperationValues = GetForBitwiseOperations("'Xor'", l, r);
+            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValues = GetForBitwiseOperations("'Xor'", l, r);
             int? left = bitwiseOperationValues.Item1.First();
             int? right = bitwiseOperationValues.Item1.Skip(1).Single();
             if ((left == null) || (right == null))
@@ -2707,7 +2743,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// booleans were operated on then a boolean will be returned, if an "Integer" (Int16) or a "Long" (Int32) were operated on then an Int32 will be returned
         /// (this is what the lambda is for).
         /// </summary>
-        private Tuple<IEnumerable<int?>, Func<int, object>> GetForBitwiseOperations(string exceptionMessageForInvalidContent, params object?[] values)
+        private Tuple<IEnumerable<int?>, Func<int, object>, Type> GetForBitwiseOperations(string exceptionMessageForInvalidContent, params object?[] values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -2726,10 +2762,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             //      byte then it jumps to Int16. In fairness, I imagine this is because byte is an unsigned type and so can not represent -1, which is what boolean True
             //      is represented by as a number - so Int16 is the smallest type that can contain all boolean AND byte values.
             Func<int, object> returnTypeConverter;
+            Type returnType;
             if (values.All(v => v is bool))
+            {
+                returnType = typeof(bool);
                 returnTypeConverter = finalValue => (finalValue != 0);
+            }
             else if (values.All(v => v is byte))
+            {
+                returnType = typeof(byte);
                 returnTypeConverter = finalValue => Convert.ToByte(finalValue & byte.MaxValue);
+            }
             else if (values.All(v => (v is bool) || (v is byte) || (v is Int16)))
             {
                 // This is the only complicated type conversion, really. To translate from an Int32 into an Int16, we want to take the last 8 (of 16) bits. For
@@ -2738,16 +2781,21 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // 8 bits then we get "11111110" and need only cast that to an Int16. This is why we can't use Convert.ToInt16 - since the long value we have manipulated
                 // could easily cause an overflow (as it would in the example here).
                 returnTypeConverter = finalValue => (Int16)(finalValue & 0xffff);
+                returnType = typeof(Int16);
             }
             else
+            {
+                returnType = typeof(int);
                 returnTypeConverter = finalValue => finalValue;
+            }
 
             // 3. Return the values as null (where VBScript Null values were found) or as Int32 values - using the convention of a C# null for a VBScript null
             //    (despite the fact that they're not the same elsewhere VBScript Null = DBNull.Value in C#, VBScript Empty = null in C#) allows us to take
             //    advantage of the Nullable<int> type, rather than having to return IEnumerable<object> where everything is either Int32 or DBNull.Value
             return Tuple.Create(
                 values.Select(v => (v == DBNull.Value) ? (int?)null : CLNG(v, exceptionMessageForInvalidContent)),
-                returnTypeConverter
+                returnTypeConverter,
+                returnType
             );
         }
 

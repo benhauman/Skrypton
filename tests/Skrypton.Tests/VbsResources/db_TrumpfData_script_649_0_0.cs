@@ -159,7 +159,7 @@ namespace TranslatedProgram
             }
             finally { hlCase = hlCase_vref; hlContext = hlContext_vref; }
             MailRequest = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CaseGeneral.DefaultNotification", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            if (_.IF(_.AND(_.EQ(_.NullableSTR(MailRequest), "DefaultNotificationEmail"), _.EQ(_.NullableNUM(SUIDx), (Int16)1))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.EQ(_.NullableSTR(MailRequest), "DefaultNotificationEmail")) && _.CBOOL(_.EQ(_.NullableNUM(SUIDx), (Int16)1)))))
             {
                 strCRLF = _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10));
                 refnumber = _.VAL(_.CALLm1v5(this, hlCase ?? throw new InvalidOperationException("Reference not set:hlCase"), "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
@@ -706,7 +706,7 @@ namespace TranslatedProgram
         //----------------------------------------------------------------------------------------------------------
         public object IsValidObject(ref object obj)
         {
-            return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
+            return _.VAL(_.ANDe2(_.CBOOL(_.ISOBJECT(obj)) && _.CBOOL(_.NOT(_.IS(obj, VBScriptConstants.Nothing)))));
         }
         public void ExportObject(ref object hlContext, ref object hlObj)
         {

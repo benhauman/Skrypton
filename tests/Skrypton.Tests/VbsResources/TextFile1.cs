@@ -162,7 +162,7 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _outer, "Trace", _.ARGS.Ref(hlContext_vref2, v8 => { hlContext_vref2 = v8; }).Val(_.CONCAT("Type ", _.VARTYPE(hlObject))));
             }
             finally { hlContext = hlContext_vref2; }
-            IsHLObject_retVal = _.VAL(_.AND(_.EQ(_.ISOBJECT(hlObject), true), _.EQ(_.IS(hlObject, VBScriptConstants.Nothing), false)));
+            IsHLObject_retVal = _.VAL(_.ANDe2(_.CBOOL(_.EQ(_.ISOBJECT(hlObject), true)) && _.CBOOL(_.EQ(_.IS(hlObject, VBScriptConstants.Nothing), false))));
             return IsHLObject_retVal;
         }
         //-------------------------------------------------------------------
@@ -294,7 +294,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref4; }
             if (ifResult)
             {
-                if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Company"), _.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Division"))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Company")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Division")))))
                 {
                     FirstOrgUnit = VBScriptConstants.Nothing;
                 }
@@ -369,7 +369,7 @@ namespace TranslatedProgram
 
             productDefName = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GetType", _.ARGS.ForceBrackets()));
 
-            if (_.IF(_.AND(_.NOTEQ(_.NullableSTR(productDefName), "Software"), _.NOTEQ(_.NullableSTR(productDefName), "SoftwareLicence"))))
+            if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "Software")) && _.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "SoftwareLicence")))))
             {
                 contentID = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GenerateContentID", _.ARGS.ForceBrackets()));
                 agentID = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
@@ -502,7 +502,7 @@ namespace TranslatedProgram
                         return GetReferenceLicenseCount_retVal;
                     }
                 }
-                if (_.IF(_.AND(_.EQ(_.NullableSTR(objType), "SoftwareLicense"), _.EQ(_.CBOOL(chkFolderOnly), false))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.EQ(_.NullableSTR(objType), "SoftwareLicense")) && _.CBOOL(_.EQ(_.CBOOL(chkFolderOnly), false)))))
                 {
                     object hlContext_vref13 = hlContext;
                     try
@@ -716,7 +716,7 @@ namespace TranslatedProgram
         //----------------------------------------------------------------------------------------------------------
         public object IsValidObject(ref object obj)
         {
-            return _.VAL(_.AND(_.ISOBJECT(obj), _.NOT(_.IS(obj, VBScriptConstants.Nothing))));
+            return _.VAL(_.ANDe2(_.CBOOL(_.ISOBJECT(obj)) && _.CBOOL(_.NOT(_.IS(obj, VBScriptConstants.Nothing)))));
         }
         //----------------------------------------------------------------------------------------------------------
         public void CalcAllLicCounter(ref object hlContext, ref object pDict)
