@@ -111,6 +111,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     if (operatorSegmentWithIndex.SegmentIndex != 0)
                     {
+                        // Syntax error? VBScript: If Len(info) =< 0 Then
                         throw new ArgumentException($"If there are any only two segments then the first must be a negation operator (the first here isn't an operator). Line:{operatorSegmentWithIndex.Segment?.Token.LineIndex}");
                     }
 

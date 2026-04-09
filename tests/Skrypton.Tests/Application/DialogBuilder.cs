@@ -149,6 +149,10 @@ namespace Skrypton.Tests.Application
         {
             GuiScripts.Add(scriptName, new ScriptInfo(scriptCode));
         }
+        public void AddWebScriptCode(string scriptName, string scriptCode)
+        {
+            WebScripts.Add(scriptName, new ScriptInfo(scriptCode));
+        }
         public string GetGuiScriptCode(string scriptName)
         {
             return GuiScripts[scriptName].Code;

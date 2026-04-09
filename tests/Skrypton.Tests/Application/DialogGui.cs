@@ -1065,9 +1065,8 @@ WScript.Echo xmlhttp.responseText
                     }
                     else
                     {
-                        //builder.AddWebScriptCode(scriptName, scriptCode);
-                        throw new NotImplementedException($"scriptName:{scriptName}");
                     }
+                    builder.AddWebScriptCode(scriptName, scriptCode);
                 }
             }
 

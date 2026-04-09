@@ -120,7 +120,7 @@ namespace Skrypton.Tests.Application
         {
             return GetItemsExCore(flags, suidx, assocdef);
         }
-        private object[] GetItemsExCore(int flags, int suidx, object assocdef)
+        private object[] GetItemsExCore(int flags, int suidx, object assocdef) // 0: ask the 'B', 1: ask the 'A'
         {
             string assocDefName;
             if (assocdef is int assocdefid)
