@@ -22,14 +22,14 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token.Content.Contains('.', StringComparison.Ordinal))
             {
                 typeText = "double";
-                return token.Content + (token.Content.EndsWith('.') ? "0" : "");
+                return token.Content + (token.Content.EndsWith('.', StringComparison.Ordinal) ? "0" : "");
             }
 
             // C# will default to int (Int32) for integers, we need to override this for smaller values
             if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
             {
                 typeText = "Int16";
-                if (token.Content.StartsWith('-'))
+                if (token.Content.StartsWith('-', StringComparison.Ordinal))
                     return "(Int16)(-" + token.Content.Substring(1) + ")";
                 return "(Int16)" + token.Content;
             }
@@ -113,7 +113,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            if (token.Content.StartsWith('-'))
+            if (token.Content.StartsWith('-', StringComparison.Ordinal))
                 return new NumericValueToken(token.Content.Substring(1).ToUpperX(), token.LineIndex);
             return new NumericValueToken(("-" + token.Content).ToUpperX(), token.LineIndex);
         }

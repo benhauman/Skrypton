@@ -35,7 +35,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             StringBuilder output = new StringBuilder();
             output.Append(generationContext.Indenter.Indent);
             output.Append("Public ");
-            output.Append(baseContent.AsSpan(4));
+            output.Append(baseContent.AsSpanX(4));
             return output.ToString();
         }
     }

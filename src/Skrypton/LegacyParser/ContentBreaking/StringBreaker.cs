@@ -120,7 +120,7 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         if (prevToken is UnprocessedContentToken)
                         {
                             // UnprocessedContentToken MAY conclude with end-of-statement content, we'll need to check
-                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith('\n'))
+                            if (!prevToken.Content.TrimEnd(_whiteSpaceCharsExceptLineReturn).EndsWith('\n', StringComparison.Ordinal))
                             {
                                 tokens.RemoveAt(tokens.Count - 1);
                                 string unprocessedContentToRecord = prevToken.Content.TrimEnd('\t', ' ');

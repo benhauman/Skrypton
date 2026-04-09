@@ -61,7 +61,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             output.Append("ReDim ");
             if (Preserve)
                 output.Append("Preserve ");
-            output.Append(baseContent.AsSpan(4));
+            output.Append(baseContent.AsSpanX(4));
             return output.ToString();
         }
     }

@@ -19,9 +19,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // Note that blank or whitespace-only are acceptable for this content so we can only check for null here
             if (contentUpper.Length == 0)
                 throw new ArgumentException("cannot be empty", nameof(contentUpper));
-            if (!contentUpper.Original.StartsWith('['))
+            if (!contentUpper.Original.StartsWith('[', StringComparison.Ordinal))
                 throw new ArgumentException("The content for an EscapedNameToken must start with an opening square bracket");
-            if (!contentUpper.Original.EndsWith(']'))
+            if (!contentUpper.Original.EndsWith(']', StringComparison.Ordinal))
                 throw new ArgumentException("The content for an EscapedNameToken must end with a closing square bracket");
             if (contentUpper.Original.Count(c => c == ']') > 1)
                 throw new ArgumentException("The content for an EscapedNameToken may only closing square bracket as the termination character, not within the content");
