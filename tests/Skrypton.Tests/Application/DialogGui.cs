@@ -734,7 +734,7 @@ WScript.Echo xmlhttp.responseText
             return new TestHostProcessControlHostService();
         }
 
-        private IHostDatabaseConnectionFactoryHostService CreateTestDatabaseConnectionFactoryHostService()
+        public static IHostDatabaseConnectionFactoryHostService CreateTestDatabaseConnectionFactoryHostService()
         {
             return new TestDatabaseConnectionFactoryHostService();
         }
@@ -1533,6 +1533,12 @@ WScript.Echo xmlhttp.responseText
         public int GetSearchItemCount(object objectDefinitions, string searchCondition)
         {
             return 70701;
+        }
+
+        public object LoadObject(int defId, int objId)
+        {
+            Console.WriteLine($"[DIALOGMODEL] LoadObject(defId:{defId}, objId:{objId})");
+            return null;
         }
     }
 
