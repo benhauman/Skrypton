@@ -212,6 +212,8 @@ namespace Skrypton.Tests.Application
     {
         public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
         public string TitleTextColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+
+        public int Height { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
     }
 
     public sealed class DialogBase

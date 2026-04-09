@@ -9,6 +9,9 @@ namespace Skrypton.Tests.Application.Controls
         public string Text { get => RetrieveValueForText(); set => UpdateValueForText(value); }
         public string ToolTip { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
 
+        public int Left { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
+        public int Width { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
+
         private void UpdateValueForText(string value)
         {
             _valueText = value;

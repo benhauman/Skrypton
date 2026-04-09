@@ -15,11 +15,17 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.searchResult = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); // Initialize as empty array
-
-            if (_.IF(_.ANDe2(_.CBOOL(_.GTE(_.NullableNUM(_.UBOUND(_outer.searchResult)), (Int16)0)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.CALLm0argp(this, _outer.searchResult ?? throw new InvalidOperationException("Reference not set:searchResult"), _.ARGS.Val((Int16)0)) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), _.ARGS.Val((Int16)2))), "")))))
+            _outer.serv = VBScriptConstants.Nothing;
+            if (_.IF(_.NOT(_.IS(_outer.serv, VBScriptConstants.Nothing))))
             {
-                _.MSGBOX("T");
+                if (_.IF(_.EQ(_.CALLm1v1(this, _outer.serv ?? throw new InvalidOperationException("Reference not set:serv"), "enabled", (Int16)7), true)))
+                {
+                    _.SETm1a1(this, _outer.serv ?? throw new InvalidOperationException("Reference not set:serv"), "Enabled", (Int16)8, false);
+                }
+                else
+                {
+                    _.SETm1a1(this, _outer.serv ?? throw new InvalidOperationException("Reference not set:serv"), "Enabled", (Int16)9, true);
+                }
             }
         }
     }
@@ -33,9 +39,9 @@ namespace TranslatedProgram
             _ = compatLayer ?? throw new ArgumentNullException(nameof(compatLayer));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = this;
-            searchResult = null;
+            serv = null;
         }
-        internal object searchResult { get; set; }
+        internal object serv { get; set; }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
     {

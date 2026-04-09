@@ -1,0 +1,206 @@
+<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://vbs" i:type="d1p1:OutermostScope" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+  <d1p1:AllExecutableBlocks xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:anyType i:type="d1p1:DimStatement">
+      <d1p1:Variables>
+        <d1p1:DimVariable i:type="d1p1:ConstantNonNegativeArrayDimensionDimVariable">
+          <d1p1:Dimensions i:nil="true" />
+          <d1p1:Name>
+            <d1p1:Content>serv</d1p1:Content>
+            <d1p1:LineIndex>1</d1p1:LineIndex>
+          </d1p1:Name>
+        </d1p1:DimVariable>
+      </d1p1:Variables>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+      <d1p1:Expression>
+        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+        <d1p1:Tokens>
+          <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+            <d1p1:Content>Nothing</d1p1:Content>
+            <d1p1:LineIndex>2</d1p1:LineIndex>
+            <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+          </d2p1:anyType>
+        </d1p1:Tokens>
+      </d1p1:Expression>
+      <d1p1:ValueSetType>Set</d1p1:ValueSetType>
+      <d1p1:ValueToSet>
+        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+        <d1p1:Tokens>
+          <d2p1:anyType i:type="d1p1:NameToken">
+            <d1p1:Content>serv</d1p1:Content>
+            <d1p1:LineIndex>2</d1p1:LineIndex>
+          </d2p1:anyType>
+        </d1p1:Tokens>
+      </d1p1:ValueToSet>
+    </d2p1:anyType>
+    <d2p1:anyType i:type="d1p1:IfBlock">
+      <d1p1:ConditionalClauses>
+        <d1p1:IfBlock.IfBlockConditionSegment>
+          <d1p1:Condition>
+            <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+            <d1p1:Tokens>
+              <d2p1:anyType i:type="d1p1:LogicalOperatorToken">
+                <d1p1:Content>not</d1p1:Content>
+                <d1p1:LineIndex>3</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:NameToken">
+                <d1p1:Content>serv</d1p1:Content>
+                <d1p1:LineIndex>3</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                <d1p1:Content>is</d1p1:Content>
+                <d1p1:LineIndex>3</d1p1:LineIndex>
+              </d2p1:anyType>
+              <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                <d1p1:Content>nothing</d1p1:Content>
+                <d1p1:LineIndex>3</d1p1:LineIndex>
+                <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+              </d2p1:anyType>
+            </d1p1:Tokens>
+          </d1p1:Condition>
+          <d1p1:Statements>
+            <d2p1:anyType i:type="d1p1:IfBlock">
+              <d1p1:ConditionalClauses>
+                <d1p1:IfBlock.IfBlockConditionSegment>
+                  <d1p1:Condition>
+                    <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                    <d1p1:Tokens>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>serv</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                        <d1p1:Content>.</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NameToken">
+                        <d1p1:Content>enabled</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:OpenBrace">
+                        <d1p1:Content>(</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:NumericValueToken">
+                        <d1p1:Content>7</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:CloseBrace">
+                        <d1p1:Content>)</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:ComparisonOperatorToken">
+                        <d1p1:Content>=</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                      </d2p1:anyType>
+                      <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                        <d1p1:Content>True</d1p1:Content>
+                        <d1p1:LineIndex>4</d1p1:LineIndex>
+                        <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                      </d2p1:anyType>
+                    </d1p1:Tokens>
+                  </d1p1:Condition>
+                  <d1p1:Statements>
+                    <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                      <d1p1:Expression>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                            <d1p1:Content>False</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                            <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:Expression>
+                      <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                      <d1p1:ValueToSet>
+                        <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                        <d1p1:Tokens>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>serv</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                            <d1p1:Content>.</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NameToken">
+                            <d1p1:Content>Enabled</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:OpenBrace">
+                            <d1p1:Content>(</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:NumericValueToken">
+                            <d1p1:Content>8</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                          <d2p1:anyType i:type="d1p1:CloseBrace">
+                            <d1p1:Content>)</d1p1:Content>
+                            <d1p1:LineIndex>5</d1p1:LineIndex>
+                          </d2p1:anyType>
+                        </d1p1:Tokens>
+                      </d1p1:ValueToSet>
+                    </d2p1:anyType>
+                  </d1p1:Statements>
+                </d1p1:IfBlock.IfBlockConditionSegment>
+              </d1p1:ConditionalClauses>
+              <d1p1:OptionalElseClause>
+                <d1p1:Statements>
+                  <d2p1:anyType i:type="d1p1:ValueSettingStatement">
+                    <d1p1:Expression>
+                      <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                      <d1p1:Tokens>
+                        <d2p1:anyType i:type="d1p1:BuiltInValueToken">
+                          <d1p1:Content>True</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                          <d1p1:IsAcceptableAsConstValue>true</d1p1:IsAcceptableAsConstValue>
+                        </d2p1:anyType>
+                      </d1p1:Tokens>
+                    </d1p1:Expression>
+                    <d1p1:ValueSetType>Let</d1p1:ValueSetType>
+                    <d1p1:ValueToSet>
+                      <d1p1:CallPrefix>Absent</d1p1:CallPrefix>
+                      <d1p1:Tokens>
+                        <d2p1:anyType i:type="d1p1:NameToken">
+                          <d1p1:Content>serv</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:MemberAccessorOrDecimalPointToken">
+                          <d1p1:Content>.</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:NameToken">
+                          <d1p1:Content>Enabled</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:OpenBrace">
+                          <d1p1:Content>(</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:NumericValueToken">
+                          <d1p1:Content>9</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                        <d2p1:anyType i:type="d1p1:CloseBrace">
+                          <d1p1:Content>)</d1p1:Content>
+                          <d1p1:LineIndex>7</d1p1:LineIndex>
+                        </d2p1:anyType>
+                      </d1p1:Tokens>
+                    </d1p1:ValueToSet>
+                  </d2p1:anyType>
+                </d1p1:Statements>
+              </d1p1:OptionalElseClause>
+            </d2p1:anyType>
+          </d1p1:Statements>
+        </d1p1:IfBlock.IfBlockConditionSegment>
+      </d1p1:ConditionalClauses>
+      <d1p1:OptionalElseClause i:nil="true" />
+    </d2p1:anyType>
+  </d1p1:AllExecutableBlocks>
+  <d1p1:Name i:type="d1p1:DoNotRenameNameToken">
+    <d1p1:Content>Root</d1p1:Content>
+    <d1p1:LineIndex>1</d1p1:LineIndex>
+  </d1p1:Name>
+</z:anyType>

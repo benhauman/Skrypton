@@ -595,7 +595,6 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
             }
 
-            string memberAccessorText = (optionalMemberAccessor == null) ? "" : optionalMemberAccessor.ToLiteral();
             if (optionalMemberAccessor == null && argumentsInitialization.Length == 0)
             {
                 return new ValueSettingStatementAssignmentFormatDetails(
@@ -605,10 +604,23 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                return new ValueSettingStatementAssignmentFormatDetails(
-                    translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}{argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
-                    variablesAccessed
-                );
+                if (optionalMemberAccessor == null)
+                {
+                    return new ValueSettingStatementAssignmentFormatDetails(
+                        translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
+                        variablesAccessed
+                    );
+
+                }
+                else
+                {
+                    string memberAccessorText = optionalMemberAccessor.ToLiteral();
+                    return new ValueSettingStatementAssignmentFormatDetails(
+                        translatedExpression => $@"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpression})", // Pass "this" as the "context" argument
+                        variablesAccessed
+                    );
+
+                }
             }
         }
 
