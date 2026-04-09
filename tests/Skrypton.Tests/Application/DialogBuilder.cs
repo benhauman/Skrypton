@@ -73,7 +73,7 @@ namespace Skrypton.Tests.Application
                 }
             }
 
-            return new DialogBase(_hostServices, _globalScriptCode, dialogHandlerScriptCodeBuilder.ToString(), _externalReferences, scriptNames, _controls);
+            return new DialogBase(_hostServices, _globalScriptCode, dialogHandlerScriptCodeBuilder.ToString(), _externalReferences, scriptNames, _controls, _dialogSearches, _dialogSymbols);
         }
         private DialogBuilder AddControlCore(string controlId, DialogGuiControlBase c)
         {
@@ -145,15 +145,15 @@ namespace Skrypton.Tests.Application
             return this;
         }
 
-        public void AddScriptCode(string scriptName, string scriptCode)
+        public void AddGuiScriptCode(string scriptName, string scriptCode)
         {
             GuiScripts.Add(scriptName, new ScriptInfo(scriptCode));
         }
-        public string GetScriptCode(string scriptName)
+        public string GetGuiScriptCode(string scriptName)
         {
             return GuiScripts[scriptName].Code;
         }
-        internal DialogBuilder FixScriptCode(string scriptName, Func<string, string> fixHandler)
+        internal DialogBuilder FixGuiScriptCode(string scriptName, Func<string, string> fixHandler)
         {
             string originalCode = GuiScripts[scriptName].Code;
             string newCode = fixHandler(originalCode);
@@ -173,6 +173,7 @@ namespace Skrypton.Tests.Application
         }
 
         private readonly Dictionary<string, ScriptInfo> GuiScripts = new Dictionary<string, ScriptInfo>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ScriptInfo> WebScripts = new Dictionary<string, ScriptInfo>(StringComparer.OrdinalIgnoreCase);
 
         private sealed class ScriptInfo
         {
@@ -188,9 +189,54 @@ namespace Skrypton.Tests.Application
             }
         }
 
-        public bool HasScriptCode(string scriptName)
+        public bool HasGuiScriptCode(string scriptName)
         {
             return GuiScripts.ContainsKey(scriptName);
+        }
+
+        public void AddDialogSearch(string searchName, string searchSymbolName, string[] searchObjectDefinitionNames)
+        {
+            _dialogSearches.Add(searchName, new DialogSearch(searchName, searchSymbolName, searchObjectDefinitionNames));
+        }
+
+        private readonly Dictionary<string, DialogSearch> _dialogSearches = new Dictionary<string, DialogSearch>();
+
+        public void AddDialogSymbol(string symbolName, string symbolAssociationName, bool symbolSearchParent) // 'Division', 'Asset2Organization', true => hlObj is Asset. hlObj is RoleB (child and not parent) Division is the parent
+        {
+            _dialogSymbols.Add(symbolName, new DialogSymbol(symbolName, symbolAssociationName, symbolSearchParent));
+
+            //!?!?_externalReferences.Add(symbolName, new ScriptExternalReferenceInfo(objectInstance, members));
+        }
+
+        private readonly Dictionary<string, DialogSymbol> _dialogSymbols = new Dictionary<string, DialogSymbol>();
+
+        public IReadOnlyCollection<DialogSymbol> DialogSymbols => _dialogSymbols.Values;
+    }
+
+    public sealed class DialogSearch
+    {
+        public string Name { get; }
+        public string SymbolName { get; }
+        public string[] ObjectDefinitionNames { get; }
+
+        public DialogSearch(string name, string symbolName, string[] objectDefinitionNames)
+        {
+            Name = name;
+            SymbolName = symbolName;
+            ObjectDefinitionNames = objectDefinitionNames;
+        }
+    }
+    public sealed class DialogSymbol
+    {
+        public string Name { get; }
+        public string AssociationName { get; }
+        public bool SearchParent { get; }
+
+        public DialogSymbol(string name, string associationName, bool searchParent)
+        {
+            Name = name;
+            AssociationName = associationName;
+            SearchParent = searchParent;
         }
     }
 
@@ -225,8 +271,10 @@ namespace Skrypton.Tests.Application
         public string DialogGlobalScriptCode { get; }
 
         public IReadOnlyCollection<string> ScriptNames { get; }
+        public IReadOnlyDictionary<string, DialogSearch> DialogSearches { get; }
+        public IReadOnlyDictionary<string, DialogSymbol> DialogSymbols { get; }
 
-        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode, string dialogHandlerScriptCode, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalReferences, IReadOnlyCollection<string> scriptNames, IReadOnlyDictionary<string, DialogGuiControlBase> controls)
+        public DialogBase(IServiceProvider hostServices, string dialogGlobalScriptCode, string dialogHandlerScriptCode, IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalReferences, IReadOnlyCollection<string> scriptNames, IReadOnlyDictionary<string, DialogGuiControlBase> controls, IReadOnlyDictionary<string, DialogSearch> dialogSearches, IReadOnlyDictionary<string, DialogSymbol> dialogSymbols)
         {
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
             HostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
@@ -234,6 +282,8 @@ namespace Skrypton.Tests.Application
             DialogHandlerScriptCode = dialogHandlerScriptCode ?? throw new ArgumentNullException(nameof(dialogHandlerScriptCode));
             ExternalReferences = externalReferences ?? throw new ArgumentNullException(nameof(externalReferences));
             ScriptNames = scriptNames ?? throw new ArgumentNullException(nameof(scriptNames));
+            DialogSearches = dialogSearches ?? throw new ArgumentNullException(nameof(dialogSearches));
+            DialogSymbols = dialogSymbols ?? throw new ArgumentNullException(nameof(dialogSymbols));
         }
 
         internal string CompleteScriptCode()

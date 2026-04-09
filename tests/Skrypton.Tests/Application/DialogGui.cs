@@ -840,7 +840,7 @@ WScript.Echo xmlhttp.responseText
                 .AddExternalObject("hlObj", hlobj)
                 .AddExternalObject("hlCaller", hlcaller)
                 .AddExternalObject("hlProduct", hlProduct)
-                .WorkaroundScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
+                .WorkaroundGuiScriptCode("cb_template_load_SelectionEndOK", "position =< anzahl_agent_templates", "position <= anzahl_agent_templates") // line:1211
                 .BuildDialog();
 
             //PERFORMANCE:for (int ixx = 1; ixx <= 7; ixx++)
@@ -1044,13 +1044,62 @@ WScript.Echo xmlhttp.responseText
             DialogBuilder builder = new DialogBuilder(hostServices, dialogModel, controls.ToArray());
 
             var xGuiScripts = xHelpLineDialogData.Elements().Single(x => x.Name.LocalName == "GuiScripts");
-
             foreach (var xScript in xGuiScripts.Elements())
             {
                 string scriptName = xScript.Elements().Single(x => x.Name.LocalName == "Name").Value;
                 string scriptCode = xScript.Elements().Single(x => x.Name.LocalName == "Code").Value;
 
-                builder.AddScriptCode(scriptName, scriptCode);
+                builder.AddGuiScriptCode(scriptName, scriptCode);
+            }
+            var xWebScripts = xHelpLineDialogData.Elements().SingleOrDefault(x => x.Name.LocalName == "WebScripts");
+            if (xWebScripts != null)
+            {
+                foreach (var xScript in xWebScripts.Elements())
+                {
+                    string scriptName = xScript.Elements().Single(x => x.Name.LocalName == "Name").Value;
+                    string scriptCode = xScript.Elements().Single(x => x.Name.LocalName == "Code").Value;
+
+                    if (scriptCode.Trim().Length == 0)
+                    {
+                        // empty code can be ignored for testing
+                    }
+                    else
+                    {
+                        //builder.AddWebScriptCode(scriptName, scriptCode);
+                        throw new NotImplementedException($"scriptName:{scriptName}");
+                    }
+                }
+            }
+
+            var xDialogSearches = xHelpLineDialogData.Elements().SingleOrDefault(x => x.Name.LocalName == "DialogSearches");
+            if (xDialogSearches != null)
+            {
+                foreach (var xDialogSearch in xDialogSearches.Elements())
+                {
+                    string searchName = xDialogSearch.Elements().Single(x => x.Name.LocalName == "Name").Value;
+                    string searchSymbolName = xDialogSearch.Elements().Single(x => x.Name.LocalName == "SymbolName").Value;
+                    var xDefinitions = xDialogSearch.Elements().SingleOrDefault(x => x.Name.LocalName == "Definitions");
+                    List<string> searchObjectDefinitionNames = new List<string>();
+                    foreach (var xSearchObjectDefinitions in xDefinitions.Elements())
+                    {
+                        string searchObjectDefinitionName = xSearchObjectDefinitions.Value;
+                        searchObjectDefinitionNames.Add(searchObjectDefinitionName);
+                    }
+
+                    builder.AddDialogSearch(searchName: searchName, searchSymbolName: searchSymbolName, searchObjectDefinitionNames: searchObjectDefinitionNames.ToArray());
+                }
+            }
+
+            var xDialogSymbols = xHelpLineDialogData.Elements().SingleOrDefault(x => x.Name.LocalName == "DialogSymbols");
+            if (xDialogSymbols != null)
+            {
+                foreach (var xDialogSymbol in xDialogSymbols.Elements())
+                {
+                    string symbolName = xDialogSymbol.Elements().Single(x => x.Name.LocalName == "Name").Value;
+                    string symbolAssociationName = xDialogSymbol.Elements().Single(x => x.Name.LocalName == "AssociationName").Value;
+                    string symbolSearchParent = xDialogSymbol.Elements().Single(x => x.Name.LocalName == "SearchParent").Value;
+                    builder.AddDialogSymbol(symbolName, symbolAssociationName, XmlConvert.ToBoolean(symbolSearchParent));
+                }
             }
 
             return builder;
@@ -1111,6 +1160,7 @@ WScript.Echo xmlhttp.responseText
                             "xsd:boolean" => XmlConvert.ToBoolean(xValue.Value),
                             "xsd:dateTime" => XmlConvert.ToDateTime(xValue.Value, XmlDateTimeSerializationMode.Utc),
                             "ComboBoxHelplineSearch" => FromXmlComboBoxHelplineSearch(xValue),
+                            "CollectionInfo" => FromXmlTableControlCollectionInfo(xValue),
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
                         if (controlPropertyName == "SymbolName" && controlPropertyValue is string sv)
@@ -1125,6 +1175,17 @@ WScript.Echo xmlhttp.responseText
 
                 CollectControls(controls, xControl);
             }
+        }
+        private static TableControlCollectionInfo FromXmlTableControlCollectionInfo(XElement xValue)
+        {
+            /*
+            <Value xsi:type="CollectionInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                 <AssociationDefId>100670</AssociationDefId>
+                 <Flags>0</Flags>
+                 <Type>2</Type>
+               </Value>
+             */
+            return new TableControlCollectionInfo();
         }
         private static ComboBoxHelplineSearch FromXmlComboBoxHelplineSearch(XElement xValue)
         {
@@ -1149,9 +1210,9 @@ WScript.Echo xmlhttp.responseText
             return new ComboBoxHelplineSearch();
         }
 
-        public static DialogBuilder WorkaroundScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
+        public static DialogBuilder WorkaroundGuiScriptCode(this DialogBuilder builder, string scriptName, string originalText, string newText)
         {
-            return builder.FixScriptCode(scriptName, (originalCode) => originalCode.Replace(originalText, newText));
+            return builder.FixGuiScriptCode(scriptName, (originalCode) => originalCode.Replace(originalText, newText));
         }
     }
 

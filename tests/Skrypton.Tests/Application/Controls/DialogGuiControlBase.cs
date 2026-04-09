@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace Skrypton.Tests.Application.Controls
 {
@@ -345,6 +346,35 @@ namespace Skrypton.Tests.Application.Controls
             get;
             set;
         }
+
+        public TableControlCollectionInfo Collection { get => GetPropertyValueAsT<TableControlCollectionInfo>(); set => SetPropertyValueAsT(value); }
+
+        public object Search => Collection;
+        //{
+        //    get
+        //    {
+        //        return new TableControlCollectionInfo();
+        //    }
+        //}
+
+        public void LoadData()
+        {
+        }
+    }
+    public sealed class TableControlCollectionInfo
+    {
+        public string SearchCondition { get; set; }
+        //public int AssociationDefId { get; set; }
+
+        //public string AssociationDefName { get; set; }
+
+        //public string SearchName { get; set; }
+
+        //public int Flags { get; set; }
+
+        //public int Type { get; set; }
+
+        public object SearchObjects { get; set; } // string[]
     }
 
     public sealed class DialogGuiTabPageControl : DialogGuiControlBase
