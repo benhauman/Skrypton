@@ -27,7 +27,10 @@ public sealed class HLAttachmentInstance // see IHlAttachment
 
         return fileBytes;
     }
-
+    public int GetSize()
+    {
+        return fileBytes.Length;
+    }
     public string GetURL()
     {
         return fileBytes.Length != 0 ? "" : internalName;

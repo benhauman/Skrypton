@@ -2300,8 +2300,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
 
 
-        public object EVAL(object value) { throw new NotImplementedException(); }
-        public object EXECUTE(object value) { throw new NotImplementedException(); }
+        public object EVAL(object value) { throw new NotImplementedException("Dynamic script evaluation. Code:" + value); }
+        public object EXECUTE(object value) { throw new NotImplementedException("Dynamic script execution. Code:" + value); } // "script in script"
         public object EXECUTEGLOBAL(object value) { throw new NotImplementedException(); }
         // - Misc
         public object GETLOCALE(object value) { throw new NotImplementedException(); }

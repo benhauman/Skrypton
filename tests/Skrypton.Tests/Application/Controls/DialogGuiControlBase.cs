@@ -222,6 +222,7 @@ namespace Skrypton.Tests.Application.Controls
     }
     public sealed class DialogGuiImageControl : DialogGuiControlBase
     {
+        public string ToolTip { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
     public sealed class DialogGuiWebControl : DialogGuiControlBase
     {
