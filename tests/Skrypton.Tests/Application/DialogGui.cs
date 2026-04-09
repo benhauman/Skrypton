@@ -1516,6 +1516,11 @@ WScript.Echo xmlhttp.responseText
                     return null;
             }
         }
+
+        public int GetSearchItemCount(object objectDefinitions, string searchCondition)
+        {
+            return 70701;
+        }
     }
 
     internal sealed class MyTimerService : IReflectOnClrType

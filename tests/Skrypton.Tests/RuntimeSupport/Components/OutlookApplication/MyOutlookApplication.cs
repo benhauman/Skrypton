@@ -34,6 +34,10 @@ public sealed class MyOutlookApplicationClass : IReflectOnClrType
     [DispId(266)]
     public object CreateItem([In] object item)
     {
+        return CreateItemCore(item);
+    }
+    internal static object CreateItemCore([In] object item)
+    {
         if (item == null) throw new ArgumentNullException(nameof(item), "Parameter must be 0:olMailItem, 1:olAppointmentItem or 2:olContactItem");
         OlItemType ItemType = (OlItemType)Enum.ToObject(typeof(OlItemType), item);
         //OlItemType ItemType = (OlItemType)item;
@@ -235,6 +239,45 @@ internal sealed class MyOutlookMAPISession : IReflectOnClrType, _NameSpace
         }
         throw new NotImplementedException($"FolderType:{folderType}");
     }
+
+    [DispId(8458)]
+    public object CreateRecipient(string recipientName)
+    {
+        return new MyMAPIRecipientClass(recipientName);
+    }
+
+    [DispId(8460)]
+    public MAPIFolder GetSharedDefaultFolder([In] object Recipient, [In] object folderType) // OlDefaultFolders
+    {
+        OlDefaultFolders xFolderType = (OlDefaultFolders)Enum.ToObject(typeof(OlDefaultFolders), folderType);
+        if (xFolderType == OlDefaultFolders.olFolderCalendar)
+        {
+            return new MyOutlookMAPIFolderCalendars();
+        }
+        throw new NotImplementedException($"Recipient:{Recipient}, FolderType:{folderType}");
+    }
+}
+
+internal sealed class MyMAPIRecipientClass : IReflectOnClrType
+{
+    private readonly string _recipientName;
+
+    public MyMAPIRecipientClass(string recipientName)
+    {
+        _recipientName = recipientName;
+    }
+
+    private bool _resolved;
+    [DispId(100)]
+    public bool Resolved => _resolved;
+
+
+    [DispId(113)]
+    public bool Resolve()
+    {
+        _resolved = true;
+        return true;
+    }
 }
 
 internal interface MAPIFolder
@@ -273,6 +316,48 @@ internal sealed class MyOutlookMAPIFolderContacts : IReflectOnClrType, MAPIFolde
             return null;
         }
     }
+}
+
+internal sealed class MyOutlookMAPIFolderCalendars : IReflectOnClrType, MAPIFolder
+{
+    private readonly CalendarsItems _items = new CalendarsItems();
+    public MyOutlookMAPIFolderCalendars()
+    {
+    }
+
+    [DispId(12544)]
+    public _Items Items
+    {
+        get
+        {
+            return _items;
+        }
+    }
+
+    private sealed class CalendarsItems : IReflectOnClrType, _Items
+    {
+        public CalendarsItems()
+        {
+        }
+
+        //[DispId(98)]
+        //public object Find([In] string Filter) // Filter:[lastname] = ''  And [firstname] = ''
+        //{
+        //    //throw new NotImplementedException($"Filter:{Filter}");
+        //    return null;
+        //}
+
+        [DispId(95)]
+        public object Add([Optional][In] object itemType) // itemType = 1
+        {
+            return MyOutlookApplicationClass.CreateItemCore(itemType);
+        }
+
+    }
+}
+
+internal sealed class MyOutlookCalendarItemClass : IReflectOnClrType
+{
 }
 
 internal sealed class MyOutlookAppointmentItemClass : IReflectOnClrType

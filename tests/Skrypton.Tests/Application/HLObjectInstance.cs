@@ -74,13 +74,15 @@ namespace Skrypton.Tests.Application
                         return ov.DataRaw;
                     if (ov.DataRaw is string)
                         return ov.DataRaw;
+                    if (ov.DataRaw is short)
+                        return ov.DataRaw;
                 }
                 throw new NotImplementedException($"GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype}). VT:{ov.DataRaw?.GetType()}, V:{ov.DataRaw}");
             }
             if (datatype == 0)
                 return "";
             if (datatype == 1)
-                return 1234567;// why not
+                return 2134;// why not
             if (datatype == 2)
                 return 7654321;// why not
             throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
@@ -220,6 +222,13 @@ namespace Skrypton.Tests.Application
 
         public int GetSvcUnitCount()
         {
+            return _sus.Count;
+        }
+
+        public int AppendServiceUnit(int flags)
+        {
+            int suidx = 1 + (_sus.Count == 0 ? 0 : _sus.Max(x => x.Key));
+            _sus.Add(suidx, null);
             return _sus.Count;
         }
 

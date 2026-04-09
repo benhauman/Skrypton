@@ -114,6 +114,7 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
             { "HelpLineForm", () => new DialogGuiFormControl() },
             { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() },
+            { "HelpLineOverview", () => new DialogGuiOverviewControl() },
 #pragma warning disable SA1028
             // see 'SetCustomControlType'
             //            { "HelpLineListControl", () => new DialogGuiListControl() },
@@ -196,6 +197,9 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
+    public sealed class DialogGuiOverviewControl : DialogGuiControlBase
+    {
+    }
     public sealed class DialogGuiAdHocTaskControl : DialogGuiControlBase
     {
     }
