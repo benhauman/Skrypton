@@ -253,10 +253,12 @@ namespace Skrypton.ScriptControlSupport
             return Task.FromResult(sc);
             //return Task.CompletedTask;
         }*/
-        public string TestGenerateCSharpCode(string? vbsCode, Dictionary<string, string[]>? addedObjectMembers)
+        public string TestGenerateCSharpCode()
         {
-            return GenerateCSharpCode(vbsCode, addedObjectMembers ?? _addedObjectMembers);
+            return GenerateCSharpCode(null, _addedObjectMembers);
         }
+
+        int _translationCount;
         private string GenerateCSharpCode(string? statementOrNull, Dictionary<string, string[]> addedObjectMembers)
         {
             string scriptContent = _code.ToString(); // Assume this is populated with the script code to be parsed
@@ -286,20 +288,38 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(warningMessageText);
             }));
 
-            if (_config.TempEnabled)
-            {
-                _config.TempFileWriteAllText($"ProgramName", $"ProgramSource.vbs", scriptContent);
-            }
+            _translationCount++;
 
-            string[] suppressions = _config._translationSuppression;
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions), warningLogger);
+            string programSourceFileNameNoExt = $"ProgramName{(_translationCount > 1 ? _translationCount.ToString(CultureInfo.InvariantCulture) : string.Empty)}";
             if (_config.TempEnabled)
             {
-                _config.TempFileWriteAllText($"ProgramName", $"TranslatedCode.cs", csCode);
+                _config.TempFileWriteAllText($"ProgramName", $"{programSourceFileNameNoExt}.vbs", scriptContent);
+            }
+            _translationIssues.Clear();
+            string[] suppressions = _config._translationSuppression;
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues), warningLogger);
+            if (_config.TempEnabled)
+            {
+                _config.TempFileWriteAllText($"ProgramName", $"{programSourceFileNameNoExt}.cs", csCode);
             }
             return csCode;
         }
         private const char NewLineNormalized = '\n';
+        private sealed class ScriptTranslationIssuesCollector : TranslationIssuesCollectorBase
+        {
+            internal Dictionary<string, int> _undeclaredNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            public override void UndeclaredNamedReferenceDetected(string errorKey, string referenceName, int lineIndex)
+            {
+                if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
+                if (!_undeclaredNames.ContainsKey(referenceName))
+                    _undeclaredNames.Add(referenceName, lineIndex);
+            }
+
+            internal void Clear() => _undeclaredNames.Clear();
+        }
+
+        private readonly ScriptTranslationIssuesCollector _translationIssues = new ScriptTranslationIssuesCollector();
+        public IReadOnlyCollection<string> CollectUndeclaredVariableNames() => _translationIssues._undeclaredNames.Keys;
     }
 
     [AttributeUsage(AttributeTargets.Assembly)]

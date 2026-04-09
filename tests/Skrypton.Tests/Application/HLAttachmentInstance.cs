@@ -28,6 +28,10 @@ public sealed class HLAttachmentInstance // see IHlAttachment
         return fileBytes;
     }
 
+    public string GetURL()
+    {
+        return fileBytes.Length != 0 ? "" : internalName;
+    }
     /*
 [DispId(1)]
            [MethodImpl(MethodImplOptions.InternalCall)]

@@ -228,7 +228,8 @@ namespace Skrypton.Tests.Application
                 IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalRefs,
                 bool isOptionalAssert = false,
                 string[] suppressions = null,
-                string[] noWarn = null)
+                string[] noWarn = null,
+                Func<ScriptControlClass, bool> programFix = null)
         {
             if (externalRefs == null) throw new ArgumentNullException(nameof(externalRefs));
 
@@ -272,7 +273,7 @@ namespace Skrypton.Tests.Application
 
 
             Console.WriteLine("translating...");
-            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCodeX(tst, completeVbsScript, externalRefs, suppressions ?? [], noWarn ?? []);
+            string translated_cs_actual = DefaultCSharpTranslation.GetTranslatedProgramCodeX(tst, completeVbsScript, externalRefs, suppressions ?? [], noWarn ?? [], programFix);
 
             if (translated_cs_expected != null)
             {

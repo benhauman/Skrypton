@@ -53,7 +53,7 @@ namespace Skrypton.Tests.Application
         public object IsNew { get; private set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GetValue")]
-        public object GetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
+        public object GetValue([In] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] int datatype)
         {
             Console.WriteLine($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
             var vk = new ObjectValueKey((string)key, ContentID, suidx);
@@ -85,7 +85,7 @@ namespace Skrypton.Tests.Application
                 return 7654321;// why not
             throw new InvalidOperationException($"{_traceName}GetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, datatype:{datatype})");
         }
-        public void SetValue([In, MarshalAs(UnmanagedType.Struct)] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
+        public void SetValue([In] string key, [In] int langid, [In] int ContentID, [In] int suidx, [In] object newValue)
         {
             Console.WriteLine($"{_traceName}SetValue('{key}', langid:{langid}', contentId:{ContentID}, suidx:{suidx}, newValue ({(newValue?.GetType().Name)}):{newValue})");
             var vk = new ObjectValueKey((string)key, ContentID, suidx);

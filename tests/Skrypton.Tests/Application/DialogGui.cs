@@ -540,7 +540,7 @@ WScript.Echo xmlhttp.responseText
             {
                 Console.WriteLine("translating...");
                 string scriptContent = dialog.CompleteScriptCode();
-                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCodeX(this, scriptContent, dialog.ExternalReferences, suppressions, noWarn);
+                translated_cs = DefaultCSharpTranslation.GetTranslatedProgramCodeX(this, scriptContent, dialog.ExternalReferences, suppressions, noWarn, programFix: null);
             }
 
             DoDialogGui(this, translated_cs, dialog, dialogHandler);

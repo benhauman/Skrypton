@@ -87,12 +87,12 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineTextBox", () => new DialogGuiTextControl() },
             { "HelpLineComboBox", () => new DialogGuiComboBoxControl() },
             { "HelpLineSearchButton", () => new DialogGuiSearchButtonControl() },
-            { "HelpLineTreeSelControl", () => new HelpLineTreeSelControl()},
+            { "HelpLineTreeSelControl", () => new DialogGuiTreeSelControl()},
             { "HelpLineLabel", () => new DialogGuiLabelControl() },
             { "HelpLineDateTimeControl", () => new DialogGuiDateTimeControl() },
-            { "HelpLineTabPage", () => new DialogGuiHelpLineTabPageControl() },
-            { "HelpLineTasksControl", () => new DialogGuiHelpLineTasksControl() },
-            { "HelpLineTableControl", () => new DialogGuiHelpLineTableControl() },
+            { "HelpLineTabPage", () => new DialogGuiTabPageControl() },
+            { "HelpLineTasksControl", () => new DialogGuiTasksControl() },
+            { "HelpLineTableControl", () => new DialogGuiTableControl() },
             { "HelpLineCompound", () => new DialogGuiCompoundControl() },
             { "HelpLineAttachmentControl", () => new DialogGuiAttachmentControl() },
             { "HelpLineTreeComboBox", () => new DialogGuiTreeComboBoxControl() },
@@ -111,12 +111,12 @@ namespace Skrypton.Tests.Application.Controls
             { "HelpLineHyperlink", () => new DialogGuiHyperlinkControl() },
             { "HelpLineCompoundPanelGroupBox", () => new DialogGuiCompoundPanelGroupBoxControl() },
             { "HelpLineSimpleObjectSearch", () => new DialogGuiSimpleObjectSearchControl() },
-            { "HelpLineForm", () => new DialogGuiHelpLineFormControl() },
+            { "HelpLineForm", () => new DialogGuiFormControl() },
+            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() },
 #pragma warning disable SA1028
             // see 'SetCustomControlType'
             //            { "HelpLineListControl", () => new DialogGuiListControl() },
             //            { "HelpLineTreeControl", () => new DialogGuiTreeControl() },
-            //            { "HelpLineAdHocTaskControl", () => new DialogGuiAdHocTaskControl() },
             //            { "HelpLineCommunicationFeed", () => new DialogGuiCommunicationFeedControl() },
             //            { "HelpLineHistory", () => new DialogGuiHistoryControl() },
             //            { "HelpLineServiceCatalogItemOverview", () => new DialogGuiServiceCatalogItemOverviewControl() },
@@ -183,7 +183,7 @@ namespace Skrypton.Tests.Application.Controls
         //    throw new NotSupportedException($"[UnknownControl{ControlTypeName}]({ID}).SelectTreeItem({treeItem})");
         //}
     }
-    public sealed class HelpLineTreeSelControl : DialogGuiControlBase
+    public sealed class DialogGuiTreeSelControl : DialogGuiControlBase
     {
         public void SelectTreeItem(object treeItem)
         {
@@ -195,7 +195,10 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
-    public sealed class DialogGuiHelpLineFormControl : DialogGuiControlBase // CT98_dialog386
+    public sealed class DialogGuiAdHocTaskControl : DialogGuiControlBase
+    {
+    }
+    public sealed class DialogGuiFormControl : DialogGuiControlBase // CT98_dialog386
     {
     }
 
@@ -314,7 +317,7 @@ namespace Skrypton.Tests.Application.Controls
         FormView,
         TableView
     }
-    public sealed class DialogGuiHelpLineTableControl : DialogGuiControlBase
+    public sealed class DialogGuiTableControl : DialogGuiControlBase
     {
         private HLObjectInstance _selectedObject;
         public HLObjectInstance SelectedObject
@@ -344,11 +347,11 @@ namespace Skrypton.Tests.Application.Controls
         }
     }
 
-    public sealed class DialogGuiHelpLineTabPageControl : DialogGuiControlBase
+    public sealed class DialogGuiTabPageControl : DialogGuiControlBase
     {
         public string Caption { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
     }
-    public sealed class DialogGuiHelpLineTasksControl : DialogGuiControlBase
+    public sealed class DialogGuiTasksControl : DialogGuiControlBase
     {
 
     }

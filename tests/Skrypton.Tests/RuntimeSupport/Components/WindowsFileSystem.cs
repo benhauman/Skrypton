@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Skrypton.Tests.RuntimeSupport.Components;
 
 namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
@@ -219,6 +220,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     public sealed class TestFileSystem : IHostFileSystemHostService
     {
         private readonly Dictionary<string, StringBuilder> _allfiles = new Dictionary<string, StringBuilder>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, HashSet<string>> _folders = new Dictionary<string, HashSet<string>>();
 
         public TestFileSystem()
         {
@@ -241,7 +243,8 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         HostFileSystemDirectoryInfo IHostFileSystemHostService.CreateDirectory(string path)
         {
-            throw new NotImplementedException();
+            _folders.Add(path, new HashSet<string>());
+            return new HostFileSystemDirectoryInfo(path, Path.GetDirectoryName(path), exists: true);
         }
 
         void IHostFileSystemHostService.DeleteDirectory(string path, bool recursive)
@@ -259,7 +262,11 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         bool IHostFileSystemHostService.DirectoryExists(string path)
         {
-            throw new NotImplementedException();
+            if (_allfiles.Any(x => x.Key.StartsWith(path, StringComparison.OrdinalIgnoreCase)))
+                return true;
+            if (_folders.TryGetValue(path, out var folder))
+                return true;
+            return false;
         }
 
         bool IHostFileSystemHostService.DriveExists(string path)

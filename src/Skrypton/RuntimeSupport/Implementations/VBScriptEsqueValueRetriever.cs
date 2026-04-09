@@ -561,6 +561,12 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             result = null;
 
+            // 0. Check integer types safely
+            if (bool.TryParse(input, out bool b))
+            {
+                result = b;
+                return true;
+            }
             // 1. Check integer types safely
             if (short.TryParse(input, NumberStyles.Integer, culture, out short s))
             {

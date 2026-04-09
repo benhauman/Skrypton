@@ -27,16 +27,16 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
-        {
-            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
-        }
+        //public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
+        //{
+        //    return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+        //}
 
-        internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions) => new DefaultTranslatorOptions(suppressions);
+        internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector) => new DefaultTranslatorOptions(suppressions, issuesCollector);
 
         public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
         {
-            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CreateTranslatorOptions(suppressions), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
+            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.WithoutScaffolding, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
         }
         internal static ILogInformation CommentsLogger(bool renderCommentsAboutUndeclaredVariables = true, ILogInformation? logger = null) => renderCommentsAboutUndeclaredVariables
             ? new CSharpCommentMakingLogger(logger ?? new ConsoleLogger())

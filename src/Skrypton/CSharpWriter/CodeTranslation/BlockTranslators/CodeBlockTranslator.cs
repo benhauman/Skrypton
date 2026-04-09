@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Skrypton.RuntimeSupport;
+using System.Security.Cryptography;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
 {
@@ -745,8 +746,22 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                         DoBlock scopeDoBlock => ("SKY109", scopeDoBlock.GetType().Name, false), // test:CT132_Dialog_83
                         _ => throw new NotImplementedException(scopeAccessInformation.Parent.GetType().FullName)
                     };
+
+                    string scopeMoreInfo = scopeAccessInformation.ParentScope?.Parent switch
+                    {
+                        SubBlock scopeSubBlock => scopeSubBlock.Name.Content,
+                        FunctionBlock scopeFunctionBlock => scopeFunctionBlock.Name.Content,
+                        _ => ""
+                    };
+                    if (scopeMoreInfo.Length > 0)
+                    {
+                        scopeMoreInfo = $" in '{scopeMoreInfo}'";
+                    }
+
+                    _translatorOptions.UndeclaredNamedReferenceDetected(errorKey, undeclaredVariable.Content, undeclaredVariable.LineIndex);
+
                     bool acceptErr = _translatorOptions.AcceptTranslationError(errorKey);
-                    _logger.Warning($"{errorKey}: Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'");
+                    _logger.Warning($"{errorKey}: Undeclared variable: '{undeclaredVariable.Content}' (line:{undeclaredVariable.LineIndex}) used by '{block?.GetType().Name}' in '{scopeName}'{scopeMoreInfo}");
                     if (acceptErr)
                     {
                         // ok

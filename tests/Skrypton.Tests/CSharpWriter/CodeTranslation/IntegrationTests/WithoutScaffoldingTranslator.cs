@@ -34,22 +34,33 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
             //            g => g.Key,
             //            g => g.Select(x => x.MethodName).ToArray());
 
-            return GetTranslatedProgramCodeX(tst, vbsSource, xr, translationSuppression, noWarn);
+            return GetTranslatedProgramCodeX(tst, vbsSource, xr, translationSuppression, noWarn, programFix: null);
         }
         internal static string GetTranslatedProgramCodeX(TestBaseX tst, string vbsSource,
             IReadOnlyDictionary<string, ScriptExternalReferenceInfo> externalDependencies,
             string[] translationSuppression,
-            string[] noWarn)
+            string[] noWarn,
+            Func<ScriptControlClass, bool> programFix
+            )
         {
-            var scriptengineConfig = tst.CreateScriptControlConfiguration(false, translationSuppression, noWarn);
-            var scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), scriptengineConfig);
+            ScriptControlConfiguration scriptengineConfig = tst.CreateScriptControlConfiguration(false, translationSuppression, noWarn);
+            ScriptControlClass scriptengineClass = tst.CreateScriptControlClass(new TestRuntimeHost(tst.CreateTestHostServices()), scriptengineConfig);
             IScriptControl scriptengine = scriptengineClass;
             foreach (var externalDependencyInfo in externalDependencies)
             {
                 scriptengine.AddObject(externalDependencyInfo.Key, externalDependencyInfo.Value.Instance, AddMembers: externalDependencyInfo.Value.AddMembers); // added explicitly
             }
             scriptengine.AddCode(vbsSource);
-            return scriptengineClass.TestGenerateCSharpCode(null, null);
+            string csCode = scriptengineClass.TestGenerateCSharpCode();
+            if (programFix != null)
+            {
+                bool programFixed = programFix(scriptengineClass);
+                if (programFixed)
+                {
+                    csCode = scriptengineClass.TestGenerateCSharpCode();
+                }
+            }
+            return csCode;
         }
     }
 }
