@@ -664,7 +664,15 @@ WScript.Echo xmlhttp.responseText
 
             IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
 
-            var dialog = new DialogBuilder(CreateTestHostServices(r => r.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService)), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(services =>
+                {
+                    services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
+                    services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
+                        .RegisterObjectFactory<object>("ADODB.Connection", h => DialogGui.CreateADODBConnectionClass(h))
+                    );
+
+                }), model)
+                .AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                 .AddButton("ButtonShowWebsite_Click")
                 .BuildDialog();
 
@@ -708,6 +716,10 @@ WScript.Echo xmlhttp.responseText
         public static object CreateMyOutlookApplicationClass(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);
+        }
+        public static object CreateADODBConnectionClass(IRuntimeHost runtimeHost)
+        {
+            return new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(runtimeHost);
         }
         public static TestHostObjectFactoryHostService CreateTestHostObjectFactoryHostService()
         {
@@ -821,6 +833,7 @@ WScript.Echo xmlhttp.responseText
             var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>
             {
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
+                        .RegisterObjectFactory<object>("ADODB.Connection", h => DialogGui.CreateADODBConnectionClass(h))
                         .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA(TestCulture))
                     );
 

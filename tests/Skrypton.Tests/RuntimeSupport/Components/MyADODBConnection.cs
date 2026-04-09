@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Skrypton.RuntimeSupport.Attributes;
+using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
@@ -24,8 +25,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
     internal sealed class MyADODBConnection : IReflectOnClrType, Connection
     {
         // csproj =>  Add → Reference =>  COM → Select Microsoft ActiveX Data Objects x.x Library => Interop.ADODB.dll # // Interop.ADODB, Version=6.1.0.0, Culture=neutral, PublicKeyToken=null
-        private readonly IServiceProvider _hostServices;
-        public MyADODBConnection(IServiceProvider hostServices) : base(typeof(MyADODBConnection))
+        private readonly IRuntimeHost _hostServices;
+        public MyADODBConnection(IRuntimeHost hostServices) : base(typeof(MyADODBConnection))
         {
             _hostServices = hostServices ?? throw new ArgumentNullException(nameof(hostServices));
         }
@@ -53,7 +54,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations.ADODB
             //    0 → adConnectUnspecified
             //    1: adConnectUnspecified
             //    2: adAsyncConnect
-            var svc = _hostServices.GetRequiredService<IHostDatabaseConnectionFactoryHostService>();
+            var svc = _hostServices.TryGetRuntimeHostService<IHostDatabaseConnectionFactoryHostService>() ?? throw new InvalidOperationException($"Service '{nameof(IHostDatabaseConnectionFactoryHostService)}' not registered.");
 
             _currentOpenConnectionOrNull = svc.CreateAndOpenDatabaseConnectionString(connectionString: string.IsNullOrEmpty(connectionString) ? ConnectionString : connectionString, userName: UserID, password: Password);
             if (_currentOpenConnectionOrNull.State == System.Data.ConnectionState.Closed)

@@ -145,7 +145,8 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("VBScript.RegExp", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
             provider.RegisterObjectCreateFactory("WScript.Shell", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell(hostServices));
             provider.RegisterObjectCreateFactory("WbemScripting.SWbemLocator", (optionalMonikerValues) => new Skrypton.Tests.RuntimeSupport.Implementations.MySWbemLocator(hostServices, optionalMonikerValues));
-            provider.RegisterObjectCreateFactory("ADODB.Connection", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
+            //provider.RegisterObjectCreateFactory("ADODB.Connection", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
+            //provider.RegisterObjectCreateFactory("ADODB.Connection", (_) =>  DialogGui.CreateADODBConnectionClass( Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
             provider.RegisterObjectCreateFactory("ADODB.Command", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBCommand());
             provider.RegisterObjectCreateFactory("ADODB.Recordset", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBRecordSet());
             provider.RegisterObjectCreateFactory("ADODB.Stream", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBStream());
