@@ -545,7 +545,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SETm0a1(this, aryFormattedData ?? throw new InvalidOperationException("Reference not set:aryFormattedData"), i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues ?? throw new InvalidOperationException("Reference not set:dictKeyValues"), "Item", _.ARGS.Ref(key, v26 => { key = v26; })), "\" />", VBScriptConstants.vbCrLf));
+                    _.SETm0a1(this, aryFormattedData ?? throw new InvalidOperationException("Reference not set:aryFormattedData"), i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, dictKeyValues ?? throw new InvalidOperationException("Reference not set:dictKeyValues"), "Item", _.ARGS.Ref(key, v25 => { key = v25; })), "\" />", VBScriptConstants.vbCrLf));
                 }
                 i = _.ADD(i, (Int16)1);
             }
