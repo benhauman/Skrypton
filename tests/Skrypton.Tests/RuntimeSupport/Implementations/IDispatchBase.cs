@@ -437,20 +437,34 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 if (ex.Message.Length > 0)
                 {
                     MemberInfo candidate = DebugInspectMember(name, invokeAttr, args);
-                    if (candidate != null &&  candidate is MethodInfo mtd)
+                    if (candidate != null && candidate is MethodInfo mtd)
                     {
-                        return mtd.Invoke(target ?? this, args);
+                        //if (invokeAttr.HasFlag(BindingFlags.InvokeMethod)) // rescue named properties setter
+                        {
+                            return mtd.Invoke(target ?? this, args);
+                        }
                     }
                     else if (candidate != null && candidate is PropertyInfo prp)
                     {
                         if (invokeAttr.HasFlag(BindingFlags.SetProperty))
                         {
-                            prp.SetValue(target ?? this, args);
+                            /*
+                               Dim serv: Set serv = model.QueryService("{24280463-E982-4c84-A777-89FD30227B9A}")
+                               If serv.enabled ( nSUID ) = True Then
+                                 serv.Enabled ( nSUID ) = False
+                               Else
+                                 serv.Enabled ( nSUID) = True
+                               End If
+                             */
+                            prp.SetValue(target ?? this, args); // named properties like
                             return null;
                         }
                         else
                         {
-                            return prp.GetValue(target ?? this, args);
+                            if (invokeAttr.HasFlag(BindingFlags.GetProperty))
+                            {
+                                return prp.GetValue(target ?? this, args);
+                            }
 
                         }
                     }

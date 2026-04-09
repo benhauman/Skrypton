@@ -14,6 +14,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport;
+using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application.Controls;
@@ -1440,6 +1441,59 @@ WScript.Echo xmlhttp.responseText
         public int GetActiveCasesByOrgUnit()
         {
             return 657;
+        }
+
+        public object QueryService(string clsid)
+        {
+            switch (clsid)
+            {
+                case "{24280463-E982-4c84-A777-89FD30227B9A}":      // Timer-Service
+                    return new MyTimerService();
+                case "{AB0D155E-F10C-42f8-B19A-6CB3BBE3FDAD}":      // Dataprovider
+                    //return dataProvider;
+                    throw new NotImplementedException($"clsid");
+                default:
+                    return null;
+            }
+        }
+    }
+
+    internal sealed class MyTimerService : IReflectOnClrType
+    {
+        public MyTimerService()
+        {
+
+        }
+        private readonly Dictionary<int, bool> _timers = new Dictionary<int, bool>();
+
+        [DispId(0)]
+        [IsDefault]
+        public bool this[int suid]
+        {
+            get => _timers.TryGetValue(suid, out bool v) ? v : false;
+            set
+            {
+                if (_timers.ContainsKey(suid))
+                    _timers[suid] = value;
+                else
+                    _timers.Add(suid, true);
+            }
+        }
+
+        [DispId(0)]
+        //[IsDefault]
+        public bool Enabled(int suid)
+        {
+            return _timers.TryGetValue(suid, out bool v) ? v : false;
+        }
+        [DispId(0)]
+        //[IsDefault]
+        public void Enabled(int suid, bool value)
+        {
+            if (_timers.ContainsKey(suid))
+                _timers[suid] = value;
+            else
+                _timers.Add(suid, true);
         }
     }
 
