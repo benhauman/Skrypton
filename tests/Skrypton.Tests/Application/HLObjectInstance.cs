@@ -41,7 +41,7 @@ namespace Skrypton.Tests.Application
         {
             return _objectId.HasValue ? _objectId.Value : throw new InvalidOperationException($"{_traceName}Id not set.");
         }
-        internal int TestGetObjectDefId()
+        public int TestGetObjectDefId()
         {
             return _objectDefId.HasValue ? _objectDefId.Value : throw new InvalidOperationException($"{_traceName}DefId not set.");
         }

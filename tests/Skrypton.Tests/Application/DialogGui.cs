@@ -1538,8 +1538,15 @@ WScript.Echo xmlhttp.responseText
         public object LoadObject(int defId, int objId)
         {
             Console.WriteLine($"[DIALOGMODEL] LoadObject(defId:{defId}, objId:{objId})");
+            if (_objectLoaders.TryGetValue(objId, out var loader))
+                return loader();
             return null;
         }
+        public void TestRegisterObjectLoader(int objectId, Func<HLObjectInstance> loader)
+        {
+            _objectLoaders.Add(objectId, loader);
+        }
+        private readonly Dictionary<int, Func<HLObjectInstance>> _objectLoaders = new Dictionary<int, Func<HLObjectInstance>>();
     }
 
     internal sealed class MyTimerService : IReflectOnClrType
