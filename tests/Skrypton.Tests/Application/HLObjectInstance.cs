@@ -404,6 +404,11 @@ namespace Skrypton.Tests.Application
                             DataRaw = valueInt32.ToString(CultureInfo.InvariantCulture);
                             HasValue = true;
                         }
+                        else if (DataType == typeof(string) && value is short valueInt16)
+                        {
+                            DataRaw = valueInt16.ToString(CultureInfo.InvariantCulture);
+                            HasValue = true;
+                        }
                         else if (DataType == typeof(string) && value is double valueDouble)
                         {
                             DataRaw = valueDouble.ToString(CultureInfo.InvariantCulture);
