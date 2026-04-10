@@ -2948,7 +2948,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             if (targetInstance == null)
             {
-                throw new InvalidOperationException($"Reference not set:({targetName})");
+                throw new InvalidOperationException($"Reference not set:{targetName}");
             }
             return targetInstance;
         }
