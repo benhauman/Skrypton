@@ -51,10 +51,10 @@ namespace TranslatedProgram
             oMailRequest = _.OBJ(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("mailrequest")));
             oHLServer = _.OBJ(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("serverconnection")));
 
-            autoReplyList = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); //("Out of Office:", "Abwesend:")
-            rfKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); //("[ServiceRequest]", "Anfrage", "request", "Frage", "question")
-            imKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); //("[Incident]", "Incident","Stoerung","Hilfe", "help")
-            cmKeywords = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); //("[RFC]", "Aenderung", "Change")
+            autoReplyList = _.VAL(_.ARRAY()); //("Out of Office:", "Abwesend:")
+            rfKeywords = _.VAL(_.ARRAY()); //("[ServiceRequest]", "Anfrage", "request", "Frage", "question")
+            imKeywords = _.VAL(_.ARRAY()); //("[Incident]", "Incident","Stoerung","Hilfe", "help")
+            cmKeywords = _.VAL(_.ARRAY()); //("[RFC]", "Aenderung", "Change")
 
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail subject:", _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "subject")));
 

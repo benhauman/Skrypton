@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.searchResult = _.VAL(_.CALLm1argp(this, _, "ARRAY", _.ARGS.ForceBrackets())); // Initialize as empty array
+            _outer.searchResult = _.VAL(_.ARRAY()); // Initialize as empty array
 
             if (_.IF(_.ANDe2(_.CBOOL(_.GTE(_.NullableNUM(_.UBOUND(_outer.searchResult)), (Int16)0)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_.CALLm0argp(this, _.NnO(_outer.searchResult, "searchResult"), _.ARGS.Val((Int16)0)), "(_.call result)"), _.ARGS.Val((Int16)2))), "")))))
             {

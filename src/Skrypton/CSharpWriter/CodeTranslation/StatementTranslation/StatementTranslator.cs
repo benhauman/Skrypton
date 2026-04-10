@@ -1262,36 +1262,80 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string targetAccessorName = $"{nameOfTargetContainer}{targetName}";
 
             StringBuilder callExpressionContent = new StringBuilder();
-            callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {RenderNnO(targetAccessorName)}");// Pass "this" as the "context" argument
 
-            if (targetMemberAccessTokensArray.Length > 0)
+            string? knownFn = null;
+            if (targetAccessorName == _supportRefName.Name && targetIsKnownToBeBuiltInFunction)
             {
-                callExpressionContent.Append(", ");
-                if (!ableToUseShorthandCallSignature)
+                if (targetMemberAccessTokensArray.Length > 0)
                 {
-                    callExpressionContent.Append(" new[] { ");
-                }
-
-                for (int index = 0; index < targetMemberAccessTokensArray.Length; index++)
-                {
-                    callExpressionContent.Append(
-                        targetMemberAccessTokensArray[index].Content.ToLiteral()
-                    );
-                    if (index < (targetMemberAccessTokensArray.Length - 1))
+                    string builtInFnName = targetMemberAccessTokensArray[0].ContentUpperX().UpperText switch
                     {
-                        callExpressionContent.Append(", ");
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY) => nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT),
+                        _ => ""//throw new NotImplementedException(targetMemberAccessTokensArray[0].ContentUpperX().UpperText)
+                    };
+                    if (builtInFnName.Length > 0)
+                    {
+                        knownFn = builtInFnName;
+                        callExpressionContent.Append($@"{_supportRefName.Name}.{builtInFnName}(");
+                    }
+                    else
+                    {
+                        //throw new NotImplementedException(targetMemberAccessTokensArray[0].ContentUpperX().UpperText);
                     }
                 }
-                if (!ableToUseShorthandCallSignature)
+                else
                 {
-                    callExpressionContent.Append(" }");
+                    //throw new NotImplementedException();
+                }
+            }
+
+            int argumentsCountRendered = 0;
+            if (knownFn == null)
+            {
+                callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {RenderNnO(targetAccessorName)}");// Pass "this" as the "context" argument
+                argumentsCountRendered = 2; // (this, target
+
+
+                if (targetMemberAccessTokensArray.Length > 0)
+                {
+                    callExpressionContent.Append(", ");
+                    if (!ableToUseShorthandCallSignature)
+                    {
+                        callExpressionContent.Append(" new[] { ");
+                    }
+
+                    for (int index = 0; index < targetMemberAccessTokensArray.Length; index++)
+                    {
+                        callExpressionContent.Append(
+                            targetMemberAccessTokensArray[index].Content.ToLiteral()
+                        );
+                        if (index < (targetMemberAccessTokensArray.Length - 1))
+                        {
+                            callExpressionContent.Append(", ");
+                        }
+                    }
+                    if (!ableToUseShorthandCallSignature)
+                    {
+                        callExpressionContent.Append(" }");
+                    }
                 }
             }
 
             IReadOnlyCollection<NameToken> callExpressionVariablesAccessed = [];
             if (argumentsArray.Length > 0)
             {
-                callExpressionContent.Append(", ");
+                if (argumentsCountRendered == 0)
+                {
+
+                }
+                else
+                {
+                    argumentsCountRendered++;
+                    callExpressionContent.Append(", ");
+                }
 
                 bool allArgsConfirmedToBeByVal = forceAllArgumentsToBeByVal || ArgumentsWouldBePassedByValBasedUponItsContent(argumentsArray, scopeAccessInformation, _nameRewriter);
 
@@ -1333,10 +1377,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             else if (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Present)
             {
                 // force using a method instead of a property (same name/dispid)
-                callExpressionContent.AppendFormat(CultureInfo.InvariantCulture,
-                    ", {0}.ARGS.ForceBrackets()",
-                    _supportRefName.Name
-                );
+                if (knownFn == null)
+                {
+                    callExpressionContent.AppendFormat(CultureInfo.InvariantCulture,
+                        ", {0}.ARGS.ForceBrackets()",
+                        _supportRefName.Name
+                    );
+                }
+                else
+                {
+                    // it is a function no property
+                }
             }
 
             callExpressionContent.Append(')');

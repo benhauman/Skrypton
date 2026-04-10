@@ -52,10 +52,10 @@ namespace TranslatedProgram
             oMailRequest = _.OBJ(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("mailrequest")));
             oHLServer = _.OBJ(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("serverconnection")));
 
-            autoReplyList = _.VAL(_.CALLm1v2(this, _, "ARRAY", "Out of Office:", "Abwesend:"));
-            rfKeywords = _.VAL(_.CALLm1v1(this, _, "ARRAY", "[ServiceRequest]"));
-            imKeywords = _.VAL(_.CALLm1v1(this, _, "ARRAY", "[Incident]"));
-            cmKeywords = _.VAL(_.CALLm1v1(this, _, "ARRAY", "[RFC]"));
+            autoReplyList = _.VAL(_.ARRAY("Out of Office:", "Abwesend:"));
+            rfKeywords = _.VAL(_.ARRAY("[ServiceRequest]"));
+            imKeywords = _.VAL(_.ARRAY("[Incident]"));
+            cmKeywords = _.VAL(_.ARRAY("[RFC]"));
 
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("mail subject:", _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "subject")));
 

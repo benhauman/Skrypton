@@ -30,6 +30,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             if (targetAccessorName == _supportRefName.Name) // _.
             {
+                //throw new NotImplementedException();// do not render it via "CALL/SET" but directly like: _.RAISE
                 return targetAccessorName;
             }
             if (targetAccessorName == _outerRefName.Name) // _outer.
@@ -60,6 +61,21 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     return GetTargetChainTokenAsText(dotTokens, targetAccessorName, "o");
                 }
                 throw new NotImplementedException(targetAccessorName);
+            }
+            else if (dotTokens.Length == 1)
+            {
+                if (targetAccessorName.StartsWith(",", StringComparison.Ordinal))
+                {
+                    return "(member)";
+                }
+                if (targetAccessorName.Contains('"', StringComparison.Ordinal))
+                {
+                    throw new NotImplementedException(targetAccessorName);
+                }
+                else
+                {
+                    return targetAccessorName;
+                }
             }
             else if (targetAccessorName.Contains('"', StringComparison.Ordinal))
             {

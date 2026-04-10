@@ -16,7 +16,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
 
-            var enumerationContent = _.ENUMERABLE(_.CALLm1v2(this, _, "ARRAY", (Int16)1, (Int16)2)).GetEnumerator();
+            var enumerationContent = _.ENUMERABLE(_.ARRAY((Int16)1, (Int16)2)).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent.MoveNext())

@@ -77,7 +77,7 @@ namespace TranslatedProgram
             object item = null;
             object retVal = null;
             retVal = false;
-            autoReplyList = _.VAL(_.CALLm1v2(this, _, "ARRAY", "Out of Office:", "Abwesend:"));
+            autoReplyList = _.VAL(_.ARRAY("Out of Office:", "Abwesend:"));
 
             var enumerationContent = _.ENUMERABLE(autoReplyList).GetEnumerator();
             while (true)
@@ -133,11 +133,11 @@ namespace TranslatedProgram
             object fmKeywords = null;
             object hrKeywords = null;
             object reportText = null;
-            rfKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[ServiceRequest]", "Anfrage", "request", "Frage", "question"));
-            imKeywords = _.VAL(_.CALLm1v5(this, _, "ARRAY", "[Incident]", "Incident", "Störung", "Hilfe", "help"));
-            cmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[RFC]", "Änderung", "Change"));
-            fmKeywords = _.VAL(_.CALLm1v3(this, _, "ARRAY", "[Facility]", "Haustechnik", "FM"));
-            hrKeywords = _.VAL(_.CALLm1v2(this, _, "ARRAY", "[HR]", "Personal"));
+            rfKeywords = _.VAL(_.ARRAY("[ServiceRequest]", "Anfrage", "request", "Frage", "question"));
+            imKeywords = _.VAL(_.ARRAY("[Incident]", "Incident", "Störung", "Hilfe", "help"));
+            cmKeywords = _.VAL(_.ARRAY("[RFC]", "Änderung", "Change"));
+            fmKeywords = _.VAL(_.ARRAY("[Facility]", "Haustechnik", "FM"));
+            hrKeywords = _.VAL(_.ARRAY("[HR]", "Personal"));
 
             bool ifResult;
             object mailSubject_vref2 = mailSubject;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
+using Skrypton.RuntimeSupport;
 
 namespace Skrypton.LegacyParser.Tokens.Basic;
 
@@ -483,7 +484,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionVARTYPE, "VARTYPE")
         .AddS(BuiltInFunctionId.BuiltInFunctionTYPENAME, "TYPENAME")
         .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, "CREATEOBJECT")
-        .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, "GETOBJECT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT))
         .AddS(BuiltInFunctionId.BuiltInFunctionCBOOL, "CBOOL")
         .AddS(BuiltInFunctionId.BuiltInFunctionCSTR, "CSTR")
         .AddS(BuiltInFunctionId.BuiltInFunctionDATEVALUE, "DATEVALUE")
