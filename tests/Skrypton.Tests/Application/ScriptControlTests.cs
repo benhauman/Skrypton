@@ -87,10 +87,21 @@ namespace Skrypton.Tests.Application
         }
         [TestMethod]
         [Ignore]
-        public void XSetMembersN()
+        public void XSetM1opt0opt0()
         {
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>());
             DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
+
+            /* next tests:
+'XSetM2opt0opt0'
+               doc.Bookmarks("Firma", "Division").Range.Text = 202
+
+'XSetM2opt1opt1'
+               doc.Bookmarks("Firma", "Division").Range("High").Text(88) = 303
+
+'XSetM2opt2opt1'
+               doc.Bookmarks("Firma", "Division").Range("High", "Low").Text(88) = 404
+             */
         }
         [TestMethod]
         public void XSetm1a1()

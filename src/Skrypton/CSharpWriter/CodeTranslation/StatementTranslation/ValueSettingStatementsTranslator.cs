@@ -428,7 +428,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     if (optionalMemberAccessTokensForLastCallExpressionSegment.Count > 1)
                     {
-                        // test:XSetMembersN
+                        // test:XSetM1opt0opt0
                         optionalMemberAccessor = optionalMemberAccessTokensForLastCallExpressionSegment.Select(x => x.Content).ToArray();
                     }
                     else
@@ -620,7 +620,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 if (optionalMemberAccessor.Length > 1)
                 {
-                    // test:XSetMembersN
+                    // test:XSetM1opt0opt0
+                    // TODO CALL(CALL(CALL())) =
                     List<string> txt = new List<string>();
                     for (int ix = 0; ix < optionalMemberAccessor.Length; ix++)
                     {
