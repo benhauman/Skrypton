@@ -988,7 +988,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public object FORMATDATETIME(object dateValue, object format)
         {
-            return FORMATDATETIMECore(dateValue, Enum.IsDefined(typeof(VbDateTimeFormat), format) ? (VbDateTimeFormat)format : VbDateTimeFormat.vbGeneralDate);
+            VbDateTimeFormat fmt = (VbDateTimeFormat)Enum.ToObject(typeof(VbDateTimeFormat), format);
+            return FORMATDATETIMECore(dateValue, Enum.IsDefined(typeof(VbDateTimeFormat), fmt) ? fmt : VbDateTimeFormat.vbGeneralDate);
         }
 
         private enum VbDateTimeFormat

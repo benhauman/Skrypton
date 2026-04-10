@@ -95,6 +95,11 @@ namespace Skrypton.Tests.Application
         {
             return AddControlCore(controlId, new DialogGuiComboBoxControl() { });
         }
+
+        public DialogBuilder AddCheckBoxControl(string controlId)
+        {
+            return AddControlCore(controlId, new DialogGuiCheckBoxControl() { });
+        }
         public DialogBuilder AddTextControl(string controlId)
         {
             return AddControlCore(controlId, new DialogGuiTextControl() { });
@@ -264,6 +269,15 @@ namespace Skrypton.Tests.Application
         public string TitleTextColor { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
 
         public int Height { get => GetPropertyValueAsT<int>(); set => SetPropertyValueAsT(value); }
+
+
+        private int _ocId;
+        public int OCID
+        {
+            get { return _ocId; }
+            set { _ocId = value; }
+        }
+
     }
 
     public sealed class DialogBase

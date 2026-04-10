@@ -221,6 +221,18 @@ namespace Skrypton.Tests.Application.Controls
     public sealed class DialogGuiHyperlinkControl : DialogGuiControlBase
     {
         public string Url { get => GetPropertyValueAsT<string>(); set => SetPropertyValueAsT(value); }
+
+        public string Text { get => RetrieveValueForText(); set => UpdateValueForText(value); }
+        private string _valueText;
+        private void UpdateValueForText(string value)
+        {
+            _valueText = value;
+        }
+
+        private string RetrieveValueForText()
+        {
+            return _valueText;
+        }
     }
     public sealed class DialogGuiTimeControl : DialogGuiControlBase
     {
