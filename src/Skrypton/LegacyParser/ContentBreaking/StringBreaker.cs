@@ -207,7 +207,15 @@ namespace Skrypton.LegacyParser.ContentBreaking
                             else
                             {
                                 // Non-escaped quote: string end
-                                tokens.Add(new StringToken(tokenContent, lineIndexForStartOfContent));
+                                if (tokenContent.StartsWith("&H", StringComparison.OrdinalIgnoreCase) && AtomToken.TryHEX(tokenContent, lineIndexForStartOfContent, out IToken ? hexToken) && hexToken != null)
+                                {
+                                    //IToken newTkn = AtomToken.GetNewToken(tokenContent.ToUpperX(), false, lineIndexForStartOfContent);
+                                    tokens.Add(hexToken);
+                                }
+                                else
+                                {
+                                    tokens.Add(new StringToken(tokenContent, lineIndexForStartOfContent));
+                                }
                                 tokenContent = "";
                                 lineIndexForStartOfContent = lineIndex;
                                 index = indexString;

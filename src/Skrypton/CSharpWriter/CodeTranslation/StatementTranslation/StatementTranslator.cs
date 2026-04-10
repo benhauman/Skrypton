@@ -731,7 +731,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     // This means that we can express this more directly, without relying upon an "argument provider" - eg.
                     //   _.CDate(value)
                     // instead of
-                    //   _.CALL(this, _, "CDate", _.ARGS.VAL(value))
+                    //   _.CALL(this, _, "...
                     // If these conditions are not met then we have to use the argument provider - if, for example, the support function requires a string parameter
                     // then we can't be sure that the argument we have at this point is a string. If there is no support function that matches the segment's number
                     // of arguments then this must fail at runtime, not compile time, and so the "CALL" method approach is required.

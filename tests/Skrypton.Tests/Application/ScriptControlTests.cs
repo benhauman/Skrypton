@@ -87,6 +87,14 @@ namespace Skrypton.Tests.Application
             DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
         }
         [TestMethod]
+        public void XHex1() // "&H00000" =>
+        {
+            object doc = new HLObjectInstance();
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>() { { "hlObj", new ScriptExternalReferenceInfo(doc, []) } });
+            DoScriptControlTest<object>(null, new Dictionary<string, object>() { { "hlObj", doc } }, [], [], services => { }, (x) => { });
+
+        }
+        [TestMethod]
         public void XSetM1opt0opt0()
         {
             object doc = new MyDocument1();

@@ -62,10 +62,6 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.IntegrationTests
 				End Function
 			";
             TestCSharpCodeTranslationWithoutScaffolding(source, []);
-
-            //Assert.Inconclusive("Argument not valid");
-            // actual: _outer.URLEncode = _.CONCAT(_.CALLm1v0(this, _, "SPACE"), "x", _.CALLm1v0(this, _, "SPACE"));
-            // expect: _outer.URLEncode = _.CONCAT( ..._outer.Space
         }
         [TestMethod]
         public void DimSpace1() // see 'TranslateCallExpressionSegment'

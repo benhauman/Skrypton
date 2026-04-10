@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Transactions;
 
 namespace Skrypton.LegacyParser.Tokens.Basic
 {
@@ -165,14 +166,30 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             double numericValue;
             if (double.TryParse(contentUpper.Original, out numericValue))
                 return new NumericValueToken(contentUpper, lineIndex);
-            if (contentUpper.Original.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase))
+            if (contentUpper.Original.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase) && TryHEX(contentUpper.Original, lineIndex, out IToken? hexToken) && hexToken != null)
             {
-                int numericHexValue;
-                if (int.TryParse(contentUpper.Original.AsSpanX(2), NumberStyles.HexNumber, null, out numericHexValue))
-                    return new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
+                //int numericHexValue;
+                //if (int.TryParse(contentUpper.Original.AsSpanX(2), NumberStyles.HexNumber, null, out numericHexValue))
+                //    return new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
+                return hexToken;
             }
 
             return null;
+        }
+        internal static bool TryHEX(string contentOriginal, int lineIndex, out IToken? token)
+        {
+            if (contentOriginal.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase))
+            {
+                int numericHexValue;
+                if (int.TryParse(contentOriginal.AsSpanX(2), NumberStyles.HexNumber, null, out numericHexValue))
+                {
+                    token = new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
+                    return true;
+                }
+            }
+
+            token = null;
+            return false;
         }
 
         /// private static string WhiteSpaceChars = new string(
