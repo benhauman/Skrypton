@@ -274,7 +274,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             // target and optional member accessor) or we have multiple segments where all but the last one define the target and the last entry
             // has the optional member accessor and any arguments.
             string targetAccessorName;
-            string? optionalMemberAccessor;
+            string[]? optionalMemberAccessor;
             ParsingExpression[] arguments;
             if (callExpressionSegments.Count == 1)
             {
@@ -287,7 +287,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                 {
-                    optionalMemberAccessor = callExpressionSegments[0].MemberAccessTokens.Skip(1).Single().Content;
+                    optionalMemberAccessor = [callExpressionSegments[0].MemberAccessTokens.Skip(1).Single().Content];
                 }
 
                 arguments = callExpressionSegments[0].Arguments.ToArray();
@@ -395,7 +395,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             // - Note: Moving the target name down into being a member accessor means that we can revert to using the non-rewritten
                             //   NameToken Content value (the targetAccessorName will have been through the nameRewriter, which is not necessary
                             //   now that it will appear as a string in a SET call - and less name-rewriting in the output is better)
-                            optionalMemberAccessor = targetAccessor.Content;
+                            optionalMemberAccessor = [targetAccessor.Content];
                             targetAccessorName = "this";
                         }
                     }
@@ -407,6 +407,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 IExpressionSegment[] targetAccessExpressionSegments = (targetAccessCallExpressionSegments.Length > 1)
                     ? new IExpressionSegment[] { new CallSetExpressionSegment(targetAccessCallExpressionSegments) }
                     : new IExpressionSegment[] { targetAccessCallExpressionSegments.Single() };
+
+                // The last CallExpressionSegment may only have one member accessor
+                // - Note: it may have zero member accessors if the assignment target was of the form "a(0, 1)(2)"
+                CallSetItemExpressionSegment lastCallExpressionSegment = callExpressionSegments.Last();
+                IReadOnlyCollection<IToken> optionalMemberAccessTokensForLastCallExpressionSegment = lastCallExpressionSegment.MemberAccessTokens;
+
                 targetAccessorName =
                     _statementTranslator.TranslateParsingExpression(
                         new ParsingExpression(targetAccessExpressionSegments),
@@ -414,10 +420,22 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         ExpressionReturnTypeOptions.NotSpecified
                     ).TranslatedContent;
 
-                // The last CallExpressionSegment may only have one member accessor
-                // - Note: it may have zero member accessors if the assignment target was of the form "a(0, 1)(2)"
-                CallSetItemExpressionSegment? lastCallExpressionSegment = callExpressionSegments.Last();
-                optionalMemberAccessor = lastCallExpressionSegment.MemberAccessTokens.Count != 0 ? lastCallExpressionSegment.MemberAccessTokens.Single().Content : null;
+                if (optionalMemberAccessTokensForLastCallExpressionSegment.Count == 0)
+                {
+                    optionalMemberAccessor = null;
+                }
+                else
+                {
+                    if (optionalMemberAccessTokensForLastCallExpressionSegment.Count > 1)
+                    {
+                        // test:XSetMembersN
+                        optionalMemberAccessor = optionalMemberAccessTokensForLastCallExpressionSegment.Select(x => x.Content).ToArray();
+                    }
+                    else
+                    {
+                        optionalMemberAccessor = [optionalMemberAccessTokensForLastCallExpressionSegment.Single().Content];
+                    }
+                }
                 arguments = lastCallExpressionSegment.Arguments.ToArray();
 
                 // Note: In this case, we don't have to apply any special logic to make "return value replacements" for assignment targets
@@ -600,19 +618,33 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else
             {
-                if (argumentsInitialization.Length == 0)
+                if (optionalMemberAccessor.Length > 1)
                 {
-                    string memberAccessorText = optionalMemberAccessor.ToLiteral();
-                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
-                        variablesAccessed
-                    );
+                    // test:XSetMembersN
+                    List<string> txt = new List<string>();
+                    for (int ix = 0; ix < optionalMemberAccessor.Length; ix++)
+                    {
+                        string memberAccessorText = optionalMemberAccessor[ix].ToLiteral();
+
+                        //string memberAccessorExprText = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})";
+                    }
+                    throw new NotImplementedException();
                 }
                 else
                 {
-                    string memberAccessorText = optionalMemberAccessor.ToLiteral();
-                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
-                        variablesAccessed
-                    );
+                    string memberAccessorText = optionalMemberAccessor[0].ToLiteral();
+                    if (argumentsInitialization.Length == 0)
+                    {
+                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                            variablesAccessed
+                        );
+                    }
+                    else
+                    {
+                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                            variablesAccessed
+                        );
+                    }
                 }
             }
         }
