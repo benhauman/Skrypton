@@ -20,11 +20,11 @@ namespace TranslatedProgram
             {
                 if (_.IF(_.EQ(_.CALLm1v1(this, _.NnO(_outer.serv, "serv"), "enabled", (Int16)7), true)))
                 {
-                    _.SETm1a1(this, _outer.serv ?? throw new InvalidOperationException("Reference not set:serv"), "Enabled", (Int16)8, false);
+                    _.SETm1a1(this, _.NnO(_outer.serv, "serv"), "Enabled", (Int16)8, false);
                 }
                 else
                 {
-                    _.SETm1a1(this, _outer.serv ?? throw new InvalidOperationException("Reference not set:serv"), "Enabled", (Int16)9, true);
+                    _.SETm1a1(this, _.NnO(_outer.serv, "serv"), "Enabled", (Int16)9, true);
                 }
             }
         }

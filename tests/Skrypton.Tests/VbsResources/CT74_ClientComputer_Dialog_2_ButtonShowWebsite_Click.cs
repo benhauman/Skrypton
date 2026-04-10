@@ -72,9 +72,9 @@ namespace TranslatedProgram
                 parmname = "runScript";
                 adoSQLCmdParam = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with = _.OBJ(adoSQLCmdParam);
-                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "ActiveConnection", _.OBJ(oConn));
-                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CommandText", "CreateNewSBCode");
-                _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "CommandType", _.VAL(adCmdStoredProc));
+                _.SETm1a0(this, _.NnO(with, "with"), "ActiveConnection", _.OBJ(oConn));
+                _.SETm1a0(this, _.NnO(with, "with"), "CommandText", "CreateNewSBCode");
+                _.SETm1a0(this, _.NnO(with, "with"), "CommandType", _.VAL(adCmdStoredProc));
                 _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1v3(this, _.NnO(with, "with"), "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
                 _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1argp(this, _.NnO(with, "with"), "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
                 _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1v4(this, _.NnO(with, "with"), "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
@@ -97,9 +97,9 @@ namespace TranslatedProgram
                 //X/V Personalnummer ermitteln
                 adoSQLCmdParam2 = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
                 var with2 = _.OBJ(adoSQLCmdParam2);
-                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "ActiveConnection", _.OBJ(oConn));
-                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CommandText", "CreateNewPersonalID");
-                _.SETm1a0(this, with2 ?? throw new InvalidOperationException("Reference not set:with2"), "CommandType", _.VAL(adCmdStoredProc));
+                _.SETm1a0(this, _.NnO(with2, "with2"), "ActiveConnection", _.OBJ(oConn));
+                _.SETm1a0(this, _.NnO(with2, "with2"), "CommandText", "CreateNewPersonalID");
+                _.SETm1a0(this, _.NnO(with2, "with2"), "CommandType", _.VAL(adCmdStoredProc));
                 _.CALLm2v1(this, _.NnO(with2, "with2"), "Parameters", "Append", _.CALLm1v3(this, _.NnO(with2, "with2"), "CreateParameter", "RETURN_VALUE", adInteger, adParamReturnValue));
                 _.CALLm2v1(this, _.NnO(with2, "with2"), "Parameters", "Append", _.CALLm1argp(this, _.NnO(with2, "with2"), "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
                 _.CALLm2v1(this, _.NnO(with2, "with2"), "Parameters", "Append", _.CALLm1v4(this, _.NnO(with2, "with2"), "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));

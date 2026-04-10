@@ -96,22 +96,22 @@ namespace TranslatedProgram
                     {
                         MailAttachment = VBScriptConstants.Nothing;
                         MailAttachment = _.OBJ(_.CALLm1v0(this, _.NnO(Email, "Email"), "AddAttachment"));
-                        _.SETm1a0(this, MailAttachment ?? throw new InvalidOperationException("Reference not set:MailAttachment"), "name", _.VAL(_.CALLm1v0(this, _.NnO(Attachment, "Attachment"), "name")));
-                        _.SETm1a0(this, MailAttachment ?? throw new InvalidOperationException("Reference not set:MailAttachment"), "data", _.VAL(_.CALLm1v0(this, _.NnO(Attachment, "Attachment"), "data")));
+                        _.SETm1a0(this, _.NnO(MailAttachment, "MailAttachment"), "name", _.VAL(_.CALLm1v0(this, _.NnO(Attachment, "Attachment"), "name")));
+                        _.SETm1a0(this, _.NnO(MailAttachment, "MailAttachment"), "data", _.VAL(_.CALLm1v0(this, _.NnO(Attachment, "Attachment"), "data")));
                     }
                 }
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(MailSender), "")))
             {
-                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "SenderMail", _.VAL(MailSender));
+                _.SETm1a0(this, _.NnO(Email, "Email"), "SenderMail", _.VAL(MailSender));
             }
-            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "To", _.VAL(Receiver));
-            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Subject", _.VAL(Subject));
-            _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Body", _.VAL(body));
+            _.SETm1a0(this, _.NnO(Email, "Email"), "To", _.VAL(Receiver));
+            _.SETm1a0(this, _.NnO(Email, "Email"), "Subject", _.VAL(Subject));
+            _.SETm1a0(this, _.NnO(Email, "Email"), "Body", _.VAL(body));
             if (_.IF(_.NOTEQ(_.NullableSTR(CC), "")))
             {
-                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "CC", _.VAL(CC));
+                _.SETm1a0(this, _.NnO(Email, "Email"), "CC", _.VAL(CC));
             }
             _.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "SendRequestMail", _.ARGS.Ref(Email, v4 => { Email = v4; }));
         }
@@ -260,9 +260,9 @@ namespace TranslatedProgram
                     body = _.CONCAT(body, _.CALLm1v5(this, _.NnO(hlCase, "hlCase"), "GetValue", "CASEINFO.REFERENCENUMBER", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     body = _.CONCAT(body, " konnte wegen einer fehlenden E-Mail Adresse nicht zugestellt werden.");
                 }
-                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "To", _.VAL(Emailadress));
-                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Subject", _.VAL(Subject));
-                _.SETm1a0(this, Email ?? throw new InvalidOperationException("Reference not set:Email"), "Body", _.VAL(body));
+                _.SETm1a0(this, _.NnO(Email, "Email"), "To", _.VAL(Emailadress));
+                _.SETm1a0(this, _.NnO(Email, "Email"), "Subject", _.VAL(Subject));
+                _.SETm1a0(this, _.NnO(Email, "Email"), "Body", _.VAL(body));
                 _.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "SendRequestMail", _.ARGS.Ref(Email, v7 => { Email = v7; }));
             }
         }
@@ -741,7 +741,7 @@ namespace TranslatedProgram
             nodeObjects = _.OBJ(_.CALLm1v1(this, _.NnO(nodeData, "nodeData"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Objects")));
             nodeObject = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObjects, "nodeObjects"), "appendChild", _.CALLm1argp(this, _.NnO(xmldoc, "xmldoc"), "createElement", _.ARGS.Ref(objDefname, v73 => { objDefname = v73; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName ?? throw new InvalidOperationException("Reference not set:attAliasName"), "Text", _.VAL(aliasname));
+            _.SETm1a0(this, _.NnO(attAliasName, "attAliasName"), "Text", _.VAL(aliasname));
             _.CALLm2argp(this, _.NnO(nodeObject, "nodeObject"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v74 => { attAliasName = v74; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObject, "nodeObject"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Attributes")));
             nodeRelations = _.OBJ(_.CALLm1v1(this, _.NnO(nodeData, "nodeData"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Relations")));
@@ -954,13 +954,13 @@ namespace TranslatedProgram
 
             nodeObject = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObjects, "nodeObjects"), "appendChild", _.CALLm1argp(this, _.NnO(xmldoc, "xmldoc"), "createElement", _.ARGS.Ref(objDefname, v114 => { objDefname = v114; }))));
             attAliasName = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName ?? throw new InvalidOperationException("Reference not set:attAliasName"), "Text", _.VAL(aliasname1));
+            _.SETm1a0(this, _.NnO(attAliasName, "attAliasName"), "Text", _.VAL(aliasname1));
             _.CALLm2argp(this, _.NnO(nodeObject, "nodeObject"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName, v115 => { attAliasName = v115; }));
             nodeAttributes = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObject, "nodeObject"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Attributes")));
             nodeServiceUnits = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObject, "nodeObject"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "ServiceUnits")));
             nodeServiceUnit = _.OBJ(_.CALLm1v1(this, _.NnO(nodeServiceUnits, "nodeServiceUnits"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "ServiceUnit")));
             attAliasNameSU = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasNameSU ?? throw new InvalidOperationException("Reference not set:attAliasNameSU"), "Text", _.VAL(aliasnameSU));
+            _.SETm1a0(this, _.NnO(attAliasNameSU, "attAliasNameSU"), "Text", _.VAL(aliasnameSU));
             _.CALLm2argp(this, _.NnO(nodeServiceUnit, "nodeServiceUnit"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasNameSU, v116 => { attAliasNameSU = v116; }));
             ////////////////// HLOBJECT.ID
             //Call AppendNode(hlContext,xmldoc, nodeAttributes, True, "HLOBJECTINFO.ID", hlObj.GetValue("HLOBJECTINFO.ID", 0,0,0,0)) '
@@ -1016,7 +1016,7 @@ namespace TranslatedProgram
             ////// obj2: Product///////////////////////////////////////////////////////
             nodeObject2 = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObjects, "nodeObjects"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", _.CALLm1argp(this, _.NnO(hlObj, "hlObj"), "GetType", _.ARGS.ForceBrackets()))));
             attAliasName2 = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createAttribute", "aliasname"));
-            _.SETm1a0(this, attAliasName2 ?? throw new InvalidOperationException("Reference not set:attAliasName2"), "Text", _.VAL(aliasname2));
+            _.SETm1a0(this, _.NnO(attAliasName2, "attAliasName2"), "Text", _.VAL(aliasname2));
             _.CALLm2argp(this, _.NnO(nodeObject2, "nodeObject2"), "Attributes", "setNamedItem", _.ARGS.Ref(attAliasName2, v145 => { attAliasName2 = v145; }));
             nodeAttributes2 = _.OBJ(_.CALLm1v1(this, _.NnO(nodeObject2, "nodeObject2"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Attributes")));
             object hlContext_vref23 = hlContext;
@@ -1072,11 +1072,11 @@ namespace TranslatedProgram
             attIsKey = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createAttribute", "iskey"));
             if (_.IF(iskey))
             {
-                _.SETm1a0(this, attIsKey ?? throw new InvalidOperationException("Reference not set:attIsKey"), "Text", "true");
+                _.SETm1a0(this, _.NnO(attIsKey, "attIsKey"), "Text", "true");
             }
             else
             {
-                _.SETm1a0(this, attIsKey ?? throw new InvalidOperationException("Reference not set:attIsKey"), "Text", "false");
+                _.SETm1a0(this, _.NnO(attIsKey, "attIsKey"), "Text", "false");
             }
             _.CALLm2argp(this, _.NnO(valueNode, "valueNode"), "Attributes", "setNamedItem", _.ARGS.Ref(attIsKey, v160 => { attIsKey = v160; }));
 
@@ -1092,7 +1092,7 @@ namespace TranslatedProgram
             finally { key = key_vref2; }
             _.CALLm1v1(this, _.NnO(nodeObject, "nodeObject"), "appendChild", valueNode);
 
-            _.SETm1a0(this, valueNode ?? throw new InvalidOperationException("Reference not set:valueNode"), "Text", _.VAL(value));
+            _.SETm1a0(this, _.NnO(valueNode, "valueNode"), "Text", _.VAL(value));
         }
         public object DBConnectionString(ref object hlContext)
         {

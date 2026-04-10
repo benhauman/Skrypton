@@ -108,7 +108,7 @@ namespace TranslatedProgram
             else
             {
                 GetCommunicationDefault_retVal = true;
-                _.SETm0a1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "DefValue", _.VAL(strValue));
+                _.SETm0a1(this, _.NnO(dict, "dict"), "DefValue", _.VAL(strValue));
             }
             return GetCommunicationDefault_retVal;
         }
@@ -335,8 +335,8 @@ namespace TranslatedProgram
                     }
                     finally { hlContext = hlContext_vref8; }
 
-                    _.SETm0a1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "DefValue", _.VAL(strOrgUnits));
-                    _.SETm0a1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "PersInfoAttr", "PersonOrganization");
+                    _.SETm0a1(this, _.NnO(dict, "dict"), "DefValue", _.VAL(strOrgUnits));
+                    _.SETm0a1(this, _.NnO(dict, "dict"), "PersInfoAttr", "PersonOrganization");
                     object hlContext_vref9 = hlContext, hlPerson_vref = hlPerson, dict_vref4 = dict;
                     try
                     {
@@ -528,11 +528,11 @@ namespace TranslatedProgram
             //initialisiert werden.
             if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", (Int16)1);
+                _.SETm0a1(this, _.NnO(pDict, "pDict"), "SoftwareSuiteFolderLevel", (Int16)1);
             }
             else
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
+                _.SETm0a1(this, _.NnO(pDict, "pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
             }
 
             //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
@@ -546,7 +546,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref14; hlParentSWFolder = hlParentSWFolder_vref; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.SETm0a1(this, _.NnO(pDict, "pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
                 return CheckForSoftwareSuiteFolder_retVal;
             }
 
@@ -588,16 +588,16 @@ namespace TranslatedProgram
             retval = (Int16)0;
 
             //Dictionary Eintraege initalisieren
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", "");
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", (Int16)0);
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", (Int16)0);
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", (Int16)0);
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SoftwareLicenses", "");
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumRefLicCounter", (Int16)0);
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumInstLicCounter", (Int16)0);
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumFreeLicCounter", (Int16)0);
 
             //Pruefen ob es Software Lizenzobjekte unterhalb des Folders gibt.
             object assocName_vref = assocName;
             try
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
+                _.SETm0a1(this, _.NnO(pDict, "pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
             }
             finally { assocName = assocName_vref; }
 
@@ -664,7 +664,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref19; hlSWFolder = hlSWFolder_vref2; }
             if (_.IF(_.EQ(_.CBOOL(CheckLicContrByServer), true)))
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", (Int16)0);
+                _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumFreeLicCounter", (Int16)0);
             }
             object pDict_vref7 = pDict;
             try
@@ -741,7 +741,7 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref21, v78 => { hlContext_vref21 = v78; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref21; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
                 else
@@ -754,19 +754,19 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref22, v79 => { hlContext_vref22 = v79; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref22; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                         object hlContext_vref23 = hlContext;
                         try
                         {
                             SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref23, v80 => { hlContext_vref23 = v80; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref23; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
+                        _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
 
         }
         //----------------------------------------------------------------------------------------------------------
@@ -799,7 +799,7 @@ namespace TranslatedProgram
                         SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref24, v81 => { hlContext_vref24 = v81; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref24; }
-                    _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                    _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
 
                     object hlContext_vref25 = hlContext;
                     try
@@ -809,7 +809,7 @@ namespace TranslatedProgram
                     finally { hlContext = hlContext_vref25; }
                     if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")))))
                     {
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.VAL(SWInstCounter));
+                        _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumInstLicCounter", _.VAL(SWInstCounter));
                     }
                 }
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
@@ -823,12 +823,12 @@ namespace TranslatedProgram
                             SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref26, v83 => { hlContext_vref26 = v83; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref26; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, _.NnO(pDict, "pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
         }
         //----------------------------------------------------------------------------------------------------------
         //Diese Function ueberprueft den ganzzahligen Wert (Integer).

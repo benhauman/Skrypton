@@ -227,7 +227,7 @@ namespace TranslatedProgram
         public void LogText(ref object sText)
         {
             //Uncomment to enable logging
-            _.SETm0a1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "processtext", _.CONCAT(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine));
+            _.SETm0a1(this, _.NnO(_env.session, "session"), "processtext", _.CONCAT(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("processtext")), sText, VBScriptConstants.vbNewLine));
         }
         //---------------------------------------------------------------------------------------- ExtractRefNumber ---
         public object ExtractRefNumber(ref object mailSubject)

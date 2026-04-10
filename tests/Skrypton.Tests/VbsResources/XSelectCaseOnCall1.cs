@@ -18,15 +18,15 @@ namespace TranslatedProgram
             object targetCaseExpr = _.CALLm1v5(this, _.NnO(_outer.hlObj, "hlObj"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
-                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", "RGB(107,105,248)");
+                _.SETm1a0(this, _.NnO(_outer.CaseAttributes, "CaseAttributes"), "BackColor", "RGB(107,105,248)");
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
-                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", "RGB(119,170,251)");
+                _.SETm1a0(this, _.NnO(_outer.CaseAttributes, "CaseAttributes"), "BackColor", "RGB(119,170,251)");
             }
             else
             {
-                _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", "RGB(248,245,240)");
+                _.SETm1a0(this, _.NnO(_outer.CaseAttributes, "CaseAttributes"), "BackColor", "RGB(248,245,240)");
             }
         }
     }

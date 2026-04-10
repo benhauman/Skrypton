@@ -67,12 +67,12 @@ namespace TranslatedProgram
                 item = enumerationContent.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "Subject"), item, (Int16)1)), (Int16)0)))
                 {
-                    _.SETm0a1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "processtext", "Out of Office AutoReply");
+                    _.SETm0a1(this, _.NnO(_env.session, "session"), "processtext", "Out of Office AutoReply");
                     return;
                 }
             }
 
-            _.SETm1a0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype", (Int16)(-2));
+            _.SETm1a0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype", (Int16)(-2));
             adhocMail = false;
             adhocMail = _.VAL(_.CALLm1argp(this, _outer, "IsAdhocMail", _.ARGS.Ref(oMailRequest, v => { oMailRequest = v; })));
 
@@ -128,7 +128,7 @@ namespace TranslatedProgram
         public void LogText(ref object sText)
         {
             //session("worker").trace sText
-            _.SETm0a1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "processtext", _.CONCAT(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf));
+            _.SETm0a1(this, _.NnO(_env.session, "session"), "processtext", _.CONCAT(_.CALLm0argp(this, _.NnO(_env.session, "session"), _.ARGS.Val("processtext")), sText, VBScriptConstants.vbLf));
         }
         //--------------------------------------------------------------------------------------- sub 3 ---
         public void SetCaseAttributes(ref object hlcase, ref object mail)
@@ -181,7 +181,7 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(oCaseType, "oCaseType"), "GetValue", "type"), "(_.call result)"), "data"), _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype"))))
                 {
                     oCaseCfg = _.OBJ(oCaseType);
-                    _.SETm1a0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(oCaseCfg, "oCaseCfg"), "GetValue", "type"), "(_.call result)"), "data")));
+                    _.SETm1a0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(oCaseCfg, "oCaseCfg"), "GetValue", "type"), "(_.call result)"), "data")));
                     bRegisteredMailType = true;
                     break;
                 }
@@ -207,13 +207,13 @@ namespace TranslatedProgram
                 oSubjectValue = enumerationContent3.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "Subject"), _.CALLm1v0(this, _.NnO(oSubjectValue, "oSubjectValue"), "data"), (Int16)1)), (Int16)0)))
                 {
-                    _.SETm1a0(this, oMailRequest ?? throw new InvalidOperationException("Reference not set:oMailRequest"), "mailtype", _.CLNG(_.CALLm1v0(this, _.NnO(oSubjectValue, "oSubjectValue"), "Name")));
+                    _.SETm1a0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype", _.CLNG(_.CALLm1v0(this, _.NnO(oSubjectValue, "oSubjectValue"), "Name")));
                     break;
                 }
             }
             if (_.IF(_.LT(_.NullableNUM(_.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype")), (Int16)0)))
             {
-                _.SETm0a1(this, _env.session ?? throw new InvalidOperationException("Reference not set:session"), "processtext", "unregistered mail subject");
+                _.SETm0a1(this, _.NnO(_env.session, "session"), "processtext", "unregistered mail subject");
                 return;
             }
             _.CALLm1v1(this, _outer, "LogText", _.CONCAT("MailRequestType:", _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype")));

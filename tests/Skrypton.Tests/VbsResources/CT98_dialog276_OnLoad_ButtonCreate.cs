@@ -30,7 +30,7 @@ namespace TranslatedProgram
         }
         public void OnLoad()
         {
-            _.SETm1a0(this, _.RAISEERROR(new Skrypton.RuntimeSupport.IllegalAssignmentException("'ButtonCreate' (line 2) : The left-hand side of an assignment cannot be a function.")) ?? throw new InvalidOperationException("Reference not set:(error result)"), "Disabled", true);
+            _.SETm1a0(this, _.NnO(_.RAISEERROR(new Skrypton.RuntimeSupport.IllegalAssignmentException("'ButtonCreate' (line 2) : The left-hand side of an assignment cannot be a function.")), "(error result)"), "Disabled", true);
         }
         public void ButtonCreate()
         {

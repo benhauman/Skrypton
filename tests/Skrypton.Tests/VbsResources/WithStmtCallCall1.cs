@@ -16,7 +16,7 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             var with = _.OBJ(_outer.adoSQLCmdParam);
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "ActiveConnection", VBScriptConstants.Nothing);
+            _.SETm1a0(this, _.NnO(with, "with"), "ActiveConnection", VBScriptConstants.Nothing);
             _.CALLm2v1(this, _.NnO(with, "with"), "Pr", "Ap", _.CALLm1v3(this, _.NnO(with, "with"), "CreateParameterX", "RETURN_VALUEx", (Int16)3, (Int16)4));
             _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1v5(this, _.NnO(with, "with"), "CreateParameterY", "@FirstCharName", (Int16)202, (Int16)1, (Int16)1, "FirstCharName"));
             _.CALLm1v0(this, _.NnO(with, "with"), "Execute");

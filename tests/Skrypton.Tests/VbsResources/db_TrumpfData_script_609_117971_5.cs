@@ -36,11 +36,11 @@ namespace TranslatedProgram
             //Create VB-Dictionary.
             _outer.pCase = VBScriptConstants.Nothing;
             _outer.pCase = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
-            _.SETm1a0(this, _outer.pCase ?? throw new InvalidOperationException("Reference not set:pCase"), "CompareMode", VBScriptConstants.vbTextCompare);
-            _.SETm0a1(this, _outer.pCase ?? throw new InvalidOperationException("Reference not set:pCase"), "BillCase", false);
-            _.SETm0a1(this, _outer.pCase ?? throw new InvalidOperationException("Reference not set:pCase"), "attrOperation", "IncidentSUAttribute.IncidentOperation");
-            _.SETm0a1(this, _outer.pCase ?? throw new InvalidOperationException("Reference not set:pCase"), "attrDistinguishMixed", "IncidentAttribute.RequestType");
-            _.SETm0a1(this, _outer.pCase ?? throw new InvalidOperationException("Reference not set:pCase"), "Delegated", false);
+            _.SETm1a0(this, _.NnO(_outer.pCase, "pCase"), "CompareMode", VBScriptConstants.vbTextCompare);
+            _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "BillCase", false);
+            _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "attrOperation", "IncidentSUAttribute.IncidentOperation");
+            _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "attrDistinguishMixed", "IncidentAttribute.RequestType");
+            _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "Delegated", false);
 
             //Vorgangsstatus auslesen.
             //Retrieve Case status.
@@ -252,8 +252,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -370,8 +370,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -485,8 +485,8 @@ namespace TranslatedProgram
                         //Verbindung oeffnen
                         //Hier muss Server- und Datenbankname fest eingetragen werden!
                         //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                        _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1");
-                        _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                        _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1");
+                        _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                         _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                         //CI-Nummer auslesen
@@ -602,8 +602,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -720,8 +720,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -838,8 +838,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -956,8 +956,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1074,8 +1074,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1192,8 +1192,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1310,8 +1310,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1428,8 +1428,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1546,8 +1546,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1663,8 +1663,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1781,8 +1781,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -1899,8 +1899,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2017,8 +2017,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2135,8 +2135,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2253,8 +2253,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2371,8 +2371,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2489,8 +2489,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2607,8 +2607,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2725,8 +2725,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2842,8 +2842,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -2960,8 +2960,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -3079,8 +3079,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm1");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
@@ -3197,8 +3197,8 @@ namespace TranslatedProgram
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
                                 //Wird die DB auf einen anderen Server uebertragen, muss dies vor Betrieb hier angepasst werden!!!
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                                _.SETm1a0(this, _outer.cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplineuser;Persist Security Info=True;User ID=helplineuser;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                                _.SETm1a0(this, _.NnO(_outer.cn, "cn"), "ConnectionTimeout", (Int16)10);
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen

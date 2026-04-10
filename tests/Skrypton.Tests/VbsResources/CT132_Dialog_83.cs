@@ -66,38 +66,38 @@ namespace TranslatedProgram
                 //If VIP = VIPLevelNone Then hlObj.SetValue "IncidentAttribute.VIPStatus",0,0,0,"VIPStatusNone"
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)1);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)2);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)3);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)4);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)0);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", "");
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", "");
                 }
             }
 
@@ -119,11 +119,11 @@ namespace TranslatedProgram
             {
                 if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "GetSearchState")), (Int16)3)))
                 {
-                    _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Reset");
+                    _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Reset");
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Betroffener");
+                    _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Betroffener");
                 }
             }
 
@@ -133,11 +133,11 @@ namespace TranslatedProgram
             {
                 if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "GetSearchState")), (Int16)3)))
                 {
-                    _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Reset");
+                    _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Reset");
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Inventar");
+                    _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Inventar");
                 }
             }
 
@@ -166,10 +166,10 @@ namespace TranslatedProgram
                     }
                     else
                     {
-                        _.SETm1a0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text", " ");
+                        _.SETm1a0(this, _.NnO(_env.EditAssetModel, "EditAssetModel"), "Text", " ");
                     }
                 }
-                _.SETm1a0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text", _.VAL(varString));
+                _.SETm1a0(this, _.NnO(_env.EditAssetModel, "EditAssetModel"), "Text", _.VAL(varString));
             }
 
             //Abhängig von der Anfrageart werden Teile des Dialogs aktiviert oder deaktiviert
@@ -177,81 +177,81 @@ namespace TranslatedProgram
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
             {
-                _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", true);
             }
             else
             {
-                _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", false);
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
 
             }
             else
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", true);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", true);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboProductionalRelevanz ?? throw new InvalidOperationException("Reference not set:ComboProductionalRelevanz"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboProductionalRelevanz, "ComboProductionalRelevanz"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", true);
             }
 
             //Zugriff auf Übersichts-Buttons regeln
             if (_.IF(_.EQ(rewritten_ReadOnly, false)))
             {
-                _.SETm1a0(this, _env.ButtonShowOverView ?? throw new InvalidOperationException("Reference not set:ButtonShowOverView"), "Disabled", false);
-                _.SETm1a0(this, _env.ButtonEmailPreview ?? throw new InvalidOperationException("Reference not set:ButtonEmailPreview"), "Disabled", false);
-                _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ButtonShowOverView, "ButtonShowOverView"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ButtonEmailPreview, "ButtonEmailPreview"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Disabled", false);
             }
             else
             {
-                _.SETm1a0(this, _env.ButtonShowOverView ?? throw new InvalidOperationException("Reference not set:ButtonShowOverView"), "Disabled", true);
-                _.SETm1a0(this, _env.ButtonEmailPreview ?? throw new InvalidOperationException("Reference not set:ButtonEmailPreview"), "Disabled", true);
-                _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ButtonShowOverView, "ButtonShowOverView"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ButtonEmailPreview, "ButtonEmailPreview"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Disabled", true);
             }
 
             //Einfärben der GrupBox CaseAttributes je nach Priorität
             object targetCaseExpr = _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)107, (Int16)105, (Int16)248)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)107, (Int16)105, (Int16)248)));
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority2")))
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)119, (Int16)170, (Int16)251)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)119, (Int16)170, (Int16)251)));
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority3")))
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)132, (Int16)235, (Int16)255)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)132, (Int16)235, (Int16)255)));
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority4")))
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)128, (Int16)213, (Int16)177)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)128, (Int16)213, (Int16)177)));
             }
             else if (_.IF(_.EQ(targetCaseExpr, "Priority5")))
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)123, (Int16)190, (Int16)99)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)123, (Int16)190, (Int16)99)));
             }
             else
             {
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)));
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "BackColor", _.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)));
             }
 
             //Bei Status ToProof wird die Email-Tab angewählt
             if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), "IncidentStatusToProof")))
             {
-                _.SETm1a0(this, _env.TabPageEmail ?? throw new InvalidOperationException("Reference not set:TabPageEmail"), "UiActive", true);
+                _.SETm1a0(this, _.NnO(_env.TabPageEmail, "TabPageEmail"), "UiActive", true);
             }
             else
             {
@@ -318,25 +318,25 @@ namespace TranslatedProgram
             //Zugriff auf Übersichts-Buttons regeln
             if (_.IF(_.EQ(rewritten_ReadOnly, false)))
             {
-                _.SETm1a0(this, _env.ButtonShowOverView ?? throw new InvalidOperationException("Reference not set:ButtonShowOverView"), "Disabled", false);
-                _.SETm1a0(this, _env.ButtonEmailPreview ?? throw new InvalidOperationException("Reference not set:ButtonEmailPreview"), "Disabled", false);
-                _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ButtonShowOverView, "ButtonShowOverView"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ButtonEmailPreview, "ButtonEmailPreview"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Disabled", false);
             }
             else
             {
-                _.SETm1a0(this, _env.ButtonShowOverView ?? throw new InvalidOperationException("Reference not set:ButtonShowOverView"), "Disabled", true);
-                _.SETm1a0(this, _env.ButtonEmailPreview ?? throw new InvalidOperationException("Reference not set:ButtonEmailPreview"), "Disabled", true);
-                _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ButtonShowOverView, "ButtonShowOverView"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ButtonEmailPreview, "ButtonEmailPreview"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Disabled", true);
             }
             //Abhängig von der Anfrageart werden Teile des Dialogs aktiviert oder deaktiviert
             Anfrageart = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
             else
             {
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", true);
             }
 
             //Bei 2nd Level Dialog setzen der Benachrichtigung auf Email
@@ -349,11 +349,11 @@ namespace TranslatedProgram
             //Check Asset search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "GetSearchState")), (Int16)3)))
             {
-                _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Reset");
+                _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Reset");
             }
             else
             {
-                _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Inventar");
+                _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Inventar");
             }
 
         }
@@ -379,11 +379,11 @@ namespace TranslatedProgram
             //Check Asset search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "GetSearchState")), (Int16)3)))
             {
-                _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Reset");
+                _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Reset");
             }
             else
             {
-                _.SETm1a0(this, _env.SearchAsset ?? throw new InvalidOperationException("Reference not set:SearchAsset"), "Caption", "Inventar");
+                _.SETm1a0(this, _.NnO(_env.SearchAsset, "SearchAsset"), "Caption", "Inventar");
             }
 
         }
@@ -449,10 +449,10 @@ namespace TranslatedProgram
                     }
                     else
                     {
-                        _.SETm1a0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text", " ");
+                        _.SETm1a0(this, _.NnO(_env.EditAssetModel, "EditAssetModel"), "Text", " ");
                     }
                 }
-                _.SETm1a0(this, _env.EditAssetModel ?? throw new InvalidOperationException("Reference not set:EditAssetModel"), "Text", _.VAL(varString));
+                _.SETm1a0(this, _.NnO(_env.EditAssetModel, "EditAssetModel"), "Text", _.VAL(varString));
             }
 
         }
@@ -474,11 +474,11 @@ namespace TranslatedProgram
             //Check requester search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "GetSearchState")), (Int16)3)))
             {
-                _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Reset");
+                _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Reset");
             }
             else
             {
-                _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Search");
+                _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Search");
             }
 
             //VIP-Status des Anfragers abfragen und Imp Vorgang setzen
@@ -489,38 +489,38 @@ namespace TranslatedProgram
                 //If VIP = VIPLevelNone Then hlObj.SetValue "IncidentAttribute.VIPStatus",0,0,0,"VIPStatusNone"
                 if (_.IF(_.EQ(VIP, "VIPLevelVIP")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)1);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)142, (Int16)139, (Int16)254)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminDitzingen")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)2);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelITAdminTG")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)3);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelSAPKeyUserTUS")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)4);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)205, (Int16)250, (Int16)255)));
                 }
                 else if (_.IF(_.EQ(VIP, "VIPLevelNon")))
                 {
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", false);
                     _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)0);
-                    _.SETm1a0(this, _env.ComboVIPStatus ?? throw new InvalidOperationException("Reference not set:ComboVIPStatus"), "Disabled", true);
-                    _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", "");
+                    _.SETm1a0(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", "");
                 }
             }
 
@@ -583,9 +583,9 @@ namespace TranslatedProgram
             {
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v4 => { strEmail = v4; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v5 => { strSubject = v5; }));
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", true);
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
             }
             else
             {
@@ -596,9 +596,9 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", true);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", false);
             }
 
         }
@@ -619,17 +619,17 @@ namespace TranslatedProgram
             //Check requester search status to set the caption of the button
             if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "GetSearchState")), (Int16)3)))
             {
-                _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Reset");
+                _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Reset");
             }
             else
             {
-                _.SETm1a0(this, _env.EditSurname ?? throw new InvalidOperationException("Reference not set:EditSurname"), "Text", "");
-                _.SETm1a0(this, _env.SearchCaller ?? throw new InvalidOperationException("Reference not set:SearchCaller"), "Caption", "Search");
+                _.SETm1a0(this, _.NnO(_env.EditSurname, "EditSurname"), "Text", "");
+                _.SETm1a0(this, _.NnO(_env.SearchCaller, "SearchCaller"), "Caption", "Search");
             }
 
             //VIP-Status zurücksetzen
             _.CALLm1v2(this, _.NnO(_env.ComboVIPStatus, "ComboVIPStatus"), "SelectItem", (Int16)0, (Int16)0);
-            _.SETm1a0(this, _env.Person ?? throw new InvalidOperationException("Reference not set:Person"), "BackColor", _.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)));
+            _.SETm1a0(this, _.NnO(_env.Person, "Person"), "BackColor", _.VAL(_.RGB((Int16)248, (Int16)245, (Int16)240)));
 
         }
         public void SearchCaller_Click()
@@ -665,7 +665,7 @@ namespace TranslatedProgram
             varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _.NnO(_env.EditProblem, "EditProblem"), "Text"), (Int16)100));
             if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text")), "")))
             {
-                _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Text", _.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "));
+                _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text", _.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "));
             }
 
         }
@@ -736,37 +736,37 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v7 => { strEmail = v7; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v8 => { strSubject = v8; }));
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Red");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", true);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Red");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusClosed")))
             {
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v9 => { strEmail = v9; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v10 => { strSubject = v10; }));
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Red");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Red");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", true);
                 if (_.IF(_.EQ(_.NullableSTR(strEmail), "")))
                 {
-                    _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
                 }
                 else
                 {
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerYes");
-                    _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
                 }
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusTimephased")))
             {
@@ -774,13 +774,13 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v11 => { strEmail = v11; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v12 => { strSubject = v12; }));
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Red");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", true);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", true);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Red");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusWaitingforCustomer")))
             {
@@ -788,66 +788,66 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v13 => { strEmail = v13; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v14 => { strSubject = v14; }));
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "SUINFO.PUBLISHED", (Int16)0, (Int16)0, (Int16)0, "1");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Red");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", true);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Red");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusWaitingforExtern")))
             {
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Black");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Black");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusToProof")))
             {
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Black");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Black");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusRouted")))
             {
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Black");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Black");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusNew")))
             {
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Black");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Black");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
             }
             else if (_.IF(_.EQ(strIncStatus, "IncidentStatusInProgress")))
             {
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, "EmailCallerNo");
-                _.SETm1a0(this, _env.LabelEmailBody ?? throw new InvalidOperationException("Reference not set:LabelEmailBody"), "TextColor", "Black");
-                _.SETm1a0(this, _env.ComplexTextEmailBody ?? throw new InvalidOperationException("Reference not set:ComplexTextEmailBody"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Required", false);
-                _.SETm1a0(this, _env.EditResubmissionTime ?? throw new InvalidOperationException("Reference not set:EditResubmissionTime"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.LabelEmailBody, "LabelEmailBody"), "TextColor", "Black");
+                _.SETm1a0(this, _.NnO(_env.ComplexTextEmailBody, "ComplexTextEmailBody"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "Disabled", true);
                 _.CALLm1v0(this, _.NnO(_env.EditResubmissionTime, "EditResubmissionTime"), "DeleteContent");
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
             }
 
         }
@@ -858,53 +858,53 @@ namespace TranslatedProgram
             Anfrageart = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             Status = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
-            _.SETm1a0(this, _env.ComboProductionalRelevanz ?? throw new InvalidOperationException("Reference not set:ComboProductionalRelevanz"), "Disabled", false);
+            _.SETm1a0(this, _.NnO(_env.ComboProductionalRelevanz, "ComboProductionalRelevanz"), "Disabled", false);
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
             {
-                _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", true);
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, "ImpactOne");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, "FunctionalRangePartFailure");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzAdministrativeProcess");
             }
             else
             {
-                _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", false);
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzSupportProcess");
             }
 
             if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
                 if (_.IF(_.NOTEQ(_.NullableSTR(Status), "IncidentStatusClosed")))
                 {
-                    _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
                 }
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
             else
             {
-                _.SETm1a0(this, _env.EditProblem ?? throw new InvalidOperationException("Reference not set:EditProblem"), "Text", "");
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
-                _.SETm1a0(this, _env.EditDiagnosis ?? throw new InvalidOperationException("Reference not set:EditDiagnosis"), "Text", "");
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", true);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", true);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", true);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboRequestType ?? throw new InvalidOperationException("Reference not set:ComboRequestType"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboProductionalRelevanz ?? throw new InvalidOperationException("Reference not set:ComboProductionalRelevanz"), "Disabled", true);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.EditProblem, "EditProblem"), "Text", "");
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.EditDiagnosis, "EditDiagnosis"), "Text", "");
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboRequestType, "ComboRequestType"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboProductionalRelevanz, "ComboProductionalRelevanz"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", true);
             }
 
         }
@@ -928,7 +928,7 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "CaseGeneral.SummaryHTML.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "CaseGeneral.SummaryHTML.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
                 //Button "Übersicht" entsperren
-                _.SETm1a0(this, _env.ButtonShowOverView ?? throw new InvalidOperationException("Reference not set:ButtonShowOverView"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ButtonShowOverView, "ButtonShowOverView"), "Disabled", false);
             }
 
         }
@@ -955,8 +955,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Ditzingen oder TG auslesen
@@ -1064,8 +1064,8 @@ namespace TranslatedProgram
                     //Datenbankverbindung zu helpline_replication
                     cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                     //DB Verbindung öffnen
-                    _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                    _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                    _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                    _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                     _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                     //Teamname auslesen
@@ -1131,8 +1131,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Inhalte von agent_templates in das Recordset einlesen
@@ -1174,7 +1174,7 @@ namespace TranslatedProgram
                 varSubject = _.VAL(_.LEFT(_.CALLm1v0(this, _.NnO(_env.EditProblem, "EditProblem"), "Text"), (Int16)100));
                 if (_.IF(_.EQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text")), "")))
                 {
-                    _.SETm1a0(this, _env.EditSubjectCase ?? throw new InvalidOperationException("Reference not set:EditSubjectCase"), "Text", _.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "));
+                    _.SETm1a0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text", _.REPLACE(varSubject, _.CONCAT(_.CHR((Int16)13), _.CHR((Int16)10)), " "));
                 }
 
                 //Übertrag der Caller in das An-Feld
@@ -1231,66 +1231,66 @@ namespace TranslatedProgram
                 sendmail = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "EmailSUAttribute.EmailCaller", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 if (_.IF(_.EQ(_.NullableSTR(sendmail), "EmailCallerYes")))
                 {
-                    _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                    _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", true);
-                    _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", true);
+                    _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
                     _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v19 => { strEmail = v19; }));
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                    _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", false);
-                    _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                    _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", false);
+                    _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", true);
                 }
 
                 //Aktivieren/Deaktivieren der Felder je nach gesetzter Anfrageart
-                _.SETm1a0(this, _env.ComboProductionalRelevanz ?? throw new InvalidOperationException("Reference not set:ComboProductionalRelevanz"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboProductionalRelevanz, "ComboProductionalRelevanz"), "Disabled", false);
                 if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeIncident")))
                 {
-                    _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", true);
-                    _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", true);
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "CaseClassificationAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, "ImpactOne");
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.FunctionalRange", (Int16)0, (Int16)0, (Int16)0, "FunctionalRangePartFailure");
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzAdministrativeProcess");
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.ComboImpact ?? throw new InvalidOperationException("Reference not set:ComboImpact"), "Disabled", false);
-                    _.SETm1a0(this, _env.ComboFunctionalRange ?? throw new InvalidOperationException("Reference not set:ComboFunctionalRange"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboImpact, "ComboImpact"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboFunctionalRange, "ComboFunctionalRange"), "Disabled", false);
                     _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.ProductionalRelevanz", (Int16)0, (Int16)0, (Int16)0, "ProductionalRelevanzSupportProcess");
                 }
 
                 if (_.IF(_.NOTEQ(_.NullableSTR(Anfrageart), "RequestTypeContact")))
                 {
-                    _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
                     Status = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "IncidentAttribute.IncidentStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.NOTEQ(_.NullableSTR(Status), "IncidentStatusClosed")))
                     {
-                        _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
+                        _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
                     }
                     else
                     {
-                        _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
+                        _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
                     }
-                    _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                    _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                    _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                    _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                    _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
                 }
                 else
                 {
-                    _.SETm1a0(this, _env.EditProblem ?? throw new InvalidOperationException("Reference not set:EditProblem"), "Text", "");
-                    _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", true);
-                    _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", true);
-                    _.SETm1a0(this, _env.EditDiagnosis ?? throw new InvalidOperationException("Reference not set:EditDiagnosis"), "Text", "");
-                    _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", true);
-                    _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", true);
-                    _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", true);
-                    _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", true);
-                    _.SETm1a0(this, _env.ComboRequestType ?? throw new InvalidOperationException("Reference not set:ComboRequestType"), "Disabled", false);
-                    _.SETm1a0(this, _env.ComboProductionalRelevanz ?? throw new InvalidOperationException("Reference not set:ComboProductionalRelevanz"), "Disabled", true);
-                    _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.EditProblem, "EditProblem"), "Text", "");
+                    _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.EditDiagnosis, "EditDiagnosis"), "Text", "");
+                    _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboRequestType, "ComboRequestType"), "Disabled", false);
+                    _.SETm1a0(this, _.NnO(_env.ComboProductionalRelevanz, "ComboProductionalRelevanz"), "Disabled", true);
+                    _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", true);
                 }
 
                 //Recordset schließen
@@ -1333,8 +1333,8 @@ namespace TranslatedProgram
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
                 //DB Verbindung öffnen
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Recordset anlegen und templatenamen auslesen
@@ -1406,7 +1406,7 @@ namespace TranslatedProgram
             if (_.IF(_.EQ(_.NullableSTR(isreserved), "")))
             {
                 _.MSGBOX("Please reserve the ticket first.");
-                _.SETm1a0(this, _env.EditSurname ?? throw new InvalidOperationException("Reference not set:EditSurname"), "RequestFocus", true);
+                _.SETm1a0(this, _.NnO(_env.EditSurname, "EditSurname"), "RequestFocus", true);
             }
             else
             {
@@ -1419,8 +1419,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Teamname auslesen
@@ -1533,8 +1533,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Editor bestimmen
@@ -1567,7 +1567,7 @@ namespace TranslatedProgram
 
                         //Auswahl der Checkbox zurücksetzen und ID auf Null
                         _.CALLm1v0(this, _.NnO(_env.cb_template_load, "cb_template_load"), "ResetContent");
-                        _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "text", "");
+                        _.SETm1a0(this, _.NnO(_env.l_templateID, "l_templateID"), "text", "");
 
                         //Recordset schließen
                         rs = VBScriptConstants.Nothing;
@@ -1585,7 +1585,7 @@ namespace TranslatedProgram
 
                 //Vorhandene Checkbox Werte entfernen
                 _.CALLm1v0(this, _.NnO(_env.cb_template_load, "cb_template_load"), "ResetContent");
-                _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", "");
+                _.SETm1a0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text", "");
 
             }
 
@@ -1613,8 +1613,8 @@ namespace TranslatedProgram
 
             //Datenbankverbindung zu helpline_replication
             cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-            _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-            _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+            _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+            _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
             _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
             //Teamname auslesen
@@ -1675,7 +1675,7 @@ namespace TranslatedProgram
                     while (true)
                     {
                         _.HANDLEERROR(errOn2, () => {
-                            _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_agent, "rs_agent"), "fields", "template_id"), "(_.call result)"), "value")));
+                            _.SETm1a0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_agent, "rs_agent"), "fields", "template_id"), "(_.call result)"), "value")));
                         });
                         _.HANDLEERROR(errOn2, () => {
                             _.CALLm1v0(this, _.NnO(rs_agent, "rs_agent"), "MoveNext");
@@ -1704,7 +1704,7 @@ namespace TranslatedProgram
                 if (_.IF(() => _.EQ(_.CALLm1v0(this, _.NnO(_env.cb_template_load, "cb_template_load"), "GetCurSel"), anzahl_agent_templates), errOn2))
                 {
                     _.HANDLEERROR(errOn2, () => {
-                        _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", "");
+                        _.SETm1a0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text", "");
                     });
                     //cb_template_load.ResetContent
 
@@ -1742,7 +1742,7 @@ namespace TranslatedProgram
                         while (true)
                         {
                             _.HANDLEERROR(errOn2, () => {
-                                _.SETm1a0(this, _env.l_templateID ?? throw new InvalidOperationException("Reference not set:l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "template_id"), "(_.call result)"), "value")));
+                                _.SETm1a0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "template_id"), "(_.call result)"), "value")));
                             });
                             _.HANDLEERROR(errOn2, () => {
                                 _.CALLm1v0(this, _.NnO(rs_team, "rs_team"), "MoveNext");
@@ -2061,9 +2061,9 @@ namespace TranslatedProgram
             {
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailTo").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strEmail, v34 => { strEmail = v34; }));
                 _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("EmailSUAttribute.EmailSubject").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strSubject, v35 => { strSubject = v35; }));
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", true);
-                _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", true);
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", true);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", false);
             }
             else
             {
@@ -2074,9 +2074,9 @@ namespace TranslatedProgram
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailSubject", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailBody.TEXTVALUE", (Int16)0, (Int16)0, (Int16)0, "");
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "EmailSUAttribute.EmailBody.RAWTEXT", (Int16)0, (Int16)0, (Int16)0, "");
-                _.SETm1a0(this, _env.GroupBoxEmail ?? throw new InvalidOperationException("Reference not set:GroupBoxEmail"), "Disabled", true);
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Required", false);
-                _.SETm1a0(this, _env.TextBoxEmailSubject ?? throw new InvalidOperationException("Reference not set:TextBoxEmailSubject"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.GroupBoxEmail, "GroupBoxEmail"), "Disabled", true);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Required", false);
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailSubject, "TextBoxEmailSubject"), "Required", false);
             }
 
         }
@@ -2089,7 +2089,7 @@ namespace TranslatedProgram
             object Data = null; /* Undeclared in source */
             object i = null; /* Undeclared in source */
             //EMail-Adressen leeren
-            _.SETm1a0(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.ComboBoxEmailSearchResult, "ComboBoxEmailSearchResult"), "Text", "");
             _.CALLm1v0(this, _.NnO(_env.ComboBoxEmailSearchResult, "ComboBoxEmailSearchResult"), "ResetContent");
             //Name als Suchparameter für Email-Adressen abfragen
             name = _.VAL(_.CALLm1v0(this, _.NnO(_env.TextBoxEmailSearchName, "TextBoxEmailSearchName"), "Text"));
@@ -2107,8 +2107,8 @@ namespace TranslatedProgram
                 cn2 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
 
                 //Verbindung öffnen
-                _.SETm1a0(this, cn2 ?? throw new InvalidOperationException("Reference not set:cn2"), "ConnectionString", _.VAL(ConString));
-                _.SETm1a0(this, cn2 ?? throw new InvalidOperationException("Reference not set:cn2"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn2, "cn2"), "ConnectionString", _.VAL(ConString));
+                _.SETm1a0(this, _.NnO(cn2, "cn2"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn2, "cn2"), "Open");
 
                 //SELECT absetzen
@@ -2124,7 +2124,7 @@ namespace TranslatedProgram
                     _.CALLm1v1(this, _.NnO(_env.ComboBoxEmailSearchResult, "ComboBoxEmailSearchResult"), "AddItem", _.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs2, "rs2"), "fields", (Int16)0), "(_.call result)"), "value"));
                     if (_.IF(_.EQ(_.NullableNUM(i), (Int16)1)))
                     {
-                        _.SETm1a0(this, _env.ComboBoxEmailSearchResult ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailSearchResult"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs2, "rs2"), "fields", (Int16)0), "(_.call result)"), "value")));
+                        _.SETm1a0(this, _.NnO(_env.ComboBoxEmailSearchResult, "ComboBoxEmailSearchResult"), "Text", _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs2, "rs2"), "fields", (Int16)0), "(_.call result)"), "value")));
                     }
                     _.CALLm1v0(this, _.NnO(rs2, "rs2"), "movenext");
                 }
@@ -2169,7 +2169,7 @@ namespace TranslatedProgram
                         Recipient = _.ADD(_.ADD(Recipient, ";"), email);
                     }
                 }
-                _.SETm1a0(this, _env.TextBoxEmailTo ?? throw new InvalidOperationException("Reference not set:TextBoxEmailTo"), "Text", _.VAL(Recipient));
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailTo, "TextBoxEmailTo"), "Text", _.VAL(Recipient));
             }
 
         }
@@ -2207,7 +2207,7 @@ namespace TranslatedProgram
                         RecipientCC = _.ADD(_.ADD(RecipientCC, ";"), email);
                     }
                 }
-                _.SETm1a0(this, _env.TextBoxEmailCC ?? throw new InvalidOperationException("Reference not set:TextBoxEmailCC"), "Text", _.VAL(RecipientCC));
+                _.SETm1a0(this, _.NnO(_env.TextBoxEmailCC, "TextBoxEmailCC"), "Text", _.VAL(RecipientCC));
             }
 
         }
@@ -2231,8 +2231,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_data
                 cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Teamname auslesen
@@ -2276,8 +2276,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn1, "cn1"), "Open");
 
                 //Teamname auslesen
@@ -2737,8 +2737,8 @@ namespace TranslatedProgram
 
                 //Datenbankverbindung zu helpline_replication
                 cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                _.SETm1a0(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
-                _.SETm1a0(this, cn1 ?? throw new InvalidOperationException("Reference not set:cn1"), "ConnectionTimeout", (Int16)10);
+                _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
+                _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn1, "cn1"), "Open");
 
                 //Keyword einlesen und in Datenbank ablegen
@@ -2753,8 +2753,8 @@ namespace TranslatedProgram
 
                     //Datenbankverbindung zu helpline_data
                     cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
-                    _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2");
-                    _.SETm1a0(this, cn ?? throw new InvalidOperationException("Reference not set:cn"), "ConnectionTimeout", (Int16)10);
+                    _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2");
+                    _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                     _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
                     //Keyword schreiben
                     rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
@@ -2781,49 +2781,49 @@ namespace TranslatedProgram
             object Text = null;
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text"), "Notfalltransport_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
 
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text"), "Systemänderbarkeit_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
 
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text"), "#Prio 1 Incident# ", VBScriptConstants.vbTextCompare)))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
             if (_.IF(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(_env.EditSubjectCase, "EditSubjectCase"), "Text"), "Debugg_Modus_SAP", VBScriptConstants.vbTextCompare)))
             {
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseProblem ?? throw new InvalidOperationException("Reference not set:CaseProblem"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboBoxEmailCaller ?? throw new InvalidOperationException("Reference not set:ComboBoxEmailCaller"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseDiagnosis ?? throw new InvalidOperationException("Reference not set:CaseDiagnosis"), "Disabled", false);
-                _.SETm1a0(this, _env.KeywordTree ?? throw new InvalidOperationException("Reference not set:KeywordTree"), "Disabled", false);
-                _.SETm1a0(this, _env.Attachment ?? throw new InvalidOperationException("Reference not set:Attachment"), "Disabled", false);
-                _.SETm1a0(this, _env.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "Disabled", false);
-                _.SETm1a0(this, _env.ComboIncidentStatus ?? throw new InvalidOperationException("Reference not set:ComboIncidentStatus"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseProblem, "CaseProblem"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboBoxEmailCaller, "ComboBoxEmailCaller"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseDiagnosis, "CaseDiagnosis"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.KeywordTree, "KeywordTree"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.Attachment, "Attachment"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.CaseAttributes, "CaseAttributes"), "Disabled", false);
+                _.SETm1a0(this, _.NnO(_env.ComboIncidentStatus, "ComboIncidentStatus"), "Disabled", false);
             }
 
         }

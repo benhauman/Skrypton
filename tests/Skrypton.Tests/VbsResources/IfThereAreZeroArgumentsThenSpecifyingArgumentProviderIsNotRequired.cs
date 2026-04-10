@@ -1,1 +1,1 @@
-_.SETm1a0(this, _env.a ?? throw new InvalidOperationException("Reference not set:a"), "b", (Int16)1)
+_.SETm1a0(this, _.NnO(_env.a, "a"), "b", (Int16)1)

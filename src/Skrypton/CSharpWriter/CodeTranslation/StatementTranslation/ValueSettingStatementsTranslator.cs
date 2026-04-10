@@ -604,13 +604,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 if (argumentsInitialization.Length == 0)
                 {
-                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
                         variablesAccessed
                     );
                 }
                 else
                 {
-                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                    return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
                         variablesAccessed
                     );
 
@@ -632,12 +632,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         {
                             string callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
                             memberAccessorExprTextLast = $@"{_supportRefName.Name}.{callName}(this, _.NnO({targetAccessorName}, ""(call result)""), {memberAccessorText})";
-                            //memberAccessorExprTextLast = $"{targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText})"; // Pass "this" as the "context" argument
-                            //memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
                         }
                         else
                         {
-                            memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
+                            memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
                         }
                     }
 
@@ -659,13 +657,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     string memberAccessorText = optionalMemberAccessor[0].ToLiteral();
                     if (argumentsInitialization.Length == 0)
                     {
-                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
                             variablesAccessed
                         );
                     }
                     else
                     {
-                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
+                        return new ValueSettingStatementAssignmentFormatDetails(() => $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})", // Pass "this" as the "context" argument
                             variablesAccessed
                         );
                     }

@@ -252,7 +252,7 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SETm1a0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"))));
+            _.SETm1a0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"))));
 
             _outer.IsVBPollingEnabled = _.VAL(_.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "IsVBPollingEnabled"));
             _outer.bRenderAsCalendar = _.VAL(_.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "RenderAsCalendar"));
@@ -545,7 +545,7 @@ namespace TranslatedProgram
                 // and update the BookingRequirement object for when it is used in the Booking Checkout
                 if (_.IF(_.NOT(_.EQ(_.NullableSTR(_.LEFT(_.LCASE(key), (Int16)8)), "roomreq_"))))
                 {
-                    _.SETm0a1(this, aryFormattedData ?? throw new InvalidOperationException("Reference not set:aryFormattedData"), i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, _.NnO(dictKeyValues, "dictKeyValues"), "Item", _.ARGS.Ref(key, v25 => { key = v25; })), "\" />", VBScriptConstants.vbCrLf));
+                    _.SETm0a1(this, _.NnO(aryFormattedData, "aryFormattedData"), i, _.CONCAT("<input type=\"hidden\" name=\"", key, "\" value=\"", _.CALLm1argp(this, _.NnO(dictKeyValues, "dictKeyValues"), "Item", _.ARGS.Ref(key, v25 => { key = v25; })), "\" />", VBScriptConstants.vbCrLf));
                 }
                 i = _.ADD(i, (Int16)1);
             }
@@ -1271,7 +1271,7 @@ namespace TranslatedProgram
                             {
                                 bStayIndicative = _.VAL(_.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "Indicative"));
                             }
-                            _.SETm0a1(this, objDictAvaiStays ?? throw new InvalidOperationException("Reference not set:objDictAvaiStays"), strAvailStayKey, _.CONCAT(sStayNo, "_", bStayIndicative));
+                            _.SETm0a1(this, _.NnO(objDictAvaiStays, "objDictAvaiStays"), strAvailStayKey, _.CONCAT(sStayNo, "_", bStayIndicative));
                             _.ERASE(aryStay, v65 => { aryStay = v65; });
                         }
                         else
@@ -1413,7 +1413,7 @@ namespace TranslatedProgram
 
             // 2011-08-09 DWR: Expect the BookingRequirement in objRenderSettings to be read-only (since it usually comes from Page.Functions.GetSharedObject),
             // so replace it with an editable version (since some methods in here try to mess about with properties on it)
-            _.SETm1a0(this, objRenderSettings ?? throw new InvalidOperationException("Reference not set:objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"))));
+            _.SETm1a0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement", _.OBJ(_.CALLm1v1(this, _outer, "GetEditableBookingRequirement", _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"))));
 
             objSuppliersForStay = _.OBJ(_.CALLm1v2(this, _.NnO(objAvail, "objAvail"), "GetSupplierUnitDataForStay", _.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "StartDate"), _.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "Nights")));
 
@@ -1599,8 +1599,8 @@ namespace TranslatedProgram
                         // 2013-02-05 TB: objRenderSettings is used by RenderBookingInfoForm to populate some hidden stay information
                         // For fuzzy stays, both nights and startdate may differ from the original requirements.
                         // For FogBugz case 7594 I added the second line below which wasn't present.
-                        _.SETm1a0(this, _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "VisitDate", _.VAL(_.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "StartDate")));
-                        _.SETm1a0(this, _.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement") ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "Nights", _.VAL(_.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "Nights")));
+                        _.SETm1a0(this, _.NnO(_.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"), "(_.call result)"), "VisitDate", _.VAL(_.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "StartDate")));
+                        _.SETm1a0(this, _.NnO(_.CALLm1v0(this, _.NnO(objRenderSettings, "objRenderSettings"), "BookingRequirement"), "(_.call result)"), "Nights", _.VAL(_.CALLm1v0(this, _.NnO(objFuzzyStay, "objFuzzyStay"), "Nights")));
 
                         // 2014-03-12 DWR: We need to pass the Search Industry Classification into the form rendering code for VB Polling Products so that the
                         // Polling Exist can generate the deep link correctly. An Eviivo Configset can be set up with zero, meaning support either 1 OR 9. The
@@ -1891,9 +1891,9 @@ namespace TranslatedProgram
 
             // Need to create a new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "ReqNo", _.VAL(intReqNo));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "NumPeople", _.VAL(intNumPeople));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "Units", _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsList")));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "ReqNo", _.VAL(intReqNo));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "NumPeople", _.VAL(intNumPeople));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "Units", _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsList")));
             object intUnitKey_vref2 = intUnitKey;
             try
             {
@@ -1985,9 +1985,9 @@ namespace TranslatedProgram
 
             // Preparer new entry
             objEntry = _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsValueBag"));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "NumPeople", _.ADD(intNumAdults, intNumChildren));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "UnitKey", _.VAL(intUnitKey));
-            _.SETm0a1(this, objEntry ?? throw new InvalidOperationException("Reference not set:objEntry"), "PossReqNos", _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsList")));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "NumPeople", _.ADD(intNumAdults, intNumChildren));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "UnitKey", _.VAL(intUnitKey));
+            _.SETm0a1(this, _.NnO(objEntry, "objEntry"), "PossReqNos", _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "clsList")));
 
             // Look through the unit options and look for possible requirement matches
             // - We've got a set of requirement / room options from the DMS and we've (possibly) got a
@@ -2196,7 +2196,7 @@ namespace TranslatedProgram
                 {
                     intIndexOption = _.SUBT(_.CALLm0argp(this, _.NnO(arrMatches, "arrMatches"), _.ARGS.Ref(intIndexSel, v144 => { intIndexSel = v144; })), (Int16)1);
                     intUnitKey = _.VAL(_.CALLm0argp(this, _.NnO(_.CALLm0argp(this, _.NnO(arrReqUnitSelections, "arrReqUnitSelections"), _.ARGS.Ref(intIndexSel, v145 => { intIndexSel = v145; })), "(_.call result)"), _.ARGS.Val("UnitKey")));
-                    _.SETm0a1(this, lsUnitKeys ?? throw new InvalidOperationException("Reference not set:lsUnitKeys"), intIndexOption, _.VAL(intUnitKey));
+                    _.SETm0a1(this, _.NnO(lsUnitKeys, "lsUnitKeys"), intIndexOption, _.VAL(intUnitKey));
                 }
             }
 
@@ -3302,26 +3302,26 @@ namespace TranslatedProgram
 
             objBookingRequirementNew = _.OBJ(_.CALLm2v1(this, _.NnO(_outer.Page, "Page"), "Functions", "GetNewObject", "BookingRequirement"));
             var with = _.OBJ(objBookingRequirementNew);
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "VisitDate", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "VisitDate")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Nights", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Nights")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "FlexibleRange", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "FlexibleRange")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Adults", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Adults")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Children", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Children")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "ChildAges", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "ChildAges")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "IsEviivoBooking", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "IsEviivoBooking")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Consumer", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Consumer")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Offer", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Offer")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "BookingPassword", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "BookingPassword")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Product", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Product")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Requirement", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Requirement")));
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "RequirementRef", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "RequirementRef")));
+            _.SETm1a0(this, _.NnO(with, "with"), "VisitDate", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "VisitDate")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Nights", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Nights")));
+            _.SETm1a0(this, _.NnO(with, "with"), "FlexibleRange", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "FlexibleRange")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Adults", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Adults")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Children", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Children")));
+            _.SETm1a0(this, _.NnO(with, "with"), "ChildAges", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "ChildAges")));
+            _.SETm1a0(this, _.NnO(with, "with"), "IsEviivoBooking", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "IsEviivoBooking")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Consumer", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Consumer")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Offer", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Offer")));
+            _.SETm1a0(this, _.NnO(with, "with"), "BookingPassword", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "BookingPassword")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Product", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Product")));
+            _.SETm1a0(this, _.NnO(with, "with"), "Requirement", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "Requirement")));
+            _.SETm1a0(this, _.NnO(with, "with"), "RequirementRef", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "RequirementRef")));
             // NP 2012-03-12: RoomRequirements are needed
             // See GenerateRequirementFormData and Page.Functions.Booking.GenerateRequirementKeyValueData
             // the "NumRoomReq" value is part of the RoomRequirement, if it is not available then GenerateRequirementKeyValueData
             // sets default values for the adult and number of room requirements both to 1.
             // Requirements are not being passed to the RequirementSummary control correctly because the BookingRequestDictionary
             // is being overwritten with these incorrect default values.
-            _.SETm1a0(this, with ?? throw new InvalidOperationException("Reference not set:with"), "RoomRequirements", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "RoomRequirements")));
+            _.SETm1a0(this, _.NnO(with, "with"), "RoomRequirements", _.VAL(_.CALLm1v0(this, _.NnO(objBookingRequirement, "objBookingRequirement"), "RoomRequirements")));
             GetEditableBookingRequirement_retVal = _.OBJ(objBookingRequirementNew);
             return GetEditableBookingRequirement_retVal;
         }

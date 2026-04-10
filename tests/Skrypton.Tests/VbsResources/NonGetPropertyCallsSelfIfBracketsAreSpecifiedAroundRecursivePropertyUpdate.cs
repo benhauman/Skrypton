@@ -16,6 +16,6 @@
         [TranslatedProperty("Name")]
         public void Name(ref object value)
         {
-            _.SETm1a0(this, this ?? throw new InvalidOperationException("Reference not set:this"), "Name", "C1");
+            _.SETm1a0(this, _.NnO(this, "this"), "Name", "C1");
         }
     }
