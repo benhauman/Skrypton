@@ -237,7 +237,7 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
         }
 
         [TestMethod]
-        public void BuiltInFunctionsAreMappedToTheSupportClassButMayNotBeCalledDirectlyIfArgumentCountsMatch()
+        public void BuiltInFuncAreMappedButMayNotBeCalledDirectlyIfArgCountsMatch()
         {
             // This is a complement to BuiltInFunctionsAreMappedToTheSupportClassAndMayBeCalledDirectlyIfArgumentCountsMatch, where an incorrect number of
             // arguments is being passed to a support function. As such, it may not be called directly and must pass through the "CALL" method, so that the
@@ -252,8 +252,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 BuiltInFunctionToken.TestCreateBuiltInFunctionTokenTest("CDate", lineIndex1),
                 new OpenBrace(lineIndex1),
                 new NameToken("a", lineIndex1),
-                new ArgumentSeparatorToken(lineIndex1),
-                new NameToken("b", lineIndex1),
+                //new ArgumentSeparatorToken(lineIndex1), // CDate never has 2 arguments in VBScript (or VBA).
+                //new NameToken("b", lineIndex1),
                 new CloseBrace(lineIndex1)
             ]);
 
@@ -266,7 +266,8 @@ namespace Skrypton.Tests.CSharpWriter.CodeTranslation.StatementTranslation
                 ),
                 scopeAccessInformation
             );
-            myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1), new NameToken("b", lineIndex1)], actual);
+            myAssert.AreEqualX(this, null, [new NameToken("a", lineIndex1)//, new NameToken("b", lineIndex1)
+                ], actual);
         }
 
         [TestMethod]

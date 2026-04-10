@@ -29,8 +29,7 @@ namespace Skrypton.Tests.Shared.Comparers
             if (exTranslatedContent != y.TranslatedContent)
                 return false;
 
-            var tokenSetComparer = new TokenSetComparer();
-            return tokenSetComparer.Equals(
+            return TokenSetComparer.EqualsX(
                 exVariablesAccessed.Distinct(TokenComparer.Instance),
                 y.VariablesAccessed.Distinct(TokenComparer.Instance)
             );

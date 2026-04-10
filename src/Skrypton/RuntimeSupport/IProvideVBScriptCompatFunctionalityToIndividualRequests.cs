@@ -135,7 +135,8 @@ namespace Skrypton.RuntimeSupport
         object OCT(object value);
         float RND();
         float RND(object value);
-        object ROUND(object value); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/bankers-rounding.aspx
+        object ROUND(object expression); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/bankers-rounding.aspx
+        object ROUND(object expression, object numDecimalPlaces); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/bankers-rounding.aspx
         object SGN(object value);
         object SIN(object value);
         object SQR(object value);
@@ -149,7 +150,8 @@ namespace Skrypton.RuntimeSupport
         object CHRW(object value);
         object ESCAPE(object value);
         object FORMATCURRENCY(object value);
-        object FORMATDATETIME(object value);
+        object FORMATDATETIME(object dateValue);
+        object FORMATDATETIME(object dateValue, object format);
         object FORMATNUMBER(object expression); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/53112.aspx
         object FORMATNUMBER(object expression, object numDigitsAfterDecimal);
         object FORMATPERCENT(object value);
@@ -285,6 +287,8 @@ namespace Skrypton.RuntimeSupport
         object RAISEERROR(object number);
         object RAISEERROR(object number, object source);
         object RAISEERROR(object number, object source, object description);
+        object RAISEERROR(object number, object source, object description, object helpFile);
+        object RAISEERROR(object number, object source, object description, object helpFile, object helpContext);
 
         void CLEARANYERROR();
         void SETERROR(Exception e);

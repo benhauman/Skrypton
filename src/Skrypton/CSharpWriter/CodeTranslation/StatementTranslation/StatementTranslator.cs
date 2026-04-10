@@ -936,6 +936,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return new BuiltInFunctionDetails(builtInFunctionToken, idealMatch.Name, desiredNumberOfArguments, idealMatch.ReturnType, returnExpressionReturnTypeOptionsIfKnown: binFun?.ReturnExpressionReturnTypeOptionsIfKnown); // idealmatch
             }
 
+
             // lubo: check for: (params object[] values) ARRAY(...)
             foreach (var m in supportFunctionMatches.Where(m => m.GetParameters().All(p => !p.IsOut && !p.ParameterType.IsByRef && p.ParameterType == typeof(object[]))))
             {
@@ -959,6 +960,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         pc++;
                     }
                 }
+                if (binFun != null && binFun.FunctionId == BuiltInFunctionId.BuiltInFunctionARRAY)
+                {
+                    idealMatch = m;
+                    return new BuiltInFunctionDetails(builtInFunctionToken, idealMatch.Name, desiredNumberOfArguments, idealMatch.ReturnType, returnExpressionReturnTypeOptionsIfKnown: binFun.ReturnExpressionReturnTypeOptionsIfKnown); // array(...)
+                }
+            }
+
+            if (binFun != null)
+            {
+                throw new NotImplementedException($"public x {builtInFunctionToken.Content}({desiredNumberOfArguments})");
             }
 
             // If a match was found for the name but not the desired number of arguments then return a result with null "desiredNumberOfArgumentsMatchedAgainst"
@@ -1311,8 +1322,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR) => ("", null),//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR),
                         nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART) => ("", null),//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART),
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY), null),
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT), ExpressionReturnTypeOptions.Reference),
+                        //nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY), null),
+                        //nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT), ExpressionReturnTypeOptions.Reference),
                         _ => FnInfo("", null)
                     };
                     if (builtInFnName.Length > 0)
@@ -1326,6 +1337,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
                     else
                     {
+                        // CLEARANYERROR
                         //throw new NotImplementedException(targetMemberAccessTokensArray[0].ContentUpperX().UpperText);
                     }
                 }

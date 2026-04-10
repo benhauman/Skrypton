@@ -1004,7 +1004,7 @@ namespace TranslatedProgram
                         _.CALLm1v1(this, _.NnO(sbCalendars, "sbCalendars"), "AppendLine", "</tr>");
                     }
 
-                    dDate = _.VAL(_.DATEADD("d", 1, dDate));
+                    dDate = _.DATEADD("d", 1, dDate);
                 }
             }
 

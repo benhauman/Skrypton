@@ -805,11 +805,11 @@ namespace Skrypton.RuntimeSupport.Implementations
 #pragma warning restore CA5394 // Do not use insecure randomness
             return (float)GenerateRandomDouble();
         }
-        public object ROUND(object value) => ROUNDCore(value, 0);
-        public object ROUND(object value, object decimals)
+        public object ROUND(object expression) => ROUNDCore(expression, 0);
+        public object ROUND(object expression, object numDecimalPlaces)
         {
-            int nDecimals = GetAsNumber<int>(decimals, "'ROUND'", Convert.ToInt32);
-            return ROUNDCore(value, nDecimals);
+            int nDecimals = GetAsNumber<int>(numDecimalPlaces, "'ROUND'", Convert.ToInt32);
+            return ROUNDCore(expression, nDecimals);
         }
         private decimal ROUNDCore(object value, int nDecimals)
         {
@@ -982,13 +982,13 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object FILTER(object value) { throw new NotImplementedException(); }
         public object FORMATCURRENCY(object value) { throw new NotImplementedException(); }
 
-        public object FORMATDATETIME(object value)
+        public object FORMATDATETIME(object dateValue)
         {
-            return FORMATDATETIMECore(value, VbDateTimeFormat.vbGeneralDate);
+            return FORMATDATETIMECore(dateValue, VbDateTimeFormat.vbGeneralDate);
         }
-        public object FORMATDATETIME(object value, int format)
+        public object FORMATDATETIME(object dateValue, object format)
         {
-            return FORMATDATETIMECore(value, Enum.IsDefined(typeof(VbDateTimeFormat), format) ? (VbDateTimeFormat)format : VbDateTimeFormat.vbGeneralDate);
+            return FORMATDATETIMECore(dateValue, Enum.IsDefined(typeof(VbDateTimeFormat), format) ? (VbDateTimeFormat)format : VbDateTimeFormat.vbGeneralDate);
         }
 
         private enum VbDateTimeFormat
@@ -2534,9 +2534,14 @@ namespace Skrypton.RuntimeSupport.Implementations
         // These method signatures have to return a value since these are what are called when the source code includes "Err.Raise 123", which VBScript allows
         // to exist in the form "If (Err.Raise(123)) Then" - if these didn't return values then there could be compile errors in the generated C# that were
         // valid VBScript.
-        public object RAISEERROR(object number) { return RAISEERROR(number, ""); }
-        public object RAISEERROR(object number, object source) { return RAISEERROR(number, source, ""); }
-        public object RAISEERROR(object number, object source, object description)
+        public object RAISEERROR(object number) => RAISEERRORCore(number, "", description: null, helpFile: null, helpContext: null);
+        public object RAISEERROR(object number, object source) => RAISEERRORCore(number, source, description: null, helpFile: null, helpContext: null);
+
+        public object RAISEERROR(object number, object source, object description) => RAISEERRORCore(number, source, description, helpFile: null, helpContext: null);
+
+        public object RAISEERROR(object number, object source, object description, object helpFile) => RAISEERRORCore(number, source, description, helpFile, helpContext: null);
+        public object RAISEERROR(object number, object source, object description, object helpFile, object helpContext) => RAISEERRORCore(number, source, description, helpFile, helpContext);
+        private object RAISEERRORCore(object number, object source, object? description, object? helpFile, object? helpContext)
         {
             // This is another function (like ERASE) that doesn't give many clues - almost every failure is a "Type mismatch" (Null values do not result in
             // "Invalid use of null" and Nothing does not result in "Object variable not set"). However, if "number" is zero then the other two arguments

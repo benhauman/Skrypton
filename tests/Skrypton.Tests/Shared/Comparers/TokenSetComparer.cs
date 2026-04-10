@@ -13,7 +13,8 @@ namespace Skrypton.Tests.Shared.Comparers
 
         }
 
-        public bool Equals(IEnumerable<IToken> x, IEnumerable<IToken> y)
+        public bool Equals(IEnumerable<IToken> x, IEnumerable<IToken> y) => EqualsX(x, y);
+        public static bool EqualsX(IEnumerable<IToken> x, IEnumerable<IToken> y)
         {
             if (x == null)
                 throw new ArgumentNullException(nameof(x));

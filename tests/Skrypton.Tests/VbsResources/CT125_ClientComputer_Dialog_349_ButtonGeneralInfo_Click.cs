@@ -63,19 +63,19 @@ namespace TranslatedProgram
 
             if (_.IF(_.EQ(Suffix, " KB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, (Int16)1024), (Int16)2));
+                Size = _.ROUND(_.DIV(Size, (Int16)1024), 2);
             }
             else if (_.IF(_.EQ(Suffix, " MB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1048576), (Int16)2));
+                Size = _.ROUND(_.DIV(Size, 1048576), 2);
             }
             else if (_.IF(_.EQ(Suffix, " GB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1073741824), (Int16)2));
+                Size = _.ROUND(_.DIV(Size, 1073741824), 2);
             }
             else if (_.IF(_.EQ(Suffix, " TB")))
             {
-                Size = _.VAL(_.CALLm1v2(this, _, "ROUND", _.DIV(Size, 1099511627776d), (Int16)2));
+                Size = _.ROUND(_.DIV(Size, 1099511627776d), 2);
             }
 
             ConvertSize_retVal = _.CONCAT(Size, Suffix);
@@ -383,7 +383,7 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, "TextBoxGeneralCallTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.NOW(), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, "TextBoxGeneralCallTime"), "Text", _.FORMATDATETIME(_.NOW(), VBScriptConstants.vbGeneralDate));
             });
 
             _.HANDLEERROR(errOn, () => {
@@ -506,10 +506,10 @@ namespace TranslatedProgram
                 _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGroupName, "TextBoxGeneralGroupName"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "group_name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, "TextBoxGeneralLastBootTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, "TextBoxGeneralLastBootTime"), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, "TextBoxGeneralLastLogon"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, "TextBoxGeneralLastLogon"), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate));
             });
             _.HANDLEERROR(errOn, () => {
                 _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceType, "TextBoxGeneralDeviceType"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logged_on_user")));

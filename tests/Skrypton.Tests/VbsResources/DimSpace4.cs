@@ -1,1 +1,1 @@
-_outer.txt = _.VAL(_.SPACE((Int16)10));
+            _outer.txt = _.SPACE((Int16)10);

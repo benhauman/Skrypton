@@ -317,7 +317,7 @@ namespace Skrypton.Tests
             if (!TranslatedStatementContentDetailsComparer.EqualsX(expectedCs, expectedVariablesAccessed, actual))
             {
                 string storedFile = tst.SaveExpectedActualFile(tst.TestName, "Script", tst.TestName + ".cs", actual.TranslatedContent);
-                Assert.Fail("Not Equal. Expected:" + expectedTranslatedContent + ", Actual:" + actual.TranslatedContent);
+                Assert.Fail("Not Equal. Expected:" + expectedCs + ", Actual:" + actual.TranslatedContent);
             }
         }
         public static void AreEqualCollection<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<IEnumerable<T>> comparer)

@@ -476,12 +476,12 @@ internal static class KnownTextResolver
         // Note: Some of these functions sound like they would be returned by isVBScriptFunctionThatAlwaysReturnsNumericContent but they
         // return null in some cases and so are not applicable - eg. "INT" will return Null if Null is passed in
         return new BuiltInFunctionRegistration()
-        .AddS(BuiltInFunctionId.BuiltInFunctionISEMPTY, "ISEMPTY")
-        .AddS(BuiltInFunctionId.BuiltInFunctionISNULL, "ISNULL")
-        .AddS(BuiltInFunctionId.BuiltInFunctionISOBJECT, "ISOBJECT")
-        .AddS(BuiltInFunctionId.BuiltInFunctionISNUMERIC, "ISNUMERIC")
-        .AddS(BuiltInFunctionId.BuiltInFunctionISDATE, "ISDATE")
-        .AddS(BuiltInFunctionId.BuiltInFunctionISARRAY, "ISARRAY")
+        .AddS(BuiltInFunctionId.BuiltInFunctionISEMPTY, "ISEMPTY", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
+        .AddS(BuiltInFunctionId.BuiltInFunctionISNULL, "ISNULL", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
+        .AddS(BuiltInFunctionId.BuiltInFunctionISOBJECT, "ISOBJECT", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
+        .AddS(BuiltInFunctionId.BuiltInFunctionISNUMERIC, "ISNUMERIC", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
+        .AddS(BuiltInFunctionId.BuiltInFunctionISDATE, "ISDATE", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
+        .AddS(BuiltInFunctionId.BuiltInFunctionISARRAY, "ISARRAY", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
         .AddS(BuiltInFunctionId.BuiltInFunctionVARTYPE, "VARTYPE")
         .AddS(BuiltInFunctionId.BuiltInFunctionTYPENAME, "TYPENAME")
         .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CREATEOBJECT), alwaysReturnsNumeric: false, returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Reference) // "CREATEOBJECT")
@@ -519,7 +519,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionLEFTB, "LEFTB")
         .AddS(BuiltInFunctionId.BuiltInFunctionRIGHT, "RIGHT")
         .AddS(BuiltInFunctionId.BuiltInFunctionRIGHTB, "RIGHTB")
-        .AddS(BuiltInFunctionId.BuiltInFunctionSPACE, "SPACE")
+        .AddS(BuiltInFunctionId.BuiltInFunctionSPACE, "SPACE", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
         .AddS(BuiltInFunctionId.BuiltInFunctionREPLACE, "REPLACE")
         .AddS(BuiltInFunctionId.BuiltInFunctionSTRCOMP, "STRCOMP")
         .AddS(BuiltInFunctionId.BuiltInFunctionSTRING, "STRING")
@@ -533,7 +533,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionEXECUTE, "EXECUTE")
         .AddS(BuiltInFunctionId.BuiltInFunctionEXECUTEGLOBAL, "EXECUTEGLOBAL")
         .AddS(BuiltInFunctionId.BuiltInFunctionFORMATCURRENCY, "FORMATCURRENCY")
-        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATDATETIME, "FORMATDATETIME")
+        .AddS(BuiltInFunctionId.BuiltInFunctionFORMATDATETIME, "FORMATDATETIME", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
         .AddS(BuiltInFunctionId.BuiltInFunctionFORMATNUMBER, "FORMATNUMBER")
         .AddS(BuiltInFunctionId.BuiltInFunctionFORMATPERCENT, "FORMATPERCENT")
         .AddS(BuiltInFunctionId.BuiltInFunctionFILTER, "FILTER")
@@ -605,7 +605,7 @@ internal static class KnownTextResolver
         internal IReadOnlyDictionary<string, BuiltInFunctionInfo> FunctionInfos { get; private set; } = new Dictionary<string, BuiltInFunctionInfo>();
         internal KnownTextContent[] FunctionContents { get; private set; } = [];
 
-        public BuiltInFunctionRegistration AddN(BuiltInFunctionId functionId, string name) => AddS(functionId, name, alwaysReturnsNumeric: true);
+        public BuiltInFunctionRegistration AddN(BuiltInFunctionId functionId, string name) => AddS(functionId, name, alwaysReturnsNumeric: true, returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value);
         public BuiltInFunctionRegistration AddS(BuiltInFunctionId functionId, string name, bool alwaysReturnsNumeric = false, ExpressionReturnTypeOptions? returnExpressionReturnTypeOptionsIfKnown = null)
         {
             if ((!Enum.TryParse<BuiltInFunctionId>("BuiltInFunction" + name, out BuiltInFunctionId enumItem) || (enumItem != functionId)))
