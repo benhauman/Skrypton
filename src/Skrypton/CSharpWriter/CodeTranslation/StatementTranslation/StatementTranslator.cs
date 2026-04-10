@@ -1262,7 +1262,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string targetAccessorName = $"{nameOfTargetContainer}{targetName}";
 
             StringBuilder callExpressionContent = new StringBuilder();
-            callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}");// Pass "this" as the "context" argument
+            callExpressionContent.Append($@"{_supportRefName.Name}.{callName}(this, {RenderNnO(targetAccessorName)}");// Pass "this" as the "context" argument
 
             if (targetMemberAccessTokensArray.Length > 0)
             {

@@ -72,7 +72,7 @@ namespace TranslatedProgram
             object dict_vref = dict;
             try
             {
-                ItemIDs = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetContentIDs", _.ARGS.RefIfArray(dict_vref, _.ARGS.Val("Compound")).Val((Int16)0)));
+                ItemIDs = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetContentIDs", _.ARGS.RefIfArray(dict_vref, _.ARGS.Val("Compound")).Val((Int16)0)));
             }
             finally { dict = dict_vref; }
 
@@ -96,7 +96,7 @@ namespace TranslatedProgram
                     object dict_vref3 = dict;
                     try
                     {
-                        strValue = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", _.ARGS.RefIfArray(dict_vref3, _.ARGS.Val("Value")).Val((Int16)0).Ref(Item, v4 => { Item = v4; }).Val((Int16)0).Val((Int16)0)));
+                        strValue = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetValue", _.ARGS.RefIfArray(dict_vref3, _.ARGS.Val("Value")).Val((Int16)0).Ref(Item, v4 => { Item = v4; }).Val((Int16)0).Val((Int16)0)));
                     }
                     finally { dict = dict_vref3; }
                     if (_.IF(_.EQ(_.CBOOL(GetAll), false)))
@@ -124,7 +124,7 @@ namespace TranslatedProgram
             object text_vref = text;
             try
             {
-                _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v5 => { text_vref = v5; }));
+                _.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v5 => { text_vref = v5; }));
             }
             finally { text = text_vref; }
         }
@@ -136,16 +136,16 @@ namespace TranslatedProgram
             object strAttrValue = null;
             //Aus dem Dictionary wird das Attribut und der dazugehörige Wert ermittelt.
             AttrDef = "";
-            AttrDef = _.CONCAT("PersonInformation.", _.CALLm0argp(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), _.ARGS.Val("PersInfoAttr")));
+            AttrDef = _.CONCAT("PersonInformation.", _.CALLm0argp(this, _.NnO(dict, "dict"), _.ARGS.Val("PersInfoAttr")));
 
             strAttrValue = "";
-            strAttrValue = _.VAL(_.CALLm0argp(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), _.ARGS.Val("DefValue")));
+            strAttrValue = _.VAL(_.CALLm0argp(this, _.NnO(dict, "dict"), _.ARGS.Val("DefValue")));
 
             if (_.IF(_.EQ(_.NullableSTR(strAttrValue), "")))
             {
                 strAttrValue = "-";
             }
-            _.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
+            _.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
         }
         //---------------------------------------------------------------
         public object IsHLObject(ref object hlContext, ref object hlObject)
@@ -168,7 +168,7 @@ namespace TranslatedProgram
         //-------------------------------------------------------------------
         public object GetBaseType(ref object hlContext, ref object hlObject)
         {
-            return _.VAL(_.CALLm1v5(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", "HLOBJECTINFO.BASETYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            return _.VAL(_.CALLm1v5(this, _.NnO(hlObject, "hlObject"), "GetValue", "HLOBJECTINFO.BASETYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
         }
         //---------------------------------------------------------------
         //Dies ist eine rekursive Function zum ermitteln der Organisationshierarchie,
@@ -187,28 +187,28 @@ namespace TranslatedProgram
             //Andernfalls, wird jede weitere OU einfach angehangen.
             if (_.IF(_.EQ(_.NullableSTR(strOrgUnits), "")))
             {
-                strOrgUnits = _.VAL(_.CALLm1v5(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                strOrgUnits = _.VAL(_.CALLm1v5(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             }
             else
             {
-                strOrgUnits = _.CONCAT(strOrgUnits, ", ", _.CALLm1v5(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                strOrgUnits = _.CONCAT(strOrgUnits, ", ", _.CALLm1v5(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             }
 
             //Erst prüfen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
             //für die nächste Abfrage gewählt werden kann.
             orgaType = "";
-            orgaType = _.VAL(_.CALLm1v0(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetType"));
+            orgaType = _.VAL(_.CALLm1v0(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Division")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "CompanyView"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "CompanyView"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Site")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Site2Company"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Site2Company"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Company")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Company2Company"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Company2Company"));
             }
 
             //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
@@ -240,7 +240,7 @@ namespace TranslatedProgram
             object hlattribute_vref = hlattribute, hlcontentid_vref = hlcontentid, hlsuid_vref = hlsuid;
             try
             {
-                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", _.ARGS.Ref(hlattribute_vref, v11 => { hlattribute_vref = v11; }).Val((Int16)0).Ref(hlcontentid_vref, v12 => { hlcontentid_vref = v12; }).Ref(hlsuid_vref, v13 => { hlsuid_vref = v13; }).Val((Int16)0)));
+                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetValue", _.ARGS.Ref(hlattribute_vref, v11 => { hlattribute_vref = v11; }).Val((Int16)0).Ref(hlcontentid_vref, v12 => { hlcontentid_vref = v12; }).Ref(hlsuid_vref, v13 => { hlsuid_vref = v13; }).Val((Int16)0)));
             }
             finally { hlattribute = hlattribute_vref; hlcontentid = hlcontentid_vref; hlsuid = hlsuid_vref; }
             if (_.IF(_.EQ(_.NullableSTR(GetFlagValue_retVal), "")))
@@ -262,7 +262,7 @@ namespace TranslatedProgram
             object ErrCode_vref = ErrCode, LocaleID_vref = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref, v14 => { ErrCode_vref = v14; }).Ref(LocaleID_vref, v15 => { LocaleID_vref = v15; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref, v14 => { ErrCode_vref = v14; }).Ref(LocaleID_vref, v15 => { LocaleID_vref = v15; })));
             }
             finally { ErrCode = ErrCode_vref; LocaleID = LocaleID_vref; }
             strErrMsg = _.CONCAT(strErrMsg, VBScriptConstants.vbNewLine, "(Code: ", ErrCode, ")");
@@ -283,7 +283,7 @@ namespace TranslatedProgram
             object retval = null;
             object strOrgUnits = null;
             FirstOrgUnit = VBScriptConstants.Nothing;
-            FirstOrgUnit = _.OBJ(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetRelatedObject"));
+            FirstOrgUnit = _.OBJ(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetRelatedObject"));
 
             bool ifResult;
             object hlContext_vref4 = hlContext;
@@ -294,7 +294,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref4; }
             if (ifResult)
             {
-                if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Company")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Division")))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(FirstOrgUnit, "FirstOrgUnit"), "GetType")), "Company")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(FirstOrgUnit, "FirstOrgUnit"), "GetType")), "Division")))))
                 {
                     FirstOrgUnit = VBScriptConstants.Nothing;
                 }
@@ -310,10 +310,10 @@ namespace TranslatedProgram
             if (ifResult2)
             {
                 rsltOrgUnit = "";
-                rsltOrgUnit = _.VAL(_.CALLm1v4(this, hlPerson ?? throw new InvalidOperationException("Reference not set:hlPerson"), "GetItems", 65536, (Int16)0, (Int16)0, "Person2Organization"));
+                rsltOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlPerson, "hlPerson"), "GetItems", 65536, (Int16)0, (Int16)0, "Person2Organization"));
                 if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltOrgUnit)), (Int16)0)))
                 {
-                    FirstOrgUnit = _.OBJ(_.CALLm0argp(this, rsltOrgUnit ?? throw new InvalidOperationException("Reference not set:rsltOrgUnit"), _.ARGS.Val((Int16)0)));
+                    FirstOrgUnit = _.OBJ(_.CALLm0argp(this, _.NnO(rsltOrgUnit, "rsltOrgUnit"), _.ARGS.Val((Int16)0)));
                 }
             }
 
@@ -367,20 +367,20 @@ namespace TranslatedProgram
             object orgUnitName = null;
             object strErrMsg = null;
 
-            productDefName = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GetType", _.ARGS.ForceBrackets()));
+            productDefName = _.VAL(_.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "GetType", _.ARGS.ForceBrackets()));
 
             if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "Software")) && _.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "SoftwareLicence")))))
             {
-                contentID = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GenerateContentID", _.ARGS.ForceBrackets()));
-                agentID = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
-                orgUnitName = _.VAL(_.CALLm1v5(this, hlObjectA ?? throw new InvalidOperationException("Reference not set:hlObjectA"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-                personOfAgent = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetPersonOfAgent", _.ARGS.Ref(agentID, v38 => { agentID = v38; })));
+                contentID = _.VAL(_.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "GenerateContentID", _.ARGS.ForceBrackets()));
+                agentID = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
+                orgUnitName = _.VAL(_.CALLm1v5(this, _.NnO(hlObjectA, "hlObjectA"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                personOfAgent = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetPersonOfAgent", _.ARGS.Ref(agentID, v38 => { agentID = v38; })));
                 if (_.IF(_.IS(personOfAgent, VBScriptConstants.Nothing)))
                 {
                     object hlContext_vref10 = hlContext;
                     try
                     {
-                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(hlContext_vref10, v39 => { hlContext_vref10 = v39; }).Val(_.CALLm1v0(this, hlContext_vref10 ?? throw new InvalidOperationException("Reference not set:hlContext_vref10"), "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
+                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(hlContext_vref10, v39 => { hlContext_vref10 = v39; }).Val(_.CALLm1v0(this, _.NnO(hlContext_vref10, "hlContext_vref10"), "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
                     }
                     finally { hlContext = hlContext_vref10; }
                     object hlContext_vref11 = hlContext;
@@ -393,23 +393,23 @@ namespace TranslatedProgram
                 }
                 else
                 {
-                    personName = _.VAL(_.CALLm1v5(this, personOfAgent ?? throw new InvalidOperationException("Reference not set:personOfAgent"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    personName = _.VAL(_.CALLm1v5(this, _.NnO(personOfAgent, "personOfAgent"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     personName = _.CONCAT(personName, ", ");
-                    personName = _.CONCAT(personName, _.CALLm1v5(this, personOfAgent ?? throw new InvalidOperationException("Reference not set:personOfAgent"), "GetValue", "PersonGeneral.GivenName", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    personName = _.CONCAT(personName, _.CALLm1v5(this, _.NnO(personOfAgent, "personOfAgent"), "GetValue", "PersonGeneral.GivenName", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 }
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v42 => { contentID = v42; }).Val((Int16)0).Ref(personName, v43 => { personName = v43; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v44 => { contentID = v44; }).Val((Int16)0).Ref(agentID, v45 => { agentID = v45; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Val(_.NOW()));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v47 => { contentID = v47; }).Val((Int16)0).Ref(orgUnitName, v48 => { orgUnitName = v48; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val(_.CALLm1argp(this, hlObjectA ?? throw new InvalidOperationException("Reference not set:hlObjectA"), "GetID", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v42 => { contentID = v42; }).Val((Int16)0).Ref(personName, v43 => { personName = v43; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v44 => { contentID = v44; }).Val((Int16)0).Ref(agentID, v45 => { agentID = v45; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Val(_.NOW()));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v47 => { contentID = v47; }).Val((Int16)0).Ref(orgUnitName, v48 => { orgUnitName = v48; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val(_.CALLm1argp(this, _.NnO(hlObjectA, "hlObjectA"), "GetID", _.ARGS.ForceBrackets())));
 
                 if (_.IF(_.EQ(created, true)))
                 {
-                    _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionCreated"));
+                    _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionCreated"));
                 }
                 else
                 {
-                    _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v51 => { contentID = v51; }).Val((Int16)0).Val("HistoryActionDeleted"));
+                    _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v51 => { contentID = v51; }).Val((Int16)0).Val("HistoryActionDeleted"));
                 }
             }
         }
@@ -426,7 +426,7 @@ namespace TranslatedProgram
             object ErrCode_vref2 = ErrCode, LocaleID_vref2 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref2, v52 => { ErrCode_vref2 = v52; }).Ref(LocaleID_vref2, v53 => { LocaleID_vref2 = v53; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref2, v52 => { ErrCode_vref2 = v52; }).Ref(LocaleID_vref2, v53 => { LocaleID_vref2 = v53; })));
             }
             finally { ErrCode = ErrCode_vref2; LocaleID = LocaleID_vref2; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -447,7 +447,7 @@ namespace TranslatedProgram
             object ErrCode_vref3 = ErrCode, LocaleID_vref3 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref3, v54 => { ErrCode_vref3 = v54; }).Ref(LocaleID_vref3, v55 => { LocaleID_vref3 = v55; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref3, v54 => { ErrCode_vref3 = v54; }).Ref(LocaleID_vref3, v55 => { LocaleID_vref3 = v55; })));
             }
             finally { ErrCode = ErrCode_vref3; LocaleID = LocaleID_vref3; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -478,7 +478,7 @@ namespace TranslatedProgram
             object HLASC_SoftwareLicenseFolderView_vref = HLASC_SoftwareLicenseFolderView;
             try
             {
-                rsltSWFolders = _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref, v56 => { HLASC_SoftwareLicenseFolderView_vref = v56; })));
+                rsltSWFolders = _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref, v56 => { HLASC_SoftwareLicenseFolderView_vref = v56; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = HLASC_SoftwareLicenseFolderView_vref; }
 
@@ -488,13 +488,13 @@ namespace TranslatedProgram
                 if (!enumerationContent2.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent2.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "LicenseFolder")))
                 {
                     object hlContext_vref12 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref12, v57 => { hlContext_vref12 = v57; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref12, v57 => { hlContext_vref12 = v57; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref12; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -507,7 +507,7 @@ namespace TranslatedProgram
                     object hlContext_vref13 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref13, v58 => { hlContext_vref13 = v58; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref13, v58 => { hlContext_vref13 = v58; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref13; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -535,13 +535,13 @@ namespace TranslatedProgram
             //Festhalten auf welcher Ebene ggf. eine Software Suite oberhalb des
             //Start Folders existiert. Die Variable muss von außen mit einem Startwert
             //initialisiert werden.
-            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
+            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
             {
                 _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", (Int16)1);
             }
             else
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
             }
 
             //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
@@ -555,7 +555,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref14; hlParentSWFolder = hlParentSWFolder_vref; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, hlParentSWFolder ?? throw new InvalidOperationException("Reference not set:hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
                 return CheckForSoftwareSuiteFolder_retVal;
             }
 
@@ -564,7 +564,7 @@ namespace TranslatedProgram
             object HLASC_SoftwareLicenseFolderView_vref2 = HLASC_SoftwareLicenseFolderView;
             try
             {
-                NextSWFolder = _.VAL(_.CALLm1argp(this, hlParentSWFolder ?? throw new InvalidOperationException("Reference not set:hlParentSWFolder"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref2, v61 => { HLASC_SoftwareLicenseFolderView_vref2 = v61; })));
+                NextSWFolder = _.VAL(_.CALLm1argp(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref2, v61 => { HLASC_SoftwareLicenseFolderView_vref2 = v61; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = HLASC_SoftwareLicenseFolderView_vref2; }
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(NextSWFolder)), (Int16)0)))
@@ -606,7 +606,7 @@ namespace TranslatedProgram
             object assocName_vref = assocName;
             try
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
             }
             finally { assocName = assocName_vref; }
 
@@ -624,7 +624,7 @@ namespace TranslatedProgram
             object pDict_vref2 = pDict;
             try
             {
-                ifResult5 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALLm0argp(this, pDict_vref2 ?? throw new InvalidOperationException("Reference not set:pDict_vref2"), _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
+                ifResult5 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALLm0argp(this, _.NnO(pDict_vref2, "pDict_vref2"), _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
             }
             finally { pDict = pDict_vref2; }
             if (ifResult5)
@@ -652,13 +652,13 @@ namespace TranslatedProgram
             object pDict_vref5 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref5, _.ARGS.Val("SumRefLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref5, _.ARGS.Val("SumRefLicCounter")));
             }
             finally { pDict = pDict_vref5; }
             object pDict_vref6 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref6, _.ARGS.Val("SumInstLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref6, _.ARGS.Val("SumInstLicCounter")));
             }
             finally { pDict = pDict_vref6; }
 
@@ -678,7 +678,7 @@ namespace TranslatedProgram
             object pDict_vref7 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref7, _.ARGS.Val("SumFreeLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref7, _.ARGS.Val("SumFreeLicCounter")));
             }
             finally { pDict = pDict_vref7; }
 
@@ -686,13 +686,13 @@ namespace TranslatedProgram
             //für die nächste Abfrage gewählt werden kann.
             NextSWFolder = "";
             a = "";
-            a = _.VAL(_.CALLm1v0(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetType"));
+            a = _.VAL(_.CALLm1v0(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(a), "LicenseFolder")))
             {
                 object assocName_vref2 = assocName;
                 try
                 {
-                    NextSWFolder = _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(assocName_vref2, v74 => { assocName_vref2 = v74; })));
+                    NextSWFolder = _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(assocName_vref2, v74 => { assocName_vref2 = v74; })));
                 }
                 finally { assocName = assocName_vref2; }
             }
@@ -732,25 +732,25 @@ namespace TranslatedProgram
             objType = "";
             lstLicStatus = "";
 
-            var enumerationContent3 = _.ENUMERABLE(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            var enumerationContent3 = _.ENUMERABLE(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent3.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
                 {
-                    lstLicStatus = _.VAL(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    lstLicStatus = _.VAL(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.EQ(_.NullableSTR(lstLicStatus), "LicenseStatusValid")))
                     {
                         object hlContext_vref21 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref21, v78 => { hlContext_vref21 = v78; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref21, v78 => { hlContext_vref21 = v78; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref21; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
                 else
@@ -760,22 +760,22 @@ namespace TranslatedProgram
                         object hlContext_vref22 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref22, v79 => { hlContext_vref22 = v79; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref22, v79 => { hlContext_vref22 = v79; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref22; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                         object hlContext_vref23 = hlContext;
                         try
                         {
-                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref23, v80 => { hlContext_vref23 = v80; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref23, v80 => { hlContext_vref23 = v80; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref23; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
 
         }
         //----------------------------------------------------------------------------------------------------------
@@ -793,51 +793,51 @@ namespace TranslatedProgram
             objType = "";
             lstLicStatus = "";
 
-            var enumerationContent4 = _.ENUMERABLE(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            var enumerationContent4 = _.ENUMERABLE(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent4.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent4.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(objType), "LicenseFolder"), _.EQ(_.NullableSTR(objType), "Software"))))
                 {
                     object hlContext_vref24 = hlContext;
                     try
                     {
-                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref24, v81 => { hlContext_vref24 = v81; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref24, v81 => { hlContext_vref24 = v81; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref24; }
-                    _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                    _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
 
                     object hlContext_vref25 = hlContext;
                     try
                     {
-                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref25, v82 => { hlContext_vref25 = v82; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref25, v82 => { hlContext_vref25 = v82; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref25; }
-                    if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter")))))
+                    if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")))))
                     {
                         _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.VAL(SWInstCounter));
                     }
                 }
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
                 {
-                    lstLicStatus = _.VAL(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    lstLicStatus = _.VAL(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.EQ(_.NullableSTR(lstLicStatus), "LicenseStatusValid")))
                     {
                         object hlContext_vref26 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref26, v83 => { hlContext_vref26 = v83; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref26, v83 => { hlContext_vref26 = v83; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref26; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
         }
         //----------------------------------------------------------------------------------------------------------
         //Diese Function überprüft den ganzzahligen Wert (Integer).
@@ -865,7 +865,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -877,15 +877,15 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart; _.StrictLTE(ixAC, loopEnd); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToDelete")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToDelete")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -908,7 +908,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -920,15 +920,15 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart2; _.StrictLTE(ixAC, loopEnd2); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToCreate")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -953,7 +953,7 @@ namespace TranslatedProgram
 
             //Anzahl der zu erstellenden oder löschenden Assoziationen
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -967,16 +967,16 @@ namespace TranslatedProgram
                 {
 
                     //Für jede Assoziations Änderung wird das entsprechende Infos (Objekt    ) ausgelsen.
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
                     //Def Name der Assoc ermitteln, die angelegt werden soll
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToCreate")))
                     {
                         //Überprüfen ob die gewünschte Assoc auch angelegt werden soll.
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -1001,10 +1001,10 @@ namespace TranslatedProgram
             object pDict_vref9 = pDict;
             try
             {
-                rsltParent = _.VAL(_.CALLm1argp(this, hlChild ?? throw new InvalidOperationException("Reference not set:hlChild"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(pDict_vref9, _.ARGS.Val("AssocID"))));
+                rsltParent = _.VAL(_.CALLm1argp(this, _.NnO(hlChild, "hlChild"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(pDict_vref9, _.ARGS.Val("AssocID"))));
             }
             finally { pDict = pDict_vref9; }
-            if (_.IF(_.GTE(_.UBOUND(rsltParent), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ParentCounter")))))
+            if (_.IF(_.GTE(_.UBOUND(rsltParent), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ParentCounter")))))
             {
                 objParent = VBScriptConstants.Nothing;
                 var enumerationContent5 = _.ENUMERABLE(rsltParent).GetEnumerator();
@@ -1016,13 +1016,13 @@ namespace TranslatedProgram
                     object pDict_vref10 = pDict;
                     try
                     {
-                        GetAssociatedOrganizationalUnit_retVal = _.VAL(_.CALLm1argp(this, objParent ?? throw new InvalidOperationException("Reference not set:objParent"), "GetValue", _.ARGS.RefIfArray(pDict_vref10, _.ARGS.Val("AttrName")).Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
+                        GetAssociatedOrganizationalUnit_retVal = _.VAL(_.CALLm1argp(this, _.NnO(objParent, "objParent"), "GetValue", _.ARGS.RefIfArray(pDict_vref10, _.ARGS.Val("AttrName")).Val((Int16)0).Val((Int16)0).Val((Int16)0).Val((Int16)0)));
                     }
                     finally { pDict = pDict_vref10; }
                     object lcid_vref = lcid;
                     try
                     {
-                        outParentDefName = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetDisplayName", _.ARGS.Val(_.CALLm1v5(this, objParent ?? throw new InvalidOperationException("Reference not set:objParent"), "GetValue", "HLOBJECTINFO.DEFID", (Int16)0, (Int16)0, (Int16)0, (Int16)0)).Ref(lcid_vref, v87 => { lcid_vref = v87; })));
+                        outParentDefName = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetDisplayName", _.ARGS.Val(_.CALLm1v5(this, _.NnO(objParent, "objParent"), "GetValue", "HLOBJECTINFO.DEFID", (Int16)0, (Int16)0, (Int16)0, (Int16)0)).Ref(lcid_vref, v87 => { lcid_vref = v87; })));
                     }
                     finally { lcid = lcid_vref; }
                     break;
@@ -1046,25 +1046,25 @@ namespace TranslatedProgram
 
             //XML-Processing Instruction hinzufügen
             xmlProInc = VBScriptConstants.Nothing;
-            xmlProInc = _.OBJ(_.CALLm1v2(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "createProcessingInstruction", "xml", "version='1.0' encoding='UTF-8'"));
-            _.CALLm1argp(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "insertBefore", _.ARGS.Ref(xmlProInc, v88 => { xmlProInc = v88; }).Val(_.CALLm1v0(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "firstChild")));
+            xmlProInc = _.OBJ(_.CALLm1v2(this, _.NnO(objXMLDoc, "objXMLDoc"), "createProcessingInstruction", "xml", "version='1.0' encoding='UTF-8'"));
+            _.CALLm1argp(this, _.NnO(objXMLDoc, "objXMLDoc"), "insertBefore", _.ARGS.Ref(xmlProInc, v88 => { xmlProInc = v88; }).Val(_.CALLm1v0(this, _.NnO(objXMLDoc, "objXMLDoc"), "firstChild")));
 
             //Root-Element erstellen
-            xmlRoot = _.OBJ(_.CALLm1v1(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "CreateElement", "ASAPBatch"));
-            _.CALLm1v1(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "AppendChild", xmlRoot);
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "xmlns", "http://www.brainware.ch/operationsmanager/asap-batch/1.1");
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "xmlns:dt", "http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1");
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "xsi:schemaLocation", "http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd");
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "version", "1.1");
-            _.CALLm1v2(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "SetAttribute", "responseRequired", "Yes");
+            xmlRoot = _.OBJ(_.CALLm1v1(this, _.NnO(objXMLDoc, "objXMLDoc"), "CreateElement", "ASAPBatch"));
+            _.CALLm1v1(this, _.NnO(objXMLDoc, "objXMLDoc"), "AppendChild", xmlRoot);
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "xmlns", "http://www.brainware.ch/operationsmanager/asap-batch/1.1");
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "xmlns:dt", "http://www.brainware.ch/operationsmanager/wf/changemanagement/columbus/datatypes/1.1");
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "xsi:schemaLocation", "http://www.brainware.ch/operationsmanager/asap-batch/1.1 asap-batch-1.1.xsd");
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "version", "1.1");
+            _.CALLm1v2(this, _.NnO(xmlRoot, "xmlRoot"), "SetAttribute", "responseRequired", "Yes");
 
             //Das Node Session hinzufügen
-            nodeSession = _.OBJ(_.CALLm1v1(this, objXMLDoc ?? throw new InvalidOperationException("Reference not set:objXMLDoc"), "CreateElement", "Session"));
-            _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeSession);
-            _.CALLm1v2(this, nodeSession ?? throw new InvalidOperationException("Reference not set:nodeSession"), "SetAttribute", "id", "s1");
-            _.CALLm1v2(this, nodeSession ?? throw new InvalidOperationException("Reference not set:nodeSession"), "SetAttribute", "loginname", "foreignSystems\\assetcolumbus");
-            _.CALLm1v2(this, nodeSession ?? throw new InvalidOperationException("Reference not set:nodeSession"), "SetAttribute", "password", "");
+            nodeSession = _.OBJ(_.CALLm1v1(this, _.NnO(objXMLDoc, "objXMLDoc"), "CreateElement", "Session"));
+            _.CALLm1v1(this, _.NnO(xmlRoot, "xmlRoot"), "AppendChild", nodeSession);
+            _.CALLm1v2(this, _.NnO(nodeSession, "nodeSession"), "SetAttribute", "id", "s1");
+            _.CALLm1v2(this, _.NnO(nodeSession, "nodeSession"), "SetAttribute", "loginname", "foreignSystems\\assetcolumbus");
+            _.CALLm1v2(this, _.NnO(nodeSession, "nodeSession"), "SetAttribute", "password", "");
 
             //XML Dokument inkl. Header an das Dictionary übergeben
             _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "XMLDocument", _.OBJ(objXMLDoc));
@@ -1091,77 +1091,77 @@ namespace TranslatedProgram
             object nodeActState = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
-            _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_adddevice");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, _.NnO(xmlRoot, "xmlRoot"), "AppendChild", nodeCreateInstanceRq);
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_adddevice");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
-            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
+            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeAddDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:AddDeviceActualParams"));
-            _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeAddDeviceActualParams);
+            nodeAddDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:AddDeviceActualParams"));
+            _.CALLm1v1(this, _.NnO(nodeContextData, "nodeContextData"), "AppendChild", nodeAddDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
-            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
+            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("DeviceName"))));
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CompanyName"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeCmpyName);
-            _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CompanyName"))));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:CompanyName"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeCmpyName);
+            _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("CompanyName"))));
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
-            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDomain);
+            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("Domain"))));
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CostCenter"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeCostCenter);
-            _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CostCenter"))));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:CostCenter"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeCostCenter);
+            _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("CostCenter"))));
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:MACAddress"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeMACAddress);
-            _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("MACAddress"))));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:MACAddress"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeMACAddress);
+            _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("MACAddress"))));
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:SubnetMask"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeSubnetMask);
-            _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SubnetMask"))));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:SubnetMask"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeSubnetMask);
+            _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SubnetMask"))));
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:HwTypeId"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeHWType);
-            _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("HwTypeId"))));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:HwTypeId"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeHWType);
+            _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("HwTypeId"))));
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:OsTypeId"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeOSType);
-            _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("OsTypeId"))));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:OsTypeId"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeOSType);
+            _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("OsTypeId"))));
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ActivationState"));
-            _.CALLm1v1(this, nodeAddDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeAddDeviceActualParams"), "AppendChild", nodeActState);
-            _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ActivationState"))));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:ActivationState"));
+            _.CALLm1v1(this, _.NnO(nodeAddDeviceActualParams, "nodeAddDeviceActualParams"), "AppendChild", nodeActState);
+            _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ActivationState"))));
 
             return MIG_CreateADDXML2Columbus_retVal;
         }
@@ -1186,77 +1186,77 @@ namespace TranslatedProgram
             object nodeActState = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
-            _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_chgdevice");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, _.NnO(xmlRoot, "xmlRoot"), "AppendChild", nodeCreateInstanceRq);
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_chgdevice");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
-            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
+            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeChgDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ChangeDeviceActualParams"));
-            _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeChgDeviceActualParams);
+            nodeChgDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:ChangeDeviceActualParams"));
+            _.CALLm1v1(this, _.NnO(nodeContextData, "nodeContextData"), "AppendChild", nodeChgDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
-            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
+            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("DeviceName"))));
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
-            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDomain);
+            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("Domain"))));
 
             //Das Node CompanyName hinzufügen
-            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CompanyName"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeCmpyName);
-            _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CompanyName"))));
+            nodeCmpyName = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:CompanyName"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeCmpyName);
+            _.SETm1a0(this, nodeCmpyName ?? throw new InvalidOperationException("Reference not set:nodeCmpyName"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("CompanyName"))));
 
             //Das Node CostCenter hinzufügen
-            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:CostCenter"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeCostCenter);
-            _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("CostCenter"))));
+            nodeCostCenter = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:CostCenter"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeCostCenter);
+            _.SETm1a0(this, nodeCostCenter ?? throw new InvalidOperationException("Reference not set:nodeCostCenter"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("CostCenter"))));
 
             //Das Node MACAdess hinzufügen
-            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:MACAddress"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeMACAddress);
-            _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("MACAddress"))));
+            nodeMACAddress = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:MACAddress"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeMACAddress);
+            _.SETm1a0(this, nodeMACAddress ?? throw new InvalidOperationException("Reference not set:nodeMACAddress"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("MACAddress"))));
 
             //Das Node SubnetMask hinzufügen
-            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:SubnetMask"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeSubnetMask);
-            _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SubnetMask"))));
+            nodeSubnetMask = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:SubnetMask"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeSubnetMask);
+            _.SETm1a0(this, nodeSubnetMask ?? throw new InvalidOperationException("Reference not set:nodeSubnetMask"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SubnetMask"))));
 
             //Das Node HwTypeId hinzufügen
-            nodeHWType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:HwTypeId"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeHWType);
-            _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("HwTypeId"))));
+            nodeHWType = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:HwTypeId"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeHWType);
+            _.SETm1a0(this, nodeHWType ?? throw new InvalidOperationException("Reference not set:nodeHWType"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("HwTypeId"))));
 
             //Das Node OsTypeId hinzufügen
-            nodeOSType = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:OsTypeId"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeOSType);
-            _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("OsTypeId"))));
+            nodeOSType = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:OsTypeId"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeOSType);
+            _.SETm1a0(this, nodeOSType ?? throw new InvalidOperationException("Reference not set:nodeOSType"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("OsTypeId"))));
 
             //Das Node ActivationState hinzufügen
-            nodeActState = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:ActivationState"));
-            _.CALLm1v1(this, nodeChgDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeChgDeviceActualParams"), "AppendChild", nodeActState);
-            _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ActivationState"))));
+            nodeActState = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:ActivationState"));
+            _.CALLm1v1(this, _.NnO(nodeChgDeviceActualParams, "nodeChgDeviceActualParams"), "AppendChild", nodeActState);
+            _.SETm1a0(this, nodeActState ?? throw new InvalidOperationException("Reference not set:nodeActState"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ActivationState"))));
 
             return MIG_CreateCHGXML2Columbus_retVal;
         }
@@ -1274,37 +1274,37 @@ namespace TranslatedProgram
             object nodeDomain = null;
 
             //Root Element aus dem XML ermitteln.
-            xmlRoot = _.OBJ(_.CALLm1v0(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "DocumentElement"));
+            xmlRoot = _.OBJ(_.CALLm1v0(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "DocumentElement"));
 
             //Das Node CreateInstanceReq hinzufügen
-            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "CreateInstanceRq"));
-            _.CALLm1v1(this, xmlRoot ?? throw new InvalidOperationException("Reference not set:xmlRoot"), "AppendChild", nodeCreateInstanceRq);
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_removedevice");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
-            _.CALLm1v2(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
+            nodeCreateInstanceRq = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "CreateInstanceRq"));
+            _.CALLm1v1(this, _.NnO(xmlRoot, "xmlRoot"), "AppendChild", nodeCreateInstanceRq);
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "id", "e7");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfpNs", "ch.bw.wf.changemgmt.columbus_removedevice");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "wfmNs", "Columbus Changemanagement");
+            _.CALLm1v2(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "SetAttribute", "sessionId", "s1");
 
             //Das Node ObserverKey hinzufügen
-            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ObserverKey"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
-            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ObserverKey"))));
+            nodeObserverKey = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ObserverKey"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeObserverKey);
+            _.SETm1a0(this, nodeObserverKey ?? throw new InvalidOperationException("Reference not set:nodeObserverKey"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ObserverKey"))));
 
             //Das Container Node ContextData hinzufügen
-            nodeContextData = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "ContextData"));
-            _.CALLm1v1(this, nodeCreateInstanceRq ?? throw new InvalidOperationException("Reference not set:nodeCreateInstanceRq"), "AppendChild", nodeContextData);
+            nodeContextData = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "ContextData"));
+            _.CALLm1v1(this, _.NnO(nodeCreateInstanceRq, "nodeCreateInstanceRq"), "AppendChild", nodeContextData);
 
             //Das Container Node AddDeviceActualParams hinzufügen
-            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:RemoveDeviceActualParams"));
-            _.CALLm1v1(this, nodeContextData ?? throw new InvalidOperationException("Reference not set:nodeContextData"), "AppendChild", nodeRemoveDeviceActualParams);
+            nodeRemoveDeviceActualParams = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:RemoveDeviceActualParams"));
+            _.CALLm1v1(this, _.NnO(nodeContextData, "nodeContextData"), "AppendChild", nodeRemoveDeviceActualParams);
 
             //Das Container Node DeviceIdentification hinzufügen
-            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
-            _.CALLm1v1(this, nodeRemoveDeviceActualParams ?? throw new InvalidOperationException("Reference not set:nodeRemoveDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
+            nodeDeviceIdentification = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceIdentification"));
+            _.CALLm1v1(this, _.NnO(nodeRemoveDeviceActualParams, "nodeRemoveDeviceActualParams"), "AppendChild", nodeDeviceIdentification);
 
             //Das Node DeviceName hinzufügen
-            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:DeviceName"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
-            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("DeviceName"))));
+            nodeDeviceName = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:DeviceName"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDeviceName);
+            _.SETm1a0(this, nodeDeviceName ?? throw new InvalidOperationException("Reference not set:nodeDeviceName"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("DeviceName"))));
 
             //Das Node CompanyName hinzufügen
             //Dim nodeCmpyName : Set nodeCmpyName = pDict("XMLDocument").CreateElement("dt:CompanyName")
@@ -1312,9 +1312,9 @@ namespace TranslatedProgram
             //nodeCmpyName.Text = pDict("CompanyName")
 
             //Das Node Domain hinzufügen
-            nodeDomain = _.OBJ(_.CALLm1v1(this, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("XMLDocument")) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "CreateElement", "dt:Domain"));
-            _.CALLm1v1(this, nodeDeviceIdentification ?? throw new InvalidOperationException("Reference not set:nodeDeviceIdentification"), "AppendChild", nodeDomain);
-            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("Domain"))));
+            nodeDomain = _.OBJ(_.CALLm1v1(this, _.NnO(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("XMLDocument")), "(_.call result)"), "CreateElement", "dt:Domain"));
+            _.CALLm1v1(this, _.NnO(nodeDeviceIdentification, "nodeDeviceIdentification"), "AppendChild", nodeDomain);
+            _.SETm1a0(this, nodeDomain ?? throw new InvalidOperationException("Reference not set:nodeDomain"), "Text", _.VAL(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("Domain"))));
 
             return MIG_CreateDELXML2Columbus_retVal;
         }
@@ -1375,8 +1375,8 @@ namespace TranslatedProgram
             srchQuery = _.CONCAT("SEARCH Division WHERE OrganizationBilling.CostCenter_CA.CostCenter = \"", strCostCenter, "\"");
             Qry = VBScriptConstants.Nothing;
             rsltQuery = "";
-            Qry = _.OBJ(_.CALLm1argp(this, hlSrvContext ?? throw new InvalidOperationException("Reference not set:hlSrvContext"), "OpenSearch", _.ARGS.Ref(srchQuery, v89 => { srchQuery = v89; })));
-            rsltQuery = _.VAL(_.CALLm1v4(this, Qry ?? throw new InvalidOperationException("Reference not set:Qry"), "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
+            Qry = _.OBJ(_.CALLm1argp(this, _.NnO(hlSrvContext, "hlSrvContext"), "OpenSearch", _.ARGS.Ref(srchQuery, v89 => { srchQuery = v89; })));
+            rsltQuery = _.VAL(_.CALLm1v4(this, _.NnO(Qry, "Qry"), "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), (Int16)0));
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltQuery)), (Int16)0)))
             {
                 MIG_CheckCostCenter_retVal = true;
@@ -1394,10 +1394,10 @@ namespace TranslatedProgram
             //BOOL
 
             flagAuthorized = false;
-            intAgentID = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
+            intAgentID = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
             objPerson = VBScriptConstants.Nothing;
 
-            objPerson = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetPersonOfAgent", _.ARGS.Ref(intAgentID, v90 => { intAgentID = v90; })));
+            objPerson = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetPersonOfAgent", _.ARGS.Ref(intAgentID, v90 => { intAgentID = v90; })));
 
             bool ifResult6;
             object hlContext_vref27 = hlContext;
@@ -1412,7 +1412,7 @@ namespace TranslatedProgram
                 if (_.IF(_.NOTEQ(_.NullableSTR(relObjMIGPartnerID), "")))
                 {
 
-                    strPersonInternalMIGPartnerIDs = _.VAL(_.CALLm1v5(this, objPerson ?? throw new InvalidOperationException("Reference not set:objPerson"), "GetValue", "MIGAgentInformation.InternalMIGPartnerID", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    strPersonInternalMIGPartnerIDs = _.VAL(_.CALLm1v5(this, _.NnO(objPerson, "objPerson"), "GetValue", "MIGAgentInformation.InternalMIGPartnerID", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
                     if (_.IF(_.GT(_.NullableNUM(_.INSTR(strPersonInternalMIGPartnerIDs, relObjMIGPartnerID)), (Int16)0)))
                     {

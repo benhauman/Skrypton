@@ -17,7 +17,7 @@
         public object Name()
         {
             object Name_retVal = null;
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "get_Name");
+            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", "get_Name");
             Name_retVal = "C1";
             return Name_retVal;
         }

@@ -38,8 +38,8 @@ namespace TranslatedProgram
             object f = null;
 
             fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
-            f = _.OBJ(_.CALLm1v2(this, fso ?? throw new InvalidOperationException("Reference not set:fso"), "OpenTextFile", "C:\\TRUMPF\\helpLine\\IntermediateReply.html", ForReading));
-            BodyText = _.VAL(_.CALLm1v0(this, f ?? throw new InvalidOperationException("Reference not set:f"), "ReadAll"));
+            f = _.OBJ(_.CALLm1v2(this, _.NnO(fso, "fso"), "OpenTextFile", "C:\\TRUMPF\\helpLine\\IntermediateReply.html", ForReading));
+            BodyText = _.VAL(_.CALLm1v0(this, _.NnO(f, "f"), "ReadAll"));
         }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase

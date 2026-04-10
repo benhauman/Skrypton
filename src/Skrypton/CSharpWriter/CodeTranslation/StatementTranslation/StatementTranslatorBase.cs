@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Skrypton.CSharpWriter.CodeTranslation.Extensions;
 using Skrypton.RuntimeSupport;
 
 namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
@@ -40,6 +41,24 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             return targetNotNullCheckCs;
         }
 
+        internal string RenderNnO(string targetAccessorName, string? targetNameForException = null)
+        {
+            if (targetAccessorName == _envRefName.Name) // _env.
+            {
+                return targetAccessorName;
+            }
+            if (targetAccessorName == _supportRefName.Name) // _.
+            {
+                return targetAccessorName;
+            }
+            if (targetAccessorName == _outerRefName.Name) // _outer.
+            {
+                return targetAccessorName;
+            }
+
+            string targetNameForExceptionSafe = targetNameForException ?? GetTargetNameForException(targetAccessorName);
+            return $"_.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.NnO)}({targetAccessorName}, {targetNameForExceptionSafe.ToLiteral()})";
+        }
         private string GetTargetNameForException(string targetAccessorName)
         {
             if (targetAccessorName == null) throw new ArgumentNullException(nameof(targetAccessorName));

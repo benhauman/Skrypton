@@ -1,1 +1,1 @@
-            _.CALLm0argp(this, _env.func ?? throw new InvalidOperationException("Reference not set:func"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'vbObjectError' is called like a function"))));
+            _.CALLm0argp(this, _.NnO(_env.func, "func"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'vbObjectError' is called like a function"))));

@@ -1,2 +1,2 @@
 
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.CONCAT(_env.a, _env.b, _env.c, _env.d));
+            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", _.CONCAT(_env.a, _env.b, _env.c, _env.d));

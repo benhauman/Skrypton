@@ -365,11 +365,11 @@ namespace TranslatedProgram
             colorWarning = "#F20012";
             colorCheck = "#1B709F";
 
-            hostname = _.VAL(_.CALLm1v5(this, _env.hlobj ?? throw new InvalidOperationException("Reference not set:hlobj"), "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            hostname = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlobj, "hlobj"), "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             if (_.IF(_.EQ(_.NullableSTR(hostname), "")))
             {
-                _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", "Der Computer hat keinen Hostnamen.");
+                _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Der Computer hat keinen Hostnamen.");
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
             }
@@ -390,23 +390,23 @@ namespace TranslatedProgram
                 xmlhttp = _.OBJ(_.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v2(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "setOption", (Int16)2, (Int16)13056);
+                _.CALLm1v2(this, _.NnO(xmlhttp, "xmlhttp"), "setOption", (Int16)2, (Int16)13056);
             }); //bypass certificate errors
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1argp(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, _.NnO(xmlhttp, "xmlhttp"), "open", _.ARGS.Val("GET").Ref(nexthinkURL, v => { nexthinkURL = v; }).Val(false).Val(_.CALLm1argp(this, _outer, "getNexthinkUser", _.ARGS.ForceBrackets())).Val(_.CALLm1argp(this, _outer, "getNexthinkPassword", _.ARGS.ForceBrackets())));
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v0(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "send");
+                _.CALLm1v0(this, _.NnO(xmlhttp, "xmlhttp"), "send");
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
+                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "HelpContext")));
+                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -424,17 +424,17 @@ namespace TranslatedProgram
                 _.SETm1a0(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "async", "false");
             });
             _.HANDLEERROR(errOn, () => {
-                _.CALLm1v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "load", _.CALLm1v0(this, xmlhttp ?? throw new InvalidOperationException("Reference not set:xmlhttp"), "responseXML"));
+                _.CALLm1v1(this, _.NnO(xmlDoc, "xmlDoc"), "load", _.CALLm1v0(this, _.NnO(xmlhttp, "xmlhttp"), "responseXML"));
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "HelpContext")));
+                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -450,7 +450,7 @@ namespace TranslatedProgram
             });
             IEnumerator enumerationContent = null;
             _.HANDLEERROR(errOn, () => {
-                enumerationContent = _.ENUMERABLE(_.CALLm1v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "SelectNodes", "//table/header/*")).GetEnumerator();
+                enumerationContent = _.ENUMERABLE(_.CALLm1v1(this, _.NnO(xmlDoc, "xmlDoc"), "SelectNodes", "//table/header/*")).GetEnumerator();
             });
             while (true)
             {
@@ -461,10 +461,10 @@ namespace TranslatedProgram
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {
-                    curnode = _.OBJ(_.CALLm2v1(this, xmlDoc ?? throw new InvalidOperationException("Reference not set:xmlDoc"), "documentElement", "selectSingleNode", _.CONCAT("//table/body/r/c", i)));
+                    curnode = _.OBJ(_.CALLm2v1(this, _.NnO(xmlDoc, "xmlDoc"), "documentElement", "selectSingleNode", _.CONCAT("//table/body/r/c", i)));
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v2(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", _.CALLm1v0(this, n ?? throw new InvalidOperationException("Reference not set:n"), "Text"), _.CALLm1v0(this, curnode ?? throw new InvalidOperationException("Reference not set:curnode"), "Text"));
+                    _.CALLm1v2(this, _.NnO(dict, "dict"), "Add", _.CALLm1v0(this, _.NnO(n, "n"), "Text"), _.CALLm1v0(this, _.NnO(curnode, "curnode"), "Text"));
                 });
                 _.HANDLEERROR(errOn, () => {
                     i = _.ADD(i, (Int16)1);
@@ -474,10 +474,10 @@ namespace TranslatedProgram
             }
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.ERR ?? throw new InvalidOperationException("Reference not set:ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -488,59 +488,59 @@ namespace TranslatedProgram
             //fill textboxes
             //LabelNName.Text = dict.key("name")
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralHostName ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralHostName"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "name")));
+                _.SETm1a0(this, _env.TextBoxGeneralHostName ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralHostName"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastIP ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastIP"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_ip_address")));
+                _.SETm1a0(this, _env.TextBoxGeneralLastIP ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastIP"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_ip_address")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer ?? throw new InvalidOperationException("Reference not set:TextBoxlGeneralDeviceManufacturer"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "device_manufacturer")));
+                _.SETm1a0(this, _env.TextBoxlGeneralDeviceManufacturer ?? throw new InvalidOperationException("Reference not set:TextBoxlGeneralDeviceManufacturer"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_manufacturer")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralDeviceProductVersion"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "device_model")));
+                _.SETm1a0(this, _env.TextBoxGeneralDeviceProductVersion ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralDeviceProductVersion"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralOS ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralOS"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "os_version_and_architecture")));
+                _.SETm1a0(this, _env.TextBoxGeneralOS ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralOS"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "os_version_and_architecture")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralGroupName ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGroupName"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "group_name")));
+                _.SETm1a0(this, _env.TextBoxGeneralGroupName ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGroupName"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "group_name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastBootTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastBootTime ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastBootTime"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastLogon"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
+                _.SETm1a0(this, _env.TextBoxGeneralLastLogon ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralLastLogon"), "Text", _.VAL(_.CALLm1v2(this, _, "FORMATDATETIME", _.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate)));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralDeviceType ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralDeviceType"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "last_logged_on_user")));
+                _.SETm1a0(this, _env.TextBoxGeneralDeviceType ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralDeviceType"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logged_on_user")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralBIOSSerialNumber"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "bios_serial_number")));
+                _.SETm1a0(this, _env.TextBoxGeneralBIOSSerialNumber ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralBIOSSerialNumber"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "bios_serial_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCPUModel ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCPUModel"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "cpu_model")));
+                _.SETm1a0(this, _env.TextBoxGeneralCPUModel ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCPUModel"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfCPUs"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_cpus")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCPUs ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfCPUs"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cpus")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfLogProcs"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "logical_cpu_number")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfLogProcs ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfLogProcs"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "logical_cpu_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfCores"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_cores")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfCores ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfCores"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cores")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralCPUFreq ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCPUFreq"), "Text", _.CONCAT(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "cpu_frequency"), " MHz"));
+                _.SETm1a0(this, _env.TextBoxGeneralCPUFreq ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralCPUFreq"), "Text", _.CONCAT(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_frequency"), " MHz"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralTotalRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "total_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralTotalRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralTotalRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "total_ram"))));
             });
 
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfGraphCards"), "Text", _.VAL(_.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "number_of_graphical_cards")));
+                _.SETm1a0(this, _env.TextBoxGeneralNumberOfGraphCards ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralNumberOfGraphCards"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_graphical_cards")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGraphCardRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), "Item", "graphical_card_ram"))));
+                _.SETm1a0(this, _env.TextBoxGeneralGraphCardRAM ?? throw new InvalidOperationException("Reference not set:TextBoxGeneralGraphCardRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "graphical_card_ram"))));
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

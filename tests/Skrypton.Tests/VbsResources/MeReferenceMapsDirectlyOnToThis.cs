@@ -1,2 +1,2 @@
 
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.CALLm1v0(this, this ?? throw new InvalidOperationException("Reference not set:this"), "Name"));
+            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", _.CALLm1v0(this, _.NnO(this, "this"), "Name"));

@@ -32,7 +32,7 @@ namespace TranslatedProgram
         {
             object hlObj = null; /* Undeclared in source */
             object IsAgent = null; /* Undeclared in source */
-            if (_.IF(_.EQ(_.CALLm0argp(this, IsAgent ?? throw new InvalidOperationException("Reference not set:IsAgent"), _.ARGS.Ref(hlObj, v => { hlObj = v; })), true)))
+            if (_.IF(_.EQ(_.CALLm0argp(this, _.NnO(IsAgent, "IsAgent"), _.ARGS.Ref(hlObj, v => { hlObj = v; })), true)))
             {
                 _.MSGBOX("TT");
             }

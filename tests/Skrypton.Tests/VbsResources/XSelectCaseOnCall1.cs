@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            object targetCaseExpr = _.CALLm1v5(this, _outer.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
+            object targetCaseExpr = _.CALLm1v5(this, _.NnO(_outer.hlObj, "hlObj"), "GetValue", "CaseClassificationAttribute.Priority", (Int16)0, (Int16)0, (Int16)0, (Int16)0);
             if (_.IF(_.EQ(targetCaseExpr, "Priority1")))
             {
                 _.SETm1a0(this, _outer.CaseAttributes ?? throw new InvalidOperationException("Reference not set:CaseAttributes"), "BackColor", "RGB(107,105,248)");

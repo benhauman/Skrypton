@@ -3,6 +3,6 @@
         {
             object Render_retVal = null;
             var with = _.OBJ(x);
-            _.CALLm1v1(this, with ?? throw new InvalidOperationException("Reference not set:with"), "Draw", "Test");
+            _.CALLm1v1(this, _.NnO(with, "with"), "Draw", "Test");
             return Render_retVal;
         }

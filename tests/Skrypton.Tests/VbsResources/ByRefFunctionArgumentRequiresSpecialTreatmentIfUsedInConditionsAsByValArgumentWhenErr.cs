@@ -6,7 +6,7 @@
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
             bool ifResult;
             object a_zref = a;
-            ifResult = _.IF(() => _.CALLm1v1(this, _outer, "F2", _.CALLm1v0(this, a_zref ?? throw new InvalidOperationException("Reference not set:a_zref"), "Name")), errOn);
+            ifResult = _.IF(() => _.CALLm1v1(this, _outer, "F2", _.CALLm1v0(this, _.NnO(a_zref, "a_zref"), "Name")), errOn);
             if (ifResult)
             {
             }

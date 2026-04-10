@@ -20,6 +20,6 @@
         }
         public void Class_Initialize()
         {
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Here!");
+            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", "Here!");
         }
     }

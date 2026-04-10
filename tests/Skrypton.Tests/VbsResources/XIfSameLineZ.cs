@@ -1,4 +1,4 @@
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v5(this, _env.hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "ServiceRequestRecordSpecific.TargetDateScheduled", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), (Int16)1)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "ServiceRequestRecordSpecific.TargetDateScheduled", (Int16)0, (Int16)0, (Int16)0, (Int16)0)), (Int16)1)))
             {
                 _.SETm1a0(this, _env.ComboBoxPriority ?? throw new InvalidOperationException("Reference not set:ComboBoxPriority"), "Disabled", "true");
             }

@@ -21,16 +21,16 @@ namespace TranslatedProgram
             _.SETm1a0(this, _env.objRegEx ?? throw new InvalidOperationException("Reference not set:objRegEx"), "Global", true);
             _.SETm1a0(this, _env.objRegEx ?? throw new InvalidOperationException("Reference not set:objRegEx"), "Pattern", "[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]");
 
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 1 URL", _.CALLm1v0(this, _env.TextBoxChecklist1URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist1URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 2 URL", _.CALLm1v0(this, _env.TextBoxChecklist2URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist2URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 3 URL", _.CALLm1v0(this, _env.TextBoxChecklist3URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist3URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 4 URL", _.CALLm1v0(this, _env.TextBoxChecklist4URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist4URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 5 URL", _.CALLm1v0(this, _env.TextBoxChecklist5URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist5URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 6 URL", _.CALLm1v0(this, _env.TextBoxChecklist6URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist6URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 7 URL", _.CALLm1v0(this, _env.TextBoxChecklist7URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist7URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 8 URL", _.CALLm1v0(this, _env.TextBoxChecklist8URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist8URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 9 URL", _.CALLm1v0(this, _env.TextBoxChecklist9URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist9URL"), "Text"));
-            _.CALLm1v2(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), "Add", "Checkliste 10 URL", _.CALLm1v0(this, _env.TextBoxChecklist10URL ?? throw new InvalidOperationException("Reference not set:TextBoxChecklist10URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 1 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist1URL, "TextBoxChecklist1URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 2 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist2URL, "TextBoxChecklist2URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 3 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist3URL, "TextBoxChecklist3URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 4 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist4URL, "TextBoxChecklist4URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 5 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist5URL, "TextBoxChecklist5URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 6 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist6URL, "TextBoxChecklist6URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 7 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist7URL, "TextBoxChecklist7URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 8 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist8URL, "TextBoxChecklist8URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 9 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist9URL, "TextBoxChecklist9URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 10 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist10URL, "TextBoxChecklist10URL"), "Text"));
 
             var enumerationContent = _.ENUMERABLE(_env.dict).GetEnumerator();
             while (true)
@@ -38,15 +38,15 @@ namespace TranslatedProgram
                 if (!enumerationContent.MoveNext())
                     break;
                 _outer.element = enumerationContent.Current;
-                if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _env.dict ?? throw new InvalidOperationException("Reference not set:dict"), _.ARGS.Ref(_outer.element, v => { _outer.element = v; }))), "")))
+                if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_env.dict, "dict"), _.ARGS.Ref(_outer.element, v => { _outer.element = v; }))), "")))
                 {
-                    _env.match = _.OBJ(_.CALLm1argp(this, _env.objRegEx ?? throw new InvalidOperationException("Reference not set:objRegEx"), "execute", _.ARGS.RefIfArray(_env.dict, _.ARGS.Ref(_outer.element, v2 => { _outer.element = v2; }))));
-                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _env.match ?? throw new InvalidOperationException("Reference not set:match"), "Count")), (Int16)0)))
+                    _env.match = _.OBJ(_.CALLm1argp(this, _.NnO(_env.objRegEx, "objRegEx"), "execute", _.ARGS.RefIfArray(_env.dict, _.ARGS.Ref(_outer.element, v2 => { _outer.element = v2; }))));
+                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.match, "match"), "Count")), (Int16)0)))
                     {
-                        _outer.errMsg = _.VAL(_.CALLm1v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "Translate", "#ERR_Checklists_InvalidChars"));
+                        _outer.errMsg = _.VAL(_.CALLm1v1(this, _.NnO(_env.model, "model"), "Translate", "#ERR_Checklists_InvalidChars"));
                         _outer.errMsg = _.REPLACE(_outer.errMsg, "{0}", _outer.element);
-                        _.CALLm1argp(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
-                        _.CALLm2v1(this, _env.model ?? throw new InvalidOperationException("Reference not set:model"), "CurrentCommand", "Abort", "OnSave");
+                        _.CALLm1argp(this, _.NnO(_env.model, "model"), "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
+                        _.CALLm2v1(this, _.NnO(_env.model, "model"), "CurrentCommand", "Abort", "OnSave");
                     }
                 }
             }

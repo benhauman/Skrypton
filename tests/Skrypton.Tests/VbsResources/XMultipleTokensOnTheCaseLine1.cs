@@ -39,7 +39,7 @@ namespace TranslatedProgram
             object priorityText = null;
             object hlObj = null; /* Undeclared in source */
             object ComboBoxImpact = null; /* Undeclared in source */
-            impactText = _.VAL(_.CALLm1v5(this, hlObj ?? throw new InvalidOperationException("Reference not set:hlObj"), "GetValue", "IncidentAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            impactText = _.VAL(_.CALLm1v5(this, _.NnO(hlObj, "hlObj"), "GetValue", "IncidentAttribute.Impact", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             if (_.IF(_.EQ(impactText, "ImpactSinglePerson")))
             {
@@ -59,7 +59,7 @@ namespace TranslatedProgram
             }
             else
             {
-                impact = _.VAL(_.CALLm1argp(this, ComboBoxImpact ?? throw new InvalidOperationException("Reference not set:ComboBoxImpact"), "GetCurSel", _.ARGS.ForceBrackets()));
+                impact = _.VAL(_.CALLm1argp(this, _.NnO(ComboBoxImpact, "ComboBoxImpact"), "GetCurSel", _.ARGS.ForceBrackets()));
             }
 
         }

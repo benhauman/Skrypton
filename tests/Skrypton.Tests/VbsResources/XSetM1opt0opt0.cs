@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _.CALLm1v0(this, _.NnO(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _env.doc ?? throw new InvalidOperationException("Reference not set:doc"), "Bookmarks", "Firma"), "(call result)"), "Range"), "(call result)"), "Text");
+            _.CALLm1v0(this, _.NnO(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_env.doc, "doc"), "Bookmarks", "Firma"), "(call result)"), "Range"), "(call result)"), "Text");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

@@ -1,1 +1,1 @@
-_.ARGS.Val(_.CALLm1v0(this, _.CALLm1v1(this, _env.a ?? throw new InvalidOperationException("Reference not set:a"), "b", (Int16)0) ?? throw new InvalidOperationException("Reference not set:(_.call result)"), "c"))
+_.ARGS.Val(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_env.a, "a"), "b", (Int16)0), "(_.call result)"), "c"))

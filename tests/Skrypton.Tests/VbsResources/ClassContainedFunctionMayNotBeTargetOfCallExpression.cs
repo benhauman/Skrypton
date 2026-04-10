@@ -17,7 +17,7 @@
         {
             object Go_retVal = null;
             object a = null; /* Undeclared in source */
-            a = _.OBJ(_.CALLm2v0(this, this ?? throw new InvalidOperationException("Reference not set:this"), "GetSomething", "Name"));
+            a = _.OBJ(_.CALLm2v0(this, _.NnO(this, "this"), "GetSomething", "Name"));
             return Go_retVal;
         }
         public object GetSomething()

@@ -38,6 +38,6 @@
         }
         public void Class_Terminate()
         {
-            _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", "Gone!");
+            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", "Gone!");
         }
     }

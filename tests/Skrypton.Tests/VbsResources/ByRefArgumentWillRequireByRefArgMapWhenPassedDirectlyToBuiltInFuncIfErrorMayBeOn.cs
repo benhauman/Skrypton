@@ -8,7 +8,7 @@
             try
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.TYPENAME(x_vref));
+                    _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", _.TYPENAME(x_vref));
                 });
             }
             finally { x = x_vref; }

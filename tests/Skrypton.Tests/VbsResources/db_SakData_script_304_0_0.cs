@@ -67,7 +67,7 @@ namespace TranslatedProgram
             object dict_vref = dict;
             try
             {
-                ItemIDs = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetContentIDs", _.ARGS.RefIfArray(dict_vref, _.ARGS.Val("Compound")).Val((Int16)0)));
+                ItemIDs = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetContentIDs", _.ARGS.RefIfArray(dict_vref, _.ARGS.Val("Compound")).Val((Int16)0)));
             }
             finally { dict = dict_vref; }
 
@@ -91,7 +91,7 @@ namespace TranslatedProgram
                     object dict_vref3 = dict;
                     try
                     {
-                        strValue = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", _.ARGS.RefIfArray(dict_vref3, _.ARGS.Val("Value")).Val((Int16)0).Ref(Item, v4 => { Item = v4; }).Val((Int16)0).Val((Int16)0)));
+                        strValue = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetValue", _.ARGS.RefIfArray(dict_vref3, _.ARGS.Val("Value")).Val((Int16)0).Ref(Item, v4 => { Item = v4; }).Val((Int16)0).Val((Int16)0)));
                     }
                     finally { dict = dict_vref3; }
                     if (_.IF(_.EQ(_.CBOOL(GetAll), false)))
@@ -119,7 +119,7 @@ namespace TranslatedProgram
             object text_vref = text;
             try
             {
-                _.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v5 => { text_vref = v5; }));
+                _.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "trace", _.ARGS.Val((Int16)1).Ref(text_vref, v5 => { text_vref = v5; }));
             }
             finally { text = text_vref; }
         }
@@ -131,12 +131,12 @@ namespace TranslatedProgram
             object strAttrValue = null;
             //Aus dem Dictionary wird das Attribut und der dazugehoerige Wert ermittelt.
             AttrDef = "";
-            AttrDef = _.CONCAT("PersonInformation.", _.CALLm0argp(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), _.ARGS.Val("PersInfoAttr")));
+            AttrDef = _.CONCAT("PersonInformation.", _.CALLm0argp(this, _.NnO(dict, "dict"), _.ARGS.Val("PersInfoAttr")));
 
             strAttrValue = "";
-            strAttrValue = _.VAL(_.CALLm0argp(this, dict ?? throw new InvalidOperationException("Reference not set:dict"), _.ARGS.Val("DefValue")));
+            strAttrValue = _.VAL(_.CALLm0argp(this, _.NnO(dict, "dict"), _.ARGS.Val("DefValue")));
 
-            _.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
+            _.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "SetValue", _.ARGS.Ref(AttrDef, v6 => { AttrDef = v6; }).Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(strAttrValue, v7 => { strAttrValue = v7; }));
         }
         //---------------------------------------------------------------
         public object IsHLObject(ref object hlContext, ref object hlObject)
@@ -159,7 +159,7 @@ namespace TranslatedProgram
         //-------------------------------------------------------------------
         public object GetBaseType(ref object hlContext, ref object hlObject)
         {
-            return _.VAL(_.CALLm1v5(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", "HLOBJECTINFO.BASETYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            return _.VAL(_.CALLm1v5(this, _.NnO(hlObject, "hlObject"), "GetValue", "HLOBJECTINFO.BASETYPE", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
         }
         //---------------------------------------------------------------
         //Dies ist eine rekursive Function zum ermitteln der Organisationshierarchie,
@@ -178,28 +178,28 @@ namespace TranslatedProgram
             //Andernfalls, wird jede weitere OU einfach angehangen.
             if (_.IF(_.EQ(_.NullableSTR(strOrgUnits), "")))
             {
-                strOrgUnits = _.VAL(_.CALLm1v5(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                strOrgUnits = _.VAL(_.CALLm1v5(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             }
             else
             {
-                strOrgUnits = _.CONCAT(strOrgUnits, ", ", _.CALLm1v5(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                strOrgUnits = _.CONCAT(strOrgUnits, ", ", _.CALLm1v5(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
             }
 
             //Erst pruefen, um welchen OU Typ es sich handelt, damit die richtige Assoziationsdefinition
             //fuer die naechste Abfrage gewaehlt werden kann.
             orgaType = "";
-            orgaType = _.VAL(_.CALLm1v0(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetType"));
+            orgaType = _.VAL(_.CALLm1v0(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Division")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "CompanyView"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "CompanyView"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Site")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Site2Company"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Site2Company"));
             }
             if (_.IF(_.EQ(_.NullableSTR(orgaType), "Company")))
             {
-                NextOrgUnit = _.VAL(_.CALLm1v4(this, hlOrgUnit ?? throw new InvalidOperationException("Reference not set:hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Company2Company"));
+                NextOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlOrgUnit, "hlOrgUnit"), "GetItems", 65536, (Int16)0, (Int16)0, "Company2Company"));
             }
 
             //Wenn sich mindestens noch eine weitere OU oberhalb der aktuellen befindet,
@@ -231,7 +231,7 @@ namespace TranslatedProgram
             object hlattribute_vref = hlattribute, hlcontentid_vref = hlcontentid, hlsuid_vref = hlsuid;
             try
             {
-                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, hlObject ?? throw new InvalidOperationException("Reference not set:hlObject"), "GetValue", _.ARGS.Ref(hlattribute_vref, v11 => { hlattribute_vref = v11; }).Val((Int16)0).Ref(hlcontentid_vref, v12 => { hlcontentid_vref = v12; }).Ref(hlsuid_vref, v13 => { hlsuid_vref = v13; }).Val((Int16)0)));
+                GetFlagValue_retVal = _.VAL(_.CALLm1argp(this, _.NnO(hlObject, "hlObject"), "GetValue", _.ARGS.Ref(hlattribute_vref, v11 => { hlattribute_vref = v11; }).Val((Int16)0).Ref(hlcontentid_vref, v12 => { hlcontentid_vref = v12; }).Ref(hlsuid_vref, v13 => { hlsuid_vref = v13; }).Val((Int16)0)));
             }
             finally { hlattribute = hlattribute_vref; hlcontentid = hlcontentid_vref; hlsuid = hlsuid_vref; }
             if (_.IF(_.EQ(_.NullableSTR(GetFlagValue_retVal), "")))
@@ -253,7 +253,7 @@ namespace TranslatedProgram
             object ErrCode_vref = ErrCode, LocaleID_vref = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref, v14 => { ErrCode_vref = v14; }).Ref(LocaleID_vref, v15 => { LocaleID_vref = v15; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref, v14 => { ErrCode_vref = v14; }).Ref(LocaleID_vref, v15 => { LocaleID_vref = v15; })));
             }
             finally { ErrCode = ErrCode_vref; LocaleID = LocaleID_vref; }
             strErrMsg = _.CONCAT(strErrMsg, VBScriptConstants.vbNewLine, "(Code: ", ErrCode, ")");
@@ -274,7 +274,7 @@ namespace TranslatedProgram
             object retval = null;
             object strOrgUnits = null;
             FirstOrgUnit = VBScriptConstants.Nothing;
-            FirstOrgUnit = _.OBJ(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetRelatedObject"));
+            FirstOrgUnit = _.OBJ(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetRelatedObject"));
 
             bool ifResult;
             object hlContext_vref4 = hlContext;
@@ -285,7 +285,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref4; }
             if (ifResult)
             {
-                if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Company")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, FirstOrgUnit ?? throw new InvalidOperationException("Reference not set:FirstOrgUnit"), "GetType")), "Division")))))
+                if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(FirstOrgUnit, "FirstOrgUnit"), "GetType")), "Company")) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm1v0(this, _.NnO(FirstOrgUnit, "FirstOrgUnit"), "GetType")), "Division")))))
                 {
                     FirstOrgUnit = VBScriptConstants.Nothing;
                 }
@@ -301,10 +301,10 @@ namespace TranslatedProgram
             if (ifResult2)
             {
                 rsltOrgUnit = "";
-                rsltOrgUnit = _.VAL(_.CALLm1v4(this, hlPerson ?? throw new InvalidOperationException("Reference not set:hlPerson"), "GetItems", 65536, (Int16)0, (Int16)0, "Person2Organization"));
+                rsltOrgUnit = _.VAL(_.CALLm1v4(this, _.NnO(hlPerson, "hlPerson"), "GetItems", 65536, (Int16)0, (Int16)0, "Person2Organization"));
                 if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(rsltOrgUnit)), (Int16)0)))
                 {
-                    FirstOrgUnit = _.OBJ(_.CALLm0argp(this, rsltOrgUnit ?? throw new InvalidOperationException("Reference not set:rsltOrgUnit"), _.ARGS.Val((Int16)0)));
+                    FirstOrgUnit = _.OBJ(_.CALLm0argp(this, _.NnO(rsltOrgUnit, "rsltOrgUnit"), _.ARGS.Val((Int16)0)));
                 }
             }
 
@@ -358,20 +358,20 @@ namespace TranslatedProgram
             object orgUnitName = null;
             object strErrMsg = null;
 
-            productDefName = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GetType", _.ARGS.ForceBrackets()));
+            productDefName = _.VAL(_.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "GetType", _.ARGS.ForceBrackets()));
 
             if (_.IF(_.ANDe2(_.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "Software")) && _.CBOOL(_.NOTEQ(_.NullableSTR(productDefName), "SoftwareLicence")))))
             {
-                contentID = _.VAL(_.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "GenerateContentID", _.ARGS.ForceBrackets()));
-                agentID = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
-                orgUnitName = _.VAL(_.CALLm1v5(this, hlObjectA ?? throw new InvalidOperationException("Reference not set:hlObjectA"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-                personOfAgent = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetPersonOfAgent", _.ARGS.Ref(agentID, v38 => { agentID = v38; })));
+                contentID = _.VAL(_.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "GenerateContentID", _.ARGS.ForceBrackets()));
+                agentID = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAgentID", _.ARGS.ForceBrackets()));
+                orgUnitName = _.VAL(_.CALLm1v5(this, _.NnO(hlObjectA, "hlObjectA"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                personOfAgent = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetPersonOfAgent", _.ARGS.Ref(agentID, v38 => { agentID = v38; })));
                 if (_.IF(_.IS(personOfAgent, VBScriptConstants.Nothing)))
                 {
                     object hlContext_vref10 = hlContext;
                     try
                     {
-                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(hlContext_vref10, v39 => { hlContext_vref10 = v39; }).Val(_.CALLm1v0(this, hlContext_vref10 ?? throw new InvalidOperationException("Reference not set:hlContext_vref10"), "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
+                        strErrMsg = _.VAL(_.CALLm1argp(this, _outer, "GetErrMsg0", _.ARGS.Ref(hlContext_vref10, v39 => { hlContext_vref10 = v39; }).Val(_.CALLm1v0(this, _.NnO(hlContext_vref10, "hlContext_vref10"), "GetLocaleID")).Val("#ERR_SETASSETHISTORY")));
                     }
                     finally { hlContext = hlContext_vref10; }
                     object hlContext_vref11 = hlContext;
@@ -384,23 +384,23 @@ namespace TranslatedProgram
                 }
                 else
                 {
-                    personName = _.VAL(_.CALLm1v5(this, personOfAgent ?? throw new InvalidOperationException("Reference not set:personOfAgent"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    personName = _.VAL(_.CALLm1v5(this, _.NnO(personOfAgent, "personOfAgent"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     personName = _.CONCAT(personName, ", ");
-                    personName = _.CONCAT(personName, _.CALLm1v5(this, personOfAgent ?? throw new InvalidOperationException("Reference not set:personOfAgent"), "GetValue", "PersonGeneral.GivenName", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    personName = _.CONCAT(personName, _.CALLm1v5(this, _.NnO(personOfAgent, "personOfAgent"), "GetValue", "PersonGeneral.GivenName", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                 }
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v42 => { contentID = v42; }).Val((Int16)0).Ref(personName, v43 => { personName = v43; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v44 => { contentID = v44; }).Val((Int16)0).Ref(agentID, v45 => { agentID = v45; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Val(_.NOW()));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v47 => { contentID = v47; }).Val((Int16)0).Ref(orgUnitName, v48 => { orgUnitName = v48; }));
-                _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val(_.CALLm1argp(this, hlObjectA ?? throw new InvalidOperationException("Reference not set:hlObjectA"), "GetID", _.ARGS.ForceBrackets())));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedBy").Val((Int16)0).Ref(contentID, v42 => { contentID = v42; }).Val((Int16)0).Ref(personName, v43 => { personName = v43; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangedByAgentID").Val((Int16)0).Ref(contentID, v44 => { contentID = v44; }).Val((Int16)0).Ref(agentID, v45 => { agentID = v45; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryChangeDate").Val((Int16)0).Ref(contentID, v46 => { contentID = v46; }).Val((Int16)0).Val(_.NOW()));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnit").Val((Int16)0).Ref(contentID, v47 => { contentID = v47; }).Val((Int16)0).Ref(orgUnitName, v48 => { orgUnitName = v48; }));
+                _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryOrgUnitID").Val((Int16)0).Ref(contentID, v49 => { contentID = v49; }).Val((Int16)0).Val(_.CALLm1argp(this, _.NnO(hlObjectA, "hlObjectA"), "GetID", _.ARGS.ForceBrackets())));
 
                 if (_.IF(_.EQ(created, true)))
                 {
-                    _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionCreated"));
+                    _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v50 => { contentID = v50; }).Val((Int16)0).Val("HistoryActionCreated"));
                 }
                 else
                 {
-                    _.CALLm1argp(this, hlObjectB ?? throw new InvalidOperationException("Reference not set:hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v51 => { contentID = v51; }).Val((Int16)0).Val("HistoryActionDeleted"));
+                    _.CALLm1argp(this, _.NnO(hlObjectB, "hlObjectB"), "SetValue", _.ARGS.Val("AssocHistory.HistoryInformation_CA.HistoryAction").Val((Int16)0).Ref(contentID, v51 => { contentID = v51; }).Val((Int16)0).Val("HistoryActionDeleted"));
                 }
             }
         }
@@ -417,7 +417,7 @@ namespace TranslatedProgram
             object ErrCode_vref2 = ErrCode, LocaleID_vref2 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref2, v52 => { ErrCode_vref2 = v52; }).Ref(LocaleID_vref2, v53 => { LocaleID_vref2 = v53; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref2, v52 => { ErrCode_vref2 = v52; }).Ref(LocaleID_vref2, v53 => { LocaleID_vref2 = v53; })));
             }
             finally { ErrCode = ErrCode_vref2; LocaleID = LocaleID_vref2; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -438,7 +438,7 @@ namespace TranslatedProgram
             object ErrCode_vref3 = ErrCode, LocaleID_vref3 = LocaleID;
             try
             {
-                strErrMsg = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref3, v54 => { ErrCode_vref3 = v54; }).Ref(LocaleID_vref3, v55 => { LocaleID_vref3 = v55; })));
+                strErrMsg = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetTranslation", _.ARGS.Ref(ErrCode_vref3, v54 => { ErrCode_vref3 = v54; }).Ref(LocaleID_vref3, v55 => { LocaleID_vref3 = v55; })));
             }
             finally { ErrCode = ErrCode_vref3; LocaleID = LocaleID_vref3; }
             strErrMsg = _.REPLACE(strErrMsg, "%1", Arg1);
@@ -469,7 +469,7 @@ namespace TranslatedProgram
             object HLASC_SoftwareLicenseFolderView_vref = HLASC_SoftwareLicenseFolderView;
             try
             {
-                rsltSWFolders = _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref, v56 => { HLASC_SoftwareLicenseFolderView_vref = v56; })));
+                rsltSWFolders = _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref, v56 => { HLASC_SoftwareLicenseFolderView_vref = v56; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = HLASC_SoftwareLicenseFolderView_vref; }
 
@@ -479,13 +479,13 @@ namespace TranslatedProgram
                 if (!enumerationContent2.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent2.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "LicenseFolder")))
                 {
                     object hlContext_vref12 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref12, v57 => { hlContext_vref12 = v57; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref12, v57 => { hlContext_vref12 = v57; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref12; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -498,7 +498,7 @@ namespace TranslatedProgram
                     object hlContext_vref13 = hlContext;
                     try
                     {
-                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref13, v58 => { hlContext_vref13 = v58; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        GetReferenceLicenseCount_retVal = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref13, v58 => { hlContext_vref13 = v58; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref13; }
                     if (_.IF(_.GT(_.NullableNUM(GetReferenceLicenseCount_retVal), (Int16)0)))
@@ -526,13 +526,13 @@ namespace TranslatedProgram
             //Festhalten auf welcher Ebene ggf. eine Software Suite oberhalb des
             //Start Folders existiert. Die Variable muss von aussen mit einem Startwert
             //initialisiert werden.
-            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
+            if (_.IF(_.OR(_.EQ(_.NullableNUM(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), (Int16)0), _.EQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel"))), ""))))
             {
                 _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", (Int16)1);
             }
             else
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolderLevel", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareSuiteFolderLevel")), (Int16)1));
             }
 
             //Amhand des Flags "Software Suite" festellen ob ein Lizenzumschlag als Software Suite
@@ -546,7 +546,7 @@ namespace TranslatedProgram
             finally { hlContext = hlContext_vref14; hlParentSWFolder = hlParentSWFolder_vref; }
             if (_.IF(_.EQ(_.CBOOL(CheckSoftwareSuite), true)))
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, hlParentSWFolder ?? throw new InvalidOperationException("Reference not set:hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareSuiteFolder", _.VAL(_.CALLm1v5(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetValue", "OrganizationGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0)));
                 return CheckForSoftwareSuiteFolder_retVal;
             }
 
@@ -555,7 +555,7 @@ namespace TranslatedProgram
             object HLASC_SoftwareLicenseFolderView_vref2 = HLASC_SoftwareLicenseFolderView;
             try
             {
-                NextSWFolder = _.VAL(_.CALLm1argp(this, hlParentSWFolder ?? throw new InvalidOperationException("Reference not set:hlParentSWFolder"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref2, v61 => { HLASC_SoftwareLicenseFolderView_vref2 = v61; })));
+                NextSWFolder = _.VAL(_.CALLm1argp(this, _.NnO(hlParentSWFolder, "hlParentSWFolder"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(HLASC_SoftwareLicenseFolderView_vref2, v61 => { HLASC_SoftwareLicenseFolderView_vref2 = v61; })));
             }
             finally { HLASC_SoftwareLicenseFolderView = HLASC_SoftwareLicenseFolderView_vref2; }
             if (_.IF(_.GTE(_.NullableNUM(_.UBOUND(NextSWFolder)), (Int16)0)))
@@ -597,7 +597,7 @@ namespace TranslatedProgram
             object assocName_vref = assocName;
             try
             {
-                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
+                _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SoftwareLicenses", _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val((Int16)0).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).Ref(assocName_vref, v65 => { assocName_vref = v65; }))));
             }
             finally { assocName = assocName_vref; }
 
@@ -615,7 +615,7 @@ namespace TranslatedProgram
             object pDict_vref2 = pDict;
             try
             {
-                ifResult5 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALLm0argp(this, pDict_vref2 ?? throw new InvalidOperationException("Reference not set:pDict_vref2"), _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
+                ifResult5 = _.IF(_.GTE(_.NullableNUM(_.UBOUND(_.CALLm0argp(this, _.NnO(pDict_vref2, "pDict_vref2"), _.ARGS.Val("SoftwareLicenses")))), (Int16)0));
             }
             finally { pDict = pDict_vref2; }
             if (ifResult5)
@@ -643,13 +643,13 @@ namespace TranslatedProgram
             object pDict_vref5 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref5, _.ARGS.Val("SumRefLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.ReferenceLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref5, _.ARGS.Val("SumRefLicCounter")));
             }
             finally { pDict = pDict_vref5; }
             object pDict_vref6 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref6, _.ARGS.Val("SumInstLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.InstalledLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref6, _.ARGS.Val("SumInstLicCounter")));
             }
             finally { pDict = pDict_vref6; }
 
@@ -669,7 +669,7 @@ namespace TranslatedProgram
             object pDict_vref7 = pDict;
             try
             {
-                _.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref7, _.ARGS.Val("SumFreeLicCounter")));
+                _.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "SetValue", _.ARGS.Val("SoftwareLicenseCounter.FreeLicenseCount").Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref7, _.ARGS.Val("SumFreeLicCounter")));
             }
             finally { pDict = pDict_vref7; }
 
@@ -677,13 +677,13 @@ namespace TranslatedProgram
             //fuer die naechste Abfrage gewaehlt werden kann.
             NextSWFolder = "";
             a = "";
-            a = _.VAL(_.CALLm1v0(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetType"));
+            a = _.VAL(_.CALLm1v0(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetType"));
             if (_.IF(_.EQ(_.NullableSTR(a), "LicenseFolder")))
             {
                 object assocName_vref2 = assocName;
                 try
                 {
-                    NextSWFolder = _.VAL(_.CALLm1argp(this, hlSWFolder ?? throw new InvalidOperationException("Reference not set:hlSWFolder"), "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(assocName_vref2, v74 => { assocName_vref2 = v74; })));
+                    NextSWFolder = _.VAL(_.CALLm1argp(this, _.NnO(hlSWFolder, "hlSWFolder"), "GetItems", _.ARGS.Val(65536).Val((Int16)0).Val((Int16)0).Ref(assocName_vref2, v74 => { assocName_vref2 = v74; })));
                 }
                 finally { assocName = assocName_vref2; }
             }
@@ -723,25 +723,25 @@ namespace TranslatedProgram
             objType = "";
             lstLicStatus = "";
 
-            var enumerationContent3 = _.ENUMERABLE(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            var enumerationContent3 = _.ENUMERABLE(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent3.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
                 {
-                    lstLicStatus = _.VAL(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    lstLicStatus = _.VAL(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.EQ(_.NullableSTR(lstLicStatus), "LicenseStatusValid")))
                     {
                         object hlContext_vref21 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref21, v78 => { hlContext_vref21 = v78; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref21, v78 => { hlContext_vref21 = v78; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref21; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
                 else
@@ -751,22 +751,22 @@ namespace TranslatedProgram
                         object hlContext_vref22 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref22, v79 => { hlContext_vref22 = v79; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref22, v79 => { hlContext_vref22 = v79; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref22; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                         object hlContext_vref23 = hlContext;
                         try
                         {
-                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref23, v80 => { hlContext_vref23 = v80; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref23, v80 => { hlContext_vref23 = v80; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref23; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")), SWInstCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
 
         }
         //----------------------------------------------------------------------------------------------------------
@@ -784,51 +784,51 @@ namespace TranslatedProgram
             objType = "";
             lstLicStatus = "";
 
-            var enumerationContent4 = _.ENUMERABLE(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
+            var enumerationContent4 = _.ENUMERABLE(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SoftwareLicenses"))).GetEnumerator();
             while (true)
             {
                 if (!enumerationContent4.MoveNext())
                     break;
                 SoftwareLicense = enumerationContent4.Current;
-                objType = _.VAL(_.CALLm1argp(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
+                objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(objType), "LicenseFolder"), _.EQ(_.NullableSTR(objType), "Software"))))
                 {
                     object hlContext_vref24 = hlContext;
                     try
                     {
-                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref24, v81 => { hlContext_vref24 = v81; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref24, v81 => { hlContext_vref24 = v81; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref24; }
-                    _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                    _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
 
                     object hlContext_vref25 = hlContext;
                     try
                     {
-                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref25, v82 => { hlContext_vref25 = v82; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                        SWInstCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref25, v82 => { hlContext_vref25 = v82; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.InstalledLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                     }
                     finally { hlContext = hlContext_vref25; }
-                    if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter")))))
+                    if (_.IF(_.GT(SWInstCounter, _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter")))))
                     {
                         _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumInstLicCounter", _.VAL(SWInstCounter));
                     }
                 }
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
                 {
-                    lstLicStatus = _.VAL(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                    lstLicStatus = _.VAL(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseDetail.LicenseStatus", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
                     if (_.IF(_.EQ(_.NullableSTR(lstLicStatus), "LicenseStatusValid")))
                     {
                         object hlContext_vref26 = hlContext;
                         try
                         {
-                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref26, v83 => { hlContext_vref26 = v83; }).Val(_.CALLm1v5(this, SoftwareLicense ?? throw new InvalidOperationException("Reference not set:SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
+                            SWRefLicCounter = _.VAL(_.CALLm1argp(this, _outer, "CheckIntegerValue", _.ARGS.Ref(hlContext_vref26, v83 => { hlContext_vref26 = v83; }).Val(_.CALLm1v5(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetValue", "SoftwareLicenseCounter.ReferenceLicenseCount", (Int16)0, (Int16)0, (Int16)0, (Int16)0))));
                         }
                         finally { hlContext = hlContext_vref26; }
-                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
+                        _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumRefLicCounter", _.ADD(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), SWRefLicCounter));
                     }
                 }
             }
             //Anzahl freier Lizenzen berechnen und in den Folder schreiben.
-            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("SumInstLicCounter"))));
+            _.SETm0a1(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), "SumFreeLicCounter", _.SUBT(_.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumRefLicCounter")), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("SumInstLicCounter"))));
         }
         //----------------------------------------------------------------------------------------------------------
         //Diese Function ueberprueft den ganzzahligen Wert (Integer).
@@ -856,7 +856,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -868,15 +868,15 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart; _.StrictLTE(ixAC, loopEnd); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v84 => { ixAC = v84; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToDelete")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToDelete")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -899,7 +899,7 @@ namespace TranslatedProgram
             object ixAC = null;
             result = false;
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -911,15 +911,15 @@ namespace TranslatedProgram
             {
                 for (ixAC = loopStart2; _.StrictLTE(ixAC, loopEnd2); ixAC = _.ADD(ixAC, (Int16)1))
                 {
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v85 => { ixAC = v85; })));
 
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToCreate")))
                     {
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -944,7 +944,7 @@ namespace TranslatedProgram
 
             //Anzahl der zu erstellenden oder loeschenden Assoziationen
             cAssociationChanges = (Int16)0;
-            cAssociationChanges = _.VAL(_.CALLm1v0(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangesCount"));
+            cAssociationChanges = _.VAL(_.CALLm1v0(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangesCount"));
 
             oAssociationChange = VBScriptConstants.Nothing;
             AscDefNameChange = "";
@@ -958,16 +958,16 @@ namespace TranslatedProgram
                 {
 
                     //Fuer jede Assoziations aenderung wird das entsprechende Infos (Objekt    ) ausgelsen.
-                    oAssociationChange = _.OBJ(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
+                    oAssociationChange = _.OBJ(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetAssociationChangeAt", _.ARGS.Ref(ixAC, v86 => { ixAC = v86; })));
                     //Def Name der Assoc ermitteln, die angelegt werden soll
-                    AscDefNameChange = _.VAL(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "AssociationType"));
+                    AscDefNameChange = _.VAL(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "AssociationType"));
 
-                    if (_.IF(_.CALLm1v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "IsToCreate")))
+                    if (_.IF(_.CALLm1v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "IsToCreate")))
                     {
                         //ueberpruefen ob die gewuenschte Assoc auch angelegt werden soll.
                         if (_.IF(_.EQ(AscDefNameChange, AscDefName)))
                         {
-                            if (_.IF(_.EQ(_.CALLm1v0(this, hlObjB ?? throw new InvalidOperationException("Reference not set:hlObjB"), "GetID"), _.CALLm2v0(this, oAssociationChange ?? throw new InvalidOperationException("Reference not set:oAssociationChange"), "EndB", "GetID"))))
+                            if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(hlObjB, "hlObjB"), "GetID"), _.CALLm2v0(this, _.NnO(oAssociationChange, "oAssociationChange"), "EndB", "GetID"))))
                             {
                                 result = true;
                                 break;
@@ -992,10 +992,10 @@ namespace TranslatedProgram
             object pDict_vref9 = pDict;
             try
             {
-                rsltParent = _.VAL(_.CALLm1argp(this, hlChild ?? throw new InvalidOperationException("Reference not set:hlChild"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(pDict_vref9, _.ARGS.Val("AssocID"))));
+                rsltParent = _.VAL(_.CALLm1argp(this, _.NnO(hlChild, "hlChild"), "GetItems", _.ARGS.Val(65536).Val(_.SUBT((Int16)1)).Val(_.SUBT((Int16)1)).RefIfArray(pDict_vref9, _.ARGS.Val("AssocID"))));
             }
             finally { pDict = pDict_vref9; }
-            if (_.IF(_.GTE(_.UBOUND(rsltParent), _.CALLm0argp(this, pDict ?? throw new InvalidOperationException("Reference not set:pDict"), _.ARGS.Val("ParentCounter")))))
+            if (_.IF(_.GTE(_.UBOUND(rsltParent), _.CALLm0argp(this, _.NnO(pDict, "pDict"), _.ARGS.Val("ParentCounter")))))
             {
                 objParent = VBScriptConstants.Nothing;
                 var enumerationContent5 = _.ENUMERABLE(rsltParent).GetEnumerator();
@@ -1007,13 +1007,13 @@ namespace TranslatedProgram
                     object pDict_vref10 = pDict;
                     try
                     {
-                        GetAssociatedOrganizationalUnit_retVal = _.VAL(_.CALLm1argp(this, objParent ?? throw new InvalidOperationException("Reference not set:objParent"), "GetValue", _.ARGS.Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref10, _.ARGS.Val("AttrName")).Val((Int16)0)));
+                        GetAssociatedOrganizationalUnit_retVal = _.VAL(_.CALLm1argp(this, _.NnO(objParent, "objParent"), "GetValue", _.ARGS.Val((Int16)0).Val((Int16)0).Val((Int16)0).RefIfArray(pDict_vref10, _.ARGS.Val("AttrName")).Val((Int16)0)));
                     }
                     finally { pDict = pDict_vref10; }
                     object lcid_vref = lcid;
                     try
                     {
-                        outParentDefName = _.VAL(_.CALLm1argp(this, hlContext ?? throw new InvalidOperationException("Reference not set:hlContext"), "GetDisplayName", _.ARGS.Val(_.CALLm1v5(this, objParent ?? throw new InvalidOperationException("Reference not set:objParent"), "GetValue", (Int16)0, (Int16)0, (Int16)0, (Int16)0, "HLOBJECTINFO.DEFID")).Ref(lcid_vref, v87 => { lcid_vref = v87; })));
+                        outParentDefName = _.VAL(_.CALLm1argp(this, _.NnO(hlContext, "hlContext"), "GetDisplayName", _.ARGS.Val(_.CALLm1v5(this, _.NnO(objParent, "objParent"), "GetValue", (Int16)0, (Int16)0, (Int16)0, (Int16)0, "HLOBJECTINFO.DEFID")).Ref(lcid_vref, v87 => { lcid_vref = v87; })));
                     }
                     finally { lcid = lcid_vref; }
                     break;

@@ -5,5 +5,5 @@
                 if (!enumerationContent.MoveNext())
                     break;
                 _env.value = enumerationContent.Current;
-                _.CALLm1argp(this, _env.WScript ?? throw new InvalidOperationException("Reference not set:WScript"), "Echo", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
+                _.CALLm1argp(this, _.NnO(_env.WScript, "WScript"), "Echo", _.ARGS.Ref(_env.value, v => { _env.value = v; }));
             }

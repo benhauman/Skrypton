@@ -32,7 +32,7 @@ namespace TranslatedProgram
         {
             object task = null; /* Undeclared in source */
             object Person = null; /* Undeclared in source */
-            _.CALLm1v5(this, task ?? throw new InvalidOperationException("Reference not set:task"), "SetValue", "RoutingHelper.AgentID", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v5(this, Person ?? throw new InvalidOperationException("Reference not set:Person"), "GetValue", "HLOBJECTINFO.ID", (Int16)0, (Int16)0, _.CALLm1argp(this, task ?? throw new InvalidOperationException("Reference not set:task"), "GetSvcUnitCount", _.ARGS.ForceBrackets()), (Int16)0));
+            _.CALLm1v5(this, _.NnO(task, "task"), "SetValue", "RoutingHelper.AgentID", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v5(this, _.NnO(Person, "Person"), "GetValue", "HLOBJECTINFO.ID", (Int16)0, (Int16)0, _.CALLm1argp(this, _.NnO(task, "task"), "GetSvcUnitCount", _.ARGS.ForceBrackets()), (Int16)0));
         }
     }
     public sealed class EnvironmentReferences : EnvironmentReferencesBase
