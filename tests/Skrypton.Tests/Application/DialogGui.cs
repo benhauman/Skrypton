@@ -1173,6 +1173,7 @@ WScript.Echo xmlhttp.responseText
                             "xsd:dateTime" => XmlConvert.ToDateTime(xValue.Value, XmlDateTimeSerializationMode.Utc),
                             "ComboBoxHelplineSearch" => FromXmlComboBoxHelplineSearch(xValue),
                             "CollectionInfo" => FromXmlTableControlCollectionInfo(xValue),
+                            "SearchDefinition" => new MySearchDefinitionClass(),
                             _ => throw new NotImplementedException($"{ControlTypeName}.{controlPropertyName} ({valueTypeName}):{xValue.Value}")
                         };
                         if (controlPropertyName == "SymbolName" && controlPropertyValue is string sv)

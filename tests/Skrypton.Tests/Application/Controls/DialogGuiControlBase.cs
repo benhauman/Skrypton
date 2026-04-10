@@ -209,6 +209,11 @@ namespace Skrypton.Tests.Application.Controls
 
     public sealed class DialogGuiSimpleObjectSearchControl : DialogGuiControlBase
     {
+        public MySearchDefinitionClass SearchDefinition { get => GetPropertyValueAsT<MySearchDefinitionClass>(); set => SetPropertyValueAsT(value); }
+    }
+    public sealed class MySearchDefinitionClass : IReflectOnClrType
+    {
+        public string Condition { get; set; }
     }
     public sealed class DialogGuiCompoundPanelGroupBoxControl : DialogGuiControlBase
     {
