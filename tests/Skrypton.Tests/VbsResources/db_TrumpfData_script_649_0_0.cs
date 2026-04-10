@@ -52,7 +52,7 @@ namespace TranslatedProgram
         public object hlITIL2()
         {
             object hlITIL2_retVal = null;
-            hlITIL2_retVal = _.OBJ(_.CREATEOBJECT("hlStartITIL2.Global"));
+            hlITIL2_retVal = _.CREATEOBJECT("hlStartITIL2.Global");
             _.CALLm2argp(this, _outer, "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
             return hlITIL2_retVal;
         }
@@ -734,7 +734,7 @@ namespace TranslatedProgram
             }
 
             // VBScript source code
-            xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
+            xmldoc = _.CREATEOBJECT("msxml2.DomDocument");
 
             //create root element
             nodeData = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Data")));
@@ -944,7 +944,7 @@ namespace TranslatedProgram
             increqsubject = _.CONCAT("Eliminierung/Elimination: ", cinummer, " Internal helpLine-ID: ", _.CALLm1v0(this, _.NnO(hlObj, "hlObj"), "GetID"));
 
             // VBScript source code
-            xmldoc = _.OBJ(_.CREATEOBJECT("msxml2.DomDocument"));
+            xmldoc = _.CREATEOBJECT("msxml2.DomDocument");
 
             //create root element
             nodeData = _.OBJ(_.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "appendChild", _.CALLm1v1(this, _.NnO(xmldoc, "xmldoc"), "createElement", "Data")));

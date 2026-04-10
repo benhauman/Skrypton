@@ -2367,7 +2367,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             public ExpressionReturnTypeOptions ContentType { get; private set; }
         }
 
-        [DebuggerDisplay("SupportFunctionName")]
+        [DebuggerDisplay("{SupportFunctionName}")]
         private sealed class BuiltInFunctionDetails
         {
             public BuiltInFunctionDetails(IToken token, string supportFunctionName, int? desiredNumberOfArgumentsMatchedAgainst, Type? returnTypeIfKnown, ExpressionReturnTypeOptions? returnExpressionReturnTypeOptionsIfKnown)

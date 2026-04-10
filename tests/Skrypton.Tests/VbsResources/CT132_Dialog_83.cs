@@ -299,7 +299,7 @@ namespace TranslatedProgram
             if (_.IF(_.GT(_.NullableNUM(GetLastSUIdx), (Int16)0)))
             {
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "SUINFO.EDITOR", (Int16)0, (Int16)0, _.ADD(GetLastSUIdx, (Int16)1), (Int16)1));
-                helper = _.OBJ(_.CREATEOBJECT("helpline.hlcontrols.HLHelperPFA"));
+                helper = _.CREATEOBJECT("helpline.hlcontrols.HLHelperPFA");
                 Person = _.OBJ(_.CALLm1v2(this, _.NnO(helper, "helper"), "GetPersonForAgent", _.CALLm1v0(this, _.NnO(_env.model, "model"), "GetClientContext"), _.CLNG(agent)));
                 if (_.IF(_.EQ(_.ISOBJECT(Person), true)))
                 {
@@ -954,13 +954,13 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                 //Datenbankverbindung zu helpline_replication
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Ditzingen oder TG auslesen
-                rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_resp = _.CREATEOBJECT("ADODB.Recordset");
                 rs_resp = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
                 responsibility = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_resp, "rs_resp"), "fields", "responsibility"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_resp, "rs_resp"), "close");
@@ -970,7 +970,7 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(_.NullableNUM(responsibility), 112545)))
                 {
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
-                    rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_kwkwo = _.CREATEOBJECT("ADODB.Recordset");
                     rs_kwkwo = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, _.NnO(rs_kwkwo, "rs_kwkwo"), "EOF"))))
                     {
@@ -1022,7 +1022,7 @@ namespace TranslatedProgram
             object oExec = null;
             object Command1 = null; /* Undeclared in source */
             Hostname = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlProduct, "hlProduct"), "getvalue", "AssetGeneral.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
-            wshshell = _.OBJ(_.CREATEOBJECT("Wscript.Shell"));
+            wshshell = _.CREATEOBJECT("Wscript.Shell");
             Command1 = _.ADD(_.ADD("c:\\program files\\internet explorer\\iexplore.exe http://srv01inv1/discovery/Reports/List.aspx?q=", Hostname), "&flgDevice=1");
             oExec = _.OBJ(_.CALLm1argp(this, _.NnO(wshshell, "wshshell"), "Exec", _.ARGS.Ref(Command1, v17 => { Command1 = v17; })));
 
@@ -1062,14 +1062,14 @@ namespace TranslatedProgram
                     agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                     //Datenbankverbindung zu helpline_replication
-                    cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                    cn = _.CREATEOBJECT("ADODB.Connection");
                     //DB Verbindung öffnen
                     _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                     _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                     _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                     //Teamname auslesen
-                    rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_team = _.CREATEOBJECT("ADODB.Recordset");
                     rs_team = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname,Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
                     teamDisplayname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "AgentTeam_Displayname"), "(_.call result)"), "value"));
                     teamID = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "AgentTeam_ID"), "(_.call result)"), "value"));
@@ -1130,13 +1130,13 @@ namespace TranslatedProgram
                 templateid = _.VAL(_.CALLm1v0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text"));
 
                 //Datenbankverbindung zu helpline_replication
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Inhalte von agent_templates in das Recordset einlesen
-                rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs = _.CREATEOBJECT("ADODB.Recordset");
                 rs = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select * from templater where template_id = ", templateid)));
 
                 _.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", "IncidentAttribute.RequestType", (Int16)0, (Int16)0, (Int16)0, _.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs, "rs"), "fields", "Requesttype"), "(_.call result)"), "value"));
@@ -1331,20 +1331,20 @@ namespace TranslatedProgram
                 templateid = _.VAL(_.CALLm1v0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text"));
 
                 //Datenbankverbindung zu helpline_replication
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 //DB Verbindung öffnen
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Recordset anlegen und templatenamen auslesen
-                rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs = _.CREATEOBJECT("ADODB.Recordset");
                 rs = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select templatename,editor from templater where template_id = ", _.CSTR(templateid))));
                 templatename = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs, "rs"), "fields", "templatename"), "(_.call result)"), "value"));
                 editor = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs, "rs"), "fields", "editor"), "(_.call result)"), "value"));
 
                 //Agent Name auslesen
-                rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_team = _.CREATEOBJECT("ADODB.Recordset");
                 rs_team = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
                 agent_displayname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "Agent_Displayname"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_team, "rs_team"), "close");
@@ -1418,13 +1418,13 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                 //Datenbankverbindung zu helpline_replication
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Teamname auslesen
-                rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_team = _.CREATEOBJECT("ADODB.Recordset");
                 rs_team = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
                 teamDisplayname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "AgentTeam_Displayname"), "(_.call result)"), "value"));
                 teamID = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "AgentTeam_ID"), "(_.call result)"), "value"));
@@ -1432,7 +1432,7 @@ namespace TranslatedProgram
 
                 //Für Agent Templates ID bestimmen und selektierten Wert in Label schreiben
                 anzahl_agent_templates = (Int16)0;
-                rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs = _.CREATEOBJECT("ADODB.Recordset");
                 rs = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent), " order by agentid, cast(Templatename as varchar(500))")));
                 _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn);
                 _.HANDLEERROR(errOn, () => {
@@ -1461,7 +1461,7 @@ namespace TranslatedProgram
                     anzahl_team_templates = (Int16)0;
                 });
                 _.HANDLEERROR(errOn, () => {
-                    rs2 = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs2 = _.CREATEOBJECT("ADODB.Recordset");
                 });
                 _.HANDLEERROR(errOn, () => {
                     rs2 = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(teamID), " order by agentid, cast(Templatename as varchar(500))")));
@@ -1532,19 +1532,19 @@ namespace TranslatedProgram
                 templateid = _.VAL(_.CALLm1v0(this, _.NnO(_env.l_templateID, "l_templateID"), "Text"));
 
                 //Datenbankverbindung zu helpline_replication
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Editor bestimmen
-                rs_editor = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_editor = _.CREATEOBJECT("ADODB.Recordset");
                 rs_editor = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select editor from templater where template_id = ", _.CSTR(templateid))));
                 editor = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_editor, "rs_editor"), "fields", "editor"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_editor, "rs_editor"), "close");
 
                 //Agent Name auslesen
-                rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_team = _.CREATEOBJECT("ADODB.Recordset");
                 rs_team = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select Agent_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(editor))));
                 agent_displayname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_team, "rs_team"), "fields", "Agent_Displayname"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_team, "rs_team"), "close");
@@ -1562,7 +1562,7 @@ namespace TranslatedProgram
                     {
 
                         //Zeile von agent_templates löschen
-                        rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                        rs = _.CREATEOBJECT("ADODB.Recordset");
                         rs = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Delete from templater where template_id = ", _.CSTR(templateid))));
 
                         //Auswahl der Checkbox zurücksetzen und ID auf Null
@@ -1612,13 +1612,13 @@ namespace TranslatedProgram
             position = _.ADD(_.CALLm1v0(this, _.NnO(_env.cb_template_load, "cb_template_load"), "GetCurSel"), (Int16)1);
 
             //Datenbankverbindung zu helpline_replication
-            cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+            cn = _.CREATEOBJECT("ADODB.Connection");
             _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
             _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
             _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
             //Teamname auslesen
-            rs_teamid = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+            rs_teamid = _.CREATEOBJECT("ADODB.Recordset");
             rs_teamid = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select AgentTeam_ID,AgentTeam_Displayname from IM_Agent_Supportteam where Agent_ID = ", _.CSTR(agent))));
             teamDisplayname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_teamid, "rs_teamid"), "fields", "AgentTeam_Displayname"), "(_.call result)"), "value"));
             teamID = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_teamid, "rs_teamid"), "fields", "AgentTeam_ID"), "(_.call result)"), "value"));
@@ -1626,7 +1626,7 @@ namespace TranslatedProgram
 
             //Anzahl der Agenten-Templates bestimmen
             anzahl_agent_templates = (Int16)0;
-            rs_anzahl = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+            rs_anzahl = _.CREATEOBJECT("ADODB.Recordset");
             rs_anzahl = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select template_id,templatename from templater where agentid = ", _.CSTR(agent))));
             _.STARTERRORTRAPPINGANDCLEARANYERROR(errOn2);
             _.HANDLEERROR(errOn2, () => {
@@ -1649,7 +1649,7 @@ namespace TranslatedProgram
             {
                 //Select für Agententemplate ausführen
                 _.HANDLEERROR(errOn2, () => {
-                    rs_agent = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_agent = _.CREATEOBJECT("ADODB.Recordset");
                 });
                 _.HANDLEERROR(errOn2, () => {
                     rs_agent = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select template_id from templater where agentid = '", _.CSTR(agent), "' order by agentid, cast(Templatename as varchar(500))")));
@@ -1716,7 +1716,7 @@ namespace TranslatedProgram
                         position = _.SUBT(_.SUBT(position, anzahl_agent_templates), (Int16)1);
                     });
                     _.HANDLEERROR(errOn2, () => {
-                        rs_team = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                        rs_team = _.CREATEOBJECT("ADODB.Recordset");
                     });
                     _.HANDLEERROR(errOn2, () => {
                         rs_team = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select template_id from templater where agentid = '", _.CSTR(teamID), "' order by agentid, cast(Templatename as varchar(500))")));
@@ -1785,7 +1785,7 @@ namespace TranslatedProgram
             object host = null; /* Undeclared in source */
             object Command1 = null; /* Undeclared in source */
             object RemoteTool = null; /* Undeclared in source */
-            wshshell = _.OBJ(_.CREATEOBJECT("Wscript.Shell"));
+            wshshell = _.CREATEOBJECT("Wscript.Shell");
 
             //Ermitteln der Locale ID für die Sprachauswahl
             //Selecting the Locale ID for the desired language
@@ -2104,7 +2104,7 @@ namespace TranslatedProgram
             {
                 //------------------------------------------------------------------------------------------------
                 //Ermitteln der Email-Adressen auf Bases des eingegebenen Namens
-                cn2 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn2 = _.CREATEOBJECT("ADODB.Connection");
 
                 //Verbindung öffnen
                 _.SETm1a0(this, _.NnO(cn2, "cn2"), "ConnectionString", _.VAL(ConString));
@@ -2112,7 +2112,7 @@ namespace TranslatedProgram
                 _.CALLm1v0(this, _.NnO(cn2, "cn2"), "Open");
 
                 //SELECT absetzen
-                rs2 = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs2 = _.CREATEOBJECT("ADODB.Recordset");
                 rs2 = _.OBJ(_.CALLm1v1(this, _.NnO(cn2, "cn2"), "Execute", _.CONCAT("select email from _EMails where email LIKE '%", name, "%' ORDER BY email")));
 
                 //Daten einlesen
@@ -2230,13 +2230,13 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                 //Datenbankverbindung zu helpline_data
-                cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
 
                 //Teamname auslesen
-                rs_kwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_kwo = _.CREATEOBJECT("ADODB.Recordset");
                 rs_kwo = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Select name,internalname from vw_agent_to_first_keywordorga where agentid = ", _.CSTR(agent))));
                 internalname = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_kwo, "rs_kwo"), "fields", "internalname"), "(_.call result)"), "value"));
 
@@ -2275,13 +2275,13 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                 //Datenbankverbindung zu helpline_replication
-                cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn1 = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn1, "cn1"), "Open");
 
                 //Teamname auslesen
-                rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_kw = _.CREATEOBJECT("ADODB.Recordset");
                 rs_kw = _.OBJ(_.CALLm1v1(this, _.NnO(cn1, "cn1"), "Execute", _.CONCAT("Select keywordid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
                 keywordid = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_kw, "rs_kw"), "fields", "keywordid"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_kw, "rs_kw"), "close");
@@ -2292,7 +2292,7 @@ namespace TranslatedProgram
                 _.CALLm1argp(this, _.NnO(_env.TreeKeyword, "TreeKeyword"), "ExpandTreeItem", _.ARGS.Ref(keywordid, v40 => { keywordid = v40; }));
 
                 //Responsibility - Ditzingen oder TG - einlesen
-                rs_resp = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                rs_resp = _.CREATEOBJECT("ADODB.Recordset");
                 rs_resp = _.OBJ(_.CALLm1v1(this, _.NnO(cn1, "cn1"), "Execute", _.CONCAT("Select responsibility from AgentID_responsibility where agentid = ", _.CSTR(agent))));
                 responsibility = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_resp, "rs_resp"), "fields", "responsibility"), "(_.call result)"), "value"));
                 _.CALLm1v0(this, _.NnO(rs_resp, "rs_resp"), "close");
@@ -2302,7 +2302,7 @@ namespace TranslatedProgram
                 if (_.IF(_.EQ(_.NullableNUM(responsibility), 112545)))
                 {
                     //KeywordOrga Wert aus Vergleichstabelle einlesen
-                    rs_kwkwo = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_kwkwo = _.CREATEOBJECT("ADODB.Recordset");
                     rs_kwkwo = _.OBJ(_.CALLm1v1(this, _.NnO(cn1, "cn1"), "Execute", _.CONCAT("Select keywordorga from kw_kwo_mapping where keywordid = ", _.CSTR(kw))));
                     while (_.IF(_.NOT(_.CALLm1v0(this, _.NnO(rs_kwkwo, "rs_kwkwo"), "EOF"))))
                     {
@@ -2538,7 +2538,7 @@ namespace TranslatedProgram
                 }
                 MailBody = _.REPLACE(MailBody, VBScriptConstants.vbCrLf, "<br>");
                 OriginDescr = _.REPLACE(OriginDescr, VBScriptConstants.vbCrLf, "<br>");
-                fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
+                fso = _.CREATEOBJECT("Scripting.FileSystemObject");
                 //Öffnet das File zum lesen
                 f = _.OBJ(_.CALLm1v2(this, _.NnO(fso, "fso"), "OpenTextFile", "C:\\TRUMPF\\helpline\\Emailtemplate.html", ForReading));
                 //Liest alle Daten in die Variable BodyText
@@ -2674,7 +2674,7 @@ namespace TranslatedProgram
                 }
 
                 //Const ForReading = 1, ForWriting = 2, ForAppending = 8
-                fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
+                fso = _.CREATEOBJECT("Scripting.FileSystemObject");
                 //Öffnet das File zum lesen
                 f = _.OBJ(_.CALLm1v2(this, _.NnO(fso, "fso"), "OpenTextFile", "C:\\TRUMPF\\helpLine\\IntermediateReply.html", ForReading));
                 //Liest alle Daten in die Variable BodyText
@@ -2736,7 +2736,7 @@ namespace TranslatedProgram
                 agent = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "CASEINFO.RESERVEDBY", (Int16)0, (Int16)0, (Int16)0, (Int16)1));
 
                 //Datenbankverbindung zu helpline_replication
-                cn1 = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                cn1 = _.CREATEOBJECT("ADODB.Connection");
                 _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinereplication;Persist Security Info=True;User ID=helplinereplication;Initial Catalog=helpline_replication;Data Source=srv01itsm2");
                 _.SETm1a0(this, _.NnO(cn1, "cn1"), "ConnectionTimeout", (Int16)10);
                 _.CALLm1v0(this, _.NnO(cn1, "cn1"), "Open");
@@ -2746,18 +2746,18 @@ namespace TranslatedProgram
                 if (_.IF(_.GT(_.NullableNUM(_.CDBL(keywordid)), (Int16)0)))
                 {
                     //Personid über AgentID ermitteln
-                    rs_person = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_person = _.CREATEOBJECT("ADODB.Recordset");
                     rs_person = _.OBJ(_.CALLm1v1(this, _.NnO(cn1, "cn1"), "Execute", _.CONCAT("Select personid from vw_Agent_Emplkeyword where agentid = ", _.CSTR(agent))));
                     personid = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(rs_person, "rs_person"), "fields", "personid"), "(_.call result)"), "value"));
                     _.CALLm1v0(this, _.NnO(rs_person, "rs_person"), "close");
 
                     //Datenbankverbindung zu helpline_data
-                    cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                    cn = _.CREATEOBJECT("ADODB.Connection");
                     _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionString", "Provider=SQLOLEDB.1;Password=helplinedata;Persist Security Info=True;User ID=helplinedata;Initial Catalog=helpline_data;Data Source=srv01itsm2");
                     _.SETm1a0(this, _.NnO(cn, "cn"), "ConnectionTimeout", (Int16)10);
                     _.CALLm1v0(this, _.NnO(cn, "cn"), "Open");
                     //Keyword schreiben
-                    rs_kw = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                    rs_kw = _.CREATEOBJECT("ADODB.Recordset");
                     rs_kw = _.OBJ(_.CALLm1v1(this, _.NnO(cn, "cn"), "Execute", _.CONCAT("Update dbo.emplkeywords set keyword = ", _.CDBL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "Keywords.Keyword", (Int16)0, (Int16)0, (Int16)0, (Int16)1)), " where personid = ", _.CSTR(personid))));
                     //Datenbank schließen
                     //rs_kw.close

@@ -35,7 +35,7 @@ namespace TranslatedProgram
             //VB-Dictionary anlegen.
             //Create VB-Dictionary.
             _outer.pCase = VBScriptConstants.Nothing;
-            _outer.pCase = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
+            _outer.pCase = _.CREATEOBJECT("Scripting.Dictionary");
             _.SETm1a0(this, _.NnO(_outer.pCase, "pCase"), "CompareMode", VBScriptConstants.vbTextCompare);
             _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "BillCase", false);
             _.SETm0a1(this, _.NnO(_outer.pCase, "pCase"), "attrOperation", "IncidentSUAttribute.IncidentOperation");
@@ -247,7 +247,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -257,7 +257,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT desktop FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -365,7 +365,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -375,7 +375,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT notebook FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -480,7 +480,7 @@ namespace TranslatedProgram
                         }
                         //------------------------------------------------------------------------------------------------
                         //Generiert eine neue CI-Nummer
-                        _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                        _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                         //Verbindung oeffnen
                         //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -490,7 +490,7 @@ namespace TranslatedProgram
                         _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                         //CI-Nummer auslesen
-                        _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                        _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                         _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT softwarelic FROM _cinumbers"));
                         //In Variable schreiben
                         _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -597,7 +597,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -607,7 +607,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT printer FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -715,7 +715,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -725,7 +725,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT copydevice FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -833,7 +833,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -843,7 +843,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT multifunctiondevice FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -951,7 +951,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -961,7 +961,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT scanner FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1069,7 +1069,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1079,7 +1079,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT handys FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1187,7 +1187,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1197,7 +1197,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT simcard FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1305,7 +1305,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1315,7 +1315,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT umtscard FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1423,7 +1423,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1433,7 +1433,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT pda FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1541,7 +1541,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1551,7 +1551,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT blackberry FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1658,7 +1658,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1668,7 +1668,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT monitor FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1776,7 +1776,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1786,7 +1786,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT beamer FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -1894,7 +1894,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -1904,7 +1904,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT videoconference FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2012,7 +2012,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2022,7 +2022,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT mediatechnic FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2130,7 +2130,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2140,7 +2140,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT diktiersystem FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2248,7 +2248,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2258,7 +2258,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT usv FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2366,7 +2366,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2376,7 +2376,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT controlcam FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2484,7 +2484,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2494,7 +2494,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT bde FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2602,7 +2602,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2612,7 +2612,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT spacemouse FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2720,7 +2720,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2730,7 +2730,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT networkcomponent FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2837,7 +2837,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2847,7 +2847,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT homeofficerouter FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -2955,7 +2955,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -2965,7 +2965,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT headset FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -3074,7 +3074,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -3084,7 +3084,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT conferencephone FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));
@@ -3192,7 +3192,7 @@ namespace TranslatedProgram
                                 }
                                 //------------------------------------------------------------------------------------------------
                                 //Generiert eine neue CI-Nummer
-                                _outer.cn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                                _outer.cn = _.CREATEOBJECT("ADODB.Connection");
 
                                 //Verbindung oeffnen
                                 //Hier muss Server- und Datenbankname fest eingetragen werden!
@@ -3202,7 +3202,7 @@ namespace TranslatedProgram
                                 _.CALLm1v0(this, _.NnO(_outer.cn, "cn"), "Open");
 
                                 //CI-Nummer auslesen
-                                _outer.rs = _.OBJ(_.CREATEOBJECT("ADODB.Recordset"));
+                                _outer.rs = _.CREATEOBJECT("ADODB.Recordset");
                                 _outer.rs = _.OBJ(_.CALLm1v1(this, _.NnO(_outer.cn, "cn"), "Execute", "SELECT server FROM _cinumbers"));
                                 //In Variable schreiben
                                 _outer.CINumber = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_outer.rs, "rs"), "fields", (Int16)0), "(_.call result)"), "value"));

@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.oShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
+            _outer.oShell = _.CREATEOBJECT("WScript.Shell");
             _.CALLm1v3(this, _.NnO(_outer.oShell, "oShell"), "Run", "test.txt", System.Reflection.Missing.Value, false);
         }
     }

@@ -1042,7 +1042,7 @@ namespace TranslatedProgram
 
             //XML-Objekt erstellen
             objXMLDoc = VBScriptConstants.Nothing;
-            objXMLDoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
+            objXMLDoc = _.CREATEOBJECT("Msxml2.DOMDocument");
 
             //XML-Processing Instruction hinzufügen
             xmlProInc = VBScriptConstants.Nothing;
@@ -1326,9 +1326,9 @@ namespace TranslatedProgram
             object MigCheckDatePeriod_retVal = null;
             MigCheckDatePeriod_retVal = false;
 
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(StartDate))), "0")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.DATEPART("d", _.CDATE(StartDate))), "0")))
             {
-                if (_.IF(_.LT(_.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "d", _.CDATE(EndDate)))))
+                if (_.IF(_.LT(_.DATEPART("d", _.CDATE(StartDate)), _.DATEPART("d", _.CDATE(EndDate)))))
                 {
                     MigCheckDatePeriod_retVal = false;
                 }
@@ -1337,15 +1337,15 @@ namespace TranslatedProgram
                     MigCheckDatePeriod_retVal = true;
                 }
 
-                if (_.IF(_.GT(_.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(EndDate)))))
+                if (_.IF(_.GT(_.DATEPART("yyyy", _.CDATE(StartDate)), _.DATEPART("yyyy", _.CDATE(EndDate)))))
                 {
                     MigCheckDatePeriod_retVal = false;
                 }
                 else
                 {
-                    if (_.IF(_.GT(_.CALLm1v2(this, _, "DATEPART", "y", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "y", _.CDATE(EndDate)))))
+                    if (_.IF(_.GT(_.DATEPART("y", _.CDATE(StartDate)), _.DATEPART("y", _.CDATE(EndDate)))))
                     {
-                        if (_.IF(_.LT(_.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(StartDate)), _.CALLm1v2(this, _, "DATEPART", "yyyy", _.CDATE(EndDate)))))
+                        if (_.IF(_.LT(_.DATEPART("yyyy", _.CDATE(StartDate)), _.DATEPART("yyyy", _.CDATE(EndDate)))))
                         {
                             MigCheckDatePeriod_retVal = true;
                         }

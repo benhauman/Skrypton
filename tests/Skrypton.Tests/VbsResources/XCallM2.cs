@@ -37,7 +37,7 @@ namespace TranslatedProgram
             object BodyText = null;
             object f = null;
 
-            fso = _.OBJ(_.CREATEOBJECT("Scripting.FileSystemObject"));
+            fso = _.CREATEOBJECT("Scripting.FileSystemObject");
             f = _.OBJ(_.CALLm1v2(this, _.NnO(fso, "fso"), "OpenTextFile", "C:\\TRUMPF\\helpLine\\IntermediateReply.html", ForReading));
             BodyText = _.VAL(_.CALLm1v0(this, _.NnO(f, "f"), "ReadAll"));
         }

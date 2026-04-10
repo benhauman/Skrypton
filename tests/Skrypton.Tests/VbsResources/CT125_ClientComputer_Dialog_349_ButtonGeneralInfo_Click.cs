@@ -387,7 +387,7 @@ namespace TranslatedProgram
             });
 
             _.HANDLEERROR(errOn, () => {
-                xmlhttp = _.OBJ(_.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0"));
+                xmlhttp = _.CREATEOBJECT("Msxml2.ServerXMLHTTP.6.0");
             });
             _.HANDLEERROR(errOn, () => {
                 _.CALLm1v2(this, _.NnO(xmlhttp, "xmlhttp"), "setOption", (Int16)2, (Int16)13056);
@@ -418,7 +418,7 @@ namespace TranslatedProgram
             });
 
             _.HANDLEERROR(errOn, () => {
-                xmlDoc = _.OBJ(_.CREATEOBJECT("Msxml2.DOMDocument"));
+                xmlDoc = _.CREATEOBJECT("Msxml2.DOMDocument");
             });
             _.HANDLEERROR(errOn, () => {
                 _.SETm1a0(this, _.NnO(xmlDoc, "xmlDoc"), "async", "false");
@@ -441,7 +441,7 @@ namespace TranslatedProgram
             }
 
             _.HANDLEERROR(errOn, () => {
-                dict = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
+                dict = _.CREATEOBJECT("Scripting.Dictionary");
             });
 
             //iterate all nodes and write into dictionary

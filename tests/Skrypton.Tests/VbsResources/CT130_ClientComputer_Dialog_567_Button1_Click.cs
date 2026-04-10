@@ -39,7 +39,7 @@ namespace TranslatedProgram
 
             URL = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
-            wshShell = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
+            wshShell = _.CREATEOBJECT("WScript.Shell");
             _.CALLm1argp(this, _.NnO(wshShell, "wshShell"), "run", _.ARGS.Ref(URL, v => { URL = v; }));
 
             Processes = _.OBJ(_.CALLm1v1(this, _.NnO(_.GETOBJECT("winmgmts:"), "(GetObject result)"), "InstancesOf", "Win32_Process"));
@@ -60,7 +60,7 @@ namespace TranslatedProgram
 
             if (_.IF(_.GT(_.NullableNUM(_.LEN(intProcessId)), (Int16)0)))
             {
-                var with = _.OBJ(_.CREATEOBJECT("WScript.Shell"));
+                var with = _.CREATEOBJECT("WScript.Shell");
                 _.CALLm1argp(this, _.NnO(with, "with"), "AppActivate", _.ARGS.Ref(intProcessId, v2 => { intProcessId = v2; }));
 
             }

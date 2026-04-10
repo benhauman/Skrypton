@@ -484,7 +484,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionISARRAY, "ISARRAY")
         .AddS(BuiltInFunctionId.BuiltInFunctionVARTYPE, "VARTYPE")
         .AddS(BuiltInFunctionId.BuiltInFunctionTYPENAME, "TYPENAME")
-        .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, "CREATEOBJECT")
+        .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CREATEOBJECT), alwaysReturnsNumeric: false, returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Reference) // "CREATEOBJECT")
         .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT), alwaysReturnsNumeric: false, returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Reference) // "GETOBJECT"
         .AddS(BuiltInFunctionId.BuiltInFunctionCBOOL, "CBOOL")
         .AddS(BuiltInFunctionId.BuiltInFunctionCSTR, "CSTR")
@@ -500,7 +500,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionMINUTE, "MINUTE")
         .AddS(BuiltInFunctionId.BuiltInFunctionSECOND, "SECOND")
         .AddS(BuiltInFunctionId.BuiltInFunctionDATEDIFF, "DATEDIFF")
-        .AddS(BuiltInFunctionId.BuiltInFunctionDATEPART, "DATEPART")
+        .AddS(BuiltInFunctionId.BuiltInFunctionDATEPART, "DATEPART", returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Value)
         .AddS(BuiltInFunctionId.BuiltInFunctionABS, "ABS")
         //.AddS(BuiltInFunctionId.BuiltInFunctionHEX, "HEX") numeric
         //.AddS(BuiltInFunctionId.BuiltInFunctionOCT, "OCT") numeric

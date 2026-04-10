@@ -1953,7 +1953,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return (int)(d2 - d1).TotalSeconds;
             }
         }
-        public object DATEPART(object value) { throw new NotImplementedException(); }
+        public object DATEPART(object interval, object valueDate) { throw new NotImplementedException(); }
+        public object DATEPART(object interval, object valueDate, object firstDayOfWeek) { throw new NotImplementedException(); } // , object firstweekofyear
         public object DATESERIAL(object year, object month, object day)
         {
             // TODO: This is not a complete implementation, it's just enough to get moving

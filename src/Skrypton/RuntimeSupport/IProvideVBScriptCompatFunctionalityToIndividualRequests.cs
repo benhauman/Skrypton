@@ -215,7 +215,8 @@ namespace Skrypton.RuntimeSupport
         DateTime TIME();
         object DATEADD(object interval, object number, object value);
         object DATEDIFF(object interval, object date1, object date2);
-        object DATEPART(object value);
+        object DATEPART(object interval, object valueDate);
+        object DATEPART(object interval, object valueDate, object firstDayOfWeek);
         object DATESERIAL(object year, object month, object day);
         DateTime DATEVALUE(object value);
         object DAY(object value);

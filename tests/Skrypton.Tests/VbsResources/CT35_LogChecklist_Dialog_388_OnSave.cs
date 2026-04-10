@@ -16,8 +16,8 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             //Check if invalid characters are in any of the url textboxes
-            _env.dict = _.OBJ(_.CREATEOBJECT("Scripting.Dictionary"));
-            _env.objRegEx = _.OBJ(_.CREATEOBJECT("VBScript.RegExp"));
+            _env.dict = _.CREATEOBJECT("Scripting.Dictionary");
+            _env.objRegEx = _.CREATEOBJECT("VBScript.RegExp");
             _.SETm1a0(this, _.NnO(_env.objRegEx, "objRegEx"), "Global", true);
             _.SETm1a0(this, _.NnO(_env.objRegEx, "objRegEx"), "Pattern", "[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]");
 

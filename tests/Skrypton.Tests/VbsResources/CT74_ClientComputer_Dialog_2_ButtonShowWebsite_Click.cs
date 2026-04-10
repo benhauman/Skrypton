@@ -63,14 +63,14 @@ namespace TranslatedProgram
                 sUser = "helplinedata";
                 sPassword = "helplinedata";
                 sConn = _.CONCAT("provider=sqloledb;data source=", sServer, ";initial catalog=", sDatabaseName);
-                oConn = _.OBJ(_.CREATEOBJECT("ADODB.Connection"));
+                oConn = _.CREATEOBJECT("ADODB.Connection");
                 _.CALLm1argp(this, _.NnO(oConn, "oConn"), "Open", _.ARGS.Ref(sConn, v => { sConn = v; }).Ref(sUser, v2 => { sUser = v2; }).Ref(sPassword, v3 => { sPassword = v3; }));
 
                 FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
 
                 //SB Code ermitteln
                 parmname = "runScript";
-                adoSQLCmdParam = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
+                adoSQLCmdParam = _.CREATEOBJECT("ADODB.Command");
                 var with = _.OBJ(adoSQLCmdParam);
                 _.SETm1a0(this, _.NnO(with, "with"), "ActiveConnection", _.OBJ(oConn));
                 _.SETm1a0(this, _.NnO(with, "with"), "CommandText", "CreateNewSBCode");
@@ -95,7 +95,7 @@ namespace TranslatedProgram
                 }
 
                 //X/V Personalnummer ermitteln
-                adoSQLCmdParam2 = _.OBJ(_.CREATEOBJECT("ADODB.Command"));
+                adoSQLCmdParam2 = _.CREATEOBJECT("ADODB.Command");
                 var with2 = _.OBJ(adoSQLCmdParam2);
                 _.SETm1a0(this, _.NnO(with2, "with2"), "ActiveConnection", _.OBJ(oConn));
                 _.SETm1a0(this, _.NnO(with2, "with2"), "CommandText", "CreateNewPersonalID");
