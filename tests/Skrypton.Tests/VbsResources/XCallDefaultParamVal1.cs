@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.Outlook = _.OBJ(_.CALLm1v2(this, _, "GETOBJECT", System.Reflection.Missing.Value, "Outlook.Application"));
+            _outer.Outlook = _.GETOBJECT(System.Reflection.Missing.Value, "Outlook.Application");
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

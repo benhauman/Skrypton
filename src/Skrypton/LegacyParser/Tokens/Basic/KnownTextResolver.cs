@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
+using Skrypton.CSharpWriter.CodeTranslation;
 using Skrypton.RuntimeSupport;
 
 namespace Skrypton.LegacyParser.Tokens.Basic;
@@ -484,7 +485,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionVARTYPE, "VARTYPE")
         .AddS(BuiltInFunctionId.BuiltInFunctionTYPENAME, "TYPENAME")
         .AddS(BuiltInFunctionId.BuiltInFunctionCREATEOBJECT, "CREATEOBJECT")
-        .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT))
+        .AddS(BuiltInFunctionId.BuiltInFunctionGETOBJECT, nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT), alwaysReturnsNumeric: false, returnExpressionReturnTypeOptionsIfKnown: ExpressionReturnTypeOptions.Reference) // "GETOBJECT"
         .AddS(BuiltInFunctionId.BuiltInFunctionCBOOL, "CBOOL")
         .AddS(BuiltInFunctionId.BuiltInFunctionCSTR, "CSTR")
         .AddS(BuiltInFunctionId.BuiltInFunctionDATEVALUE, "DATEVALUE")
@@ -605,13 +606,13 @@ internal static class KnownTextResolver
         internal KnownTextContent[] FunctionContents { get; private set; } = [];
 
         public BuiltInFunctionRegistration AddN(BuiltInFunctionId functionId, string name) => AddS(functionId, name, alwaysReturnsNumeric: true);
-        public BuiltInFunctionRegistration AddS(BuiltInFunctionId functionId, string name, bool alwaysReturnsNumeric = false)
+        public BuiltInFunctionRegistration AddS(BuiltInFunctionId functionId, string name, bool alwaysReturnsNumeric = false, ExpressionReturnTypeOptions? returnExpressionReturnTypeOptionsIfKnown = null)
         {
             if ((!Enum.TryParse<BuiltInFunctionId>("BuiltInFunction" + name, out BuiltInFunctionId enumItem) || (enumItem != functionId)))
             {
                 throw new InvalidOperationException($"The functionId {functionId} does not match the expected enum item name of BuiltInFunction{name}");
             }
-            _registry.Add(name, new BuiltInFunctionInfo(functionId, alwaysReturnsNumeric, new KnownTextContent(name, false, false, null)));
+            _registry.Add(name, new BuiltInFunctionInfo(functionId, alwaysReturnsNumeric, new KnownTextContent(name, false, false, null), returnExpressionReturnTypeOptionsIfKnown));
             return this;
         }
 
@@ -983,11 +984,13 @@ internal sealed class BuiltInFunctionInfo
     /// be raised for null, blank or whitespace-containing input.
     public bool AlwaysReturnsNumeric { get; } // These must ONLY include those that will never return null
     public KnownTextContent Content { get; }
+    public ExpressionReturnTypeOptions? ReturnExpressionReturnTypeOptionsIfKnown { get; }
 
-    public BuiltInFunctionInfo(BuiltInFunctionId functionId, bool alwaysReturnsNumeric, KnownTextContent content)
+    public BuiltInFunctionInfo(BuiltInFunctionId functionId, bool alwaysReturnsNumeric, KnownTextContent content, ExpressionReturnTypeOptions? returnExpressionReturnTypeOptionsIfKnown)
     {
         FunctionId = functionId;
         AlwaysReturnsNumeric = alwaysReturnsNumeric;
         Content = content;
+        ReturnExpressionReturnTypeOptionsIfKnown = returnExpressionReturnTypeOptionsIfKnown;
     }
 }

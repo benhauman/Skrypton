@@ -9,6 +9,7 @@ using Skrypton.RuntimeSupport.Exceptions;
 using Skrypton.StageTwoParser.ExpressionParsing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -700,7 +701,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 if (targetBuiltInFunction != null && !builtInFunctionIsOverwrittenAsVariable)
                 {
-                    BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, callExpressionSegment.Arguments.Count);
+                    if (!KnownTextResolver.isVBScriptFunctionUpper(aTkn.ContentUpperX(), out BuiltInFunctionInfo? binFun) || binFun == null)
+                    {
+                        throw new NotImplementedException(aTkn.ContentUpperX().UpperText);
+                    }
+
+                    BuiltInFunctionDetails supportFunctionDetails = GetDetailsOfBuiltInFunction(targetBuiltInFunction, binFun, callExpressionSegment.Arguments.Count);
                     IEnumerable<IToken> rewrittenMemberAccessTokens = new[] { new DoNotRenameNameToken(supportFunctionDetails.SupportFunctionName.ToUpperX(), targetBuiltInFunction.LineIndex) }
                         .Concat(callExpressionSegment.MemberAccessTokens.Skip(1));
 
@@ -784,7 +790,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 if (specialErrorHandlingFunctionNameIfApplicable != null)
                 {
                     NameToken specialErrorHandlingFunctionToken = new NameToken(false, specialErrorHandlingFunctionNameIfApplicable.ToUpperX(), memberAccessors.Single().LineIndex);
-                    BuiltInFunctionDetails errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, callExpressionSegment.Arguments.Count);
+                    if (!KnownTextResolver.isVBScriptFunctionUpper(specialErrorHandlingFunctionToken.ContentUpperX(), out BuiltInFunctionInfo? binFun) || binFun == null)
+                    {
+                        // can be null 'CLEARANYERROR' just a support function
+                    }
+
+                    BuiltInFunctionDetails errorSupportFunction = GetDetailsOfBuiltInFunction(specialErrorHandlingFunctionToken, binFun, callExpressionSegment.Arguments.Count);
                     if (errorSupportFunction.DesiredNumberOfArgumentsMatchedAgainst != null)
                     {
                         specialErrorHandlingFunctionStatementIfApplicable = TranslateAsDirectSupportFunctionCall(errorSupportFunction, callExpressionSegment.Arguments, scopeAccessInformation);
@@ -894,7 +905,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         /// of these paramaters matches the specified desiredNumberOfArguments, then the return value will have a DesiredNumberOfArgumentsMatchedAgainst value
         /// that is consistent with desiredNumberOfArguments, otherwise it will be null. This information affects how the support function may be called.
         /// </summary>
-        private static BuiltInFunctionDetails GetDetailsOfBuiltInFunction(IToken builtInFunctionToken, int desiredNumberOfArguments)
+        private static BuiltInFunctionDetails GetDetailsOfBuiltInFunction(IToken builtInFunctionToken, BuiltInFunctionInfo? binFun, int desiredNumberOfArguments)
         {
             if (builtInFunctionToken == null)
             {
@@ -922,13 +933,40 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 // If located a support function with the desired number of arguments (in the correct format; "in only" and type "object") then return a
                 // BuiltInFunctionDetails with the name from that match (just in case the case of the function name varies - the match above is case insensitive)
-                return new BuiltInFunctionDetails(builtInFunctionToken, idealMatch.Name, desiredNumberOfArguments, idealMatch.ReturnType);
+                return new BuiltInFunctionDetails(builtInFunctionToken, idealMatch.Name, desiredNumberOfArguments, idealMatch.ReturnType, returnExpressionReturnTypeOptionsIfKnown: binFun?.ReturnExpressionReturnTypeOptionsIfKnown); // idealmatch
             }
+
+            // lubo: check for: (params object[] values) ARRAY(...)
+            foreach (var m in supportFunctionMatches.Where(m => m.GetParameters().All(p => !p.IsOut && !p.ParameterType.IsByRef && p.ParameterType == typeof(object[]))))
+            {
+                var prms = m.GetParameters();
+                int pc = 0;
+                foreach (ParameterInfo p in prms)
+                {
+                    if (IsParams(p))
+                    {
+                        if (pc >= desiredNumberOfArguments)
+                        {
+                            idealMatch = m;
+                            // If located a support function with the desired number of arguments (in the correct format; "in only" and type "object") then return a
+                            // BuiltInFunctionDetails with the name from that match (just in case the case of the function name varies - the match above is case insensitive)
+                            return new BuiltInFunctionDetails(builtInFunctionToken, idealMatch.Name, desiredNumberOfArguments, idealMatch.ReturnType, returnExpressionReturnTypeOptionsIfKnown: binFun?.ReturnExpressionReturnTypeOptionsIfKnown); // params
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        pc++;
+                    }
+                }
+            }
+
             // If a match was found for the name but not the desired number of arguments then return a result with null "desiredNumberOfArgumentsMatchedAgainst"
             // and "returnTypeIfKnown" values (it doesn't matter which of the names we select - for cases where they vary by case, which is not expected but not
             // impossible - so just return the first matched support function name)
-            return new BuiltInFunctionDetails(builtInFunctionToken, supportFunctionMatches.First().Name, null, null);
+            return new BuiltInFunctionDetails(builtInFunctionToken, supportFunctionMatches.First().Name, null, null, returnExpressionReturnTypeOptionsIfKnown: null); // no match
         }
+        private static bool IsParams(ParameterInfo p) => p.GetCustomAttribute<ParamArrayAttribute>() != null;
 
         private TranslatedStatementContentDetailsWithContentType TranslateCallExpressionSegment(
             AtomToken target,
@@ -1262,23 +1300,28 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             string targetAccessorName = $"{nameOfTargetContainer}{targetName}";
 
             StringBuilder callExpressionContent = new StringBuilder();
+            ExpressionReturnTypeOptions resultExpressionType = ExpressionReturnTypeOptions.NotSpecified; // This could be anything so we have to report NotSpecified as the return type
 
             string? knownFn = null;
             if (targetAccessorName == _supportRefName.Name && targetIsKnownToBeBuiltInFunction)
             {
                 if (targetMemberAccessTokensArray.Length > 0)
                 {
-                    string builtInFnName = targetMemberAccessTokensArray[0].ContentUpperX().UpperText switch
+                    (string builtInFnName, ExpressionReturnTypeOptions? exprType) = targetMemberAccessTokensArray[0].ContentUpperX().UpperText switch
                     {
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR),
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART),
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY) => nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY),
-                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT) => "",//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT),
-                        _ => ""//throw new NotImplementedException(targetMemberAccessTokensArray[0].ContentUpperX().UpperText)
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR) => ("", null),//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART) => ("", null),//nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.DATEPART),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ARRAY), null),
+                        nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT) => (nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.GETOBJECT), ExpressionReturnTypeOptions.Reference),
+                        _ => FnInfo("", null)
                     };
                     if (builtInFnName.Length > 0)
                     {
                         knownFn = builtInFnName;
+                        if (exprType != null)
+                        {
+                            resultExpressionType = exprType.Value;
+                        }
                         callExpressionContent.Append($@"{_supportRefName.Name}.{builtInFnName}(");
                     }
                     else
@@ -1399,10 +1442,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
             return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                 callExpressionContent.ToString(),
-                ExpressionReturnTypeOptions.NotSpecified, // This could be anything so we have to report NotSpecified as the return type
+                resultExpressionType,
                 callExpressionVariablesAccessed
             );
         }
+
+        private static (string builtInFnName, ExpressionReturnTypeOptions? exprType) FnInfo(string fnName, ExpressionReturnTypeOptions? exprType) => (fnName, exprType);
 
         /// <summary>
         /// This generates the content that initialises a new IProvideCallArguments instance, based upon the specified argument values. This will throw
@@ -1511,29 +1556,36 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             supportFunctionCallContent.Append(')');
             ExpressionReturnTypeOptions supportFunctionReturnType;
-            if (function.ReturnTypeIfKnown == null)
+            if (function.ReturnExpressionReturnTypeOptionsIfKnown != null)
             {
-                supportFunctionReturnType = ExpressionReturnTypeOptions.NotSpecified;
-            }
-            else if (function.ReturnTypeIfKnown == typeof(void))
-            {
-                supportFunctionReturnType = ExpressionReturnTypeOptions.None;
-            }
-            else if ((function.ReturnTypeIfKnown.IsValueType) || (function.ReturnTypeIfKnown == typeof(string)) || function.ReturnTypeIfKnown.IsArray)
-            {
-                supportFunctionReturnType = ExpressionReturnTypeOptions.Value;
-            }
-            else if (function.ReturnTypeIfKnown == typeof(object))
-            {
-                // If it's got "object" return type then it might be because it needs to be a string OR DBNull.Value, or it might genuinely be because
-                // it needs to return a Reference type object. There's no way to know so we have to resort to NotSpecified.
-                supportFunctionReturnType = ExpressionReturnTypeOptions.NotSpecified;
+                supportFunctionReturnType = function.ReturnExpressionReturnTypeOptionsIfKnown.Value;
             }
             else
             {
-                // If it's a non-object return type (that which is too vague to reason about) and it isn't a type that we know is Value type, then it
-                // must be a Reference type.
-                supportFunctionReturnType = ExpressionReturnTypeOptions.Reference;
+                if (function.ReturnTypeIfKnown == null)
+                {
+                    supportFunctionReturnType = ExpressionReturnTypeOptions.NotSpecified;
+                }
+                else if (function.ReturnTypeIfKnown == typeof(void))
+                {
+                    supportFunctionReturnType = ExpressionReturnTypeOptions.None;
+                }
+                else if ((function.ReturnTypeIfKnown.IsValueType) || (function.ReturnTypeIfKnown == typeof(string)) || function.ReturnTypeIfKnown.IsArray)
+                {
+                    supportFunctionReturnType = ExpressionReturnTypeOptions.Value;
+                }
+                else if (function.ReturnTypeIfKnown == typeof(object))
+                {
+                    // If it's got "object" return type then it might be because it needs to be a string OR DBNull.Value, or it might genuinely be because
+                    // it needs to return a Reference type object. There's no way to know so we have to resort to NotSpecified.
+                    supportFunctionReturnType = ExpressionReturnTypeOptions.NotSpecified;
+                }
+                else
+                {
+                    // If it's a non-object return type (that which is too vague to reason about) and it isn't a type that we know is Value type, then it
+                    // must be a Reference type.
+                    supportFunctionReturnType = ExpressionReturnTypeOptions.Reference;
+                }
             }
             return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.CallText,
                 supportFunctionCallContent.ToString(),
@@ -2315,9 +2367,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             public ExpressionReturnTypeOptions ContentType { get; private set; }
         }
 
+        [DebuggerDisplay("SupportFunctionName")]
         private sealed class BuiltInFunctionDetails
         {
-            public BuiltInFunctionDetails(IToken token, string supportFunctionName, int? desiredNumberOfArgumentsMatchedAgainst, Type? returnTypeIfKnown)
+            public BuiltInFunctionDetails(IToken token, string supportFunctionName, int? desiredNumberOfArgumentsMatchedAgainst, Type? returnTypeIfKnown, ExpressionReturnTypeOptions? returnExpressionReturnTypeOptionsIfKnown)
             {
                 if (string.IsNullOrWhiteSpace(supportFunctionName))
                 {
@@ -2334,6 +2387,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 SupportFunctionName = supportFunctionName;
                 DesiredNumberOfArgumentsMatchedAgainst = desiredNumberOfArgumentsMatchedAgainst;
                 ReturnTypeIfKnown = returnTypeIfKnown;
+                ReturnExpressionReturnTypeOptionsIfKnown = returnExpressionReturnTypeOptionsIfKnown;
             }
 
             /// <summary>
@@ -2358,7 +2412,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             /// This will be null if DesiredNumberOfArgumentsMatchedAgainst is null and non-null if not since it relies upon the same criteria when trying
             /// to identify a target support function.
             /// </summary>
-            public Type? ReturnTypeIfKnown { get; set; }
+            public Type? ReturnTypeIfKnown { get; }
+
+            public ExpressionReturnTypeOptions? ReturnExpressionReturnTypeOptionsIfKnown { get; }
         }
     }
 }

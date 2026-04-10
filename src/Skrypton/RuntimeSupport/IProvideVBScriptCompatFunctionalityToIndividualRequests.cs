@@ -235,6 +235,7 @@ namespace Skrypton.RuntimeSupport
         // - Object creation
         object CREATEOBJECT(object value);
         object GETOBJECT(object value);
+        object GETOBJECT(object path, object value); // for 'DesiredNumberOfArgumentsMatchedAgainst'
         object EVAL(object value);
         object EXECUTE(object value);
         object EXECUTEGLOBAL(object value);
