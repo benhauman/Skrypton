@@ -771,11 +771,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     if (memberAccessors.Single().Content.Equals("RAISE", StringComparison.OrdinalIgnoreCase))
                     {
-                        specialErrorHandlingFunctionNameIfApplicable = "RAISEERROR";
+                        specialErrorHandlingFunctionNameIfApplicable = nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.RAISEERROR);
                     }
                     else if (memberAccessors.Single().Content.Equals("CLEAR", StringComparison.OrdinalIgnoreCase))
                     {
-                        specialErrorHandlingFunctionNameIfApplicable = "CLEARANYERROR";
+                        specialErrorHandlingFunctionNameIfApplicable = nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CLEARANYERROR);
                     }
                     else
                     {
