@@ -21,7 +21,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             _outerRefName = outerRefName ?? throw new ArgumentNullException(nameof(outerRefName));
         }
 
-        protected string BuildTargetNotNullCheckCodeFragment(string targetAccessorName)
+        protected string BuildTargetNotNullCheckCodeFragment(string targetAccessorName, string? targetNameForException = null)
         {
             if (targetAccessorName == _envRefName.Name) // _env.
             {
@@ -35,8 +35,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 return string.Empty;
             }
-            string targetNameForException = GetTargetNameForException(targetAccessorName);
-            string targetNotNullCheckCs = $@" ?? throw new InvalidOperationException(""Reference not set:{targetNameForException}"")";
+            string targetNameForExceptionSafe = targetNameForException ?? GetTargetNameForException(targetAccessorName);
+            string targetNotNullCheckCs = $@" ?? throw new InvalidOperationException(""Reference not set:{targetNameForExceptionSafe}"")";
             return targetNotNullCheckCs;
         }
 

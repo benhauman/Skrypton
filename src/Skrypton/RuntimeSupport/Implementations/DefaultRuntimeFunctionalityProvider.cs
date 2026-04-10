@@ -2929,6 +2929,23 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// must be associatedw ith the new year (this is consistent with how the VBScript interpreter would re-process the script each time).
         /// </summary>
         public DateParser DateLiteralParser { get; private set; }
+
+        public T NnT<T>(T? targetInstance, string targetName) where T : class
+        {
+            if (targetInstance == null)
+            {
+                throw new InvalidOperationException($"Reference not set:({targetName})");
+            }
+            return targetInstance;
+        }
+        public object NnO(object? targetInstance, string targetName)
+        {
+            if (targetInstance == null)
+            {
+                throw new InvalidOperationException($"Reference not set:({targetName})");
+            }
+            return targetInstance;
+        }
     }
 
     public interface IMyMoniker

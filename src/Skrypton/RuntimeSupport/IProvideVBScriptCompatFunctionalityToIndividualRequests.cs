@@ -329,5 +329,8 @@ namespace Skrypton.RuntimeSupport
         /// must be associated with the new year (this is consistent with how the VBScript interpreter would re-process the script each time).
         /// </summary>
         DateParser DateLiteralParser { get; }
+
+        T NnT<T>(T? targetInstance, string targetName) where T : class;
+        object NnO(object? targetInstance, string targetName);
     }
 }

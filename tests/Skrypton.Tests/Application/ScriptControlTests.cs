@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
+using Skrypton.Tests.RuntimeSupport.Implementations;
 
 namespace Skrypton.Tests.Application
 {
@@ -86,11 +87,11 @@ namespace Skrypton.Tests.Application
             DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
         }
         [TestMethod]
-        [Ignore]
         public void XSetM1opt0opt0()
         {
-            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>());
-            DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
+            object doc = new MyDocument1();
+            TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>() { { "doc", new ScriptExternalReferenceInfo(doc, []) } });
+            DoScriptControlTest<object>(null, new Dictionary<string, object>() { { "doc", doc } }, [], [], services => { }, (x) => { });
 
             /* next tests:
 'XSetM2opt0opt0'
@@ -103,6 +104,23 @@ namespace Skrypton.Tests.Application
                doc.Bookmarks("Firma", "Division").Range("High", "Low").Text(88) = 404
              */
         }
+        private sealed class MyDocument1 : IReflectOnClrType
+        {
+            public MyBookmarks Bookmarks(object prm)
+            {
+                return new MyBookmarks();
+            }
+            public sealed class MyBookmarks
+            {
+                public MyRange Range => new MyRange();
+            }
+
+            public sealed class MyRange
+            {
+                public object Text { get; set; }
+            }
+        }
+
         [TestMethod]
         public void XSetm1a1()
         {

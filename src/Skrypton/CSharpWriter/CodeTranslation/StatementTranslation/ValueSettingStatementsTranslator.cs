@@ -622,14 +622,37 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     // test:XSetM1opt0opt0
                     // TODO CALL(CALL(CALL())) =
-                    List<string> txt = new List<string>();
-                    for (int ix = 0; ix < optionalMemberAccessor.Length; ix++)
+                    //List<string> txt = new List<string>();
+                    string memberAccessorExprTextLast = "";
+                    int ix = 0;
+                    //for (int ix = 0; ix < optionalMemberAccessor.Length; ix++)
                     {
                         string memberAccessorText = optionalMemberAccessor[ix].ToLiteral();
-
-                        //string memberAccessorExprText = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})";
+                        if (argumentsInitialization.Length == 0)
+                        {
+                            string callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
+                            memberAccessorExprTextLast = $@"{_supportRefName.Name}.{callName}(this, _.NnO({targetAccessorName}, ""(call result)""), {memberAccessorText})";
+                            //memberAccessorExprTextLast = $"{targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText})"; // Pass "this" as the "context" argument
+                            //memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
+                        }
+                        else
+                        {
+                            memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {targetAccessorName}{BuildTargetNotNullCheckCodeFragment(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
+                        }
                     }
-                    throw new NotImplementedException();
+
+                    ix = 1; // use loop if needed
+                    {
+                        string callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
+                        string memberAccessorText = optionalMemberAccessor[ix].ToLiteral();
+                        memberAccessorExprTextLast = $@"{_supportRefName.Name}.{callName}(this, _.NnO({memberAccessorExprTextLast}, ""(call result)""), {memberAccessorText})";
+                    }
+
+                    if (optionalMemberAccessor.Length > 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    return new ValueSettingStatementAssignmentFormatDetails(() => memberAccessorExprTextLast, variablesAccessed);
                 }
                 else
                 {
