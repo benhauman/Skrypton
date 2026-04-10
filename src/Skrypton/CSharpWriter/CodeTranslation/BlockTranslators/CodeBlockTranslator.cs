@@ -1216,7 +1216,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             else if (!variableDeclaration.ConstantDimensionsIfAny.Any())
             {
                 string xleft0 = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "";
-                return $"{xleft0}{rewrittenName} = (object[])null;{inlineCommentText}";
+                return $"{xleft0}{rewrittenName} = Array.Empty<object>();{inlineCommentText}";
             }
 
             string left0 = (scopeLocation == ScopeLocationOptions.WithinFunctionOrPropertyOrWith) ? "object " : "";
