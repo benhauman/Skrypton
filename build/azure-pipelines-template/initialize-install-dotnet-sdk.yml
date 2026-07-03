@@ -1,5 +1,6 @@
-﻿steps:
+steps:
 - task: UseDotNet@2
-  displayName: 🧰 Ensure .NET SDK
+  displayName: Install .NET 10 SDK
   inputs:
-    useGlobalJson: true
+    version: 10.0.x
+    packageType: sdk
