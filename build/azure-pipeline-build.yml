@@ -1,37 +1,3 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
-trigger:
-- main
-
-parameters:
-- name: publishNuGetPackages
-  displayName: Publish NuGet packages
-  type: boolean
-  default: false
-- name: createGitHubRelease
-  displayName: Create GitHub release
-  type: boolean
-  default: false
-
-pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  codeCoverageEngine: Cobertura     # Compile-time
-
-  
-stages:
-- stage: Initialize
-  displayName: "Stage 'Initialize'"
-  jobs:
-  - job: JobInit1
-    displayName: "Job Init (1) this"
     steps:
 
     # FIX for Nerdbank.GitVersioning: disable shallow clone
@@ -51,22 +17,41 @@ stages:
 
     - task: NuGetToolInstaller@1
 
-    - task: NuGetCommand@2
-      displayName: 'Nuget : restore solution'
+    - task: UseDotNet@2
+      displayName: "🔰 Ensure .NET 10 SDK"
       inputs:
-        restoreSolution: '$(solution)'
+        packageType: 'sdk'
+        version: '10.0.301'
+        includePreview: false
 
-    - task: VSBuild@1
+    - task: CmdLine@2
+      displayName: 'Verify dotnet/sdk'
       inputs:
-        solution: '$(solution)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
+        script: |
+          dotnet --version
+          dotnet --list-sdks
+          dotnet --info
 
-    - task: VSTest@2
+    # Use dotnet CLI for restore/build/test so the installed SDK is used
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: restore solution'
       inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        resultsFolder: '$(System.DefaultWorkingDirectory)/TestResults'
+        command: 'restore'
+        projects: '$(solution)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: build solution'
+      inputs:
+        command: 'build'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: test'
+      inputs:
+        command: 'test'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration) --no-build --verbosity normal'
 
     - task: PublishTestResults@2
       displayName: 📗 Publish test results
@@ -124,21 +109,3 @@ stages:
     - task: GitHubRelease@1
       displayName: ?? Create GitHub release
       inputs:
-        gitHubConnection: 'benhauman'
-        repositoryName: $(Build.Repository.Name)
-        #target: $(resources.pipeline.CI.sourceCommit)
-        target: $(Build.SourceVersion)
-        tagSource: userSpecifiedTag
-        #tag: v$(resources.pipeline.CI.runName)
-        tag: 'v$(Build.BuildNumber)'
-        #title: v$(resources.pipeline.CI.runName)
-        title: 'v$(Build.BuildNumber)'
-        #isPreRelease: $(IsPreRelease)
-        #isDraft: $(IsPreview)
-        assets: |
-          $(Pipeline.Workspace)/CI/NuGet packages/*.nupkg
-          $(Pipeline.Workspace)/CI/Publish output*/*.zip
-        changeLogCompareToRelease: lastFullRelease
-        changeLogCompareToReleaseTag: v$(NBGV_MAJORMINORVERSION)\.\d+$
-        changeLogType: commitBased
-      condition: and(succeeded(), eq(${{ parameters.createGitHubRelease }}, true))
