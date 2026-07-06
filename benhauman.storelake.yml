@@ -39,6 +39,13 @@ stages:
         packageType: 'sdk'
         version: '10.0.301'
         includePreview: false
+    - task: CmdLine@2
+      displayName: 'Verify dotnet/sdk'
+      inputs:
+        script: |
+          dotnet --version
+          dotnet --list-sdks
+          dotnet --info
     - task: DotNetCoreCLI@2
       displayName: "🤓 Install NBGV"
       inputs:
@@ -57,19 +64,23 @@ stages:
 
           echo See buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)...
     - task: NuGetToolInstaller@1
-    - task: NuGetCommand@2
-      displayName: 'Nuget : restore solution'
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: restore solution'
       inputs:
-        restoreSolution: '$(solution)'
-    - task: VSBuild@1
+        command: 'restore'
+        projects: '$(solution)'
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: build solution'
       inputs:
-        solution: '$(solution)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-    - task: VSTest@2
+        command: 'build'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet: test'
       inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
+        command: 'test'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration) --no-build --verbosity normal'
     - task: NuGetCommand@2
       displayName: 'Nuget : do nothing (default restore)'
       condition: and(succeeded(), eq(False, true))
