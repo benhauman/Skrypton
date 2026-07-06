@@ -107,5 +107,18 @@
       condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'true'))
 
     - task: GitHubRelease@1
-      displayName: ?? Create GitHub release
+      displayName: 'Create GitHub release'
+      condition: and(succeeded(), eq(variables['createGitHubRelease'], 'true'))
       inputs:
+        gitHubConnection: 'benhauman'
+        repositoryName: $(Build.Repository.Name)
+        target: $(Build.SourceVersion)
+        tagSource: userSpecifiedTag
+        tag: 'v$(Build.BuildNumber)'
+        title: 'v$(Build.BuildNumber)'
+        assets: |
+          $(Pipeline.Workspace)/CI/NuGet packages/*.nupkg
+          $(Pipeline.Workspace)/CI/Publish output*/*.zip
+        changeLogCompareToRelease: lastFullRelease
+        changeLogCompareToReleaseTag: v$(NBGV_MAJORMINORVERSION)\.\d+$
+        changeLogType: commitBased
