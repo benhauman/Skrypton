@@ -18,7 +18,7 @@
     - task: NuGetToolInstaller@1
 
     - task: UseDotNet@2
-      displayName: "🔰 Ensure .NET 10 SDK"
+      displayName: "Ensure .NET 10 SDK"
       inputs:
         packageType: 'sdk'
         version: '10.0.301'
@@ -54,11 +54,11 @@
         arguments: '--configuration $(buildConfiguration) --no-build --verbosity normal'
 
     - task: PublishTestResults@2
-      displayName: 📗 Publish test results
+      displayName: Publish test results
       inputs:
         testResultsFormat: VSTest
         testResultsFiles: '**/TestResults/*.trx'
-        testRunTitle: ($(operatingSystem))
+        testRunTitle: '$(operatingSystem)'
         buildConfiguration: '$(buildConfiguration)'
         buildPlatform: $(operatingSystem)
         mergeTestResults: true
@@ -66,7 +66,7 @@
     
     - task: NuGetCommand@2
       displayName: 'Nuget : do nothing (default restore)'
-      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
+      condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'true'))
 #  condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
     # - task: NuGetCommand@2
     #   displayName: 'Nuget : empty'
@@ -94,7 +94,7 @@
 
     - script: echo "skip nuget push due to parameter value"
       displayName: "Nuget : push-skipped"
-      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, false))
+      condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'false'))
 
     - task: NuGetCommand@2
       displayName: 'Nuget : push'
@@ -104,7 +104,7 @@
         nuGetFeedType: 'external'
         publishFeedCredentials: 'nuget.org'
         verbosityPush: 'Detailed'
-      condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
+      condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'true'))
 
     - task: GitHubRelease@1
       displayName: ?? Create GitHub release
