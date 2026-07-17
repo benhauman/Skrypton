@@ -1,8 +1,26 @@
+parameters:
+- name: publishNuGetPackages
+  displayName: Publish NuGet packages
+  type: boolean
+  default: false
+- name: createGitHubRelease
+  displayName: Create GitHub release
+  type: boolean
+  default: false
+
 variables:
 - name: publishNuGetPackages
-  value: 'false'
+  value: ${{ parameters.publishNuGetPackages }}
 - name: createGitHubRelease
-  value: 'false'
+  value: ${{ parameters.createGitHubRelease }}
+- name: solution
+  value: '**/*.slnx'
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildConfiguration
+  value: 'Release'
+- name: codeCoverageEngine
+  value: Cobertura
 
 steps:
 
@@ -17,7 +35,7 @@ steps:
 - template: azure-pipelines-template/initialize.yml
 
 - script: |
-    echo Add publishNuGetPackages:${{ parameters.publishNuGetPackages }}...
+    echo Add publishNuGetPackages:$(publishNuGetPackages)...
     echo See buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)...
   displayName: 'Run a multiline script'
 
@@ -53,22 +71,35 @@ steps:
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet: test'
+  displayName: '🧪 dotnet: test (+ coverage)'
   inputs:
     command: 'test'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --no-build --verbosity normal'
+    arguments: >
+      --configuration $(buildConfiguration)
+      --no-build
+      --results-directory $(Agent.TempDirectory)/TestResults
+      --logger trx
+      --collect:"XPlat Code Coverage"
 
 - task: PublishTestResults@2
-  displayName: Publish test results
+  displayName: '📊 Publish test results'
+  condition: succeededOrFailed()
   inputs:
     testResultsFormat: VSTest
-    testResultsFiles: '**/TestResults/*.trx'
-    testRunTitle: '$(operatingSystem)'
+    testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
+    testRunTitle: 'Skrypton ($(buildConfiguration))'
     buildConfiguration: '$(buildConfiguration)'
-    buildPlatform: $(operatingSystem)
     mergeTestResults: true
     failTaskOnFailedTests: false
+
+- task: PublishCodeCoverageResults@2
+  displayName: '☑️ Publish code coverage'
+  condition: succeededOrFailed()
+  inputs:
+    summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml'
+    pathToSources: '$(Build.SourcesDirectory)'
+    failIfCoverageEmpty: true
 
 - task: NuGetCommand@2
   displayName: 'Nuget : do nothing (default restore)'
