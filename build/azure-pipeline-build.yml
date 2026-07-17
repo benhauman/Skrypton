@@ -135,35 +135,39 @@ jobs:
       configuration: ${{ variables.buildConfiguration }}
       codeCoverageEngine: ${{ variables.codeCoverageEngine }}
 
-  - task: NuGetCommand@2
-    displayName: '📦 Push to nuget.org'
-    condition: eq(variables['publishNuGetPackages'], 'true')
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
-      nuGetFeedType: 'external'
-      publishFeedCredentials: 'nuget.org'
-      verbosityPush: 'Detailed'
+  # Each push/release is emitted at compile time only when its box is ticked, so the
+  # pipeline never references a service connection (e.g. github-packages) unless that
+  # publish is actually requested. Otherwise Azure fails validation for a missing
+  # connection even on normal builds where the step would be skipped anyway.
+  - ${{ if eq(parameters.publishNuGetPackages, true) }}:
+    - task: NuGetCommand@2
+      displayName: '📦 Push to nuget.org'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'nuget.org'
+        verbosityPush: 'Detailed'
 
-  - task: NuGetCommand@2
-    displayName: '📦 Push to GitHub Packages'
-    condition: eq(variables['publishToGitHubPackages'], 'true')
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
-      nuGetFeedType: 'external'
-      publishFeedCredentials: 'github-packages'
-      verbosityPush: 'Detailed'
+  - ${{ if eq(parameters.publishToGitHubPackages, true) }}:
+    - task: NuGetCommand@2
+      displayName: '📦 Push to GitHub Packages'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'github-packages'
+        verbosityPush: 'Detailed'
 
-  - task: GitHubRelease@1
-    displayName: 'Create GitHub release'
-    condition: eq(variables['createGitHubRelease'], 'true')
-    inputs:
-      gitHubConnection: 'benhauman'
-      repositoryName: $(Build.Repository.Name)
-      target: $(Build.SourceVersion)
-      tagSource: userSpecifiedTag
-      tag: 'v$(Build.BuildNumber)'
-      title: 'v$(Build.BuildNumber)'
-      assets: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
-      changeLogType: commitBased
+  - ${{ if eq(parameters.createGitHubRelease, true) }}:
+    - task: GitHubRelease@1
+      displayName: 'Create GitHub release'
+      inputs:
+        gitHubConnection: 'benhauman'
+        repositoryName: $(Build.Repository.Name)
+        target: $(Build.SourceVersion)
+        tagSource: userSpecifiedTag
+        tag: 'v$(Build.BuildNumber)'
+        title: 'v$(Build.BuildNumber)'
+        assets: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+        changeLogType: commitBased
