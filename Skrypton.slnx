@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="todos.txt" />
+    <File Path="version.json" />
+  </Folder>
+  <Project Path="src/Skrypton/Skrypton.csproj" />
+  <Project Path="tests/Skrypton.Tests/Skrypton.Tests.csproj" />
+</Solution>

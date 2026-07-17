@@ -9,12 +9,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Skrypton\Skrypton.csproj" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="19.14.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
   </ItemGroup>
 
   <ItemGroup>
