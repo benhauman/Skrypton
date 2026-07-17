@@ -14,7 +14,7 @@ variables:
 - name: createGitHubRelease
   value: ${{ parameters.createGitHubRelease }}
 - name: solution
-  value: '**/*.slnx'
+  value: 'Skrypton.slnx'
 - name: buildPlatform
   value: 'Any CPU'
 - name: buildConfiguration
@@ -70,17 +70,11 @@ steps:
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- task: DotNetCoreCLI@2
+# Run via the dotnet CLI directly (not DotNetCoreCLI@2) so the shell preserves the
+# quotes in --collect:"XPlat Code Coverage"; the task's arg-splitter strips them and
+# also injects a duplicate --logger/--results-directory. Works on Linux and Windows.
+- script: dotnet test $(solution) --configuration $(buildConfiguration) --no-build --logger trx --results-directory "$(Agent.TempDirectory)/TestResults" --collect:"XPlat Code Coverage"
   displayName: '🧪 dotnet: test (+ coverage)'
-  inputs:
-    command: 'test'
-    projects: '$(solution)'
-    arguments: >
-      --configuration $(buildConfiguration)
-      --no-build
-      --results-directory $(Agent.TempDirectory)/TestResults
-      --logger trx
-      --collect:"XPlat Code Coverage"
 
 - task: PublishTestResults@2
   displayName: '📊 Publish test results'
