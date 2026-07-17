@@ -67,7 +67,10 @@ namespace Skrypton.Tests.RuntimeSupport.Components.WordApplication
         private Document OpenCore([In] object FileName)//, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object ConfirmConversions, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object ReadOnly, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object AddToRecentFiles, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object PasswordDocument, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object PasswordTemplate, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object Revert, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object WritePasswordDocument, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object WritePasswordTemplate, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object Format, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object Encoding, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object Visible, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object OpenAndRepair, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object DocumentDirection, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object NoEncodingDialog, [Optional][In][MarshalAs(UnmanagedType.Struct)] ref object XMLTransform)
         {
             Console.WriteLine($"[WORD].Open('{FileName}')");
-            string name = Path.GetFileName((string)FileName);
+            // VBScript passes Windows-style paths (backslashes). Path.GetFileName only
+            // treats '\' as a separator on Windows, so split on both separators to get
+            // the file name consistently on Linux and Windows.
+            string name = ((string)FileName).Split('/', '\\').Last();
             MyWordDocument doc = new MyWordDocument(name);
 
 
