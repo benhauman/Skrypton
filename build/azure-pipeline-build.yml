@@ -1,6 +1,10 @@
 parameters:
 - name: publishNuGetPackages
-  displayName: Publish NuGet packages
+  displayName: Publish NuGet packages (nuget.org)
+  type: boolean
+  default: false
+- name: publishToGitHubPackages
+  displayName: Publish to GitHub Packages
   type: boolean
   default: false
 - name: createGitHubRelease
@@ -11,6 +15,8 @@ parameters:
 variables:
 - name: publishNuGetPackages
   value: ${{ parameters.publishNuGetPackages }}
+- name: publishToGitHubPackages
+  value: ${{ parameters.publishToGitHubPackages }}
 - name: createGitHubRelease
   value: ${{ parameters.createGitHubRelease }}
 - name: solution
@@ -22,134 +28,142 @@ variables:
 - name: codeCoverageEngine
   value: Cobertura
 
-steps:
+jobs:
+# ---------------------------------------------------------------------------
+# Test on Linux. Kept on ubuntu so the suite is exercised cross-platform.
+# ---------------------------------------------------------------------------
+- job: Test
+  displayName: 'Test (Linux)'
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 0                 # Nerdbank.GitVersioning needs full history
 
-# FIX for Nerdbank.GitVersioning: disable shallow clone
-- checkout: self
-  clean: true
-  fetchDepth: 0
+  - template: azure-pipelines-template/initialize.yml
 
-- script: echo "Running init in Job Init2"
-  displayName: "Init 'that'"
+  - task: UseDotNet@2
+    displayName: 'Ensure .NET 10 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.301'
+      includePreview: false
 
-- template: azure-pipelines-template/initialize.yml
+  - task: CmdLine@2
+    displayName: 'Verify dotnet/sdk'
+    inputs:
+      script: |
+        dotnet --version
+        dotnet --list-sdks
 
-- script: |
-    echo Add publishNuGetPackages:$(publishNuGetPackages)...
-    echo See buildPlatform:$(buildPlatform), buildConfiguration:$(buildConfiguration)...
-  displayName: 'Run a multiline script'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: restore'
+    inputs:
+      command: 'restore'
+      projects: '$(solution)'
 
-- task: NuGetToolInstaller@1
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: build'
+    inputs:
+      command: 'build'
+      projects: '$(solution)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- task: UseDotNet@2
-  displayName: "Ensure .NET 10 SDK"
-  inputs:
-    packageType: 'sdk'
-    version: '10.0.301'
-    includePreview: false
+  # Run via the dotnet CLI directly (not DotNetCoreCLI@2) so the shell preserves the
+  # quotes in --collect:"XPlat Code Coverage"; the task's arg-splitter strips them and
+  # also injects a duplicate --logger/--results-directory.
+  - script: dotnet test $(solution) --configuration $(buildConfiguration) --no-build --logger trx --results-directory "$(Agent.TempDirectory)/TestResults" --collect:"XPlat Code Coverage"
+    displayName: '🧪 dotnet: test (+ coverage)'
 
-- task: CmdLine@2
-  displayName: 'Verify dotnet/sdk'
-  inputs:
-    script: |
-      dotnet --version
-      dotnet --list-sdks
-      dotnet --info
+  - task: PublishTestResults@2
+    displayName: '📊 Publish test results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
+      testRunTitle: 'Skrypton ($(buildConfiguration))'
+      buildConfiguration: '$(buildConfiguration)'
+      mergeTestResults: true
+      failTaskOnFailedTests: false
 
-# Use dotnet CLI for restore/build/test so the installed SDK is used
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet: restore solution'
-  inputs:
-    command: 'restore'
-    projects: '$(solution)'
+  - task: PublishCodeCoverageResults@2
+    displayName: '☑️ Publish code coverage'
+    condition: succeededOrFailed()
+    inputs:
+      summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml'
+      pathToSources: '$(Build.SourcesDirectory)'
+      failIfCoverageEmpty: true
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet: build solution'
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --no-restore'
+# ---------------------------------------------------------------------------
+# Publish on Windows. NuGetCommand@2 (NuGet.exe) needs mono on Linux, so pack
+# and push run on windows-latest using NuGet service connections (no secret
+# variables). Skipped entirely unless a publish/release flag is set.
+# ---------------------------------------------------------------------------
+- job: Publish
+  displayName: 'Publish (Windows)'
+  dependsOn: Test
+  condition: >
+    and(succeeded(),
+        or(eq(variables['publishNuGetPackages'], 'true'),
+           eq(variables['publishToGitHubPackages'], 'true'),
+           eq(variables['createGitHubRelease'], 'true')))
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 0
 
-# Run via the dotnet CLI directly (not DotNetCoreCLI@2) so the shell preserves the
-# quotes in --collect:"XPlat Code Coverage"; the task's arg-splitter strips them and
-# also injects a duplicate --logger/--results-directory. Works on Linux and Windows.
-- script: dotnet test $(solution) --configuration $(buildConfiguration) --no-build --logger trx --results-directory "$(Agent.TempDirectory)/TestResults" --collect:"XPlat Code Coverage"
-  displayName: '🧪 dotnet: test (+ coverage)'
+  - template: azure-pipelines-template/initialize.yml
 
-- task: PublishTestResults@2
-  displayName: '📊 Publish test results'
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: VSTest
-    testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
-    testRunTitle: 'Skrypton ($(buildConfiguration))'
-    buildConfiguration: '$(buildConfiguration)'
-    mergeTestResults: true
-    failTaskOnFailedTests: false
+  - task: UseDotNet@2
+    displayName: 'Ensure .NET 10 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.301'
+      includePreview: false
 
-- task: PublishCodeCoverageResults@2
-  displayName: '☑️ Publish code coverage'
-  condition: succeededOrFailed()
-  inputs:
-    summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml'
-    pathToSources: '$(Build.SourcesDirectory)'
-    failIfCoverageEmpty: true
+  - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  displayName: 'Nuget : do nothing (default restore)'
-  condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'true'))
-#  condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, true))
-    # - task: NuGetCommand@2
-    #   displayName: 'Nuget : empty'
-    #   condition: and(succeeded(), eq(${{ parameters.publishNuGetPackages }}, false))
+  # Pack: produces $(Build.ArtifactStagingDirectory)/packages and publishes the
+  # 'NuGet packages' pipeline artifact.
+  - template: azure-pipelines-template/run.yml
+    parameters:
+      operatingSystem: Windows
+      runtimeIdentifier: win-x64
+      configuration: ${{ variables.buildConfiguration }}
+      codeCoverageEngine: ${{ variables.codeCoverageEngine }}
 
-    # - task: NuGetCommand@2
-    #   displayName: 'Nuget : pack'
-    #   inputs:
-    #     command: 'pack'
-    #     packagesToPack: '**/StoreLake.Sdk.csproj'
-    #     versioningScheme: 'off'
-    #     verbosityPack: 'Detailed'
-        
-    
-  # - job: Windows
-  #   pool:
-  #     vmImage: windows-latest
-  #   steps:
-- template: azure-pipelines-template/run.yml
-  parameters:
-    operatingSystem: Windows
-    runtimeIdentifier: win-x64
-    configuration: ${{ variables.buildConfiguration }}
-    codeCoverageEngine: ${{ variables.codeCoverageEngine }}
+  - task: NuGetCommand@2
+    displayName: '📦 Push to nuget.org'
+    condition: eq(variables['publishNuGetPackages'], 'true')
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'nuget.org'
+      verbosityPush: 'Detailed'
 
-- script: echo "skip nuget push due to parameter value"
-  displayName: "Nuget : push-skipped"
-  condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'false'))
+  - task: NuGetCommand@2
+    displayName: '📦 Push to GitHub Packages'
+    condition: eq(variables['publishToGitHubPackages'], 'true')
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'github-packages'
+      verbosityPush: 'Detailed'
 
-- task: NuGetCommand@2
-  displayName: 'Nuget : push'
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'nuget.org'
-    verbosityPush: 'Detailed'
-  condition: and(succeeded(), eq(variables['publishNuGetPackages'], 'true'))
-
-- task: GitHubRelease@1
-  displayName: 'Create GitHub release'
-  condition: and(succeeded(), eq(variables['createGitHubRelease'], 'true'))
-  inputs:
-    gitHubConnection: 'benhauman'
-    repositoryName: $(Build.Repository.Name)
-    target: $(Build.SourceVersion)
-    tagSource: userSpecifiedTag
-    tag: 'v$(Build.BuildNumber)'
-    title: 'v$(Build.BuildNumber)'
-    assets: |
-      $(Pipeline.Workspace)/CI/NuGet packages/*.nupkg
-      $(Pipeline.Workspace)/CI/Publish output*/*.zip
-    changeLogCompareToRelease: lastFullRelease
-    changeLogCompareToReleaseTag: v$(NBGV_MAJORMINORVERSION)\.\d+$
-    changeLogType: commitBased
+  - task: GitHubRelease@1
+    displayName: 'Create GitHub release'
+    condition: eq(variables['createGitHubRelease'], 'true')
+    inputs:
+      gitHubConnection: 'benhauman'
+      repositoryName: $(Build.Repository.Name)
+      target: $(Build.SourceVersion)
+      tagSource: userSpecifiedTag
+      tag: 'v$(Build.BuildNumber)'
+      title: 'v$(Build.BuildNumber)'
+      assets: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+      changeLogType: commitBased

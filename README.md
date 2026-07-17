@@ -4,9 +4,9 @@ Seamlessly migrate legacy VBScript to C# — translated into readable source and
 [![Build Status](https://img.shields.io/azure-devops/build/lubennaumov0149/Skrypton/3/main)](https://dev.azure.com/lubennaumov0149/Skrypton/_build/latest?definitionId=3&branchName=main) [![Test Status](https://img.shields.io/azure-devops/tests/lubennaumov0149/Skrypton/3/main)](https://dev.azure.com/lubennaumov0149/Skrypton/_build/latest?definitionId=3&branchName=main) [![Code coverage](https://img.shields.io/azure-devops/coverage/lubennaumov0149/Skrypton/3/main)](https://dev.azure.com/lubennaumov0149/Skrypton/_build/latest?definitionId=3&branchName=main)
 
 ## Artifacts
-| Name | Version |
-| - | - |
-| Skrypton | [![NuGet](https://img.shields.io/nuget/v/Skrypton)](https://www.nuget.org/packages/Skrypton) |
+| Name | nuget.org | GitHub Packages |
+| - | - | - |
+| Skrypton | [![NuGet](https://img.shields.io/nuget/v/Skrypton)](https://www.nuget.org/packages/Skrypton) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
 
 ## Background
 VBScript is being retired. Microsoft has deprecated it and is removing it from Windows, which puts every classic ASP page, `.vbs` automation script, and `MSScriptControl`-hosted rules engine on a countdown. The obvious answer — "just rewrite it in C#" — is a trap, because VBScript's behavior is not the syntax on the page:
