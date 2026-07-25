@@ -3,7 +3,7 @@
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.10.85" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="18.0.2" />
     <!--
       Be careful to update this package, because it might require a newer version of the compiler:
