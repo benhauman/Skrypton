@@ -24,6 +24,6 @@
     <PackageVersion Include="System.IO.Packaging" Version="10.0.0" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="10.0.1" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.10" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.11" />
   </ItemGroup>
 </Project>
