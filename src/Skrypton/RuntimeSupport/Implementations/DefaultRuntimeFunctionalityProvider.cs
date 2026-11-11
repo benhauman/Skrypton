@@ -364,7 +364,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Frankly, if we get here then I have no idea what's happened. It will be much easier to identify issues (if any are encountered) if an
             // exception is raised rather than a false response return
-            throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
+            throw NotSupportedExceptionFactory.Create($"Don't know how to compare values of type {TYPENAME(l)} ({l.GetType().FullName}: {l}) and {TYPENAME(r)} ({r.GetType().FullName}: {r})");
         }
 
         public object? NOTEQ(object l, object r)
@@ -417,7 +417,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             // not then we'll have to do more work.
             bool? eq = EQ_Internal(l, r);
             if (eq == null)
-                throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
+                throw NotSupportedExceptionFactory.Create($"Don't know how to compare values of type {TYPENAME(l)} ({l?.GetType().FullName ?? "Empty"}: {l}) and {TYPENAME(r)} ({r?.GetType().FullName ?? "Empty"}: {r})");
             if (eq.Value)
                 return allowEquals;
 
@@ -430,7 +430,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 int? stringComparisonResult = STRCOMP_Internal(lString, rString, 0);
                 if ((stringComparisonResult == null) || (stringComparisonResult.Value == 0))
-                    throw new NotSupportedException("Don't know how to compare values of type " + TYPENAME(l) + " and " + TYPENAME(r));
+                    throw NotSupportedExceptionFactory.Create($"Don't know how to compare values of type {TYPENAME(l)} ({l?.GetType().FullName ?? "Empty"}: {l}) and {TYPENAME(r)} ({r?.GetType().FullName ?? "Empty"}: {r})");
                 return stringComparisonResult.Value < 0;
             }
 #pragma warning disable CA1820 // Test for empty strings using string length
@@ -1901,7 +1901,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             switch (i)
             {
                 default:
-                    throw new NotSupportedException($"Unsupported interval: '{interval}'"); // This will be a different exception type once all VBScript-support interval strings are supported
+                    throw NotSupportedExceptionFactory.Create($"DateDiff: unsupported interval '{interval}' (date1: {date1}, date2: {date2})"); // This will be a different exception type once all VBScript-support interval strings are supported
                 case "n": // minutes (Ignores seconds => Truncates both dates down to the minute)
                     DateTime dtx1 = new DateTime(d1.Year, d1.Month, d1.Day, d1.Hour, d1.Minute, 0); // Truncate to minute precision
                     DateTime dtx2 = new DateTime(d2.Year, d2.Month, d2.Day, d2.Hour, d2.Minute, 0); // Truncate to minute precision
@@ -2094,7 +2094,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             int numericFirstDayOfWeek = CLNG(firstDayOfWeek, "'WeekdayName'");
             if (numericFirstDayOfWeek != VBScriptConstants.vbSunday)
-                throw new NotSupportedException(); // TODO: Deal with firstDayOfWeek properly (and ensure evaluate arguments in correct order)
+                throw NotSupportedExceptionFactory.Create($"WeekdayName: only firstDayOfWeek vbSunday (1) is supported, not {numericFirstDayOfWeek} (weekday: {numericValue})"); // TODO: Deal with firstDayOfWeek properly (and ensure evaluate arguments in correct order)
 
             // The first day in January 2017 is Sunday and VBScript treats day 1 as Sunday, so we can just take our 1-7 range and use that as the day number in Jan 2017
             // (then we take the name of the day for the generated date and we're all done)

@@ -1,4 +1,5 @@
 ﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+using Skrypton.RuntimeSupport;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
@@ -55,7 +56,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
                 }
                 else
                 {
-                    throw new NotSupportedException("Not a WITH parent.");
+                    throw NotSupportedExceptionFactory.Create($"A directed With reference ('.') is only supported inside a With or If block, not inside a {parent.GetType().Name}", directedWithReferenceIfAny.AsToken().LineIndex);
                 }
             }
         }

@@ -832,9 +832,10 @@ Part2: 'Close'
                     if (PrecedenceGroups[index].Any(value => value.Equals(segment.Token.Content, StringComparison.OrdinalIgnoreCase)))
                         return index;
                 }
-                throw new NotSupportedException(
-                    $"Unrecognized operator token value '{segment.Token.Content}' (token type {segment.Token.GetType().Name}) at line {segment.Token.LineIndex + 1}" +
-                    $" in {nameof(ExpressionGenerator)}.{nameof(IndexerOperationExpressionSegmentSorter)}.{nameof(GetPrecedenceGroup)}"
+                throw Skrypton.RuntimeSupport.NotSupportedExceptionFactory.Create(
+                    $"Unrecognized operator token value '{segment.Token.Content}' (token type {segment.Token.GetType().Name})",
+                    segment.Token.LineIndex,
+                    segment.RenderedContent
                 );
             }
         }

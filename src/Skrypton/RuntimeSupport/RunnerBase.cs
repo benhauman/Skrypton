@@ -128,11 +128,11 @@ namespace Skrypton.RuntimeSupport
                         if (args.Length > 0)
                         {
                             // validate parameter types if their type are acceptable.
-                            throw new NotSupportedException($"{mi.Name} args.Count:{args.Length}");
+                            throw NotSupportedExceptionFactory.Create($"Calling the script procedure '{mi.Name}' with arguments is not supported (args: {args.Length})");
                         }
                         if (mi.GetParameters().Length > 0)
                         {
-                            throw new NotSupportedException($"{mi.Name} prms.Count:{mi.GetParameters().Length}");
+                            throw NotSupportedExceptionFactory.Create($"The script procedure '{mi.Name}' has {mi.GetParameters().Length} parameter(s) - calling a procedure with parameters is not supported");
                         }
 
 

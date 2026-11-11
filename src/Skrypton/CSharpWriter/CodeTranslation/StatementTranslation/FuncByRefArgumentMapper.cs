@@ -1,4 +1,5 @@
 ﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+using Skrypton.RuntimeSupport;
 using Skrypton.CSharpWriter.Lists;
 using Skrypton.CSharpWriter.Logging;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
@@ -189,7 +190,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     continue;
                 }
 
-                throw new NotSupportedException("Unsupported codeExpression segment type: " + expressionSegment.GetType());
+                throw NotSupportedExceptionFactory.Create("Unsupported codeExpression segment type: " + expressionSegment.GetType().Name, expressionSegment.LineIndex, expressionSegment.RenderedContent);
             }
             return rewrittenReferences;
         }
