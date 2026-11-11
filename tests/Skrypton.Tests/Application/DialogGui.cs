@@ -1,4 +1,5 @@
 ﻿using System;
+using Skrypton.RuntimeSupport.Components;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -841,7 +842,7 @@ WScript.Echo xmlhttp.responseText
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
                 services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
                 services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
-                services.RegisterHostService<RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs =>
+                services.RegisterHostService<global::Skrypton.RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs =>
                 {
                     fs.AddTestFile(@"C:\TRUMPF\helpLine\IntermediateReply.html", @"blah1");
                 })
