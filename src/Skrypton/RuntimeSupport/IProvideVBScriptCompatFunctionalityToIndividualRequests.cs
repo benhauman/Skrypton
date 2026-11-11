@@ -147,13 +147,26 @@ namespace Skrypton.RuntimeSupport
         object CHRB(object value);
         object CHRW(object value);
         object ESCAPE(object value);
-        object FORMATCURRENCY(object value);
+        object FORMATCURRENCY(object expression);
+        object FORMATCURRENCY(object expression, object numDigitsAfterDecimal);
+        object FORMATCURRENCY(object expression, object numDigitsAfterDecimal, object includeLeadingDigit);
+        object FORMATCURRENCY(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers);
+        object FORMATCURRENCY(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers, object groupDigits);
         object FORMATDATETIME(object dateValue);
         object FORMATDATETIME(object dateValue, object format);
         object FORMATNUMBER(object expression); // TODO: See http://blogs.msdn.com/b/ericlippert/archive/2003/09/26/53112.aspx
         object FORMATNUMBER(object expression, object numDigitsAfterDecimal);
-        object FORMATPERCENT(object value);
-        object FILTER(object value);
+        object FORMATNUMBER(object expression, object numDigitsAfterDecimal, object includeLeadingDigit);
+        object FORMATNUMBER(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers);
+        object FORMATNUMBER(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers, object groupDigits);
+        object FORMATPERCENT(object expression);
+        object FORMATPERCENT(object expression, object numDigitsAfterDecimal);
+        object FORMATPERCENT(object expression, object numDigitsAfterDecimal, object includeLeadingDigit);
+        object FORMATPERCENT(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers);
+        object FORMATPERCENT(object expression, object numDigitsAfterDecimal, object includeLeadingDigit, object useParensForNegativeNumbers, object groupDigits);
+        object FILTER(object inputStrings, object value);
+        object FILTER(object inputStrings, object value, object include);
+        object FILTER(object inputStrings, object value, object include, object compare);
         object HEX(object value);
         object INSTR(object valueToSearch, object valueToSearchFor);
         object INSTR(object startIndex, object valueToSearch, object valueToSearchFor);
@@ -217,11 +230,13 @@ namespace Skrypton.RuntimeSupport
         object DATEDIFF(object interval, object date1, object date2);
         object DATEPART(object interval, object valueDate);
         object DATEPART(object interval, object valueDate, object firstDayOfWeek);
+        object DATEPART(object interval, object valueDate, object firstDayOfWeek, object firstWeekOfYear);
         object DATESERIAL(object year, object month, object day);
         DateTime DATEVALUE(object value);
         object DAY(object value);
         object MONTH(object value);
         object MONTHNAME(object value);
+        object MONTHNAME(object value, object abbreviate);
         object YEAR(object value);
         object WEEKDAY(object value);
         object WEEKDAY(object value, object firstDayOfWeek);
@@ -241,17 +256,17 @@ namespace Skrypton.RuntimeSupport
         object EXECUTE(object value);
         object EXECUTEGLOBAL(object value);
         // - Misc
-        object GETLOCALE(object value);
+        object GETLOCALE();
         object GETREF(object value);
         object INPUTBOX(object prompt, object? title = null, object? defaultValue = null);
         object LOADPICTURE(object value);
         object MSGBOX(object value);
         object MSGBOX(object value, object buttons);
         object MSGBOX(object value, object buttons, object title);
-        string SCRIPTENGINE(object value);
-        int SCRIPTENGINEBUILDVERSION(object value);
-        int SCRIPTENGINEMAJORVERSION(object value);
-        int SCRIPTENGINEMINORVERSION(object value);
+        string SCRIPTENGINE();
+        int SCRIPTENGINEBUILDVERSION();
+        int SCRIPTENGINEMAJORVERSION();
+        int SCRIPTENGINEMINORVERSION();
         object SETLOCALE(object value);
 
         object NEWREGEXP(); // TODO

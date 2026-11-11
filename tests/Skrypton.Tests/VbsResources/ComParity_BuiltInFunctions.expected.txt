@@ -1,0 +1,78 @@
+ChrW(252): String 252 1 String
+ChrW(65): String A
+AscW(ChrW(8364)): Integer 8364
+ChrW(-1) AscW: Integer -1
+StrReverse: String notpyrkS
+StrReverse empty: String 
+LenB: Long 6
+Filter an: array(0 to 0) Banana
+Filter an exclude: array(0 to 2) apple,cherry,date
+Filter A text: array(0 to 2) apple,Banana,date
+Filter A binary: array(0 to -1) 
+Filter none: array(0 to -1) 
+Fix(2.7): Double 2
+Fix(-2.7): Double -2
+Fix(5): Integer 5
+Fix("-3.5"): Double -3
+Fix(Null): Null
+Int(-2.7): Double -3
+Sgn(-5): Integer -1
+Sgn(0): Integer 0
+Sgn(2.5): Integer 1
+Exp(1): Double 2.71828182845905
+Exp(0): Double 1
+Log(1): Double 0
+Log(10): Double 2.30258509299405
+Tan(0): Double 0
+Tan(1): Double 1.5574077246549
+Oct(8): String 10
+Oct(255): String 377
+Oct(-1): String 177777
+Oct(-32769): String 37777677777
+Hex(255): String FF
+True Eqv False: Boolean False
+True Eqv True: Boolean True
+5 Eqv 3: Integer -7
+True Imp False: Boolean False
+False Imp True: Boolean True
+5 Imp 3: Integer -5
+Null Eqv True: Null
+False Imp Null: Boolean True
+FormatNumber(1234.5): String 1,234.50
+FormatNumber(1234.5, 0): String 1,235
+FormatNumber(-0.5, 2): String -0.50
+FormatNumber(0.5, 2, 0): String .50
+FormatNumber(-1234.5, 1, -1, -1): String (1,234.5)
+FormatNumber(1234.5, 1, -1, 0, 0): String 1234.5
+FormatCurrency(1234.5): String $1,234.50
+FormatCurrency(-1234.5): String ($1,234.50)
+FormatCurrency(1234.567, 1): String $1,234.6
+FormatPercent(0.256): String 25.60%
+FormatPercent(0.256, 0): String 26%
+FormatPercent(1.5, 1): String 150.0%
+DatePart yyyy: Integer 2026
+DatePart q: Integer 4
+DatePart m: Integer 11
+DatePart y: Integer 315
+DatePart d: Integer 11
+DatePart w: Integer 4
+DatePart w monday: Integer 3
+DatePart ww: Integer 46
+DatePart ww first full week: Integer 52
+DatePart h: Integer 13
+DatePart n: Integer 45
+DatePart s: Integer 30
+MonthName(1): String January
+MonthName(11, True): String Nov
+WeekdayName(1): String Sunday
+ScriptEngine: String VBScript
+ScriptEngineMajorVersion: Long 10
+ScriptEngineMinorVersion: Long 8
+GetLocale: Long 1033
+ChrW(70000): error 5
+Log(0): error 5
+Sgn(Null): error 94
+StrReverse(Null): error 94
+MonthName(13): error 5
+DatePart x: error 5
+Filter not an array: error 13

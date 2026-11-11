@@ -705,6 +705,12 @@ namespace Skrypton.RuntimeSupport.Implementations
             // VBScript)
             if (o is DateTime)
                 return DateToString((DateTime)o, _culture);
+            // VBScript shows 15 significant digits of a Double and 7 of a Single (Exp(1) is "2.71828182845905", not .NET's round-trip
+            // "2.718281828459045"), with the decimal separator of the locale
+            if (o is double doubleValue)
+                return doubleValue.ToString("G15", _culture);
+            if (o is float singleValue)
+                return singleValue.ToString("G7", _culture);
             return o.ToString();
         }
 

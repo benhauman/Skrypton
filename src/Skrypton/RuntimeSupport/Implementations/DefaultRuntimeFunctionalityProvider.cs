@@ -23,7 +23,7 @@ namespace Skrypton.RuntimeSupport.Implementations
     /// cleaned up. VBScript's deterministic garbage collector can tidy up more aggressively, relying upon reference counting, the best that we can do
     /// with the C# code is for this to implement IDiposable and to ensure that everything is tidy when the request completes and Dispose is called.
     /// </summary>
-    public sealed class DefaultRuntimeFunctionalityProvider : IProvideVBScriptCompatFunctionalityToIndividualRequests
+    public sealed partial class DefaultRuntimeFunctionalityProvider : IProvideVBScriptCompatFunctionalityToIndividualRequests
     {
         /// <summary>
         /// VBScript has a string length limited by its data storage mechanism; each character is represented by two bytes and the index into that
@@ -550,8 +550,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return true;
             return _valueRetriever.OBJ(l, "'Is'") == _valueRetriever.OBJ(r, "'Is'");
         }
-        public object EQV(object l, object r) { throw new NotImplementedException(); }
-        public object IMP(object l, object r) { throw new NotImplementedException(); }
 
         // Builtin functions - TODO: These are not fully specified yet (eg. LEFT requires more than one parameter and INSTR requires multiple parameters and
         // overloads to deal with optional parameters)
@@ -794,10 +792,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             double radians = CDBL_Precise(value, "'Cos'");
             return Math.Cos(radians);
         }
-        public object EXP(object value) { throw new NotImplementedException(); }
-        public object FIX(object value) { throw new NotImplementedException(); }
-        public object LOG(object value) { throw new NotImplementedException(); }
-        public object OCT(object value) { throw new NotImplementedException(); }
         public float RND()
         {
             return RND(1); // Any value greater than zero passed to RND will just get the next random number, so calling RND(1) should be the same as VBScript calling just "RND()"
@@ -844,7 +838,6 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             return Math.Round(decimalValue, nDecimals, MidpointRounding.ToEven);
         }
-        public object SGN(object value) { throw new NotImplementedException(); }
         public object SIN(object value)
         {
             // TODO: Tests need to confirm that double precision is used (eg. COS returns different values for 1.111111 and 1.1111111)
@@ -862,7 +855,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidProcedureCallOrArgumentException($"numericValue must be positive. value:{value}");
             return Math.Sqrt(numericValue);
         }
-        public object TAN(object value) { throw new NotImplementedException(); }
         /// <summary>
         /// Returns the number of seconds that have elapsed since midnight
         /// </summary>
@@ -889,7 +881,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             char characterValue = s[0];
             return (short)Encoding.Default.GetBytes(new[] { characterValue })[0];
         }
-        public object ASCB(object value) { throw new NotImplementedException(); }
         public short ASCW(object value)
         {
             var valueSafe = VAL(value);
@@ -1002,10 +993,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidProcedureCallOrArgumentException("'CHR'", e);
             }
         }
-        public object CHRB(object value) { throw new NotImplementedException(); }
-        public object CHRW(object value) { throw new NotImplementedException(); }
-        public object FILTER(object value) { throw new NotImplementedException(); }
-        public object FORMATCURRENCY(object value) { throw new NotImplementedException(); }
 
         public object FORMATDATETIME(object dateValue)
         {
@@ -1066,19 +1053,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return dt.ToString("g", _culture); // short date + short time (closest)
             }
         }
-        public object FORMATNUMBER(object expression, object numDigitsAfterDecimal) => FORMATNUMBERCore(expression, numDigitsAfterDecimal);
-        public object FORMATNUMBER(object expression) => FORMATNUMBERCore(expression, _culture.NumberFormat.NumberDecimalDigits);
-        private string FORMATNUMBERCore(object expression, object numDigitsAfterDecimal) // FormatNumber(Expression, NumDigitsAfterDecimal [, IncludeLeadingDigit [, UseParensForNegativeNumbers [, GroupDigits ]]])
-        {
-            var expressionV = _valueRetriever.VAL(expression, "'FORMATNUMBER'");
-            double expressionNum = GetAsNumber<double>(expressionV, "'FORMATNUMBER'", Convert.ToDouble);
-
-            int decimals = GetAsNumber<int>(numDigitsAfterDecimal, "'FORMATNUMBER'", Convert.ToInt32);
-
-            string result = expressionNum.ToString($"F{decimals}", _culture);
-            return result;
-        }
-        public object FORMATPERCENT(object value) { throw new NotImplementedException(); }
         public object HEX(object? value)
         {
             value = _valueRetriever.VAL(value, "'Hex'");
@@ -1260,7 +1234,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(0, maxLengthInt);
         }
-        public object LEFTB(object value, object maxLength) { throw new NotImplementedException(); }
         public object RGB(object red, object green, object blue)
         {
             short redComponent = red is short redShort ? redShort : Convert.ToInt16(_valueRetriever.NUM(red), CultureInfo.InvariantCulture);
@@ -1305,7 +1278,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             maxLengthInt = Math.Min(valueString.Length, maxLengthInt);
             return valueString.Substring(valueString.Length - maxLengthInt);
         }
-        public object RIGHTB(object value, object maxLength) { throw new NotImplementedException(); }
         public string REPLACE(object value, object toSearchFor, object toReplaceWith) { return REPLACE(value, toSearchFor, toReplaceWith, 1); }
         public string REPLACE(object value, object toSearchFor, object toReplaceWith, object startIndex) { return REPLACE(value, toSearchFor, toReplaceWith, startIndex, -1); }
         public string REPLACE(object value, object toSearchFor, object toReplaceWith, object startIndex, object maxNumberOfReplacements) { return REPLACE(value, toSearchFor, toReplaceWith, startIndex, maxNumberOfReplacements, 0); }
@@ -1418,7 +1390,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 : StringComparison.Ordinal;
             return string.Compare(text1, text2, comparison);
         }
-        public object STRREVERSE(object value) { throw new NotImplementedException(); }
         public object TRIM(object? value)
         {
             value = _valueRetriever.VAL(value, "'Trim'");
@@ -2021,8 +1992,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return (int)(d2 - d1).TotalSeconds;
             }
         }
-        public object DATEPART(object interval, object valueDate) { throw new NotImplementedException(); }
-        public object DATEPART(object interval, object valueDate, object firstDayOfWeek) { throw new NotImplementedException(); } // , object firstweekofyear
         public object DATESERIAL(object year, object month, object day)
         {
             // TODO: This is not a complete implementation, it's just enough to get moving
@@ -2152,7 +2121,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return DBNull.Value; // This is special case is the only real difference between the logic here and in CDATE
             return ToClosestSecond(CDATECore(value, "'Month'")).Month;
         }
-        public object MONTHNAME(object value) { throw new NotImplementedException(); }
         public object YEAR(object? value)
         {
             value = _valueRetriever.VAL(value, "'Year'");
@@ -2379,7 +2347,6 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object EXECUTE(object value) { throw new NotImplementedException("Dynamic script execution. Code:" + value); } // "script in script"
         public object EXECUTEGLOBAL(object value) { throw new NotImplementedException(); }
         // - Misc
-        public object GETLOCALE(object value) { throw new NotImplementedException(); }
         public object GETREF(object value) { throw new NotImplementedException(); }
         public object INPUTBOX(object prompt, object? title = null, object? defaultValue = null)
         {
@@ -2419,10 +2386,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             MessageBoxResult result = svc.ShowMessageBox(prompt, (MessageBoxButtons)buttons.GetValueOrDefault(0), title ?? "Application");
             return (int)result;
         }
-        public string SCRIPTENGINE(object value) { throw new NotImplementedException(); }
-        public int SCRIPTENGINEBUILDVERSION(object value) { throw new NotImplementedException(); }
-        public int SCRIPTENGINEMAJORVERSION(object value) { throw new NotImplementedException(); }
-        public int SCRIPTENGINEMINORVERSION(object value) { throw new NotImplementedException(); }
         public object SETLOCALE(object value) { throw new NotImplementedException(); }
 
         /// <summary>
@@ -2735,7 +2698,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 action();
             }
-            catch (Exception e)
+            catch (Exception e) when (ScriptQuitException.Find(e) == null) // WScript.Quit ends the script, it is not an error that can be trapped
             {
                 // Translated programs shouldn't provide any actions that register or unregister error tokens, but since we've just gone off and
                 // attempted to do some unknown work, it's best to check

@@ -33,6 +33,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_WordApplication() => RunParityScript();
         [TestMethod] public void ComParity_ExcelApplication() => RunParityScript();
         [TestMethod] public void ComParity_OutlookApplication() => RunParityScript();
+        [TestMethod] public void ComParity_BuiltInFunctions() => RunParityScript();
 
         private void RunParityScript()
         {
@@ -68,7 +69,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
         private void RunParityScript(string script, string expected)
         {
-
+            // The expected output was captured with cscript on Windows with the culture en-US (numbers, currency, month names)
+            TestCulture = System.Globalization.CultureInfo.GetCultureInfo("en-US");
             var output = new Output();
             IScriptControl scriptengine = CreateScriptControlClass(
                 // WMI (winmgmts:) lists the processes of the host's process service (cscript lists the real ones; the script only checks that there are some)
