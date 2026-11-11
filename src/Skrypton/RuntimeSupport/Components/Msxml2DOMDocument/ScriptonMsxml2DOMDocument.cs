@@ -81,19 +81,75 @@ namespace Skrypton.RuntimeSupport.Components
 
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [DispId(58)]
+        /// <summary>
+        /// Loads the document, like MSXML's DOMDocument.load: the source may be a URL or file path (String), the bytes of an XML document
+        /// (a Byte array, as returned by eg. ServerXMLHTTP.responseBody), a Stream or another DOMDocument. As in MSXML, a source that can not be
+        /// loaded or parsed does not raise an error - load returns False and the reason is available from parseErrorReason.
+        /// </summary>
         public bool load([In][MarshalAs(UnmanagedType.Struct)] object xmlSource)
         {
-            if (xmlSource is byte[] byteArray)
+            return TryLoad(() =>
             {
-                // For testing purposes, we can assume the byte array is UTF-8 encoded XML content
-                string xmlContent = Encoding.UTF8.GetString(byteArray);
-                // Here you could add logic to parse the XML content if needed for your tests
+                switch (xmlSource is ScriptDispatchWrapper wrapper ? wrapper.WrappedObject : xmlSource)
+                {
+                    case string urlOrPath:
+                        _xmldoc.Load(urlOrPath); // XmlDocument.Load(string) accepts file paths and URLs (file:, http:, https:)
+                        break;
+                    case byte[] bytes:
+                        using (var stream = new System.IO.MemoryStream(bytes))
+                        {
+                            _xmldoc.Load(stream); // the encoding is detected from the BOM / XML declaration (UTF-8 by default)
+                        }
+                        break;
+                    case System.IO.Stream stream:
+                        _xmldoc.Load(stream);
+                        break;
+                    case ScriptonMsxml2DOMDocument otherDocument:
+                        _xmldoc.LoadXml(otherDocument._xmldoc.OuterXml);
+                        break;
+                    case null:
+                        throw new ArgumentException("No XML source was specified (the source is Empty or Nothing)");
+                    default:
+                        throw new ArgumentException($"Unsupported XML source of type '{xmlSource.GetType().FullName}' (a URL or file path, a Byte array, a Stream or a DOMDocument is supported)");
+                }
+            });
+        }
 
-                using var ms = new System.IO.MemoryStream(byteArray);
-                _xmldoc.Load(ms);
-                return true; // Simulate successful load
+        /// <summary>
+        /// Loads the document from a string of XML, like MSXML's DOMDocument.loadXML - returns False (rather than raising an error) if it can not
+        /// be parsed
+        /// </summary>
+        [DispId(55)]
+        public bool loadXML([In][MarshalAs(UnmanagedType.BStr)] string bstrXML)
+        {
+            return TryLoad(() => _xmldoc.LoadXml(bstrXML ?? ""));
+        }
+
+        /// <summary>
+        /// The XML of the whole document
+        /// </summary>
+        [DispId(27)]
+        public string xml => _xmldoc.OuterXml;
+
+        /// <summary>
+        /// Why the most recent load / loadXML returned False (empty if it succeeded) - MSXML reports this through parseError.reason
+        /// </summary>
+        public string parseErrorReason { get; private set; } = "";
+
+        private bool TryLoad(Action load)
+        {
+            parseErrorReason = "";
+            _xmldoc.PreserveWhitespace = preserveWhiteSpace;
+            try
+            {
+                load();
+                return true;
             }
-            throw new NotImplementedException($"xmlSource:{xmlSource}");
+            catch (Exception e) when ((e is XmlException) || (e is System.IO.IOException) || (e is UnauthorizedAccessException) || (e is WebException) || (e is ArgumentException) || (e is NotSupportedException) || (e is UriFormatException))
+            {
+                parseErrorReason = e.Message;
+                return false;
+            }
         }
 
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -113,6 +169,19 @@ namespace Skrypton.RuntimeSupport.Components
             //    // MSXML-style behavior: return empty list instead of throwing
             //    return new MyXMLDOMNodeList(null);
             //}
+        }
+
+        /// <summary>
+        /// The first node that matches the XPath query (Nothing if there is none), like MSXML's DOMDocument.selectSingleNode
+        /// </summary>
+        [DispId(30)]
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public MyXMLDOMNode selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
+        {
+            if (string.IsNullOrEmpty(queryString))
+                return null;
+            XmlNode node = _xmldoc.SelectSingleNode(queryString);
+            return (node == null) ? null : new MyXMLDOMNode(node);
         }
 
         [DispId(40)]
