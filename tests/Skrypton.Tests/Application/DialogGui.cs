@@ -599,7 +599,6 @@ WScript.Echo xmlhttp.responseText
                 {
                     services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
                     services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
-                        .RegisterObjectFactory<object>("ADODB.Connection", h => DialogGui.CreateADODBConnectionClass(h))
                     );
 
                 }), model)
@@ -648,10 +647,6 @@ WScript.Echo xmlhttp.responseText
         {
             return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);
         }
-        public static object CreateADODBConnectionClass(IRuntimeHost runtimeHost)
-        {
-            return new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(runtimeHost);
-        }
         public static TestHostObjectFactoryHostService CreateTestHostObjectFactoryHostService()
         {
             return new TestHostObjectFactoryHostService();
@@ -664,6 +659,27 @@ WScript.Echo xmlhttp.responseText
         {
             return new TestHostProcessControlHostService();
         }
+
+        /// <summary>
+        /// One row for any SELECT: the columns of its column list (or the templater columns for "SELECT *"), INSERT etc. return nothing
+        /// </summary>
+        private static System.Data.DataTable CreateOneRowForSelect(string sql)
+        {
+            var match = System.Text.RegularExpressions.Regex.Match(sql, @"^\s*select\s+(?<columns>.+?)\s+from\s", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+            if (!match.Success)
+                return null;
+            string columnList = match.Groups["columns"].Value.Trim();
+            string[] columns = (columnList == "*") ? TemplaterColumns : columnList.Split(',').Select(c => c.Trim()).ToArray();
+            var table = new System.Data.DataTable();
+            foreach (string column in columns)
+                table.Columns.Add(column, IsIdColumn(column) ? typeof(int) : typeof(string));
+            table.Rows.Add(columns.Select(c => IsIdColumn(c) ? (object)1 : "1").ToArray()); // "1" works both where the script uses the value as text and as a number
+            return table;
+        }
+
+        private static bool IsIdColumn(string column) => column.EndsWith("id", StringComparison.OrdinalIgnoreCase) || column.EndsWith("_ID", StringComparison.OrdinalIgnoreCase);
+
+        private static readonly string[] TemplaterColumns = { "DefaultNotification", "descriptiontext", "diagnosistext", "EmailBodyRawtext", "EmailBodytext", "EmailCaller", "EmailCC", "EmailSubject", "EmailTo", "EscalationLevel", "FunctionalRange", "Impact", "IncidentStatus", "keyword", "keywordorga", "PCAssoziated", "ProductionalRelevance", "Requesttype", "solutiontext", "templatename", "editor", "template_id" };
 
         public static IHostDatabaseConnectionFactoryHostService CreateTestDatabaseConnectionFactoryHostService()
         {
@@ -758,13 +774,13 @@ WScript.Echo xmlhttp.responseText
             model.RegisterSymbolObjectProvider("product", () => symbol_product);
             model.RegisterSymbolObjectProvider("caller", () => hlcaller);
 
-            IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = CreateTestDatabaseConnectionFactoryHostService();
+            // The script loads a template with "Select * from templater where template_id = .." and reads its fields without checking EOF
+            IHostDatabaseConnectionFactoryHostService databaseConnectionFactoryHostService = new TestDatabaseConnectionFactoryHostService(CreateOneRowForSelect);
 
             string dialogXml = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + "_Source" + ".xml"); // CT132_Dialog_83_Source.xml
             var dialog = this.BuildDialogFromXml(dialogXml, CreateTestHostServices(services =>
             {
                 services.RegisterHostService<IHostObjectFactoryHostService>(() => new TestHostObjectFactoryHostService()
-                        .RegisterObjectFactory<object>("ADODB.Connection", h => DialogGui.CreateADODBConnectionClass(h))
                         .RegisterObjectFactory<object>("helpline.hlcontrols.HLHelperPFA", (h) => new DispatchProxyForHLHelperPFA(TestCulture))
                     );
 
