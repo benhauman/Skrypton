@@ -138,7 +138,6 @@ namespace Skrypton.Tests.Application
 
         internal static void SetupDefaultRuntimeFunctionalityProvider(DefaultRuntimeFunctionalityProvider provider, IServiceProvider hostServices, CultureInfo culture)
         {
-            provider.RegisterObjectCreateFactory("Scripting.Dictionary", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptingDictionaryCpuAny());
             provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
             provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
             provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
