@@ -138,6 +138,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonSWbemLocator(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonShellApplication.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonShellApplication(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonADODBConnection.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonADODBConnection(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonADODBRecordset.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonADODBRecordset(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonADODBCommand.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonADODBCommand(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonADODBStream.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonADODBStream(_runtimeHost);
             if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonScriptletTypeLib();
             return null;
