@@ -120,6 +120,17 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         }
 
         [TestMethod]
+        [DataRow(@"C:\a", "b.txt", @"C:\a\b.txt")]
+        [DataRow(@"C:\a\", "b.txt", @"C:\a\b.txt")]
+        [DataRow(@"C:\a", @"\b.txt", @"C:\a\b.txt")]
+        [DataRow("a/b", "c.txt", "a/b/c.txt")]
+        public void FileSystemObjectBuildPathKeepsTheSeparatorOfThePathOnEveryPlatform(string path, string name, string expected)
+        {
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject");
+            Assert.AreEqual(expected, fso.BuildPath(path, name));
+        }
+
+        [TestMethod]
         public void ScriptletTypeLibGuidHasTheWindowsFormat()
         {
             var values = Execute("Dim tl : Set tl = CreateObject(\"Scriptlet.TypeLib\")\r\nDim g : g = tl.Guid\r\ncollector.Report g\r\n");

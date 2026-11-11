@@ -49,7 +49,9 @@ namespace Skrypton.RuntimeSupport.Components
                 return Path + Name.Substring(1);
             if (pathEndsWithSeparator || nameStartsWithSeparator || (Path[Path.Length - 1] == ':'))
                 return Path + Name;
-            return Path + System.IO.Path.DirectorySeparatorChar + Name;
+            // Keep the style of the path (a Windows path "C:\a" stays a Windows path on Linux too), otherwise the platform's separator
+            char separator = (Path.IndexOf('\\') >= 0) ? '\\' : (Path.IndexOf('/') >= 0) ? '/' : System.IO.Path.DirectorySeparatorChar;
+            return Path + separator + Name;
         }
 
         // The path functions work on the text only and, as with scrrun, treat both '\' and '/' as separators on every platform (System.IO.Path
