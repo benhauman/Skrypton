@@ -29,12 +29,14 @@ namespace Skrypton.RuntimeSupport.Components
         private string? _password;
         private TimeSpan? _timeout;
         private HostHttpResponse? _response;
+        private readonly IRuntimeHost _runtimeHost;
 
         public ScriptonServerXMLHTTP60(IRuntimeHost runtimeHost) : base(typeof(ScriptonServerXMLHTTP60))
         {
             if (runtimeHost == null)
                 throw new ArgumentNullException(nameof(runtimeHost));
             _httpClient = runtimeHost.TryGetRuntimeHostService<IHostHttpClientHostService>() ?? DefaultHostHttpClientHostService.Instance;
+            _runtimeHost = runtimeHost;
         }
 
         /// <summary>
@@ -110,7 +112,7 @@ namespace Skrypton.RuntimeSupport.Components
         {
             get
             {
-                var document = new ScriptonMsxml2DOMDocument();
+                var document = new ScriptonMsxml2DOMDocument(_runtimeHost);
                 document.load(Response.Body);
                 return document;
             }

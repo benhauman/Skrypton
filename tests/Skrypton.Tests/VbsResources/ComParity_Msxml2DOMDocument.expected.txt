@@ -11,3 +11,26 @@ True
 IXMLDOMElement|root|x|True
 IXMLDOMSelection|IXMLDOMElement
 <item id="1">one</item>
+[]|Nothing
+IXMLDOMProcessingInstruction|xml|<?xml version="1.0"?>|version="1.0" encoding="UTF-8"
+IXMLDOMProcessingInstruction|True|True
+IXMLDOMElement|<ASAPBatch/>
+True|True
+First|Nothing|dt:CompanyName|dt:CompanyName
+<?xml version="1.0"?>
+<ASAPBatch xmlns="urn:batch" xmlns:dt="urn:datatypes" q="a&lt;b&gt;c&amp;d&quot;e'f"><First/><Session id="s1"/><Request><dt:CompanyName>t&lt;x&gt;&amp;y"z'</dt:CompanyName></Request></ASAPBatch>
+
+<ASAPBatch xmlns="urn:batch" xmlns:dt="urn:datatypes" q="a&lt;b&gt;c&amp;d&quot;e'f"><First/><Session id="s1"/><Request><dt:CompanyName>t&lt;x&gt;&amp;y"z'</dt:CompanyName></Request></ASAPBatch>
+IXMLDOMElement|s1|3
+236
+<?xml version="1.0" encoding="UTF-8"?>
+<ASAPBatch xmlns="urn:batch" xmlns:dt="urn:datatypes" q="a&lt;b&gt;c&amp;d&quot;e'f"><First/><Session id="s1"/><Request><dt:CompanyName>t&lt;x&gt;&amp;y"z'</dt:CompanyName></Request></ASAPBatch>
+
+13|<x><y/></x>
+
+True
+<?xml version="1.0"?>
+<a x="1"><b/><c></c><d>e &amp; &lt; &gt;</d></a>
+
+IXMLDOMProcessingInstruction|xml
+<a x="1"><b/><c></c><d>e &amp; &lt; &gt;</d><n/></a>
