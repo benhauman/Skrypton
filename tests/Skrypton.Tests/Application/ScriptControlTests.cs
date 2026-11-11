@@ -5,6 +5,7 @@ using System.Linq;
 using Helpline.Application.ScriptingModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport.Components;
 using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.RuntimeSupport.Implementations;
@@ -53,13 +54,26 @@ namespace Skrypton.Tests.Application
         }, (x) => { });
 
         [TestMethod]
-        public void Word1() => DoScriptControlTest<object>(null, [], [], [], services =>
+        public void Word1()
         {
-            services.RegisterHostService<IHostObjectFactoryHostService>(() => DialogGui.CreateTestHostObjectFactoryHostService()
-                .RegisterObjectFactory<object>("Word.Application", (h) => DialogGui.CreateMyWordApplicationClass(h))
-            );
-            //services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
-        }, (x) => { });
+            // The built-in Word.Application fills in the customer template, which is a fixture created with Word (Word1.template.docx: the
+            // bookmarks of the script and a 2x6 table) redirected from the path that the script opens
+            string template = Path.Combine(Path.GetTempPath(), "skrypton_word1_" + Guid.NewGuid().ToString("N") + ".docx");
+            using (Stream resource = typeof(ScriptControlTests).Assembly.GetManifestResourceStream("Skrypton.Tests.VbsResources.Word1.template.docx")!)
+            using (FileStream file = File.Create(template))
+                resource.CopyTo(file);
+            try
+            {
+                DoScriptControlTest<object>(null, [], [], [], services =>
+                {
+                    services.RegisterHostService<IHostFileSystemHostService>(() => new TestRedirectingFileSystem().Redirect(@"C:\helpline\Dokumente\A-XXX-VL-Firma-hL_Cons.docx", template));
+                }, (x) => { });
+            }
+            finally
+            {
+                File.Delete(template);
+            }
+        }
 
         [TestMethod]
         public void CT98_dialog276_OnLoad_ButtonCreate()

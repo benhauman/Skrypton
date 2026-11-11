@@ -176,6 +176,28 @@ namespace Skrypton.RuntimeSupport.Components
             }
             catch (System.MissingMemberException ex)
             {
+                // obj.Prop(i) where Prop has no parameters is obj.Prop.Item(i): the default member of the value of Prop (eg. doc.Tables(1), as with COM)
+                if ((args != null) && (args.Length > 0) && ((invokeAttr & (BindingFlags.GetProperty | BindingFlags.InvokeMethod)) != 0))
+                {
+                    PropertyInfo parameterLess = GetProperty(name, BindingFlagsVBScript);
+                    if ((parameterLess != null) && (parameterLess.GetIndexParameters().Length == 0) && parameterLess.CanRead)
+                    {
+                        object value = parameterLess.GetValue(target ?? this, null);
+                        if (value is IReflect reflect)
+                            return reflect.InvokeMember("", BindingFlags.GetProperty | BindingFlags.InvokeMethod, binder, value, args, modifiers, culture, namedParameters);
+                    }
+                }
+
+                // obj.Member(i, j) = v where Member(i, j) returns an object: v is assigned to the default member of that object (eg. ws.Cells(1, 2) = v
+                // sets the Value of the cell, as with COM)
+                if ((args != null) && (args.Length > 1) && ((invokeAttr & BindingFlags.SetProperty) != 0))
+                {
+                    object[] memberArgs = args.Take(args.Length - 1).ToArray();
+                    object value = InvokeMember(name, BindingFlags.GetProperty | BindingFlags.InvokeMethod, binder, target, memberArgs, null, culture, null);
+                    if (value is IReflect reflect)
+                        return reflect.InvokeMember("", BindingFlags.SetProperty, binder, value, new[] { args[args.Length - 1] }, null, culture, null);
+                }
+
                 // No overload takes the arguments as they are: convert object arguments through their default property and try again (see above)
                 if ((args != null) && TryReplaceObjectsWithDefaultValues(args, out object[] valueArgs))
                     return InvokeMember(name, invokeAttr, binder, target, valueArgs, modifiers, culture, namedParameters);

@@ -18,14 +18,12 @@ namespace Skrypton.RuntimeSupport.Components
     {
         public const string ProgId = "WScript.Shell";
 
-        private readonly IHostProcessControlHostService? _processControl;
+        private readonly IRuntimeHost _runtimeHost;
         private readonly IHostEnvironmentHostService _environment;
 
         public ScriptonWScriptShell(IRuntimeHost runtimeHost) : base(typeof(ScriptonWScriptShell))
         {
-            if (runtimeHost == null)
-                throw new ArgumentNullException(nameof(runtimeHost));
-            _processControl = runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>();
+            _runtimeHost = runtimeHost ?? throw new ArgumentNullException(nameof(runtimeHost));
             _environment = runtimeHost.TryGetRuntimeHostService<IHostEnvironmentHostService>() ?? DefaultHostEnvironmentHostService.Instance;
         }
 
@@ -76,7 +74,7 @@ namespace Skrypton.RuntimeSupport.Components
 
         private IHostProcessControlHostService ProcessControl(string member)
         {
-            return _processControl ?? throw new InvalidOperationException(
+            return _runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>() ?? throw new InvalidOperationException(
                 $"WshShell.{member}: starting or controlling processes requires the host to register an {nameof(IHostProcessControlHostService)}"
             );
         }

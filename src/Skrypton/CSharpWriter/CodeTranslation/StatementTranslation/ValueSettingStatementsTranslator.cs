@@ -497,7 +497,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 #pragma warning disable CA1508 // Avoid dead conditional code
                 if (allArgsConfirmedToBeByVal || usesArgProvider == false)
                 {
-                    if (arguments.Length > 1)
+                    // SETm0a1..SETm0a3 / SETm1a1..SETm1a3 (eg. "ws.Cells(1, 2) = v", test: ComParity_ExcelApplication)
+                    if (arguments.Length > 3)
                     {
                         throw new NotImplementedException($"a:{arguments.Length}");
                     }
@@ -557,11 +558,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         if (allArgsConfirmedToBeByVal)
                         {
-                            if (arguments.Length != 1)
+                            methodNameSet = arguments.Length switch
                             {
-                                throw new NotImplementedException($"a:{arguments.Length}");
-                            }
-                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
+                                1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1),
+                                2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a2),
+                                3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a3),
+                                _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                            };
                         }
                         else
                         {
@@ -571,7 +574,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             }
                             else
                             {
-                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
+                                methodNameSet = arguments.Length switch
+                                {
+                                    1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1),
+                                    2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a2),
+                                    3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a3),
+                                    _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                                };
                             }
                         }
                     }
@@ -591,7 +600,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
                     else
                     {
-                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                        methodNameSet = arguments.Length switch
+                        {
+                            1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1),
+                            2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a2),
+                            3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a3),
+                            _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                        };
                     }
                 }
                 else
@@ -620,37 +635,19 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             {
                 if (optionalMemberAccessor.Length > 1)
                 {
-                    // test:XSetM1opt0opt0
-                    // TODO CALL(CALL(CALL())) =
-                    //List<string> txt = new List<string>();
-                    string memberAccessorExprTextLast = "";
-                    int ix = 0;
-                    //for (int ix = 0; ix < optionalMemberAccessor.Length; ix++)
-                    {
-                        string memberAccessorText = optionalMemberAccessor[ix].ToLiteral();
-                        if (argumentsInitialization.Length == 0)
-                        {
-                            string callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
-                            memberAccessorExprTextLast = $@"{_supportRefName.Name}.{callName}(this, _.NnO({targetAccessorName}, ""(call result)""), {memberAccessorText})";
-                        }
-                        else
-                        {
-                            memberAccessorExprTextLast = $"{_supportRefName.Name}.{methodNameSet}(this, {RenderNnO(targetAccessorName)}, {memberAccessorText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})"; // Pass "this" as the "context" argument
-                        }
-                    }
-
-                    ix = 1; // use loop if needed
+                    // test:XSetM1opt0opt0 - "a.B(1).C.D = v": the members before the last one are read ("a.B(1).C"), the last one is set ("D" -
+                    // with the arguments of the target, if any)
+                    string targetOfLastMember = targetAccessorName;
+                    for (int ix = 0; ix < optionalMemberAccessor.Length - 1; ix++)
                     {
                         string callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v0);
-                        string memberAccessorText = optionalMemberAccessor[ix].ToLiteral();
-                        memberAccessorExprTextLast = $@"{_supportRefName.Name}.{callName}(this, _.NnO({memberAccessorExprTextLast}, ""(call result)""), {memberAccessorText})";
+                        targetOfLastMember = $@"{_supportRefName.Name}.{callName}(this, _.NnO({targetOfLastMember}, ""(call result)""), {optionalMemberAccessor[ix].ToLiteral()})";
                     }
-
-                    if (optionalMemberAccessor.Length > 2)
-                    {
-                        throw new NotImplementedException();
-                    }
-                    return new ValueSettingStatementAssignmentFormatDetails(() => memberAccessorExprTextLast, variablesAccessed);
+                    string lastMemberText = optionalMemberAccessor[optionalMemberAccessor.Length - 1].ToLiteral();
+                    string assignment = (argumentsInitialization.Length == 0)
+                        ? $@"{_supportRefName.Name}.{methodNameSet}(this, _.NnO({targetOfLastMember}, ""(call result)""), {lastMemberText}, {translatedExpressionContentDetails.TranslatedContent})" // Pass "this" as the "context" argument
+                        : $@"{_supportRefName.Name}.{methodNameSet}(this, _.NnO({targetOfLastMember}, ""(call result)""), {lastMemberText}, {argumentsInitialization}, {translatedExpressionContentDetails.TranslatedContent})";
+                    return new ValueSettingStatementAssignmentFormatDetails(() => assignment, variablesAccessed);
                 }
                 else
                 {

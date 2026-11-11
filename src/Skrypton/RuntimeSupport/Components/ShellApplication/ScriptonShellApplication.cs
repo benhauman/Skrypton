@@ -17,13 +17,11 @@ namespace Skrypton.RuntimeSupport.Components
     {
         public const string ProgId = "Shell.Application";
 
-        private readonly IHostProcessControlHostService? _processControl;
+        private readonly IRuntimeHost _runtimeHost;
 
         public ScriptonShellApplication(IRuntimeHost runtimeHost) : base(typeof(ScriptonShellApplication))
         {
-            if (runtimeHost == null)
-                throw new ArgumentNullException(nameof(runtimeHost));
-            _processControl = runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>();
+            _runtimeHost = runtimeHost ?? throw new ArgumentNullException(nameof(runtimeHost));
         }
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace Skrypton.RuntimeSupport.Components
             if (string.IsNullOrWhiteSpace(File))
                 throw new ArgumentException("Shell.ShellExecute: a file is required", nameof(File));
 
-            IHostProcessControlHostService processControl = _processControl ?? throw new InvalidOperationException(
+            IHostProcessControlHostService processControl = _runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>() ?? throw new InvalidOperationException(
                 $"Shell.ShellExecute: opening files and URLs requires the host to register an {nameof(IHostProcessControlHostService)}"
             );
             processControl.ShellExecute(File, ToText(vArgs), ToText(vDir), ToText(vOperation), IsMissing(vShow) ? 1 : Convert.ToInt32(vShow, CultureInfo.InvariantCulture));

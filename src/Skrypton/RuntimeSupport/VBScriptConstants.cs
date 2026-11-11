@@ -68,11 +68,11 @@ namespace Skrypton.RuntimeSupport
         public static int vbNo { get { return 7; } }
 
         // String Constants (http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs53.htm)
-        public static char vbCr { get { return '\n'; } }
+        public static char vbCr { get { return '\r'; } } // Chr(13)
         public static string vbCrLf { get { return "\r\n"; } }
-        public static char vbFormFeed { get { return (char)11; } }
-        public static char vbLf { get { return '\n'; } }
-        public static string vbNewLine { get { return Environment.NewLine; } }
+        public static char vbFormFeed { get { return (char)12; } } // Chr(12)
+        public static char vbLf { get { return '\n'; } } // Chr(10)
+        public static string vbNewLine { get { return "\r\n"; } } // vbCrLf on every platform, as with VBScript
         public static char vbNullChar { get { return '\0'; } }
         public static string? vbNullString { get { return (string?)null; } }
         public static char vbTab { get { return '\t'; } }

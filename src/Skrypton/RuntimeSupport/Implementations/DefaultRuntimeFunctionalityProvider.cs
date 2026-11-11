@@ -148,6 +148,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonADODBStream(_runtimeHost);
             if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonScriptletTypeLib();
+            if (classProgId.Equals(Components.ScriptonInternetExplorerApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonInternetExplorerApplication(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonHtmlFile.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonHtmlFile(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonWordApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonWordApplication(_runtimeHost, value => CSTR(value!)); // values become text as with VBScript's CStr
+            if (classProgId.Equals(Components.ScriptonExcelApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonExcelApplication(_runtimeHost, value => CSTR(value!));
             return null;
         }
 

@@ -1,0 +1,12 @@
+HTMLDocument|8|[object]
+HTMLWindow2|9
+IHTMLDataTransfer|8
+Boolean|True
+String
+Boolean|Boolean
+IWebBrowser2|8|Internet Explorer|Internet Explorer
+False|False|0|[]|[]
+False|1|False|True|True|False|True|False
+Long|Long|Long|Long|Long
+True|0|True
+4|about:blank|False

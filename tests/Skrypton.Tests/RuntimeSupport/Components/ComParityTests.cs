@@ -29,6 +29,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_Msxml2DOMDocument() => RunParityScript();
         [TestMethod] public void ComParity_ScriptingFileSystemObject() => RunParityScript();
         [TestMethod] public void ComParity_WScriptShellScriptletWmiAdodbTypeNames() => RunParityScript();
+        [TestMethod] public void ComParity_InternetExplorerHtmlFile() => RunParityScript();
+        [TestMethod] public void ComParity_WordApplication() => RunParityScript();
+        [TestMethod] public void ComParity_ExcelApplication() => RunParityScript();
 
         private void RunParityScript()
         {
@@ -38,10 +41,40 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             // The script reads this variable with WScript.Shell.ExpandEnvironmentStrings (it was set the same way for cscript)
             Environment.SetEnvironmentVariable("SKRYPTON_PARITY_VAR", "parity-value");
 
+            // An Office template of the script (ComParity_*.template.docx / .xlsx, created with Word / Excel) is passed as a file, its path in
+            // SKRYPTON_PARITY_DOCX / SKRYPTON_PARITY_XLSX (as for cscript)
+            string? templateFile = null;
+            foreach (string extension in new[] { "docx", "xlsx" })
+            {
+                using System.IO.Stream? template = typeof(ComParityTests).Assembly.GetManifestResourceStream("Skrypton.Tests.VbsResources." + TestName + ".template." + extension);
+                if (template == null)
+                    continue;
+                templateFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "skrypton_parity_template_" + Guid.NewGuid().ToString("N") + "." + extension);
+                using (System.IO.FileStream file = System.IO.File.Create(templateFile))
+                    template.CopyTo(file);
+                Environment.SetEnvironmentVariable("SKRYPTON_PARITY_" + extension.ToUpperInvariant(), templateFile);
+            }
+            try
+            {
+                RunParityScript(script, expected);
+            }
+            finally
+            {
+                if (templateFile != null)
+                    System.IO.File.Delete(templateFile);
+            }
+        }
+
+        private void RunParityScript(string script, string expected)
+        {
+
             var output = new Output();
             IScriptControl scriptengine = CreateScriptControlClass(
                 // WMI (winmgmts:) lists the processes of the host's process service (cscript lists the real ones; the script only checks that there are some)
-                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService()))),
+                // htmlfile's clipboardData uses an in-memory clipboard (cscript's htmlfile does not change the user's clipboard either)
+                CreateRuntimeHost(CreateTestHostServices(s => s
+                    .RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService())
+                    .RegisterHostService<IHostClipboardHostService>(() => new TestClipboardHostService()))),
                 CreateScriptControlConfiguration(false, [], [])
             );
             scriptengine.AddObject("output", output, false);

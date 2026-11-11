@@ -1265,7 +1265,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v1), // test: CT74_
                         2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v2), // test: db_TrumpfData_script_649_0_0
-                        //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3),
+                        3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3), // test: ComParity_WordApplication (d.Tables.Add(d.Content, 2, 2))
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4), // CT98_dialog276
                         //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
                         _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm2v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
@@ -1299,6 +1299,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     //use 'byref' syntax
                     callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3argp);
                 }
+                callNameResolved = true;
+            }
+            else if ((targetMemberAccessTokensArray.Length == 3) && (argumentsArray.Length == 0) && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v0); // test: ComParity_ExcelApplication (ws.UsedRange.Rows.Count)
+                callNameResolved = true;
+            }
+            else if ((targetMemberAccessTokensArray.Length == 4) && (argumentsArray.Length == 0) && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm4v0); // test: ComParity_ExcelApplication (xl.ActiveSheet.UsedRange.Rows.Count)
                 callNameResolved = true;
             }
             else
