@@ -31,6 +31,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_WScriptShellScriptletWmiAdodbTypeNames() => RunParityScript();
         [TestMethod] public void ComParity_InternetExplorerHtmlFile() => RunParityScript();
         [TestMethod] public void ComParity_WordApplication() => RunParityScript();
+        [TestMethod] public void ComParity_ExcelApplication() => RunParityScript();
 
         private void RunParityScript()
         {
