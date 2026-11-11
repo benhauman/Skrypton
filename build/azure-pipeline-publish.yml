@@ -1,0 +1,123 @@
+# Publish: tests the commit, packs Skrypton, Skrypton.Windows and Skrypton.Windows.NetFx (Skrypton with the command line tools in tools\),
+# pushes them to nuget.org and creates the GitHub release v<version> with the packages.
+#
+# Run it manually (no triggers, no options) on the commit to release - usually main. The version comes from Nerdbank.GitVersioning, so
+# every commit has its own version: running it again on a commit that is published already fails with 409 (the version exists on
+# nuget.org) - that does not affect the build badge, which is the one of the CI pipeline (azure-pipeline-build.yml).
+#
+# Service connections: 'nuget.org' (NuGet, ApiKey) and 'benhauman' (GitHub).
+
+trigger: none
+pr: none
+
+variables:
+- name: solution
+  value: 'Skrypton.slnx'
+- name: buildConfiguration
+  value: 'Release'
+- name: codeCoverageEngine
+  value: Cobertura
+
+jobs:
+# ---------------------------------------------------------------------------
+# Test the commit on Windows (the whole solution, including the command line
+# tools) before anything is published.
+# ---------------------------------------------------------------------------
+- job: Test
+  displayName: 'Test (Windows)'
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 0                 # Nerdbank.GitVersioning needs full history
+
+  - template: azure-pipelines-template/initialize.yml
+
+  - task: UseDotNet@2
+    displayName: 'Ensure .NET 10 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.301'
+      includePreview: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: restore'
+    inputs:
+      command: 'restore'
+      projects: '$(solution)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: build'
+    inputs:
+      command: 'build'
+      projects: '$(solution)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  - script: dotnet test $(solution) --configuration $(buildConfiguration) --no-build --logger trx --results-directory "$(Agent.TempDirectory)/TestResults"
+    displayName: '🧪 dotnet: test'
+
+  - task: PublishTestResults@2
+    displayName: '📊 Publish test results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
+      testRunTitle: 'Skrypton publish ($(buildConfiguration))'
+      buildConfiguration: '$(buildConfiguration)'
+      mergeTestResults: true
+
+# ---------------------------------------------------------------------------
+# Pack, push to nuget.org, create the GitHub release. NuGetCommand@2
+# (NuGet.exe) needs Windows; the push uses the NuGet service connection (no
+# secret variables).
+# ---------------------------------------------------------------------------
+- job: Publish
+  displayName: 'Publish (Windows)'
+  dependsOn: Test
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 0
+
+  - template: azure-pipelines-template/initialize.yml
+
+  - task: UseDotNet@2
+    displayName: 'Ensure .NET 10 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.301'
+      includePreview: false
+
+  - task: NuGetToolInstaller@1
+
+  # Pack: produces $(Build.ArtifactStagingDirectory)/packages and publishes the 'NuGet packages' pipeline artifact.
+  - template: azure-pipelines-template/run.yml
+    parameters:
+      operatingSystem: Windows
+      runtimeIdentifier: win-x64
+      configuration: ${{ variables.buildConfiguration }}
+      codeCoverageEngine: ${{ variables.codeCoverageEngine }}
+
+  - task: NuGetCommand@2
+    displayName: '📦 Push to nuget.org'
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'nuget.org'
+      verbosityPush: 'Detailed'
+
+  - task: GitHubRelease@1
+    displayName: 'Create GitHub release'
+    inputs:
+      gitHubConnection: 'benhauman'
+      repositoryName: $(Build.Repository.Name)
+      target: $(Build.SourceVersion)
+      tagSource: userSpecifiedTag
+      tag: 'v$(Build.BuildNumber)'
+      title: 'v$(Build.BuildNumber)'
+      assets: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+      changeLogType: commitBased
