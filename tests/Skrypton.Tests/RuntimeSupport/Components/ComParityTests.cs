@@ -58,7 +58,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
         /// <summary>
         /// Unhandled errors (ComParity_UnhandledErrors.cases.txt): each script fails and the error that the script control reports - "(line)
-        /// source: description" - must be the one that Windows cscript.exe reports for it (issues #84, #85)
+        /// column) source: description" - must be the one that Windows cscript.exe reports for it (issues #84, #85, #86, #87)
         /// </summary>
         [TestMethod]
         public void ComParity_UnhandledErrors()
@@ -78,11 +78,29 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                     // the error is in scriptengine.Error
                 }
                 Error error = scriptengine.Error!;
-                string actual = $"({error.Line}) {error.Source}: {error.Description}";
+                // Error.Column is 0-based (as MSScriptControl's), cscript reports it 1-based (issue #87)
+                string actual = $"({error.Line}, {error.Column + 1}) {error.Source}: {error.Description}";
                 if (actual != expected)
                     failures.Add($"{script}{Environment.NewLine}  expected: {expected}{Environment.NewLine}  actual:   {actual}");
             }
             Assert.IsEmpty(failures, string.Join(Environment.NewLine, failures));
+        }
+
+        /// <summary>
+        /// The line and the column of the failing statement in a script with more lines, as cscript reports them: "(4, 13)" - a ':' and a
+        /// comment on the line do not count as statements (issue #87)
+        /// </summary>
+        [TestMethod]
+        [DataRow("Dim a\r\na = 1\r\nSub Go(o)\r\n    a = 2 : o.Run \"x\" ' comment: o.Fail\r\nEnd Sub\r\nGo Nothing\r\n", 4, 13, "a = 2 : o.Run \"x\" ' comment: o.Fail")]
+        [DataRow("x = \"a:b\" : y = 1 / 0\r\n", 1, 13, "x = \"a:b\" : y = 1 / 0")]
+        public void ErrorReportsTheLineAndColumnOfTheFailingStatement(string script, int line, int column, string text)
+        {
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
+            Assert.Throws<Exception>(() => scriptengine.ExecuteStatement(script));
+            Error error = scriptengine.Error!;
+            Assert.AreEqual(line, error.Line);
+            Assert.AreEqual(column - 1, error.Column); // 0-based
+            Assert.AreEqual(text, error.Text);
         }
 
         /// <summary>

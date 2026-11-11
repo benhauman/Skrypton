@@ -84,7 +84,7 @@ namespace Skrypton.Windows.Tests
 
         /// <summary>
         /// Unhandled errors (tests\Skrypton.Tests\VbsResources\ComParity_UnhandledErrors.cases.txt): the command line tool must report each
-        /// error as cscript does - "script.vbs(line, column) source: description" (compared without the file and the column) - and end with 1
+        /// error as cscript does - "script.vbs(line, column) source: description" (compared without the file) - and end with 1
         /// </summary>
         [TestMethod]
         public void UnhandledErrorsAreReportedAsCscriptReportsThem()
@@ -101,8 +101,8 @@ namespace Skrypton.Windows.Tests
                     File.WriteAllText(script, lines[i] + "\r\n");
                     CliRunner.Result result = CliRunner.Run(new[] { "/culture:en-US", script });
                     string reported = result.StandardError.Trim();
-                    // "C:\..\x.vbs(1, 41) Microsoft VBScript runtime error: .." -> "(1) Microsoft VBScript runtime error: .."
-                    string actual = System.Text.RegularExpressions.Regex.Replace(reported, @"^.*?\((\d+), \d+\) ", "($1) ");
+                    // "C:\..\x.vbs(1, 41) Microsoft VBScript runtime error: .." -> "(1, 41) Microsoft VBScript runtime error: .."
+                    string actual = System.Text.RegularExpressions.Regex.Replace(reported, @"^.*?\((\d+, \d+)\) ", "($1) ");
                     if ((actual != lines[i + 1]) || (result.ExitCode != 1))
                         failures.Add($"{lines[i]}{Environment.NewLine}  expected: {lines[i + 1]}{Environment.NewLine}  actual:   {actual} (exit code {result.ExitCode})");
                 }

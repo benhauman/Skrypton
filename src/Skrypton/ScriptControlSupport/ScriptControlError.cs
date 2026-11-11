@@ -41,7 +41,7 @@ namespace Skrypton.ScriptControlSupport
         /// error happened before the program could be run (so it is a compilation error). The source line map (1-based C# line to VBScript source
         /// line index) is used to report the VBScript line of a runtime error.
         /// </summary>
-        internal void SetFrom(Exception exception, Assembly? programAssemblyIfCompiled, IReadOnlyDictionary<int, int>? sourceLineMap, string? scriptContent)
+        internal void SetFrom(Exception exception, Assembly? programAssemblyIfCompiled, IReadOnlyDictionary<int, int>? sourceLineMap, string? scriptContent, string? csCode = null)
         {
             if (exception == null)
                 throw new ArgumentNullException(nameof(exception));
@@ -58,13 +58,16 @@ namespace Skrypton.ScriptControlSupport
             HelpFile = null;
             HelpContext = 0;
             Column = 0;
-            Line = isCompilationError ? 0 : TryGetSourceLine(error, programAssemblyIfCompiled!, sourceLineMap);
+            int csLine = 0;
+            Line = isCompilationError ? 0 : TryGetSourceLine(error, programAssemblyIfCompiled!, sourceLineMap, out csLine);
             if (error is Skrypton.RuntimeSupport.Exceptions.VariableIsUndefinedException undefined)
             {
                 // found by the translation, but a runtime error of VBScript (with the line of the variable)
                 Source = RuntimeErrorSource;
                 Line = undefined.ScriptLine;
             }
+            // the column of the statement on the line (0-based, as MSScriptControl's Error.Column - issue #87)
+            Column = (Line > 0) ? ScriptStatementColumns.Find(GetSourceLine(scriptContent, Line), GetSourceLine(csCode, csLine), (error as Skrypton.RuntimeSupport.Exceptions.VariableIsUndefinedException)?.HostTarget) : 0;
             Text = (Line > 0) ? GetSourceLineText(scriptContent, Line) : "";
         }
 
@@ -97,8 +100,9 @@ namespace Skrypton.ScriptControlSupport
         /// <summary>
         /// Find the innermost stack frame in the compiled script program and map its C# line back to the 1-based VBScript line (0 if unknown)
         /// </summary>
-        private static int TryGetSourceLine(Exception error, Assembly programAssembly, IReadOnlyDictionary<int, int>? sourceLineMap)
+        private static int TryGetSourceLine(Exception error, Assembly programAssembly, IReadOnlyDictionary<int, int>? sourceLineMap, out int csLineOfError)
         {
+            csLineOfError = 0;
             if ((sourceLineMap == null) || (sourceLineMap.Count == 0))
                 return 0;
 
@@ -116,9 +120,18 @@ namespace Skrypton.ScriptControlSupport
                 int[] candidates = sourceLineMap.Keys.Where(l => l <= csLine).ToArray();
                 if (candidates.Length == 0)
                     continue;
+                csLineOfError = csLine;
                 return sourceLineMap[candidates.Max()];
             }
             return 0;
+        }
+
+        private static string GetSourceLine(string? content, int line)
+        {
+            if (string.IsNullOrEmpty(content))
+                return "";
+            string[] lines = content!.Replace("\r\n", "\n").Split('\n');
+            return ((line >= 1) && (line <= lines.Length)) ? lines[line - 1] : "";
         }
 
         private static string GetSourceLineText(string? scriptContent, int line)
