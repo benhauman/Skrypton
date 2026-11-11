@@ -129,7 +129,7 @@ namespace Skrypton.RuntimeSupport.Components
         /// The XML of the whole document
         /// </summary>
         [DispId(27)]
-        public string xml => _xmldoc.OuterXml;
+        public string xml => (_xmldoc.DocumentElement == null) ? "" : _xmldoc.OuterXml + "\r\n"; // MSXML ends the document with a line break
 
         /// <summary>
         /// Why the most recent load / loadXML returned False (empty if it succeeded) - MSXML reports this through parseError.reason
@@ -176,12 +176,12 @@ namespace Skrypton.RuntimeSupport.Components
         /// </summary>
         [DispId(30)]
         [return: MarshalAs(UnmanagedType.IDispatch)]
-        public MyXMLDOMNode selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
+        public object selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
         {
             if (string.IsNullOrEmpty(queryString))
                 return null;
             XmlNode node = _xmldoc.SelectSingleNode(queryString);
-            return (node == null) ? null : new MyXMLDOMNode(node);
+            return ScriptonXmlNodeFactory.Create(node);
         }
 
         [DispId(40)]
@@ -208,6 +208,7 @@ namespace Skrypton.RuntimeSupport.Components
 
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [DefaultMember("Item")] // +[DispId(0)] +[IsDefault]
+    [SourceClassName("IXMLDOMSelection")] // TypeName(doc.selectNodes(..)) (as MSXML)
     internal sealed class MyXMLDOMNodeList : IEnumerable
     {
         private readonly XmlNodeList _nodes;
@@ -246,19 +247,19 @@ namespace Skrypton.RuntimeSupport.Components
                 if (index < 0 || index >= _nodes.Count)
                     return null; // MSXML returns null, not exception
 
-                return new MyXMLDOMNode(_nodes[index]);
+                return ScriptonXmlNodeFactory.Create(_nodes[index]);
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            List<MyXMLDOMNode> resultNodes = new List<MyXMLDOMNode>();
+            List<object> resultNodes = new List<object>();
             var xe = _nodes.GetEnumerator();
             if (xe != null)
             {
                 while (xe.MoveNext())
                 {
-                    resultNodes.Add(new MyXMLDOMNode((XmlNode)xe.Current));
+                    resultNodes.Add(ScriptonXmlNodeFactory.Create((XmlNode)xe.Current));
                 }
             }
 
@@ -266,76 +267,91 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
-    [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
-    internal sealed class MyXMLDOMElement// : IXMLDOMElement
+    internal static class ScriptonXmlNodeFactory
+    {
+        /// <summary>
+        /// The DOM wrapper for a node - an element is an IXMLDOMElement, anything else an IXMLDOMNode (Nothing for null)
+        /// </summary>
+        public static object Create(XmlNode node)
+        {
+            if (node == null)
+                return null;
+            return (node is XmlElement element) ? new MyXMLDOMElement(element) : new MyXMLDOMNode(node);
+        }
+    }
+
+    [SourceClassName("IXMLDOMElement")] // TypeName(doc.documentElement), as MSXML
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMElement : MyXMLDOMNodeBase
     {
         private readonly XmlElement _element;
 
-        public MyXMLDOMElement(XmlElement element)
+        public MyXMLDOMElement(XmlElement element) : base(element)
         {
             _element = element;
         }
 
-        public string tagNameXZZZ => _element?.Name;
+        public string tagName => _element.Name;
 
-        public string textZZZZ
+        /// <summary>
+        /// The value of the attribute, or Null if the element has no such attribute (as MSXML)
+        /// </summary>
+        public object getAttribute(string name) => _element.HasAttribute(name) ? _element.GetAttribute(name) : (object)DBNull.Value;
+
+        public void setAttribute(string name, object value) => _element.SetAttribute(name, Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    [SourceClassName("IXMLDOMNode")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMNode : MyXMLDOMNodeBase
+    {
+        public MyXMLDOMNode(XmlNode node) : base(node)
         {
-            get => _element?.InnerText;
-            set
-            {
-                if (_element != null)
-                    _element.InnerText = value;
-            }
-        }
-
-        // Optional: expose underlying node if needed internally
-        //public XmlElement UnderlyingElement => _element;
-
-        [DispId(30)]
-        public MyXMLDOMNode selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
-        {
-            if (_element == null || string.IsNullOrEmpty(queryString))
-                return null;
-
-            //try
-            //{
-            XmlNode node = _element.SelectSingleNode(queryString);
-
-            if (node == null)
-                return null;
-
-            return new MyXMLDOMNode(node);
-            //}
-            //catch
-            //{
-            //    // MSXML-style behavior: invalid XPath returns null
-            //    return null;
-            //}
         }
     }
 
-    [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
-    internal sealed class MyXMLDOMNode// : IXMLDOMNode
+    /// <summary>
+    /// The IXMLDOMNode members that elements and other nodes share
+    /// </summary>
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal abstract class MyXMLDOMNodeBase
     {
         private readonly XmlNode _node;
 
-        public MyXMLDOMNode(XmlNode node)
+        protected MyXMLDOMNodeBase(XmlNode node)
         {
-            _node = node;
+            _node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
-        public string nodeNameZZZ => _node?.Name;
+        public string nodeName => _node.Name;
+
+        /// <summary>
+        /// The value of an attribute, text or comment node, Null for an element (as MSXML)
+        /// </summary>
+        public object nodeValue => (_node is XmlElement) ? DBNull.Value : (object)_node.Value;
 
         public string text
         {
-            get => _node?.InnerText;
-            set
-            {
-                if (_node != null)
-                    _node.InnerText = value;
-            }
+            get => _node.InnerText;
+            set => _node.InnerText = value;
         }
 
-        //internal XmlNode UnderlyingNode => _node;
+        public string xml => _node.OuterXml;
+
+        [DispId(30)]
+        public object selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
+        {
+            if (string.IsNullOrEmpty(queryString))
+                return null;
+            return ScriptonXmlNodeFactory.Create(_node.SelectSingleNode(queryString));
+        }
+
+        public MyXMLDOMNodeList selectNodes([In][MarshalAs(UnmanagedType.BStr)] string queryString)
+        {
+            return new MyXMLDOMNodeList(string.IsNullOrEmpty(queryString) ? null : _node.SelectNodes(queryString));
+        }
     }
 }

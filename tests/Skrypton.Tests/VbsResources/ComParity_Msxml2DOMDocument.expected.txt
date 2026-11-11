@@ -1,0 +1,13 @@
+DOMDocument|9
+True
+two
+2
+root
+<root><item id="1">one</item><item id="2">two</item></root>
+
+False
+Nothing
+True
+IXMLDOMElement|root|x|True
+IXMLDOMSelection|IXMLDOMElement
+<item id="1">one</item>

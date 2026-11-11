@@ -317,11 +317,6 @@ namespace Skrypton.Tests
             return container;
         }
 
-        public IHostFileSystemHostService CreateWindowsFileSystem()
-        {
-            return new WindowsFileSystem();
-        }
-
         public virtual ScriptControlConfiguration CreateScriptControlConfiguration(bool tempEnabled, string[] translationSuppression, string[] noWarn)
         {
             return new TestScriptControlConfiguration(this, tempEnabled, translationSuppression, noWarn);

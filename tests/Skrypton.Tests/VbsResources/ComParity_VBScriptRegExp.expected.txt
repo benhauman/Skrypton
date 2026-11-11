@@ -1,0 +1,10 @@
+IRegExp2|9
+True|False
+IMatchCollection2|2
+IMatch2|c@d.COM|12|7|2|c
+<B:A> and <d:c>
+x1 x2 x3
+[1] [2] [3]
+78
+2|True|Empty|ISubMatches
+8|a

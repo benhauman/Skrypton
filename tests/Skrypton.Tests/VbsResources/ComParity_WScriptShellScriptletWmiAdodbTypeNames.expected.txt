@@ -1,0 +1,11 @@
+IWshShell3|9
+parity-value|%NO_SUCH_VAR_X%
+IGenScriptletTLib|40|{|}|True
+IServerXMLHTTPRequest2|0
+IShellDispatch6
+SWbemServicesEx
+SWbemObjectSet|True
+SWbemObjectEx|True|3
+SWbemLocator
+Connection|Recordset|Command|Stream
+9|9|9|9|9

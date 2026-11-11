@@ -8,10 +8,9 @@ using Skrypton.RuntimeSupport.Attributes;
 
 namespace Skrypton.RuntimeSupport.Components
 {
-    [SourceClassName("TypeLib")]
+    [SourceClassName("IGenScriptletTLib")] // TypeName(CreateObject("Scriptlet.TypeLib")) (as with Windows VBScript)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [DefaultMember(nameof(ScriptonScriptletTypeLib.GUID))]  // +[DispId(0)] +[IsDefault] // "Scriptlet.TypeLib"
 
     internal sealed class ScriptonScriptletTypeLib : ScriptonIReflectOnClrType
     {
@@ -19,11 +18,12 @@ namespace Skrypton.RuntimeSupport.Components
         {
         }
 
-        [DispId(0)]
-        public string GUID()
-        {
-            return System.Guid.NewGuid().ToString();
-        }
+        /// <summary>
+        /// A new GUID in registry format, eg. "{3F2504E0-4F89-11D3-9A0C-0305E82C3301}" - as with Windows, the value is 40 characters long: the
+        /// 38 characters of the GUID followed by two NUL characters (scripts use Left(.., 38) or Mid(.., 2, 36))
+        /// </summary>
+        [DispId(1)] // not the default member: VarType(CreateObject("Scriptlet.TypeLib")) is 9 (verified with cscript)
+        public string GUID => "{" + System.Guid.NewGuid().ToString().ToUpperInvariant() + "}" + "\0\0";
     }
 
     /*

@@ -90,7 +90,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 "host.Report doc.load(other)\r\n" +
                 "host.Report doc.xml\r\n",
                 new Host());
-            CollectionAssert.AreEqual(new object[] { true, Xml }, values.ToArray());
+            CollectionAssert.AreEqual(new object[] { true, Xml + "\r\n" } /* MSXML ends doc.xml with a line break */, values.ToArray());
         }
     }
 }

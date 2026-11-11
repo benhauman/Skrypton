@@ -26,6 +26,7 @@
     <EmbeddedResource Include="VbsResources\**\*.xml" />
     <EmbeddedResource Include="VbsResources\**\*.cs" />
     <EmbeddedResource Include="VbsResources\**\*.cstxt" />
+    <EmbeddedResource Include="VbsResources\**\*.expected.txt" />
   </ItemGroup>
 
   <ItemGroup>

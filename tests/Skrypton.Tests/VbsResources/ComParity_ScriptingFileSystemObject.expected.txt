@@ -1,0 +1,19 @@
+FileSystemObject|9
+C:\a\b.txt|C:\a\b.txt|C:\a\b.txt
+b.txt|b|txt|C:\a
+dir||
+12|.tmp|rad
+TextStream
+True
+line1|False|line2|True
+File|True
+exists:0
+delete missing:53
+getfile missing:53
+False|Folder
+open missing:53
+getfolder missing:76
+deletefolder missing:76
+no overwrite:58
+Folder|8
+C:\|C:|x.tar|c.txt|
