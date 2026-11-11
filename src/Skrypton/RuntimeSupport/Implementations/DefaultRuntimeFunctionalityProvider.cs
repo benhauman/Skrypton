@@ -132,6 +132,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonServerXMLHTTP60(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonWScriptShell.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonWScriptShell(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonFileSystemObject.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonFileSystemObject(_runtimeHost);
             if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonScriptletTypeLib();
             return null;
