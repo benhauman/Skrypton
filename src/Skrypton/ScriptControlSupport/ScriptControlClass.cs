@@ -319,9 +319,11 @@ namespace Skrypton.ScriptControlSupport
                 }
             }
 
+            // Translation warnings ("Option Explicit is ignored ..") go to the trace listeners, not to the console of the host (whose standard output
+            // may be the output of the script, eg. for the command line tools)
             var warningLogger = Skrypton.CSharpWriter.DefaultTranslator.CommentsLogger(true, new Skrypton.CSharpWriter.DefaultTranslator.DelegateWrappingWarningLogger(warningMessageText =>
             {
-                Console.WriteLine(warningMessageText);
+                System.Diagnostics.Trace.WriteLine(warningMessageText, "Skrypton");
             }));
 
             _translationCount++;
