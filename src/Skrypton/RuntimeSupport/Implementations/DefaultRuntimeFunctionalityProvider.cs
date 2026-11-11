@@ -1739,7 +1739,27 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             if (value == null)
                 return (short)MyVarEnum.VT_EMPTY; // VarType(Empty) is 0 (an Integer), not the enum name
-            return (short)IDispatchAccess.GetVariantType(value!);
+            MyVarEnum variantType = IDispatchAccess.GetVariantType(value!);
+            if ((variantType == MyVarEnum.VT_DISPATCH) && !((value is ScriptDispatchWrapper wrapper) && (wrapper.WrappedObject == null)))
+            {
+                // As in VBScript, VarType of an object with a parameter-less default property is the type of its value (eg. VarType(rs("name")) is 8
+                // for a text ADODB Field, VarType(CreateObject("ADODB.Connection")) is 8 - verified with cscript, ADO and SQL Server); objects
+                // without one (eg. Scripting.Dictionary, VBScript.RegExp) and Nothing are 9 (vbObject)
+                object? defaultValue;
+                bool hasDefaultValue;
+                try
+                {
+                    hasDefaultValue = _valueRetriever.TryVAL(value, out bool parameterLessDefaultMemberWasAvailable, out defaultValue) && parameterLessDefaultMemberWasAvailable;
+                }
+                catch (ObjectDoesNotSupportPropertyOrMemberException)
+                {
+                    hasDefaultValue = false;
+                    defaultValue = null;
+                }
+                if (hasDefaultValue)
+                    return (defaultValue == null) ? (short)MyVarEnum.VT_EMPTY : (short)IDispatchAccess.GetVariantType(defaultValue);
+            }
+            return (short)variantType;
         }
 
         // - Array functions
