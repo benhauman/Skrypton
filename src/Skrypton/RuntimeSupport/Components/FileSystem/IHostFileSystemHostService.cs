@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Skrypton.Tests.RuntimeSupport.Components;
+namespace Skrypton.RuntimeSupport.Components;
 
 public interface IHostFileSystemHostService
 {

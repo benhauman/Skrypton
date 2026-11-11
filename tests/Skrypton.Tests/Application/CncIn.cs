@@ -139,9 +139,6 @@ namespace Skrypton.Tests.Application
         internal static void SetupDefaultRuntimeFunctionalityProvider(DefaultRuntimeFunctionalityProvider provider, IServiceProvider hostServices, CultureInfo culture)
         {
             provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
-            provider.RegisterObjectCreateFactory("Msxml2.ServerXMLHTTP.6.0", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyServerXMLHTTP60());
-            provider.RegisterObjectCreateFactory("Msxml2.DOMDocument", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyMsxml2DOMDocument());
-            provider.RegisterObjectCreateFactory("VBScript.RegExp", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyVBScriptRegExp(culture));
             provider.RegisterObjectCreateFactory("WScript.Shell", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyWScriptShell(hostServices));
             provider.RegisterObjectCreateFactory("WbemScripting.SWbemLocator", (optionalMonikerValues) => new Skrypton.Tests.RuntimeSupport.Implementations.MySWbemLocator(hostServices, optionalMonikerValues));
             //provider.RegisterObjectCreateFactory("ADODB.Connection", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
@@ -150,7 +147,6 @@ namespace Skrypton.Tests.Application
             provider.RegisterObjectCreateFactory("ADODB.Recordset", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBRecordSet());
             provider.RegisterObjectCreateFactory("ADODB.Stream", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBStream());
             provider.RegisterObjectCreateFactory("Scripting.FileSystemObject", (_) => Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport.MyFileSystemObject.Create(hostServices));
-            provider.RegisterObjectCreateFactory("Scriptlet.TypeLib", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyScriptletTypeLib());
         }
 
 
