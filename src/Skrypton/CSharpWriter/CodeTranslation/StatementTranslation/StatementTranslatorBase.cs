@@ -60,7 +60,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     return GetTargetChainTokenAsText(dotTokens, targetAccessorName, "o");
                 }
-                throw new NotImplementedException(targetAccessorName);
+                return GetCallResultName(targetAccessorName);
             }
             else if (dotTokens.Length == 1)
             {
@@ -70,7 +70,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 if (targetAccessorName.Contains('"', StringComparison.Ordinal))
                 {
-                    throw new NotImplementedException(targetAccessorName);
+                    return GetCallResultName(targetAccessorName); // see issue #72
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             }
             else if (targetAccessorName.Contains('"', StringComparison.Ordinal))
             {
-                throw new NotImplementedException(targetAccessorName);
+                return GetCallResultName(targetAccessorName); // see issue #72
             }
             else
             {
@@ -105,9 +105,31 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     return "(GetObject result)";
                 }
-                throw new NotImplementedException(targetAccessorName);
+                if (targetAccessorName.StartsWith($"{token0}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CREATEOBJECT)}", StringComparison.Ordinal)) // _.CREATEOBJECT("..").Member (see issue #72)
+                {
+                    return "(CreateObject result)";
+                }
+                return GetCallResultName(targetAccessorName);
             }
             return dotTokens[1];
+        }
+
+        /// <summary>
+        /// This name is only used in the "Object required" error message for a member access on the target, so any other call result gets a generic
+        /// name rather than failing the translation (see issue #72), eg. "_.LCASE(x)" is "(LCASE result)"
+        /// </summary>
+        private static string GetCallResultName(string targetAccessorName)
+        {
+            int openBracketIndex = targetAccessorName.IndexOf('(', StringComparison.Ordinal);
+            if (openBracketIndex > 0)
+            {
+                string callee = targetAccessorName.Substring(0, openBracketIndex);
+                int lastDotIndex = callee.LastIndexOf('.');
+                string name = (lastDotIndex >= 0) ? callee.Substring(lastDotIndex + 1) : callee;
+                if (name.Length != 0)
+                    return $"({name} result)";
+            }
+            return "(expression result)";
         }
     }
 }
