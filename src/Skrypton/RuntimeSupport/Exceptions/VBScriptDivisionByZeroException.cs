@@ -6,7 +6,7 @@ namespace Skrypton.RuntimeSupport.Exceptions
     [Serializable]
     public sealed class VBScriptDivisionByZeroException : SpecificVBScriptException
     {
-        private const string BASIC_ERROR_DESCRIPTION = "Object variable not set";
+        private const string BASIC_ERROR_DESCRIPTION = "Division by zero";
 
         [Obsolete("do not use it")] private VBScriptDivisionByZeroException() : this(null, innerException: null) { }
         public VBScriptDivisionByZeroException(string message) : this(message, innerException: null) { }
