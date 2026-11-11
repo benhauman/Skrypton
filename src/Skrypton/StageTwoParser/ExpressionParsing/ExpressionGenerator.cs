@@ -788,51 +788,54 @@ Part2: 'Close'
                 if (y == null)
                     throw new ArgumentNullException(nameof(y));
 
-                int operatorTypeValueX = GetOperatorTypeValue(x.Item1);
-                int operatorTypeValueY = GetOperatorTypeValue(y.Item1);
-                if (operatorTypeValueX != operatorTypeValueY)
-                    return operatorTypeValueX.CompareTo(operatorTypeValueY);
+                int precedenceX = GetPrecedenceGroup(x.Item1);
+                int precedenceY = GetPrecedenceGroup(y.Item1);
+                if (precedenceX != precedenceY)
+                    return precedenceX.CompareTo(precedenceY);
 
-                int contentValueX = GetContentValue(x.Item1);
-                int contentValueY = GetContentValue(y.Item1);
-                if (contentValueX != contentValueY)
-                    return contentValueX.CompareTo(contentValueY);
-
+                // Operators in the same precedence group are evaluated left-to-right, so the right-most one is the last to be applied (and so is
+                // the one to break on, which is the one sorted last)
                 return x.Item2.CompareTo(y.Item2);
             }
 
-            //private static IEnumerable<string> AllOperatorContentStrings =
-            //    AtomToken.ArithmeticAndStringOperatorTokenValues
-            //    .Concat(AtomToken.ComparisonTokenValues)
-            //    .Concat(AtomToken.LogicalOperatorTokenValues);
-            //
-            private static int GetOperatorTypeValue(OperationExpressionSegment segment)
+            /// <summary>
+            /// VBScript's operator precedence groups, from the most tightly-binding to the least (see
+            /// https://learn.microsoft.com/en-us/previous-versions/6s7zy3d1(v=vs.85)). Operators within the same group have equal precedence and
+            /// are evaluated left-to-right (eg. "+" and "-" are one group, so "a - b + c" is "(a - b) + c"). Unary negation is not included here
+            /// since it is dealt with separately before this ordering is applied.
+            /// </summary>
+            private static readonly string[][] PrecedenceGroups = new[]
+            {
+                new[] { "^" },
+                new[] { "*", "/" },
+                new[] { "\\" },
+                new[] { "\"" },
+                new[] { "MOD" },
+                new[] { "+", "-" },
+                new[] { "&" },
+                new[] { "=", "<>", "<", ">", "<=", ">=", "IS" },
+                new[] { "NOT" },
+                new[] { "AND" },
+                new[] { "OR" },
+                new[] { "XOR" },
+                new[] { "EQV" },
+                new[] { "IMP" }
+            };
+
+            private static int GetPrecedenceGroup(OperationExpressionSegment segment)
             {
                 if (segment == null)
                     throw new ArgumentNullException(nameof(segment));
 
-                if (segment.Token is LogicalOperatorToken)
-                    return 3;
-                else if (segment.Token is ComparisonOperatorToken)
-                    return 2;
-                else
-                    return 1;
-            }
-
-            private static int GetContentValue(OperationExpressionSegment segment)
-            {
-                if (segment == null)
-                    throw new ArgumentNullException(nameof(segment));
-
-                var operatorContentOptions =
-                    AtomToken.ArithmeticAndStringOperatorTokenValues
-                    .Concat(AtomToken.ComparisonTokenValues)
-                    .Concat(AtomToken.LogicalOperatorTokenValues)
-                    .Select((value, index) => new { Value = value, Index = index })
-                    .FirstOrDefault(c => c.Value.Equals(segment.Token.Content, StringComparison.OrdinalIgnoreCase));
-                if (operatorContentOptions == null)
-                    throw new NotSupportedException("Unrecognized operator token value");
-                return operatorContentOptions.Index;
+                for (int index = 0; index < PrecedenceGroups.Length; index++)
+                {
+                    if (PrecedenceGroups[index].Any(value => value.Equals(segment.Token.Content, StringComparison.OrdinalIgnoreCase)))
+                        return index;
+                }
+                throw new NotSupportedException(
+                    $"Unrecognized operator token value '{segment.Token.Content}' (token type {segment.Token.GetType().Name}) at line {segment.Token.LineIndex + 1}" +
+                    $" in {nameof(ExpressionGenerator)}.{nameof(IndexerOperationExpressionSegmentSorter)}.{nameof(GetPrecedenceGroup)}"
+                );
             }
         }
 
