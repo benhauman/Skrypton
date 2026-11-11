@@ -1359,6 +1359,29 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
                 else
                 {
+                    // As with VBScript / COM: obj.Member(args) where Member takes no arguments is obj.Member followed by the default member of its
+                    // value with those arguments - eg. match.SubMatches(0) is match.SubMatches.Item(0) (verified with cscript)
+                    if (argumentsArray.Length > 0)
+                    {
+                        MethodInfo? parameterLessMember = GetNamedGetMethods(targetType, optionalName, 0, allowPrivateAccess).FirstOrDefault();
+                        if (parameterLessMember != null)
+                        {
+                            GetterInfo memberGetter = GenerateCompiledLinqExpressionGetInvoker(targetType, parameterLessMember, 0);
+                            return new GetterInfo(
+                                (invokeTarget, invokeArguments) =>
+                                {
+                                    object memberValue = memberGetter.DelegateFunc(invokeTarget, Array.Empty<object?>());
+                                    if (memberValue == null)
+                                        throw new ObjectRequiredException($"'{optionalName}' (Nothing) can not be called with arguments");
+                                    return InvokeGetter(memberValue, null, invokeArguments, allowPrivateAccess: false, onlyConsiderMethods: false)!;
+                                },
+                                $"{targetType.FullName}::{optionalName}().[default]",
+                                null,
+                                usesIReflect: false
+                            );
+                        }
+                    }
+
                     string argstext = "";
                     for (int aix = 0; aix < argumentsArray.Length; aix++)
                     {

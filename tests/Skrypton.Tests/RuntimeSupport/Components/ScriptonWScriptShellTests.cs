@@ -52,7 +52,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 "sh.Run \"test.txt\", 0, True\r\n" +
                 "collector.Report TypeName(sh)\r\n",
                 processControl);
-            CollectionAssert.AreEqual(new object[] { 0, "WshShell" }, values.ToArray());
+            CollectionAssert.AreEqual(new object[] { 0, "IWshShell3" }, values.ToArray());
             CollectionAssert.AreEqual(new[] { "notepad.exe|1|False", "test.txt|0|True" }, processControl.Started.ToArray());
         }
 

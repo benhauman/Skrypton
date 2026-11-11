@@ -13,7 +13,7 @@ namespace Skrypton.RuntimeSupport.Components
     /// The built-in Msxml2.ServerXMLHTTP.6.0. Requests are sent through the host's IHostHttpClientHostService (or with HttpClient if the host has
     /// not registered one), synchronously - a request opened with async = True is also completed by send (readyState is then 4).
     /// </summary>
-    [SourceClassName("ServerXMLHTTP60")] // TypeName(CreateObject("Msxml2.ServerXMLHTTP.6.0"))
+    [SourceClassName("IServerXMLHTTPRequest2")] // TypeName(CreateObject("Msxml2.ServerXMLHTTP.6.0")) (as with Windows VBScript)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonServerXMLHTTP60 : ScriptonIReflectOnClrType

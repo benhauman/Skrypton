@@ -10,7 +10,7 @@ namespace Skrypton.RuntimeSupport.Components
     /// The built-in Shell.Application (IShellDispatch). ShellExecute goes through the host's IHostProcessControlHostService - opening files and
     /// URLs from a script is a decision for the host, so it raises an error if the host has not registered one.
     /// </summary>
-    [SourceClassName("Shell")] // TypeName(CreateObject("Shell.Application")) is "IShellDispatch6" in Windows, "Shell" is kept for compatibility
+    [SourceClassName("IShellDispatch6")] // TypeName(CreateObject("Shell.Application")) (as with Windows VBScript)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonShellApplication : ScriptonIReflectOnClrType

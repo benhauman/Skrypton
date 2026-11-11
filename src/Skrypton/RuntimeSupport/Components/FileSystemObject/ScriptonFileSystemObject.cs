@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
+using Skrypton.RuntimeSupport.Exceptions;
 using Skrypton.RuntimeSupport.Implementations;
 
 namespace Skrypton.RuntimeSupport.Components
@@ -51,19 +52,57 @@ namespace Skrypton.RuntimeSupport.Components
             return Path + System.IO.Path.DirectorySeparatorChar + Name;
         }
 
-        public string GetFileName(string Path) => System.IO.Path.GetFileName((Path ?? "").TrimEnd('\\', '/'));
+        // The path functions work on the text only and, as with scrrun, treat both '\' and '/' as separators on every platform (System.IO.Path
+        // only knows '/' on Linux)
 
-        public string GetBaseName(string Path) => System.IO.Path.GetFileNameWithoutExtension((Path ?? "").TrimEnd('\\', '/'));
+        public string GetFileName(string Path)
+        {
+            string trimmed = TrimTrailingSeparators(Path);
+            if (IsRootOnly(trimmed))
+                return "";
+            return trimmed.Substring(LastSeparatorIndex(trimmed) + 1);
+        }
+
+        public string GetBaseName(string Path)
+        {
+            string fileName = GetFileName(Path);
+            int dot = fileName.LastIndexOf('.');
+            return (dot < 0) ? fileName : fileName.Substring(0, dot);
+        }
 
         public string GetExtensionName(string Path)
         {
-            string extension = System.IO.Path.GetExtension((Path ?? "").TrimEnd('\\', '/'));
-            return string.IsNullOrEmpty(extension) ? "" : extension.Substring(1);
+            string fileName = GetFileName(Path);
+            int dot = fileName.LastIndexOf('.');
+            return (dot < 0) ? "" : fileName.Substring(dot + 1);
         }
 
-        public string GetParentFolderName(string Path) => System.IO.Path.GetDirectoryName((Path ?? "").TrimEnd('\\', '/')) ?? "";
+        public string GetParentFolderName(string Path)
+        {
+            string trimmed = TrimTrailingSeparators(Path);
+            if (IsRootOnly(trimmed))
+                return "";
+            int separator = LastSeparatorIndex(trimmed);
+            if (separator < 0)
+                return "";
+            string parent = trimmed.Substring(0, separator);
+            return ((parent.Length == 2) && (parent[1] == ':')) ? parent + trimmed[separator] : parent; // "C:\a" -> "C:\"
+        }
 
-        public string GetDriveName(string Path) => System.IO.Path.GetPathRoot(Path ?? "")?.TrimEnd('\\', '/') ?? "";
+        public string GetDriveName(string Path)
+        {
+            string path = Path ?? "";
+            return ((path.Length >= 2) && (path[1] == ':')) ? path.Substring(0, 2) : "";
+        }
+
+        private static string TrimTrailingSeparators(string path)
+        {
+            return (path ?? "").TrimEnd('\\', '/'); // "C:\a\dir\" -> "C:\a\dir", "C:\" -> "C:"
+        }
+
+        private static bool IsRootOnly(string trimmedPath) => (trimmedPath.Length == 0) || ((trimmedPath.Length == 2) && (trimmedPath[1] == ':'));
+
+        private static int LastSeparatorIndex(string path) => Math.Max(path.LastIndexOf('\\'), path.LastIndexOf('/'));
 
         public string GetAbsolutePathName(string Path) => System.IO.Path.GetFullPath(string.IsNullOrEmpty(Path) ? "." : Path);
 
@@ -77,14 +116,14 @@ namespace Skrypton.RuntimeSupport.Components
         public void DeleteFile(string FileSpec, [Optional, DefaultParameterValue(false)] bool Force)
         {
             if (!_hostFileSystem.FileExists(FileSpec))
-                throw new System.IO.FileNotFoundException("File not found", FileSpec);
+                throw FileNotFound(FileSpec);
             _hostFileSystem.DeleteFile(FileSpec);
         }
 
         public void DeleteFolder(string FolderSpec, [Optional, DefaultParameterValue(false)] bool Force)
         {
             if (!_hostFileSystem.DirectoryExists(FolderSpec))
-                throw new System.IO.DirectoryNotFoundException("Path not found: " + FolderSpec);
+                throw PathNotFound(FolderSpec);
             _hostFileSystem.DeleteDirectory(FolderSpec, recursive: true);
         }
 
@@ -137,11 +176,11 @@ namespace Skrypton.RuntimeSupport.Components
         public IFile GetFile(string path)
         {
             if (!_hostFileSystem.FileExists(path))
-                throw new System.IO.FileNotFoundException(path);
+                throw FileNotFound(path);
             HostFileSystemFileInfo nfo = _hostFileSystem.GetFileInfo(path);
             if (!nfo.Exists)
             {
-                throw new System.IO.FileNotFoundException(path);
+                throw FileNotFound(path);
             }
 
             return new ScriptonFile(_hostFileSystem, nfo);
@@ -150,11 +189,11 @@ namespace Skrypton.RuntimeSupport.Components
         public IFolder GetFolder(string path)
         {
             if (!_hostFileSystem.DirectoryExists(path))
-                throw new System.IO.DirectoryNotFoundException(path);
+                throw PathNotFound(path);
             HostFileSystemDirectoryInfo nfo = _hostFileSystem.GetDirectoryInfo(path);
             if (!nfo.Exists)
             {
-                throw new System.IO.DirectoryNotFoundException(path);
+                throw PathNotFound(path);
             }
 
             return new ScriptonFolder(_hostFileSystem, nfo);
@@ -181,6 +220,8 @@ namespace Skrypton.RuntimeSupport.Components
             if (!Enum.IsDefined(typeof(IOMode), mode))
                 throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
 
+            if (!create && !_hostFileSystem.FileExists(path))
+                throw FileNotFound(path); // error 53, as scrrun
             if (mode == IOMode.ForReading)
             {
                 return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileRead(path));
@@ -192,12 +233,27 @@ namespace Skrypton.RuntimeSupport.Components
         }
 
         /// <summary>
-        /// CreateTextFile(FileName, [Overwrite = False], [Unicode = False]) - creates the file; an existing file is only replaced if Overwrite is True (as with scrrun)
+        /// CreateTextFile(FileName, [Overwrite = True], [Unicode = False]) - creates the file; an existing file is replaced unless Overwrite is False,
+        /// in which case error 58 (File already exists) is raised (verified with Windows scrrun)
         /// </summary>
-        public ITextStream CreateTextFile(string path, bool overwrite = false, bool unicode = false)
+        public ITextStream CreateTextFile(string path, bool overwrite = true, bool unicode = false)
         {
+            if (!overwrite && _hostFileSystem.FileExists(path))
+                throw new CustomException(58, ErrorSource, "File already exists");
             return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: true, overwriteIfExists: overwrite, append: false), IOMode.ForWriting, unicode);
         }
+
+        private const string ErrorSource = "Microsoft VBScript runtime error";
+
+        /// <summary>
+        /// Error 53, File not found (as scrrun raises for a missing file)
+        /// </summary>
+        internal static CustomException FileNotFound(string path) => new CustomException(53, ErrorSource, "File not found: " + path);
+
+        /// <summary>
+        /// Error 76, Path not found (as scrrun raises for a missing folder)
+        /// </summary>
+        internal static CustomException PathNotFound(string path) => new CustomException(76, ErrorSource, "Path not found: " + path);
 
         [DispId(10014)]
         public IFolder GetSpecialFolder([In] object SpecialFolder)
@@ -212,6 +268,8 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
+    [SourceClassName("Folder")]
+    [ComVisible(true)]
     [DefaultMember("Path")] // +[DispId(0)] +[IsDefault]
     internal sealed class ScriptonFolder : IFolder
     {
@@ -250,11 +308,14 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
+    [SourceClassName("File")]
+    [ComVisible(true)]
+    [DefaultMember("Path")]
     internal sealed class ScriptonFile : IFile
     {
         private readonly IHostFileSystemHostService _hostFileSystem;
         private readonly HostFileSystemFileInfo _nfo;
-        public string Path => _nfo.Path;
+        [DispId(0)] [IsDefault] public string Path => _nfo.Path;
         public string Name => _nfo.Name;
         //public long Size => new FileInfo(Path).Length;
         //public string Type => "File";
@@ -299,6 +360,8 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
+    [SourceClassName("TextStream")]
+    [ComVisible(true)]
     [DebuggerDisplay("({_mode}) Path:{_path}")]
     internal sealed class ScriptonFileTextStream : ITextStream, IDisposable
     {
@@ -438,7 +501,7 @@ namespace Skrypton.RuntimeSupport.Components
         IFile GetFile(string path);
 
         IFolder CreateFolder(string path);
-        ITextStream CreateTextFile(string path, bool overwrite = false, bool unicode = false);
+        ITextStream CreateTextFile(string path, bool overwrite = true, bool unicode = false); // Overwrite defaults to True, as scrrun
         ITextStream OpenTextFile(string path, IOMode mode, bool create = false, Tristate format = Tristate.UseDefault);
 
         bool FileExists(string path);

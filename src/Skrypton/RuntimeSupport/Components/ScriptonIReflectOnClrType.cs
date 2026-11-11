@@ -120,6 +120,26 @@ namespace Skrypton.RuntimeSupport.Components
         /// The key hook: COM late-binding calls come here via the CCW.
         /// You can customize name resolution, case sensitivity, default members, etc.
         /// </summary>
+        private static bool TryReplaceObjectsWithDefaultValues(object[] args, out object[] valueArgs)
+        {
+            valueArgs = (object[])args.Clone();
+            bool replaced = false;
+            for (int i = 0; i < valueArgs.Length; i++)
+            {
+                object arg = valueArgs[i];
+                if ((arg == null) || (arg is string) || arg.GetType().IsPrimitive || (arg is DateTime) || (arg is decimal) || (arg is Array))
+                    continue;
+                PropertyInfo defaultProperty = arg.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .FirstOrDefault(p => p.CanRead && (p.GetIndexParameters().Length == 0)
+                        && ((p.GetCustomAttribute<DispIdAttribute>()?.Value == 0) || (p.GetCustomAttribute<Skrypton.RuntimeSupport.Attributes.IsDefaultAttribute>() != null)));
+                if (defaultProperty == null)
+                    continue;
+                valueArgs[i] = defaultProperty.GetValue(arg);
+                replaced = true;
+            }
+            return replaced;
+        }
+
         public object InvokeMember(
             string name,
             BindingFlags invokeAttr,
@@ -142,8 +162,23 @@ namespace Skrypton.RuntimeSupport.Components
                     culture,
                     namedParameters);
             }
+            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            {
+                // The script must see the member's own error (eg. a VBScript error number such as 53 File not found), not the reflection wrapper
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                throw;
+            }
+            catch (ArgumentException) when ((args != null) && TryReplaceObjectsWithDefaultValues(args, out object[] valueArgs))
+            {
+                // As with COM variant conversion: an object passed where a value is expected is converted through its default property (eg. a
+                // Folder passed to fso.GetFolder is its Path, verified with cscript)
+                return InvokeMember(name, invokeAttr, binder, target, valueArgs, modifiers, culture, namedParameters);
+            }
             catch (System.MissingMemberException ex)
             {
+                // No overload takes the arguments as they are: convert object arguments through their default property and try again (see above)
+                if ((args != null) && TryReplaceObjectsWithDefaultValues(args, out object[] valueArgs))
+                    return InvokeMember(name, invokeAttr, binder, target, valueArgs, modifiers, culture, namedParameters);
                 if (ex.Message.Length > 0)
                 {
                     MemberInfo candidate = DebugInspectMember(name, invokeAttr, args);

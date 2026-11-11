@@ -1735,6 +1735,25 @@ namespace Skrypton.RuntimeSupport.Implementations
                 type = type.BaseType;
             }
         }
+        private static bool HasExplicitParameterLessDefaultMember(Type type)
+        {
+            static bool IsParameterLess(MemberInfo member) => member switch
+            {
+                PropertyInfo property => property.CanRead && (property.GetIndexParameters().Length == 0),
+                MethodInfo method => method.GetParameters().Length == 0,
+                FieldInfo _ => true,
+                _ => false
+            };
+
+            MemberInfo[] members = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+            string? defaultMemberName = type.GetCustomAttribute<DefaultMemberAttribute>(inherit: true)?.MemberName;
+            return members.Any(m =>
+                IsParameterLess(m)
+                && (((defaultMemberName != null) && m.Name.Equals(defaultMemberName, StringComparison.Ordinal))
+                    || (m.GetCustomAttribute<DispIdAttribute>()?.Value == 0)
+                    || (m.GetCustomAttribute<Attributes.IsDefaultAttribute>() != null)));
+        }
+
         public object VARTYPE(object value)
         {
             if (value == null)
@@ -1745,11 +1764,14 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // As in VBScript, VarType of an object with a parameter-less default property is the type of its value (eg. VarType(rs("name")) is 8
                 // for a text ADODB Field, VarType(CreateObject("ADODB.Connection")) is 8 - verified with cscript, ADO and SQL Server); objects
                 // without one (eg. Scripting.Dictionary, VBScript.RegExp) and Nothing are 9 (vbObject)
-                object? defaultValue;
+                object? defaultValue = null;
                 bool hasDefaultValue;
                 try
                 {
-                    hasDefaultValue = _valueRetriever.TryVAL(value, out bool parameterLessDefaultMemberWasAvailable, out defaultValue) && parameterLessDefaultMemberWasAvailable;
+                    // Only an explicit default member counts (DispId(0), [DefaultMember] or [IsDefault]) - not the "ToString" fallback that VAL applies
+                    // to COM-visible CLR objects (eg. VarType(CreateObject("Scripting.FileSystemObject")) is 9, verified with cscript)
+                    hasDefaultValue = (Marshal.IsComObject(value) || HasExplicitParameterLessDefaultMember(value.GetType()))
+                        && _valueRetriever.TryVAL(value, out bool parameterLessDefaultMemberWasAvailable, out defaultValue) && parameterLessDefaultMemberWasAvailable;
                 }
                 catch (ObjectDoesNotSupportPropertyOrMemberException)
                 {

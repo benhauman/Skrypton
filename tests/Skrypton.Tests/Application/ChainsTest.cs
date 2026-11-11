@@ -113,6 +113,10 @@ namespace Skrypton.Tests.Application
                             {
 
                             }
+                            else if (resAsm_name.StartsWith(prefix + "ComParity_", StringComparison.Ordinal))
+                            {
+                                // COM component parity scripts, run (and compared with Windows VBScript) by ComParityTests
+                            }
                             else
                             {
                                 names.Add(resAsm_name.Substring(prefix.Length, resAsm_name.Length - prefix.Length - suffix.Length)); // ".vbs"

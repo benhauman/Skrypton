@@ -414,24 +414,28 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             fso.DeleteFile(moved);
             Assert.IsFalse(File.Exists(moved));
-            Assert.ThrowsExactly<FileNotFoundException>(() => fso.DeleteFile(moved));
+            Assert.AreEqual(53, Assert.ThrowsExactly<Skrypton.RuntimeSupport.Exceptions.CustomException>(() => fso.DeleteFile(moved)).ErrorNumber, "File not found (as scrrun)");
 
             fso.DeleteFolder(folder);
             Assert.IsFalse(Directory.Exists(folder));
         }
 
         [TestMethod]
-        public void CreateTextFileDoesNotOverwriteUnlessAsked()
+        public void CreateTextFileOverwritesUnlessOverwriteIsFalse()
         {
             var root = EnsureRootPath();
             var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject");
             string file = Path.Combine(root.RootPath, "existing.txt");
             File.WriteAllText(file, "old");
-            Assert.ThrowsExactly<IOException>(() => fso.CreateTextFile(file));
+            Assert.AreEqual(58, Assert.ThrowsExactly<Skrypton.RuntimeSupport.Exceptions.CustomException>(() => fso.CreateTextFile(file, false)).ErrorNumber, "File already exists (as scrrun)");
             var ts = fso.CreateTextFile(file, true);
             ts.Write("new");
             ts.Close();
             Assert.AreEqual("new", File.ReadAllText(file));
+            var byDefault = fso.CreateTextFile(file); // Overwrite defaults to True (verified with Windows scrrun)
+            byDefault.Write("default");
+            byDefault.Close();
+            Assert.AreEqual("default", File.ReadAllText(file));
         }
     }
 }

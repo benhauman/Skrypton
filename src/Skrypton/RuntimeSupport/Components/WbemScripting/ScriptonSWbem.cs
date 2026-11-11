@@ -58,7 +58,7 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
-    [SourceClassName("SWbemServices")] // TypeName(GetObject("winmgmts:"))
+    [SourceClassName("SWbemServicesEx")] // TypeName(GetObject("winmgmts:")) (as with Windows VBScript)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonSWbemServices : ScriptonIReflectOnClrType
@@ -161,7 +161,7 @@ namespace Skrypton.RuntimeSupport.Components
     /// <summary>
     /// A Win32_Process instance (the properties that IHostProcessControlHostService.ProcessesCollect provides)
     /// </summary>
-    [SourceClassName("SWbemObject")]
+    [SourceClassName("SWbemObjectEx")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonWin32Process

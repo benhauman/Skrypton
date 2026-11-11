@@ -13,7 +13,7 @@ using System.Security.Authentication;
 
 namespace Skrypton.RuntimeSupport.Components
 {
-    [SourceClassName("RegExp")] // for TYPENAME(CreateObject("VBScript.RegExp"))
+    [SourceClassName("IRegExp2")] // TypeName(CreateObject("VBScript.RegExp")) is "IRegExp2" (as with Windows VBScript)
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 
@@ -141,18 +141,24 @@ namespace Skrypton.RuntimeSupport.Components
                 return regex.Replace(input, replacement, 1);
         }
     }
+    [SourceClassName("IMatch2")]
+    [ComVisible(true)]
     internal sealed class MyMatch : IMatch
     {
         private readonly Match _m;
 
         public MyMatch(Match m) => _m = m;
 
+        [DispId(0)]
+        [IsDefault]
         public string Value => _m.Value;
         public int FirstIndex => _m.Index;
         public int Length => _m.Length;
         public ISubMatches SubMatches => new MySubMatches(_m);
     }
 
+    [SourceClassName("IMatchCollection2")]
+    [ComVisible(true)]
     internal sealed class MyMatchCollection : IMatchCollection
     {
         private readonly MatchCollection _matches;
@@ -162,6 +168,11 @@ namespace Skrypton.RuntimeSupport.Components
 
         public int Count => _matches.Count;
 
+        /// <summary>
+        /// The default member: matches(i)
+        /// </summary>
+        [DispId(0)]
+        [IsDefault]
         public IMatch this[int index] => new MyMatch(_matches[index]);
 
         public System.Collections.IEnumerator GetEnumerator()
@@ -171,6 +182,8 @@ namespace Skrypton.RuntimeSupport.Components
         }
     }
 
+    [SourceClassName("ISubMatches")]
+    [ComVisible(true)]
     internal sealed class MySubMatches : ISubMatches
     {
         private readonly GroupCollection _groups;
@@ -179,7 +192,10 @@ namespace Skrypton.RuntimeSupport.Components
 
         public int Count => Math.Max(0, _groups.Count - 1);
 
-        public object this[int index] => _groups[index + 1].Value;
+        // An optional group that did not take part in the match is Empty (as with Windows VBScript), not an empty string
+        [DispId(0)]
+        [IsDefault]
+        public object this[int index] => _groups[index + 1].Success ? _groups[index + 1].Value : null;
 
         public System.Collections.IEnumerator GetEnumerator()
         {

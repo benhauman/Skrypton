@@ -46,7 +46,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 "Next\r\n" +
                 "collector.Report s\r\n" +
                 "collector.Report TypeName(GetObject(\"winmgmts:\"))\r\n");
-            CollectionAssert.AreEqual(new object[] { "666:xxx;4444:IExplore.exe;", "SWbemServices" }, values.ToArray());
+            CollectionAssert.AreEqual(new object[] { "666:xxx;4444:IExplore.exe;", "SWbemServicesEx" }, values.ToArray());
         }
 
         [TestMethod]

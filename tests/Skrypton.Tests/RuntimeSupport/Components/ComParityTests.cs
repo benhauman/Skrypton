@@ -1,0 +1,57 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport.Components;
+using Skrypton.ScriptControlSupport;
+using Skrypton.Tests.Application;
+
+namespace Skrypton.Tests.RuntimeSupport.Implementations
+{
+    /// <summary>
+    /// Black-box parity tests for the built-in COM components: each VbsResources\ComParity_*.vbs script is run through Skrypton and its output is
+    /// compared line by line with ComParity_*.expected.txt, which was captured by running the same script with Windows cscript.exe and the real
+    /// COM components (scrrun.dll, vbscript.dll, msxml, wshom, wbem, ADO). The scripts write their results with "Out", which both sides convert to
+    /// text ("" &amp; value).
+    /// </summary>
+    [TestClass]
+    public sealed class ComParityTests : TestBase
+    {
+        public sealed class Output
+        {
+            public List<string> Lines { get; } = new List<string>();
+            public void Write(object? value) => Lines.Add(Convert.ToString(value) ?? "");
+        }
+
+        [TestMethod] public void ComParity_ScriptingDictionary() => RunParityScript();
+        [TestMethod] public void ComParity_VBScriptRegExp() => RunParityScript();
+        [TestMethod] public void ComParity_Msxml2DOMDocument() => RunParityScript();
+        [TestMethod] public void ComParity_ScriptingFileSystemObject() => RunParityScript();
+        [TestMethod] public void ComParity_WScriptShellScriptletWmiAdodbTypeNames() => RunParityScript();
+
+        private void RunParityScript()
+        {
+            string script = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + ".vbs");
+            string expected = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources." + TestName + ".expected.txt");
+
+            // The script reads this variable with WScript.Shell.ExpandEnvironmentStrings (it was set the same way for cscript)
+            Environment.SetEnvironmentVariable("SKRYPTON_PARITY_VAR", "parity-value");
+
+            var output = new Output();
+            IScriptControl scriptengine = CreateScriptControlClass(
+                // WMI (winmgmts:) lists the processes of the host's process service (cscript lists the real ones; the script only checks that there are some)
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService()))),
+                CreateScriptControlConfiguration(false, [], [])
+            );
+            scriptengine.AddObject("output", output, false);
+            scriptengine.ExecuteStatement("Sub Out(s)\r\n  output.Write \"\" & s\r\nEnd Sub\r\n" + script.Replace("\r\n", "\n").Replace("\n", "\r\n"));
+
+            string[] expectedLines = expected.Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
+            string[] actualLines = string.Join("\n", output.Lines).Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
+            for (int i = 0; i < Math.Min(expectedLines.Length, actualLines.Length); i++)
+                Assert.AreEqual(expectedLines[i], actualLines[i], $"{TestName}: line {i + 1} differs from Windows VBScript");
+            Assert.HasCount(expectedLines.Length, actualLines, $"{TestName}: number of output lines (expected:{Environment.NewLine}{string.Join(Environment.NewLine, expectedLines)}{Environment.NewLine}actual:{Environment.NewLine}{string.Join(Environment.NewLine, actualLines)})");
+        }
+    }
+}

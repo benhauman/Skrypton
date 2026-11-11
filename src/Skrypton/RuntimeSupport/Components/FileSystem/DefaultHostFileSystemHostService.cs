@@ -20,7 +20,9 @@ namespace Skrypton.RuntimeSupport.Components
         public bool FileExists(string path) => File.Exists(path);
         public bool DirectoryExists(string path) => Directory.Exists(path);
 
-        public StreamReader OpenTextFileRead(string path) => File.OpenText(path);
+        // FileShare.Delete: as with scrrun, a file that a script still has open (a TextStream that is not closed yet - VBScript releases objects
+        // immediately, .NET only when collected) can be deleted or replaced
+        public StreamReader OpenTextFileRead(string path) => new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete));
         public Stream OpenTextFileWrite(string path, bool createIfNotExists, bool overwriteIfExists, bool append)// => new StreamWriter(path, append, unicode ? Encoding.Unicode : null);
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
@@ -29,13 +31,13 @@ namespace Skrypton.RuntimeSupport.Components
             {
                 if (append)
                 {
-                    return new FileStream(path, FileMode.Append, FileAccess.Write);
+                    return new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete);
                 }
                 else
                 {
                     if (overwriteIfExists)
                     {
-                        return new FileStream(path, FileMode.Create, FileAccess.Write);
+                        return new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete);
                     }
                     else
                     {
@@ -47,7 +49,7 @@ namespace Skrypton.RuntimeSupport.Components
             {
                 if (createIfNotExists)
                 {
-                    return new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+                    return new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete);
                 }
                 else
                 {

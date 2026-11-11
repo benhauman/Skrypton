@@ -11,7 +11,7 @@ namespace Skrypton.RuntimeSupport.Components
     /// script is a decision for the host, so Run / Exec / AppActivate raise an error if the host has not registered one. Environment variables are
     /// resolved through the host's IHostEnvironmentHostService, or the process environment if there is none.
     /// </summary>
-    [SourceClassName("WshShell")] // TypeName(CreateObject("WScript.Shell"))
+    [SourceClassName("IWshShell3")] // TypeName(CreateObject("WScript.Shell")) is "IWshShell3" (as with Windows VBScript)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonWScriptShell : ScriptonIReflectOnClrType
