@@ -1,0 +1,24 @@
+6 65 0 4 98
+3 67 5 2 0
+1 200 True 8 8
+A|b|bC|3|0|0|1
+Byte String Long Long String
+3 1 True
+5 0 0 2 0 6
+0 6 7 0 3 0
+0 True True True True True True
+4 49 8 0
+0102FF
+Byte() 5 72 101 3 111 3
+48656C6C6F
+AscB("") 5 Invalid procedure call or argument
+AscB(Null) 94 Invalid use of Null
+MidB(s, 0) 5 Invalid procedure call or argument
+MidB(s, 1, -1) 5 Invalid procedure call or argument
+LeftB(s, -1) 5 Invalid procedure call or argument
+RightB(s, -1) 5 Invalid procedure call or argument
+ChrB(256) 6 Overflow
+ChrB(-1) 6 Overflow
+ChrB(Null) 94 Invalid use of Null
+InStrB(0, s, "b") 5 Invalid procedure call or argument
+InStrB(1, s, "b", 2) 0 

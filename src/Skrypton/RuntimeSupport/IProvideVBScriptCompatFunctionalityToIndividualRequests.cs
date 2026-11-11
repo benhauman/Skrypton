@@ -171,6 +171,9 @@ namespace Skrypton.RuntimeSupport
         object INSTR(object valueToSearch, object valueToSearchFor);
         object INSTR(object startIndex, object valueToSearch, object valueToSearchFor);
         object INSTR(object startIndex, object valueToSearch, object valueToSearchFor, object compareMode);
+        object INSTRB(object valueToSearch, object valueToSearchFor);
+        object INSTRB(object startIndex, object valueToSearch, object valueToSearchFor);
+        object INSTRB(object startIndex, object valueToSearch, object valueToSearchFor, object compareMode);
         object INSTRREV(object valueToSearch, object valueToSearchFor);
         object INSTRREV(object valueToSearch, object valueToSearchFor, object startIndex);
         object INSTRREV(object valueToSearch, object valueToSearchFor, object startIndex, object compareMode);
@@ -178,6 +181,8 @@ namespace Skrypton.RuntimeSupport
         object LENB(object value);
         object LEFT(object value, object maxLength);
         object LEFTB(object value, object maxLength);
+        object MIDB(object value, object start);
+        object MIDB(object value, object start, object length);
         object MID(object value, object start);
         object MID(object value, object start, object length);
         object RGB(object red, object green, object blue);
