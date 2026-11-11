@@ -1,0 +1,17 @@
+[If c Then r = "a" Else r = "b" End If] a
+[If True Then r = "t" End If] t
+[If True Then r = "u" : r = r & "v" End If] uv
+[If False Then r = "u" Else r = "w" : r = r & "z" End If] wz
+[Function T(n) : If n Then T = "yes" Else T = "no" End If : End Function : r = T(True) & T(False)] yesno
+[If True Then r = "e" End If : r = r & "!"] e!
+[If True Then r = 1 : End If] 1
+[If True Then r = 1 Else r = 2 : End If] 1
+[If False Then r = 1 Else r = 2 : End If : r = r & "!"] 2!
+[Sub S : If True Then r = "s" End If : End Sub : S] s
+[Sub S2 : If True Then r = "s2" : End If : End Sub : S2] s2
+[If True Then If True Then r = "nn" End If] nn
+[If c Then r = "q" ' comment] q
+[If c Then r = "x" Else If False Then r = 1 Else r = "ee" End If : r = r & "!"] x
+[If False Then r = "x" Else If False Then r = 1 Else r = "ee" End If : r = r & "!"] ee!
+[If False Then r = "x" Else If True Then r = 1 End If : r = r & "!" End If : r = r & "?"] 1!?
+[c = False] b
