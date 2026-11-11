@@ -116,6 +116,23 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// provides "Scripting.Dictionary" - but it takes precedence over a host IHostObjectFactoryHostService registration. A registration made
         /// after this one (RegisterObjectCreateFactory) replaces it.
         /// </summary>
+        /// <summary>
+        /// The built-in, managed replacements for COM objects (in RuntimeSupport\Components), used by CreateObject when no factory is registered
+        /// for the ProgID - null if there is no built-in object for it
+        /// </summary>
+        private object? TryCreateBuiltInObject(string classProgId)
+        {
+            if (classProgId.Equals(Components.SkryptonScriptingDictionaryCpuAny.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.SkryptonScriptingDictionaryCpuAny();
+            if (classProgId.Equals("VBScript.RegExp", StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonVBScriptRegExp(_culture);
+            if (classProgId.Equals("Msxml2.DOMDocument", StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonMsxml2DOMDocument();
+            if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonScriptletTypeLib();
+            return null;
+        }
+
         public void RegisterScriptingDictionaryCpuAny()
         {
             RegisterObjectCreateFactory(Components.SkryptonScriptingDictionaryCpuAny.ProgId, _ => new Components.SkryptonScriptingDictionaryCpuAny());
@@ -2179,9 +2196,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
 
                 // Built-in objects: used only when neither RegisterObjectCreateFactory nor the host's IHostObjectFactoryHostService provides the
-                // ProgID, so "Scripting.Dictionary" just works and can still be overridden (see issue #50)
-                if (classProgId.Equals(Components.SkryptonScriptingDictionaryCpuAny.ProgId, StringComparison.OrdinalIgnoreCase))
-                    return HandlePostInitializationHandler(classProgId, new Components.SkryptonScriptingDictionaryCpuAny());
+                // ProgID, so they just work and can still be overridden (see issue #50)
+                object? builtInObject = TryCreateBuiltInObject(classProgId);
+                if (builtInObject != null)
+                    return HandlePostInitializationHandler(classProgId, builtInObject);
 
                 //if (classProgId.Length > 0)
                 throw new NotSupportedException($"CreateObject(\"{classProgId}\"): no object factory is registered for this ProgID (register one with RegisterObjectCreateFactory or an IHostObjectFactoryHostService)");

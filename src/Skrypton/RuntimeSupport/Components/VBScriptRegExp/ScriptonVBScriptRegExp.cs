@@ -1,4 +1,8 @@
-﻿using System;
+// Moved from the test project as-is; it was written without nullable reference type annotations
+#nullable disable
+// The members are bound by name from scripts (so they must stay instance members) and the names mirror the COM type library
+#pragma warning disable CA1822, CA1008, CA1711, CA1716, CA1309, CA1859
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -7,25 +11,25 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Security.Authentication;
 
-namespace Skrypton.Tests.RuntimeSupport.Implementations
+namespace Skrypton.RuntimeSupport.Components
 {
     [SourceClassName("RegExp")] // for TYPENAME(CreateObject("VBScript.RegExp"))
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 
-    internal sealed class MyVBScriptRegExp : IRegExp2
+    internal sealed class ScriptonVBScriptRegExp : IRegExp2
     {
         // =============================
         //   Fields stored VBScript-style
         // =============================
         private string _pattern = "";
-        private bool _ignoreCase = false;
-        private bool _global = false;      // In VBScript RegExp, Replace only replaces the first match unless you set Global = true.
-        private bool _multiline = false;   // VBScript uses MultiLine flag
-        private int _compare = 0;          // 0 = Binary; 1 = Text (culture-aware)
+        private bool _ignoreCase;
+        private bool _global;      // In VBScript RegExp, Replace only replaces the first match unless you set Global = true.
+        private bool _multiline;   // VBScript uses MultiLine flag
+        private int _compare;          // 0 = Binary; 1 = Text (culture-aware)
 
         private readonly CultureInfo _culture;
-        internal MyVBScriptRegExp(CultureInfo culture)
+        internal ScriptonVBScriptRegExp(CultureInfo culture)
         {
             _culture = culture;
         }

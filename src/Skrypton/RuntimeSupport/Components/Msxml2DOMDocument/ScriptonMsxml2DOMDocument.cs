@@ -1,4 +1,8 @@
-﻿using System;
+// Moved from the test project as-is; it was written without nullable reference type annotations
+#nullable disable
+// The members are bound by name from scripts (so they must stay instance members) and the names mirror the COM type library
+#pragma warning disable CA1822, CA1008, CA1711, CA1716, CA1309, CA1859
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -9,7 +13,7 @@ using System.Xml;
 using Skrypton.RuntimeSupport.Attributes;
 
 //D:\projects.ToDelete\ConsoleApp2\obj\Debug\net10.0\Interop.MSXML2.dll
-namespace Skrypton.Tests.RuntimeSupport.Implementations
+namespace Skrypton.RuntimeSupport.Components
 {
     // test with 'CT125_ClientComputer_Dialog_349_ButtonGeneralInfo_Click'
 
@@ -17,10 +21,10 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     // [DefaultMember("Item")]
-    internal sealed class MyMsxml2DOMDocument //  see "Msxml2.DOMDocument" from Interop.MSXML2.dll, 'MSXML2.DOMDocument60'
+    internal sealed class ScriptonMsxml2DOMDocument //  see "Msxml2.DOMDocument" from Interop.MSXML2.dll, 'MSXML2.DOMDocument60'
     {
         private readonly XmlDocument _xmldoc = new XmlDocument();
-        public MyMsxml2DOMDocument()
+        public ScriptonMsxml2DOMDocument()
         {
         }
 

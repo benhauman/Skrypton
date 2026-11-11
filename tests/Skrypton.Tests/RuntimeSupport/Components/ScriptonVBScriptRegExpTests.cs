@@ -2,16 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Skrypton.RuntimeSupport.Components;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
     [TestClass]
-    public sealed class MyVBScriptRegExpTests : TestBase
+    public sealed class ScriptonVBScriptRegExpTests : TestBase
     {
         // -------------------------------------------------------------
         //  BASIC FUNCTIONALITY
         // -------------------------------------------------------------
-        private MyVBScriptRegExp NewMyVBScriptRegExp() => new MyVBScriptRegExp(base.TestCulture);
+        // The built-in VBScript.RegExp is internal to Skrypton, so it is created the way a script creates it (CreateObject) and used through its interface
+        private IRegExp2 NewMyVBScriptRegExp() => (IRegExp2)DefaultRuntimeSupportClassFactoryInstance.Get().CREATEOBJECT("VBScript.RegExp");
 
         [TestMethod]
         public void Test_SimpleMatch()

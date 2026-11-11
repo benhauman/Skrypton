@@ -213,10 +213,11 @@ WScript.Echo xmlhttp.responseText
         private static void Test_Xml_IDispatch()
         {
 #pragma warning disable CA1416 // Validate platform compatibility
-            Type domType = typeof(MyMsxml2DOMDocument); // Type.GetTypeFromProgID("Msxml2.DOMDocument"); // IXMLDOMDocument
+            object xmlDocInstance = TestBuiltInComponents.CompatLayer.CREATEOBJECT("Msxml2.DOMDocument"); // the built-in Msxml2.DOMDocument (internal to Skrypton)
+            Type domType = xmlDocInstance.GetType(); // Type.GetTypeFromProgID("Msxml2.DOMDocument"); // IXMLDOMDocument
 
 #pragma warning restore CA1416 // Validate platform compatibility
-            object xmlDoc = Activator.CreateInstance(domType);
+            object xmlDoc = xmlDocInstance;
 
             domType.InvokeMember("setProperty", BindingFlags.InvokeMethod, null, xmlDoc, ["SelectionLanguage", "XPath"]);
             // xmlDoc.async = false
