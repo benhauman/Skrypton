@@ -32,6 +32,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_InternetExplorerHtmlFile() => RunParityScript();
         [TestMethod] public void ComParity_WordApplication() => RunParityScript();
         [TestMethod] public void ComParity_ExcelApplication() => RunParityScript();
+        [TestMethod] public void ComParity_OutlookApplication() => RunParityScript();
 
         private void RunParityScript()
         {
@@ -74,7 +75,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 // htmlfile's clipboardData uses an in-memory clipboard (cscript's htmlfile does not change the user's clipboard either)
                 CreateRuntimeHost(CreateTestHostServices(s => s
                     .RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService())
-                    .RegisterHostService<IHostClipboardHostService>(() => new TestClipboardHostService()))),
+                    .RegisterHostService<IHostClipboardHostService>(() => new TestClipboardHostService())
+                    .RegisterHostService<IHostOutlookHostService>(() => new TestOutlookHostService()))),
                 CreateScriptControlConfiguration(false, [], [])
             );
             scriptengine.AddObject("output", output, false);

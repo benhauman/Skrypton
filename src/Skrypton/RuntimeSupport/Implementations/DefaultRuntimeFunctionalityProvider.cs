@@ -156,6 +156,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonWordApplication(_runtimeHost, value => CSTR(value!)); // values become text as with VBScript's CStr
             if (classProgId.Equals(Components.ScriptonExcelApplication.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonExcelApplication(_runtimeHost, value => CSTR(value!));
+            if (classProgId.Equals(Components.ScriptonOutlookApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonOutlookApplication(_runtimeHost);
             return null;
         }
 

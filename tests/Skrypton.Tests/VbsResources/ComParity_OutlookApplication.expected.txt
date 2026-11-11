@@ -1,0 +1,19 @@
+Application|8|Outlook|Outlook
+MailItem|8|43|[]|[]|1|2|False|True
+Betreff|Betreff|a@example.invalid; b@example.invalid|c@example.invalid|3|Recipients
+Recipient|d@example.invalid|1|4|a@example.invalid; b@example.invalid; d@example.invalid|c@example.invalid
+2|True
+Attachments|1|Attachment|True
+ContactItem|8|40|[]|[]|Date|4501
+Muster, Max|Max Muster|Muster, Max|helpLine|max@example.invalid
+AppointmentItem|9|26|30|True|15|False|2|Date|30
+11:30|Date|2026-11-12 10
+120|Termin|Raum 1
+NameSpace|8|Mapi|Mapi|NameSpace
+MAPIFolder|8|2|Items|9
+Nothing
+AppointmentItem|1
+Recipient|nobody-skrypton|False
+item 99:5
+namespace XYZ:5
+missing attachment:True

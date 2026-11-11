@@ -45,13 +45,19 @@ namespace Skrypton.Tests.Application
         }
 
         [TestMethod]
-        public void Outlook1() => DoScriptControlTest<object>(null, [], [], [], services =>
+        public void Outlook1()
         {
-            services.RegisterHostService<IHostObjectFactoryHostService>(() => DialogGui.CreateTestHostObjectFactoryHostService()
-                .RegisterObjectFactory<object>("Outlook.Application", (h) => DialogGui.CreateMyOutlookApplicationClass(h))
-            );
-            services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
-        }, (x) => { });
+            // The built-in Outlook.Application: the contact is saved and displayed through the host's IHostOutlookHostService
+            var outlook = new TestOutlookHostService();
+            DoScriptControlTest<object>(null, [], [], [], services =>
+            {
+                services.RegisterHostService<IHostOutlookHostService>(() => outlook);
+                services.RegisterHostService<IHostMessageBoxHostService>(() => DialogGui.CreateHostMessageBoxHostService());
+            }, (x) => { });
+            Assert.HasCount(1, outlook.Saved, "the contact is saved");
+            Assert.AreEqual(HostOutlookItemType.ContactItem, outlook.Saved[0].ItemType);
+            Assert.HasCount(1, outlook.Displayed, "the contact is displayed");
+        }
 
         [TestMethod]
         public void Word1()
