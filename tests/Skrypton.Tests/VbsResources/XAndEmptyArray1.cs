@@ -17,7 +17,7 @@ namespace TranslatedProgram
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             _outer.searchResult = _.VAL(_.ARRAY()); // Initialize as empty array
 
-            if (_.IF(_.ANDe2(_.CBOOL(_.GTE(_.NullableNUM(_.UBOUND(_outer.searchResult)), (Int16)0)) && _.CBOOL(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_.CALLm0argp(this, _.NnO(_outer.searchResult, "searchResult"), _.ARGS.Val((Int16)0)), "(_.call result)"), _.ARGS.Val((Int16)2))), "")))))
+            if (_.IF(_.AND(_.GTE(_.NullableNUM(_.UBOUND(_outer.searchResult)), (Int16)0), _.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_.CALLm0argp(this, _.NnO(_outer.searchResult, "searchResult"), _.ARGS.Val((Int16)0)), "(_.call result)"), _.ARGS.Val((Int16)2))), ""))))
             {
                 _.MSGBOX("T");
             }
