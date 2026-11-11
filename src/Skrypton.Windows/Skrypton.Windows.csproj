@@ -23,7 +23,4 @@
     <ProjectReference Include="..\Skrypton\Skrypton.csproj" />
     <PackageReference Include="System.Data.OleDb" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
-  </ItemGroup>
 </Project>
