@@ -1698,7 +1698,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             {
                 return (invokeTarget, invokeArguments, value) =>
                 {
-                    BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.IgnoreCase;
+                    BindingFlags invokeAttributes = BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.IgnoreCase; // Instance is required, matching the getter flags (see issue #45)
                     if (allowPrivateAccess)
                     {
                         invokeAttributes = invokeAttributes | BindingFlags.NonPublic;
