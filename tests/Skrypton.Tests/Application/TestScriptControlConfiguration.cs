@@ -7,7 +7,7 @@ internal sealed class TestScriptControlConfiguration : ScriptControlConfiguratio
 {
     private readonly TestBaseX _tst;
 
-    public TestScriptControlConfiguration(TestBaseX tst, bool tempEnabled, string[] translationSuppression, string[] noWarn) : base(tempEnabled, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression, noWarn: noWarn)
+    public TestScriptControlConfiguration(TestBaseX tst, bool tempEnabled, string[] translationSuppression, string[] noWarn, bool undeclaredVariablesAreErrors = true) : base(tempEnabled, tst.TestRunResultsDirectory, enabledLoadFromDisk: false, translationSuppression: translationSuppression, noWarn: noWarn, undeclaredVariablesAreErrors: undeclaredVariablesAreErrors)
     {
         _tst = tst ?? throw new ArgumentNullException(nameof(tst));
     }

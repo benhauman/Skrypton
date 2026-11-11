@@ -59,6 +59,12 @@ namespace Skrypton.ScriptControlSupport
             HelpContext = 0;
             Column = 0;
             Line = isCompilationError ? 0 : TryGetSourceLine(error, programAssemblyIfCompiled!, sourceLineMap);
+            if (error is Skrypton.RuntimeSupport.Exceptions.VariableIsUndefinedException undefined)
+            {
+                // found by the translation, but a runtime error of VBScript (with the line of the variable)
+                Source = RuntimeErrorSource;
+                Line = undefined.ScriptLine;
+            }
             Text = (Line > 0) ? GetSourceLineText(scriptContent, Line) : "";
         }
 

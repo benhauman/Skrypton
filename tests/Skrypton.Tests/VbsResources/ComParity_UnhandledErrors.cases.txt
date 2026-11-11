@@ -34,3 +34,7 @@ Err.Raise 1000, "MySource", "My description"
 (1) MySource: My description
 Dim x : x = Array(1)(5)
 (1) Microsoft VBScript runtime error: Subscript out of range: '[number: 5]'
+Option Explicit : Dim a : a = 1 : b = 2
+(1) Microsoft VBScript runtime error: Variable is undefined: 'b'
+Option Explicit : Sub M : Dim a : c = 2 : End Sub : M
+(1) Microsoft VBScript runtime error: Variable is undefined: 'c'

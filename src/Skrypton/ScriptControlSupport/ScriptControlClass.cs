@@ -337,7 +337,7 @@ namespace Skrypton.ScriptControlSupport
             string[] suppressions = _config._translationSuppression;
             _lastScriptContent = scriptContent;
             _lastSourceLineMap = null;
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCoreWithSourceLineMap(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues), warningLogger, out IReadOnlyDictionary<int, int> sourceLineMap);
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCoreWithSourceLineMap(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues, _config.UndeclaredVariablesAreErrors), warningLogger, out IReadOnlyDictionary<int, int> sourceLineMap);
             _lastSourceLineMap = sourceLineMap;
             if (_config.TempEnabled)
             {
@@ -386,7 +386,7 @@ namespace Skrypton.ScriptControlSupport
 
         internal readonly string[] NoWarn;
 
-        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression, string[] noWarn, bool treatWarningsAsErrors = true)
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression, string[] noWarn, bool treatWarningsAsErrors = true, bool undeclaredVariablesAreErrors = true)
         {
             _translationSuppression = translationSuppression ?? throw new ArgumentNullException(nameof(translationSuppression));
             TempEnabled = tempEnabled;
@@ -394,7 +394,15 @@ namespace Skrypton.ScriptControlSupport
             EnabledLoadFromDisk = enabledLoadFromDisk;
             NoWarn = noWarn ?? throw new ArgumentNullException(nameof(noWarn));
             TreatWarningsAsErrors = treatWarningsAsErrors;
+            UndeclaredVariablesAreErrors = undeclaredVariablesAreErrors;
         }
+
+        /// <summary>
+        /// Whether a variable that is used without being declared (Dim) is an error (default: true, Skrypton's strict mode; the translation errors
+        /// SKY101..SKY109 can also be suppressed one by one). Pass false for VBScript's rule (cscript, MSScriptControl): undeclared variables are
+        /// implicitly declared unless the script has Option Explicit (see issue #86).
+        /// </summary>
+        public bool UndeclaredVariablesAreErrors { get; }
 
         internal bool EnabledLoadFromDisk { get; }
 

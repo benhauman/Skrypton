@@ -89,7 +89,8 @@ namespace Skrypton.Windows
                 NormalizeLineEnds(source ?? ""),
                 HostObjectNames,
                 Array.Empty<Skrypton.CSharpWriter.CodeTranslation.BlockTranslators.ExternalMemberMethodInfo>(),
-                Array.Empty<string>());
+                Array.Empty<string>(),
+                undeclaredVariablesAreErrors: false);
         }
 
         private static readonly string[] HostObjectNames = { "WScript" };
@@ -97,7 +98,7 @@ namespace Skrypton.Windows
         private IScriptControl CreateScriptControl(IRuntimeLogger logger)
         {
             // Scripts written for cscript compile with warnings (unused variables, code after Exit Sub, ..), so warnings are not errors
-            var configuration = new ScriptControlConfiguration(tempEnabled: false, tempDirectoryPath: null, enabledLoadFromDisk: false, translationSuppression: Array.Empty<string>(), noWarn: Array.Empty<string>(), treatWarningsAsErrors: false);
+            var configuration = new ScriptControlConfiguration(tempEnabled: false, tempDirectoryPath: null, enabledLoadFromDisk: false, translationSuppression: Array.Empty<string>(), noWarn: Array.Empty<string>(), treatWarningsAsErrors: false, undeclaredVariablesAreErrors: false);
             IScriptControl control = new ScriptControlClass(_runtimeHost, logger, _culture, configuration);
             control.Language = "VBScript";
             control.AllowUI = true;
