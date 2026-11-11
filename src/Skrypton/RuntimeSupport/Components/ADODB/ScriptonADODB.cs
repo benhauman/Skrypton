@@ -681,9 +681,19 @@ namespace Skrypton.RuntimeSupport.Components
         public void WriteText(string Data, [Optional, DefaultParameterValue(0)] int Options)
         {
             string text = (Options == 1) ? (Data ?? "") + "\r\n" : (Data ?? ""); // 1: adWriteLine
-            byte[] bytes = GetEncoding().GetBytes(text);
-            Buffer("WriteText").Write(bytes, 0, bytes.Length);
+            Encoding encoding = GetEncoding();
+            System.IO.MemoryStream buffer = Buffer("WriteText");
+            // As with ADO: the text of an empty stream starts with the byte order mark of UTF-8 and of "Unicode" (UTF-16)
+            if ((buffer.Length == 0) && HasByteOrderMark(encoding))
+            {
+                byte[] preamble = encoding.GetPreamble();
+                buffer.Write(preamble, 0, preamble.Length);
+            }
+            byte[] bytes = encoding.GetBytes(text);
+            buffer.Write(bytes, 0, bytes.Length);
         }
+
+        private static bool HasByteOrderMark(Encoding encoding) => (encoding.CodePage == Encoding.UTF8.CodePage) || (encoding.CodePage == Encoding.Unicode.CodePage);
 
         [DispId(12)]
         public object Read([Optional, DefaultParameterValue(-1)] int NumBytes) => ReadBytes(NumBytes);
@@ -691,7 +701,13 @@ namespace Skrypton.RuntimeSupport.Components
         [DispId(15)]
         public string ReadText([Optional, DefaultParameterValue(-1)] int NumChars)
         {
-            string text = GetEncoding().GetString(ReadBytes(-1));
+            Encoding encoding = GetEncoding();
+            bool atStart = Buffer("ReadText").Position == 0;
+            byte[] bytes = ReadBytes(-1);
+            // the byte order mark at the start is not text
+            byte[] preamble = encoding.GetPreamble();
+            int skip = (atStart && (preamble.Length > 0) && (bytes.Length >= preamble.Length) && bytes.Take(preamble.Length).SequenceEqual(preamble)) ? preamble.Length : 0;
+            string text = encoding.GetString(bytes, skip, bytes.Length - skip);
             return ((NumChars >= 0) && (NumChars < text.Length)) ? text.Substring(0, NumChars) : text;
         }
 

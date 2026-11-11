@@ -50,6 +50,29 @@ public sealed class HostFileSystemFileInfo
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Exists = exists;
     }
+
+    /// <summary>
+    /// A file with its size and times (File.Size, DateCreated, DateLastModified, DateLastAccessed)
+    /// </summary>
+    public HostFileSystemFileInfo(string path, string name, bool exists, long size, DateTime dateCreated, DateTime dateLastModified, DateTime dateLastAccessed)
+        : this(path, name, exists)
+    {
+        Size = size;
+        DateCreated = dateCreated;
+        DateLastModified = dateLastModified;
+        DateLastAccessed = dateLastAccessed;
+    }
+
+    /// <summary>
+    /// The size in bytes (0 if the host service does not provide it)
+    /// </summary>
+    public long Size { get; }
+
+    public DateTime DateCreated { get; }
+
+    public DateTime DateLastModified { get; }
+
+    public DateTime DateLastAccessed { get; }
 }
 public abstract class HostFileSystemHostServiceBase
 {

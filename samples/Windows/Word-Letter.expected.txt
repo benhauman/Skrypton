@@ -1,0 +1,4 @@
+Saved: skrypton-demo-letter.docx
+Tables: 1, rows: 2, bookmarks: 1
+Content: Item | Quantity | Price |  | Consulting | 8 | 1,200.00 |  | Travel |  |  |  |  / 
+Price cell: 1,200.00, bookmark kept: True

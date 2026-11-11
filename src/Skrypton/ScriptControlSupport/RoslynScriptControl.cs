@@ -283,9 +283,9 @@ namespace Skrypton.ScriptControlSupport
                 }
 
                 foreach (Diagnostic diagnostic in emitResult.Diagnostics)
-                    Console.WriteLine("cs " + diagnostic);
+                    System.Diagnostics.Trace.WriteLine("cs " + diagnostic, "Skrypton"); // also in the exception, not on the console of the host
 
-                Console.WriteLine(errorsBuffer.ToString());
+                System.Diagnostics.Trace.WriteLine(errorsBuffer.ToString(), "Skrypton");
 
                 // In unit tests, you can fail like this:
                 throw new CompilationFailedException("Compilation failed." + Environment.NewLine + errorsBuffer.ToString());
@@ -316,7 +316,7 @@ namespace Skrypton.ScriptControlSupport
                 string dllFilePath = config.EnsureFilePathX(tempFolderName, fileNameDll);
                 if (!File.Exists(dllFilePath))
                     throw new InvalidOperationException("generated program could not be found.");
-                System.Console.WriteLine("Load assembly from:" + dllFilePath);
+                System.Diagnostics.Trace.WriteLine("Load assembly from:" + dllFilePath, "Skrypton");
                 var asm = Assembly.LoadFile(dllFilePath); // this a dynamic assembly => do not use Assembly.Load(AssemblyName.GetAssemblyName(dllFilePath))!!! otherwise 'System.IO.FileNotFoundException'
                 asmLoad = () => asm;
             }

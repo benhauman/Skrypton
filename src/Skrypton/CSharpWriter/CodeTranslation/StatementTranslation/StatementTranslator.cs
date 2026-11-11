@@ -19,6 +19,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 {
     public sealed class StatementTranslator : StatementTranslatorBase, ITranslateIndividualStatements
     {
+        /// <summary>
+        /// Numeric built-in functions whose result depends on the VBScript type of the argument, so numeric literal arguments keep their type
+        /// </summary>
+        private static readonly HashSet<string> FunctionsWhoseResultDependsOnTheArgumentType = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "INT", "FIX", "HEX", "OCT", "ROUND" };
+
         private readonly VBScriptNameRewriter _nameRewriter;
         private readonly TempValueNameGenerator _tempNameGenerator;
         private readonly ILogInformation _logger;
@@ -1562,7 +1567,10 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // - eg. don't emit "CDBL((Int16)1)" since it's going to return a double so the Int16 type information is useless, "CDBL(1)" is no less
                 // useful while being more succinct (and more natural when compared to the source it's being translated from)
                 NumericValueExpressionSegment? argumentValueAsNumericConstant = TryToGetExpressionAsSingleNumericValueExpressionSegment(argumentValue);
-                if ((argumentValueAsNumericConstant != null) && (function.Token is BuiltInFunctionToken) && ((BuiltInFunctionToken)function.Token).GuaranteedToReturnNumericContent())
+                // - Not for the functions whose result depends on the type of the argument: Int(5) and Fix(5) are Integers (VBScript literals are
+                //   Integers) and Hex(-1) / Oct(-1) are "FFFF" / "177777" for an Integer
+                if ((argumentValueAsNumericConstant != null) && (function.Token is BuiltInFunctionToken) && ((BuiltInFunctionToken)function.Token).GuaranteedToReturnNumericContent()
+                    && !((indexedArgumentValue.Index == 0) && FunctionsWhoseResultDependsOnTheArgumentType.Contains(function.SupportFunctionName)))
                 {
                     supportFunctionCallContent.Append(argumentValueAsNumericConstant.Token.Value);
                     continue;

@@ -1,0 +1,6 @@
+Monthly file: report-2026-01.txt (year 2026, month 01)
+Monthly file: report-2026-02.txt (year 2026, month 02)
+.csv: 1 file(s)
+.pdf: 1 file(s)
+.txt: 3 file(s)
+Files: 5

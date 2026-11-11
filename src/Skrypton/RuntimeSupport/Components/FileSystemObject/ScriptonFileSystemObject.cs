@@ -307,8 +307,15 @@ namespace Skrypton.RuntimeSupport.Components
         //    }
         //}
 
-        public IReadOnlyCollection<IFile> Files => _hostFileSystem.GetFiles(Path).Select(nfo => new ScriptonFile(_hostFileSystem, nfo)).ToArray();
-        public IReadOnlyCollection<IFolder> SubFolders => _hostFileSystem.GetDirectories(Path).Select(nfo => new ScriptonFolder(_hostFileSystem, nfo)).ToArray();
+        /// <summary>
+        /// The files of the folder - a Files collection (Count, Item(name), For Each), as with scrrun
+        /// </summary>
+        public IReadOnlyCollection<IFile> Files => new ScriptonFiles(_hostFileSystem.GetFiles(Path).Select(nfo => (IFile)new ScriptonFile(_hostFileSystem, nfo)).ToList());
+
+        /// <summary>
+        /// The folders of the folder - a Folders collection (Count, Item(name), For Each), as with scrrun
+        /// </summary>
+        public IReadOnlyCollection<IFolder> SubFolders => new ScriptonFolders(_hostFileSystem.GetDirectories(Path).Select(nfo => (IFolder)new ScriptonFolder(_hostFileSystem, nfo)).ToList());
 
         public void Delete(bool force) => _hostFileSystem.DeleteDirectory(Path, force);
 
@@ -329,8 +336,19 @@ namespace Skrypton.RuntimeSupport.Components
         private readonly HostFileSystemFileInfo _nfo;
         [DispId(0)] [IsDefault] public string Path => _nfo.Path;
         public string Name => _nfo.Name;
-        //public long Size => new FileInfo(Path).Length;
-        //public string Type => "File";
+
+        /// <summary>
+        /// The size in bytes - a Long, or a Double for files of 2 GB and more (as with scrrun)
+        /// </summary>
+        public object Size => (_nfo.Size <= int.MaxValue) ? (object)(int)_nfo.Size : (double)_nfo.Size;
+
+        public DateTime DateCreated => _nfo.DateCreated;
+
+        public DateTime DateLastModified => _nfo.DateLastModified;
+
+        public DateTime DateLastAccessed => _nfo.DateLastAccessed;
+
+        public string ParentFolder => ScriptonFileSystemObject.ParentFolderNameOf(_nfo.Path);
 
         public ScriptonFile(IHostFileSystemHostService hostFileSystem, HostFileSystemFileInfo nfo)
         {
@@ -547,6 +565,63 @@ namespace Skrypton.RuntimeSupport.Components
         void Delete(bool force);
         void Move(string newPath);
         void Copy(string newPath, bool overwrite);
+    }
+
+    /// <summary>
+    /// Folder.Files / Folder.SubFolders: Count, Item(name or path) and For Each (TypeName "Files" / "Folders", as with scrrun)
+    /// </summary>
+    [ComVisible(true)]
+    [DefaultMember("Item")] // +[DispId(0)] +[IsDefault]
+    internal abstract class ScriptonFileSystemCollection<T> : IReadOnlyCollection<T> where T : class
+    {
+        private readonly List<T> _items;
+        private readonly Func<T, string> _name;
+        private readonly Func<T, string> _path;
+
+        protected ScriptonFileSystemCollection(List<T> items, Func<T, string> name, Func<T, string> path)
+        {
+            _items = items;
+            _name = name;
+            _path = path;
+        }
+
+        public int Count => _items.Count;
+
+        /// <summary>
+        /// Item(name) - the file or folder with the name (or the full path); error 53 (File not found) / 76 (Path not found) if there is none
+        /// </summary>
+        [DispId(0)]
+        [IsDefault]
+        public T Item(object name)
+        {
+            string key = Convert.ToString(name, System.Globalization.CultureInfo.InvariantCulture) ?? "";
+            return _items.FirstOrDefault(i => string.Equals(_name(i), key, StringComparison.OrdinalIgnoreCase) || string.Equals(_path(i), key, StringComparison.OrdinalIgnoreCase))
+                ?? throw ((typeof(T) == typeof(IFile)) ? ScriptonFileSystemObject.FileNotFound(key) : ScriptonFileSystemObject.PathNotFound(key));
+        }
+
+        public IEnumerator<T> GetEnumerator() => _items.GetEnumerator();
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    [SourceClassName("Files")]
+    [ComVisible(true)]
+    [DefaultMember("Item")]
+    internal sealed class ScriptonFiles : ScriptonFileSystemCollection<IFile>
+    {
+        public ScriptonFiles(List<IFile> files) : base(files, f => f.Name, f => f.Path)
+        {
+        }
+    }
+
+    [SourceClassName("Folders")]
+    [ComVisible(true)]
+    [DefaultMember("Item")]
+    internal sealed class ScriptonFolders : ScriptonFileSystemCollection<IFolder>
+    {
+        public ScriptonFolders(List<IFolder> folders) : base(folders, f => f.Name, f => f.Path)
+        {
+        }
     }
 
     //[ComImport]

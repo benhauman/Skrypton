@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Tests of Skrypton.Windows and of the command line tool Skrypton.Windows.Cli (.NET, Windows): the host services, the script runner and the
+    parity of the command line tool with cscript.exe (demo scripts in samples\Windows, parity scripts of the components). The sources are shared
+    with Skrypton.Windows.NetFx.Tests (.NET Framework).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);MSTEST0001</NoWarn>
+    <CliProject>$(MSBuildThisFileDirectory)..\..\src\Skrypton.Windows.Cli\Skrypton.Windows.Cli.csproj</CliProject>
+    <CliPath>$(MSBuildThisFileDirectory)..\..\src\Skrypton.Windows.Cli\bin\$(Configuration)\net10.0-windows\Skrypton.Windows.Cli.exe</CliPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Skrypton.Windows\Skrypton.Windows.csproj" />
+    <!-- built before the tests run (the tests start it) -->
+    <ProjectReference Include="$(CliProject)" ReferenceOutputAssembly="false" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>CliPath</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(CliPath)'))</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>RepositoryRoot</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>

@@ -10,6 +10,8 @@ steps:
   parameters:
     projects:
     - Skrypton
+    - Skrypton.Windows
+    - Skrypton.Windows.NetFx
     configuration: ${{ parameters.configuration }}
 
 - template: run-pack-publish-artifact.yml

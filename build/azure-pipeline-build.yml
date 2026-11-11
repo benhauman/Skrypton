@@ -21,6 +21,9 @@ variables:
   value: ${{ parameters.createGitHubRelease }}
 - name: solution
   value: 'Skrypton.slnx'
+# the projects that run on every platform (Skrypton.Windows* need Windows to run their tests)
+- name: crossPlatformTests
+  value: 'tests/Skrypton.Tests/Skrypton.Tests.csproj'
 - name: buildPlatform
   value: 'Any CPU'
 - name: buildConfiguration
@@ -61,6 +64,57 @@ jobs:
     displayName: 'dotnet: restore'
     inputs:
       command: 'restore'
+      projects: '$(crossPlatformTests)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: build'
+    inputs:
+      command: 'build'
+      projects: '$(crossPlatformTests)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  - script: dotnet test $(crossPlatformTests) --configuration $(buildConfiguration) --no-build --logger trx --results-directory "$(Agent.TempDirectory)/TestResults"
+    displayName: '🧪 dotnet: test'
+
+  - task: PublishTestResults@2
+    displayName: '📊 Publish test results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
+      testRunTitle: 'Skrypton Linux ($(buildConfiguration))'
+      buildConfiguration: '$(buildConfiguration)'
+      mergeTestResults: true
+      failTaskOnFailedTests: false
+
+# ---------------------------------------------------------------------------
+# Test on Windows: the whole solution - Skrypton, Skrypton.Windows (.NET),
+# Skrypton.Windows.NetFx (.NET Framework 4.8.1) and both command line tools
+# (Skrypton.Windows.Tests and Skrypton.Windows.NetFx.Tests run them on the
+# demo and parity scripts). Its code coverage is the one of the badge.
+# ---------------------------------------------------------------------------
+- job: TestWindows
+  displayName: 'Test (Windows)'
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 0                 # Nerdbank.GitVersioning needs full history
+
+  - template: azure-pipelines-template/initialize.yml
+
+  - task: UseDotNet@2
+    displayName: 'Ensure .NET 10 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.301'
+      includePreview: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet: restore'
+    inputs:
+      command: 'restore'
       projects: '$(solution)'
 
   - task: DotNetCoreCLI@2
@@ -82,7 +136,7 @@ jobs:
     inputs:
       testResultsFormat: VSTest
       testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
-      testRunTitle: 'Skrypton ($(buildConfiguration))'
+      testRunTitle: 'Skrypton Windows ($(buildConfiguration))'
       buildConfiguration: '$(buildConfiguration)'
       mergeTestResults: true
       failTaskOnFailedTests: false
@@ -102,7 +156,9 @@ jobs:
 # ---------------------------------------------------------------------------
 - job: Publish
   displayName: 'Publish (Windows)'
-  dependsOn: Test
+  dependsOn:
+  - Test
+  - TestWindows
   condition: >
     and(succeeded(),
         or(eq(variables['publishNuGetPackages'], 'true'),

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Skrypton.Windows for the .NET Framework 4.8.1 - the same sources as Skrypton.Windows (net10.0-windows).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Nullable>enable</Nullable>
+    <SignAssembly>True</SignAssembly>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <RootNamespace>Skrypton.Windows</RootNamespace>
+    <PackageId>Skrypton.Windows.NetFx</PackageId>
+    <Description>Skrypton on Windows (.NET Framework 4.8.1): the Windows host services (processes, clipboard, dialogs, ADO through OLE DB, Outlook) and the script runner of the skrypton command line tool</Description>
+    <PackageTags>Skrypton;VBScript;Windows;NetFramework</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Skrypton.Windows\**\*.cs" Exclude="..\Skrypton.Windows\obj\**;..\Skrypton.Windows\bin\**" LinkBase="Shared" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Skrypton\Skrypton.csproj" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+</Project>

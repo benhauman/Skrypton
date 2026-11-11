@@ -17,3 +17,4 @@ deletefolder missing:76
 no overwrite:58
 Folder|8
 C:\|C:|x.tar|c.txt|
+Files|Folders|True|True

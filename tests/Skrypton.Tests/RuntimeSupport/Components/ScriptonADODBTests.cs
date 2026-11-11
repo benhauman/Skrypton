@@ -145,7 +145,26 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 "collector.Report st.Size\r\n" +
                 "st.Close\r\n",
                 database: null);
-            CollectionAssert.AreEqual(new object?[] { "Hello", 5 }, values.ToArray());
+            // Size includes the byte order mark of UTF-8 (verified with Windows ADO: "Hello" is 8 bytes)
+            CollectionAssert.AreEqual(new object?[] { "Hello", 8 }, values.ToArray());
+        }
+
+        [TestMethod]
+        [DataRow("utf-8", 5)]
+        [DataRow("Unicode", 6)]
+        [DataRow("iso-8859-1", 2)]
+        public void StreamTextStartsWithTheByteOrderMarkOfUtf8AndUnicode(string charset, int expectedSize)
+        {
+            // verified with Windows ADO: "Hi" is 5 bytes in UTF-8 (EF BB BF 48 69), 6 in Unicode (FF FE 48 00 69 00), 2 in ISO-8859-1
+            var values = Execute(
+                "Dim st : Set st = CreateObject(\"ADODB.Stream\")\r\n" +
+                "st.Type = 2 : st.Charset = \"" + charset + "\" : st.Open\r\n" +
+                "st.WriteText \"Hi\"\r\n" +
+                "collector.Report st.Size\r\n" +
+                "st.Position = 0\r\n" +
+                "collector.Report st.ReadText()\r\n",
+                database: null);
+            CollectionAssert.AreEqual(new object?[] { expectedSize, "Hi" }, values.ToArray());
         }
     }
 }

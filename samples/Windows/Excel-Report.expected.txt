@@ -1,0 +1,8 @@
+Saved: skrypton-demo-report.xlsx
+Sheet: Report, used range $A$1:$C$5 (5 rows)
+  Article | Quantity | Price
+  Screws | 100 | 0.25
+  Nuts | 250 | 0.1
+  Bolts | 40 | 1.75
+  Total | =SUM(B2:B4)
+Header bold: True, price format: 0.00

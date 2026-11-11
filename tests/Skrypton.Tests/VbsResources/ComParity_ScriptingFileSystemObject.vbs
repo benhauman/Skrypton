@@ -33,3 +33,5 @@ fso.DeleteFile tmp
 On Error GoTo 0
 Out TypeName(fso.GetFolder(fso.GetSpecialFolder(2))) & "|" & VarType(fso.GetSpecialFolder(2))
 Out fso.GetParentFolderName("C:\a") & "|" & fso.GetDriveName("C:\a\b") & "|" & fso.GetBaseName("x.tar.gz") & "|" & fso.GetFileName("a/b/c.txt") & "|" & fso.GetParentFolderName("rel")
+Dim tmpFolder : Set tmpFolder = fso.GetFolder(fso.GetSpecialFolder(2))
+Out TypeName(tmpFolder.Files) & "|" & TypeName(tmpFolder.SubFolders) & "|" & (tmpFolder.Files.Count >= 0) & "|" & (tmpFolder.SubFolders.Count >= 0)
