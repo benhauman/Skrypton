@@ -2,12 +2,12 @@
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport;
+using Skrypton.RuntimeSupport.Components;
 
 namespace Skrypton.Tests.RuntimeSupport.Implementations
 {
     [TestClass]
-    public sealed class MyFileSystemObjectTests : TestBase
+    public sealed class ScriptonFileSystemObjectTests : TestBase
     {
         private sealed class RootPathInfo
         {
@@ -36,7 +36,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void CreateFolder_ShouldCreateDirectory()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             string folderPath = Path.Combine(root.RootPath, "SubFolder");
 
             var folder = fso.CreateFolder(folderPath);
@@ -49,7 +49,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void FileExists_ShouldReturnTrue_WhenFileExists()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             string filePath = Path.Combine(root.RootPath, "test.txt");
             File.WriteAllText(filePath, "Hello");
 
@@ -61,7 +61,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void GetFile_ShouldReturnCorrectFile()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             string filePath = Path.Combine(root.RootPath, "data.txt");
             File.WriteAllText(filePath, "ABC");
 
@@ -75,7 +75,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void CreateTextFile_ShouldCreateAndWrite()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             string filePath = Path.Combine(root.RootPath, "newfile.txt");
 
             {
@@ -99,7 +99,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void OpenTextFile_ForReadingAfterWriting_ShouldReadBack()
         {
             var root = EnsureRootPath();
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             string filePath = Path.Combine(root.RootPath, "open.txt");
 
             {
@@ -141,7 +141,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             File.WriteAllText(Path.Combine(root.RootPath, "a.txt"), "A");
             File.WriteAllText(Path.Combine(root.RootPath, "b.txt"), "BB");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var folder = fso.GetFolder(root.RootPath);
             var files = folder.Files;
 
@@ -157,7 +157,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(Path.Combine(root.RootPath, "A"));
             Directory.CreateDirectory(Path.Combine(root.RootPath, "B"));
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var folder = fso.GetFolder(root.RootPath);
             var subs = folder.SubFolders;
 
@@ -174,7 +174,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(Path.Combine(root.RootPath, "src"));
             File.WriteAllText(Path.Combine(root.RootPath, "src", "source.txt"), "X");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var src = fso.GetFolder(Path.Combine(root.RootPath, "src"));
             //var src = new MyFolder();
             string dst = Path.Combine(root.RootPath, "dst");
@@ -197,7 +197,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(from);
             File.WriteAllText(Path.Combine(from, "f.txt"), "x");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var folder = fso.GetFolder(from);
 
             // Act
@@ -217,7 +217,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Directory.CreateDirectory(dir);
             File.WriteAllText(Path.Combine(dir, "x.txt"), "x");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var folder = fso.GetFolder(dir);
             folder.Delete(force: true);
 
@@ -233,7 +233,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "info.txt");
             File.WriteAllText(filePath, "1234");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var f = fso.GetFile(filePath);
 
             Assert.AreEqual("info.txt", f.Name);
@@ -248,7 +248,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "move.txt");
             File.WriteAllText(filePath, "Data");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var f = fso.GetFile(filePath);
 
             string newPath = Path.Combine(root.RootPath, "moved.txt");
@@ -266,7 +266,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "copy.txt");
             File.WriteAllText(filePath, "OK");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var f = fso.GetFile(filePath);
 
             string dest = Path.Combine(root.RootPath, "copy2.txt");
@@ -283,7 +283,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string filePath = Path.Combine(root.RootPath, "del.txt");
             File.WriteAllText(filePath, "del");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             var f = fso.GetFile(filePath);
             f.Delete(force: true);
 
@@ -297,7 +297,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         {
             var root = EnsureRootPath();
             string filePath = Path.Combine(root.RootPath, "ts.txt");
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
 
             {
                 var ts = fso.OpenTextFile(filePath, IOMode.ForWriting, create: true);
@@ -336,7 +336,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string file = Path.Combine(root.RootPath, "lines.txt");
             File.WriteAllLines(file, new[] { "A", "B", "C" });
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             {
                 var ts = fso.OpenTextFile(file, IOMode.ForReading);
                 try
@@ -360,7 +360,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             string file = Path.Combine(root.RootPath, "append.txt");
             File.WriteAllText(file, "X");
 
-            var fso = new MyFileSystemObject(CreateWindowsFileSystem());
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject"); // the built-in, on the process file system (no host service registered)
             {
                 var ts = fso.OpenTextFile(file, IOMode.ForAppending);
                 try
@@ -376,6 +376,62 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             var content = File.ReadAllText(file);
             Assert.AreEqual("XYZ", content);
+        }
+
+        // ---------- Path functions and file operations ----------
+
+        [TestMethod]
+        public void PathFunctions()
+        {
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject");
+            Assert.AreEqual("a" + Path.DirectorySeparatorChar + "b.txt", fso.BuildPath("a", "b.txt"));
+            Assert.AreEqual(@"a\b.txt", fso.BuildPath(@"a\", "b.txt"));
+            Assert.AreEqual("b.txt", fso.GetFileName(Path.Combine("a", "b.txt")));
+            Assert.AreEqual("b", fso.GetBaseName(Path.Combine("a", "b.txt")));
+            Assert.AreEqual("txt", fso.GetExtensionName(Path.Combine("a", "b.txt")));
+            Assert.AreEqual("", fso.GetExtensionName("noextension"));
+            Assert.AreEqual("a", fso.GetParentFolderName(Path.Combine("a", "b.txt")));
+            StringAssert.EndsWith(fso.GetTempName(), ".tmp");
+        }
+
+        [TestMethod]
+        public void CopyMoveAndDeleteFiles()
+        {
+            var root = EnsureRootPath();
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject");
+            string source = Path.Combine(root.RootPath, "source.txt");
+            File.WriteAllText(source, "data");
+            string folder = Path.Combine(root.RootPath, "target");
+            Directory.CreateDirectory(folder);
+
+            fso.CopyFile(source, folder + Path.DirectorySeparatorChar);
+            Assert.IsTrue(File.Exists(Path.Combine(folder, "source.txt")), "copied into the folder");
+
+            string moved = Path.Combine(root.RootPath, "moved.txt");
+            fso.MoveFile(source, moved);
+            Assert.IsFalse(File.Exists(source));
+            Assert.IsTrue(File.Exists(moved));
+
+            fso.DeleteFile(moved);
+            Assert.IsFalse(File.Exists(moved));
+            Assert.ThrowsExactly<FileNotFoundException>(() => fso.DeleteFile(moved));
+
+            fso.DeleteFolder(folder);
+            Assert.IsFalse(Directory.Exists(folder));
+        }
+
+        [TestMethod]
+        public void CreateTextFileDoesNotOverwriteUnlessAsked()
+        {
+            var root = EnsureRootPath();
+            var fso = (IFileSystem)TestBuiltInComponents.Create("Scripting.FileSystemObject");
+            string file = Path.Combine(root.RootPath, "existing.txt");
+            File.WriteAllText(file, "old");
+            Assert.ThrowsExactly<IOException>(() => fso.CreateTextFile(file));
+            var ts = fso.CreateTextFile(file, true);
+            ts.Write("new");
+            ts.Close();
+            Assert.AreEqual("new", File.ReadAllText(file));
         }
     }
 }

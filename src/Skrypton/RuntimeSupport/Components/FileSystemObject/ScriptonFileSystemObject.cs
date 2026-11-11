@@ -1,33 +1,120 @@
-﻿using System;
-using Skrypton.RuntimeSupport.Components;
+// Moved from the test project; it was written without nullable reference type annotations
+#nullable disable
+// The members are bound by name from scripts and the names / values mirror the scrrun.dll type library
+#pragma warning disable CA1859, CA1008, CA1027, CA1711
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
-using Skrypton.Tests.RuntimeSupport.Components;
-using Skrypton.Tests.RuntimeSupport.Implementations;
+using Skrypton.RuntimeSupport.Implementations;
 
-namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
+namespace Skrypton.RuntimeSupport.Components
 {
-    [SourceClassName("Dictionary")] // for TYPENAME(CreateObject("Scripting.Dictionary"))
+    /// <summary>
+    /// The built-in Scripting.FileSystemObject (scrrun.dll). All file system access goes through the host's IHostFileSystemHostService; if the host
+    /// has not registered one, the file system of the process is used (DefaultHostFileSystemHostService, System.IO) - a host that must restrict
+    /// what scripts can access registers its own service.
+    /// </summary>
+    [SourceClassName("FileSystemObject")] // TypeName(CreateObject("Scripting.FileSystemObject"))
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    //[DefaultMember("Item")]
-    internal sealed class MyFileSystemObject : IReflectOnClrType, IFileSystem
+    internal sealed class ScriptonFileSystemObject : ScriptonIReflectOnClrType, IFileSystem
     {
-        /* COM:"Microsoft Scripting Runtime" => 'Interop.Scripting.dll' => C:\Windows\System32\scrrun.dll */
-        // D:\projects.ToDelete\ConsoleApp2\bin\Debug\net10.0\Interop.Scripting.dll
+        public const string ProgId = "Scripting.FileSystemObject";
 
         private readonly IHostFileSystemHostService _hostFileSystem;
-        public MyFileSystemObject(IHostFileSystemHostService hostFileSystemService)
+
+        public ScriptonFileSystemObject(IRuntimeHost runtimeHost) : base(typeof(ScriptonFileSystemObject))
         {
-            _hostFileSystem = hostFileSystemService ?? throw new ArgumentNullException(nameof(hostFileSystemService));
+            if (runtimeHost == null)
+                throw new ArgumentNullException(nameof(runtimeHost));
+            _hostFileSystem = runtimeHost.TryGetRuntimeHostService<IHostFileSystemHostService>() ?? DefaultHostFileSystemHostService.Instance;
         }
-        internal static MyFileSystemObject Create(IServiceProvider hostServices)
+
+        // --- Path functions (they do not access the file system) ---
+
+        public string BuildPath(string Path, string Name)
         {
-            return new MyFileSystemObject(hostServices.GetRequiredService<IHostFileSystemHostService>());
+            if (string.IsNullOrEmpty(Path))
+                return Name ?? "";
+            if (string.IsNullOrEmpty(Name))
+                return Path;
+            bool pathEndsWithSeparator = (Path[Path.Length - 1] == '\\') || (Path[Path.Length - 1] == '/');
+            bool nameStartsWithSeparator = (Name[0] == '\\') || (Name[0] == '/');
+            if (pathEndsWithSeparator && nameStartsWithSeparator)
+                return Path + Name.Substring(1);
+            if (pathEndsWithSeparator || nameStartsWithSeparator || (Path[Path.Length - 1] == ':'))
+                return Path + Name;
+            return Path + System.IO.Path.DirectorySeparatorChar + Name;
+        }
+
+        public string GetFileName(string Path) => System.IO.Path.GetFileName((Path ?? "").TrimEnd('\\', '/'));
+
+        public string GetBaseName(string Path) => System.IO.Path.GetFileNameWithoutExtension((Path ?? "").TrimEnd('\\', '/'));
+
+        public string GetExtensionName(string Path)
+        {
+            string extension = System.IO.Path.GetExtension((Path ?? "").TrimEnd('\\', '/'));
+            return string.IsNullOrEmpty(extension) ? "" : extension.Substring(1);
+        }
+
+        public string GetParentFolderName(string Path) => System.IO.Path.GetDirectoryName((Path ?? "").TrimEnd('\\', '/')) ?? "";
+
+        public string GetDriveName(string Path) => System.IO.Path.GetPathRoot(Path ?? "")?.TrimEnd('\\', '/') ?? "";
+
+        public string GetAbsolutePathName(string Path) => System.IO.Path.GetFullPath(string.IsNullOrEmpty(Path) ? "." : Path);
+
+        /// <summary>
+        /// A random file name like "radC2A1B.tmp" (as scrrun returns), the file is not created
+        /// </summary>
+        public string GetTempName() => "rad" + Guid.NewGuid().ToString("N").Substring(0, 5).ToUpperInvariant() + ".tmp";
+
+        // --- File and folder operations ---
+
+        public void DeleteFile(string FileSpec, [Optional, DefaultParameterValue(false)] bool Force)
+        {
+            if (!_hostFileSystem.FileExists(FileSpec))
+                throw new System.IO.FileNotFoundException("File not found", FileSpec);
+            _hostFileSystem.DeleteFile(FileSpec);
+        }
+
+        public void DeleteFolder(string FolderSpec, [Optional, DefaultParameterValue(false)] bool Force)
+        {
+            if (!_hostFileSystem.DirectoryExists(FolderSpec))
+                throw new System.IO.DirectoryNotFoundException("Path not found: " + FolderSpec);
+            _hostFileSystem.DeleteDirectory(FolderSpec, recursive: true);
+        }
+
+        public void CopyFile(string Source, string Destination, [Optional, DefaultParameterValue(true)] bool OverWriteFiles)
+        {
+            _hostFileSystem.CopyFile(Source, IsFolderTarget(Destination) ? BuildPath(Destination, GetFileName(Source)) : Destination, OverWriteFiles);
+        }
+
+        public void MoveFile(string Source, string Destination)
+        {
+            _hostFileSystem.MoveFile(Source, IsFolderTarget(Destination) ? BuildPath(Destination, GetFileName(Source)) : Destination);
+        }
+
+        public void CopyFolder(string Source, string Destination, [Optional, DefaultParameterValue(true)] bool OverWriteFiles)
+        {
+            _hostFileSystem.CopyDirectory(Source, Destination, OverWriteFiles);
+        }
+
+        public void MoveFolder(string Source, string Destination)
+        {
+            _hostFileSystem.MoveDirectory(Source, Destination);
+        }
+
+        /// <summary>
+        /// As with scrrun, a destination that ends with a path separator (or is an existing folder) is the folder to copy / move the file into
+        /// </summary>
+        private bool IsFolderTarget(string destination)
+        {
+            return !string.IsNullOrEmpty(destination)
+                && ((destination[destination.Length - 1] == '\\') || (destination[destination.Length - 1] == '/') || _hostFileSystem.DirectoryExists(destination));
         }
 
         public bool FileExists(string path)
@@ -45,24 +132,10 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         public object GetDrive(string path)
         {
-            //string root = Path.GetPathRoot(path);
-            //if (string.IsNullOrEmpty(root))
-            //    return false;
-
-            //// Normalize like "C:\"
-            //root = root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
-
-            //var nfo = DriveInfo.GetDrives()
-            //    .Any(d => string.Equals(
-            //        d.Name,
-            //        root,
-            //        StringComparison.OrdinalIgnoreCase));
-
-            throw new NotImplementedException(path);
+            throw new NotSupportedException($"FileSystemObject.GetDrive('{path}'): Drive objects are not supported (DriveExists and GetDriveName are)");
         }
         public IFile GetFile(string path)
         {
-            //throw new NotImplementedException(path);
             if (!_hostFileSystem.FileExists(path))
                 throw new System.IO.FileNotFoundException(path);
             HostFileSystemFileInfo nfo = _hostFileSystem.GetFileInfo(path);
@@ -71,7 +144,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
                 throw new System.IO.FileNotFoundException(path);
             }
 
-            return new MyFile(_hostFileSystem, nfo);
+            return new ScriptonFile(_hostFileSystem, nfo);
         }
 
         public IFolder GetFolder(string path)
@@ -84,14 +157,14 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
                 throw new System.IO.DirectoryNotFoundException(path);
             }
 
-            return new MyFolder(_hostFileSystem, nfo);
+            return new ScriptonFolder(_hostFileSystem, nfo);
         }
 
         public IFolder CreateFolder(string path)
         {
-            _ = nameof(MyFolder);
+            _ = nameof(ScriptonFolder);
             HostFileSystemDirectoryInfo nfo = _hostFileSystem.CreateDirectory(path);
-            return new MyFolder(_hostFileSystem, nfo);
+            return new ScriptonFolder(_hostFileSystem, nfo);
         }
 
         public ITextStream OpenTextFile(string path, short mode) => OpenTextFileCore(path, (IOMode)mode, create:false, format: Tristate.UseDefault);
@@ -105,22 +178,25 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
             //if (mode == null)
             //    throw new ArgumentNullException($"Argument 'mode' is required", nameof(mode));
 
-            if (!Enum.IsDefined<IOMode>(mode))
+            if (!Enum.IsDefined(typeof(IOMode), mode))
                 throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
 
             if (mode == IOMode.ForReading)
             {
-                return new MyTextStream(path, _hostFileSystem.OpenTextFileRead(path));
+                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileRead(path));
             }
             else
             {
-                return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: false);
+                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: false);
             }
         }
 
-        public ITextStream CreateTextFile(string path, bool overwrite = true, bool unicode = false)
+        /// <summary>
+        /// CreateTextFile(FileName, [Overwrite = False], [Unicode = False]) - creates the file; an existing file is only replaced if Overwrite is True (as with scrrun)
+        /// </summary>
+        public ITextStream CreateTextFile(string path, bool overwrite = false, bool unicode = false)
         {
-            return new MyTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: overwrite, overwriteIfExists: true, false), IOMode.ForWriting, unicode);
+            return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: true, overwriteIfExists: overwrite, append: false), IOMode.ForWriting, unicode);
         }
 
         [DispId(10014)]
@@ -130,21 +206,21 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
             if (specialFolderX == SpecialFolderConst.TemporaryFolder)
             {
                 HostFileSystemDirectoryInfo nfo = _hostFileSystem.GetSpecialFolderTemp();
-                return new MyFolder(_hostFileSystem, nfo);
+                return new ScriptonFolder(_hostFileSystem, nfo);
             }
-            throw new NotImplementedException($"SpecialFolder:{SpecialFolder}");
+            throw new NotSupportedException($"FileSystemObject.GetSpecialFolder({SpecialFolder}): only the TemporaryFolder (2) is supported");
         }
     }
 
     [DefaultMember("Path")] // +[DispId(0)] +[IsDefault]
-    internal sealed class MyFolder : IFolder
+    internal sealed class ScriptonFolder : IFolder
     {
         private readonly IHostFileSystemHostService _hostFileSystem;
         private readonly HostFileSystemDirectoryInfo _info;
         [DispId(0)] [IsDefault] public string Path => _info.Path;
         public string Name => _info.Name;
 
-        public MyFolder(IHostFileSystemHostService hostFileSystemService, HostFileSystemDirectoryInfo info)
+        public ScriptonFolder(IHostFileSystemHostService hostFileSystemService, HostFileSystemDirectoryInfo info)
         {
             _hostFileSystem = hostFileSystemService ?? throw new ArgumentNullException(nameof(hostFileSystemService));
             _info = info ?? throw new ArgumentNullException(nameof(info));
@@ -161,8 +237,8 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         //    }
         //}
 
-        public IReadOnlyCollection<IFile> Files => _hostFileSystem.GetFiles(Path).Select(nfo => new MyFile(_hostFileSystem, nfo)).ToArray();
-        public IReadOnlyCollection<IFolder> SubFolders => _hostFileSystem.GetDirectories(Path).Select(nfo => new MyFolder(_hostFileSystem, nfo)).ToArray();
+        public IReadOnlyCollection<IFile> Files => _hostFileSystem.GetFiles(Path).Select(nfo => new ScriptonFile(_hostFileSystem, nfo)).ToArray();
+        public IReadOnlyCollection<IFolder> SubFolders => _hostFileSystem.GetDirectories(Path).Select(nfo => new ScriptonFolder(_hostFileSystem, nfo)).ToArray();
 
         public void Delete(bool force) => _hostFileSystem.DeleteDirectory(Path, force);
 
@@ -174,7 +250,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         }
     }
 
-    internal sealed class MyFile : IFile
+    internal sealed class ScriptonFile : IFile
     {
         private readonly IHostFileSystemHostService _hostFileSystem;
         private readonly HostFileSystemFileInfo _nfo;
@@ -183,7 +259,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         //public long Size => new FileInfo(Path).Length;
         //public string Type => "File";
 
-        public MyFile(IHostFileSystemHostService hostFileSystem, HostFileSystemFileInfo nfo)
+        public ScriptonFile(IHostFileSystemHostService hostFileSystem, HostFileSystemFileInfo nfo)
         {
             _hostFileSystem = hostFileSystem ?? throw new ArgumentNullException(nameof(hostFileSystem));
             _nfo = nfo ?? throw new ArgumentNullException(nameof(nfo));
@@ -209,22 +285,22 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
 
         public ITextStream OpenAsTextStream(IOMode mode, Tristate format = Tristate.UseDefault)
         {
-            if (!Enum.IsDefined<IOMode>(mode))
+            if (!Enum.IsDefined(typeof(IOMode), mode))
                 throw new ArgumentException($"Undefined mode:{mode}", nameof(mode));
 
             if (mode == IOMode.ForReading)
             {
-                return new MyTextStream(Path, _hostFileSystem.OpenTextFileRead(Path));
+                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileRead(Path));
             }
             else
             {
-                return new MyTextStream(Path, _hostFileSystem.OpenTextFileWrite(Path, createIfNotExists: true, overwriteIfExists: mode == IOMode.ForAppending, append: mode == IOMode.ForAppending), mode, unicode: false);
+                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileWrite(Path, createIfNotExists: true, overwriteIfExists: mode == IOMode.ForAppending, append: mode == IOMode.ForAppending), mode, unicode: false);
             }
         }
     }
 
     [DebuggerDisplay("({_mode}) Path:{_path}")]
-    internal sealed class MyTextStream : ITextStream, IDisposable
+    internal sealed class ScriptonFileTextStream : ITextStream, IDisposable
     {
         private System.IO.StreamReader _reader; // nullable
         private System.IO.StreamWriter _writer; // nullable
@@ -232,13 +308,13 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
         private readonly string _path;
         private readonly IOMode _mode;
 
-        public MyTextStream(string path, System.IO.StreamReader reader)
+        public ScriptonFileTextStream(string path, System.IO.StreamReader reader)
         {
             _mode = IOMode.ForReading;
             _path = path ?? throw new ArgumentNullException(nameof(path));
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
         }
-        public MyTextStream(string path, System.IO.Stream writeStream, IOMode mode, bool unicode)
+        public ScriptonFileTextStream(string path, System.IO.Stream writeStream, IOMode mode, bool unicode)
         {
             _mode = mode;
             _path = path ?? throw new ArgumentNullException(nameof(path));
@@ -304,23 +380,30 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
             }
         }
 
-        public bool AtEndOfLine => throw new NotImplementedException();
+        public bool AtEndOfLine
+        {
+            get
+            {
+                int next = reader.Peek();
+                return (next == -1) || (next == 13) || (next == 10); // end of stream, CR or LF
+            }
+        }
     }
-    internal enum IOMode
+    public enum IOMode
     {
         ForReading = 1,
         ForWriting = 2,
         ForAppending = 8
     }
 
-    internal enum Tristate
+    public enum Tristate
     {
         False = 0,
         True = -1,
         UseDefault = -2
     }
 
-    internal enum FileAttribute
+    public enum FileAttribute
     {
         Normal = 0,
         ReadOnly = 1,
@@ -333,8 +416,23 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     //[ComImport]
     //[Guid("0D43FE01-F093-11CF-8940-00A0C9054228")] // public class ID
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal interface IFileSystem
+    public interface IFileSystem
     {
+        string BuildPath(string Path, string Name);
+        string GetFileName(string Path);
+        string GetBaseName(string Path);
+        string GetExtensionName(string Path);
+        string GetParentFolderName(string Path);
+        string GetDriveName(string Path);
+        string GetAbsolutePathName(string Path);
+        string GetTempName();
+        void DeleteFile(string FileSpec, bool Force = false);
+        void DeleteFolder(string FolderSpec, bool Force = false);
+        void CopyFile(string Source, string Destination, bool OverWriteFiles = true);
+        void MoveFile(string Source, string Destination);
+        void CopyFolder(string Source, string Destination, bool OverWriteFiles = true);
+        void MoveFolder(string Source, string Destination);
+
         object GetDrive(string path);
         IFolder GetFolder(string path);
         IFile GetFile(string path);
@@ -362,7 +460,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     //[ComImport]
     //[Guid("0D43FE05-F093-11CF-8940-00A0C9054228")]
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal interface IFolder
+    public interface IFolder
     {
         string Path { get; }
         string Name { get; }
@@ -379,7 +477,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     //[ComImport]
     //[Guid("0D43FE03-F093-11CF-8940-00A0C9054228")]
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal interface IFile
+    public interface IFile
     {
         string Path { get; }
         string Name { get; }
@@ -396,7 +494,7 @@ namespace Skrypton.Tests.RuntimeSupport.Components.FileSystemSupport
     //[ComImport]
     //[Guid("0D43FE08-F093-11CF-8940-00A0C9054228")]
     //[InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    internal interface ITextStream
+    public interface ITextStream
     {
         string Read(int count);
         string ReadAll();
