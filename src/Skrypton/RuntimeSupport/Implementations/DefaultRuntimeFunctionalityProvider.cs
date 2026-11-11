@@ -148,6 +148,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonADODBStream(_runtimeHost);
             if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonScriptletTypeLib();
+            if (classProgId.Equals(Components.ScriptonInternetExplorerApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonInternetExplorerApplication(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonHtmlFile.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonHtmlFile(_runtimeHost);
             return null;
         }
 

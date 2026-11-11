@@ -29,6 +29,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_Msxml2DOMDocument() => RunParityScript();
         [TestMethod] public void ComParity_ScriptingFileSystemObject() => RunParityScript();
         [TestMethod] public void ComParity_WScriptShellScriptletWmiAdodbTypeNames() => RunParityScript();
+        [TestMethod] public void ComParity_InternetExplorerHtmlFile() => RunParityScript();
 
         private void RunParityScript()
         {
@@ -41,7 +42,10 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var output = new Output();
             IScriptControl scriptengine = CreateScriptControlClass(
                 // WMI (winmgmts:) lists the processes of the host's process service (cscript lists the real ones; the script only checks that there are some)
-                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService()))),
+                // htmlfile's clipboardData uses an in-memory clipboard (cscript's htmlfile does not change the user's clipboard either)
+                CreateRuntimeHost(CreateTestHostServices(s => s
+                    .RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService())
+                    .RegisterHostService<IHostClipboardHostService>(() => new TestClipboardHostService()))),
                 CreateScriptControlConfiguration(false, [], [])
             );
             scriptengine.AddObject("output", output, false);
