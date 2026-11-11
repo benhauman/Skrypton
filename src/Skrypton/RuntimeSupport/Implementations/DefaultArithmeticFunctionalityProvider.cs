@@ -487,14 +487,76 @@ namespace Skrypton.RuntimeSupport.Implementations
             return dblResult;
         }
 
-        public int INTDIV(object l, object r)
+        public object INTDIV(object? l, object? r)
         {
-            throw new NotImplementedException(); // TODO
+            // Both operands are rounded (banker's rounding) to whole numbers, then divided with the result truncated towards zero. Null trumps division-by-zero.
+            // Like MOD (and unlike DIV), Empty \ Empty is a Division-by-zero, not an Overflow. The result is a Byte if both operands are Bytes, an Integer if both
+            // are Byte/Integer/Boolean/Empty, otherwise a Long (an Overflow is raised if the rounded values or the result do not fit in a Long).
+            l = _valueRetriever.VAL(l);
+            r = _valueRetriever.VAL(r);
+            if ((l == DBNull.Value) || (r == DBNull.Value))
+                return DBNull.Value;
+
+            long lValue = ToWholeNumberForIntegerDivision(l, l, r);
+            long rValue = ToWholeNumberForIntegerDivision(r, l, r);
+            if (rValue == 0)
+                throw new VBScriptDivisionByZeroException($"l:{l}, r:{r}");
+
+            long result = lValue / rValue;
+            if ((l is byte) && (r is byte))
+                return (byte)result;
+            if (IsIntegerSizedForIntegerDivision(l) && IsIntegerSizedForIntegerDivision(r) && (result >= Int16.MinValue) && (result <= Int16.MaxValue))
+                return (Int16)result;
+            if ((result < Int32.MinValue) || (result > Int32.MaxValue))
+                throw new VBScriptOverflowException($"l:{l}, r:{r}");
+            return (Int32)result;
         }
 
-        public double POW(object l, object r)
+        private static bool IsIntegerSizedForIntegerDivision(object? value)
         {
-            throw new NotImplementedException(); // TODO
+            return (value == null) || (value is byte) || (value is Int16) || (value is bool);
+        }
+
+        private long ToWholeNumberForIntegerDivision(object? value, object? l, object? r)
+        {
+            if (value == null)
+                return 0;
+            double doubleValue;
+            var dateValue = TryToCoerceInto<DateTime>(value);
+            if (dateValue != null)
+                doubleValue = dateValue.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays;
+            else
+                doubleValue = AsDouble(value);
+            try
+            {
+                return Convert.ToInt32(doubleValue); // Convert.ToInt32 uses banker's rounding, consistent with VBScript
+            }
+            catch (OverflowException e)
+            {
+                throw new VBScriptOverflowException($"l:{l}, r:{r}", e);
+            }
+        }
+
+        public object POW(object? l, object? r)
+        {
+            // The result is always a Double (or Null if either operand is Null). A negative number raised to a non-integer power is an Invalid procedure call and a
+            // result that can not be represented as a Double is an Overflow.
+            l = _valueRetriever.VAL(l);
+            r = _valueRetriever.VAL(r);
+            if ((l == DBNull.Value) || (r == DBNull.Value))
+                return DBNull.Value;
+
+            var lDate = TryToCoerceInto<DateTime>(l);
+            var rDate = TryToCoerceInto<DateTime>(r);
+            var lDouble = (lDate != null) ? lDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(l);
+            var rDouble = (rDate != null) ? rDate.Value.Subtract(VBScriptConstants.ZeroDate).TotalDays : AsDouble(r);
+            if ((lDouble < 0) && (Math.Floor(rDouble) != rDouble))
+                throw new InvalidProcedureCallOrArgumentException($"l:{l}, r:{r}");
+
+            var result = Math.Pow(lDouble, rDouble);
+            if (double.IsInfinity(result) || double.IsNaN(result))
+                throw new VBScriptOverflowException($"l:{l}, r:{r}");
+            return result;
         }
 
         public object MOD(object? l, object? r)

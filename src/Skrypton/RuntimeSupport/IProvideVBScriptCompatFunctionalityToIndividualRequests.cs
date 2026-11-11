@@ -12,10 +12,10 @@ namespace Skrypton.RuntimeSupport
     public interface IProvideVBScriptCompatFunctionalityToIndividualRequests : IAccessValuesUsingVBScriptRules, IDisposable
     {
         // Arithemetic operators
-        double POW(object l, object r);
+        object POW(object l, object r);
         object DIV(object l, object r);
         object MULT(object l, object r);
-        int INTDIV(object l, object r);
+        object INTDIV(object l, object r);
 #pragma warning disable CA1716 // Identifiers should not match keywords
         object MOD(object l, object r);
 #pragma warning restore CA1716 // Identifiers should not match keywords
