@@ -1692,7 +1692,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         public object VARTYPE(object value)
         {
             if (value == null)
-                return MyVarEnum.VT_EMPTY;
+                return (short)MyVarEnum.VT_EMPTY; // VarType(Empty) is 0 (an Integer), not the enum name
             return (short)IDispatchAccess.GetVariantType(value!);
         }
 

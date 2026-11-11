@@ -1101,7 +1101,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 invoker = GenerateGetInvoker(target, optionalName, arguments, allowPrivateAccess, onlyConsiderMethods);
                 _getInvokerCache.TryAdd(cacheKey, invoker);
             }
-            if (arguments.Any(x => x is ScriptDispatchWrapper))
+            // Nothing is represented by a ScriptDispatchWrapper around null and it must stay that way inside the script (so that VarType returns 9 and
+            // IsObject returns True for a Nothing that has been passed into a script Function or Property) - it is only unwrapped at the boundary into a
+            // host call (see issue #42)
+            if (!IsTranslatedScriptTarget(target) && arguments.Any(x => x is ScriptDispatchWrapper))
             {
                 arguments = arguments.Select(x => x is ScriptDispatchWrapper dw ? dw.WrappedObject : x).ToArray();
             }
@@ -1113,7 +1116,21 @@ namespace Skrypton.RuntimeSupport.Implementations
                     return dw.WrappedObject;
                 }
             }
+            if ((resultValue == null) && invoker.ReturnsObjectReference)
+            {
+                // A host member declared to return an object reference (an interface type, or MarshalAs IDispatch / IUnknown / Interface) that
+                // returns null is returning Nothing, not Empty (see issue #42)
+                return VBScriptConstants.Nothing;
+            }
             return resultValue;
+        }
+
+        /// <summary>
+        /// Is the target code that was translated from the VBScript source (the global references class or a translated VBScript class), rather than a host object?
+        /// </summary>
+        private static bool IsTranslatedScriptTarget(object target)
+        {
+            return (target is GlobalReferencesBase) || (target.GetType().GetCustomAttribute<SourceClassNameAttribute>(inherit: false) != null);
         }
 
         [DebuggerDisplay("{_debugInfo}")]
@@ -1123,6 +1140,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             internal readonly Func<object, object?[], object> DelegateFunc;
             private readonly string _debugInfo;
             internal readonly MemberInfo? _member;
+            internal readonly bool ReturnsObjectReference;
 
             public GetterInfo(Func<object, object?[], object> delegateFunc, string debugInfo, MemberInfo? method, bool usesIReflect)
             {
@@ -1130,6 +1148,34 @@ namespace Skrypton.RuntimeSupport.Implementations
                 DelegateFunc = delegateFunc ?? throw new ArgumentNullException(nameof(delegateFunc));
                 _debugInfo = debugInfo;
                 _member = method;
+                ReturnsObjectReference = IsDeclaredToReturnObjectReference(method);
+            }
+
+            private static bool IsDeclaredToReturnObjectReference(MemberInfo? member)
+            {
+                ParameterInfo? returnParameter;
+                Type? returnType;
+                if (member is MethodInfo method)
+                {
+                    returnParameter = method.ReturnParameter;
+                    returnType = method.ReturnType;
+                }
+                else if (member is PropertyInfo property)
+                {
+                    returnParameter = property.GetMethod?.ReturnParameter;
+                    returnType = property.PropertyType;
+                }
+                else
+                {
+                    return false;
+                }
+
+                MarshalAsAttribute? marshalAs = returnParameter?.GetCustomAttribute<MarshalAsAttribute>();
+                if (marshalAs != null)
+                {
+                    return (marshalAs.Value == UnmanagedType.IDispatch) || (marshalAs.Value == UnmanagedType.IUnknown) || (marshalAs.Value == UnmanagedType.Interface);
+                }
+                return (returnType != null) && returnType.IsInterface;
             }
         }
         private GetterInfo GenerateGetInvoker(object target, string? optionalName, object?[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)

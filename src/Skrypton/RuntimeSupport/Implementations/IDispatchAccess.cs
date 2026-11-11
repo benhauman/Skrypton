@@ -347,6 +347,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 case DateTime _: return MyVarEnum.VT_DATE;
                 case DBNull _: return MyVarEnum.VT_NULL;
 
+                // Nothing is an object reference (VarType 9, vbObject), as is any other wrapped object reference (see issue #42)
+                case ScriptDispatchWrapper _: return MyVarEnum.VT_DISPATCH;
+
                 // Arrays
                 case Array _: return MyVarEnum.VT_ARRAY | MyVarEnum.VT_VARIANT;
                 // COM objects

@@ -14,9 +14,10 @@ namespace Skrypton.RuntimeSupport
 
         /// <summary>
         /// VBScript's Nothing reference is an uninitialised object, not the same as Empty which is an uninitialised value type and not the same as Null
-        /// which is DBNull.Value. What this means under the hood is that Nothing is a VARIANT with type VT_EMPTY, Null is a VARIANT with type VT_NULL
-        /// and Empty is an uninitialised VARIANT. This means Empty is equivalent to .net's null, VBScript's Null can be mapped to DBNull.Value and
-        /// Nothing may be mapped to a DispatchWrapper that wraps null. Note that if this Nothing reference is passed from VBScript into a .net
+        /// which is DBNull.Value. What this means under the hood is that Nothing is a VARIANT with type VT_DISPATCH and a null pointer (VarType 9,
+        /// vbObject), Null is a VARIANT with type VT_NULL and Empty is a VARIANT with type VT_EMPTY. This means Empty is equivalent to .net's null,
+        /// VBScript's Null can be mapped to DBNull.Value and Nothing is mapped to a ScriptDispatchWrapper that wraps null (it must stay wrapped
+        /// inside the runtime so that VarType and IsObject can tell it apart from Empty). Note that if this Nothing reference is passed from VBScript into a .net
         /// COM component then it will appear as a .net null. This is expected and consistent behaviour with a Nothing reference generated
         /// natively in VBScript. See http://www.informit.com/articles/article.aspx?p=27219&amp;seqNum=8 for more about the DispatchWrapper.
         /// </summary>
