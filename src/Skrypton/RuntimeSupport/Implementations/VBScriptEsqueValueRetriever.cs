@@ -1132,6 +1132,19 @@ namespace Skrypton.RuntimeSupport.Implementations
                 _member = method;
             }
         }
+
+        private static IDispatchAccess.IDispatch GetIDispatchForInvokeTarget(object invokeTarget)
+        {
+            if (!IDispatchAccess.ImplementsIDispatch(invokeTarget, out IDispatchAccess.IDispatch? invokeTargetDispatch) || (invokeTargetDispatch == null))
+            {
+                throw new ArgumentException(
+                    $"The target of type '{invokeTarget?.GetType().FullName ?? "null"}' does not implement IDispatch, but the cached invoker for it was generated for an IDispatch target",
+                    nameof(invokeTarget)
+                );
+            }
+            return invokeTargetDispatch;
+        }
+
         private GetterInfo GenerateGetInvoker(object target, string? optionalName, object?[] arguments, bool allowPrivateAccess, bool onlyConsiderMethods)
         {
             if (target == null)
@@ -1198,7 +1211,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten (don't try to catch exceptions here - it may be important to the caller
                         // if there was an IDispatchAccessException with particular values)
-                        dispId = IDispatchAccess.GetDispId(targetDispatch!, optionalName);
+                        // The invoker is cached per target type and every COM object has the type System.__ComObject, so the DISPID must be resolved
+                        // on the call-time object, not the object that this invoker was generated for (see issue #41)
+                        dispId = IDispatchAccess.GetDispId(GetIDispatchForInvokeTarget(invokeTarget), optionalName);
                     }
                     return IDispatchAccess.Invoke<object>(
                         invokeTarget,
@@ -1250,7 +1265,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 MethodInfo? ireflectInvokeMember = typeof(IReflect).GetMethod("InvokeMember");
                 Func<object, object?[], object> getterFunc = (invokeTarget, invokeArguments) =>
                 {
-                    return (targetIReflect).InvokeMember(
+                    // The invoker is cached per target type, so it must call the call-time object's InvokeMember (an IReflect implementation may
+                    // dispatch on "this" rather than on the target argument) - not the object that this invoker was generated for (see issue #41)
+                    return ((IReflect)invokeTarget).InvokeMember(
                         optionalName ?? "[DISPID=0]", // IReflect can receive a member name like "[DISPID=0]", but it will not treat it as a normal identifier.
                         invokeAttributes,
                         binder: null,
@@ -1619,7 +1636,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     {
                         // We don't use the nameRewriter here since we won't have rewritten the COM component, it's the C# generated from the
                         // VBScript source that we may have rewritten
-                        dispId = IDispatchAccess.GetDispId(targetDispatch!, optionalMemberAccessor);
+                        dispId = IDispatchAccess.GetDispId(GetIDispatchForInvokeTarget(invokeTarget), optionalMemberAccessor); // see issue #41
                     }
                     IDispatchAccess.Invoke<object>(
                         invokeTarget,
