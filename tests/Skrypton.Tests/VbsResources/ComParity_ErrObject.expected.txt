@@ -1,0 +1,19 @@
+division by zero: 11|Division by zero|Microsoft VBScript runtime error
+type mismatch: 13|Type mismatch|Microsoft VBScript runtime error
+overflow: 6|Overflow|Microsoft VBScript runtime error
+raise 5: 5|Invalid procedure call or argument|Microsoft VBScript runtime error
+raise with source and description: 1000|My description|MySource
+raise vbObjectError without source: -2147221503|custom|
+raise 70: 70|Permission denied|Microsoft VBScript runtime error
+file not found: 53|File not found|Microsoft VBScript runtime error
+path not found: 76|Path not found|Microsoft VBScript runtime error
+global Nothing call: 424|Object required|Microsoft VBScript runtime error
+global Nothing set: 424|Object required|Microsoft VBScript runtime error
+Empty member: 424|Object required|Microsoft VBScript runtime error
+string member: 424|Object required|Microsoft VBScript runtime error
+call result member: 424|Object required|Microsoft VBScript runtime error
+array index out of range: 9|Subscript out of range|Microsoft VBScript runtime error
+local Nothing call: 424|Object required|Microsoft VBScript runtime error
+local Nothing get: 424|Object required|Microsoft VBScript runtime error
+local Nothing set: 424|Object required|Microsoft VBScript runtime error
+cleared: 0||

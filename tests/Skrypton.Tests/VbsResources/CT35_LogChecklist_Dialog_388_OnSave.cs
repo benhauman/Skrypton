@@ -18,19 +18,19 @@ namespace TranslatedProgram
             //Check if invalid characters are in any of the url textboxes
             _env.dict = _.CREATEOBJECT("Scripting.Dictionary");
             _env.objRegEx = _.CREATEOBJECT("VBScript.RegExp");
-            _.SETm1a0(this, _.NnO(_env.objRegEx, "objRegEx"), "Global", true);
-            _.SETm1a0(this, _.NnO(_env.objRegEx, "objRegEx"), "Pattern", "[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]");
+            _.SETm1a0(this, _.NnO(_env.objRegEx, null), "Global", true);
+            _.SETm1a0(this, _.NnO(_env.objRegEx, null), "Pattern", "[^A-Z0-9][^\\:][^\\/][^\\.][^\\S][^\\?][^\\€][^\\@]");
 
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 1 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist1URL, "TextBoxChecklist1URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 2 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist2URL, "TextBoxChecklist2URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 3 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist3URL, "TextBoxChecklist3URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 4 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist4URL, "TextBoxChecklist4URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 5 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist5URL, "TextBoxChecklist5URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 6 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist6URL, "TextBoxChecklist6URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 7 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist7URL, "TextBoxChecklist7URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 8 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist8URL, "TextBoxChecklist8URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 9 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist9URL, "TextBoxChecklist9URL"), "Text"));
-            _.CALLm1v2(this, _.NnO(_env.dict, "dict"), "Add", "Checkliste 10 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist10URL, "TextBoxChecklist10URL"), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 1 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist1URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 2 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist2URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 3 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist3URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 4 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist4URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 5 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist5URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 6 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist6URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 7 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist7URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 8 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist8URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 9 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist9URL, null), "Text"));
+            _.CALLm1v2(this, _.NnO(_env.dict, null), "Add", "Checkliste 10 URL", _.CALLm1v0(this, _.NnO(_env.TextBoxChecklist10URL, null), "Text"));
 
             var enumerationContent = _.ENUMERABLE(_env.dict).GetEnumerator();
             while (true)
@@ -38,15 +38,15 @@ namespace TranslatedProgram
                 if (!enumerationContent.MoveNext())
                     break;
                 _outer.element = enumerationContent.Current;
-                if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_env.dict, "dict"), _.ARGS.Ref(_outer.element, v => { _outer.element = v; }))), "")))
+                if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_env.dict, null), _.ARGS.Ref(_outer.element, v => { _outer.element = v; }))), "")))
                 {
-                    _env.match = _.OBJ(_.CALLm1argp(this, _.NnO(_env.objRegEx, "objRegEx"), "execute", _.ARGS.RefIfArray(_env.dict, _.ARGS.Ref(_outer.element, v2 => { _outer.element = v2; }))));
-                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.match, "match"), "Count")), (Int16)0)))
+                    _env.match = _.OBJ(_.CALLm1argp(this, _.NnO(_env.objRegEx, null), "execute", _.ARGS.RefIfArray(_env.dict, _.ARGS.Ref(_outer.element, v2 => { _outer.element = v2; }))));
+                    if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.match, null), "Count")), (Int16)0)))
                     {
-                        _outer.errMsg = _.VAL(_.CALLm1v1(this, _.NnO(_env.model, "model"), "Translate", "#ERR_Checklists_InvalidChars"));
+                        _outer.errMsg = _.VAL(_.CALLm1v1(this, _.NnO(_env.model, null), "Translate", "#ERR_Checklists_InvalidChars"));
                         _outer.errMsg = _.REPLACE(_outer.errMsg, "{0}", _outer.element);
-                        _.CALLm1argp(this, _.NnO(_env.model, "model"), "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
-                        _.CALLm2v1(this, _.NnO(_env.model, "model"), "CurrentCommand", "Abort", "OnSave");
+                        _.CALLm1argp(this, _.NnO(_env.model, null), "MsgBox", _.ARGS.Ref(_outer.errMsg, v3 => { _outer.errMsg = v3; }));
+                        _.CALLm2v1(this, _.NnO(_env.model, null), "CurrentCommand", "Abort", "OnSave");
                     }
                 }
             }

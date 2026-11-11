@@ -38,8 +38,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 return targetAccessorName;
             }
 
-            string targetNameForExceptionSafe = targetNameForException ?? GetTargetNameForException(targetAccessorName);
-            return $"_.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.NnO)}({targetAccessorName}, {targetNameForExceptionSafe.ToLiteral()})";
+            // Error 424 names a local variable or parameter, but for a global variable (or the result of a support function) VBScript names its
+            // value - so only locals pass their name (issue #84)
+            string firstToken = targetAccessorName.Split('.')[0];
+            bool isGlobal = (targetNameForException == null) && ((firstToken == _envRefName.Name) || (firstToken == _outerRefName.Name) || (firstToken == _supportRefName.Name));
+            string targetNameLiteral = isGlobal ? "null" : (targetNameForException ?? GetTargetNameForException(targetAccessorName)).ToLiteral();
+            return $"_.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.NnO)}({targetAccessorName}, {targetNameLiteral})";
         }
         private string GetTargetNameForException(string targetAccessorName)
         {

@@ -37,12 +37,12 @@ namespace TranslatedProgram
             object intProcessId = null; /* Undeclared in source */
             object Process = null; /* Undeclared in source */
 
-            URL = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            URL = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, null), "GetValue", "vRealize.LansweeperURL", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             wshShell = _.CREATEOBJECT("WScript.Shell");
             _.CALLm1argp(this, _.NnO(wshShell, "wshShell"), "run", _.ARGS.Ref(URL, v => { URL = v; }));
 
-            Processes = _.OBJ(_.CALLm1v1(this, _.NnO(_.GETOBJECT("winmgmts:"), "(GetObject result)"), "InstancesOf", "Win32_Process"));
+            Processes = _.OBJ(_.CALLm1v1(this, _.NnO(_.GETOBJECT("winmgmts:"), null), "InstancesOf", "Win32_Process"));
 
             intProcessId = "";
             var enumerationContent = _.ENUMERABLE(Processes).GetEnumerator();

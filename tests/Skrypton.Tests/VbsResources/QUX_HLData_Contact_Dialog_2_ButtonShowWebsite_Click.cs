@@ -16,9 +16,9 @@ namespace TranslatedProgram
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
             _outer.objShell = _.CREATEOBJECT("Shell.Application");
-            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _.NnO(_env.TextBoxWebsite, "TextBoxWebsite"), "Text"))), "")))
+            if (_.IF(_.NOTEQ(_.NullableSTR(_.TRIM(_.CALLm1v0(this, _.NnO(_env.TextBoxWebsite, null), "Text"))), "")))
             {
-                _.CALLm1v1(this, _.NnO(_outer.objShell, "objShell"), "ShellExecute", _.CALLm1v0(this, _.NnO(_env.TextBoxWebsite, "TextBoxWebsite"), "Text"));
+                _.CALLm1v1(this, _.NnO(_outer.objShell, null), "ShellExecute", _.CALLm1v0(this, _.NnO(_env.TextBoxWebsite, null), "Text"));
             }
         }
     }

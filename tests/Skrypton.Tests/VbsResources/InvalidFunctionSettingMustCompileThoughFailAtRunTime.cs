@@ -1,1 +1,1 @@
-_.SETm0a1(this, _.NnO(_.RAISEERROR(new Skrypton.RuntimeSupport.IllegalAssignmentException("'a' (line 1) : The left-hand side of an assignment cannot be a function.")), "(error result)"), (Int16)1, (Int16)1)
+_.SETm0a1(this, _.NnO(_.RAISEERROR(new Skrypton.RuntimeSupport.IllegalAssignmentException("'a' (line 1) : The left-hand side of an assignment cannot be a function.")), null), (Int16)1, (Int16)1)

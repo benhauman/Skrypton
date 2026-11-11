@@ -350,6 +350,6 @@ namespace Skrypton.RuntimeSupport
         DateParser DateLiteralParser { get; }
 
         T NnT<T>(T? targetInstance, string targetName) where T : class;
-        object NnO(object? targetInstance, string targetName);
+        object NnO(object? targetInstance, string? targetName);
     }
 }

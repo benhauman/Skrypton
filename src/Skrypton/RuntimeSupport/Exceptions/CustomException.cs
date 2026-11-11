@@ -24,7 +24,19 @@ namespace Skrypton.RuntimeSupport.Exceptions
                 throw new ArgumentOutOfRangeException(nameof(number));
 
             _errorNumber = number;
+            ErrSource = source ?? "";
+            ErrDescription = description ?? "";
         }
+
+        /// <summary>
+        /// The source given to Err.Raise ("" if there was none) - Err.Source
+        /// </summary>
+        public string ErrSource { get; } = "";
+
+        /// <summary>
+        /// The description given to Err.Raise ("" if there was none) - Err.Description
+        /// </summary>
+        public string ErrDescription { get; } = "";
 
         /// <summary>
         /// This will never be zero (but it may be a negative or positive value)

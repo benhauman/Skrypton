@@ -2541,12 +2541,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                 Exception? currentError = _trappedErrorIfAny;
                 if (currentError == null)
                     return ErrorDetails.NoError;
-                SpecificVBScriptException? currentErrorAsVBScriptSpecificError = currentError as SpecificVBScriptException;
+                // Number, Description and Source as Windows VBScript has them (issue #85)
+                VBScriptErrorInfo info = VBScriptErrorInfo.From(currentError);
                 return new ErrorDetails(
-                    number: (currentErrorAsVBScriptSpecificError != null) ? currentErrorAsVBScriptSpecificError.ErrorNumber : currentError.HResult, // TODO: Is HResult appropriate?
-                    source: currentError.Source,
+                    number: info.Number,
+                    source: info.Source,
                     text: currentError.Message,
-                    description: "",
+                    description: info.Description,
                     originalExceptionIfKnown: currentError
                 );
             }
@@ -2597,8 +2598,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             string sourceString, descriptionString;
             try
             {
-                sourceString = _valueRetriever.STR(source);
-                descriptionString = _valueRetriever.STR(description);
+                // an omitted argument ("Err.Raise n, , description") is no source / description
+                sourceString = (source is System.Reflection.Missing) ? "" : _valueRetriever.STR(source);
+                descriptionString = (description is System.Reflection.Missing) ? "" : _valueRetriever.STR(description);
             }
             catch (Exception e)
             {
@@ -2753,7 +2755,15 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new ArgumentNullException(nameof(converter));
 
             value = _valueRetriever.VAL(value, optionalExceptionMessageForInvalidContent);
-            value = _valueRetriever.NUM(value);
+            try
+            {
+                value = _valueRetriever.NUM(value);
+            }
+            catch (TypeMismatchException e) when (optionalExceptionMessageForInvalidContent != null)
+            {
+                // "abc" is not a number: the error names the function (CInt("abc") is "Type mismatch: 'CInt'", as with VBScript)
+                throw new TypeMismatchException(optionalExceptionMessageForInvalidContent, e);
+            }
             if (value is DateTime)
                 value = DateToDouble((DateTime)value);
             if (value is T)
@@ -2981,12 +2991,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             return targetInstance;
         }
-        public object NnO(object? targetInstance, string targetName)
+        /// <summary>
+        /// The target of a member access or call (targetName: the source text of a local variable or parameter, null for a global variable). If
+        /// it is Empty or Nothing then the member access raises error 424, whose description names what VBScript names (issue #84): the local
+        /// variable or parameter, or for a global variable its value ('' for Empty, nothing for Nothing).
+        /// </summary>
+        public object NnO(object? targetInstance, string? targetName)
         {
             if (targetInstance == null)
-            {
-                throw new InvalidOperationException($"Reference not set:{targetName}");
-            }
+                throw ObjectRequiredException.ForScriptTarget(targetName ?? "", $"Empty '{targetName ?? "(global)"}' is not an object");
+            if ((targetName != null) && (targetInstance is ScriptDispatchWrapper wrapper) && (wrapper.WrappedObject == null))
+                return new ScriptDispatchWrapper(null, targetName); // Nothing, with the name for the error that a member access raises
             return targetInstance;
         }
     }

@@ -15,7 +15,7 @@ namespace TranslatedProgram
         {
             var _env = env ?? throw new ArgumentNullException(nameof(env));
             var _outer = globalReferences ?? throw new ArgumentNullException(nameof(globalReferences));
-            _outer.participants = _.VAL(_.CALLm1v4(this, _.NnO(_env.hlObj, "hlObj"), "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), "Participant2TrainingRecord"));
+            _outer.participants = _.VAL(_.CALLm1v4(this, _.NnO(_env.hlObj, null), "GetItems", (Int16)0, _.SUBT((Int16)1), _.SUBT((Int16)1), "Participant2TrainingRecord"));
         }
     }
     public sealed class GlobalReferences : GlobalReferencesBaseT<EnvironmentReferences>

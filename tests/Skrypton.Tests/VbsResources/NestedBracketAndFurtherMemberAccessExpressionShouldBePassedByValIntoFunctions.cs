@@ -1,1 +1,1 @@
-_.ARGS.Val(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_env.a, "a"), "b", (Int16)0), "(_.call result)"), "c"))
+_.ARGS.Val(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(_env.a, null), "b", (Int16)0), null), "c"))

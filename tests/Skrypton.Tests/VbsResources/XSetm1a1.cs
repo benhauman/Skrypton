@@ -18,13 +18,13 @@ namespace TranslatedProgram
             _outer.serv = VBScriptConstants.Nothing;
             if (_.IF(_.NOT(_.IS(_outer.serv, VBScriptConstants.Nothing))))
             {
-                if (_.IF(_.EQ(_.CALLm1v1(this, _.NnO(_outer.serv, "serv"), "enabled", (Int16)7), true)))
+                if (_.IF(_.EQ(_.CALLm1v1(this, _.NnO(_outer.serv, null), "enabled", (Int16)7), true)))
                 {
-                    _.SETm1a1(this, _.NnO(_outer.serv, "serv"), "Enabled", (Int16)8, false);
+                    _.SETm1a1(this, _.NnO(_outer.serv, null), "Enabled", (Int16)8, false);
                 }
                 else
                 {
-                    _.SETm1a1(this, _.NnO(_outer.serv, "serv"), "Enabled", (Int16)9, true);
+                    _.SETm1a1(this, _.NnO(_outer.serv, null), "Enabled", (Int16)9, true);
                 }
             }
         }

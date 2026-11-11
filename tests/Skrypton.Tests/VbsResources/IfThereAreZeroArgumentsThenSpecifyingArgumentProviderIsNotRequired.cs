@@ -1,1 +1,1 @@
-_.SETm1a0(this, _.NnO(_env.a, "a"), "b", (Int16)1)
+_.SETm1a0(this, _.NnO(_env.a, null), "b", (Int16)1)

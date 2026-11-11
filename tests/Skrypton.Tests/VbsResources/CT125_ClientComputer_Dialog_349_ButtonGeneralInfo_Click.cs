@@ -109,253 +109,253 @@ namespace TranslatedProgram
             object xmlDoc = null; /* Undeclared in source */
             object n = null; /* Undeclared in source */
 
-            _.SETm1a0(this, _.NnO(_env.TabPageGeneralInfo, "TabPageGeneralInfo"), "ShowControl", (Int16)1);
-            _.SETm1a0(this, _.NnO(_env.TabPageSoftwareOSHealth, "TabPageSoftwareOSHealth"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.TabPageSecurityCompliance, "TabPageSecurityCompliance"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.TabPageTechnicalInfo, "TabPageTechnicalInfo"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.TabPageNetworkHealth, "TabPageNetworkHealth"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.TabPageL1Checklist, "TabPageL1Checklist"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.TabPageGeneralInfo, null), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _.NnO(_env.TabPageSoftwareOSHealth, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.TabPageSecurityCompliance, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.TabPageTechnicalInfo, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.TabPageNetworkHealth, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.TabPageL1Checklist, null), "ShowControl", (Int16)3);
 
-            _.SETm1a0(this, _.NnO(_env.GroupBoxGeneralInfo, "GroupBoxGeneralInfo"), "ShowControl", (Int16)1);
-            _.SETm1a0(this, _.NnO(_env.GroupBoxTechnicalInfo, "GroupBoxTechnicalInfo"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.GroupBoxSoftwareOSHealth, "GroupBoxSoftwareOSHealth"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.GroupBoxSecurityCompliance, "GroupBoxSecurityCompliance"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.GroupBoxNetworkHealth, "GroupBoxNetworkHealth"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.GroupBoxL1Checklist, "GroupBoxL1Checklist"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxGeneralInfo, null), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxTechnicalInfo, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxSoftwareOSHealth, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxSecurityCompliance, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxNetworkHealth, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.GroupBoxL1Checklist, null), "ShowControl", (Int16)3);
 
-            _.SETm1a0(this, _.NnO(_env.ButtonGeneralInfo, "ButtonGeneralInfo"), "BackColor", "#5b5b5b");
-            _.SETm1a0(this, _.NnO(_env.ButtonTechnicalInfo, "ButtonTechnicalInfo"), "BackColor", "#1B709F");
-            _.SETm1a0(this, _.NnO(_env.ButtonSWHealth, "ButtonSWHealth"), "BackColor", "#1B709F");
-            _.SETm1a0(this, _.NnO(_env.ButtonSecurityCompliance, "ButtonSecurityCompliance"), "BackColor", "#1B709F");
-            _.SETm1a0(this, _.NnO(_env.ButtonNetworkHealth, "ButtonNetworkHealth"), "BackColor", "#1B709F");
-            _.SETm1a0(this, _.NnO(_env.ButtonL1Checklist, "ButtonL1Checklist"), "BackColor", "#1B709F");
+            _.SETm1a0(this, _.NnO(_env.ButtonGeneralInfo, null), "BackColor", "#5b5b5b");
+            _.SETm1a0(this, _.NnO(_env.ButtonTechnicalInfo, null), "BackColor", "#1B709F");
+            _.SETm1a0(this, _.NnO(_env.ButtonSWHealth, null), "BackColor", "#1B709F");
+            _.SETm1a0(this, _.NnO(_env.ButtonSecurityCompliance, null), "BackColor", "#1B709F");
+            _.SETm1a0(this, _.NnO(_env.ButtonNetworkHealth, null), "BackColor", "#1B709F");
+            _.SETm1a0(this, _.NnO(_env.ButtonL1Checklist, null), "BackColor", "#1B709F");
 
-            _.SETm1a0(this, _.NnO(_env.TabControlNexthink, "TabControlNexthink"), "ShowControl", (Int16)1);
-            _.SETm1a0(this, _.NnO(_env.TabPageGeneralInfo, "TabPageGeneralInfo"), "RequestFocus", true);
+            _.SETm1a0(this, _.NnO(_env.TabControlNexthink, null), "ShowControl", (Int16)1);
+            _.SETm1a0(this, _.NnO(_env.TabPageGeneralInfo, null), "RequestFocus", true);
 
             //Clear TextBoxes
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, "TextBoxGeneralCallTime"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralHostName, "TextBoxGeneralHostName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxlGeneralDeviceManufacturer, "TextBoxlGeneralDeviceManufacturer"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceProductVersion, "TextBoxGeneralDeviceProductVersion"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastIP, "TextBoxGeneralLastIP"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGroupName, "TextBoxGeneralGroupName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralOS, "TextBoxGeneralOS"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, "TextBoxGeneralLastBootTime"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, "TextBoxGeneralLastLogon"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceType, "TextBoxGeneralDeviceType"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralBIOSSerialNumber, "TextBoxGeneralBIOSSerialNumber"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUModel, "TextBoxGeneralCPUModel"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCPUs, "TextBoxGeneralNumberOfCPUs"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfLogProcs, "TextBoxGeneralNumberOfLogProcs"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCores, "TextBoxGeneralNumberOfCores"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUFreq, "TextBoxGeneralCPUFreq"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralTotalRAM, "TextBoxGeneralTotalRAM"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfGraphCards, "TextBoxGeneralNumberOfGraphCards"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralHostName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxlGeneralDeviceManufacturer, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceProductVersion, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastIP, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGroupName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralOS, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceType, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralBIOSSerialNumber, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUModel, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCPUs, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfLogProcs, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCores, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUFreq, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralTotalRAM, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfGraphCards, null), "Text", "");
 
             // --- GroupBoxTechnicalInfo
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveCapNow, "TextBoxTechnicalInfoTotalDriveCapNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalFreeSpaceNow, "TextBoxTechnicalInfoTotalFreeSpaceNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveUsageNow, "TextBoxTechnicalInfoTotalDriveUsageNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveCapNow, "TextBoxTechnicalInfoSystemDriveCapNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveFreeSpaceNow, "TextBoxTechnicalInfoSystemDriveFreeSpaceNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighCPUTimeNow, "TextBoxTechnicalInfoHighCPUTimeNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighMemoryTimeNow, "TextBoxTechnicalInfoHighMemoryTimeNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighIOTimeNow, "TextBoxTechnicalInfoHighIOTimeNow"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveCap7Days, "TextBoxTechnicalInfoTotalDriveCap7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalFreeSpace7Days, "TextBoxTechnicalInfoTotalFreeSpace7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveUsage7Days, "TextBoxTechnicalInfoTotalDriveUsage7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveCap7Days, "TextBoxTechnicalInfoSystemDriveCap7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveFreeSpace7Days, "TextBoxTechnicalInfoSystemDriveFreeSpace7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighCPUTime7Days, "TextBoxTechnicalInfoHighCPUTime7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighMemoryTime7Days, "TextBoxTechnicalInfoHighMemoryTime7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighIOTime7Days, "TextBoxTechnicalInfoHighIOTime7Days"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveCapNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalFreeSpaceNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveUsageNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveCapNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveFreeSpaceNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighCPUTimeNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighMemoryTimeNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighIOTimeNow, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveCap7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalFreeSpace7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoTotalDriveUsage7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveCap7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoSystemDriveFreeSpace7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighCPUTime7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighMemoryTime7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxTechnicalInfoHighIOTime7Days, null), "Text", "");
 
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalFreeSpaceNow, "ImageNOKTechnicalInfoTotalFreeSpaceNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpaceNow, "ImageOKTechnicalInfoTotalFreeSpaceNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalDriveUsageNow, "ImageNOKTechnicalInfoTotalDriveUsageNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalDriveUsageNow, "ImageOKTechnicalInfoTotalDriveUsageNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveCapNow, "ImageNOKTechnicalInfoSystemDriveCapNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveCapNow, "ImageOKTechnicalInfoSystemDriveCapNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveFreeSpaceNow, "ImageNOKTechnicalInfoSystemDriveFreeSpaceNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveFreeSpaceNow, "ImageOKTechnicalInfoSystemDriveFreeSpaceNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighCPUTimeNow, "ImageNOKTechnicalInfoHighCPUTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighCPUTimeNow, "ImageOKTechnicalInfoHighCPUTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighMemoryTimeNow, "ImageNOKTechnicalInfoHighMemoryTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighMemoryTimeNow, "ImageOKTechnicalInfoHighMemoryTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighIOTimeNow, "ImageNOKTechnicalInfoHighIOTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighIOTimeNow, "ImageOKTechnicalInfoHighIOTimeNow"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ImageOKTechnicalInfoTotalFreeSpace7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpace7Days, "ImageOKTechnicalInfoTotalFreeSpace7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalDriveUsage7Days, "ImageNOKTechnicalInfoTotalDriveUsage7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalDriveUsage7Days, "ImageOKTechnicalInfoTotalDriveUsage7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveCap7Days, "ImageNOKTechnicalInfoSystemDriveCap7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveCap7Days, "ImageOKTechnicalInfoSystemDriveCap7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveFreeSpace7Days, "ImageNOKTechnicalInfoSystemDriveFreeSpace7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveFreeSpace7Days, "ImageOKTechnicalInfoSystemDriveFreeSpace7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighCPUTime7Days, "ImageNOKTechnicalInfoHighCPUTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighCPUTime7Days, "ImageOKTechnicalInfoHighCPUTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighMemoryTime7Days, "ImageNOKTechnicalInfoHighMemoryTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighMemoryTime7Days, "ImageOKTechnicalInfoHighMemoryTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighIOTime7Days, "ImageNOKTechnicalInfoHighIOTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighIOTime7Days, "ImageOKTechnicalInfoHighIOTime7Days"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalFreeSpaceNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpaceNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalDriveUsageNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalDriveUsageNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveCapNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveCapNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveFreeSpaceNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveFreeSpaceNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighCPUTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighCPUTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighMemoryTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighMemoryTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighIOTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighIOTimeNow, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpace7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalFreeSpace7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoTotalDriveUsage7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoTotalDriveUsage7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveCap7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveCap7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoSystemDriveFreeSpace7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoSystemDriveFreeSpace7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighCPUTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighCPUTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighMemoryTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighMemoryTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKTechnicalInfoHighIOTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKTechnicalInfoHighIOTime7Days, null), "ShowControl", (Int16)3);
 
             // GroupBox Software OS Health
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSVersionArchitecture, "TextBoxSoftwareOSHealthOSVersionArchitecture"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSName, "TextBoxSoftwareOSHealthOSName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWMIStatus, "TextBoxSoftwareOSHealthWMIStatus"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthLastSystemUpdate, "TextBoxSoftwareOSHealthLastSystemUpdate"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWindowsUpdateStatus, "TextBoxSoftwareOSHealthWindowsUpdateStatus"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfApps, "TextBoxSoftwareOSHealthNumberOfApps"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfExes, "TextBoxSoftwareOSHealthNumberOfExes"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfBins, "TextBoxSoftwareOSHealthNumberOfBins"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSEndOfSupport, "TextBoxSoftwareOSHealthOSEndOfSupport"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSIE11Support, "TextBoxSoftwareOSHealthOSIE11Support"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWin10Ready, "TextBoxSoftwareOSHealthWin10Ready"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSComplience, "TextBoxSoftwareOSHealthOSComplience"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSVersionArchitecture, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWMIStatus, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthLastSystemUpdate, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWindowsUpdateStatus, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfApps, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfExes, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthNumberOfBins, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSEndOfSupport, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSIE11Support, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthWin10Ready, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSoftwareOSHealthOSComplience, null), "Text", "");
 
             // GroupBox Security Compliance
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceInetSecuritySettings, "TextBoxSecurityComplianceInetSecuritySettings"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceUserAccountStatus, "TextBoxSecurityComplianceUserAccountStatus"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusName, "TextBoxSecurityComplianceAntivirusName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusRTP, "TextBoxSecurityComplianceAntivirusRTP"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusUpToDate, "TextBoxSecurityComplianceAntivirusUpToDate"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusNumber, "TextBoxSecurityComplianceAntivirusNumber"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusAll, "TextBoxSecurityComplianceAntivirusAll"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareName, "TextBoxSecurityComplianceAntispywareName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareRTP, "TextBoxSecurityComplianceAntispywareRTP"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareUpToDate, "TextBoxSecurityComplianceAntispywareUpToDate"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareNumber, "TextBoxSecurityComplianceAntispywareNumber"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareAll, "TextBoxSecurityComplianceAntispywareAll"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallName, "TextBoxSecurityComplianceFirewallName"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallRTP, "TextBoxSecurityComplianceFirewallRTP"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallNumber, "TextBoxSecurityComplianceFirewallNumber"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallAll, "TextBoxSecurityComplianceFirewallAll"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceInetSecuritySettings, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceUserAccountStatus, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusRTP, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusUpToDate, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusNumber, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntivirusAll, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareRTP, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareUpToDate, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareNumber, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceAntispywareAll, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallName, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallRTP, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallNumber, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxSecurityComplianceFirewallAll, null), "Text", "");
 
             // GroupBox Network Health
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingNetTaffic24Hours, "TextBoxNetworkHealthIncomingNetTaffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingNetTaffic24Hours, "TextBoxNetworkHealthOutgoingNetTaffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalNetTaffic24Hours, "TextBoxNetworkHealthTotalNetTaffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessNetConnectionRatio24Hours, "TextBoxNetworkHealthSuccessNetConnectionRatio24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthNetAvailLevel24Hours, "TextBoxNetworkHealthNetAvailLevel24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingNetBitrate24Hours, "TextBoxNetworkHealthAvgIncomingNetBitrate24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours, "TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgNetResponseTime24Hours, "TextBoxNetworkHealthAvgNetResponseTime24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingWebTraffic24Hours, "TextBoxNetworkHealthIncomingWebTraffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingWebTraffic24Hours, "TextBoxNetworkHealthOutgoingWebTraffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalWebTraffic24Hours, "TextBoxNetworkHealthTotalWebTraffic24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingWebBitrate24Hours, "TextBoxNetworkHealthAvgIncomingWebBitrate24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours, "TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebRequestSize24Hours, "TextBoxNetworkHealthAvgWebRequestSize24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebResponseSize24Hours, "TextBoxNetworkHealthAvgWebResponseSize24Hours"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours, "TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingNetTaffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingNetTaffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalNetTaffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessNetConnectionRatio24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthNetAvailLevel24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingNetBitrate24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingNetBitrate24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgNetResponseTime24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingWebTraffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingWebTraffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalWebTraffic24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingWebBitrate24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingWebBitrate24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebRequestSize24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebResponseSize24Hours, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessHTTPRequestRatio24Hours, null), "Text", "");
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingNetTaffic7Days, "TextBoxNetworkHealthIncomingNetTaffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingNetTaffic7Days, "TextBoxNetworkHealthOutgoingNetTaffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalNetTaffic7Days, "TextBoxNetworkHealthTotalNetTaffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessNetConnectionRatio7Days, "TextBoxNetworkHealthSuccessNetConnectionRatio7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthNetAvailLevel7Days, "TextBoxNetworkHealthNetAvailLevel7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingNetBitrate7Days, "TextBoxNetworkHealthAvgIncomingNetBitrate7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingNetBitrate7Days, "TextBoxNetworkHealthAvgOutgoingNetBitrate7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgNetResponseTime7Days, "TextBoxNetworkHealthAvgNetResponseTime7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingWebTraffic7Days, "TextBoxNetworkHealthIncomingWebTraffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingWebTraffic7Days, "TextBoxNetworkHealthOutgoingWebTraffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalWebTraffic7Days, "TextBoxNetworkHealthTotalWebTraffic7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingWebBitrate7Days, "TextBoxNetworkHealthAvgIncomingWebBitrate7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingWebBitrate7Days, "TextBoxNetworkHealthAvgOutgoingWebBitrate7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebRequestSize7Days, "TextBoxNetworkHealthAvgWebRequestSize7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebResponseSize7Days, "TextBoxNetworkHealthAvgWebResponseSize7Days"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessHTTPRequestRatio7Days, "TextBoxNetworkHealthSuccessHTTPRequestRatio7Days"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingNetTaffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingNetTaffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalNetTaffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessNetConnectionRatio7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthNetAvailLevel7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingNetBitrate7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingNetBitrate7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgNetResponseTime7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthIncomingWebTraffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthOutgoingWebTraffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthTotalWebTraffic7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgIncomingWebBitrate7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgOutgoingWebBitrate7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebRequestSize7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthAvgWebResponseSize7Days, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxNetworkHealthSuccessHTTPRequestRatio7Days, null), "Text", "");
 
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingNetTaffic24Hours, "ImageOKNetworkHealthIncomingNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingNetTaffic24Hours, "ImageNOKNetworkHealthIncomingNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingNetTaffic7Days, "ImageOKNetworkHealthIncomingNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingNetTaffic7Days, "ImageNOKNetworkHealthIncomingNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingNetTaffic24Hours, "ImageOKNetworkHealthOutgoingNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingNetTaffic24Hours, "ImageNOKNetworkHealthOutgoingNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingNetTaffic7Days, "ImageOKNetworkHealthOutgoingNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingNetTaffic7Days, "ImageNOKNetworkHealthOutgoingNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalNetTaffic24Hours, "ImageOKNetworkHealthTotalNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalNetTaffic24Hours, "ImageNOKNetworkHealthTotalNetTaffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalNetTaffic7Days, "ImageOKNetworkHealthTotalNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalNetTaffic7Days, "ImageNOKNetworkHealthTotalNetTaffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessNetConnectionRatio24Hours, "ImageOKNetworkHealthSuccessNetConnectionRatio24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours, "ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessNetConnectionRatio7Days, "ImageOKNetworkHealthSuccessNetConnectionRatio7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessNetConnectionRatio7Days, "ImageNOKNetworkHealthSuccessNetConnectionRatio7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthNetAvailLevel24Hours, "ImageOKNetworkHealthNetAvailLevel24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthNetAvailLevel24Hours, "ImageNOKNetworkHealthNetAvailLevel24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthNetAvailLevel7Days, "ImageOKNetworkHealthNetAvailLevel7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthNetAvailLevel7Days, "ImageNOKNetworkHealthNetAvailLevel7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingNetBitrate24Hours, "ImageOKNetworkHealthAvgIncomingNetBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours, "ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingNetBitrate7Days, "ImageOKNetworkHealthAvgIncomingNetBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingNetBitrate7Days, "ImageNOKNetworkHealthAvgIncomingNetBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours, "ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingNetBitrate7Days, "ImageOKNetworkHealthAvgOutgoingNetBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days, "ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgNetResponseTime24Hours, "ImageOKNetworkHealthAvgNetResponseTime24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgNetResponseTime24Hours, "ImageNOKNetworkHealthAvgNetResponseTime24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgNetResponseTime7Days, "ImageOKNetworkHealthAvgNetResponseTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgNetResponseTime7Days, "ImageNOKNetworkHealthAvgNetResponseTime7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingWebTraffic24Hours, "ImageOKNetworkHealthIncomingWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingWebTraffic24Hours, "ImageNOKNetworkHealthIncomingWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingWebTraffic7Days, "ImageOKNetworkHealthIncomingWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingWebTraffic7Days, "ImageNOKNetworkHealthIncomingWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingWebTraffic24Hours, "ImageOKNetworkHealthOutgoingWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingWebTraffic24Hours, "ImageNOKNetworkHealthOutgoingWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingWebTraffic7Days, "ImageOKNetworkHealthOutgoingWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingWebTraffic7Days, "ImageNOKNetworkHealthOutgoingWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ImageOKNetworkHealthTotalWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic24Hours, "ImageOKNetworkHealthTotalWebTraffic24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic7Days, "ImageOKNetworkHealthTotalWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalWebTraffic7Days, "ImageNOKNetworkHealthTotalWebTraffic7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingWebBitrate24Hours, "ImageOKNetworkHealthAvgIncomingWebBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours, "ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingWebBitrate7Days, "ImageOKNetworkHealthAvgIncomingWebBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingWebBitrate7Days, "ImageNOKNetworkHealthAvgIncomingWebBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours, "ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingWebBitrate7Days, "ImageOKNetworkHealthAvgOutgoingWebBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days, "ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebRequestSize24Hours, "ImageOKNetworkHealthAvgWebRequestSize24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebRequestSize24Hours, "ImageNOKNetworkHealthAvgWebRequestSize24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebRequestSize7Days, "ImageOKNetworkHealthAvgWebRequestSize7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebRequestSize7Days, "ImageNOKNetworkHealthAvgWebRequestSize7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebResponseSize24Hours, "ImageOKNetworkHealthAvgWebResponseSize24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebResponseSize24Hours, "ImageNOKNetworkHealthAvgWebResponseSize24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebResponseSize7Days, "ImageOKNetworkHealthAvgWebResponseSize7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebResponseSize7Days, "ImageNOKNetworkHealthAvgWebResponseSize7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours, "ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessHTTPRequestRatio7Days, "ImageOKNetworkHealthSuccessHTTPRequestRatio7Days"), "ShowControl", (Int16)3);
-            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days, "ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days"), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalNetTaffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalNetTaffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessNetConnectionRatio24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessNetConnectionRatio24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessNetConnectionRatio7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessNetConnectionRatio7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthNetAvailLevel24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthNetAvailLevel24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthNetAvailLevel7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthNetAvailLevel7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingNetBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingNetBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingNetBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingNetBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingNetBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingNetBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingNetBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingNetBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgNetResponseTime24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgNetResponseTime24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgNetResponseTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgNetResponseTime7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthIncomingWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthIncomingWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthOutgoingWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthOutgoingWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthTotalWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthTotalWebTraffic7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingWebBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingWebBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgIncomingWebBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgIncomingWebBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingWebBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingWebBitrate24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgOutgoingWebBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgOutgoingWebBitrate7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebRequestSize24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebRequestSize24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebRequestSize7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebRequestSize7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebResponseSize24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebResponseSize24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthAvgWebResponseSize7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthAvgWebResponseSize7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessHTTPRequestRatio24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessHTTPRequestRatio24Hours, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageOKNetworkHealthSuccessHTTPRequestRatio7Days, null), "ShowControl", (Int16)3);
+            _.SETm1a0(this, _.NnO(_env.ImageNOKNetworkHealthSuccessHTTPRequestRatio7Days, null), "ShowControl", (Int16)3);
 
             // GroupBox L1-Checkliste
 
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1FreeSpace, "TextBoxL1FreeSpace"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1OSUpToDate, "TextBoxL1OSUpToDate"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Browser, "TextBoxL1Browser"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Collaboration, "TextBoxL1Collaboration"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus, "TextBoxL1Antivirus"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus2, "TextBoxL1Antivirus2"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus3, "TextBoxL1Antivirus3"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Defender, "TextBoxL1Defender"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1BootLogon2, "TextBoxL1BootLogon2"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1BootLogon3, "TextBoxL1BootLogon3"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1CPU24, "TextBoxL1CPU24"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1CPU7, "TextBoxL1CPU7"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Speicher24, "TextBoxL1Speicher24"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Speicher7, "TextBoxL1Speicher7"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Bluescreen24, "TextBoxL1Bluescreen24"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1Bluescrren7, "TextBoxL1Bluescrren7"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1HardReset24, "TextBoxL1HardReset24"), "Text", "");
-            _.SETm1a0(this, _.NnO(_env.TextBoxL1HardReset7, "TextBoxL1HardReset7"), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1FreeSpace, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1OSUpToDate, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Browser, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Collaboration, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus2, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Antivirus3, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Defender, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1BootLogon2, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1BootLogon3, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1CPU24, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1CPU7, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Speicher24, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Speicher7, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Bluescreen24, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1Bluescrren7, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1HardReset24, null), "Text", "");
+            _.SETm1a0(this, _.NnO(_env.TextBoxL1HardReset7, null), "Text", "");
 
             // --- GroupBoxGeneralInfo
 
@@ -365,11 +365,11 @@ namespace TranslatedProgram
             colorWarning = "#F20012";
             colorCheck = "#1B709F";
 
-            hostname = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlobj, "hlobj"), "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+            hostname = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlobj, null), "GetValue", "ComputerDetail.Hostname", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
             if (_.IF(_.EQ(_.NullableSTR(hostname), "")))
             {
-                _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Der Computer hat keinen Hostnamen.");
+                _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", "Der Computer hat keinen Hostnamen.");
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
             }
@@ -383,7 +383,7 @@ namespace TranslatedProgram
 
             //time of call
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, "TextBoxGeneralCallTime"), "Text", _.FORMATDATETIME(_.NOW(), VBScriptConstants.vbGeneralDate));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCallTime, null), "Text", _.FORMATDATETIME(_.NOW(), VBScriptConstants.vbGeneralDate));
             });
 
             _.HANDLEERROR(errOn, () => {
@@ -400,13 +400,13 @@ namespace TranslatedProgram
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, null), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
+                    _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", "Beim Nexthink Abruf (POST) ist ein Fehler aufgetreten. Möglicherweise ist der Server nicht erreichbar.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "HelpContext")));
+                    _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -428,13 +428,13 @@ namespace TranslatedProgram
             });
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, null), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", "Beim Nexthink Abruf (GET) ist ein Fehler aufgetreten.");
                 });
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "HelpContext")));
+                    _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", _.CONCAT("Error Description: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Description"), VBScriptConstants.vbLf, "Error Source: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Source"), VBScriptConstants.vbLf, "Error HelpFile: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "Helpfile"), VBScriptConstants.vbLf, "Error Context: ", _.CALLm1v0(this, _.NnO(_.ERR, null), "HelpContext")));
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -474,10 +474,10 @@ namespace TranslatedProgram
             }
 
             //Error Handling
-            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, "ERR"), "Number")), (Int16)0), errOn))
+            if (_.IF(() => _.NOTEQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_.ERR, null), "Number")), (Int16)0), errOn))
             {
                 _.HANDLEERROR(errOn, () => {
-                    _.CALLm1v1(this, _.NnO(_env.model, "model"), "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
+                    _.CALLm1v1(this, _.NnO(_env.model, null), "MsgBox", "Beim Verarbeiten der Nexthink Informationen ist ein Fehler aufgetreten.");
                 });
                 _.RELEASEERRORTRAPPINGTOKEN(errOn);
                 return;
@@ -488,59 +488,59 @@ namespace TranslatedProgram
             //fill textboxes
             //LabelNName.Text = dict.key("name")
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralHostName, "TextBoxGeneralHostName"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "name")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralHostName, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastIP, "TextBoxGeneralLastIP"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_ip_address")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastIP, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_ip_address")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxlGeneralDeviceManufacturer, "TextBoxlGeneralDeviceManufacturer"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_manufacturer")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxlGeneralDeviceManufacturer, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_manufacturer")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceProductVersion, "TextBoxGeneralDeviceProductVersion"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_model")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceProductVersion, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "device_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralOS, "TextBoxGeneralOS"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "os_version_and_architecture")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralOS, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "os_version_and_architecture")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGroupName, "TextBoxGeneralGroupName"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "group_name")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGroupName, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "group_name")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, "TextBoxGeneralLastBootTime"), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastBootTime, null), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_system_boot"), "T", " "), VBScriptConstants.vbGeneralDate));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, "TextBoxGeneralLastLogon"), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralLastLogon, null), "Text", _.FORMATDATETIME(_.REPLACE(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logon_time"), "T", " "), VBScriptConstants.vbGeneralDate));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceType, "TextBoxGeneralDeviceType"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logged_on_user")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralDeviceType, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "last_logged_on_user")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralBIOSSerialNumber, "TextBoxGeneralBIOSSerialNumber"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "bios_serial_number")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralBIOSSerialNumber, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "bios_serial_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUModel, "TextBoxGeneralCPUModel"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_model")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUModel, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_model")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCPUs, "TextBoxGeneralNumberOfCPUs"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cpus")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCPUs, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cpus")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfLogProcs, "TextBoxGeneralNumberOfLogProcs"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "logical_cpu_number")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfLogProcs, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "logical_cpu_number")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCores, "TextBoxGeneralNumberOfCores"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cores")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfCores, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_cores")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUFreq, "TextBoxGeneralCPUFreq"), "Text", _.CONCAT(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_frequency"), " MHz"));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralCPUFreq, null), "Text", _.CONCAT(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "cpu_frequency"), " MHz"));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralTotalRAM, "TextBoxGeneralTotalRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "total_ram"))));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralTotalRAM, null), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "total_ram"))));
             });
 
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfGraphCards, "TextBoxGeneralNumberOfGraphCards"), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_graphical_cards")));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralNumberOfGraphCards, null), "Text", _.VAL(_.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "number_of_graphical_cards")));
             });
             _.HANDLEERROR(errOn, () => {
-                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGraphCardRAM, "TextBoxGeneralGraphCardRAM"), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "graphical_card_ram"))));
+                _.SETm1a0(this, _.NnO(_env.TextBoxGeneralGraphCardRAM, null), "Text", _.VAL(_.CALLm1v1(this, _outer, "ConvertSize", _.CALLm1v1(this, _.NnO(dict, "dict"), "Item", "graphical_card_ram"))));
             });
 
             _.RELEASEERRORTRAPPINGTOKEN(errOn);

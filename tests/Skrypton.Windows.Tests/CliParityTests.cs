@@ -43,6 +43,7 @@ namespace Skrypton.Windows.Tests
         [DataRow("ComParity_WordApplication")]
         [DataRow("ComParity_ExcelApplication")]
         [DataRow("ComParity_BuiltInFunctions")]
+        [DataRow("ComParity_ErrObject")]
         public void ComponentParityScript(string name)
         {
             string folder = Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources");
@@ -79,6 +80,38 @@ namespace Skrypton.Windows.Tests
             }
         }
 
+
+        /// <summary>
+        /// Unhandled errors (tests\Skrypton.Tests\VbsResources\ComParity_UnhandledErrors.cases.txt): the command line tool must report each
+        /// error as cscript does - "script.vbs(line, column) source: description" (compared without the file and the column) - and end with 1
+        /// </summary>
+        [TestMethod]
+        public void UnhandledErrorsAreReportedAsCscriptReportsThem()
+        {
+            string[] lines = File.ReadAllLines(Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources", "ComParity_UnhandledErrors.cases.txt"))
+                .Where(line => (line.Length > 0) && !line.StartsWith("#", StringComparison.Ordinal))
+                .ToArray();
+            string script = Path.Combine(Path.GetTempPath(), "skrypton_cli_" + Guid.NewGuid().ToString("N") + ".vbs");
+            var failures = new List<string>();
+            try
+            {
+                for (int i = 0; i + 1 < lines.Length; i += 2)
+                {
+                    File.WriteAllText(script, lines[i] + "\r\n");
+                    CliRunner.Result result = CliRunner.Run(new[] { "/culture:en-US", script });
+                    string reported = result.StandardError.Trim();
+                    // "C:\..\x.vbs(1, 41) Microsoft VBScript runtime error: .." -> "(1) Microsoft VBScript runtime error: .."
+                    string actual = System.Text.RegularExpressions.Regex.Replace(reported, @"^.*?\((\d+), \d+\) ", "($1) ");
+                    if ((actual != lines[i + 1]) || (result.ExitCode != 1))
+                        failures.Add($"{lines[i]}{Environment.NewLine}  expected: {lines[i + 1]}{Environment.NewLine}  actual:   {actual} (exit code {result.ExitCode})");
+                }
+            }
+            finally
+            {
+                File.Delete(script);
+            }
+            Assert.IsEmpty(failures, string.Join(Environment.NewLine, failures));
+        }
 
         private static void AssertSameOutput(string name, string expected, CliRunner.Result result)
         {

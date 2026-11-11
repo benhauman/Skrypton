@@ -14,7 +14,13 @@ namespace Skrypton.RuntimeSupport
         [Obsolete("do not use it")] private TypeMismatchException() : this(null, innerException: null) { }
         public TypeMismatchException(string message) : this(message, innerException: null) { }
         public TypeMismatchException(string? additionalInformationIfAny, Exception? innerException)
-            : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException) { }
+            : base(BASIC_ERROR_DESCRIPTION, additionalInformationIfAny, innerException)
+        {
+            // A built-in function that cannot convert its argument passes its name ("'CInt'") - VBScript names it when it reports the error to the
+            // host ("Type mismatch: 'CInt'")
+            if ((additionalInformationIfAny != null) && System.Text.RegularExpressions.Regex.IsMatch(additionalInformationIfAny, "^'[A-Za-z]+'$"))
+                HostTarget = additionalInformationIfAny.Substring(1, additionalInformationIfAny.Length - 2);
+        }
 
         public override int ErrorNumber { get { return 13; } } // From http://www.csidata.com/custserv/onlinehelp/vbsdocs/vbs241.htm
 

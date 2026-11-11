@@ -89,7 +89,7 @@ END FUNCTION",
                         throw new InvalidOperationException(""Wrong number of arguments: 'Erase' (line 1)"");"
                 ];
                 yield return [12, "Member access target", "ERASE a.Name", @"
-            var invalidEraseTarget = _.CALLm1v0(this, _.NnO(_env.a, ""a""), ""Name"");
+            var invalidEraseTarget = _.CALLm1v0(this, _.NnO(_env.a, null), ""Name"");
             throw new TypeMismatchException(""'Erase' (line 1)"");
 "];
             }

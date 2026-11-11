@@ -1,1 +1,1 @@
-            _.CALLm0argp(this, _.NnO(_env.func, "func"), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'vbObjectError' is called like a function"))));
+            _.CALLm0argp(this, _.NnO(_env.func, null), _.ARGS.Val(_.RAISEERROR(new TypeMismatchException("'vbObjectError' is called like a function"))));
