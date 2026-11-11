@@ -50,8 +50,10 @@ namespace Skrypton.ScriptControlSupport
             bool isCompilationError = programAssemblyIfCompiled == null;
             SpecificVBScriptException? specificError = error as SpecificVBScriptException;
 
-            Number = (specificError != null) ? specificError.ErrorNumber : (isCompilationError ? 1002 : error.HResult); // 1002: Syntax error
-            Source = isCompilationError ? CompilationErrorSource : RuntimeErrorSource;
+            // runtime errors: number and source as Windows VBScript reports them (Err.Raise keeps its own source, issue #85)
+            Skrypton.RuntimeSupport.Exceptions.VBScriptErrorInfo? runtimeError = isCompilationError ? null : Skrypton.RuntimeSupport.Exceptions.VBScriptErrorInfo.From(error);
+            Number = (specificError != null) ? specificError.ErrorNumber : (isCompilationError ? 1002 : runtimeError!.Number); // 1002: Syntax error
+            Source = isCompilationError ? CompilationErrorSource : ((runtimeError!.Source.Length > 0) ? runtimeError.Source : RuntimeErrorSource);
             Description = GetDescription(error);
             HelpFile = null;
             HelpContext = 0;
@@ -69,6 +71,13 @@ namespace Skrypton.ScriptControlSupport
 
         private static string GetDescription(Exception error)
         {
+            // Err.Raise and .NET exceptions: as the Err object has them; VBScript errors: with what VBScript names when it reports them to the host
+            // ("Object required: 'name'", not in Err.Description - issue #84)
+            if ((error is Skrypton.RuntimeSupport.Exceptions.CustomException) || !(error is SpecificVBScriptException))
+                return Skrypton.RuntimeSupport.Exceptions.VBScriptErrorInfo.From(error).Description;
+            if (((SpecificVBScriptException)error).HostTarget != null)
+                return ((SpecificVBScriptException)error).HostDescription;
+
             // SpecificVBScriptException messages are "<basic description>: <additional information>" and the basic description is what
             // MSScriptControl reports (eg. "Division by zero")
             if (error is SpecificVBScriptException)

@@ -34,6 +34,49 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_ExcelApplication() => RunParityScript();
         [TestMethod] public void ComParity_OutlookApplication() => RunParityScript();
         [TestMethod] public void ComParity_BuiltInFunctions() => RunParityScript();
+        [TestMethod] public void ComParity_ErrObject() => RunParityScript();
+
+        /// <summary>
+        /// Unhandled errors (ComParity_UnhandledErrors.cases.txt): each script fails and the error that the script control reports - "(line)
+        /// source: description" - must be the one that Windows cscript.exe reports for it (issues #84, #85)
+        /// </summary>
+        [TestMethod]
+        public void ComParity_UnhandledErrors()
+        {
+            var failures = new List<string>();
+            foreach ((string script, string expected) in UnhandledErrorCases())
+            {
+                IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), CreateScriptControlConfiguration(false, [], []));
+                try
+                {
+                    scriptengine.ExecuteStatement(script);
+                    failures.Add($"{script}{Environment.NewLine}  expected: {expected}{Environment.NewLine}  no error");
+                    continue;
+                }
+                catch (Exception)
+                {
+                    // the error is in scriptengine.Error
+                }
+                Error error = scriptengine.Error!;
+                string actual = $"({error.Line}) {error.Source}: {error.Description}";
+                if (actual != expected)
+                    failures.Add($"{script}{Environment.NewLine}  expected: {expected}{Environment.NewLine}  actual:   {actual}");
+            }
+            Assert.IsEmpty(failures, string.Join(Environment.NewLine, failures));
+        }
+
+        /// <summary>
+        /// The cases of ComParity_UnhandledErrors.cases.txt: a script (one line) and the error that cscript reports for it
+        /// </summary>
+        internal static IEnumerable<(string Script, string Expected)> UnhandledErrorCases()
+        {
+            string[] lines = TextResourceHelper.LoadResourceText<CncIn>("Skrypton.Tests.VbsResources.ComParity_UnhandledErrors.cases.txt")
+                .Replace("\r\n", "\n").Split('\n')
+                .Where(line => (line.Length > 0) && !line.StartsWith("#", StringComparison.Ordinal))
+                .ToArray();
+            for (int i = 0; i + 1 < lines.Length; i += 2)
+                yield return (lines[i], lines[i + 1]);
+        }
 
         private void RunParityScript()
         {

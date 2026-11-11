@@ -55,7 +55,7 @@ namespace TranslatedProgram
             //	model.CurrentCommand.abort"OnSave"
             //End if
 
-            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.hlObj, "hlObj"), "IsNew")), (Int16)1)))
+            if (_.IF(_.EQ(_.NullableNUM(_.CALLm1v0(this, _.NnO(_env.hlObj, null), "IsNew")), (Int16)1)))
             {
 
                 sDatabaseName = "HLData";
@@ -66,7 +66,7 @@ namespace TranslatedProgram
                 oConn = _.CREATEOBJECT("ADODB.Connection");
                 _.CALLm1argp(this, _.NnO(oConn, "oConn"), "Open", _.ARGS.Ref(sConn, v => { sConn = v; }).Ref(sUser, v2 => { sUser = v2; }).Ref(sPassword, v3 => { sPassword = v3; }));
 
-                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
+                FirstCharName = _.VAL(_.LEFT(_.CALLm1v5(this, _.NnO(_env.hlObj, null), "GetValue", "PersonGeneral.Name", (Int16)0, (Int16)0, (Int16)0, (Int16)0), (Int16)1));
 
                 //SB Code ermitteln
                 parmname = "runScript";
@@ -79,11 +79,11 @@ namespace TranslatedProgram
                 _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1argp(this, _.NnO(with, "with"), "CreateParameter", _.ARGS.Val("@FirstCharName").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(FirstCharName, v4 => { FirstCharName = v4; })));
                 _.CALLm2v1(this, _.NnO(with, "with"), "Parameters", "Append", _.CALLm1v4(this, _.NnO(with, "with"), "CreateParameter", "@NewSBCode", adVarWChar, adParamOutput, (Int16)10));
                 _.CALLm1v0(this, _.NnO(with, "with"), "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(with, "with"), "Parameters", (Int16)2), "(_.call result)"), "Value"));
+                parmval = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(with, "with"), "Parameters", (Int16)2), null), "Value"));
 
-                _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
+                _.CALLm1argp(this, _.NnO(_env.hlObj, null), "SetValue", _.ARGS.Val("PersonInformation.SBCode").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v5 => { parmval = v5; }));
 
-                rewritten_group = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, "hlObj"), "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
+                rewritten_group = _.VAL(_.CALLm1v5(this, _.NnO(_env.hlObj, null), "GetValue", "PersonGeneral.Group", (Int16)0, (Int16)0, (Int16)0, (Int16)0));
 
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(rewritten_group), "GroupMainova"), _.EQ(_.NullableSTR(rewritten_group), "GroupHolding"))))
                 {
@@ -104,9 +104,9 @@ namespace TranslatedProgram
                 _.CALLm2v1(this, _.NnO(with2, "with2"), "Parameters", "Append", _.CALLm1argp(this, _.NnO(with2, "with2"), "CreateParameter", _.ARGS.Val("@TypeCode").Val(adVarWChar).Val(adParamInput).Val((Int16)1).Ref(xvIdentifier, v6 => { xvIdentifier = v6; })));
                 _.CALLm2v1(this, _.NnO(with2, "with2"), "Parameters", "Append", _.CALLm1v4(this, _.NnO(with2, "with2"), "CreateParameter", "@NewPersonalID", adVarWChar, adParamOutput, (Int16)10));
                 _.CALLm1v0(this, _.NnO(with2, "with2"), "Execute");
-                parmval = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(with2, "with2"), "Parameters", (Int16)2), "(_.call result)"), "Value"));
+                parmval = _.VAL(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(with2, "with2"), "Parameters", (Int16)2), null), "Value"));
 
-                _.CALLm1argp(this, _.NnO(_env.hlObj, "hlObj"), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
+                _.CALLm1argp(this, _.NnO(_env.hlObj, null), "SetValue", _.ARGS.Val("PersonGeneral.PersonalID").Val((Int16)0).Val((Int16)0).Val((Int16)0).Ref(parmval, v7 => { parmval = v7; }));
 
                 _.CALLm1v0(this, _.NnO(oConn, "oConn"), "Close");
                 oConn = VBScriptConstants.Nothing;

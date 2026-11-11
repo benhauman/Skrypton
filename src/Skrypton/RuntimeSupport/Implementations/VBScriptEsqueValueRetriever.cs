@@ -241,6 +241,28 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// The comparison (o == VBScriptConstants.Nothing) will return false even if o is VBScriptConstants.Nothing due to the implementation details of
         /// DispatchWrapper. This method delivers a reliable way to test for it.
         /// </summary>
+        /// <summary>
+        /// What VBScript names in the description of error 424 for a member access on the target (see ObjectRequiredException.HostDescription):
+        /// the local variable or parameter that a Nothing was read from (NnO), otherwise the value of the target - '' for Empty, the text of a
+        /// number or string, nothing for Nothing, Null and arrays
+        /// </summary>
+        internal string? ScriptTargetForObjectRequired(object? target)
+        {
+            switch (target)
+            {
+                case null:
+                    return "";
+                case ScriptDispatchWrapper wrapper:
+                    return wrapper.SourceName;
+                case DBNull _:
+                    return null;
+                case Array _:
+                    return null;
+                default:
+                    return STR(target);
+            }
+        }
+
         private static bool IsVBScriptNothing(object? o)
         {
             return o != null && o is ScriptDispatchWrapper dw && dw.WrappedObject == null;
@@ -970,7 +992,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 else
                     targetDescription = STR(target);
                 if (memberAccessorsArray.Length != 0)
-                    throw new ObjectRequiredException($"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
+                    throw ObjectRequiredException.ForScriptTarget(ScriptTargetForObjectRequired(target), $"'{targetDescription}' for target of '{memberAccessorsArray[0]}'. CallerLineNo:{callerLineNum}");
                 if (arguments.Length != 0)// lubo || argumentProvider.UseBracketsWhereZeroArguments)
                 {
                     string argumentsText = string.Join(", ", arguments.Select(x => x.ToString()).ToArray());
@@ -1064,6 +1086,10 @@ namespace Skrypton.RuntimeSupport.Implementations
             object[] arguments = argumentProvider.GetInitialValues();
             if ((optionalMemberAccessor == null) && arguments.Length == 0)
                 throw new ArgumentException("This must be called with a non-null optionalMemberAccessor and/or one or more arguments, null optionalMemberAccessor and zero arguments is not supported");
+
+            // Setting a member of Nothing (or of a value) is error 424, as with VBScript - not "member not found" on the wrapper
+            if ((optionalMemberAccessor != null) && (IsVBScriptNothing(target) || (!target.GetType().IsArray && IsVBScriptValueType(target))))
+                throw ObjectRequiredException.ForScriptTarget(ScriptTargetForObjectRequired(target), $"target of setting '{optionalMemberAccessor}'");
 
             bool allowPrivateAccess = AllowPrivateMemberAccess(context, target);
             InvokerCacheKey cacheKey = new InvokerCacheKey(target.GetType(), optionalMemberAccessor, arguments.Length, allowPrivateAccess, onlyConsiderMethods: false);
@@ -1267,10 +1293,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         Expression.Catch(
                             arrayAccessExceptionParameter,
                             Expression.Throw(
-                                GetNewArgumentException(
-                                    "Error accessing array with specified indexes (likely a non-numeric array index/argument or index-out-of-bounds)",
-                                    arrayAccessExceptionParameter
-                                ),
+                                GetArrayAccessException(arrayAccessExceptionParameter, indexesParameter),
                                 typeof(object)
                             )
                         )
@@ -1724,10 +1747,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         Expression.Catch(
                             arrayAccessExceptionParameter,
                             Expression.Throw(
-                                GetNewArgumentException(
-                                    "Error accessing array with specified indexes (likely a non-numeric array index/argument or index-out-of-bounds)",
-                                    arrayAccessExceptionParameter
-                                ),
+                                GetArrayAccessException(arrayAccessExceptionParameter, indexesParameter),
                                 targetType.GetElementType()
                             )
                         )
@@ -1898,6 +1918,36 @@ namespace Skrypton.RuntimeSupport.Implementations
                 ),
                 returnValueParameter
             );
+        }
+
+        /// <summary>
+        /// The exception of a failed array access: an index out of range is "Subscript out of range" (error 9) naming the index as VBScript does
+        /// ("[number: 5]"), other failures (eg. a non-numeric index) as before
+        /// </summary>
+        private static MethodCallExpression GetArrayAccessException(ParameterExpression exceptionParameter, ParameterExpression indexesParameter)
+        {
+            return Expression.Call(
+                typeof(VBScriptEsqueValueRetriever).GetMethod(nameof(CreateArrayAccessException), BindingFlags.NonPublic | BindingFlags.Static)!,
+                exceptionParameter,
+                indexesParameter);
+        }
+
+        private static Exception CreateArrayAccessException(Exception exception, object?[] indexes)
+        {
+            if (exception is IndexOutOfRangeException)
+                return new SubscriptOutOfRangeException("array index", exception) { HostTarget = ArrayIndexText(indexes) };
+            return new ArgumentException("Error accessing array with specified indexes (likely a non-numeric array index/argument or index-out-of-bounds): " + exception, exception);
+        }
+
+        /// <summary>
+        /// How VBScript names an array index in "Subscript out of range" - "[number: 5]" ("[string: "x"]" for text)
+        /// </summary>
+        private static string? ArrayIndexText(object?[] indexes)
+        {
+            if (indexes.Length == 0)
+                return null;
+            object? index = indexes[indexes.Length - 1];
+            return (index is string text) ? "[string: \"" + text + "\"]" : "[number: " + Convert.ToString(index, CultureInfo.InvariantCulture) + "]";
         }
 
         private static NewExpression GetNewArgumentException(string message, ParameterExpression exceptionParameter)

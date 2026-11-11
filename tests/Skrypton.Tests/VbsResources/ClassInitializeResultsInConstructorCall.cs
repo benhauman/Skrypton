@@ -20,6 +20,6 @@
         }
         public void Class_Initialize()
         {
-            _.CALLm1v1(this, _.NnO(_env.WScript, "WScript"), "Echo", "Here!");
+            _.CALLm1v1(this, _.NnO(_env.WScript, null), "Echo", "Here!");
         }
     }

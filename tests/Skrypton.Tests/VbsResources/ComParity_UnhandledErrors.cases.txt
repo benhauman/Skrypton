@@ -1,0 +1,36 @@
+# Unhandled errors: a script (one line) and, on the next line, the error that Windows cscript.exe reports for it - "(line) source: description"
+# (issues #84, #85). The tests run each script through Skrypton and compare the reported error.
+Sub M : Dim hlRelObj : Set hlRelObj = Nothing : If IsObject(hlRelObj) = True And hlRelObj.GetValue("X") = "Y" Then : End If : End Sub : M
+(1) Microsoft VBScript runtime error: Object required: 'hlRelObj'
+Sub M : Dim l : Set l = Nothing : Dim x : x = l.Name : End Sub : M
+(1) Microsoft VBScript runtime error: Object required: 'l'
+Sub M : Dim l : Dim x : x = l.Name : End Sub : M
+(1) Microsoft VBScript runtime error: Object required: 'l'
+Sub M : Dim l : Set l = Nothing : l.Go : End Sub : M
+(1) Microsoft VBScript runtime error: Object required: 'l'
+Sub M : Dim l : Set l = Nothing : l.Name = 1 : End Sub : M
+(1) Microsoft VBScript runtime error: Object required: 'l'
+Sub M(ByVal p) : Dim x : x = p.Name : End Sub : M Nothing
+(1) Microsoft VBScript runtime error: Object required: 'p'
+Sub M(ByRef p) : Dim x : x = p.Name : End Sub : Dim q : Set q = Nothing : M q
+(1) Microsoft VBScript runtime error: Object required: 'p'
+Dim g : Set g = Nothing : Dim x : x = g.Name
+(1) Microsoft VBScript runtime error: Object required
+Dim g : Dim x : x = g.Name
+(1) Microsoft VBScript runtime error: Object required: ''
+Dim g : g = 5 : g.Go
+(1) Microsoft VBScript runtime error: Object required: '5'
+Dim g : g = "abc" : g.Go
+(1) Microsoft VBScript runtime error: Object required: 'abc'
+Dim g : g = Null : g.Go
+(1) Microsoft VBScript runtime error: Object required
+Dim x : x = 1 / 0
+(1) Microsoft VBScript runtime error: Division by zero
+Dim x : x = CInt("abc")
+(1) Microsoft VBScript runtime error: Type mismatch: 'CInt'
+Err.Raise 5
+(1) Microsoft VBScript runtime error: Invalid procedure call or argument
+Err.Raise 1000, "MySource", "My description"
+(1) MySource: My description
+Dim x : x = Array(1)(5)
+(1) Microsoft VBScript runtime error: Subscript out of range: '[number: 5]'

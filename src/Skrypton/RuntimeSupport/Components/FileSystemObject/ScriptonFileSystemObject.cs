@@ -260,12 +260,12 @@ namespace Skrypton.RuntimeSupport.Components
         /// <summary>
         /// Error 53, File not found (as scrrun raises for a missing file)
         /// </summary>
-        internal static CustomException FileNotFound(string path) => new CustomException(53, ErrorSource, "File not found: " + path);
+        internal static CustomException FileNotFound(string path) => new CustomException(53, ErrorSource, "File not found"); // Err.Description has no path (as scrrun)
 
         /// <summary>
         /// Error 76, Path not found (as scrrun raises for a missing folder)
         /// </summary>
-        internal static CustomException PathNotFound(string path) => new CustomException(76, ErrorSource, "Path not found: " + path);
+        internal static CustomException PathNotFound(string path) => new CustomException(76, ErrorSource, "Path not found"); // Err.Description has no path (as scrrun)
 
         [DispId(10014)]
         public IFolder GetSpecialFolder([In] object SpecialFolder)

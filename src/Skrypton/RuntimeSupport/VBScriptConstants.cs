@@ -171,6 +171,16 @@ namespace Skrypton.RuntimeSupport
         // Returns:
         //     The object wrapped by the System.Runtime.InteropServices.DispatchWrapper.
         public object? WrappedObject { get; }
+
+        internal ScriptDispatchWrapper(object? obj, string sourceName) : this(obj)
+        {
+            SourceName = sourceName;
+        }
+
+        /// <summary>
+        /// The name of the local variable or parameter that this Nothing was read from, for the description of error 424 (see NnO)
+        /// </summary>
+        internal string? SourceName { get; }
     }
 
 #pragma warning disable CA1812
