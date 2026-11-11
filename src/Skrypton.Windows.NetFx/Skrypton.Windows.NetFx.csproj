@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
-    Skrypton.Windows for the .NET Framework 4.8.1 - the same sources as Skrypton.Windows (net10.0-windows).
+    Skrypton.Windows for the .NET Framework 4.8 - the same sources as Skrypton.Windows (net10.0-windows).
   -->
   <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
@@ -12,7 +12,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <RootNamespace>Skrypton.Windows</RootNamespace>
     <PackageId>Skrypton.Windows.NetFx</PackageId>
-    <Description>Skrypton on Windows (.NET Framework 4.8.1): the Windows host services (processes, clipboard, dialogs, ADO through OLE DB, Outlook) and the script runner of the skrypton command line tool</Description>
+    <Description>Skrypton on Windows (.NET Framework 4.8): the Windows host services (processes, clipboard, dialogs, ADO through OLE DB, Outlook) and the script runner of the skrypton command line tool</Description>
     <PackageTags>Skrypton;VBScript;Windows;NetFramework</PackageTags>
   </PropertyGroup>
   <ItemGroup>

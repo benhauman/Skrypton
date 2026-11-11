@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- Runs VBScript files from the command line like cscript.exe (.NET Framework 4.8.1) - the Program.cs of Skrypton.Windows.Cli -->
+  <!-- Runs VBScript files from the command line like cscript.exe (.NET Framework 4.8) - the Program.cs of Skrypton.Windows.Cli -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>

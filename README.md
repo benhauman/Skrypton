@@ -8,7 +8,7 @@ Seamlessly migrate legacy VBScript to C# — translated into readable source and
 | - | - | - |
 | Skrypton (+ the command line tools in `tools`) | [![NuGet](https://img.shields.io/nuget/v/Skrypton)](https://www.nuget.org/packages/Skrypton) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
 | Skrypton.Windows (.NET 10, Windows) | [![NuGet](https://img.shields.io/nuget/v/Skrypton.Windows)](https://www.nuget.org/packages/Skrypton.Windows) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton.Windows-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
-| Skrypton.Windows.NetFx (.NET Framework 4.8.1) | [![NuGet](https://img.shields.io/nuget/v/Skrypton.Windows.NetFx)](https://www.nuget.org/packages/Skrypton.Windows.NetFx) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton.Windows.NetFx-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
+| Skrypton.Windows.NetFx (.NET Framework 4.8) | [![NuGet](https://img.shields.io/nuget/v/Skrypton.Windows.NetFx)](https://www.nuget.org/packages/Skrypton.Windows.NetFx) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton.Windows.NetFx-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
 
 ## Background
 VBScript is being retired. Microsoft has deprecated it and is removing it from Windows, which puts every classic ASP page, `.vbs` automation script, and `MSScriptControl`-hosted rules engine on a countdown. The obvious answer — "just rewrite it in C#" — is a trap, because VBScript's behavior is not the syntax on the page:
@@ -109,7 +109,7 @@ Two command line tools run VBScript files like `cscript.exe` - the script is tra
 | Tool | Runtime | In the `Skrypton` package |
 | - | - | - |
 | `Skrypton.Windows.Cli.exe` | .NET 10 (Windows x64) | `tools\Skrypton.Windows.Cli\` |
-| `Skrypton.Windows.NetFx.Cli.exe` | .NET Framework 4.8.1 | `tools\Skrypton.Windows.NetFx.Cli\` |
+| `Skrypton.Windows.NetFx.Cli.exe` | .NET Framework 4.8 | `tools\Skrypton.Windows.NetFx.Cli\` |
 
 ```
 Skrypton.Windows.Cli.exe /help
@@ -185,9 +185,9 @@ src/Skrypton/
 ├── RuntimeSupport/        the `_` compat layer the generated code runs against
 └── ScriptControlSupport/  managed MSScriptControl.ScriptControl replacement
 src/Skrypton.Windows/            Windows host services, WScript, script runner (.NET 10)
-src/Skrypton.Windows.NetFx/      the same for the .NET Framework 4.8.1
+src/Skrypton.Windows.NetFx/      the same for the .NET Framework 4.8
 src/Skrypton.Windows.Cli/        command line tool (.NET 10)
-src/Skrypton.Windows.NetFx.Cli/  command line tool (.NET Framework 4.8.1)
+src/Skrypton.Windows.NetFx.Cli/  command line tool (.NET Framework 4.8)
 samples/Windows/                 demo scripts (with the output of cscript)
 ```
 

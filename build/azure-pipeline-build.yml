@@ -89,7 +89,7 @@ jobs:
 
 # ---------------------------------------------------------------------------
 # Test on Windows: the whole solution - Skrypton, Skrypton.Windows (.NET),
-# Skrypton.Windows.NetFx (.NET Framework 4.8.1) and both command line tools
+# Skrypton.Windows.NetFx (.NET Framework 4.8) and both command line tools
 # (Skrypton.Windows.Tests and Skrypton.Windows.NetFx.Tests run them on the
 # demo and parity scripts). Its code coverage is the one of the badge.
 # ---------------------------------------------------------------------------

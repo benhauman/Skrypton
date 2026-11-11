@@ -12,7 +12,7 @@
     <SignAssembly>True</SignAssembly>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <!-- The sources are shared with Skrypton.Windows.NetFx (net481), which has none of the APIs these rules propose
+    <!-- The sources are shared with Skrypton.Windows.NetFx (net48), which has none of the APIs these rules propose
          (ArgumentNullException.ThrowIfNull, string.StartsWith(char), SearchValues) -->
     <NoWarn>$(NoWarn);CA1510;CA1865;CA1870</NoWarn>
     <PackageId>Skrypton.Windows</PackageId>

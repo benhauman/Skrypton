@@ -21,8 +21,8 @@
 
   <!--
     The package contains the command line tools, ready to run from the package folder:
-      tools\net10.0-windows\Skrypton.Windows.Cli.exe        (.NET 10, Windows)
-      tools\net481\Skrypton.Windows.NetFx.Cli.exe            (.NET Framework 4.8.1)
+      tools\Skrypton.Windows.Cli\Skrypton.Windows.Cli.exe              (.NET 10, Windows x64)
+      tools\Skrypton.Windows.NetFx.Cli\Skrypton.Windows.NetFx.Cli.exe  (.NET Framework 4.8)
     They are published when the package is packed on Windows (the Windows only projects cannot be built for the package elsewhere).
   -->
   <PropertyGroup>
