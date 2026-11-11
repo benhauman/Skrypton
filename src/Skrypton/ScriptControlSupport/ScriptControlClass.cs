@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Skrypton.CSharpWriter.CodeTranslation.BlockTranslators;
@@ -168,6 +169,12 @@ namespace Skrypton.ScriptControlSupport
             }
         }
         private static int _lastExecNumber;
+
+        /// <summary>
+        /// The assembly of the program that was run by the most recent ExecuteStatement call (programs are cached, see CompiledProgramCache)
+        /// </summary>
+        public Assembly? LastExecutedProgramAssembly { get; private set; }
+
         void IScriptControl.ExecuteStatement(string statement)
         {
             if (string.IsNullOrEmpty(statement))
@@ -177,32 +184,32 @@ namespace Skrypton.ScriptControlSupport
             string csCode = GenerateCSharpCode(statement, _addedObjectMembers);
             //RoslynScriptControl sc = new RoslynScriptControl();
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
-            Interlocked.Increment(ref _lastExecNumber); // threadsafe
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: _lastExecNumber, csCode, _config.NoWarn);
-            //WeakReference weakRef = new WeakReference(asmctx);//, trackResurrection: true);
-            try
+            // Identical programs are compiled and loaded once and then reused (see issue #43 and CompiledProgramCache) - each run gets its own compat
+            // layer and its own environment / global references, so nothing is shared between runs other than the compiled code
+            string cacheKey = CompiledProgramCache.GetKey(csCode, _config.NoWarn, _config.TempEnabled, _config.EnabledLoadFromDisk);
+            Assembly programAssembly = CompiledProgramCache.GetOrAdd(cacheKey, () =>
             {
-                //DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = _defaultRuntimeSupportClassFactoryProvider(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
-                using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();// defaultRuntimeSupportClassFactoryInstance.RuntimeHost, defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
-                Type tRunner = asmctx!.LoadedAssembly.GetType("TranslatedProgram.Runner", true);
-                RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
+                int execNumber = Interlocked.Increment(ref _lastExecNumber); // threadsafe
+                UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: execNumber, csCode, _config.NoWarn);
+                return asmctx!.LoadedAssembly;
+            });
+            LastExecutedProgramAssembly = programAssembly;
 
-                EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
+            //DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = _defaultRuntimeSupportClassFactoryProvider(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
+            using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();// defaultRuntimeSupportClassFactoryInstance.RuntimeHost, defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
+            Type tRunner = programAssembly.GetType("TranslatedProgram.Runner", true)!;
+            RunnerBase runner = RunnerBase.CreateRunnerInstanceForType(tRunner, compatLayer);
 
-                foreach (KeyValuePair<string, object> externalReferencesEntry in _addedObjects)
-                {
-                    environmentReferences.InitializeExternalReference(externalReferencesEntry.Key, externalReferencesEntry.Value);
-                }
+            EnvironmentReferencesBase environmentReferences = runner.CreateEnvironmentReferencesInstance();
 
-                GlobalReferencesBase globalRefs = runner.Run(environmentReferences);
-            }
-            finally
+            foreach (KeyValuePair<string, object> externalReferencesEntry in _addedObjects)
             {
-                asmctx?.UnloadContextCollectAndWait();
-                asmctx = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                environmentReferences.InitializeExternalReference(externalReferencesEntry.Key, externalReferencesEntry.Value);
             }
+
+            GlobalReferencesBase globalRefs = runner.Run(environmentReferences);
+            // Note: There is no forced GC.Collect / WaitForPendingFinalizers here any more - the compiled program is loaded into the default load
+            // context (so it could never be unloaded by a collection) and a blocking full GC per call is expensive on a busy server (see issue #43)
 
             //if (!weakRef.IsAlive)
             //    Console.WriteLine("ALC successfully unloaded");
