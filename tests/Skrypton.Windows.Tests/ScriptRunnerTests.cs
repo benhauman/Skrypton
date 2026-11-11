@@ -53,7 +53,7 @@ namespace Skrypton.Windows.Tests
         {
             var result = Run("WScript.Echo \"start\"\r\nDim x : x = 1 / 0");
             Assert.AreEqual(1, result.ExitCode);
-            Assert.AreEqual(@"C:\scripts\test.vbs(2, 1) Microsoft VBScript runtime error: Division by zero", result.Error.Trim());
+            Assert.AreEqual(@"C:\scripts\test.vbs(2, 9) Microsoft VBScript runtime error: Division by zero", result.Error.Trim());
         }
 
         [TestMethod]

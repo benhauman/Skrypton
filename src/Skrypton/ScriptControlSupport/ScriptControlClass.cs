@@ -79,6 +79,7 @@ namespace Skrypton.ScriptControlSupport
         private readonly ScriptControlError _error = new ScriptControlError();
         private IReadOnlyDictionary<int, int>? _lastSourceLineMap;
         private string? _lastScriptContent;
+        private string? _lastCsCode; // the C# program of the script - for the column of an error (issue #87)
 
         /// <summary>
         /// The error raised by the most recent ExecuteStatement call (Number is zero if there was none), see issue #47
@@ -199,7 +200,7 @@ namespace Skrypton.ScriptControlSupport
             }
             catch (Exception e)
             {
-                _error.SetFrom(e, programAssembly, _lastSourceLineMap, _lastScriptContent);
+                _error.SetFrom(e, programAssembly, _lastSourceLineMap, _lastScriptContent, _lastCsCode);
                 throw;
             }
         }
@@ -337,8 +338,10 @@ namespace Skrypton.ScriptControlSupport
             string[] suppressions = _config._translationSuppression;
             _lastScriptContent = scriptContent;
             _lastSourceLineMap = null;
+            _lastCsCode = null;
             string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCoreWithSourceLineMap(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues, _config.UndeclaredVariablesAreErrors), warningLogger, out IReadOnlyDictionary<int, int> sourceLineMap);
             _lastSourceLineMap = sourceLineMap;
+            _lastCsCode = csCode;
             if (_config.TempEnabled)
             {
                 _config.TempFileWriteAllText($"ProgramName", $"{programSourceFileNameNoExt}.cs", csCode);
