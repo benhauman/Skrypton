@@ -297,7 +297,7 @@ namespace Skrypton.ScriptControlSupport
 
             // Load assembly from memory
             byte[] assemblyBytes = peStream.ToArray();
-            byte[] pdbBytes = peStream.ToArray();
+            byte[] pdbBytes = pdbStream.ToArray(); // (this was peStream, so the "pdb" was a copy of the dll)
 
             // write the .dll
             if (config.TempEnabled && !string.IsNullOrEmpty(fileNameDll))
@@ -322,7 +322,7 @@ namespace Skrypton.ScriptControlSupport
             }
             else
             {
-                asmLoad = () => Assembly.Load(assemblyBytes);
+                asmLoad = () => Assembly.Load(assemblyBytes, pdbBytes); // with symbols, so that stack traces have line numbers (used to report IScriptControl.Error.Line, see issue #47)
             }
             // return Assembly.Load(peStream.ToArray());
             UnloadableAssemblyLoadContextContext context = new UnloadableAssemblyLoadContextContext(asmLoad());

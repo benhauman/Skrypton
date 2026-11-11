@@ -105,6 +105,26 @@ namespace Skrypton.CSharpWriter
         }
 
         /// <summary>
+        /// As TranslateCore, but also returns which VBScript source line index each (1-based) line of the C# program came from
+        /// </summary>
+        internal static string TranslateCoreWithSourceLineMap(
+            CultureInfo culture,
+            string scriptContent,
+            IReadOnlyCollection<string> externalDependencies,
+            IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods,
+            OuterScopeBlockTranslator.OutputTypeOptions outputType,
+            ITranslatorOptions translatorOptions,
+            ILogInformation logger,
+            out IReadOnlyDictionary<int, int> csLineToSourceLineIndex
+            )
+        {
+            using SourceLineMapRecorder recorder = SourceLineMapRecorder.Start();
+            string csCode = TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, outputType, translatorOptions, logger);
+            csLineToSourceLineIndex = recorder.CSharpLineToSourceLineIndex;
+            return csCode;
+        }
+
+        /// <summary>
         /// This will return just the parsed VBScript content, it will not attempt any translation. It will never return null nor a set containing
         /// any null references. This may be used to analyse the structure of a script, if so desired.
         /// </summary>

@@ -62,6 +62,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
         }
         internal void RenderTranslatedStatement(StringBuilder sb)
         {
+            SourceLineMapRecorder.Current?.Record(sb, LineIndexOfStatementStartInSource);
             DoBuildTranslatedStatement(sb);
         }
         protected abstract void DoBuildTranslatedStatement(StringBuilder tb);
@@ -239,6 +240,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation
             var children = RemoveRunsOfBlankLines();
 
             StringBuilder tb = new StringBuilder();
+            SourceLineMapRecorder.Current?.SetTarget(tb);
             foreach (CSharpCodeBuilder s in children)
             {
                 s.RenderTranslatedStatement(tb);
@@ -333,6 +335,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 
         protected override void DoBuildTranslatedStatement(StringBuilder tb)
         {
+            // This wrapper is not initialised with a source line index of its own, the wrapped statement has it
+            SourceLineMapRecorder.Current?.Record(tb, _statement.LineIndexOfStatementStartInSource);
             _statement.RenderTranslatedStatement(tb);
         }
 

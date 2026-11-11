@@ -76,11 +76,21 @@ namespace Skrypton.ScriptControlSupport
         //
         Modules IScriptControl.Modules => throw new NotImplementedException();
 
-        Error? IScriptControl.Error => null; // later
+        private readonly ScriptControlError _error = new ScriptControlError();
+        private IReadOnlyDictionary<int, int>? _lastSourceLineMap;
+        private string? _lastScriptContent;
+
+        /// <summary>
+        /// The error raised by the most recent ExecuteStatement call (Number is zero if there was none), see issue #47
+        /// </summary>
+        Error? IScriptControl.Error => _error;
 
         object IScriptControl.CodeObject => throw new NotImplementedException();
 
-        Procedures IScriptControl.Procedures => throw new NotImplementedException();
+        /// <summary>
+        /// The Subs and Functions declared in the code added with AddCode (see issue #47)
+        /// </summary>
+        Procedures IScriptControl.Procedures => ScriptControlProcedures.FromScript(EngineCulture, _code.ToString());
 
         void IScriptControl._AboutBox()
         {
@@ -179,6 +189,24 @@ namespace Skrypton.ScriptControlSupport
         {
             if (string.IsNullOrEmpty(statement))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(statement));
+
+            // As with MSScriptControl, Error describes the error raised by the most recent call (and is cleared by a call that succeeds), see issue #47
+            _error.Clear();
+            Assembly? programAssembly = null;
+            try
+            {
+                ExecuteStatementCore(statement, out programAssembly);
+            }
+            catch (Exception e)
+            {
+                _error.SetFrom(e, programAssembly, _lastSourceLineMap, _lastScriptContent);
+                throw;
+            }
+        }
+
+        private void ExecuteStatementCore(string statement, out Assembly? programAssemblyIfCompiled)
+        {
+            programAssemblyIfCompiled = null;
             //RoslynScriptControl sc = StartAsync(statement, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             //sc.ExecuteStatementAsync(statement)
             string csCode = GenerateCSharpCode(statement, _addedObjectMembers);
@@ -194,6 +222,7 @@ namespace Skrypton.ScriptControlSupport
                 return asmctx!.LoadedAssembly;
             });
             LastExecutedProgramAssembly = programAssembly;
+            programAssemblyIfCompiled = programAssembly;
 
             //DefaultRuntimeSupportClassFactory defaultRuntimeSupportClassFactoryInstance = _defaultRuntimeSupportClassFactoryProvider(EngineRuntimeHost, EngineRuntimeLogger, EngineCulture);
             using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();// defaultRuntimeSupportClassFactoryInstance.RuntimeHost, defaultRuntimeSupportClassFactoryInstance.RuntimeLogger, defaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever, EngineCulture);
@@ -304,7 +333,10 @@ namespace Skrypton.ScriptControlSupport
             }
             _translationIssues.Clear();
             string[] suppressions = _config._translationSuppression;
-            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCore(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues), warningLogger);
+            _lastScriptContent = scriptContent;
+            _lastSourceLineMap = null;
+            string csCode = Skrypton.CSharpWriter.DefaultTranslator.TranslateCoreWithSourceLineMap(EngineCulture, scriptContent, externalDependencies, externalMemberMethods, CSharpWriter.CodeTranslation.BlockTranslators.OuterScopeBlockTranslator.OutputTypeOptions.Executable, DefaultTranslator.CreateTranslatorOptions(suppressions, _translationIssues), warningLogger, out IReadOnlyDictionary<int, int> sourceLineMap);
+            _lastSourceLineMap = sourceLineMap;
             if (_config.TempEnabled)
             {
                 _config.TempFileWriteAllText($"ProgramName", $"{programSourceFileNameNoExt}.cs", csCode);
