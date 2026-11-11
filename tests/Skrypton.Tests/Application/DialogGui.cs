@@ -1200,6 +1200,12 @@ WScript.Echo xmlhttp.responseText
             return 0;
         }
 
+        public void ShellExecute(string file, string arguments, string directory, string operation, int show)
+        {
+            Console.WriteLine($"[IHostProcessControlHostService] 'ShellExecute(op:{operation}, show:{show}):' {file} {arguments}");
+            Started.Add($"shell:{file}|{arguments}|{operation}|{show}");
+        }
+
         public HostProcessExecResult ProcessExec(string command)
         {
             Console.WriteLine($"[IHostProcessControlHostService] 'ProcessExec:' {command}");
