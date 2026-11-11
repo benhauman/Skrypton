@@ -126,30 +126,49 @@ namespace Skrypton.RuntimeSupport.Components
         }
 
 
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        // the other properties of MSXML's DOMDocument - kept, they do not change how Skrypton parses or selects
+        private static readonly HashSet<string> OtherProperties = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "ServerHTTPRequest", "ProhibitDTD", "AllowDocumentFunction", "AllowXsltScript", "NewParser", "ResolveExternals", "ValidateOnParse",
+            "MaxElementDepth", "MaxXMLSize", "ForcedResync", "UseInlineSchema", "MultipleErrorMessages", "NormalizeAttributeValues",
+        };
+
+        private readonly Dictionary<string, object> _otherProperties = new Dictionary<string, object>(StringComparer.Ordinal);
+
+        /// <summary>
+        /// Set a property, like MSXML's setProperty: "SelectionLanguage" ("XSLPattern", the default, or "XPath") and "SelectionNamespaces" change
+        /// how selectNodes / selectSingleNode evaluate queries (issue #94); the names and values are case-sensitive
+        /// </summary>
         [DispId(204)]
         public void setProperty([In][MarshalAs(UnmanagedType.BStr)] string name, [In][MarshalAs(UnmanagedType.Struct)] object value)
         {
-            if ("SelectionLanguage".Equals(name, StringComparison.OrdinalIgnoreCase))
-            {
-                if (value != null && value is string strValue)
-                {
-                    if ("XPath".Equals(strValue, StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Supported value, do nothing
-                        return;
-                    }
-                    else
-                    {
-                        throw new NotSupportedException($"Unsupported value for SelectionLanguage: {strValue}");
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException($"Expected a string value for SelectionLanguage, but got: {value?.GetType().Name ?? "null"}");
-                }
-            }
-            throw new NotImplementedException($"name:{name}, value:{value}");
+            if (value is ScriptDispatchWrapper wrapper)
+                value = wrapper.WrappedObject;
+            MsxmlSelection selection = MsxmlSelection.For(_xmldoc);
+            if (name == "SelectionLanguage")
+                selection.SetLanguage(value);
+            else if (name == "SelectionNamespaces")
+                selection.SetNamespaces(value);
+            else if ((name != null) && OtherProperties.Contains(name))
+                _otherProperties[name] = value;
+            else
+                throw MsxmlSelection.Error("Property name is invalid.");
+        }
+
+        /// <summary>
+        /// The value of a property set with setProperty (the default of the selection properties if it was not set), like MSXML's getProperty
+        /// </summary>
+        [DispId(203)]
+        public object getProperty([In][MarshalAs(UnmanagedType.BStr)] string name)
+        {
+            MsxmlSelection selection = MsxmlSelection.For(_xmldoc);
+            if (name == "SelectionLanguage")
+                return selection.Language;
+            if (name == "SelectionNamespaces")
+                return selection.Namespaces;
+            if ((name != null) && OtherProperties.Contains(name))
+                return _otherProperties.TryGetValue(name, out object value) ? value : false;
+            throw MsxmlSelection.Error("Property name is invalid.");
         }
 
         [DispId(67)]
@@ -246,7 +265,7 @@ namespace Skrypton.RuntimeSupport.Components
                 return new MyXMLDOMNodeList(null);
             //try
             //{
-            XmlNodeList nodes = _xmldoc.SelectNodes(queryString);
+            XmlNodeList nodes = MsxmlSelection.SelectNodes(_xmldoc, queryString);
             return new MyXMLDOMNodeList(nodes);
             //}
             //catch
@@ -265,7 +284,7 @@ namespace Skrypton.RuntimeSupport.Components
         {
             if (string.IsNullOrEmpty(queryString))
                 return null;
-            XmlNode node = _xmldoc.SelectSingleNode(queryString);
+            XmlNode node = MsxmlSelection.SelectSingleNode(_xmldoc, queryString);
             return ScriptonXmlNodeFactory.Create(node);
         }
 
@@ -585,12 +604,12 @@ namespace Skrypton.RuntimeSupport.Components
         {
             if (string.IsNullOrEmpty(queryString))
                 return null;
-            return ScriptonXmlNodeFactory.Create(_node.SelectSingleNode(queryString));
+            return ScriptonXmlNodeFactory.Create(MsxmlSelection.SelectSingleNode(_node, queryString));
         }
 
         public MyXMLDOMNodeList selectNodes([In][MarshalAs(UnmanagedType.BStr)] string queryString)
         {
-            return new MyXMLDOMNodeList(string.IsNullOrEmpty(queryString) ? null : _node.SelectNodes(queryString));
+            return new MyXMLDOMNodeList(MsxmlSelection.SelectNodes(_node, queryString));
         }
     }
 }

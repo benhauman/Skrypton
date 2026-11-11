@@ -34,3 +34,22 @@ True
 
 IXMLDOMProcessingInstruction|xml
 <a x="1"><b/><c></c><d>e &amp; &lt; &gt;</d><n/></a>
+XSLPattern||
+dt:c=built plain=p 1 dt:c=built dt:c=built
+True
+dt:c=loaded plain=p Nothing Nothing x:y=xy
+item=two item=two item=two item=two
+item=two item=one item=two Nothing 3 3 5
+n=1 1 #text=one item=two
+-2147467259 msxml3.dll Reference to undeclared namespace prefix: 'dt'.
+
+-2147467259 Property value is invalid.
+XPath
+-2147467259 Property name is invalid.
+
+-2147467259 Property name is invalid.
+
+Nothing plain=p
+dt:c=loaded x:y=xy plain=p 2
+xmlns:q='urn:dt' xmlns:d="urn:x"|XPath
+Nothing plain=p

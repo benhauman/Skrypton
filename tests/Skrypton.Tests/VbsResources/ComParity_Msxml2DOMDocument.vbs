@@ -58,3 +58,53 @@ Out plain.xml
 Out TypeName(plain.firstChild) & "|" & plain.firstChild.nodeName
 plain.documentElement.appendChild plain.createElement("n")
 Out plain.documentElement.xml
+' Selection languages (issue #94): XSLPattern (the default of Msxml2.DOMDocument) matches names as they are written, XPath resolves
+' prefixes through SelectionNamespaces
+Function NodeText(n)
+    If n Is Nothing Then
+        NodeText = "Nothing"
+    Else
+        NodeText = n.nodeName & "=" & n.text
+    End If
+End Function
+Dim sel : Set sel = CreateObject("Msxml2.DOMDocument")
+Out sel.getProperty("SelectionLanguage") & "|" & sel.getProperty("SelectionNamespaces") & "|"
+Dim selRoot : Set selRoot = sel.createElement("root")
+sel.appendChild selRoot
+selRoot.setAttribute "xmlns", "urn:x"
+selRoot.setAttribute "xmlns:dt", "urn:dt"
+Dim selChild : Set selChild = sel.createElement("dt:c")
+selRoot.appendChild selChild
+selChild.text = "built"
+Set selChild = sel.createElement("plain")
+selRoot.appendChild selChild
+selChild.text = "p"
+Out NodeText(sel.selectSingleNode("//dt:c")) & " " & NodeText(sel.selectSingleNode("//plain")) & " " & sel.selectNodes("//dt:*").length & " " & NodeText(sel.selectSingleNode("/root/dt:c")) & " " & NodeText(selRoot.selectSingleNode("dt:c"))
+Dim lsel : Set lsel = CreateObject("Msxml2.DOMDocument")
+Out lsel.loadXML("<root xmlns='urn:x' xmlns:dt='urn:dt'><dt:c n='1'>loaded</dt:c><plain id='7'>p</plain><item id='1'>one</item><item id='2'>two</item><x:y xmlns:x='urn:dt'>xy</x:y></root>")
+Out NodeText(lsel.selectSingleNode("//dt:c")) & " " & NodeText(lsel.selectSingleNode("//plain")) & " " & NodeText(lsel.selectSingleNode("//c")) & " " & NodeText(lsel.selectSingleNode("//dt:y")) & " " & NodeText(lsel.selectSingleNode("//x:y"))
+Out NodeText(lsel.selectSingleNode("//item[@id='2']")) & " " & NodeText(lsel.selectSingleNode("//item[@id = ""2""]")) & " " & NodeText(lsel.selectSingleNode("//item[@id='2' and @id!='1']")) & " " & NodeText(lsel.selectSingleNode("//item[@id > 1]"))
+Out NodeText(lsel.selectSingleNode("//item[. = 'two']")) & " " & NodeText(lsel.selectSingleNode("/root/item[0]")) & " " & NodeText(lsel.selectSingleNode("/root/item[ 1 ]")) & " " & NodeText(lsel.selectSingleNode("/root/item[2]")) & " " & lsel.selectNodes("//item | //plain").length & " " & lsel.selectNodes("//@id").length & " " & lsel.selectNodes("/root/*").length
+Out NodeText(lsel.selectSingleNode("//dt:c/@n")) & " " & lsel.selectNodes("//dt:*/@*").length & " " & NodeText(lsel.selectSingleNode("//item/text()")) & " " & NodeText(lsel.documentElement.selectSingleNode("item[1]"))
+lsel.setProperty "SelectionLanguage", "XPath"
+On Error Resume Next
+Set selChild = lsel.selectSingleNode("//dt:c")
+Out Err.Number & " " & Err.Source & " " & Err.Description
+Err.Clear
+lsel.setProperty "SelectionLanguage", "xpath"
+Out Err.Number & " " & Err.Description & lsel.getProperty("SelectionLanguage")
+Err.Clear
+lsel.setProperty "NoSuchProperty", 1
+Out Err.Number & " " & Err.Description
+Err.Clear
+Out lsel.getProperty("selectionlanguage")
+Out Err.Number & " " & Err.Description
+Err.Clear
+On Error GoTo 0
+Out NodeText(lsel.selectSingleNode("//plain")) & " " & NodeText(lsel.selectSingleNode("//*[local-name()='plain']"))
+lsel.setProperty "SelectionNamespaces", "xmlns:q='urn:dt' xmlns:d=""urn:x"""
+Out NodeText(lsel.selectSingleNode("//q:c")) & " " & NodeText(lsel.selectSingleNode("//q:y")) & " " & NodeText(lsel.selectSingleNode("//d:plain")) & " " & lsel.selectNodes("//d:item").length
+Out lsel.getProperty("SelectionNamespaces") & "|" & lsel.getProperty("SelectionLanguage")
+sel.setProperty "SelectionLanguage", "XPath"
+sel.setProperty "SelectionNamespaces", "xmlns:dt='urn:dt'"
+Out NodeText(sel.selectSingleNode("//dt:c")) & " " & NodeText(sel.selectSingleNode("//plain"))
