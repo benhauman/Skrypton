@@ -518,7 +518,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // test: 'XCallDefaultParamVal1'
                 return TranslateMissingValueExpressionSegment(mveSegment);
             }
-            throw new NotSupportedException("Unsupported segment type: " + segment.GetType());
+            throw NotSupportedExceptionFactory.Create("Unsupported segment type: " + segment.GetType().Name, segment.LineIndex, segment.RenderedContent);
         }
 
         private static TranslatedStatementContentDetailsWithContentType TranslateMissingValueExpressionSegment(MissingValueExpressionSegment mveSegment)
@@ -619,7 +619,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
             );
             if ((constantProperty == null) || !constantProperty.CanRead || constantProperty.GetIndexParameters().Length != 0)
             {
-                throw new NotSupportedException("Unsupported BuiltInValueToken content: " + builtInValueExpressionSegment.Token.Content);
+                throw NotSupportedExceptionFactory.Create("Unsupported BuiltInValueToken content: " + builtInValueExpressionSegment.Token.Content, builtInValueExpressionSegment.Token.LineIndex, builtInValueExpressionSegment.RenderedContent);
             }
 
             return new TranslatedStatementContentDetailsWithContentType(TranslatedStatementContentDetailsKind.ConstKnown,
@@ -923,7 +923,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 .ToArray();
             if (supportFunctionMatches.Length == 0)
             {
-                throw new NotSupportedException("Unsupported BuiltInFunctionToken content: " + builtInFunctionToken.Content);
+                throw NotSupportedExceptionFactory.Create("Unsupported BuiltInFunctionToken content: " + builtInFunctionToken.Content, builtInFunctionToken.LineIndex, builtInFunctionToken.Content);
             }
 
             MethodInfo? idealMatch = supportFunctionMatches
@@ -1234,7 +1234,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         9 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v9), // test: UnitSelection_Renderer_NoSelects
                         10 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v10), // test: UnitSelection_Renderer_NoSelects
                         15 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v15), // test: UnitSelection_Renderer_NoSelects
-                        _ => throw new NotSupportedException($"Overload 'CALLm1v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
+                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm1v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
                     };
                 }
                 else
@@ -1268,7 +1268,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         //3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3),
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4), // CT98_dialog276
                         //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
-                        _ => throw new NotSupportedException($"Overload 'CALLm2v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
+                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm2v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
                     };
                 }
                 else
@@ -1291,7 +1291,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v3), // test: UnitSelection_Renderer_NoSelects  Line:2427 : Page.Functions.Dates.NiceDateGuts(adtStartNight,True,True)
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v4), // test: UnitSelection_Renderer_NoSelects  Line:2447 : Page.Functions.Booking.DrawSelectRange("unit_" &objUnit.UnitKey, 0, objUnit.UnitCount, iSelectedQty)
                         5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v5), // test: UnitSelection_Renderer_NoSelects  Line:2060 : Page.Functions.Booking.Booking_MatchQual(0, iDateDiff, iDurDiff, aiReqNights, 2)
-                        _ => throw new NotSupportedException($"Overload 'CALLm3v{argumentsArray.Length}' not defined. Line:{target.LineIndex}")
+                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm3v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
                     };
                 }
                 else
@@ -1699,12 +1699,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 // we don't want, so specify it as "Absent".
                 if (possibleByRefCallExpressionSegment.MemberAccessTokens.Count > 2)
                 {
-                    throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallExpressionSegment with multiple MemberAccessTokens at this point");
+                    throw NotSupportedExceptionFactory.Create("Unexpected argumentValue content - didn't expect a CallExpressionSegment with multiple MemberAccessTokens at this point", possibleByRefCallExpressionSegment.LineIndex, possibleByRefCallExpressionSegment.RenderedContent);
                 }
 
                 if (possibleByRefCallExpressionSegment.MemberAccessTokens.Count == 0)
                 {
-                    throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallExpressionSegment without any arguments at this point");
+                    throw NotSupportedExceptionFactory.Create("Unexpected argumentValue content - didn't expect a CallExpressionSegment without any arguments at this point", possibleByRefCallExpressionSegment.LineIndex, possibleByRefCallExpressionSegment.RenderedContent);
                 }
 
                 possibleByRefTarget = TranslateCallExpressionSegment(
@@ -1724,12 +1724,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 {
                     if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.First().MemberAccessTokens.Count > 2)
                     {
-                        throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with multiple MemberAccessTokens in its first CallExpressionSegment at this point");
+                        throw NotSupportedExceptionFactory.Create("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with multiple MemberAccessTokens in its first CallExpressionSegment at this point", possibleByRefCallSetExpressionSegment.LineIndex, possibleByRefCallSetExpressionSegment.RenderedContent);
                     }
 
                     if (possibleByRefCallSetExpressionSegment.CallExpressionSegments.Skip(1).Any(s => s.MemberAccessTokens.Count != 0))
                     {
-                        throw new NotSupportedException("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with subsequent CallExpressionSegments that have MemberAccessTokens at this point");
+                        throw NotSupportedExceptionFactory.Create("Unexpected argumentValue content - didn't expect a CallSetExpressionSegment with subsequent CallExpressionSegments that have MemberAccessTokens at this point", possibleByRefCallSetExpressionSegment.LineIndex, possibleByRefCallSetExpressionSegment.RenderedContent);
                     }
 
                     // Note: Specify CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent for the same reason as explain in the logic above
@@ -1745,7 +1745,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 else
                 {
-                    throw new NotSupportedException($"Unexpected argumentValue content, unable to translate. ({argSegment.GetType().Name}):{argSegment.RenderedContent}");
+                    throw NotSupportedExceptionFactory.Create($"Unexpected argumentValue content, unable to translate ({argSegment.GetType().Name})", argSegment.LineIndex, argSegment.RenderedContent);
                 }
             }
 
@@ -2090,7 +2090,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 
                 // Error
                 default:
-                    throw new NotSupportedException("Unsupported OperatorToken content: " + operatorToken.Content);
+                    throw NotSupportedExceptionFactory.Create("Unsupported OperatorToken content: " + operatorToken.Content, operatorToken.LineIndex, operatorToken.Content);
             }
 #pragma warning restore CA1304 // Specify CultureInfo
         }
@@ -2159,7 +2159,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
 
                 default:
-                    throw new NotSupportedException("Unsupported requiredReturnType value: " + requiredReturnType);
+                    throw NotSupportedExceptionFactory.Create("Unsupported requiredReturnType value: " + requiredReturnType);
             }
         }
 
@@ -2344,17 +2344,17 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
         {
             string translatedContent = useCaseNo switch
             {
-                1 => throw new NotSupportedException(result1!.TranslatedContent),
+                1 => throw NotSupportedExceptionFactory.Create($"And with a single operand (use case {useCaseNo}) is not supported", vbsSource: result1!.TranslatedContent),
                 10 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({result1!.TranslatedContent})",
 
                 // VBScript's And never short-circuits (both operands are always evaluated, so errors and side effects in the right operand are not
                 // skipped) and it is a bitwise operation (6 And 3 = 2), so it must not be translated into C#'s "&&" (see issue #40)
                 2 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({resultLeft!.TranslatedContent}, {resultRight!.TranslatedContent})",
 
-                3 => throw new NotSupportedException(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))),
+                3 => throw NotSupportedExceptionFactory.Create($"And with multiple operands (use case {useCaseNo}) is not supported", vbsSource: string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))),
                 30 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent)))})",
 
-                _ => throw new NotSupportedException(result1!.TranslatedContent)
+                _ => throw NotSupportedExceptionFactory.Create($"Unknown And use case {useCaseNo}", vbsSource: result1?.TranslatedContent)
             };
 
             return translatedContent;

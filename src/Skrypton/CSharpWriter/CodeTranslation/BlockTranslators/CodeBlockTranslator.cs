@@ -1243,7 +1243,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 return txt.ToString();
                 */
                 //return $"//?!?! {variableDeclaration.Name.LineIndex}:" + renderer(); // TODO: analyze the actual usage and remove the declaration at all => comment it out
-                throw new NotSupportedException($"{variableDeclaration.Name.ContentUpperX()} {variableDeclaration.Name.LineIndex}"); // test?
+                throw NotSupportedExceptionFactory.Create($"Unsupported variable declaration '{variableDeclaration.Name.Content}'", variableDeclaration.Name.LineIndex, variableDeclaration.Name.Content); // test?
             }
             else
             {
