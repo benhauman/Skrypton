@@ -37,6 +37,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_ErrObject() => RunParityScript();
         [TestMethod] public void ComParity_UndeclaredVariables() => RunParityScript();
         [TestMethod] public void ComParity_ByteFunctions() => RunParityScript();
+        [TestMethod] public void ComParity_SingleLineIf() => RunParityScript();
 
         /// <summary>
         /// The parity scripts run with VBScript's rule for undeclared variables (as cscript and the command line tools - issue #86)
@@ -55,6 +56,20 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             IScriptControl vbscriptRule = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
             vbscriptRule.ExecuteStatement("x = 1\r\nx = x + 1\r\n");
+        }
+
+        /// <summary>
+        /// Only the end of the statement may follow the END IF of a single-line If, as with Windows VBScript (compilation errors there - issue #97)
+        /// </summary>
+        [TestMethod]
+        [DataRow("If True Then r = 1 End If x = 2\r\n")]
+        [DataRow("If True Then r = 1 End If End If\r\n")]
+        [DataRow("If True Then End If\r\n")]
+        public void SingleLineIfWithInvalidEndIfIsACompilationError(string script)
+        {
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
+            Assert.Throws<Exception>(() => scriptengine.ExecuteStatement(script));
+            Assert.AreEqual("Microsoft VBScript compilation error", scriptengine.Error!.Source);
         }
 
         /// <summary>

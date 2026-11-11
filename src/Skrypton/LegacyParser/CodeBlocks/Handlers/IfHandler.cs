@@ -204,17 +204,52 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                     if ((!(token is AtomToken))
                     && (!(token is DateLiteralToken))
                     && (!(token is StringToken))
-                    && (!(token is InlineCommentToken))
+                    && (!(token is CommentToken)) // also a comment after a string literal: If c Then r = "q" ' comment
                     && (!(token is EndOfStatementSameLineToken)))
                         throw new InvalidOperationException("IfHandler.ProcessSingleLine: Encountered invalid Token - should all be AtomToken, DateLiteralToken, StringToken or EndOfStatementSameLineToken until new-line end of statement");
                     ifTokens.Add(token);
                 }
             }
 
+            // - "END IF" may end a single-line IF (as Windows VBScript allows - issue #97):
+            //   eg. IF (1) THEN Func() ELSE Func() END IF
+            //   eg. IF (1) THEN Func() : END IF : Func()
+            //   eg. FUNCTION F() : IF (1) THEN F = 1 END IF : END FUNCTION
+            //   the statements after it (on the same line) are not part of the IF; an END IF
+            //   ends the innermost IF ("IF (1) THEN F() ELSE IF (2) THEN G() END IF : H()" -
+            //   H() is in the ELSE of the first IF)
+            int offsetEndIf = -1;
+            int nestedIfs = 0;
+            for (int index = 1; index < ifTokens.Count; index++)
+            {
+                if (!(ifTokens[index] is AtomToken) || !ifTokens[index].Content.Equals("IF", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                bool isEndIf = (ifTokens[index - 1] is AtomToken) && ifTokens[index - 1].Content.Equals("END", StringComparison.OrdinalIgnoreCase);
+                if (!isEndIf)
+                    nestedIfs++;
+                else if (nestedIfs > 0)
+                    nestedIfs--;
+                else
+                {
+                    offsetEndIf = index - 1;
+                    break;
+                }
+            }
+            bool endsWithEndIf = offsetEndIf != -1;
+            if (endsWithEndIf)
+            {
+                // only the end of the statement may follow END IF
+                int afterEndIf = offsetEndIf + 2;
+                if ((afterEndIf < ifTokens.Count) && !(ifTokens[afterEndIf] is AbstractEndOfStatementToken) && !(ifTokens[afterEndIf] is CommentToken))
+                    throw new InvalidOperationException("Expected end of statement after END IF in single-line IF");
+                ifTokens.RemoveRange(offsetEndIf, ifTokens.Count - offsetEndIf);
+            }
+
             // We'll need to store the number of tokens associated with this IF statement
             // because we'll pull them out of the stream later (but we'll be manipulating
-            // this ifTokens list as well, so stash the original count now)
-            int ifTokensCount = ifTokens.Count;
+            // this ifTokens list as well, so stash the original count now) - with END IF,
+            // the IF statement includes those two tokens
+            int ifTokensCount = ifTokens.Count + (endsWithEndIf ? 2 : 0);
 
             // Pull "IF" token from the start
             ifTokens.RemoveAt(0);
@@ -257,15 +292,20 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 notTokens = getTokenListSection(ifTokens, offsetElse + 1);
             }
 
+            // A ":" before END IF ends the last statement ("IF (1) THEN Func() : END IF")
+            if (endsWithEndIf)
+                TrimTrailingSameLineEndOfStatement(notTokens ?? truthTokens);
+
             // Note: It's not valid for Post-THEN content to be empty
             if (truthTokens.Count == 0)
                 throw new InvalidOperationException("Empty THEN content in IF");
 
             // If we've got this far, we can pull out the processed tokens from the input list
             // - If statement ended at new-line-end-of-statement (as opposed to end of
-            //   token stream) then remove that token as well
+            //   token stream) then remove that token as well; after END IF, the end of
+            //   statement (":" or new line) that follows it
             tokens.RemoveRange(0, ifTokensCount);
-            if (tokens.Count > 0)
+            if ((tokens.Count > 0) && (!endsWithEndIf || (tokens[0] is AbstractEndOfStatementToken)))
                 tokens.RemoveAt(0);
 
             // Translate token sets into code blocks
@@ -289,6 +329,12 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             if (notStatement != null)
                 ifContent.Add(new IfBlock.IfBlockElseSegment(notStatement));
             return new IfBlock(ifContent);
+        }
+
+        private static void TrimTrailingSameLineEndOfStatement(List<IToken> tokens)
+        {
+            while ((tokens.Count > 0) && (tokens[tokens.Count - 1] is EndOfStatementSameLineToken))
+                tokens.RemoveAt(tokens.Count - 1);
         }
 
         /// <summary>

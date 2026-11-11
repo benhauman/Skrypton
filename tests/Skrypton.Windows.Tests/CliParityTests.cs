@@ -46,6 +46,7 @@ namespace Skrypton.Windows.Tests
         [DataRow("ComParity_ErrObject")]
         [DataRow("ComParity_UndeclaredVariables")]
         [DataRow("ComParity_ByteFunctions")]
+        [DataRow("ComParity_SingleLineIf")]
         public void ComponentParityScript(string name)
         {
             string folder = Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources");
