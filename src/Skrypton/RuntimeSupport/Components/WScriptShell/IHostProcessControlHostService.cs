@@ -28,6 +28,12 @@ namespace Skrypton.RuntimeSupport.Components
         /// Run the command line application, wait for it to exit and return its exit code and output (WshShell.Exec)
         /// </summary>
         HostProcessExecResult ProcessExec(string command);
+
+        /// <summary>
+        /// Open a file, document or URL with its associated application (Shell.Application.ShellExecute) - operation is the verb ("open", "print",
+        /// "edit", .. or empty for the default) and show is the ShowWindow style (1 = normal)
+        /// </summary>
+        void ShellExecute(string file, string arguments, string directory, string operation, int show);
     }
 
     public sealed class HostProcessExecResult
