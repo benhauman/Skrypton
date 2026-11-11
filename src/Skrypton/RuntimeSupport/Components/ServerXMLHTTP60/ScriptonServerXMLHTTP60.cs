@@ -113,6 +113,7 @@ namespace Skrypton.RuntimeSupport.Components
             get
             {
                 var document = new ScriptonMsxml2DOMDocument(_runtimeHost);
+                document.setProperty("SelectionLanguage", MsxmlSelection.XPath); // an MSXML 6 document: XPath is its selection language
                 document.load(Response.Body);
                 return document;
             }
