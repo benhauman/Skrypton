@@ -36,6 +36,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_BuiltInFunctions() => RunParityScript();
         [TestMethod] public void ComParity_ErrObject() => RunParityScript();
         [TestMethod] public void ComParity_UndeclaredVariables() => RunParityScript();
+        [TestMethod] public void ComParity_ByteFunctions() => RunParityScript();
 
         /// <summary>
         /// The parity scripts run with VBScript's rule for undeclared variables (as cscript and the command line tools - issue #86)

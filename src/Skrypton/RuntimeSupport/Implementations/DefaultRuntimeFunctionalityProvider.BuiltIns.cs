@@ -128,48 +128,133 @@ namespace Skrypton.RuntimeSupport.Implementations
             return new string((char)(number & 0xFFFF), 1);
         }
 
+        // ---------------------------------------------------------------------------------------------------------------------------------------
+        // Byte strings (issue #93): a string is its UTF-16LE bytes (it may have an odd number of them, see VBScriptByteStrings), a byte array (eg.
+        // ADODB.Stream.Read, ServerXMLHTTP.responseBody) is its bytes
+
         /// <summary>
-        /// AscB - the first byte of the string (the low byte of its first character)
+        /// The bytes of the value - null if it is Null
+        /// </summary>
+        private byte[]? GetBytesOrNull(object? value, string functionName)
+        {
+            value = _valueRetriever.VAL(value, functionName);
+            if (value == DBNull.Value)
+                return null;
+            if (value is byte[] bytes)
+                return bytes;
+            return VBScriptByteStrings.GetBytes(_valueRetriever.STR(value, functionName));
+        }
+
+        /// <summary>
+        /// LenB - the number of bytes (Null for Null)
+        /// </summary>
+        public object LENB(object? value)
+        {
+            byte[]? bytes = GetBytesOrNull(value, "'LenB'");
+            return (bytes == null) ? DBNull.Value : (object)bytes.Length;
+        }
+
+        /// <summary>
+        /// AscB - the first byte (a Byte)
         /// </summary>
         public object ASCB(object value)
         {
-            string text = _valueRetriever.STR(value, "'AscB'");
-            if (text.Length == 0)
+            byte[] bytes = GetBytesOrNull(value, "'AscB'") ?? throw new InvalidUseOfNullException("'AscB'");
+            if (bytes.Length == 0)
                 throw new InvalidProcedureCallOrArgumentException("'AscB' (empty string)");
-            return (byte)(text[0] & 0xFF);
+            return bytes[0];
         }
 
         /// <summary>
-        /// ChrB - a string with the byte (.NET strings consist of characters, so it is the character with the code)
+        /// ChrB - a string of one byte
         /// </summary>
         public object CHRB(object value)
         {
-            int number = CLNG(value, "'ChrB'");
+            object? code = _valueRetriever.VAL(value, "'ChrB'");
+            if (code == DBNull.Value)
+                throw new InvalidUseOfNullException("'ChrB'");
+            int number = CLNG(code, "'ChrB'");
             if ((number < 0) || (number > 255))
-                throw new InvalidProcedureCallOrArgumentException($"'ChrB' ({number} is not a byte)");
-            return new string((char)number, 1);
+                throw new VBScriptOverflowException($"'ChrB' ({number} is not a byte)");
+            return VBScriptByteStrings.GetString(new[] { (byte)number });
         }
 
         /// <summary>
-        /// LeftB - the first bytes of the string (two bytes per character)
+        /// LeftB - the first bytes
         /// </summary>
         public object LEFTB(object value, object maxLength)
         {
-            object? text = _valueRetriever.VAL(value, "'LeftB'");
-            if (text == DBNull.Value)
-                return DBNull.Value;
-            return LEFT(text ?? "", CLNG(maxLength, "'LeftB'") / 2);
+            byte[]? bytes = GetBytesOrNull(value, "'LeftB'");
+            int length = CLNG(maxLength, "'LeftB'");
+            if (length < 0)
+                throw new InvalidProcedureCallOrArgumentException("'LeftB' (length may not be negative)");
+            return (bytes == null) ? DBNull.Value : (object)VBScriptByteStrings.GetString(bytes, 0, Math.Min(length, bytes.Length));
         }
 
         /// <summary>
-        /// RightB - the last bytes of the string (two bytes per character)
+        /// RightB - the last bytes
         /// </summary>
         public object RIGHTB(object value, object maxLength)
         {
-            object? text = _valueRetriever.VAL(value, "'RightB'");
-            if (text == DBNull.Value)
+            byte[]? bytes = GetBytesOrNull(value, "'RightB'");
+            int length = CLNG(maxLength, "'RightB'");
+            if (length < 0)
+                throw new InvalidProcedureCallOrArgumentException("'RightB' (length may not be negative)");
+            if (bytes == null)
                 return DBNull.Value;
-            return RIGHT(text ?? "", CLNG(maxLength, "'RightB'") / 2);
+            length = Math.Min(length, bytes.Length);
+            return VBScriptByteStrings.GetString(bytes, bytes.Length - length, length);
+        }
+
+        public object MIDB(object value, object start) => MIDB(value, start, int.MaxValue);
+
+        /// <summary>
+        /// MidB - the bytes from the (1-based) start, at most length of them
+        /// </summary>
+        public object MIDB(object value, object start, object length)
+        {
+            byte[]? bytes = GetBytesOrNull(value, "'MidB'");
+            int startNumber = CLNG(start, "'MidB'");
+            int lengthNumber = CLNG(length, "'MidB'");
+            if (startNumber <= 0)
+                throw new InvalidProcedureCallOrArgumentException("'MidB' (start must be a positive number)");
+            if (lengthNumber < 0)
+                throw new InvalidProcedureCallOrArgumentException("'MidB' (length may not be negative)");
+            if (bytes == null)
+                return DBNull.Value;
+            int startIndex = Math.Min(startNumber - 1, bytes.Length);
+            return VBScriptByteStrings.GetString(bytes, startIndex, Math.Min(lengthNumber, bytes.Length - startIndex));
+        }
+
+        public object INSTRB(object valueToSearch, object valueToSearchFor) => INSTRB(1, valueToSearch, valueToSearchFor);
+
+        public object INSTRB(object startIndex, object valueToSearch, object valueToSearchFor) => INSTRB(startIndex, valueToSearch, valueToSearchFor, VBScriptConstants.vbBinaryCompare);
+
+        /// <summary>
+        /// InStrB - the (1-based) byte position of the bytes of valueToSearchFor in valueToSearch from the start (0 if they are not there, Null if
+        /// either is Null) - the bytes are compared, also with vbTextCompare (as Windows VBScript does)
+        /// </summary>
+        public object INSTRB(object startIndex, object valueToSearch, object valueToSearchFor, object compareMode)
+        {
+            object? startValue = _valueRetriever.VAL(startIndex, "'InStrB'");
+            if (startValue == DBNull.Value)
+                throw new InvalidUseOfNullException("'InStrB' (start may not be Null)");
+            int start = CLNG(startValue, "'InStrB'");
+            if (start <= 0)
+                throw new InvalidProcedureCallOrArgumentException("'InStrB' (start must be a positive number)");
+            _ = CLNG(compareMode, "'InStrB'"); // Windows VBScript compares the bytes whatever the compare mode is
+
+            object? search = _valueRetriever.VAL(valueToSearch, "'InStrB'");
+            object? searchFor = _valueRetriever.VAL(valueToSearchFor, "'InStrB'");
+            if ((search == DBNull.Value) || (searchFor == DBNull.Value))
+                return DBNull.Value;
+            byte[] bytes = GetBytesOrNull(search, "'InStrB'")!;
+            byte[] bytesToFind = GetBytesOrNull(searchFor, "'InStrB'")!;
+            if (bytesToFind.Length == 0)
+                return (start <= bytes.Length + 1) ? start : 0;
+            if (start > bytes.Length)
+                return 0;
+            return VBScriptByteStrings.IndexOf(bytes, bytesToFind, start - 1) + 1;
         }
 
         public object STRREVERSE(object value)

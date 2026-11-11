@@ -511,6 +511,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionCHRW, "CHRW")
         .AddS(BuiltInFunctionId.BuiltInFunctionINSTR, "INSTR")
         .AddS(BuiltInFunctionId.BuiltInFunctionINSTRREV, "INSTRREV")
+        .AddS(BuiltInFunctionId.BuiltInFunctionINSTRB, "INSTRB")
         .AddS(BuiltInFunctionId.BuiltInFunctionLEN, "LEN")
         .AddS(BuiltInFunctionId.BuiltInFunctionLENB, "LENB")
         .AddS(BuiltInFunctionId.BuiltInFunctionLCASE, "LCASE")
@@ -542,6 +543,7 @@ internal static class KnownTextResolver
         .AddS(BuiltInFunctionId.BuiltInFunctionINPUTBOX, "INPUTBOX")
         .AddS(BuiltInFunctionId.BuiltInFunctionLOADPICTURE, "LOADPICTURE")
         .AddS(BuiltInFunctionId.BuiltInFunctionMID, "MID")
+        .AddS(BuiltInFunctionId.BuiltInFunctionMIDB, "MIDB")
         .AddS(BuiltInFunctionId.BuiltInFunctionMSGBOX, "MSGBOX")
         .AddS(BuiltInFunctionId.BuiltInFunctionRGB, "RGB")
         .AddS(BuiltInFunctionId.BuiltInFunctionSETLOCALE, "SETLOCALE")
@@ -972,6 +974,8 @@ internal enum BuiltInFunctionId
     BuiltInFunctionSCRIPTENGINEMAJORVERSION,
     BuiltInFunctionSCRIPTENGINEMINORVERSION,
     BuiltInFunctionTIMER,
+    BuiltInFunctionINSTRB,
+    BuiltInFunctionMIDB,
 }
 #pragma warning restore SA1602 // Enumeration items should be documented
 [DebuggerDisplay("{Content.TheContent} {FunctionId}")]
