@@ -93,18 +93,91 @@ namespace Skrypton.ScriptControlSupport
         //    return expando;
         //}
         //
+        private static readonly Lazy<MetadataReference[]> _compilationReferences = new Lazy<MetadataReference[]>(BuildCompilationReferences);
+
+        internal static MetadataReference[] GetCompilationReferences() => _compilationReferences.Value;
+
+        /// <summary>
+        /// The facade assemblies that the generated program needs: Skrypton is a netstandard2.0 library, so "netstandard" is required, and on
+        /// .NET (Core) the core types are exposed through "System.Runtime". These are loaded by their full names because on .NET Framework a load by
+        /// simple name is not resolved against the GAC (FileNotFoundException: Could not load file or assembly 'netstandard', see issue #44).
+        /// </summary>
+        internal static readonly string[] FacadeAssemblyNames =
+        {
+            "netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+            "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        };
+
+        private static MetadataReference[] BuildCompilationReferences()
+        {
+            var locations = new List<string>();
+            foreach (string facadeAssemblyName in FacadeAssemblyNames)
+            {
+                string? location = TryGetFacadeAssemblyLocation(new AssemblyName(facadeAssemblyName));
+                if (location != null)
+                    locations.Add(location);
+            }
+            locations.Add(typeof(IDisposable).Assembly.Location);
+            locations.Add(typeof(object).Assembly.Location);
+            locations.Add(typeof(Console).Assembly.Location);
+            locations.Add(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location);
+
+            if (!locations.Any(l => Path.GetFileName(l).Equals("netstandard.dll", StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new FileNotFoundException(
+                    "The 'netstandard' facade assembly that is required to compile translated scripts could not be found (tried '" + FacadeAssemblyNames[0] +
+                    "', the simple name 'netstandard' and the 'Facades' folder of the runtime directory '" + System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() + "')"
+                );
+            }
+            return locations
+                .Where(l => !string.IsNullOrEmpty(l))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Select(l => (MetadataReference)MetadataReference.CreateFromFile(l))
+                .ToArray();
+        }
+
+        private static string? TryGetFacadeAssemblyLocation(AssemblyName assemblyName)
+        {
+            // 1. By full name (this is what works on .NET Framework, where netstandard.dll is in the GAC)
+            string? location = TryLoadLocation(() => Assembly.Load(assemblyName));
+            if (location != null)
+                return location;
+
+            // 2. By simple name (on .NET (Core) the runtime resolves this to the version that it ships with)
+            location = TryLoadLocation(() => Assembly.Load(assemblyName.Name!));
+            if (location != null)
+                return location;
+
+            // 3. The "Facades" folder of the .NET Framework runtime directory (eg. C:\Windows\Microsoft.NET\Framework\v4.0.30319\Facades\netstandard.dll)
+            string facadePath = Path.Combine(System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(), "Facades", assemblyName.Name + ".dll");
+            return File.Exists(facadePath) ? facadePath : null;
+        }
+
+        private static string? TryLoadLocation(Func<Assembly> load)
+        {
+            try
+            {
+                string location = load().Location;
+                return string.IsNullOrEmpty(location) ? null : location;
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+            catch (FileLoadException)
+            {
+                return null;
+            }
+            catch (BadImageFormatException)
+            {
+                return null;
+            }
+        }
+
         internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, string programName, int codeNumber, string csCode, string[] nowarn)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
-            MetadataReference[] references = new[]
-            {
-                MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location), // => C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\netstandard.dll *** his is not the compiler’s API reference.
-                MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
-                MetadataReference.CreateFromFile(typeof(IDisposable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests).Assembly.Location),
-            };
+            MetadataReference[] references = GetCompilationReferences();
 
             /*
             string dotnetRoot = Path.GetDirectoryName(typeof(object).Assembly.Location);// path to dotnet runtime: eg 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.3'
