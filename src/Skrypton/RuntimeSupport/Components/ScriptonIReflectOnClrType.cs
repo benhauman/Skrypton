@@ -188,6 +188,16 @@ namespace Skrypton.RuntimeSupport.Components
                     }
                 }
 
+                // obj.Member(i, j) = v where Member(i, j) returns an object: v is assigned to the default member of that object (eg. ws.Cells(1, 2) = v
+                // sets the Value of the cell, as with COM)
+                if ((args != null) && (args.Length > 1) && ((invokeAttr & BindingFlags.SetProperty) != 0))
+                {
+                    object[] memberArgs = args.Take(args.Length - 1).ToArray();
+                    object value = InvokeMember(name, BindingFlags.GetProperty | BindingFlags.InvokeMethod, binder, target, memberArgs, null, culture, null);
+                    if (value is IReflect reflect)
+                        return reflect.InvokeMember("", BindingFlags.SetProperty, binder, value, new[] { args[args.Length - 1] }, null, culture, null);
+                }
+
                 // No overload takes the arguments as they are: convert object arguments through their default property and try again (see above)
                 if ((args != null) && TryReplaceObjectsWithDefaultValues(args, out object[] valueArgs))
                     return InvokeMember(name, invokeAttr, binder, target, valueArgs, modifiers, culture, namedParameters);

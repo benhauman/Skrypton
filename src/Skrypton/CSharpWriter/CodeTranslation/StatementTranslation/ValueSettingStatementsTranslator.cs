@@ -497,7 +497,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
 #pragma warning disable CA1508 // Avoid dead conditional code
                 if (allArgsConfirmedToBeByVal || usesArgProvider == false)
                 {
-                    if (arguments.Length > 1)
+                    // SETm0a1..SETm0a3 / SETm1a1..SETm1a3 (eg. "ws.Cells(1, 2) = v", test: ComParity_ExcelApplication)
+                    if (arguments.Length > 3)
                     {
                         throw new NotImplementedException($"a:{arguments.Length}");
                     }
@@ -557,11 +558,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     {
                         if (allArgsConfirmedToBeByVal)
                         {
-                            if (arguments.Length != 1)
+                            methodNameSet = arguments.Length switch
                             {
-                                throw new NotImplementedException($"a:{arguments.Length}");
-                            }
-                            methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
+                                1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1),
+                                2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a2),
+                                3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a3),
+                                _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                            };
                         }
                         else
                         {
@@ -571,7 +574,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                             }
                             else
                             {
-                                methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1);
+                                methodNameSet = arguments.Length switch
+                                {
+                                    1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a1),
+                                    2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a2),
+                                    3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm0a3),
+                                    _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                                };
                             }
                         }
                     }
@@ -591,7 +600,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     }
                     else
                     {
-                        methodNameSet = nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1);
+                        methodNameSet = arguments.Length switch
+                        {
+                            1 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a1),
+                            2 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a2),
+                            3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.SETm1a3),
+                            _ => throw new NotImplementedException($"a:{arguments.Length}"),
+                        };
                     }
                 }
                 else

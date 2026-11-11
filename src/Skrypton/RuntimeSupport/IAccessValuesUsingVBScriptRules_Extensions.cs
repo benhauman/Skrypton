@@ -52,6 +52,36 @@ namespace Skrypton.RuntimeSupport
 
             source.SET(context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1]), valueToSetTo);
         }
+        public static void SETm1a2(this IAccessValuesUsingVBScriptRules source, object? context, object target, string memberAccessor, object arg1, object arg2, object? valueToSetTo)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
+
+            source.SET(context, target, optionalMemberAccessor: memberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1, arg2]), valueToSetTo);
+        }
+        public static void SETm0a2(this IAccessValuesUsingVBScriptRules source, object? context, object target, object arg1, object arg2, object? valueToSetTo)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            source.SET(context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1, arg2]), valueToSetTo);
+        }
+        public static void SETm1a3(this IAccessValuesUsingVBScriptRules source, object? context, object target, string memberAccessor, object arg1, object arg2, object arg3, object? valueToSetTo)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(memberAccessor)) throw new ArgumentException("Value cannot be null or empty.", nameof(memberAccessor));
+
+            source.SET(context, target, optionalMemberAccessor: memberAccessor, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1, arg2, arg3]), valueToSetTo);
+        }
+        public static void SETm0a3(this IAccessValuesUsingVBScriptRules source, object? context, object target, object arg1, object arg2, object arg3, object? valueToSetTo)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            source.SET(context, target, optionalMemberAccessor: null, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [arg1, arg2, arg3]), valueToSetTo);
+        }
         // This one allows for no arguments OR member accessors to be mentioned - this should only be used for errors cases (since, otherwise, a simple assignment
         // would be more appropriate, no SET call would be required at all). This may be used for the representation of "a = 1" where "a" is a function or a
         // constant, the translated output would be call to this function where the target to would actually be a call to RAISEERROR so that the valueToSet
@@ -192,20 +222,20 @@ namespace Skrypton.RuntimeSupport
         //
         //    return source.CALL(context, target, new[] { member1, member2 }, DefaultCallArgumentProvider.CreateArgumentProviderForValues(useBracketsWhereZeroArguments: false, [value1, value2, value3, value4, value5]), line: 0);
         //}
-        //public static object? CALLm3v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
-        //{
-        //    if (source == null)
-        //        throw new ArgumentNullException(nameof(source));
-        //
-        //    return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
-        //}
-        //public static object? CALLm4v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
-        //{
-        //    if (source == null)
-        //        throw new ArgumentNullException(nameof(source));
-        //
-        //    return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
-        //}
+        public static object? CALLm3v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1, member2, member3 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
+        }
+        public static object? CALLm4v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            return source.CALL(context, target, new[] { member1, member2, member3, member4 }, ZeroArgumentArgumentProvider.WithoutEnforcedArgumentBracketsEmpty, line: 0);
+        }
         //public static object? CALLm5v0(this IAccessValuesUsingVBScriptRules source, object context, object target, string member1, string member2, string member3, string member4, string member5)
         //{
         //    if (source == null)

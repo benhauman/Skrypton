@@ -1301,6 +1301,16 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 }
                 callNameResolved = true;
             }
+            else if ((targetMemberAccessTokensArray.Length == 3) && (argumentsArray.Length == 0) && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v0); // test: ComParity_ExcelApplication (ws.UsedRange.Rows.Count)
+                callNameResolved = true;
+            }
+            else if ((targetMemberAccessTokensArray.Length == 4) && (argumentsArray.Length == 0) && (zeroArgumentBracketsPresence == CallSetItemExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+            {
+                callName = nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm4v0); // test: ComParity_ExcelApplication (xl.ActiveSheet.UsedRange.Rows.Count)
+                callNameResolved = true;
+            }
             else
             {
                 throw new NotImplementedException($"m:{targetMemberAccessTokensArray.Length}, a:{argumentsArray.Length}, z:'{zeroArgumentBracketsPresence}'. Line:{target.LineIndex}");
