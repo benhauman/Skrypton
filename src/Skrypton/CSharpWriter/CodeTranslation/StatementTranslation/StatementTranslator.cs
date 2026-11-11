@@ -2347,7 +2347,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 1 => throw new NotSupportedException(result1!.TranslatedContent),
                 10 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({result1!.TranslatedContent})",
 
-                2 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.ANDe2)}({_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CBOOL)}({resultLeft!.TranslatedContent}) && {_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.CBOOL)}({resultRight!.TranslatedContent}))",
+                // VBScript's And never short-circuits (both operands are always evaluated, so errors and side effects in the right operand are not
+                // skipped) and it is a bitwise operation (6 And 3 = 2), so it must not be translated into C#'s "&&" (see issue #40)
+                2 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({resultLeft!.TranslatedContent}, {resultRight!.TranslatedContent})",
 
                 3 => throw new NotSupportedException(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent))),
                 30 => $"{_supportRefName.Name}.{nameof(IProvideVBScriptCompatFunctionalityToIndividualRequests.AND)}({(string.Join(", ", translatedNonOperatorSegments!.Select(c => c.TranslatedContent)))})",

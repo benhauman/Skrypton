@@ -218,52 +218,21 @@ namespace Skrypton.RuntimeSupport.Implementations
             }
             return bitwiseOperationValues.Item2(~valueToNot.Value); // Note: VBScript's Not operation is bitwise, not logical (so the ~ operator is used)
         }
+        /// <summary>
+        /// VBScript's And is a bitwise operation and never short-circuits: both operands have already been evaluated by the time that this is called
+        /// (see issue #40). If either value is Null then Null is returned, unless the other value is zero (False), in which case the result is zero.
+        /// </summary>
         public object AND(object l, object r)
-        {
-            return ANDCore(l, () => r);
-        }
-        public bool ANDe2(bool evaluationResult) => evaluationResult;
-        public object ANDe2z(object l, Func<object> rp)
-        {
-            if (rp == null) throw new ArgumentNullException(nameof(rp));
-            return ANDCore(l, rp);
-        }
-        private object ANDCore(object l, Func<object> rp)
-        {
-            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValuesL = GetForBitwiseOperations("'And'", l);
-            int? left = bitwiseOperationValuesL.Item1.First();
-            if (left == null)
-            {
-                // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
-                // values are Null then Null is returned.
-                return DBNull.Value;
-            }
-
-            //if (left.Value ==)
-
-
-            object r = rp();
-            Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValuesR = GetForBitwiseOperations("'And'", r);
-            int? right = bitwiseOperationValuesR.Item1.First();
-            if (right == null)
-            {
-                // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
-                // values are Null then Null is returned.
-                return DBNull.Value;
-            }
-
-            return bitwiseOperationValuesR.Item2(left.Value & right.Value);
-        }
-        private object ANDCoreOld(object l, object r)
         {
             Tuple<IEnumerable<int?>, Func<int, object>, Type> bitwiseOperationValues = GetForBitwiseOperations("'And'", l, r);
             int? left = bitwiseOperationValues.Item1.First();
             int? right = bitwiseOperationValues.Item1.Skip(1).Single();
+            if ((left == null) && (right == null))
+                return DBNull.Value;
             if ((left == null) || (right == null))
             {
-                // If GetForBitwiseOperations returns null values then it means there were VBScript Null values provided. When AND'ing, if either (or both)
-                // values are Null then Null is returned.
-                return DBNull.Value;
+                // Null And False is False (whatever the Null might be, the result must be zero) but Null And anything-else is Null
+                return ((left ?? right) == 0) ? GetForBitwiseOperations("'And'", (left == null) ? r : l).Item2(0) : DBNull.Value;
             }
             return bitwiseOperationValues.Item2(left.Value & right.Value);
         }

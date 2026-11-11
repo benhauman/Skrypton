@@ -84,7 +84,9 @@ namespace Skrypton.Tests.Application
         public void XAndEmptyArray1()
         {
             TestScriptResponse rsp = ChainsTest.TestScriptChain(this, ScriptUsageKind.Unknown, externalRefs: new Dictionary<string, ScriptExternalReferenceInfo>());
-            DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { });
+            // VBScript's And does not short-circuit (see issue #40): "searchResult(0)(2)" is evaluated even though the array is empty, so (as in Windows
+            // VBScript, where this is "Subscript out of range") the script fails
+            Assert.ThrowsExactly<ArgumentException>(() => DoScriptControlTest<object>(null, [], [], [], services => { }, (x) => { }));
         }
         [TestMethod]
         public void XHex1() // "&H00000" =>
