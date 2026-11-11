@@ -258,7 +258,10 @@ namespace Skrypton.ScriptControlSupport
                     )
             );
 
-            if (!string.IsNullOrEmpty(fileNameErr))
+            // Only write the diagnostics file when temp files are enabled - otherwise it would be written relative to the process working directory
+            // (eg. C:\Windows\System32 for a COM+ server) or fail without permission (see issue #46). Compile errors are reported through the
+            // CompilationFailedException message below.
+            if (config.TempEnabled && !string.IsNullOrEmpty(fileNameErr))
             {
                 config.TempFileWriteAllLines(tempFolderName, fileNameErr!, emitResult.Diagnostics.Select(d => d.ToString()));
             }
@@ -285,7 +288,7 @@ namespace Skrypton.ScriptControlSupport
                 Console.WriteLine(errorsBuffer.ToString());
 
                 // In unit tests, you can fail like this:
-                throw new CompilationFailedException("Compilation failed.");
+                throw new CompilationFailedException("Compilation failed." + Environment.NewLine + errorsBuffer.ToString());
                 // Or if using NUnit/xUnit:
                 // Assert.Fail("Compilation failed.");
             }
