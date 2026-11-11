@@ -232,7 +232,7 @@ namespace Skrypton.ScriptControlSupport
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary, // 'DynamicallyLinkedLibrary' or '
                 warningLevel: 4,
-                generalDiagnosticOption: ReportDiagnostic.Error,
+                generalDiagnosticOption: config.TreatWarningsAsErrors ? ReportDiagnostic.Error : ReportDiagnostic.Default, // warnings stay warnings unless opted in (see issue #48)
                 specificDiagnosticOptions: specificDiagnosticOptions,
                 optimizationLevel: OptimizationLevel.Debug, // Keep debug info
                 allowUnsafe: false

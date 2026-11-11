@@ -186,7 +186,7 @@ namespace Skrypton.ScriptControlSupport
             //sc.ExecuteStatementAsync(csCode, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
             // Identical programs are compiled and loaded once and then reused (see issue #43 and CompiledProgramCache) - each run gets its own compat
             // layer and its own environment / global references, so nothing is shared between runs other than the compiled code
-            string cacheKey = CompiledProgramCache.GetKey(csCode, _config.NoWarn, _config.TempEnabled, _config.EnabledLoadFromDisk);
+            string cacheKey = CompiledProgramCache.GetKey(csCode, _config.NoWarn, _config.TempEnabled, _config.EnabledLoadFromDisk, _config.TreatWarningsAsErrors);
             Assembly programAssembly = CompiledProgramCache.GetOrAdd(cacheKey, () =>
             {
                 int execNumber = Interlocked.Increment(ref _lastExecNumber); // threadsafe
@@ -352,16 +352,24 @@ namespace Skrypton.ScriptControlSupport
 
         internal readonly string[] NoWarn;
 
-        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression, string[] noWarn)
+        public ScriptControlConfiguration(bool tempEnabled, string? tempDirectoryPath, bool enabledLoadFromDisk, string[] translationSuppression, string[] noWarn, bool treatWarningsAsErrors = true)
         {
             _translationSuppression = translationSuppression ?? throw new ArgumentNullException(nameof(translationSuppression));
             TempEnabled = tempEnabled;
             TempDirectoryPath = tempDirectoryPath ?? "";
             EnabledLoadFromDisk = enabledLoadFromDisk;
             NoWarn = noWarn ?? throw new ArgumentNullException(nameof(noWarn));
+            TreatWarningsAsErrors = treatWarningsAsErrors;
         }
 
         internal bool EnabledLoadFromDisk { get; }
+
+        /// <summary>
+        /// Whether C# compiler warnings in the translated program are treated as errors (default: true). Legal VBScript can translate into C# that
+        /// produces warnings (CS0219 / CS0168 unused variables, CS0162 unreachable code after Exit Sub, CS0164 unreferenced labels, CS1717 "x = x"),
+        /// so a host that runs such scripts can pass false to the constructor instead of listing every warning in noWarn (see issue #48).
+        /// </summary>
+        public bool TreatWarningsAsErrors { get; }
 
         internal string EnsureFilePathX(string folderName, string fileName)
         {
