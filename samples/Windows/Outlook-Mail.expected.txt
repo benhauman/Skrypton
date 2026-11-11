@@ -1,0 +1,6 @@
+Mail: Monthly report
+  To: team@example.invalid; lead@example.invalid | CC: boss@example.invalid | recipients: 3
+  attachments: 1 | HTML: True
+Contact: Max Muster (Muster, Max), Example Ltd, max@example.invalid
+Appointment: Report review, 2026-12-1 10:00 - 10:45, Room 1, reminder 15 minutes before
+Dry run: the mail is not shown

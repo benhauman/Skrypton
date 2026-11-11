@@ -6,7 +6,9 @@ Seamlessly migrate legacy VBScript to C# — translated into readable source and
 ## Artifacts
 | Name | nuget.org | GitHub Packages |
 | - | - | - |
-| Skrypton | [![NuGet](https://img.shields.io/nuget/v/Skrypton)](https://www.nuget.org/packages/Skrypton) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
+| Skrypton (+ the command line tools in `tools`) | [![NuGet](https://img.shields.io/nuget/v/Skrypton)](https://www.nuget.org/packages/Skrypton) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
+| Skrypton.Windows (.NET 10, Windows) | [![NuGet](https://img.shields.io/nuget/v/Skrypton.Windows)](https://www.nuget.org/packages/Skrypton.Windows) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton.Windows-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
+| Skrypton.Windows.NetFx (.NET Framework 4.8.1) | [![NuGet](https://img.shields.io/nuget/v/Skrypton.Windows.NetFx)](https://www.nuget.org/packages/Skrypton.Windows.NetFx) | [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Skrypton.Windows.NetFx-24292e?logo=github)](https://github.com/benhauman/Skrypton/packages) |
 
 ## Background
 VBScript is being retired. Microsoft has deprecated it and is removing it from Windows, which puts every classic ASP page, `.vbs` automation script, and `MSScriptControl`-hosted rules engine on a countdown. The obvious answer — "just rewrite it in C#" — is a trap, because VBScript's behavior is not the syntax on the page:
@@ -43,7 +45,7 @@ There are three entry points, depending on how far you want to go:
 
 | Goal | API |
 | - | - |
-| Inspect the C# a script becomes | `DefaultTranslator.TranslateWithoutScaffolding(...)` |
+| Inspect the C# a script becomes | `DefaultTranslator.TranslateExecutable(...)` / `TranslateWithoutScaffolding(...)` |
 | Analyse a script's structure without translating | `DefaultTranslator.Parse(...)` → an `ICodeBlock` tree |
 | Translate **and run** VBScript like the old COM engine | `ScriptControlSupport.ScriptControlClass` |
 
@@ -101,6 +103,33 @@ control.AddCode(vbscript);
 control.ExecuteStatement("DoTheThing");                    // translate → compile → run
 ```
 
+## Running .vbs files from the command line
+Two command line tools run VBScript files like `cscript.exe` - the script is translated to C#, compiled and run, `WScript.Echo` writes to the console, `WScript.Arguments` are the script arguments and `WScript.Quit` sets the exit code:
+
+| Tool | Runtime | In the `Skrypton` package |
+| - | - | - |
+| `Skrypton.Windows.Cli.exe` | .NET 10 (Windows x64) | `tools\Skrypton.Windows.Cli\` |
+| `Skrypton.Windows.NetFx.Cli.exe` | .NET Framework 4.8.1 | `tools\Skrypton.Windows.NetFx.Cli\` |
+
+```
+Skrypton.Windows.Cli.exe /help
+Skrypton.Windows.Cli.exe report.vbs arg1 arg2
+Skrypton.Windows.Cli.exe /culture:de-DE import.vbs C:\data\input.csv
+Skrypton.Windows.Cli.exe /translate report.vbs > report.cs
+```
+
+`CreateObject` provides `Scripting.FileSystemObject`, `Scripting.Dictionary`, `VBScript.RegExp`, `WScript.Shell`, `Shell.Application`, `ADODB`, `MSXML`, WMI (`winmgmts:`), `Word.Application` and `Excel.Application` (.docx / .xlsx without Office), `Outlook.Application`, `InternetExplorer.Application` and `htmlfile`. The tools use the host services of Windows (`Skrypton.Windows` / `Skrypton.Windows.NetFx`): processes, the clipboard, `MsgBox` / `InputBox` dialogs, ADO through the OLE DB providers and Outlook through its COM automation. Runtime errors are reported as cscript reports them (`script.vbs(3, 1) Microsoft VBScript runtime error: Type mismatch`).
+
+The demo scripts in [samples/Windows](samples/Windows) (Outlook, Edge, ADO, Excel, Word, processes, files) show the use cases; their output is compared with the output of `cscript.exe` (with the real Office applications) in the tests of both tools.
+
+### Running scripts from a Windows application
+On Windows, `WindowsRuntimeHost.CreateDefault()` (`Skrypton.Windows` / `Skrypton.Windows.NetFx`) provides the host services that the built-in components use, and `ScriptonScriptRunner` runs whole scripts with a `WScript` object, as the command line tools do:
+
+```csharp
+var runner = new ScriptonScriptRunner(WindowsRuntimeHost.CreateDefault(), Console.Out, Console.Error, Console.In, CultureInfo.CurrentCulture);
+int exitCode = runner.RunFile("report.vbs", args);
+```
+
 ## Project status
 Skrypton works for the translate-and-run path but is still under active construction. Honest status:
 
@@ -111,13 +140,11 @@ Skrypton works for the translate-and-run path but is still under active construc
 - `ScriptControl` emulation (`AddCode` / `AddObject` / `ExecuteStatement`) and `Parse(...)` for structural analysis.
 
 **In progress**
-- The public `TranslateExecutable(...)` entry point is commented out; only `TranslateWithoutScaffolding(...)` is exposed (the executable emitter is used internally by the `ScriptControl` path).
 - Several `ScriptControl` members (`Eval`, `Run`, `Reset`, `Modules`, `CodeObject`, `UseSafeSubset`) are `NotImplementedException` stubs.
-- `CreateObject` COM activation is stubbed; register managed factories for the objects you need.
+- `CreateObject` provides managed implementations of the common COM components (see above); for other ProgIDs register managed factories.
 - Internals still carry the upstream `VBScriptTranslator.*` namespaces (see Credits).
 
 **Not there yet**
-- No CLI.
 - No migration cookbook (see `todos.txt` for the running list of edge cases).
 
 ## Syntax reference
@@ -157,6 +184,11 @@ src/Skrypton/
 │   └── CodeTranslation/   scope tracking, block & statement translators
 ├── RuntimeSupport/        the `_` compat layer the generated code runs against
 └── ScriptControlSupport/  managed MSScriptControl.ScriptControl replacement
+src/Skrypton.Windows/            Windows host services, WScript, script runner (.NET 10)
+src/Skrypton.Windows.NetFx/      the same for the .NET Framework 4.8.1
+src/Skrypton.Windows.Cli/        command line tool (.NET 10)
+src/Skrypton.Windows.NetFx.Cli/  command line tool (.NET Framework 4.8.1)
+samples/Windows/                 demo scripts (with the output of cscript)
 ```
 
 ## Credits

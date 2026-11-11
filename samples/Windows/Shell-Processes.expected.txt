@@ -1,0 +1,5 @@
+OS: Windows_NT
+Exec output: Hello from cmd
+Exec exit code: 0
+Run exit code: 3
+System process found: True

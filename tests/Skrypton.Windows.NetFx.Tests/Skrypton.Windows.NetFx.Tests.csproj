@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Tests of Skrypton.Windows.NetFx and of the command line tool Skrypton.Windows.NetFx.Cli (.NET Framework 4.8.1) - the tests of
+    Skrypton.Windows.Tests.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Skrypton.Windows.Tests</RootNamespace>
+    <NoWarn>$(NoWarn);MSTEST0001</NoWarn>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <CliProject>$(MSBuildThisFileDirectory)..\..\src\Skrypton.Windows.NetFx.Cli\Skrypton.Windows.NetFx.Cli.csproj</CliProject>
+    <CliPath>$(MSBuildThisFileDirectory)..\..\src\Skrypton.Windows.NetFx.Cli\bin\$(Configuration)\net481\Skrypton.Windows.NetFx.Cli.exe</CliPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Skrypton.Windows.Tests\**\*.cs" Exclude="..\Skrypton.Windows.Tests\obj\**;..\Skrypton.Windows.Tests\bin\**" LinkBase="Shared" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Skrypton.Windows.NetFx\Skrypton.Windows.NetFx.csproj" />
+    <!-- built before the tests run (the tests start it) -->
+    <ProjectReference Include="$(CliProject)" ReferenceOutputAssembly="false" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>CliPath</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(CliPath)'))</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>RepositoryRoot</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>

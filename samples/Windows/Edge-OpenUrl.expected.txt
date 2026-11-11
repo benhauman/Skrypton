@@ -1,0 +1,3 @@
+Command: msedge.exe "https://github.com/benhauman/Skrypton"
+Browser object: IWebBrowser2, Internet Explorer, visible: False, ready state: 0
+Dry run: Edge is not started

@@ -27,10 +27,12 @@ namespace Skrypton.CSharpWriter
         /// Response, Session, etc.. when run within ASP) then specify their names in the externalDependencies set - this will prevent warnings
         /// being logged in relation to the absence of their definition in the source.
         /// </summary>
-        //public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
-        //{
-        //    return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance), CommentsLogger(renderCommentsAboutUndeclaredVariables: true));
-        //}
+        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
+        {
+            // the warnings become comments in the program (and go to the trace listeners, not to the console)
+            ILogInformation logger = CommentsLogger(renderCommentsAboutUndeclaredVariables: true, new DelegateWrappingWarningLogger(warning => System.Diagnostics.Trace.WriteLine(warning, "Skrypton")));
+            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance), logger);
+        }
 
         internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector) => new DefaultTranslatorOptions(suppressions, issuesCollector);
 

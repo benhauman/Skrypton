@@ -5,7 +5,27 @@
     <File Path="global.json" />
     <File Path="todos.txt" />
     <File Path="version.json" />
+    <File Path="build/azure-pipeline-build.yml" />
   </Folder>
-  <Project Path="src/Skrypton/Skrypton.csproj" />
-  <Project Path="tests/Skrypton.Tests/Skrypton.Tests.csproj" />
+  <Folder Name="/samples/">
+    <File Path="samples/Windows/Ado-StreamAndDatabase.vbs" />
+    <File Path="samples/Windows/Edge-OpenUrl.vbs" />
+    <File Path="samples/Windows/Excel-Report.vbs" />
+    <File Path="samples/Windows/FileSystem-Inventory.vbs" />
+    <File Path="samples/Windows/Outlook-Mail.vbs" />
+    <File Path="samples/Windows/Shell-Processes.vbs" />
+    <File Path="samples/Windows/Word-Letter.vbs" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Skrypton/Skrypton.csproj" />
+    <Project Path="src/Skrypton.Windows/Skrypton.Windows.csproj" />
+    <Project Path="src/Skrypton.Windows.NetFx/Skrypton.Windows.NetFx.csproj" />
+    <Project Path="src/Skrypton.Windows.Cli/Skrypton.Windows.Cli.csproj" />
+    <Project Path="src/Skrypton.Windows.NetFx.Cli/Skrypton.Windows.NetFx.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Skrypton.Tests/Skrypton.Tests.csproj" />
+    <Project Path="tests/Skrypton.Windows.Tests/Skrypton.Windows.Tests.csproj" />
+    <Project Path="tests/Skrypton.Windows.NetFx.Tests/Skrypton.Windows.NetFx.Tests.csproj" />
+  </Folder>
 </Solution>

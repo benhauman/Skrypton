@@ -1,0 +1,3 @@
+Written: 32 bytes (with the byte order mark)
+Read: 27 characters, line 1 has 18, line 2 is Zeile 2
+No connection string: the database part is skipped
