@@ -92,5 +92,40 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 new Host());
             CollectionAssert.AreEqual(new object[] { true, Xml + "\r\n" } /* MSXML ends doc.xml with a line break */, values.ToArray());
         }
+
+        /// <summary>
+        /// A document built by a script (issue #91) is saved through the host's IHostFileSystemHostService - the bytes are those that Windows
+        /// MSXML writes: UTF-8 without a byte order mark, the XML declaration with its encoding, CRLF after it and at the end
+        /// </summary>
+        [TestMethod]
+        public void SaveWritesABuiltDocumentThroughTheHostFileSystem()
+        {
+            string target = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "skrypton-dom-save-" + Guid.NewGuid().ToString("N") + ".xml");
+            IScriptControl scriptengine = CreateScriptControlClass(
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<Skrypton.RuntimeSupport.Components.IHostFileSystemHostService>(() => new TestRedirectingFileSystem().Redirect(@"X:\host\out.xml", target)))),
+                CreateScriptControlConfiguration(false, [], []));
+            try
+            {
+                scriptengine.ExecuteStatement(
+                    "Dim doc : Set doc = CreateObject(\"Msxml2.DOMDocument\")\r\n" +
+                    "doc.insertBefore doc.createProcessingInstruction(\"xml\", \"version='1.0' encoding='UTF-8'\"), doc.firstChild\r\n" +
+                    "Dim root : Set root = doc.createElement(\"Batch\")\r\n" +
+                    "doc.AppendChild(root)\r\n" +
+                    "root.setAttribute \"xmlns\", \"urn:batch\"\r\n" +
+                    "root.setAttribute \"xmlns:dt\", \"urn:dt\"\r\n" +
+                    "root.AppendChild (doc.createElement(\"Session\"))\r\n" +
+                    "Dim company : Set company = doc.createElement(\"dt:CompanyName\")\r\n" +
+                    "root.appendChild company\r\n" +
+                    "company.text = \"MGB\"\r\n" +
+                    "doc.save \"X:\\host\\out.xml\"\r\n");
+                CollectionAssert.AreEqual(
+                    Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<Batch xmlns=\"urn:batch\" xmlns:dt=\"urn:dt\"><Session/><dt:CompanyName>MGB</dt:CompanyName></Batch>\r\n"),
+                    File.ReadAllBytes(target));
+            }
+            finally
+            {
+                File.Delete(target);
+            }
+        }
     }
 }

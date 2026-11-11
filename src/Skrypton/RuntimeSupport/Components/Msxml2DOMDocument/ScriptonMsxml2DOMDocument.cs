@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
+using Skrypton.RuntimeSupport.Implementations;
 using Skrypton.RuntimeSupport.Attributes;
 
 //D:\projects.ToDelete\ConsoleApp2\obj\Debug\net10.0\Interop.MSXML2.dll
@@ -24,8 +27,90 @@ namespace Skrypton.RuntimeSupport.Components
     internal sealed class ScriptonMsxml2DOMDocument //  see "Msxml2.DOMDocument" from Interop.MSXML2.dll, 'MSXML2.DOMDocument60'
     {
         private readonly XmlDocument _xmldoc = new XmlDocument();
-        public ScriptonMsxml2DOMDocument()
+        private readonly IHostFileSystemHostService _fileSystem;
+
+        /// <summary>
+        /// save writes the file through the host's IHostFileSystemHostService (or the process file system if the host has none), like the
+        /// FileSystemObject
+        /// </summary>
+        public ScriptonMsxml2DOMDocument(IRuntimeHost runtimeHost)
         {
+            if (runtimeHost == null)
+                throw new ArgumentNullException(nameof(runtimeHost));
+            _fileSystem = runtimeHost.TryGetRuntimeHostService<IHostFileSystemHostService>() ?? DefaultHostFileSystemHostService.Instance;
+        }
+
+        /// <summary>
+        /// A new processing instruction (not in the document yet), like MSXML's createProcessingInstruction - for the target "xml" it is the
+        /// XML declaration (issue #91)
+        /// </summary>
+        [DispId(31)]
+        public object createProcessingInstruction([In][MarshalAs(UnmanagedType.BStr)] string target, [In][MarshalAs(UnmanagedType.BStr)] string data)
+        {
+            if (!"xml".Equals(target, StringComparison.Ordinal))
+                return ScriptonXmlNodeFactory.Create(_xmldoc.CreateProcessingInstruction(target, data ?? ""));
+            string version = XmlDeclarationPseudoAttribute(data, "version") ?? "1.0";
+            return ScriptonXmlNodeFactory.Create(_xmldoc.CreateXmlDeclaration(version, XmlDeclarationPseudoAttribute(data, "encoding"), XmlDeclarationPseudoAttribute(data, "standalone")));
+        }
+
+        private static string XmlDeclarationPseudoAttribute(string data, string name)
+        {
+            Match match = Regex.Match(data ?? "", @"\b" + name + @"\s*=\s*(?:""(?<value>[^""]*)""|'(?<value>[^']*)')", RegexOptions.CultureInvariant);
+            return match.Success ? match.Groups["value"].Value : null;
+        }
+
+        /// <summary>
+        /// A new element (not in the document yet), like MSXML's createElement - a qualified name ("dt:CompanyName") keeps its prefix and the
+        /// element is written with it (the namespace is the one that an ancestor declares, as with MSXML)
+        /// </summary>
+        [DispId(21)]
+        public object createElement([In][MarshalAs(UnmanagedType.BStr)] string tagName)
+        {
+            return ScriptonXmlNodeFactory.Create(_xmldoc.CreateElement(tagName));
+        }
+
+        [DispId(6)]
+        public object firstChild
+        {
+            [return: MarshalAs(UnmanagedType.IDispatch)] // Nothing if there is no child
+            get => ScriptonXmlNodeFactory.Create(_xmldoc.FirstChild);
+        }
+
+        /// <summary>
+        /// Insert newChild before refChild (at the end if refChild is Nothing) and return it, like MSXML's insertBefore
+        /// </summary>
+        [DispId(13)]
+        public object insertBefore(object newChild, object refChild) => MyXMLDOMNodeBase.InsertBefore(_xmldoc, newChild, refChild);
+
+        /// <summary>
+        /// Append newChild (an element or a processing instruction) and return it, like MSXML's appendChild
+        /// </summary>
+        [DispId(16)]
+        public object appendChild(object newChild) => MyXMLDOMNodeBase.InsertBefore(_xmldoc, newChild, null);
+
+        /// <summary>
+        /// Write the document to a file, like MSXML's save: as the xml property, but with the XML declaration as the document has it
+        /// (with its encoding), in that encoding (UTF-8 without a byte order mark if there is none)
+        /// </summary>
+        [DispId(64)]
+        public void save(object destination)
+        {
+            if (destination is ScriptDispatchWrapper wrapper)
+                destination = wrapper.WrappedObject;
+            if (!(destination is string path) || (path.Length == 0))
+                throw new ArgumentException($"Unsupported destination of type '{destination?.GetType().FullName ?? "null"}' (a file path is supported)");
+
+            string encodingName = (_xmldoc.FirstChild as XmlDeclaration)?.Encoding;
+            Encoding encoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+            if (!string.IsNullOrEmpty(encodingName) && !"UTF-8".Equals(encodingName, StringComparison.OrdinalIgnoreCase))
+                encoding = Encoding.GetEncoding(encodingName);
+            byte[] preamble = (encoding is UTF8Encoding) ? Array.Empty<byte>() : encoding.GetPreamble();
+            byte[] content = encoding.GetBytes(MsxmlSerializer.Serialize(_xmldoc, declarationWithEncoding: true));
+            using (System.IO.Stream file = _fileSystem.OpenTextFileWrite(path, createIfNotExists: true, overwriteIfExists: true, append: false))
+            {
+                file.Write(preamble, 0, preamble.Length);
+                file.Write(content, 0, content.Length);
+            }
         }
 
         [DispId(61)]
@@ -129,7 +214,7 @@ namespace Skrypton.RuntimeSupport.Components
         /// The XML of the whole document
         /// </summary>
         [DispId(27)]
-        public string xml => (_xmldoc.DocumentElement == null) ? "" : _xmldoc.OuterXml + "\r\n"; // MSXML ends the document with a line break
+        public string xml => MsxmlSerializer.Serialize(_xmldoc, declarationWithEncoding: false); // MSXML ends the document with a line break
 
         /// <summary>
         /// Why the most recent load / loadXML returned False (empty if it succeeded) - MSXML reports this through parseError.reason
@@ -192,10 +277,7 @@ namespace Skrypton.RuntimeSupport.Components
             [return: MarshalAs(UnmanagedType.Interface)]
             get
             {
-                XmlElement root = _xmldoc.DocumentElement;
-                if (root == null)
-                    return null;
-                return new MyXMLDOMElement(root);
+                return (MyXMLDOMElement)ScriptonXmlNodeFactory.Create(_xmldoc.DocumentElement);
             }
 
             //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -269,14 +351,129 @@ namespace Skrypton.RuntimeSupport.Components
 
     internal static class ScriptonXmlNodeFactory
     {
+        // one wrapper per node, so that "Is" compares nodes as with MSXML (doc.firstChild Is pi)
+        private static readonly ConditionalWeakTable<XmlNode, object> Wrappers = new ConditionalWeakTable<XmlNode, object>();
+
         /// <summary>
-        /// The DOM wrapper for a node - an element is an IXMLDOMElement, anything else an IXMLDOMNode (Nothing for null)
+        /// The DOM wrapper for a node - an element is an IXMLDOMElement, a processing instruction (or XML declaration) an
+        /// IXMLDOMProcessingInstruction, anything else an IXMLDOMNode (Nothing for null)
         /// </summary>
         public static object Create(XmlNode node)
         {
             if (node == null)
                 return null;
-            return (node is XmlElement element) ? new MyXMLDOMElement(element) : new MyXMLDOMNode(node);
+            return Wrappers.GetValue(node, n => n switch
+            {
+                XmlElement element => new MyXMLDOMElement(element),
+                XmlProcessingInstruction or XmlDeclaration => new MyXMLDOMProcessingInstruction(n),
+                _ => new MyXMLDOMNode(n),
+            });
+        }
+    }
+
+    [SourceClassName("IXMLDOMProcessingInstruction")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMProcessingInstruction : MyXMLDOMNodeBase
+    {
+        public MyXMLDOMProcessingInstruction(XmlNode node) : base(node)
+        {
+        }
+
+        public string target => Node.Name;
+
+        public string data => Node.Value;
+    }
+
+    /// <summary>
+    /// Writes nodes as MSXML does (its xml property and save): names and attributes as they are in the document - no namespace declarations
+    /// are added (.NET adds xmlns="" to a child without a namespace under a default namespace) - empty elements as "&lt;x/&gt;", each node
+    /// of the document on a line of its own (CRLF) and the XML declaration without its encoding (save keeps it)
+    /// </summary>
+    internal static class MsxmlSerializer
+    {
+        public static string Serialize(XmlDocument document, bool declarationWithEncoding)
+        {
+            var text = new StringBuilder();
+            foreach (XmlNode node in document.ChildNodes)
+            {
+                if ((node is XmlWhitespace) || (node is XmlSignificantWhitespace))
+                    continue;
+                if ((node is XmlDeclaration declaration) && declarationWithEncoding)
+                    text.Append("<?xml ").Append(declaration.Value).Append("?>");
+                else
+                    Write(text, node);
+                text.Append("\r\n");
+            }
+            return text.ToString();
+        }
+
+        public static string Serialize(XmlNode node)
+        {
+            if (node is XmlDocument document)
+                return Serialize(document, declarationWithEncoding: false);
+            var text = new StringBuilder();
+            Write(text, node);
+            return text.ToString();
+        }
+
+        private static void Write(StringBuilder text, XmlNode node)
+        {
+            switch (node)
+            {
+                case XmlElement element:
+                    text.Append('<').Append(element.Name);
+                    foreach (XmlAttribute attribute in element.Attributes)
+                        text.Append(' ').Append(attribute.Name).Append("=\"").Append(Escape(attribute.Value, attribute: true)).Append('"');
+                    if (!element.HasChildNodes && element.IsEmpty)
+                    {
+                        text.Append("/>");
+                        break;
+                    }
+                    text.Append('>');
+                    foreach (XmlNode child in element.ChildNodes)
+                        Write(text, child);
+                    text.Append("</").Append(element.Name).Append('>');
+                    break;
+                case XmlDeclaration declaration:
+                    text.Append("<?xml version=\"").Append(declaration.Version).Append('"');
+                    if (!string.IsNullOrEmpty(declaration.Standalone))
+                        text.Append(" standalone=\"").Append(declaration.Standalone).Append('"');
+                    text.Append("?>");
+                    break;
+                case XmlProcessingInstruction instruction:
+                    text.Append("<?").Append(instruction.Target);
+                    if (!string.IsNullOrEmpty(instruction.Data))
+                        text.Append(' ').Append(instruction.Data);
+                    text.Append("?>");
+                    break;
+                case XmlText or XmlWhitespace or XmlSignificantWhitespace:
+                    text.Append(Escape(node.Value, attribute: false));
+                    break;
+                case XmlAttribute attributeNode:
+                    text.Append(attributeNode.Name).Append("=\"").Append(Escape(attributeNode.Value, attribute: true)).Append('"');
+                    break;
+                default: // CDATA, comments, entity references, document types
+                    text.Append(node.OuterXml);
+                    break;
+            }
+        }
+
+        private static string Escape(string value, bool attribute)
+        {
+            var text = new StringBuilder(value?.Length ?? 0);
+            foreach (char c in value ?? "")
+            {
+                switch (c)
+                {
+                    case '&': text.Append("&amp;"); break;
+                    case '<': text.Append("&lt;"); break;
+                    case '>': text.Append("&gt;"); break;
+                    case '"' when attribute: text.Append("&quot;"); break;
+                    default: text.Append(c); break;
+                }
+            }
+            return text.ToString();
         }
     }
 
@@ -326,6 +523,48 @@ namespace Skrypton.RuntimeSupport.Components
             _node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
+        internal XmlNode Node => _node;
+
+        public object firstChild
+        {
+            [return: MarshalAs(UnmanagedType.IDispatch)] // Nothing if there is no child
+            get => ScriptonXmlNodeFactory.Create(_node.FirstChild);
+        }
+
+        /// <summary>
+        /// Insert newChild before refChild (at the end if refChild is Nothing) and return it, like MSXML's insertBefore
+        /// </summary>
+        public object insertBefore(object newChild, object refChild) => InsertBefore(_node, newChild, refChild);
+
+        /// <summary>
+        /// Append newChild and return it, like MSXML's appendChild
+        /// </summary>
+        public object appendChild(object newChild) => InsertBefore(_node, newChild, null);
+
+        internal static object InsertBefore(XmlNode parent, object newChild, object refChild)
+        {
+            XmlNode child = NodeOf(newChild) ?? throw new ArgumentNullException(nameof(newChild));
+            XmlNode reference = NodeOf(refChild);
+            if (reference == null)
+                parent.AppendChild(child);
+            else
+                parent.InsertBefore(child, reference);
+            return ScriptonXmlNodeFactory.Create(child);
+        }
+
+        private static XmlNode NodeOf(object value)
+        {
+            if (value is ScriptDispatchWrapper wrapper)
+                value = wrapper.WrappedObject;
+            return value switch
+            {
+                null => null,
+                DBNull => null,
+                MyXMLDOMNodeBase node => node._node,
+                _ => throw new ArgumentException($"Not a node of the document: '{value.GetType().FullName}'"),
+            };
+        }
+
         public string nodeName => _node.Name;
 
         /// <summary>
@@ -339,7 +578,7 @@ namespace Skrypton.RuntimeSupport.Components
             set => _node.InnerText = value;
         }
 
-        public string xml => _node.OuterXml;
+        public string xml => MsxmlSerializer.Serialize(_node);
 
         [DispId(30)]
         public object selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)

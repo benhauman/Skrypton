@@ -218,6 +218,7 @@ namespace Skrypton.RuntimeSupport.Components
             return new ScriptonFolder(_hostFileSystem, nfo);
         }
 
+        public ITextStream OpenTextFile(string path) => OpenTextFileCore(path, IOMode.ForReading, create: false, format: Tristate.UseDefault); // iomode is optional: ForReading
         public ITextStream OpenTextFile(string path, short mode) => OpenTextFileCore(path, (IOMode)mode, create:false, format: Tristate.UseDefault);
         public ITextStream OpenTextFile(string path, IOMode mode) => OpenTextFileCore(path, mode, create: false, format: Tristate.UseDefault);
         public ITextStream OpenTextFile(string path, short mode, bool create) => OpenTextFileCore(path, (IOMode)mode, create, format: Tristate.UseDefault);
