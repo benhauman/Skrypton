@@ -665,6 +665,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // which variables are and aren't currently declared would have to be maintained. This should be the only way in which
             // a script written with Option Explicit acts differently when translated (and since it is an edge case and indicates
             // poor practice even though Option Explicit has been used, I'm willing to live with the trade-off).
+            _translatorOptions.OptionExplicitDetected(); // undeclared variables are errors (also with VBScript's rule, see DefaultTranslatorOptions)
             _logger.Warning("Option Explicit is ignored by this translation process");
             return TranslationResult.Empty;
         }
@@ -765,6 +766,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     if (acceptErr)
                     {
                         // ok
+                    }
+                    else if (_translatorOptions.UsesVBScriptRuleForUndeclaredVariables)
+                    {
+                        // VBScript's rule and Option Explicit: VBScript's error "Variable is undefined: 'name'" (issue #86)
+                        throw new Skrypton.RuntimeSupport.Exceptions.VariableIsUndefinedException(undeclaredVariable.Content, undeclaredVariable.LineIndex);
                     }
                     else
                     {

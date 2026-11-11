@@ -50,6 +50,7 @@ namespace Skrypton.RuntimeSupport
     public abstract class EnvironmentReferencesBase
     {
         private readonly Dictionary<string, object> _externalReferences = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _hostReferences = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         protected EnvironmentReferencesBase()
         {
 
@@ -59,6 +60,7 @@ namespace Skrypton.RuntimeSupport
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
             _externalReferences[referenceName] = reference ?? throw new ArgumentNullException(nameof(reference)); // Use DBValue.Null for nulls.
+            _hostReferences.Add(referenceName); // an object of the host (AddObject) - the script may not replace it
         }
 
         protected object? GetExternalReferenceAsObject([CallerMemberName] string referenceName = "")
@@ -72,9 +74,11 @@ namespace Skrypton.RuntimeSupport
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
             object? current = GetExternalReferenceAsObject(referenceName);
-            if (current != null && newInstance != null && current != newInstance)
+            // The objects of the host may not be replaced; the other environment references are the undeclared variables of the script, which
+            // are assigned like any variable (issue #86: "s = s & i" in a loop failed with "not same")
+            if (current != null && newInstance != null && current != newInstance && _hostReferences.Contains(referenceName))
             {
-                throw new InvalidOperationException("not same");
+                throw new InvalidOperationException($"The script may not replace the host object '{referenceName}'");
             }
             else
             {

@@ -35,6 +35,26 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         [TestMethod] public void ComParity_OutlookApplication() => RunParityScript();
         [TestMethod] public void ComParity_BuiltInFunctions() => RunParityScript();
         [TestMethod] public void ComParity_ErrObject() => RunParityScript();
+        [TestMethod] public void ComParity_UndeclaredVariables() => RunParityScript();
+
+        /// <summary>
+        /// The parity scripts run with VBScript's rule for undeclared variables (as cscript and the command line tools - issue #86)
+        /// </summary>
+        private ScriptControlConfiguration VBScriptRuleConfiguration() => new TestScriptControlConfiguration(this, false, [], [], undeclaredVariablesAreErrors: false);
+
+        /// <summary>
+        /// Skrypton's default (strict) rule: an undeclared variable is a translation error, also without Option Explicit (issue #86)
+        /// </summary>
+        [TestMethod]
+        public void UndeclaredVariablesAreErrorsByDefault()
+        {
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), CreateScriptControlConfiguration(false, [], []));
+            Exception exception = Assert.Throws<Exception>(() => scriptengine.ExecuteStatement("x = 1\r\n"));
+            StringAssert.Contains(exception.ToString(), "SKY101");
+
+            IScriptControl vbscriptRule = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
+            vbscriptRule.ExecuteStatement("x = 1\r\nx = x + 1\r\n");
+        }
 
         /// <summary>
         /// Unhandled errors (ComParity_UnhandledErrors.cases.txt): each script fails and the error that the script control reports - "(line)
@@ -46,7 +66,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             var failures = new List<string>();
             foreach ((string script, string expected) in UnhandledErrorCases())
             {
-                IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), CreateScriptControlConfiguration(false, [], []));
+                IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
                 try
                 {
                     scriptengine.ExecuteStatement(script);
@@ -122,7 +142,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                     .RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService())
                     .RegisterHostService<IHostClipboardHostService>(() => new TestClipboardHostService())
                     .RegisterHostService<IHostOutlookHostService>(() => new TestOutlookHostService()))),
-                CreateScriptControlConfiguration(false, [], [])
+                VBScriptRuleConfiguration()
             );
             scriptengine.AddObject("output", output, false);
             scriptengine.ExecuteStatement("Sub Out(s)\r\n  output.Write \"\" & s\r\nEnd Sub\r\n" + script.Replace("\r\n", "\n").Replace("\n", "\r\n"));

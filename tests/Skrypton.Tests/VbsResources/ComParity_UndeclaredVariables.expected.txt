@@ -1,0 +1,8 @@
+15|12345|Integer|6
+first second
+Nothing
+in sub: 42|11
+after sub: 11
+8|Empty|True
+1,x,3|2
+[1][x][3]

@@ -29,12 +29,21 @@ namespace Skrypton.CSharpWriter
         /// </summary>
         public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
         {
-            // the warnings become comments in the program (and go to the trace listeners, not to the console)
-            ILogInformation logger = CommentsLogger(renderCommentsAboutUndeclaredVariables: true, new DelegateWrappingWarningLogger(warning => System.Diagnostics.Trace.WriteLine(warning, "Skrypton")));
-            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance), logger);
+            return TranslateExecutable(culture, scriptContent, externalDependencies, externalMemberMethods, suppressions, undeclaredVariablesAreErrors: true);
         }
 
-        internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector) => new DefaultTranslatorOptions(suppressions, issuesCollector);
+        /// <summary>
+        /// undeclaredVariablesAreErrors: false for VBScript's rule - undeclared variables are implicitly declared unless the script has Option
+        /// Explicit (issue #86)
+        /// </summary>
+        public static string TranslateExecutable(CultureInfo culture, string scriptContent, IReadOnlyCollection<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions, bool undeclaredVariablesAreErrors)
+        {
+            // the warnings become comments in the program (and go to the trace listeners, not to the console)
+            ILogInformation logger = CommentsLogger(renderCommentsAboutUndeclaredVariables: true, new DelegateWrappingWarningLogger(warning => System.Diagnostics.Trace.WriteLine(warning, "Skrypton")));
+            return TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, OuterScopeBlockTranslator.OutputTypeOptions.Executable, CreateTranslatorOptions(suppressions, TranslationIssuesCollectorDefault.Instance, undeclaredVariablesAreErrors), logger);
+        }
+
+        internal static DefaultTranslatorOptions CreateTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector, bool undeclaredVariablesAreErrors = true) => new DefaultTranslatorOptions(suppressions, issuesCollector, undeclaredVariablesAreErrors);
 
         public static string TranslateWithoutScaffolding(CultureInfo culture, string scriptContent, NonNullImmutableList<string> externalDependencies, IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods, IReadOnlyCollection<string> suppressions)
         {
@@ -102,6 +111,9 @@ namespace Skrypton.CSharpWriter
             );
 
             IReadOnlyList<ICodeBlock> parsedBlocks = Parse(culture, scriptContent);
+            // Option Explicit (the first statement of a script) applies to the whole script, including the procedures that may be translated first
+            if (parsedBlocks.OfType<Skrypton.LegacyParser.CodeBlocks.Basic.OptionExplicit>().Any())
+                translatorOptions.OptionExplicitDetected();
             CSharpOutermostCodeBuilder outerBuilder = codeBlockTranslator.Translate(parsedBlocks);
             return outerBuilder.RenderTranslatedProgramCode();
         }

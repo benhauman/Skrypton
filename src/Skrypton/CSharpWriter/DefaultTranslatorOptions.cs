@@ -9,17 +9,35 @@ namespace Skrypton.CSharpWriter
     {
         private readonly TranslationIssuesCollectorBase _issuesCollector;
         private readonly Dictionary<string, bool> _suppressions = new Dictionary<string, bool>();
+        private readonly bool _undeclaredVariablesAreErrors;
+        private bool _optionExplicit;
 
-        public DefaultTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector)
+        /// <summary>
+        /// undeclaredVariablesAreErrors: true (Skrypton's default) - every undeclared variable is an error (SKY101..SKY109) unless suppressed;
+        /// false - VBScript's rule: undeclared variables are implicitly declared unless the script has "Option Explicit" (issue #86)
+        /// </summary>
+        public DefaultTranslatorOptions(IReadOnlyCollection<string> suppressions, TranslationIssuesCollectorBase issuesCollector, bool undeclaredVariablesAreErrors = true)
         {
             _issuesCollector = issuesCollector ?? throw new ArgumentNullException(nameof(issuesCollector));
             foreach (string suppression in suppressions.Select(x => x.ToUpperInvariant()).Distinct())
             {
                 _suppressions.Add(suppression, true);
             }
+            _undeclaredVariablesAreErrors = undeclaredVariablesAreErrors;
         }
 
-        public bool AcceptTranslationError(string errorKey) => _suppressions.TryGetValue(errorKey, out bool suppressed) && suppressed;
+        public bool AcceptTranslationError(string errorKey)
+        {
+            if (_suppressions.TryGetValue(errorKey, out bool suppressed) && suppressed)
+                return true;
+            // SKY101..SKY109: an undeclared variable - allowed with VBScript's rule unless the script has Option Explicit
+            bool isUndeclaredVariable = errorKey.StartsWith("SKY10", StringComparison.Ordinal) && (errorKey.Length == 6) && (errorKey[5] >= '1') && (errorKey[5] <= '9');
+            return isUndeclaredVariable && !_undeclaredVariablesAreErrors && !_optionExplicit;
+        }
+
+        public void OptionExplicitDetected() => _optionExplicit = true;
+
+        public bool UsesVBScriptRuleForUndeclaredVariables => !_undeclaredVariablesAreErrors;
         public void UndeclaredNamedReferenceDetected(string errorKey, string referenceName, int lineIndex)
         {
             if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
