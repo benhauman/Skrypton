@@ -70,7 +70,7 @@ namespace Skrypton.RuntimeSupport.Components
         public void CopyFile(string src, string dst, bool overwrite) =>
             File.Copy(src, dst, overwrite);
 
-        public IEnumerable<HostFileSystemFileInfo> GetFiles(string directory) => Directory.GetFiles(directory).Select(x => new FileInfo(x)).Select(x => new HostFileSystemFileInfo(x.FullName, x.Name, x.Exists)).ToArray();
+        public IEnumerable<HostFileSystemFileInfo> GetFiles(string directory) => Directory.GetFiles(directory).Select(x => new FileInfo(x)).Select(ToFileInfo).ToArray();
 
         public IEnumerable<HostFileSystemDirectoryInfo> GetDirectories(string directory)
         {
@@ -95,12 +95,19 @@ namespace Skrypton.RuntimeSupport.Components
                 throw new System.IO.DirectoryNotFoundException(path);
             return new HostFileSystemDirectoryInfo(path, nfo.Name, nfo.Exists);
         }
+        private static HostFileSystemFileInfo ToFileInfo(FileInfo info)
+        {
+            return info.Exists
+                ? new HostFileSystemFileInfo(info.FullName, info.Name, true, info.Length, info.CreationTime, info.LastWriteTime, info.LastAccessTime)
+                : new HostFileSystemFileInfo(info.FullName, info.Name, false);
+        }
+
         public HostFileSystemFileInfo GetFileInfo(string path)
         {
             var nfo = new FileInfo(path);
             if (!nfo.Exists)
                 throw new System.IO.FileNotFoundException(path);
-            return new HostFileSystemFileInfo(nfo.FullName, nfo.Name, nfo.Exists);
+            return ToFileInfo(nfo);
         }
 
         public void CopyDirectory(string sourcePath, string newPath, bool overwrite)

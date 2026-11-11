@@ -336,8 +336,19 @@ namespace Skrypton.RuntimeSupport.Components
         private readonly HostFileSystemFileInfo _nfo;
         [DispId(0)] [IsDefault] public string Path => _nfo.Path;
         public string Name => _nfo.Name;
-        //public long Size => new FileInfo(Path).Length;
-        //public string Type => "File";
+
+        /// <summary>
+        /// The size in bytes - a Long, or a Double for files of 2 GB and more (as with scrrun)
+        /// </summary>
+        public object Size => (_nfo.Size <= int.MaxValue) ? (object)(int)_nfo.Size : (double)_nfo.Size;
+
+        public DateTime DateCreated => _nfo.DateCreated;
+
+        public DateTime DateLastModified => _nfo.DateLastModified;
+
+        public DateTime DateLastAccessed => _nfo.DateLastAccessed;
+
+        public string ParentFolder => ScriptonFileSystemObject.ParentFolderNameOf(_nfo.Path);
 
         public ScriptonFile(IHostFileSystemHostService hostFileSystem, HostFileSystemFileInfo nfo)
         {
