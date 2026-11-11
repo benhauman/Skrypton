@@ -134,6 +134,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonWScriptShell(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonFileSystemObject.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonFileSystemObject(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonSWbemLocator.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonSWbemLocator(_runtimeHost);
             if (classProgId.Equals("Scriptlet.TypeLib", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonScriptletTypeLib();
             return null;

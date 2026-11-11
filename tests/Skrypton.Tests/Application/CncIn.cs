@@ -139,7 +139,6 @@ namespace Skrypton.Tests.Application
         internal static void SetupDefaultRuntimeFunctionalityProvider(DefaultRuntimeFunctionalityProvider provider, IServiceProvider hostServices, CultureInfo culture)
         {
             provider.RegisterObjectCreateFactory("Shell.Application", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.MyShellApplication());
-            provider.RegisterObjectCreateFactory("WbemScripting.SWbemLocator", (optionalMonikerValues) => new Skrypton.Tests.RuntimeSupport.Implementations.MySWbemLocator(hostServices, optionalMonikerValues));
             //provider.RegisterObjectCreateFactory("ADODB.Connection", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
             //provider.RegisterObjectCreateFactory("ADODB.Connection", (_) =>  DialogGui.CreateADODBConnectionClass( Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBConnection(hostServices));
             provider.RegisterObjectCreateFactory("ADODB.Command", (_) => new Skrypton.Tests.RuntimeSupport.Implementations.ADODB.MyADODBCommand());
