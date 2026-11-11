@@ -769,6 +769,7 @@ WScript.Echo xmlhttp.responseText
                     );
 
                 services.RegisterHostService<IHostMessageBoxHostService>(() => new TestMessageBoxHostService());
+                services.RegisterHostService<IHostProcessControlHostService>(() => new TestHostProcessControlHostService()); // wshShell.Exec
                 services.RegisterHostService<IHostInputBoxHostService>(() => new TestInputBoxHostService());
                 services.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => databaseConnectionFactoryHostService);
                 services.RegisterHostService<global::Skrypton.RuntimeSupport.Components.IHostFileSystemHostService>(() => CreateTestHostFileSystemHostService(fs =>
@@ -1190,9 +1191,20 @@ WScript.Echo xmlhttp.responseText
 
         }
 
-        public void ProcessStart(string command, byte windowMode, bool waitOnReturn)
+        public List<string> Started { get; } = new List<string>();
+
+        public int ProcessStart(string command, byte windowMode, bool waitOnReturn)
         {
             Console.WriteLine($"[IHostProcessControlHostService] 'ProcessStart(m:{windowMode}, w:{waitOnReturn}):' {command}");
+            Started.Add($"{command}|{windowMode}|{waitOnReturn}");
+            return 0;
+        }
+
+        public HostProcessExecResult ProcessExec(string command)
+        {
+            Console.WriteLine($"[IHostProcessControlHostService] 'ProcessExec:' {command}");
+            Started.Add($"exec:{command}");
+            return new HostProcessExecResult(4711, 0, "out line 1\r\nout line 2\r\n", "");
         }
 
         public bool ProcessActivate(int processId)
