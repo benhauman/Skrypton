@@ -1,0 +1,33 @@
+Application|8|Microsoft Word|Microsoft Word|False
+Angebot|Documents|0
+Document|8|True|True|1|True
+Angebot\rFirma: XXX GmbH\rName: \rTabelle:\rPos\r\aArt\r\aBetrag\r\a\r\a\r\a\r\a\r\a\r\aEnde\r
+Bookmarks|3|firmenname|Vorname|zelle|True|False
+Bookmark|8|firmenname|Range|8|[XXX]|[]|[\r\a]
+Tables|1|Table|9|Rows|2|Row|Cells|3
+Cell|9|Range|Art\r\a|\r\a|2,3
+DL-1\r\a|Dienstleistung\r(Zeitstunden)\r\a|5055\r\a|Dienstleistung\r(Zeitstunden)\r\a
+3|\r\a|3
+Angebot\rFirma: helpLine GmbH\rName: \rTabelle:\rPos\r\aArt\r\aBetrag\r\a\r\aDL-1\r\aDienstleistung\r(Zeitstunden)\r\a5055\r\a\r\a\r\a\r\a\r\a\r\aEnde\r|False|2
+Angebot\rFirma: helpLine GmbH\rName: Herr Max\rTabelle:\rPos\r\aArt\r\aBetrag\r\a\r\aDL-1\r\aDienstleistung\r(Zeitstunden)\r\a5055\r\a\r\a\r\a\r\a\r\a\r\aEnde\r|True
+Zelle\r\a|True|False
+missing bookmark:5941
+missing table:5941
+row 0:5941
+cell 9,9:5941
+missing document:5941
+open missing:5174
+null:13
+True|True|True|True
+0
+1|3|2|Angebot\rFirma: helpLine GmbH\rName: Herr Max\rTabelle:\rPos\r\aArt\r\aBetrag\r\a\r\aDL-1\r\aZelle\r\a5055\r\a\r\a\r\a\r\a\r\a\r\aEnde\r
+cell:DL-1\r\a
+cell:Zelle\r\a
+cell:5055\r\a
+bookmark:Vorname
+bookmark:zelle
+Document|Document|True|[]|\r|True
+Zeile 1\rZeile 2\tEnde\r|False
+1|a\r\a\r\a\r\a\r\ad\r\a\r\a\r
+2|d\r\a|ganz
+0

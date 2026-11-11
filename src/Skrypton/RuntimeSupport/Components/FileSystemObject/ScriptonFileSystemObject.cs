@@ -57,9 +57,14 @@ namespace Skrypton.RuntimeSupport.Components
         // The path functions work on the text only and, as with scrrun, treat both '\' and '/' as separators on every platform (System.IO.Path
         // only knows '/' on Linux)
 
-        public string GetFileName(string Path)
+        public string GetFileName(string Path) => FileNameOf(Path);
+
+        /// <summary>
+        /// The file name of the path (GetFileName) - '\' and '/' are separators on every platform
+        /// </summary>
+        internal static string FileNameOf(string path)
         {
-            string trimmed = TrimTrailingSeparators(Path);
+            string trimmed = TrimTrailingSeparators(path);
             if (IsRootOnly(trimmed))
                 return "";
             return trimmed.Substring(LastSeparatorIndex(trimmed) + 1);
@@ -79,9 +84,14 @@ namespace Skrypton.RuntimeSupport.Components
             return (dot < 0) ? "" : fileName.Substring(dot + 1);
         }
 
-        public string GetParentFolderName(string Path)
+        public string GetParentFolderName(string Path) => ParentFolderNameOf(Path);
+
+        /// <summary>
+        /// The folder of the path (GetParentFolderName) - '\' and '/' are separators on every platform
+        /// </summary>
+        internal static string ParentFolderNameOf(string path)
         {
-            string trimmed = TrimTrailingSeparators(Path);
+            string trimmed = TrimTrailingSeparators(path);
             if (IsRootOnly(trimmed))
                 return "";
             int separator = LastSeparatorIndex(trimmed);

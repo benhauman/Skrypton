@@ -152,6 +152,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonInternetExplorerApplication(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonHtmlFile.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonHtmlFile(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonWordApplication.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonWordApplication(_runtimeHost, value => CSTR(value!)); // values become text as with VBScript's CStr
             return null;
         }
 

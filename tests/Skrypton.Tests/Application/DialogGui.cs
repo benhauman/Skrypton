@@ -630,10 +630,6 @@ WScript.Echo xmlhttp.responseText
             return fs;
         }
 
-        public static object CreateMyWordApplicationClass(IRuntimeHost runtimeHost)
-        {
-            return new RuntimeSupport.Components.WordApplication.MyWordApplicationClass(runtimeHost);
-        }
         public static object CreateMyOutlookApplicationClass(IRuntimeHost runtimeHost)
         {
             return new RuntimeSupport.Components.OutlookApplication.MyOutlookApplicationClass(runtimeHost);
