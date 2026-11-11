@@ -112,6 +112,11 @@ namespace Skrypton.RuntimeSupport
                 _monthNames = BuildMonthNamesDictionary(culture);
             }
 
+            /// <summary>
+            /// The culture that the parser was created for
+            /// </summary>
+            internal CultureInfo Culture => _culture;
+
             private static Dictionary<string, int> BuildMonthNamesDictionary(CultureInfo culture)
             {
                 return Enumerable.Range(1, 12).SelectMany(i =>
@@ -248,6 +253,11 @@ namespace Skrypton.RuntimeSupport
         /// the parsing of a string that is in a supported date format, it does not deal with cases such as CDate("2015"), where the string is parsed into a number and
         /// then a date calculated by taking the number of days from VBScript's "zero date". If a date outside of VBScript's expressible range is described then an
         /// OverflowException will be thrown. This will never return null.
+        /// </summary>
+        public DateTime Parse(string? value) => Parse(value, _monthNameTranslator.Culture);
+
+        /// <summary>
+        /// As Parse(string), but with an explicit culture (rather than the culture that this parser was created for)
         /// </summary>
         public DateTime Parse(string? value, CultureInfo culture)
         {

@@ -744,7 +744,7 @@ public sealed class KnownTextContent
     {
         if (isWhiteSpace || isNull)
         {
-            throw new NotSupportedException();
+            throw NotSupportedExceptionFactory.Create($"Known text content may not be white space or null (isWhiteSpace: {isWhiteSpace}, isNull: {isNull})", vbsSource: content);
         }
 
         TheContent = content;
@@ -762,7 +762,7 @@ public sealed class KnownTextContent
         {
             if (thePayload == null)
             {
-                throw new NotSupportedException("No payload for " + TheContent);
+                throw NotSupportedExceptionFactory.Create("No payload for known text '" + TheContent + "'");
             }
 
             return thePayload;

@@ -1171,11 +1171,48 @@ namespace Skrypton.RuntimeSupport.Implementations
                 }
 
                 MarshalAsAttribute? marshalAs = returnParameter?.GetCustomAttribute<MarshalAsAttribute>();
+                if ((marshalAs == null) && (member is MethodInfo classMethod))
+                {
+                    // A class method that implements an interface method (implicitly) is marshalled as the interface declares it (see issue #49)
+                    marshalAs = GetImplementedInterfaceMethods(classMethod)
+                        .Select(m => m.ReturnParameter.GetCustomAttribute<MarshalAsAttribute>())
+                        .FirstOrDefault(a => a != null);
+                }
+                else if ((marshalAs == null) && (member is PropertyInfo classProperty) && (classProperty.GetMethod != null))
+                {
+                    marshalAs = GetImplementedInterfaceMethods(classProperty.GetMethod)
+                        .Select(m => m.ReturnParameter.GetCustomAttribute<MarshalAsAttribute>())
+                        .FirstOrDefault(a => a != null);
+                }
                 if (marshalAs != null)
                 {
                     return (marshalAs.Value == UnmanagedType.IDispatch) || (marshalAs.Value == UnmanagedType.IUnknown) || (marshalAs.Value == UnmanagedType.Interface);
                 }
                 return (returnType != null) && returnType.IsInterface;
+            }
+
+            private static IEnumerable<MethodInfo> GetImplementedInterfaceMethods(MethodInfo classMethod)
+            {
+                Type? declaringType = classMethod.DeclaringType;
+                if ((declaringType == null) || declaringType.IsInterface)
+                    yield break;
+                foreach (Type interfaceType in declaringType.GetInterfaces())
+                {
+                    InterfaceMapping map;
+                    try
+                    {
+                        map = declaringType.GetInterfaceMap(interfaceType);
+                    }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
+                    for (int i = 0; i < map.TargetMethods.Length; i++)
+                    {
+                        if (map.TargetMethods[i] == classMethod)
+                            yield return map.InterfaceMethods[i];
+                    }
+                }
             }
         }
 
@@ -1466,6 +1503,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 argExpressions = argParameters
                     .Select(a =>
                     {
+                        if (a.Index >= numberOfArguments)
+                        {
+                            // An [Optional] parameter that no argument was provided for (GetGetMethods only matches a method with fewer arguments than
+                            // parameters if all of the remaining parameters are [Optional]) - use its default value, or Missing (see issue #49)
+                            return (Expression)GetOptionalParameterValue(a.Parameter);
+                        }
                         if (a.Parameter.ParameterType.IsByRef)
                         {
                             return (Expression)Expression.Variable(
@@ -1766,7 +1809,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // Rather than trying to do more LINQ ParsingExpression generation, we'll reuse the GenerateCompiledLinqExpressionGetInvoker logic and wrap it so
             // that the index-arguments-plus-value get flattened into a single arguments array
-            GetterInfo getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length);
+            GetterInfo getInvoker = GenerateCompiledLinqExpressionGetInvoker(targetType, method, argumentsArray.Length + 1); // + 1: the value to set is passed as the last argument
             return (invokeTarget, invokeArguments, value) =>
             {
                 object[] combinedArguments = invokeArguments.Concat(new[] { value }).ToArray();
@@ -2040,7 +2083,8 @@ namespace Skrypton.RuntimeSupport.Implementations
             // default member access is desired (dealing with the differing logic for translated-from-VBScript types and non-translated-from-VBScript).
             Predicate<string> nameMatcher = (optionalName != null) ? GetNameMatcher(optionalName, memberNameMatchBehaviour) : (name => true);
             bool typeWasTranslatedFromVBScript = TypeIsTranslatedFromVBScript(type);
-            bool typeIsComVisible = TypeIsComVisible(type);
+            // An interface is what a COM client binds to (it is the dispatch interface), so its DispId(0) member is its default member (see issue #49)
+            bool typeIsComVisible = type.IsInterface || TypeIsComVisible(type);
             bool typeHasAnyDispIdZeroMember = AnyDispIdZeroMemberExists(type);
             bool typeHasAmbiguousDispIdZeroMember = typeHasAnyDispIdZeroMember && DispIdZeroIsAmbiguous(type);
             MethodInfo[] allMethods = GetMethodsThatAreNotRelatedToProperties(type, allowPrivateAccess);
@@ -2120,7 +2164,15 @@ namespace Skrypton.RuntimeSupport.Implementations
             // If no matches were found and we're looking for a parameter-less default member access and the target type was not translated from VBScript
             // source, then apply the other fallbacks that the C# compiler would have added to the IDispatch interface
             MethodInfo[] allOptions = applicableMethods.Concat(applicableProperties).ToArray();
-            if (allOptions.Length == 0 && (defaultMemberBehaviour == DefaultMemberBehaviourOptions.MustBeDefault) && (numberOfArguments == 0) && !typeWasTranslatedFromVBScript && typeIsComVisible)
+            if ((allOptions.Length == 0) && !typeWasTranslatedFromVBScript)
+            {
+                // A COM client reaches a host object through its (dispatch) interface, so members that the class only implements explicitly are still
+                // members of the object - if the class itself has no match, look at the interfaces that it implements (see issue #49)
+                allOptions = GetBindableInterfaces(type)
+                    .SelectMany(i => GetGetMethods(i, optionalName, defaultMemberBehaviour, memberNameMatchBehaviour, numberOfArguments, allowPrivateAccess: false))
+                    .ToArray();
+            }
+            if (allOptions.Length == 0 && (defaultMemberBehaviour == DefaultMemberBehaviourOptions.MustBeDefault) && (numberOfArguments == 0) && !typeWasTranslatedFromVBScript && typeIsComVisible && !type.IsInterface)
             {
                 allOptions = allMethods.Where(m => m.GetParameters().Length == 0 && m.Name.Equals("Value", StringComparison.OrdinalIgnoreCase))
                     .Concat(readableProperties.Where(p => p.GetIndexParameters().Length == 0 && p.Name.Equals("Value", StringComparison.OrdinalIgnoreCase)).Select(p => p.GetGetMethod()))
@@ -2131,9 +2183,37 @@ namespace Skrypton.RuntimeSupport.Implementations
 
             // In the cases where multiple options are identified, sort by the most specific (members declared on the current type those declared further
             // down in the inheritance tree)
-            if (allOptions.Length > 1)
+            if ((allOptions.Length > 1) && allOptions.All(m => (m.DeclaringType != null) && m.DeclaringType.IsAssignableFrom(type) && !m.DeclaringType.IsInterface))
                 return allOptions.OrderByDescending(m => GetMemberInheritanceDepth(m, type)).ToArray();
             return allOptions;
+        }
+
+        /// <summary>
+        /// The interfaces of a host (non-translated) CLR type whose members are bound like a COM dispatch interface (see issue #49) - System interfaces
+        /// (IEnumerable, IDisposable, IReflect, ..) are excluded since they are not a host object's scripting interface
+        /// </summary>
+        private static Type[] GetBindableInterfaces(Type type)
+        {
+            if (type.IsInterface)
+                return Type.EmptyTypes;
+            return type.GetInterfaces()
+                .Where(i => !(i.Namespace ?? "").StartsWith("System", StringComparison.Ordinal) && !(i.Namespace ?? "").StartsWith("Microsoft", StringComparison.Ordinal))
+                .ToArray();
+        }
+
+        private static Expression GetOptionalParameterValue(ParameterInfo parameter)
+        {
+            Type parameterType = parameter.ParameterType.IsByRef ? parameter.ParameterType.GetElementType()! : parameter.ParameterType;
+            if (parameter.HasDefaultValue && (parameter.DefaultValue != null) && (parameter.DefaultValue != DBNull.Value))
+            {
+                object defaultValue = parameterType.IsInstanceOfType(parameter.DefaultValue)
+                    ? parameter.DefaultValue
+                    : Convert.ChangeType(parameter.DefaultValue, Nullable.GetUnderlyingType(parameterType) ?? parameterType, CultureInfo.InvariantCulture);
+                return Expression.Constant(defaultValue, parameterType);
+            }
+            if (parameterType == typeof(object))
+                return Expression.Constant(Missing.Value, typeof(object));
+            return Expression.Default(parameterType);
         }
 
         private static bool ParameterIsObjectParamsArray(ParameterInfo parameter)
@@ -2183,7 +2263,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                         )
                         .Select(p => p.GetSetMethod())
                 )
-                .ToArray();
+                .ToArray()
+                is MethodInfo[] classOptions && ((classOptions.Length != 0) || TypeIsTranslatedFromVBScript(type))
+                    ? classOptions
+                    // As for getters: members that a host class only implements explicitly are reached through its interfaces (see issue #49)
+                    : GetBindableInterfaces(type)
+                        .SelectMany(i => GetSetMethods(i, optionalName, defaultMemberBehaviour, memberNameMatchBehaviour, numberOfArguments, allowPrivateAccess: false))
+                        .ToArray();
         }
 
         private static MethodInfo[] GetMethodsThatAreNotRelatedToProperties(Type type, bool allowPrivateAccess)

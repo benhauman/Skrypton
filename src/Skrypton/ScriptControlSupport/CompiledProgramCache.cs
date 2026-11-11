@@ -78,7 +78,7 @@ namespace Skrypton.ScriptControlSupport
             }
         }
 
-        internal static string GetKey(string csCode, IEnumerable<string> noWarn, bool tempEnabled, bool enabledLoadFromDisk)
+        internal static string GetKey(string csCode, IEnumerable<string> noWarn, bool tempEnabled, bool enabledLoadFromDisk, bool treatWarningsAsErrors)
         {
             if (csCode == null)
                 throw new ArgumentNullException(nameof(csCode));
@@ -87,7 +87,7 @@ namespace Skrypton.ScriptControlSupport
 
             List<string> sortedNoWarn = new List<string>(noWarn);
             sortedNoWarn.Sort(StringComparer.Ordinal);
-            string keySource = string.Join("\n", sortedNoWarn) + "\n" + tempEnabled + "\n" + enabledLoadFromDisk + "\n" + csCode;
+            string keySource = string.Join("\n", sortedNoWarn) + "\n" + tempEnabled + "\n" + enabledLoadFromDisk + "\n" + treatWarningsAsErrors + "\n" + csCode;
             using (SHA256 sha = SHA256.Create())
             {
                 byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(keySource));

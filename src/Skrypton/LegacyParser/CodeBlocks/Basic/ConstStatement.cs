@@ -1,4 +1,5 @@
 ﻿using Skrypton.CSharpWriter.CodeTranslation.Extensions;
+using Skrypton.RuntimeSupport;
 using Skrypton.LegacyParser.Tokens;
 using Skrypton.LegacyParser.Tokens.Basic;
 using System;
@@ -96,7 +97,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
             {
                 return builtInValueToken.Content;
             }
-            throw new NotSupportedException($"{token.GetType().Name} : {token.Content}");
+            throw NotSupportedExceptionFactory.Create($"Unsupported Const value token ({token.GetType().Name})", token.LineIndex, token.Content);
         }
     }
 }

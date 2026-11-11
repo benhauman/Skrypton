@@ -201,7 +201,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     ////////////////////////////////////
                     //Marshal.GetNativeVariantForObject(arg, pVariant);
                     if (pVariant != null)
-                        throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
+                        throw NotSupportedExceptionFactory.Create($"IDispatch::Invoke of '{memberName}' (DISPID {dispId}): passing argument {index + 1} of {args.Length} ({args[index]?.GetType().FullName ?? "Empty"}) is not supported (Marshal.GetNativeVariantForObject is not available)");
                     ////////////////////////////////////
                     variantsToClear.Add(pVariant);
                 }
@@ -257,7 +257,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                         ////////////////////////////////////
                         //Marshal.GetNativeVariantForObject(arg, pVariant);
                         if (args.GetType() != null)
-                            throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
+                            throw NotSupportedExceptionFactory.Create($"IDispatch::Invoke of '{memberName}' (DISPID {dispId}) failed and reading back its {args.Length} argument(s) is not supported (Marshal.GetNativeVariantForObject is not available): {message}");
                         ////////////////////////////////////
 
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -363,7 +363,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (comVisibleAttributeIfAny != null)
                 return MyVarEnum.VT_DISPATCH;
 
-            throw new NotSupportedException($"({value.GetType().FullName}):{value}");//lubo 'Marshal.GetNativeVariantForObject'
+            throw NotSupportedExceptionFactory.Create($"No VARIANT type is known for a value of type '{value.GetType().FullName}' ({value})");
             /*
             ////////////////////////////////////////////////
             //Marshal.GetNativeVariantForObject(arg, pVariant);
@@ -558,7 +558,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     break;
 
                 default:
-                    throw new NotSupportedException("Unsupported VARIANT type: " + value.GetType());
+                    throw NotSupportedExceptionFactory.Create($"Unsupported VARIANT type '{value.GetType().FullName}' ({value})");
             }
 
             return v;
