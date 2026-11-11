@@ -36,5 +36,17 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public static object Create() => _compatLayer.CREATEOBJECT("Scripting.Dictionary");
 
         public static object Create(string progId) => _compatLayer.CREATEOBJECT(progId);
+
+        /// <summary>
+        /// Create a built-in object through a compat layer whose host provides the specified service (eg. an offline IHostHttpClientHostService)
+        /// </summary>
+        public static object CreateWithHostService<TService>(string progId, TService service) where TService : class
+        {
+            var hostServices = new TestHostServices().RegisterHostService<TService>(() => service);
+            var compatLayer = (DefaultRuntimeFunctionalityProvider)DefaultRuntimeSupportClassFactory
+                .Create(new TestRuntimeHost(hostServices), new NullLogger(), CultureInfo.InvariantCulture)
+                .Get();
+            return compatLayer.CREATEOBJECT(progId);
+        }
     }
 }

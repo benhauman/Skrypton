@@ -85,38 +85,10 @@ WScript.Echo xmlhttp.responseText
              */
         }
 
-        static void TestCS()
-        {
-            // Create COM object
-#pragma warning disable CA1416 // Validate platform compatibility
-            Type t = typeof(MyServerXMLHTTP60);//Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
-#pragma warning restore CA1416 // Validate platform compatibility
-            dynamic xmlhttp = Activator.CreateInstance(t);
-
-            // 2 = SXH_OPTION_IGNORE_SERVER_SSL_CERT_ERROR_FLAGS
-            // 13056 = SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS
-            xmlhttp.setOption(2, 13056);
-
-            string url = "https://httpbin.org/get";
-
-            // Open synchronous GET request, no authentication needed
-            xmlhttp.open("GET", url, false, "myusr2", "mypwd2");
-
-            // Send request
-            xmlhttp.send();
-
-            Console.WriteLine("Status: " + xmlhttp.status);
-            Console.WriteLine("Response:");
-            Console.WriteLine("responseText:" + xmlhttp.responseText);
-        }
-
         static void TestCS_IDispatch()
         {
-            // Create COM object
-#pragma warning disable CA1416 // Validate platform compatibility
-            Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
-#pragma warning restore CA1416 // Validate platform compatibility
-            object xmlhttp = Activator.CreateInstance(t);
+            // The built-in Msxml2.ServerXMLHTTP.6.0, sending through the offline TestHttpClientHostService (no network access)
+            object xmlhttp = TestBuiltInComponents.CreateWithHostService<global::Skrypton.RuntimeSupport.Components.IHostHttpClientHostService>("Msxml2.ServerXMLHTTP.6.0", new TestHttpClientHostService());
 
             // xmlhttp.setOption(2, 13056)
             ComInvoke.Call(xmlhttp, "setOption", [2, 13056]);
@@ -151,52 +123,11 @@ WScript.Echo xmlhttp.responseText
             Console.WriteLine("Response:");
             Console.WriteLine(responseText);
         }
-        static void Test_IDispatch_Invoke()
-        {
-            //works only on windows
-            //if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
-            object comObj = DefaultRuntimeFunctionalityProvider.TestCreateComObjectTest("Msxml2.ServerXMLHTTP.6.0", typeof(MyServerXMLHTTP60));
-            // Create COM object
-            //#pragma warning disable CA1416 // Validate platform compatibility
-            //Type t = typeof(MyServerXMLHTTP60);// Type.GetTypeFromProgID("Msxml2.ServerXMLHTTP.6.0", true);
-            //#pragma warning restore CA1416 // Validate platform compatibility
-            //object comObj = Activator.CreateInstance(t);
-
-            // Cast to IDispatch
-            //var disp = (IDispatchAccess.IDispatch)comObj;
-            var disp = (IReflect)comObj;
-
-            // --- setOption(2, 13056) ---
-            InvokeMethod(disp, "setOption", 2, 13056);
-            //IDispatchAccess.CallMethod(disp, "setOption", 2, 13056);
-
-            string url = "https://httpbin.org/get";
-
-            // --- open("GET", url, false, "myusr2", "mypwd2") ---
-            InvokeMethod(disp, "open", "GET", url, false, "myusr2", "mypwd2");
-            //IDispatchAccess.CallMethodU(disp, "open", "GET", url, false, "myusr2", "mypwd2");
-
-            // --- send() ---
-            InvokeMethod(disp, "send");
-            //IDispatchAccess.CallMethodU(disp, "send");
-
-            // --- status property ---
-            object status = InvokePropertyGet(disp, "status");
-            //object status = IDispatchAccess.GetProperty(disp, "status");
-
-            // --- responseText property ---
-            object responseText = InvokePropertyGet(disp, "responseText");
-            //object responseText = IDispatchAccess.GetProperty(disp, "responseText");
-
-            Console.WriteLine("Status: " + status);
-            Console.WriteLine("Response:");
-            Console.WriteLine(responseText);
-        }
 
         private static void Test_Xml()
         {
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(MyServerXMLHTTP60.SampleResponseXml);
+            xmlDoc.LoadXml(TestHttpClientHostService.SampleResponseXml);
 
             var dict = new Dictionary<string, string>();
 
@@ -235,8 +166,8 @@ WScript.Echo xmlhttp.responseText
             // * 3/3) The IDispatch binder inside Windows Script Host
             domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, [false]);
 
-            //object responseXML = MyServerXMLHTTP60.SampleResponseXml;
-            object responseXML = Encoding.UTF8.GetBytes(MyServerXMLHTTP60.SampleResponseXml);
+            //object responseXML = TestHttpClientHostService.SampleResponseXml;
+            object responseXML = Encoding.UTF8.GetBytes(TestHttpClientHostService.SampleResponseXml);
             //xmlSource[in] An indicator of the source XML to parse. This may be an URL(String / BSTR), a Request object(in an ASP page), an IStream, SAFEARRAY of bytes(VT_ARRAY| VT_UI1), a DOMDocument object, or any object that supports IStream, ISequentialStream, or IPersistStream.See Remarks for more information.
             domType.InvokeMember("load", BindingFlags.InvokeMethod, null, xmlDoc, [responseXML]);
 
@@ -287,16 +218,14 @@ WScript.Echo xmlhttp.responseText
         {
             Test_Xml_IDispatch();
             Test_Xml();
-            TestCS();
             TestCS_IDispatch();
-            //Test_IDispatch_Invoke(); //works only on windows
 
             var hlobj = new HLObjectInstance()
                     .TestRegisterValueKey<string>("ComputerDetail.Hostname", 0, 0, "hst-X_1")
                 ;
             var model = new DialogGuidModel(TestCulture);
 
-            var dialog = new DialogBuilder(CreateTestHostServices(), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
+            var dialog = new DialogBuilder(CreateTestHostServices(s => s.RegisterHostService<global::Skrypton.RuntimeSupport.Components.IHostHttpClientHostService>(() => new TestHttpClientHostService())), model).AddExternalObject("model", model).AddExternalObject("hlobj", hlobj)
                     .AddTabControl("TabPageGeneralInfo")
                     .AddTextControl("TextBoxChecklist2URL")
 
