@@ -6,7 +6,7 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <NoWarn>$(NoWarn);CA1865;CA1303</NoWarn> <!-- shared with net481; the help text is not localized -->
+    <NoWarn>$(NoWarn);CA1865;CA1303</NoWarn> <!-- shared with net48; the help text is not localized -->
     <IsPackable>false</IsPackable>
     <RollForward>Major</RollForward>
   </PropertyGroup>
