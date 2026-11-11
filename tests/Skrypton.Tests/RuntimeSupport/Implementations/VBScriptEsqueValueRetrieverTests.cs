@@ -107,7 +107,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void VALFailsOnComObjectWithNoParameterlessDefaultMember()
         {
             // Execute twice to ensure that the TryVAL caching does not affect the result
-            var dictionary = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
+            var dictionary = TestScriptingDictionary.Create();//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() => DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever.VAL(dictionary));
             myAssert.Throws<ObjectDoesNotSupportPropertyOrMemberException>(() => DefaultRuntimeSupportClassFactoryInstance.DefaultVBScriptValueRetriever.VAL(dictionary));
         }
@@ -120,7 +120,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void EnsureThatOldArgumentsAreNotReusedInSubsequentIDispatchCalls()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
-            var dict = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
+            var dict = TestScriptingDictionary.Create();//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             using (var _ = Skrypton.RuntimeSupport.DefaultRuntimeSupportClassFactory.Create(CreateRuntimeHost(CreateTestHostServices()), RuntimeLogger, TestCulture).Get())
             {
                 _.SETm0a1(context: dict, target: dict, "a", 1);
@@ -507,7 +507,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void DispIdZeroPropertySettingWorksWithValueTypes()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
-            var dict = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
+            var dict = TestScriptingDictionary.Create();//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             var valueTypeValueToRecord = 123;
             using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
             {
@@ -519,8 +519,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         public void DispIdZeroPropertySettingWorksWithReferenceTypes()
         {
             // This requires that the project be built in 32-bit mode (as much of the IDispatch support does)
-            var dict = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
-            var referenceTypeValueToRecord = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
+            var dict = TestScriptingDictionary.Create();//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
+            var referenceTypeValueToRecord = TestScriptingDictionary.Create();//lubo: Type.GetTypeFromProgID("Scripting.Dictionary"));
             using (var _ = DefaultRuntimeSupportClassFactoryInstance.Get())
             {
                 _.SETm0a1(context: dict, target: dict, arg1: "ACCO", valueToSetTo: referenceTypeValueToRecord);
@@ -897,7 +897,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 yield return new object[] { 7, "VBScript class function without brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, false, "test" };
                 yield return new object[] { 8, "VBScript class function WITH brackets", new ZeroArgumentBracketExampleClass("test"), new[] { "GetName" }, true, "test" };
 
-                yield return new object[] { 9, "COM component property without brackets", Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny)), new[] { "Count" }, false, 0 };
+                yield return new object[] { 9, "COM component property without brackets", TestScriptingDictionary.Create(), new[] { "Count" }, false, 0 };
             }
         }
 
@@ -907,7 +907,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 yield return new object[] { "String with zero-argument brackets", "123", new string[0], true, typeof(TypeMismatchException) };
                 yield return new object[] { "Array with zero-argument brackets", new object[] { 123 }, new string[0], true, typeof(SubscriptOutOfRangeException) };
-                yield return new object[] { "COM component property with brackets", Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny)), new[] { "Count" }, true, typeof(IDispatchAccess.IDispatchAccessException) };
+                yield return new object[] { "COM component property with brackets", TestScriptingDictionary.Create(), new[] { "Count" }, true, typeof(IDispatchAccess.IDispatchAccessException) };
                 yield return new object[] { "Delegate with a member accessors", (Func<object>)(() => "delegate result"), new[] { "Name" }, false, typeof(ArgumentException) };
             }
         }
@@ -951,9 +951,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             {
                 yield return new object[] { "An object array", new object[] { 1, 2 }, new object[] { 1, 2 } };
 
-                dynamic dictionary = Activator.CreateInstance(typeof(MyScriptingDictionaryCpuAny));
-                dictionary.Add("key1", "value1");
-                dictionary.Add("key2", "value2");
+                object dictionary = TestScriptingDictionary.Create();
+                TestScriptingDictionary.CompatLayer.CALLm1v2(null!, dictionary, "Add", "key1", "value1");
+                TestScriptingDictionary.CompatLayer.CALLm1v2(null!, dictionary, "Add", "key2", "value2");
                 yield return new object[] { "Scripting Dictionary COM component", dictionary, new object[] { "key1", "key2" } };
 
                 var customIntEnumerable = new CustomEnumerable<int>([1, 2, 3]);

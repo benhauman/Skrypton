@@ -362,6 +362,9 @@ namespace Skrypton.Tests
         TService IRuntimeHost.TryGetRuntimeHostService<TService>()
         {
             //return _hostServices.GetService(typeof(TService)) as TService;
+            // "Try": a service that is not registered is null (eg. so that CreateObject can fall back to a built-in object, see issue #50)
+            if ((_hostServices is TestHostServices testHostServices) && !testHostServices.IsRegistered(typeof(TService)))
+                return null!;
             return _hostServices.GetService<TService>()!;
         }
     }
@@ -373,6 +376,7 @@ namespace Skrypton.Tests
         {
         }
         internal int ProvidersCount => _providers.Count;
+        internal bool IsRegistered(Type serviceType) => _providers.ContainsKey(serviceType.FullName ?? "");
         public TestHostServices RegisterHostService<T>(Func<T> serviceProvider) where T : class // for Cli
         {
             _providers.Add(typeof(T).FullName!, () => (object)serviceProvider());

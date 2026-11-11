@@ -110,6 +110,17 @@ namespace Skrypton.RuntimeSupport.Implementations
             _objectCreateFactories[progId] = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
+        /// <summary>
+        /// Explicitly register Skrypton's built-in, managed Scripting.Dictionary (scrrun semantics, no COM needed) as the factory for
+        /// CreateObject("Scripting.Dictionary"), see issue #50. This is not required - the built-in dictionary is already used when nothing else
+        /// provides "Scripting.Dictionary" - but it takes precedence over a host IHostObjectFactoryHostService registration. A registration made
+        /// after this one (RegisterObjectCreateFactory) replaces it.
+        /// </summary>
+        public void RegisterScriptingDictionaryCpuAny()
+        {
+            RegisterObjectCreateFactory(Components.SkryptonScriptingDictionaryCpuAny.ProgId, _ => new Components.SkryptonScriptingDictionaryCpuAny());
+        }
+
         private enum ErrorTokenState
         {
             OnErrorResumeNext,
@@ -2167,8 +2178,13 @@ namespace Skrypton.RuntimeSupport.Implementations
                     }
                 }
 
+                // Built-in objects: used only when neither RegisterObjectCreateFactory nor the host's IHostObjectFactoryHostService provides the
+                // ProgID, so "Scripting.Dictionary" just works and can still be overridden (see issue #50)
+                if (classProgId.Equals(Components.SkryptonScriptingDictionaryCpuAny.ProgId, StringComparison.OrdinalIgnoreCase))
+                    return HandlePostInitializationHandler(classProgId, new Components.SkryptonScriptingDictionaryCpuAny());
+
                 //if (classProgId.Length > 0)
-                throw new NotSupportedException($"classProgId:{classProgId}");
+                throw new NotSupportedException($"CreateObject(\"{classProgId}\"): no object factory is registered for this ProgID (register one with RegisterObjectCreateFactory or an IHostObjectFactoryHostService)");
                 //Type comType = Type.GetTypeFromProgID(classProgId, true);
                 //
                 //return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
