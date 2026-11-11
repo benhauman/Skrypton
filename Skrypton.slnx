@@ -6,6 +6,7 @@
     <File Path="todos.txt" />
     <File Path="version.json" />
     <File Path="build/azure-pipeline-build.yml" />
+    <File Path="build/azure-pipeline-publish.yml" />
   </Folder>
   <Folder Name="/samples/">
     <File Path="samples/Windows/Ado-StreamAndDatabase.vbs" />

@@ -1,24 +1,7 @@
-parameters:
-- name: publishNuGetPackages
-  displayName: Publish NuGet packages (nuget.org)
-  type: boolean
-  default: false
-- name: publishToGitHubPackages
-  displayName: Publish to GitHub Packages
-  type: boolean
-  default: false
-- name: createGitHubRelease
-  displayName: Create GitHub release
-  type: boolean
-  default: false
+# Continuous integration: build and test on Linux and Windows (the build, test and coverage badges).
+# Publishing (nuget.org, GitHub release) is the separate pipeline azure-pipeline-publish.yml.
 
 variables:
-- name: publishNuGetPackages
-  value: ${{ parameters.publishNuGetPackages }}
-- name: publishToGitHubPackages
-  value: ${{ parameters.publishToGitHubPackages }}
-- name: createGitHubRelease
-  value: ${{ parameters.createGitHubRelease }}
 - name: solution
   value: 'Skrypton.slnx'
 # the projects that run on every platform (Skrypton.Windows* need Windows to run their tests)
@@ -149,81 +132,3 @@ jobs:
       pathToSources: '$(Build.SourcesDirectory)'
       failIfCoverageEmpty: true
 
-# ---------------------------------------------------------------------------
-# Publish on Windows. NuGetCommand@2 (NuGet.exe) needs mono on Linux, so pack
-# and push run on windows-latest using NuGet service connections (no secret
-# variables). Skipped entirely unless a publish/release flag is set.
-# ---------------------------------------------------------------------------
-- job: Publish
-  displayName: 'Publish (Windows)'
-  dependsOn:
-  - Test
-  - TestWindows
-  condition: >
-    and(succeeded(),
-        or(eq(variables['publishNuGetPackages'], 'true'),
-           eq(variables['publishToGitHubPackages'], 'true'),
-           eq(variables['createGitHubRelease'], 'true')))
-  pool:
-    vmImage: windows-latest
-  steps:
-  - checkout: self
-    clean: true
-    fetchDepth: 0
-
-  - template: azure-pipelines-template/initialize.yml
-
-  - task: UseDotNet@2
-    displayName: 'Ensure .NET 10 SDK'
-    inputs:
-      packageType: 'sdk'
-      version: '10.0.301'
-      includePreview: false
-
-  - task: NuGetToolInstaller@1
-
-  # Pack: produces $(Build.ArtifactStagingDirectory)/packages and publishes the
-  # 'NuGet packages' pipeline artifact.
-  - template: azure-pipelines-template/run.yml
-    parameters:
-      operatingSystem: Windows
-      runtimeIdentifier: win-x64
-      configuration: ${{ variables.buildConfiguration }}
-      codeCoverageEngine: ${{ variables.codeCoverageEngine }}
-
-  # Each push/release is emitted at compile time only when its box is ticked, so the
-  # pipeline never references a service connection (e.g. github-packages) unless that
-  # publish is actually requested. Otherwise Azure fails validation for a missing
-  # connection even on normal builds where the step would be skipped anyway.
-  - ${{ if eq(parameters.publishNuGetPackages, true) }}:
-    - task: NuGetCommand@2
-      displayName: '📦 Push to nuget.org'
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'nuget.org'
-        verbosityPush: 'Detailed'
-
-  - ${{ if eq(parameters.publishToGitHubPackages, true) }}:
-    - task: NuGetCommand@2
-      displayName: '📦 Push to GitHub Packages'
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/**/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'github-packages'
-        verbosityPush: 'Detailed'
-
-  - ${{ if eq(parameters.createGitHubRelease, true) }}:
-    - task: GitHubRelease@1
-      displayName: 'Create GitHub release'
-      inputs:
-        gitHubConnection: 'benhauman'
-        repositoryName: $(Build.Repository.Name)
-        target: $(Build.SourceVersion)
-        tagSource: userSpecifiedTag
-        tag: 'v$(Build.BuildNumber)'
-        title: 'v$(Build.BuildNumber)'
-        assets: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
-        changeLogType: commitBased
