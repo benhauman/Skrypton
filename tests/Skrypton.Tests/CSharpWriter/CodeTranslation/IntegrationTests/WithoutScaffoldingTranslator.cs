@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter.CodeTranslation;
 using System.Text;
-using Microsoft.Testing.Extensions.VSTestBridge;
 using System.Collections.Generic;
 using Skrypton.ScriptControlSupport;
 using Skrypton.Tests.Application;
