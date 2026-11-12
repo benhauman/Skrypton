@@ -69,6 +69,24 @@ namespace Skrypton.RuntimeSupport.Components
             return ScriptonXmlNodeFactory.Create(_xmldoc.CreateElement(tagName));
         }
 
+        /// <summary>
+        /// A new attribute (not on an element yet - element.attributes.setNamedItem adds it), like MSXML's createAttribute (issue #121)
+        /// </summary>
+        [DispId(24)]
+        public object createAttribute([In][MarshalAs(UnmanagedType.BStr)] string name) => ScriptonXmlNodeFactory.Create(_xmldoc.CreateAttribute(name));
+
+        /// <summary>
+        /// A new CDATA section (its content is written as it is: &lt;![CDATA[..]]&gt;), like MSXML's createCDATASection (issue #121)
+        /// </summary>
+        [DispId(25)]
+        public object createCDATASection([In][MarshalAs(UnmanagedType.BStr)] string data) => ScriptonXmlNodeFactory.Create(_xmldoc.CreateCDataSection(data ?? ""));
+
+        /// <summary>
+        /// A new text node, like MSXML's createTextNode
+        /// </summary>
+        [DispId(23)]
+        public object createTextNode([In][MarshalAs(UnmanagedType.BStr)] string data) => ScriptonXmlNodeFactory.Create(_xmldoc.CreateTextNode(data ?? ""));
+
         [DispId(6)]
         public object firstChild
         {
@@ -385,6 +403,9 @@ namespace Skrypton.RuntimeSupport.Components
             {
                 XmlElement element => new MyXMLDOMElement(element),
                 XmlProcessingInstruction or XmlDeclaration => new MyXMLDOMProcessingInstruction(n),
+                XmlAttribute attribute => new MyXMLDOMAttribute(attribute),
+                XmlCDataSection => new MyXMLDOMCDATASection(n),
+                XmlText => new MyXMLDOMText(n),
                 _ => new MyXMLDOMNode(n),
             });
         }
@@ -402,6 +423,111 @@ namespace Skrypton.RuntimeSupport.Components
         public string target => Node.Name;
 
         public string data => Node.Value;
+    }
+
+    /// <summary>
+    /// An attribute (issue #121): createAttribute, attributes.getNamedItem, selectSingleNode("@name")
+    /// </summary>
+    [SourceClassName("IXMLDOMAttribute")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMAttribute : MyXMLDOMNodeBase
+    {
+        private readonly XmlAttribute _attribute;
+
+        public MyXMLDOMAttribute(XmlAttribute attribute) : base(attribute)
+        {
+            _attribute = attribute;
+        }
+
+        public string name => _attribute.Name;
+
+        public string value
+        {
+            get => _attribute.Value;
+            set => _attribute.Value = value ?? "";
+        }
+    }
+
+    [SourceClassName("IXMLDOMCDATASection")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMCDATASection : MyXMLDOMNodeBase
+    {
+        public MyXMLDOMCDATASection(XmlNode node) : base(node)
+        {
+        }
+
+        public string data => Node.Value;
+    }
+
+    [SourceClassName("IXMLDOMText")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class MyXMLDOMText : MyXMLDOMNodeBase
+    {
+        public MyXMLDOMText(XmlNode node) : base(node)
+        {
+        }
+
+        public string data => Node.Value;
+    }
+
+    /// <summary>
+    /// element.attributes (issue #121): length, item(i) (the default member), getNamedItem (Nothing if there is none), setNamedItem (adds or
+    /// replaces the attribute of the name and returns it), removeNamedItem, For Each - in the order the attributes were set
+    /// </summary>
+    [SourceClassName("IXMLDOMNamedNodeMap")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    [DefaultMember("item")]
+    internal sealed class MyXMLDOMNamedNodeMap : IEnumerable
+    {
+        private readonly XmlElement _element;
+
+        public MyXMLDOMNamedNodeMap(XmlElement element)
+        {
+            _element = element;
+        }
+
+        [DispId(74)]
+        public int length => _element.Attributes.Count;
+
+        [DispId(0)]
+        [IsDefault]
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public object item(int index) => ((index >= 0) && (index < _element.Attributes.Count)) ? ScriptonXmlNodeFactory.Create(_element.Attributes[index]) : null;
+
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public object getNamedItem(string name) => ScriptonXmlNodeFactory.Create(_element.Attributes[name]);
+
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public object setNamedItem(object newItem)
+        {
+            object item = (newItem is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : newItem;
+            if (!(item is MyXMLDOMNodeBase node) || !(node.Node is XmlAttribute attribute))
+                throw MsxmlSelection.Error("The node is not an attribute.");
+            _element.Attributes.SetNamedItem(attribute);
+            return ScriptonXmlNodeFactory.Create(attribute);
+        }
+
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public object removeNamedItem(string name)
+        {
+            XmlAttribute attribute = _element.Attributes[name];
+            if (attribute == null)
+                return null;
+            _element.Attributes.Remove(attribute);
+            return ScriptonXmlNodeFactory.Create(attribute);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            var attributes = new List<object>();
+            foreach (XmlAttribute attribute in _element.Attributes)
+                attributes.Add(ScriptonXmlNodeFactory.Create(attribute));
+            return attributes.GetEnumerator();
+        }
     }
 
     /// <summary>
@@ -516,6 +642,11 @@ namespace Skrypton.RuntimeSupport.Components
         public object getAttribute(string name) => _element.HasAttribute(name) ? _element.GetAttribute(name) : (object)DBNull.Value;
 
         public void setAttribute(string name, object value) => _element.SetAttribute(name, Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture));
+
+        /// <summary>
+        /// The attributes of the element (issue #121)
+        /// </summary>
+        public MyXMLDOMNamedNodeMap attributes => new MyXMLDOMNamedNodeMap(_element);
     }
 
     [SourceClassName("IXMLDOMNode")]
@@ -563,6 +694,9 @@ namespace Skrypton.RuntimeSupport.Components
         internal static object InsertBefore(XmlNode parent, object newChild, object refChild)
         {
             XmlNode child = NodeOf(newChild) ?? throw new ArgumentNullException(nameof(newChild));
+            // MSXML 3 does not split a CDATA section with "]]>" - appending it is an error (E_INVALIDARG, issue #121)
+            if ((child is XmlCDataSection cdata) && (cdata.Value ?? "").Contains("]]>"))
+                throw new Skrypton.RuntimeSupport.Exceptions.CustomException(unchecked((int)0x80070057), MsxmlSelection.ErrorSource, "Invalid data for a node of type 'CDATA'.\r\n");
             XmlNode reference = NodeOf(refChild);
             if (reference == null)
                 parent.AppendChild(child);
@@ -585,6 +719,11 @@ namespace Skrypton.RuntimeSupport.Components
         }
 
         public string nodeName => _node.Name;
+
+        /// <summary>
+        /// The child nodes (length, item(i), For Each)
+        /// </summary>
+        public MyXMLDOMNodeList childNodes => new MyXMLDOMNodeList(_node.ChildNodes);
 
         /// <summary>
         /// The value of an attribute, text or comment node, Null for an element (as MSXML)
