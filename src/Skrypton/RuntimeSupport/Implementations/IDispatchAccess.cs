@@ -350,7 +350,9 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // Nothing is an object reference (VarType 9, vbObject), as is any other wrapped object reference (see issue #42)
                 case ScriptDispatchWrapper _: return MyVarEnum.VT_DISPATCH;
 
-                // Arrays
+                // Arrays - a byte array (ADODB.Stream.Read, ServerXMLHTTP.responseBody, ..) is vbArray + vbByte (8209), as TypeName says Byte()
+                // (issue #100); VBScript's own arrays are arrays of Variants (8204)
+                case byte[] _: return MyVarEnum.VT_ARRAY | MyVarEnum.VT_UI1;
                 case Array _: return MyVarEnum.VT_ARRAY | MyVarEnum.VT_VARIANT;
                 // COM objects
                 //case object _: return MyVarEnum.VT_DISPATCH;
