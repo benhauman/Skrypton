@@ -74,7 +74,8 @@ namespace Skrypton.Windows
         private void EchoValues(params object?[] values) => StdOut.WriteLine(string.Join(" ", values.Select(ToEchoText)));
 
         /// <summary>
-        /// A value as WScript.Echo writes it: as StdOut.Write, but a Boolean is -1 / 0 and Null is "null" (as with Windows Script Host - issue #119)
+        /// A value as WScript.Echo writes it: as StdOut.Write, but a Boolean is -1 / 0 and Null is "null" (as with Windows Script Host - issue #119),
+        /// and only up to its first Chr(0) (issue #152)
         /// </summary>
         internal static string ToEchoText(object? value)
         {
@@ -85,7 +86,9 @@ namespace Skrypton.Windows
                 case DBNull _:
                     return "null";
                 default:
-                    return ToText(value);
+                    string text = ToText(value);
+                    int end = text.IndexOf('\0');
+                    return (end < 0) ? text : text.Substring(0, end);
             }
         }
 

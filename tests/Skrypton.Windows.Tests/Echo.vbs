@@ -14,3 +14,7 @@ WScript.Echo 1.5, #2026-11-12#, TimeSerial(10, 30, 0), 1 / 3, CSng(1 / 3), CCur(
 WScript.Echo Empty
 WScript.StdOut.WriteLine 1 / 3
 WScript.StdOut.WriteLine CSng(1 / 3)
+' Chr(0): WScript.Echo writes each value up to it, StdOut everything (issue #152)
+WScript.Echo "a" & Chr(0) & "b"
+WScript.Echo "x", "y" & Chr(0) & "z", "w"
+WScript.StdOut.WriteLine "c" & Chr(0) & "d"
