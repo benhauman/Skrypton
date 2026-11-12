@@ -25,8 +25,9 @@ namespace Skrypton.LegacyParser.Tokens.Basic
                 return token.Content + (token.Content.EndsWith('.', StringComparison.Ordinal) ? "0" : "");
             }
 
-            // C# will default to int (Int32) for integers, we need to override this for smaller values
-            if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
+            // C# will default to int (Int32) for integers, we need to override this for smaller values - from -32767: VBScript negates the positive
+            // literal, so -32768 (32768 negated) is a Long, as is &H8000 (issue #169)
+            if ((token.Value > Int16.MinValue) && (token.Value <= Int16.MaxValue))
             {
                 typeText = "Int16";
                 if (token.Content.StartsWith('-', StringComparison.Ordinal))
@@ -56,7 +57,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
 
-            return !token.Content.Contains('.', StringComparison.Ordinal) && (token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue);
+            return !token.Content.Contains('.', StringComparison.Ordinal) && (token.Value > Int16.MinValue) && (token.Value <= Int16.MaxValue);
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // This basically takes the rules from AsCSharpValue() and inverts them
             if (token.Content.Contains('.', StringComparison.Ordinal) && function.Content.Equals("CDbl", StringComparison.OrdinalIgnoreCase))
                 return true;
-            if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue) && function.Content.Equals("CInt", StringComparison.OrdinalIgnoreCase))
+            if ((token.Value > Int16.MinValue) && (token.Value <= Int16.MaxValue) && function.Content.Equals("CInt", StringComparison.OrdinalIgnoreCase))
                 return true;
             if ((token.Value >= Int32.MinValue) || (token.Value <= Int32.MaxValue))
             {
@@ -101,7 +102,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             // If it's a decimal then we need to use CDbl
             if (token.Content.Contains('.', StringComparison.Ordinal))
                 return "CDbl";
-            if ((token.Value >= Int16.MinValue) && (token.Value <= Int16.MaxValue))
+            if ((token.Value > Int16.MinValue) && (token.Value <= Int16.MaxValue))
                 return "CInt";
             if ((token.Value >= Int32.MinValue) || (token.Value <= Int32.MaxValue))
                 return "CLng";
