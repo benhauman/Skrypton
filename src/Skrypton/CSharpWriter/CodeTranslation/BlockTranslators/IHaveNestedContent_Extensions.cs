@@ -31,6 +31,28 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
         }
 
         /// <summary>
+        /// As GetAllNestedBlocks, but without the content of nested scopes (Sub / Function / Property / Class blocks are returned, the blocks within
+        /// them are not) - the declarations of a scope are the ones in these blocks (issue #130: a Dim in a Sub is not a redefinition of a global
+        /// Dim further down)
+        /// </summary>
+        public static IEnumerable<ICodeBlock> GetAllNestedBlocksInScope(this IHaveNestedContent nestedContentBlock)
+        {
+            if (nestedContentBlock == null)
+                throw new ArgumentNullException(nameof(nestedContentBlock));
+
+            foreach (var codeBlock in nestedContentBlock.AllExecutableBlocks)
+            {
+                yield return codeBlock;
+
+                if ((codeBlock is IHaveNestedContent doubleNestedContentBlock) && !(codeBlock is IDefineScope))
+                {
+                    foreach (var doubleNestedExecutableBlock in doubleNestedContentBlock.GetAllNestedBlocksInScope())
+                        yield return doubleNestedExecutableBlock;
+                }
+            }
+        }
+
+        /// <summary>
         /// Does the content within the specified block (that contains nested content) contain a loop with a mismatched EXIT statement (eg. does it contain
         /// a FOR loop with an EXIT DO that does not have a DO loop between the FOR and the EXIT DO) - if so, then the EXIT statment will require multiple
         /// break statements in the translated C# code (one to exit its mismatched containing loop and then another to exit the loop that it targets).

@@ -189,13 +189,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // We don't check for DIM statements here since the TryToTranslateDim functions deals with clashes of variable names in DIMs and CONSTS, so here we can pretend
             // that DIMs don't exist.
             // ^ TODO: No, no, no (doesn't catch the ReDim-then-Const case)
-            var dimVariableNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocks()
+            var dimVariableNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocksInScope()
                 .TakeWhile(b => b != block)
                 .OfType<BaseDimStatement>()
                 .SelectMany(dim => dim.Variables)
                 .Select(v => v.Name)
                 .ToArray();
-            var constNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocks()
+            var constNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocksInScope()
                 .TakeWhile(b => b != block)
                 .OfType<ConstStatement>()
                 .SelectMany(c => c.Values)
@@ -290,12 +290,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             //    End If
             //
             // This is because it is a normal use case for a REDIM to target an already-declared variable reference.
-            var dimVariableNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocks()
+            var dimVariableNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocksInScope()
                 .TakeWhile(b => b != block)
                 .OfType<BaseDimStatement>()
                 .SelectMany(dim => dim.Variables)
                 .Select(v => v.Name);
-            var constNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocks()
+            var constNamesInCurrentScope = scopeAccessInformation.ScopeDefiningParent.GetAllNestedBlocksInScope()
                 .TakeWhile(b => b != block)
                 .OfType<ConstStatement>()
                 .SelectMany(c => c.Values)
