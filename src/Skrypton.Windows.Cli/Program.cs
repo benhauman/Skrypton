@@ -14,6 +14,8 @@ namespace Skrypton.Windows.Cli
     /// </summary>
     internal static class Program
     {
+        private static readonly char[] ProgIdSeparators = { ',', ';' };
+
         private static int Main(string[] args)
         {
             string exe = Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly()?.Location ?? "Skrypton.Windows.Cli");
@@ -28,7 +30,7 @@ namespace Skrypton.Windows.Cli
                 return (index >= args.Length) && (options.Count == 0) ? 1 : 0;
             }
 
-            string? unknown = options.FirstOrDefault(o => (o != "nologo") && (o != "logo") && (o != "translate") && !o.StartsWith("culture:", StringComparison.Ordinal));
+            string? unknown = options.FirstOrDefault(o => (o != "nologo") && (o != "logo") && (o != "translate") && !o.StartsWith("culture:", StringComparison.Ordinal) && !o.StartsWith("com:", StringComparison.Ordinal));
             if (unknown != null)
             {
                 Console.Error.WriteLine($"Input Error: Unknown option \"/{unknown}\" specified (see {exe} /help).");
@@ -47,7 +49,18 @@ namespace Skrypton.Windows.Cli
                 Console.Out.WriteLine(Logo());
 
             Console.OutputEncoding = Encoding.UTF8;
-            var runner = new ScriptonScriptRunner(WindowsRuntimeHost.CreateDefault(), Console.Out, Console.Error, Console.In, culture);
+            // /com:<ProgID>[,<ProgID>..] or /com:* - CreateObject also creates these registered COM classes (issue #103)
+            WindowsRuntimeHost host = WindowsRuntimeHost.CreateDefault();
+            string[] comProgIds = options.Where(o => o.StartsWith("com:", StringComparison.Ordinal))
+                .SelectMany(o => o.Substring("com:".Length).Split(ProgIdSeparators, StringSplitOptions.RemoveEmptyEntries))
+                .Select(p => p.Trim())
+                .ToArray();
+            if (comProgIds.Contains("*"))
+                host.Register<Skrypton.RuntimeSupport.Implementations.IHostComActivationHostService>(new WindowsHostComActivationHostService(_ => true));
+            else if (comProgIds.Length > 0)
+                host.RegisterComActivation(comProgIds);
+
+            var runner = new ScriptonScriptRunner(host, Console.Out, Console.Error, Console.In, culture);
             string script = args[index];
             if (options.Contains("translate"))
             {
@@ -87,6 +100,8 @@ namespace Skrypton.Windows.Cli
                 "  /nologo             Do not show the banner (the default, accepted for cscript compatibility)" + Environment.NewLine +
                 "  /translate          Write the C# program that the script is translated to instead of running it" + Environment.NewLine +
                 "  /culture:<name>     Run with the culture (eg. /culture:de-DE) instead of the culture of the user" + Environment.NewLine +
+                "  /com:<ProgIDs>      CreateObject also creates the registered COM classes of these ProgIDs (comma separated, * for all) -" + Environment.NewLine +
+                "                      built-in objects come first (eg. /com:WScript.Network,hlStartITIL.Global)" + Environment.NewLine +
                 Environment.NewLine +
                 "Exit code: the code of WScript.Quit, 0 when the script ends, 1 after an error (reported as cscript reports it, eg." + Environment.NewLine +
                 "\"C:\\scripts\\x.vbs(3, 1) Microsoft VBScript runtime error: Type mismatch\")." + Environment.NewLine +

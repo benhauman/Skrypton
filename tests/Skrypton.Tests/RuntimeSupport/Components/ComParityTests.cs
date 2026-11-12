@@ -45,6 +45,45 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
         /// </summary>
         private ScriptControlConfiguration VBScriptRuleConfiguration() => new TestScriptControlConfiguration(this, false, [], [], undeclaredVariablesAreErrors: false);
 
+        public sealed class ComMarker
+        {
+            public string Name => "marker";
+        }
+
+        private sealed class TestComActivation : Skrypton.RuntimeSupport.Implementations.IHostComActivationHostService
+        {
+            public List<string> Requested { get; } = new List<string>();
+
+            public object? TryCreateObject(string progId)
+            {
+                Requested.Add(progId);
+                return progId.Equals("Test.Component", StringComparison.OrdinalIgnoreCase) ? new ComMarker() : null;
+            }
+        }
+
+        /// <summary>
+        /// The host's COM activation comes after the built-ins (issue #103): it creates what nothing else does; a ProgID that nothing creates is
+        /// error 429 (ActiveX component can't create object)
+        /// </summary>
+        [TestMethod]
+        public void ComActivationComesAfterTheBuiltIns()
+        {
+            var activation = new TestComActivation();
+            var output = new Output();
+            IScriptControl scriptengine = CreateScriptControlClass(
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<Skrypton.RuntimeSupport.Implementations.IHostComActivationHostService>(() => activation))),
+                VBScriptRuleConfiguration());
+            scriptengine.AddObject("output", output, false);
+            scriptengine.ExecuteStatement(
+                "output.Write TypeName(CreateObject(\"Scripting.Dictionary\"))\r\n" +
+                "output.Write CreateObject(\"Test.Component\").Name\r\n" +
+                "On Error Resume Next\r\n" +
+                "Dim x : Set x = CreateObject(\"No.Such\")\r\n" +
+                "output.Write Err.Number & \"|\" & Err.Description\r\n");
+            CollectionAssert.AreEqual(new[] { "Dictionary", "marker", "429|ActiveX component can't create object" }, output.Lines);
+            CollectionAssert.AreEqual(new[] { "Test.Component", "No.Such" }, activation.Requested);
+        }
+
         /// <summary>
         /// Skrypton's default (strict) rule: an undeclared variable is a translation error, also without Option Explicit (issue #86)
         /// </summary>

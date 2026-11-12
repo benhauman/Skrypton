@@ -198,11 +198,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                     var pVariant = new IntPtr(
                         rgvarg.ToInt64() + (SizeOfNativeVariant * index)
                     );
-                    ////////////////////////////////////
-                    //Marshal.GetNativeVariantForObject(arg, pVariant);
-                    if (pVariant != null)
-                        throw NotSupportedExceptionFactory.Create($"IDispatch::Invoke of '{memberName}' (DISPID {dispId}): passing argument {index + 1} of {args.Length} ({args[index]?.GetType().FullName ?? "Empty"}) is not supported (Marshal.GetNativeVariantForObject is not available)");
-                    ////////////////////////////////////
+                    Marshal.GetNativeVariantForObject(ToVariantValue(arg), pVariant);
                     variantsToClear.Add(pVariant);
                 }
             }
@@ -252,30 +248,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                         message += excepInfo.bstrDescription;
                     if (errorType != CommonErrors.Unknown)
                         message += " [" + errorType.ToString() + "]";
-                    if (args.Length > 0)
-                    {
-                        ////////////////////////////////////
-                        //Marshal.GetNativeVariantForObject(arg, pVariant);
-                        if (args.GetType() != null)
-                            throw NotSupportedExceptionFactory.Create($"IDispatch::Invoke of '{memberName}' (DISPID {dispId}) failed and reading back its {args.Length} argument(s) is not supported (Marshal.GetNativeVariantForObject is not available): {message}");
-                        ////////////////////////////////////
-
-#pragma warning disable CA1031 // Do not catch general exception types
-                        try
-                        {
-                            //lubo:Marshal.GetObjectsForNativeVariants(rgvarg, args.Length);
-                        }
-                        catch (Exception exx)
-                        {
-                            message += " - " + exx.Message;
-                            // In Visual Studio 2012, if the "Prefer 32-bit" build option is not enabled then arguments do not get written into memory
-                            // correctly which will result in the request failing. If an exception has been raised then we can confirm if this is the
-                            // problem by trying to pull the arguments back out of the "rgvarg", if this operation fails then the absence of this
-                            // build option is most likely the cause.
-                            message += $" - this may be due to the \"Prefer 32-bit\" option not being enabled. (Is64BitProcess:{Environment.Is64BitProcess})";// in Visual Studio";
-                        }
-#pragma warning restore CA1031 // Do not catch general exception types
-                    }
                     throw new IDispatchAccessException(message, source, memberNameIfSpecified: null, dispIdIfKnown: dispId, errorType: errorType);
                 }
                 return (T)varResult;
@@ -288,12 +260,20 @@ namespace Skrypton.RuntimeSupport.Implementations
                     {
                         _ = VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
                     }
-                    Marshal.FreeHGlobal(variantToClear); // Free the memory block
+                    // the VARIANTs are in the rgvarg block (memoryAllocationsToFree), they are not freed one by one
                 }
 
                 foreach (var memoryAllocationToFree in memoryAllocationsToFree)
                     Marshal.FreeCoTaskMem(memoryAllocationToFree);
             }
+        }
+
+        /// <summary>
+        /// The value of a VBScript argument as a VARIANT gets it: a wrapped object reference is the object (Nothing is null)
+        /// </summary>
+        private static object? ToVariantValue(object? value)
+        {
+            return (value is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : value;
         }
 
         public static void FreeDISPPARAMS(ComTypes.DISPPARAMS dispParams)
