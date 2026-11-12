@@ -103,6 +103,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonServerXMLHTTP60(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonWinHttpRequest.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonWinHttpRequest(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonCdoMessage.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonCdoMessage(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonCdoConfiguration.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonCdoConfiguration();
             if (classProgId.Equals(Components.ScriptonWScriptShell.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonWScriptShell(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonFileSystemObject.ProgId, StringComparison.OrdinalIgnoreCase))
