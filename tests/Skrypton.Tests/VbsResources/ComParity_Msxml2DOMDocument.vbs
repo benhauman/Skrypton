@@ -108,3 +108,56 @@ Out lsel.getProperty("SelectionNamespaces") & "|" & lsel.getProperty("SelectionL
 sel.setProperty "SelectionLanguage", "XPath"
 sel.setProperty "SelectionNamespaces", "xmlns:dt='urn:dt'"
 Out NodeText(sel.selectSingleNode("//dt:c")) & " " & NodeText(sel.selectSingleNode("//plain"))
+' Attributes, CDATA sections and text nodes (issue #121): createAttribute, attributes (setNamedItem, getNamedItem, item, removeNamedItem, For Each),
+' createCDATASection ("]]>" is an error with MSXML 3), createTextNode, childNodes, save
+Sub AttributesAndCData()
+    Dim xmldoc : Set xmldoc = CreateObject("msxml2.DomDocument")
+    Dim nodeData : Set nodeData = xmldoc.appendChild(xmldoc.createElement("Data"))
+    Dim nodeObject : Set nodeObject = nodeData.appendChild(xmldoc.createElement("Asset"))
+    Dim attAliasName : Set attAliasName = xmldoc.createAttribute("aliasname")
+    attAliasName.Text = "NewCIAsset"
+    nodeObject.Attributes.setNamedItem attAliasName
+    Dim valueNode : Set valueNode = xmldoc.createElement("AssetGeneral.AssetName")
+    Dim cdata : Set cdata = xmldoc.createCDATASection("PC <4711> & Co")
+    valueNode.appendChild(cdata)
+    nodeObject.appendChild(valueNode)
+    Dim attIsKey : Set attIsKey = xmldoc.createAttribute("iskey")
+    attIsKey.Text = "false"
+    valueNode.Attributes.setNamedItem attIsKey
+    Out xmldoc.xml
+    Out nodeObject.Attributes.length & " " & nodeObject.Attributes.getNamedItem("aliasname").Text & " " & TypeName(attAliasName) & " " & TypeName(cdata)
+    Out TypeName(nodeObject.Attributes) & " " & TypeName(nodeObject.Attributes.getNamedItem("nope"))
+    Out attAliasName.nodeName & "|" & attAliasName.nodeValue & "|" & attAliasName.xml & "|" & cdata.nodeName & "|" & cdata.nodeValue & "|" & cdata.text & "|" & cdata.xml
+    Dim att2 : Set att2 = xmldoc.createAttribute("aliasname")
+    att2.Text = "Replaced"
+    Dim old : Set old = nodeObject.Attributes.setNamedItem(att2)
+    Out TypeName(old) & " " & nodeObject.Attributes.length & " " & nodeObject.getAttribute("aliasname")
+    nodeObject.setAttribute "z", "last"
+    Out nodeObject.Attributes.item(1).nodeName & " " & nodeObject.Attributes(0).nodeName & " " & nodeObject.Attributes.length
+    Dim at, s
+    For Each at In nodeObject.Attributes
+        s = s & at.nodeName & "=" & at.nodeValue & ";"
+    Next
+    Out s
+    Dim e2 : Set e2 = xmldoc.createElement("e")
+    e2.appendChild xmldoc.createCDATASection("")
+    On Error Resume Next
+    e2.appendChild xmldoc.createCDATASection("a]]>b")
+    Out "cdata ]]>: " & Err.Number & " " & Err.Source & " " & Replace(Err.Description, vbCrLf, "")
+    Err.Clear
+    On Error GoTo 0
+    e2.appendChild xmldoc.createTextNode("t<&>")
+    nodeData.appendChild e2
+    Out e2.xml & " " & e2.text & " " & e2.childNodes.length
+    Out TypeName(xmldoc.createTextNode("x"))
+    Out TypeName(xmldoc.selectSingleNode("//Asset/@aliasname")) & " " & xmldoc.selectSingleNode("//Asset/@aliasname").text
+    Out xmldoc.selectSingleNode("//Asset").attributes.getNamedItem("z").value
+    nodeObject.Attributes.removeNamedItem "z"
+    Out nodeObject.Attributes.length
+    Dim attrFso : Set attrFso = CreateObject("Scripting.FileSystemObject")
+    Dim attrPath : attrPath = attrFso.BuildPath(attrFso.GetSpecialFolder(2), attrFso.GetTempName())
+    xmldoc.save attrPath
+    Out attrFso.GetFile(attrPath).Size & "|" & attrFso.OpenTextFile(attrPath, 1).ReadAll
+    attrFso.DeleteFile attrPath
+End Sub
+AttributesAndCData

@@ -53,3 +53,19 @@ Nothing plain=p
 dt:c=loaded x:y=xy plain=p 2
 xmlns:q='urn:dt' xmlns:d="urn:x"|XPath
 Nothing plain=p
+<Data><Asset aliasname="NewCIAsset"><AssetGeneral.AssetName iskey="false"><![CDATA[PC <4711> & Co]]></AssetGeneral.AssetName></Asset></Data>
+
+1 NewCIAsset IXMLDOMAttribute IXMLDOMCDATASection
+IXMLDOMNamedNodeMap Nothing
+aliasname|NewCIAsset|aliasname="NewCIAsset"|#cdata-section|PC <4711> & Co|PC <4711> & Co|<![CDATA[PC <4711> & Co]]>
+IXMLDOMAttribute 1 Replaced
+z aliasname 2
+aliasname=Replaced;z=last;
+cdata ]]>: -2147024809 msxml3.dll Invalid data for a node of type 'CDATA'.
+<e><![CDATA[]]>t&lt;&amp;&gt;</e> t<&> 2
+IXMLDOMText
+IXMLDOMAttribute Replaced
+last
+1
+173|<Data><Asset aliasname="Replaced"><AssetGeneral.AssetName iskey="false"><![CDATA[PC <4711> & Co]]></AssetGeneral.AssetName></Asset><e><![CDATA[]]>t&lt;&amp;&gt;</e></Data>
+
