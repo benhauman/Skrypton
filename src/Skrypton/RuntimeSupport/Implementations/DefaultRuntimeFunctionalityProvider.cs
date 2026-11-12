@@ -126,8 +126,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.SkryptonScriptingDictionaryCpuAny();
             if (classProgId.Equals("VBScript.RegExp", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonVBScriptRegExp(_culture);
-            if (classProgId.Equals("Msxml2.DOMDocument", StringComparison.OrdinalIgnoreCase))
+            if (Components.ScriptonMsxml2DOMDocument.ProgIds.Contains(classProgId))
                 return new Components.ScriptonMsxml2DOMDocument(_runtimeHost);
+            if (Components.ScriptonMsxml2DOMDocument60.ProgIds.Contains(classProgId))
+                return new Components.ScriptonMsxml2DOMDocument60(_runtimeHost);
             if (Components.ScriptonServerXMLHTTP60.ProgIds.Contains(classProgId))
                 return new Components.ScriptonServerXMLHTTP60(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonWinHttpRequest.ProgId, StringComparison.OrdinalIgnoreCase))
