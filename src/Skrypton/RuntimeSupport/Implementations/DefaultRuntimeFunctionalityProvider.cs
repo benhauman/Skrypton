@@ -107,6 +107,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonCdoMessage(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonCdoConfiguration.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonCdoConfiguration();
+            if (classProgId.Equals(Components.ScriptonMapiSession.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonMapiSession(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonWScriptShell.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonWScriptShell(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonFileSystemObject.ProgId, StringComparison.OrdinalIgnoreCase))
