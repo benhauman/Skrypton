@@ -1,0 +1,16 @@
+txt: IBodyPart [sk175.txt] [text/plain] [7bit]
+xml: IBodyPart [sk175.xml] [text/xml] [7bit]
+pdf: IBodyPart [sk175.pdf] [application/pdf] [7bit]
+csv: IBodyPart [sk175.csv] [application/vnd.ms-excel] [7bit]
+zip: IBodyPart [sk175.zip] [application/x-zip-compressed] [7bit]
+htm: IBodyPart [sk175.htm] [text/html] [7bit]
+png: IBodyPart [sk175.png] [image/png] [7bit]
+skryptonxyz: IBodyPart [sk175.skryptonxyz] [application/octet-stream] [7bit]
+IBodyParts 8 sk175.txt sk175.xml
+sk175.txt,sk175.xml,sk175.pdf,sk175.csv,sk175.zip,sk175.htm,sk175.png,sk175.skryptonxyz,
+7 sk175.xml
+file url: sk175.txt 8
+after DeleteAll: 0
+missing: 80070002 [The system cannot find the file specified.\r\n] [CDO.Message.1]
+delete 5: 8002000B [Invalid index.\r\n]
+item 1 of none: 8002000B [Invalid index.\r\n]

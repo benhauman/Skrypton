@@ -45,6 +45,16 @@ namespace Skrypton.RuntimeSupport.Components
 #pragma warning restore CA2000
             }
 
+            // the attached files - the message becomes multipart/mixed, each file a base64 part with its file name (issue #175)
+            foreach (HostMailAttachment file in message.Attachments)
+            {
+#pragma warning disable CA2000 // The attachment (and its stream) is owned (and disposed) by the message
+                var attachment = new Attachment(new System.IO.MemoryStream(file.Content), file.FileName, file.MediaType);
+#pragma warning restore CA2000
+                attachment.ContentDisposition!.FileName = file.FileName;
+                mail.Attachments.Add(attachment);
+            }
+
             using var client = new SmtpClient(smtp.Server, smtp.Port)
             {
                 EnableSsl = smtp.UseSsl,

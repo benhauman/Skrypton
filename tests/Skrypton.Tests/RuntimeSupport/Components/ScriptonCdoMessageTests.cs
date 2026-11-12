@@ -119,6 +119,43 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 mail.Sent.Single().Message.To.ToArray());
         }
 
+        /// <summary>
+        /// AddAttachment (issue #175): the files go to the mail host service, and SmtpClient sends multipart/mixed with each file as a base64 part
+        /// whose Content-Disposition carries the file name
+        /// </summary>
+        [TestMethod]
+        public void AttachmentsAreSentWithTheMessage()
+        {
+            string file = Path.Combine(Path.GetTempPath(), "skrypton-attachment-" + Guid.NewGuid().ToString("N") + ".txt");
+            File.WriteAllText(file, "Attached note");
+            try
+            {
+                string script = SendScript.Replace("oMsg.Send\r\n", "oMsg.AddAttachment \"" + file + "\"\r\noMsg.Send\r\n");
+
+                var mail = new TestMailHostService();
+                IScriptControl withHostService = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostMailHostService>(() => mail))), CreateScriptControlConfiguration(false, [], []));
+                withHostService.ExecuteStatement(script.Replace("PORT", "25"));
+                HostMailAttachment attachment = mail.Sent.Single().Message.Attachments.Single();
+                Assert.AreEqual(Path.GetFileName(file), attachment.FileName);
+                Assert.AreEqual("text/plain", attachment.MediaType);
+                Assert.AreEqual("Attached note", Encoding.ASCII.GetString(attachment.Content));
+
+                using var server = new LoopbackSmtpServer();
+                IScriptControl withSmtp = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices(s => { })), CreateScriptControlConfiguration(false, [], []));
+                withSmtp.ExecuteStatement(script.Replace("PORT", server.Port.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                string data = server.Data();
+                StringAssert.Contains(data, "multipart/mixed");
+                StringAssert.Contains(data, "filename=" + Path.GetFileName(file));
+                StringAssert.Contains(data, "Content-Transfer-Encoding: base64");
+                StringAssert.Contains(data, Convert.ToBase64String(Encoding.ASCII.GetBytes("Attached note")));
+                StringAssert.Contains(data, "<p>The incident <b>4711</b> is solved.</p>", "the bodies are still sent");
+            }
+            finally
+            {
+                File.Delete(file);
+            }
+        }
+
         private sealed class TestMailHostService : IHostMailHostService
         {
             public List<(HostMailMessage Message, HostSmtpSettings? Smtp)> Sent { get; } = new List<(HostMailMessage, HostSmtpSettings?)>();

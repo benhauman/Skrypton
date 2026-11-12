@@ -144,6 +144,7 @@ namespace Skrypton.RuntimeSupport.Components
         private const int DefaultTimeoutSeconds = 30; // smtpconnectiontimeout
 
         private readonly IHostMailHostService _mail;
+        private readonly IHostFileSystemHostService _fileSystem;
         private ScriptonCdoConfiguration _configuration = new ScriptonCdoConfiguration();
         private string _htmlBody = "";
         private string _textBody = "";
@@ -153,6 +154,7 @@ namespace Skrypton.RuntimeSupport.Components
             if (runtimeHost == null)
                 throw new ArgumentNullException(nameof(runtimeHost));
             _mail = runtimeHost.TryGetRuntimeHostService<IHostMailHostService>() ?? DefaultHostMailHostService.Instance;
+            _fileSystem = runtimeHost.TryGetRuntimeHostService<IHostFileSystemHostService>() ?? DefaultHostFileSystemHostService.Instance;
         }
 
         /// <summary>
@@ -229,7 +231,7 @@ namespace Skrypton.RuntimeSupport.Components
                 authenticate ? (_configuration.GetText("sendpassword") ?? "") : null,
                 _configuration.GetBoolean("smtpusessl"),
                 TimeSpan.FromSeconds(_configuration.GetNumber("smtpconnectiontimeout", DefaultTimeoutSeconds)));
-            var message = new HostMailMessage(From, to, cc, bcc, Subject, TextBody, (_htmlBody.Length == 0) ? null : _htmlBody);
+            var message = new HostMailMessage(From, to, cc, bcc, Subject, TextBody, (_htmlBody.Length == 0) ? null : _htmlBody, Attachments.Files());
             try
             {
                 _mail.Send(message, smtp);
@@ -241,6 +243,36 @@ namespace Skrypton.RuntimeSupport.Components
         }
 
         private static CustomException CdoError(int number, string description) => new CustomException(number, ErrorSource, description + "\r\n"); // CDO's descriptions end with a line break
+
+        /// <summary>
+        /// The attachments of the message (issue #175)
+        /// </summary>
+        [DispId(0x00000070)]
+        public ScriptonCdoBodyParts Attachments { get; } = new ScriptonCdoBodyParts();
+
+        /// <summary>
+        /// AddAttachment(URL, [UserName], [Password]) - attaches the file (a path or a file: URL) and returns its body part (issue #175); a missing
+        /// file is error 80070002, as with CDOSYS
+        /// </summary>
+        [DispId(0x00000071)]
+        public ScriptonCdoBodyPart AddAttachment(string URL, [Optional, DefaultParameterValue(null)] object? UserName, [Optional, DefaultParameterValue(null)] object? Password)
+        {
+            string path = URL ?? "";
+            if (path.StartsWith("file:", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(path, UriKind.Absolute, out Uri? uri))
+                path = uri.LocalPath;
+            if (!_fileSystem.FileExists(path))
+                throw CdoError(unchecked((int)0x80070002), "The system cannot find the file specified.");
+            byte[] content;
+            using (System.IO.StreamReader reader = _fileSystem.OpenTextFileRead(path))
+            using (var buffer = new System.IO.MemoryStream())
+            {
+                reader.BaseStream.CopyTo(buffer);
+                content = buffer.ToArray();
+            }
+            var part = new ScriptonCdoBodyPart(System.IO.Path.GetFileName(path), content);
+            Attachments.Add(part);
+            return part;
+        }
 
         /// <summary>
         /// The addresses of To, CC or BCC - separated by "," or ";" (not within quotes or angle brackets)
@@ -276,6 +308,115 @@ namespace Skrypton.RuntimeSupport.Components
                 addresses.Add(address);
             current.Clear();
         }
+    }
+
+    /// <summary>
+    /// The attachments of a CDO.Message (IBodyParts - issue #175): Count, Item(index) from 1, For Each, Delete(index or part), DeleteAll; an index
+    /// out of range is error 8002000B (Invalid index.), as with CDOSYS
+    /// </summary>
+    [SourceClassName("IBodyParts")]
+    [System.Reflection.DefaultMember("Item")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+#pragma warning disable CA1010 // Generic IEnumerable<T> - For Each of a script enumerates the parts as variants
+    internal sealed class ScriptonCdoBodyParts : ScriptonIReflectOnClrType, System.Collections.IEnumerable
+#pragma warning restore CA1010
+    {
+        private readonly List<ScriptonCdoBodyPart> _parts = new List<ScriptonCdoBodyPart>();
+
+        public ScriptonCdoBodyParts() : base(typeof(ScriptonCdoBodyParts))
+        {
+        }
+
+        [DispId(1)]
+        public int Count => _parts.Count;
+
+        [DispId(0)]
+        [IsDefault]
+        public ScriptonCdoBodyPart Item(object Index) => _parts[IndexOf(Index)];
+
+        [DispId(2)]
+        public void Delete(object Varbodypart)
+        {
+            object? value = (Varbodypart is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : Varbodypart;
+            _parts.RemoveAt((value is ScriptonCdoBodyPart part) ? _parts.IndexOf(part) is int index && (index >= 0) ? index : throw InvalidIndex() : IndexOf(value));
+        }
+
+        [DispId(3)]
+        public void DeleteAll() => _parts.Clear();
+
+        [DispId(-4)] // DISPID_NEWENUM
+#pragma warning disable CA1707 // The name is the COM member name
+        public System.Collections.IEnumerator _NewEnum() => GetEnumerator();
+#pragma warning restore CA1707
+
+        public System.Collections.IEnumerator GetEnumerator() => _parts.ToArray().GetEnumerator();
+
+        internal void Add(ScriptonCdoBodyPart part) => _parts.Add(part);
+
+        internal IReadOnlyList<HostMailAttachment> Files() => _parts.Select(p => new HostMailAttachment(p.FileName, p.ContentMediaType, p.Content)).ToList();
+
+        private int IndexOf(object? index)
+        {
+            double number;
+            try
+            {
+                number = Convert.ToDouble((index is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : index, CultureInfo.InvariantCulture);
+            }
+            catch (Exception e) when ((e is FormatException) || (e is InvalidCastException))
+            {
+                throw InvalidIndex();
+            }
+            int position = (int)Math.Round(number);
+            if ((position < 1) || (position > _parts.Count))
+                throw InvalidIndex();
+            return position - 1;
+        }
+
+        private static CustomException InvalidIndex() => new CustomException(unchecked((int)0x8002000B), "CDO.Message.1", "Invalid index.\r\n");
+    }
+
+    /// <summary>
+    /// An attachment of a CDO.Message (IBodyPart - issue #175): FileName, ContentMediaType (from the extension) and ContentTransferEncoding
+    /// </summary>
+    [SourceClassName("IBodyPart")]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    internal sealed class ScriptonCdoBodyPart : ScriptonIReflectOnClrType
+    {
+        // the media types that Windows (the registry) gives the common extensions - others are application/octet-stream
+        private static readonly Dictionary<string, string> MediaTypes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { ".txt", "text/plain" }, { ".log", "text/plain" }, { ".xml", "text/xml" }, { ".htm", "text/html" }, { ".html", "text/html" },
+            { ".csv", "application/vnd.ms-excel" }, { ".pdf", "application/pdf" }, { ".zip", "application/x-zip-compressed" },
+            { ".png", "image/png" }, { ".jpg", "image/jpeg" }, { ".jpeg", "image/jpeg" }, { ".gif", "image/gif" }, { ".bmp", "image/bmp" },
+            { ".doc", "application/msword" }, { ".xls", "application/vnd.ms-excel" },
+            { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+            { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+        };
+
+        public ScriptonCdoBodyPart(string fileName, byte[] content) : base(typeof(ScriptonCdoBodyPart))
+        {
+            FileName = fileName;
+            Content = content;
+            ContentMediaType = MediaTypes.TryGetValue(System.IO.Path.GetExtension(fileName), out string? mediaType) ? mediaType : "application/octet-stream";
+        }
+
+        [DispId(0x00000068)]
+        public string FileName { get; }
+
+        [DispId(0x00000066)]
+        public string ContentMediaType { get; set; }
+
+        /// <summary>
+        /// 7bit, as CDOSYS reports it before it sends the message (the default mail service sends the files as base64)
+        /// </summary>
+        [DispId(0x00000067)]
+        public string ContentTransferEncoding { get; set; } = "7bit";
+
+#pragma warning disable CA1819 // The content is handed over as is
+        internal byte[] Content { get; }
+#pragma warning restore CA1819
     }
 
     /// <summary>
