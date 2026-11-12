@@ -245,6 +245,21 @@ namespace Skrypton.RuntimeSupport.Components
         private static CustomException CdoError(int number, string description) => new CustomException(number, ErrorSource, description + "\r\n"); // CDO's descriptions end with a line break
 
         /// <summary>
+        /// The path of a file: URL - the one of Uri.LocalPath, or the text after "file:" as an absolute path (file:////tmp/x.txt on Linux, which
+        /// Uri reads as a UNC path), whichever exists
+        /// </summary>
+        private string LocalPathOf(string url)
+        {
+            string rest = Uri.UnescapeDataString(url.Substring("file:".Length)).TrimStart('/', '\\');
+            var candidates = new List<string>();
+            if (Uri.TryCreate(url, UriKind.Absolute, out Uri? uri))
+                candidates.Add(uri.LocalPath);
+            candidates.Add(rest); // C:/folder/file.txt
+            candidates.Add("/" + rest); // /tmp/file.txt
+            return candidates.FirstOrDefault(_fileSystem.FileExists) ?? candidates[0];
+        }
+
+        /// <summary>
         /// The attachments of the message (issue #175)
         /// </summary>
         [DispId(0x00000070)]
@@ -258,8 +273,8 @@ namespace Skrypton.RuntimeSupport.Components
         public ScriptonCdoBodyPart AddAttachment(string URL, [Optional, DefaultParameterValue(null)] object? UserName, [Optional, DefaultParameterValue(null)] object? Password)
         {
             string path = URL ?? "";
-            if (path.StartsWith("file:", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(path, UriKind.Absolute, out Uri? uri))
-                path = uri.LocalPath;
+            if (path.StartsWith("file:", StringComparison.OrdinalIgnoreCase))
+                path = LocalPathOf(path);
             if (!_fileSystem.FileExists(path))
                 throw CdoError(unchecked((int)0x80070002), "The system cannot find the file specified.");
             byte[] content;
