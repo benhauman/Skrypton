@@ -22,7 +22,13 @@ namespace Skrypton.RuntimeSupport.Components
     public sealed class HostMailMessage
     {
         public HostMailMessage(string from, IReadOnlyList<string> to, IReadOnlyList<string> cc, IReadOnlyList<string> bcc, string subject, string textBody, string? htmlBody)
+            : this(from, to, cc, bcc, subject, textBody, htmlBody, Array.Empty<HostMailAttachment>())
         {
+        }
+
+        public HostMailMessage(string from, IReadOnlyList<string> to, IReadOnlyList<string> cc, IReadOnlyList<string> bcc, string subject, string textBody, string? htmlBody, IReadOnlyList<HostMailAttachment> attachments)
+        {
+            Attachments = attachments ?? throw new ArgumentNullException(nameof(attachments));
             From = from ?? throw new ArgumentNullException(nameof(from));
             To = to ?? throw new ArgumentNullException(nameof(to));
             Cc = cc ?? throw new ArgumentNullException(nameof(cc));
@@ -47,6 +53,31 @@ namespace Skrypton.RuntimeSupport.Components
         /// Null if the message has no HTML body
         /// </summary>
         public string? HtmlBody { get; }
+
+        /// <summary>
+        /// The files attached to the message (CDO.Message.AddAttachment - issue #175)
+        /// </summary>
+        public IReadOnlyList<HostMailAttachment> Attachments { get; }
+    }
+
+    /// <summary>
+    /// A file attached to a mail message: its name, media type (eg. text/plain) and content
+    /// </summary>
+    public sealed class HostMailAttachment
+    {
+        public HostMailAttachment(string fileName, string mediaType, byte[] content)
+        {
+            FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            MediaType = mediaType ?? throw new ArgumentNullException(nameof(mediaType));
+            Content = content ?? throw new ArgumentNullException(nameof(content));
+        }
+
+        public string FileName { get; }
+        public string MediaType { get; }
+
+#pragma warning disable CA1819 // The content is handed over as is (a copy per access would be wasteful)
+        public byte[] Content { get; }
+#pragma warning restore CA1819
     }
 
     /// <summary>
