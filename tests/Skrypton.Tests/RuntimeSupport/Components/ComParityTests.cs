@@ -16,7 +16,7 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     /// text ("" &amp; value).
     /// </summary>
     [TestClass]
-    public sealed class ComParityTests : TestBase
+    public sealed partial class ComParityTests : TestBase
     {
         public sealed class Output
         {

@@ -1,0 +1,5 @@
+local 1
+global 2
+fy gy
+local const
+global const
