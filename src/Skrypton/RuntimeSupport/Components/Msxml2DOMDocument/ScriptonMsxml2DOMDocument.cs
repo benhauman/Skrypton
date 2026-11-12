@@ -260,7 +260,7 @@ namespace Skrypton.RuntimeSupport.Components
                     default:
                         throw new ArgumentException($"Unsupported XML source of type '{xmlSource.GetType().FullName}' (a URL or file path, a Byte array, a Stream or a DOMDocument is supported)");
                 }
-            });
+            }, source: "", url: ((xmlSource is ScriptDispatchWrapper urlWrapper ? urlWrapper.WrappedObject : xmlSource) as string) ?? "");
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace Skrypton.RuntimeSupport.Components
         [DispId(55)]
         public bool loadXML([In][MarshalAs(UnmanagedType.BStr)] string bstrXML)
         {
-            return TryLoad(() => _xmldoc.LoadXml(bstrXML ?? ""));
+            return TryLoad(() => _xmldoc.LoadXml(bstrXML ?? ""), source: bstrXML ?? "", url: "");
         }
 
         /// <summary>
@@ -284,9 +284,18 @@ namespace Skrypton.RuntimeSupport.Components
         /// </summary>
         public string parseErrorReason { get; private set; } = "";
 
-        private bool TryLoad(Action load)
+        /// <summary>
+        /// The error of the most recent load / loadXML (issue #173) - errorCode 0 and an empty reason if it succeeded
+        /// </summary>
+        [DispId(59)]
+        public ScriptonXmlParseError parseError { get; private set; } = ScriptonXmlParseError.None;
+
+        /// <param name="source">the XML text (loadXML), for srcText and filepos - "" for load</param>
+        /// <param name="url">the URL or path (load), "" for loadXML</param>
+        private bool TryLoad(Action load, string source, string url)
         {
             parseErrorReason = "";
+            parseError = ScriptonXmlParseError.None;
             _xmldoc.PreserveWhitespace = preserveWhiteSpace;
             try
             {
@@ -296,6 +305,7 @@ namespace Skrypton.RuntimeSupport.Components
             catch (Exception e) when ((e is XmlException) || (e is System.IO.IOException) || (e is UnauthorizedAccessException) || (e is WebException) || (e is ArgumentException) || (e is NotSupportedException) || (e is UriFormatException))
             {
                 parseErrorReason = e.Message;
+                parseError = ScriptonXmlParseError.From(e, source, url);
                 return false;
             }
         }

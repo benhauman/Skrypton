@@ -1,0 +1,13 @@
+False|-1072896685|C00CE553|The following tags were not closed: form, parameters.\r\n|0|0|0|||IXMLDOMParseError
+False|-1072896680|C00CE558|XML document must have a top level element.\r\n|0|0|0|||IXMLDOMParseError
+False|-1072896659|C00CE56D|End tag 'b' does not match the start tag 'a'.\r\n|1|6|5|<a></b>||IXMLDOMParseError
+False|-1072896684|C00CE554|Duplicate attribute.\r\n|1|17|16|<a b='1' b='2'/>||IXMLDOMParseError
+False|-1072896659|C00CE56D|End tag 'c' does not match the start tag 'b'.\r\n|2|9|13|  <b>x</c>||IXMLDOMParseError
+False|-1072896682|C00CE556|Invalid at the top level of the document.\r\n|1|1|0|text||IXMLDOMParseError
+False|-1072896683|C00CE555|Only one top level element is allowed in an XML document.\r\n|1|6|5|<a/><b/>||IXMLDOMParseError
+False|-1072898046|C00CE002|Reference to undefined entity 'nope'.\r\n|1|5|4|<a>&nope;</a>||IXMLDOMParseError
+False|-1072896766|C00CE502|A string literal was expected, but no opening quote character was found.\r\n|1|6|5|<a x=1/>||IXMLDOMParseError
+False|-1072896680|C00CE558|XML document must have a top level element.\r\n|0|0|0|||IXMLDOMParseError
+0||0|0|0|||String
+False|True|True|0|False||-1072896685
+0||
