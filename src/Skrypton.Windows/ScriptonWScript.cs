@@ -71,7 +71,23 @@ namespace Skrypton.Windows
         public void Echo(object? a, object? b, object? c, object? d, object? e, object? f, object? g) => EchoValues(a, b, c, d, e, f, g);
         public void Echo(object? a, object? b, object? c, object? d, object? e, object? f, object? g, object? h) => EchoValues(a, b, c, d, e, f, g, h);
 
-        private void EchoValues(params object?[] values) => StdOut.WriteLine(string.Join(" ", values.Select(ToText)));
+        private void EchoValues(params object?[] values) => StdOut.WriteLine(string.Join(" ", values.Select(ToEchoText)));
+
+        /// <summary>
+        /// A value as WScript.Echo writes it: as StdOut.Write, but a Boolean is -1 / 0 and Null is "null" (as with Windows Script Host - issue #119)
+        /// </summary>
+        internal static string ToEchoText(object? value)
+        {
+            switch (value)
+            {
+                case bool boolean:
+                    return boolean ? "-1" : "0";
+                case DBNull _:
+                    return "null";
+                default:
+                    return ToText(value);
+            }
+        }
 
         /// <summary>
         /// Quit [ExitCode] - ends the script
@@ -107,6 +123,11 @@ namespace Skrypton.Windows
                     return boolean ? "True" : "False";
                 case DateTime date:
                     return (date.TimeOfDay == TimeSpan.Zero) ? date.ToString("d", CultureInfo.CurrentCulture) : ((date.Date == new DateTime(1899, 12, 30)) ? date.ToString("T", CultureInfo.CurrentCulture) : date.ToString("G", CultureInfo.CurrentCulture));
+                // 15 significant digits of a Double and 7 of a Single, as VBScript converts them to text (1 / 3 is 0.333333333333333 - issue #119)
+                case double number:
+                    return number.ToString("G15", CultureInfo.CurrentCulture);
+                case float number:
+                    return number.ToString("G7", CultureInfo.CurrentCulture);
                 case IFormattable formattable:
                     return formattable.ToString(null, CultureInfo.CurrentCulture);
                 default:
