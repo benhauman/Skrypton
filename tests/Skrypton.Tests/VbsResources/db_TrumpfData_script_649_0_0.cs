@@ -53,7 +53,7 @@ namespace TranslatedProgram
         {
             object hlITIL2_retVal = null;
             hlITIL2_retVal = _.CREATEOBJECT("hlStartITIL2.Global");
-            _.CALLm2argp(this, _outer, "hlITIL2", "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
+            _.CALLm1argp(this, _.NnO(hlITIL2_retVal, "hlITIL2_retVal"), "SelfCheck", _.ARGS.Ref(_env.hlContext, v => { _env.hlContext = v; }));
             return hlITIL2_retVal;
         }
         //----------------------------------------------------------------------------------------------------------

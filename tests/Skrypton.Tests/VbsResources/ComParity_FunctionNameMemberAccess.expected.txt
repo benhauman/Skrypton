@@ -1,0 +1,14 @@
+inside: 1 value
+x=1 2 True
+inside: 1 value
+x=1 2 True
+outside: 2 True
+plain 6
+5
+property 1
+1
+10
+y = D("key"): 450 Wrong number of arguments or invalid property assignment
+Dictionary 1
+outside D("key"): 450 Wrong number of arguments or invalid property assignment
+cp.G("k"): 450 Wrong number of arguments or invalid property assignment
