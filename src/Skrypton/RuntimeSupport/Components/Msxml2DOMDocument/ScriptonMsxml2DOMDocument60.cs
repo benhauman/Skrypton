@@ -26,6 +26,7 @@ namespace Skrypton.RuntimeSupport.Components
         public ScriptonMsxml2DOMDocument60(IRuntimeHost runtimeHost) : base(runtimeHost)
         {
             setProperty("SelectionLanguage", MsxmlSelection.XPath);
+            resolveExternals = false; // as with MSXML 6 (issue #164)
         }
     }
 }
