@@ -116,6 +116,33 @@ namespace Skrypton.Windows.Tests
             Assert.IsEmpty(failures, string.Join(Environment.NewLine, failures));
         }
 
+        /// <summary>
+        /// WMI Win32_TimeZone (issue #101): its values depend on the time zone of the machine, so the script runs with cscript (and the real
+        /// WMI) and with the command line tool here - the outputs must be the same
+        /// </summary>
+        [TestMethod]
+        public void WmiTimeZoneIsTheOneOfWindows()
+        {
+            string script = Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Windows.Tests", "WmiTimeZone.vbs");
+            var cscript = new System.Diagnostics.ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "cscript.exe"), "//NoLogo \"" + script + "\"")
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            };
+            string expected;
+            using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(cscript)!)
+            {
+                expected = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                Assert.AreEqual(0, process.ExitCode, "cscript: " + expected + process.StandardError.ReadToEnd());
+            }
+            // cscript formats the date with the culture of the user, as does the command line tool with /culture
+            CliRunner.Result result = CliRunner.Run(new[] { "/culture:" + System.Globalization.CultureInfo.CurrentCulture.Name, script });
+            AssertSameOutput("WmiTimeZone", expected, result);
+        }
+
         private static void AssertSameOutput(string name, string expected, CliRunner.Result result)
         {
             string[] expectedLines = CliRunner.Lines(expected);

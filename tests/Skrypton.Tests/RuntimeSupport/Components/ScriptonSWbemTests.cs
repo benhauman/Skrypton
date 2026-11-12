@@ -69,6 +69,37 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             var noService = Assert.Throws<Exception>(() => Execute("GetObject(\"winmgmts:\").InstancesOf \"Win32_Process\"\r\n", registerProcessControl: false));
             StringAssert.Contains(noService.ToString(), nameof(IHostProcessControlHostService));
+
+            var filtered = Assert.Throws<Exception>(() => Execute("GetObject(\"winmgmts:\").ExecQuery \"SELECT * FROM Win32_TimeZone WHERE Bias = '60'\"\r\n"));
+            StringAssert.Contains(filtered.ToString(), "Win32_TimeZone");
+        }
+
+        /// <summary>
+        /// Win32_TimeZone is the local time zone (issue #101) - no host service needed; Bias is the offset from UTC in minutes (60 for UTC+01:00,
+        /// as with Windows WMI - CliParityTests.WmiTimeZoneIsTheOneOfWindows compares it with cscript)
+        /// </summary>
+        [TestMethod]
+        public void Win32TimeZoneIsTheLocalTimeZone()
+        {
+            var values = Execute(
+                "Dim svc : Set svc = GetObject(\"winmgmts:{impersonationLevel=impersonate}!\\\\.\\root\\cimv2\")\r\n" +
+                "Dim col : Set col = svc.ExecQuery(\"Select * from Win32_TimeZone\")\r\n" +
+                "collector.Report col.Count\r\n" +
+                "Dim tz, n\r\n" +
+                "For Each tz In col\r\n" +
+                "    n = n + 1\r\n" +
+                "    collector.Report tz.Bias\r\n" +
+                "    collector.Report VarType(tz.Bias) & \"|\" & VarType(tz.DaylightDayOfWeek) & \"|\" & VarType(tz.SettingID) & \"|\" & TypeName(tz)\r\n" +
+                "    collector.Report tz.Caption & \"|\" & tz.StandardName & \"|\" & tz.DaylightName\r\n" +
+                "    Exit For\r\n" +
+                "Next\r\n" +
+                "collector.Report n\r\n" +
+                "collector.Report svc.InstancesOf(\"Win32_TimeZone\").Count\r\n",
+                registerProcessControl: false);
+            TimeZoneInfo local = TimeZoneInfo.Local;
+            CollectionAssert.AreEqual(
+                new object[] { 1, (int)local.BaseUtcOffset.TotalMinutes, "3|17|1|SWbemObjectEx", local.DisplayName + "|" + local.StandardName + "|" + local.DaylightName, (short)1, 1 },
+                values.ToArray());
         }
     }
 }
