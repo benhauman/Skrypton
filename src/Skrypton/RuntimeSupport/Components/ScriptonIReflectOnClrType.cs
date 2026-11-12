@@ -201,6 +201,11 @@ namespace Skrypton.RuntimeSupport.Components
                 // No overload takes the arguments as they are: convert object arguments through their default property and try again (see above)
                 if ((args != null) && TryReplaceObjectsWithDefaultValues(args, out object[] valueArgs))
                     return InvokeMember(name, invokeAttr, binder, target, valueArgs, modifiers, culture, namedParameters);
+
+                // As COM converts the arguments to the parameter types (VariantChangeType): 0, 1, -1 or "False" for a Boolean (issue #138)
+                if ((args != null) && ((invokeAttr & (BindingFlags.InvokeMethod | BindingFlags.GetProperty)) != 0)
+                    && TryInvokeWithConvertedArguments(name, target ?? this, args, culture ?? CultureInfo.CurrentCulture, out object result))
+                    return result;
                 if (ex.Message.Length > 0)
                 {
                     MemberInfo candidate = DebugInspectMember(name, invokeAttr, args);
@@ -239,6 +244,79 @@ namespace Skrypton.RuntimeSupport.Components
                 throw;
             }
         }
+        /// <summary>
+        /// Call the method with the arguments converted to its parameter types with the rules of VBScript (CBool, CInt, CLng, CDbl, CStr - issue
+        /// #138), the omitted optional parameters with their default values. Of the overloads that take the arguments, the one that needs the fewest
+        /// conversions is called. When an overload takes as many arguments but one of them can not be converted, the error is a Type mismatch (13)
+        /// or an Overflow (6), as with COM.
+        /// </summary>
+        private bool TryInvokeWithConvertedArguments(string name, object target, object[] args, CultureInfo culture, out object result)
+        {
+            result = null;
+            Exception conversionError = null;
+            object[] best = null;
+            MethodInfo bestMethod = null;
+            int bestConversions = int.MaxValue;
+            foreach (MethodInfo method in _type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!string.Equals(method.Name, name, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                ParameterInfo[] parameters = method.GetParameters();
+                if ((parameters.Length < args.Length) || parameters.Skip(args.Length).Any(p => !p.IsOptional))
+                    continue;
+                var converted = new object[parameters.Length];
+                int conversions = 0;
+                bool convertible = true;
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    if (i >= args.Length)
+                    {
+                        converted[i] = parameters[i].HasDefaultValue ? parameters[i].DefaultValue : Type.Missing;
+                        continue;
+                    }
+                    Type parameterType = parameters[i].ParameterType;
+                    if ((args[i] == null) ? !parameterType.IsValueType : parameterType.IsInstanceOfType(args[i]))
+                    {
+                        converted[i] = args[i];
+                        continue;
+                    }
+                    try
+                    {
+                        converted[i] = VBScriptArgumentConversion.ChangeType(args[i], parameterType, culture);
+                        conversions++;
+                    }
+                    catch (Exception e) when ((e is TypeMismatchException) || (e is Skrypton.RuntimeSupport.Exceptions.VBScriptOverflowException))
+                    {
+                        conversionError ??= e;
+                        convertible = false;
+                        break;
+                    }
+                }
+                if (convertible && (conversions < bestConversions))
+                {
+                    best = converted;
+                    bestMethod = method;
+                    bestConversions = conversions;
+                }
+            }
+            if (bestMethod == null)
+            {
+                if (conversionError != null)
+                    System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(conversionError).Throw();
+                return false;
+            }
+            try
+            {
+                result = bestMethod.Invoke(target, best);
+                return true;
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            {
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                throw;
+            }
+        }
+
         private MemberInfo DebugInspectMember(string name, BindingFlags invokeAttr, object[] args)
         {
 
