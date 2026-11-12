@@ -25,7 +25,7 @@ namespace Skrypton.Windows.Tests
         public void EchoWritesTheValuesSeparatedBySpaces()
         {
             var result = Run("WScript.Echo \"a\", 1, True, Null\r\nWScript.Echo\r\nWScript.Echo 1.5");
-            Assert.AreEqual("a 1 True Null" + Environment.NewLine + Environment.NewLine + "1.5" + Environment.NewLine, result.Output);
+            Assert.AreEqual("a 1 -1 null" + Environment.NewLine + Environment.NewLine + "1.5" + Environment.NewLine, result.Output);
             Assert.AreEqual(0, result.ExitCode);
         }
 
@@ -60,7 +60,7 @@ namespace Skrypton.Windows.Tests
         public void StandardStreams()
         {
             var result = Run("Dim line : line = WScript.StdIn.ReadLine()\r\nWScript.StdOut.Write \"[\" & line & \"]\"\r\nWScript.StdOut.WriteLine \"!\"\r\nWScript.StdErr.WriteLine \"err\"\r\nWScript.Echo WScript.StdIn.AtEndOfStream", input: "hello\r\n");
-            CollectionAssert.AreEqual(new[] { "[hello]!", "True" }, Lines(result.Output));
+            CollectionAssert.AreEqual(new[] { "[hello]!", "-1" }, Lines(result.Output)); // WScript.Echo writes a Boolean as -1 (issue #119)
             Assert.AreEqual("err", result.Error.Trim());
         }
 
