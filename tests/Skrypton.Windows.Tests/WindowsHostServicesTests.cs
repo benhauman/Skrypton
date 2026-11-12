@@ -103,6 +103,12 @@ namespace Skrypton.Windows.Tests
         [TestMethod]
         public void TheClipboardKeepsText()
         {
+            lock (SharedMachineState.Clipboard) // the tests run in parallel
+                ClipboardKeepsText();
+        }
+
+        private static void ClipboardKeepsText()
+        {
             var clipboard = new WindowsHostClipboardHostService();
             string? previous = clipboard.GetText("Text");
             try
