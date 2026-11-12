@@ -30,6 +30,8 @@
     <EmbeddedResource Include="VbsResources\**\*.cases.txt" />
     <EmbeddedResource Include="VbsResources\**\*.template.docx" />
     <EmbeddedResource Include="VbsResources\**\*.template.xlsx" />
+    <!-- the demos that use only the built-ins (ComParityTests.DemoScript - the others run in Skrypton.Windows.Tests, issue #142) -->
+    <EmbeddedResource Include="..\..\samples\Windows\Excel-Report.*;..\..\samples\Windows\FileSystem-Inventory.*;..\..\samples\Windows\Word-Letter.*" LogicalName="Skrypton.Tests.Samples.%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>

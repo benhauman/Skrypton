@@ -2,27 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Skrypton.Windows.Tests
 {
     /// <summary>
-    /// Parity of the command line tool with cscript.exe: the demo scripts (samples\Windows) and the parity scripts of the components
-    /// (tests\Skrypton.Tests\VbsResources\ComParity_*.vbs) are run with the command line tool and their output is compared with the output that
-    /// was captured with cscript.exe (and Word, Excel, Outlook, Internet Explorer) on Windows
+    /// Parity of the command line tool with cscript.exe where Windows is involved: the scripts that use the services of Windows (processes,
+    /// clipboard, OLE DB, Outlook, WMI, registry, environment, event log, COM) are run with the command line tool and their output is compared
+    /// with the output of cscript.exe - captured (samples\Windows, tests\Skrypton.Tests\VbsResources\ComParity_*.vbs) or of a cscript run of the
+    /// test. The other parity scripts and demos run cross-platform in Skrypton.Tests (ComParityTests - issue #142).
     /// </summary>
     [TestClass]
     public sealed partial class CliParityTests
     {
         [TestMethod]
-        [DataRow("Ado-StreamAndDatabase", "")]
-        [DataRow("Edge-OpenUrl", "/dryrun")]
-        [DataRow("Excel-Report", "")]
-        [DataRow("FileSystem-Inventory", "")]
-        [DataRow("Outlook-Mail", "/dryrun")]
-        [DataRow("Shell-Processes", "")]
-        [DataRow("Word-Letter", "")]
+        [DataRow("Ado-StreamAndDatabase", "")] // OLE DB
+        [DataRow("Edge-OpenUrl", "/dryrun")] // WshShell.Run
+        [DataRow("Outlook-Mail", "/dryrun")] // Outlook
+        [DataRow("Shell-Processes", "")] // processes (Exec, Run, WMI)
         public void DemoScript(string name, string argument)
         {
             string folder = Path.Combine(CliRunner.RepositoryRoot, "samples", "Windows");
@@ -33,38 +30,18 @@ namespace Skrypton.Windows.Tests
             AssertSameOutput(name, File.ReadAllText(Path.Combine(folder, name + ".expected.txt")), result);
         }
 
+        /// <summary>
+        /// The parity scripts of the components that use the services of Windows - Skrypton.Tests runs them with test services
+        /// </summary>
         [TestMethod]
-        [DataRow("ComParity_ScriptingDictionary")]
-        [DataRow("ComParity_VBScriptRegExp")]
-        [DataRow("ComParity_Msxml2DOMDocument")]
-        [DataRow("ComParity_ScriptingFileSystemObject")]
-        [DataRow("ComParity_WScriptShellScriptletWmiAdodbTypeNames")]
-        [DataRow("ComParity_InternetExplorerHtmlFile")]
-        [DataRow("ComParity_WordApplication")]
-        [DataRow("ComParity_ExcelApplication")]
-        [DataRow("ComParity_BuiltInFunctions")]
-        [DataRow("ComParity_ErrObject")]
-        [DataRow("ComParity_UndeclaredVariables")]
-        [DataRow("ComParity_ByteFunctions")]
-        [DataRow("ComParity_SingleLineIf")]
-        [DataRow("ComParity_Classes")]
+        [DataRow("ComParity_WScriptShellScriptletWmiAdodbTypeNames")] // processes (WMI, ExpandEnvironmentStrings)
+        [DataRow("ComParity_InternetExplorerHtmlFile")] // clipboard
         public void ComponentParityScript(string name)
         {
             string folder = Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources");
             string script = Path.Combine(Path.GetTempPath(), "skrypton_cli_" + Guid.NewGuid().ToString("N") + ".vbs");
             var environment = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             environment["SKRYPTON_PARITY_VAR"] = "parity-value";
-            var templates = new List<string>();
-            foreach (string extension in new[] { "docx", "xlsx" })
-            {
-                string template = Path.Combine(folder, name + ".template." + extension);
-                if (!File.Exists(template))
-                    continue;
-                string copy = Path.Combine(Path.GetTempPath(), "skrypton_cli_template_" + Guid.NewGuid().ToString("N") + "." + extension);
-                File.Copy(template, copy);
-                templates.Add(copy);
-                environment["SKRYPTON_PARITY_" + extension.ToUpperInvariant()] = copy;
-            }
 
             // the parity scripts write with Out (cscript: WScript.Echo)
             File.WriteAllText(script, "Sub Out(s) : WScript.Echo \"\" & s : End Sub\r\n" + File.ReadAllText(Path.Combine(folder, name + ".vbs")));
@@ -80,49 +57,11 @@ namespace Skrypton.Windows.Tests
             finally
             {
                 File.Delete(script);
-                foreach (string template in templates)
-                    File.Delete(template);
                 if (clipboard != null)
                     new WindowsHostClipboardHostService().SetText("Text", clipboard);
                 if (usesClipboard)
                     System.Threading.Monitor.Exit(SharedMachineState.Clipboard);
             }
-        }
-
-
-        /// <summary>
-        /// Unhandled errors (tests\Skrypton.Tests\VbsResources\ComParity_UnhandledErrors.cases.txt): the command line tool must report each
-        /// error as cscript does - "script.vbs(line, column) source: description" (compared without the file) - and end with 1
-        /// </summary>
-        [TestMethod]
-        public void UnhandledErrorsAreReportedAsCscriptReportsThem()
-        {
-            string[] lines = File.ReadAllLines(Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources", "ComParity_UnhandledErrors.cases.txt"))
-                .Where(line => (line.Length > 0) && !line.StartsWith("#", StringComparison.Ordinal))
-                .ToArray();
-            // the cases run in parallel (issue #134), each with its own script file
-            var failures = new string?[lines.Length / 2];
-            System.Threading.Tasks.Parallel.For(0, lines.Length / 2, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, c =>
-            {
-                int i = 2 * c;
-                string script = Path.Combine(Path.GetTempPath(), "skrypton_cli_" + Guid.NewGuid().ToString("N") + ".vbs");
-                try
-                {
-                    File.WriteAllText(script, lines[i] + "\r\n");
-                    CliRunner.Result result = CliRunner.Run(new[] { "/culture:en-US", script });
-                    string reported = result.StandardError.Trim();
-                    // "C:\..\x.vbs(1, 41) Microsoft VBScript runtime error: .." -> "(1, 41) Microsoft VBScript runtime error: .."
-                    string actual = System.Text.RegularExpressions.Regex.Replace(reported, @"^.*?\((\d+, \d+)\) ", "($1) ");
-                    if ((actual != lines[i + 1]) || (result.ExitCode != 1))
-                        failures[c] = $"{lines[i]}{Environment.NewLine}  expected: {lines[i + 1]}{Environment.NewLine}  actual:   {actual} (exit code {result.ExitCode})";
-                }
-                finally
-                {
-                    File.Delete(script);
-                }
-            });
-            string[] failed = failures.Where(f => f != null).Select(f => f!).ToArray();
-            Assert.IsEmpty(failed, string.Join(Environment.NewLine, failed));
         }
 
         /// <summary>
