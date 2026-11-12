@@ -150,6 +150,11 @@ namespace Skrypton.RuntimeSupport.Components
             CultureInfo culture,
             string[] namedParameters)
         {
+            // With an omitted argument (Missing - issue #154) the default binder finds several overloads (or none): bind as VBScript does, the
+            // omitted argument takes the default of an optional parameter
+            if ((args != null) && args.Any(a => a is Missing) && ((invokeAttr & (BindingFlags.InvokeMethod | BindingFlags.GetProperty)) != 0)
+                && TryInvokeWithConvertedArguments(name, target ?? this, args, culture ?? CultureInfo.CurrentCulture, out object resultWithOmittedArguments))
+                return resultWithOmittedArguments;
             try
             {
                 return _type.InvokeMember(
@@ -271,6 +276,18 @@ namespace Skrypton.RuntimeSupport.Components
                 {
                     if (i >= args.Length)
                     {
+                        converted[i] = parameters[i].HasDefaultValue ? parameters[i].DefaultValue : Type.Missing;
+                        continue;
+                    }
+                    if (args[i] is Missing)
+                    {
+                        // An omitted argument (eg. fso.OpenTextFile(path, , True) - issue #154): the default of an optional parameter, an overload
+                        // without one does not take the arguments
+                        if (!parameters[i].IsOptional)
+                        {
+                            convertible = false;
+                            break;
+                        }
                         converted[i] = parameters[i].HasDefaultValue ? parameters[i].DefaultValue : Type.Missing;
                         continue;
                     }
