@@ -1,0 +1,13 @@
+True
+False
+False|True
+True|3
+2|True
+True
+True
+False|3
+True
+5
+3
+True
+7

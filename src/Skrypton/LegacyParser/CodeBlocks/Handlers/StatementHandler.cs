@@ -117,7 +117,7 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
             for (var index = 0; index < initialTokens.Count; index++)
             {
                 var token = initialTokens[index];
-                if ((token is ComparisonOperatorToken) & (token.Content == "=") && (bracketCount == 0) && !inExpressionContent)
+                if ((token is ComparisonOperatorToken) & (token.Content == "=") && (bracketCount == 0) && !inExpressionContent && IsAssignmentTarget(valueToSetTokens))
                 {
                     // Taken an equals sign to indicate the break between a value-to-set and codeExpression-to-set in a value-setting-
                     // statement (eg. "a = 1") unless this has already been done, in which case it is a comparison operator (eg.
@@ -156,6 +156,38 @@ namespace Skrypton.LegacyParser.CodeBlocks.Handlers
                 valueToSetTokens,
                 hasCallPrefix ? Statement.CallPrefixOptions.Present : Statement.CallPrefixOptions.Absent
             );
+        }
+
+        /// <summary>
+        /// Can the tokens before a "=" be the target of an assignment ("a", "obj.Prop", "obj.Prop(1)", "a(1, 2)")? Not if they are a call without
+        /// brackets that has arguments ("WScript.Echo 1 = 1", "WScript.Echo False, 1 = 1") - then the "=" is a comparison in an argument (issue
+        /// #120): an argument separator outside of brackets, or a value directly after a name or a closing bracket
+        /// </summary>
+        private static bool IsAssignmentTarget(List<IToken> tokens)
+        {
+            int bracketCount = 0;
+            IToken? previous = null;
+            foreach (IToken token in tokens)
+            {
+                if (token is OpenBrace)
+                {
+                    bracketCount++;
+                }
+                else if (token is CloseBrace)
+                {
+                    bracketCount--;
+                }
+                else if (bracketCount == 0)
+                {
+                    if (token is ArgumentSeparatorToken)
+                        return false;
+                    bool previousEndsAnOperand = (previous != null) && !(previous is MemberAccessorOrDecimalPointToken) && !(previous is OperatorToken);
+                    if (previousEndsAnOperand && !(token is MemberAccessorOrDecimalPointToken))
+                        return false; // a name or value right after a name / ")" - the first argument of a call without brackets
+                }
+                previous = (bracketCount == 0) || (token is OpenBrace) ? token : previous;
+            }
+            return true;
         }
     }
 }
