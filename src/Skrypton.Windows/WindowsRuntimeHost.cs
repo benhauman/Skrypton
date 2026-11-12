@@ -32,7 +32,8 @@ namespace Skrypton.Windows
                 .Register<IHostMessageBoxHostService>(new WindowsHostMessageBoxHostService())
                 .Register<IHostInputBoxHostService>(new WindowsHostInputBoxHostService())
                 .Register<IHostDatabaseConnectionFactoryHostService>(new WindowsHostOleDbConnectionFactoryHostService())
-                .Register<IHostOutlookHostService>(new WindowsHostOutlookHostService());
+                .Register<IHostOutlookHostService>(new WindowsHostOutlookHostService())
+                .Register<IHostEnvironmentVariablesHostService>(new WindowsHostEnvironmentVariablesHostService());
         }
 
         /// <summary>

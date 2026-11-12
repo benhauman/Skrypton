@@ -13,7 +13,7 @@ namespace Skrypton.Windows.Tests
     /// was captured with cscript.exe (and Word, Excel, Outlook, Internet Explorer) on Windows
     /// </summary>
     [TestClass]
-    public sealed class CliParityTests
+    public sealed partial class CliParityTests
     {
         [TestMethod]
         [DataRow("Ado-StreamAndDatabase", "")]
