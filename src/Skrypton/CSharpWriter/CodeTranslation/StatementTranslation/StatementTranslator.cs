@@ -1239,7 +1239,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         9 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v9), // test: UnitSelection_Renderer_NoSelects
                         10 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v10), // test: UnitSelection_Renderer_NoSelects
                         15 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1v15), // test: UnitSelection_Renderer_NoSelects
-                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm1v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
+                        _ => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm1argp), // no helper for this number of arguments: the argument provider (issue #156)
                     };
                 }
                 else
@@ -1273,7 +1273,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v3), // test: ComParity_WordApplication (d.Tables.Add(d.Content, 2, 2))
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v4), // CT98_dialog276
                         //5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2v5),
-                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm2v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
+                        _ => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm2argp), // no helper for this number of arguments: the argument provider (issue #156)
                     };
                 }
                 else
@@ -1296,7 +1296,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                         3 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v3), // test: UnitSelection_Renderer_NoSelects  Line:2427 : Page.Functions.Dates.NiceDateGuts(adtStartNight,True,True)
                         4 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v4), // test: UnitSelection_Renderer_NoSelects  Line:2447 : Page.Functions.Booking.DrawSelectRange("unit_" &objUnit.UnitKey, 0, objUnit.UnitCount, iSelectedQty)
                         5 => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3v5), // test: UnitSelection_Renderer_NoSelects  Line:2060 : Page.Functions.Booking.Booking_MatchQual(0, iDateDiff, iDurDiff, aiReqNights, 2)
-                        _ => throw NotSupportedExceptionFactory.Create($"Overload 'CALLm3v{argumentsArray.Length}' not defined (a call with {argumentsArray.Length} arguments)", target.LineIndex, target.Content)
+                        _ => nameof(IAccessValuesUsingVBScriptRulesExtensions.CALLm3argp), // no helper for this number of arguments: the argument provider (issue #156)
                     };
                 }
                 else
@@ -1413,6 +1413,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 if (allArgsConfirmedToBeByVal && zeroArgumentBracketsPresence == null
                                               && (targetMemberAccessTokensArray.Length >= 1 && targetMemberAccessTokensArray.Length <= 3) // 'callName' !!! error CS1503: Argument 4: cannot convert from 'string' to 'Skrypton.RuntimeSupport.IBuildCallArgumentProviders'
                     && (argumentsArray.Length >= 1)// && argumentsArray.Length <= 5)
+                    && !callName.EndsWith("argp", StringComparison.Ordinal) // the helper takes an argument provider (issue #156)
                         )
                 {
                     // test: 'ConstValuesShouldAlwaysBePassedToFunctionsByVal'
