@@ -875,12 +875,12 @@ Part2: 'Close'
 
     public sealed class WithStatementInformation
     {
-        private readonly IHaveNestedContent _withBlockContent;
         internal readonly IToken WithTokenRef;
         internal Skrypton.LegacyParser.CodeBlocks.Basic.CodeExpression WithTarget { get; }// => _withBlockContent.Target;
         public WithStatementInformation(WithBlock withBlockContent, IToken directedWithReference)
         {
-            _withBlockContent = withBlockContent ?? throw new ArgumentNullException(nameof(withBlockContent));
+            if (withBlockContent == null)
+                throw new ArgumentNullException(nameof(withBlockContent));
             WithTokenRef = directedWithReference ?? throw new ArgumentNullException(nameof(directedWithReference));
             WithTarget = withBlockContent.Target;
         }

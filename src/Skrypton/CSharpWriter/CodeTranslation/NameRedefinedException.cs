@@ -7,9 +7,11 @@ namespace Skrypton.CSharpWriter.CodeTranslation
 {
     public sealed class NameRedefinedException : Exception
     {
+#pragma warning disable IDE0051 // CA1032 wants the standard exception constructors - they are private so that they are not used
         [Obsolete("do not use it")] private NameRedefinedException() : this(null!, innerException: null) { }
         [Obsolete("do not use it")] private NameRedefinedException(string message) : this(message, innerException: null) { }
         [Obsolete("do not use it")] private NameRedefinedException(string message, Exception? innerException) : base(message, innerException) { Name = new NameToken("", 0); }
+#pragma warning restore IDE0051
         public NameRedefinedException(NameToken name) : base(GetMessage(name))
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));

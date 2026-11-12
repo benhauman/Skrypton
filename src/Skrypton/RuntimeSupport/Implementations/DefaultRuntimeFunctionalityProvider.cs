@@ -72,37 +72,6 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         private readonly Dictionary<string, Func<string?, object>> _objectCreateFactories = new Dictionary<string, Func<string?, object>>(StringComparer.OrdinalIgnoreCase);
 
-        private static object HandlePostInitializationHandler(string progId, object objectInstance)
-        {
-            // The behavior comes from three different layers that were never fully documented together:
-            // * 1/3) VBScript’s automatic type coercion rules. Key point: VBScript will coerce strings to booleans, numbers, objects, etc. when calling COM methods. https://learn.microsoft.com/en-us/previous-versions//d1wf56tt(v=vs.85)
-            // * 2/3) MSXML’s COM overloading rules. VBScript uses IDispatch::Invoke with very permissive rules. https://learn.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-idispatch-invoke
-            //  -> unwraps COM objects automatically
-            //  -> chooses the correct overloaded COM method
-            //  -> retries calls with different type coercions
-            //  -> suppresses many COM errors
-            // * 3/3) The IDispatch binder inside Windows Script Host
-
-            if (string.Equals(progId, "Msxml2.DOMDocument", StringComparison.OrdinalIgnoreCase))
-            {
-                // !!!! VBScript silently sets:             xmlDoc.preserveWhiteSpace = False
-                //https://zetcode.com/vbscript/dom-msxml-domdocument/
-                // https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms757828(v=vs.85)
-                //IDispatchAccess.CallPropertySet(objectInstance, "preserveWhiteSpace", new object[] { false });
-                //objectInstance.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
-                //domType.InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, xmlDoc, new object[] { false });
-
-                // Late‑bind using reflection
-#pragma warning disable CA1304 // Specify CultureInfo
-                object elem = objectInstance.GetType().InvokeMember("preserveWhiteSpace", BindingFlags.SetProperty, null, objectInstance, new object[] { false });
-#pragma warning restore CA1304 // Specify CultureInfo
-            }
-            //IntPtr pDispatch = Marshal.GetIDispatchForObject(objectInstance);
-            //var disp = Marshal.GetComInterfaceForObject<IDispatchAccess.IDispatch>();
-            //IDispatch disp = (IDispatch)Marshal.GetObjectForIUnknown(pDispatch);
-            return objectInstance;
-        }
-
         public void RegisterObjectCreateFactory(string progId, Func<string?, object> factory)
         {
             if (string.IsNullOrEmpty(progId))
@@ -910,90 +879,9 @@ namespace Skrypton.RuntimeSupport.Implementations
             // Windows-1252 maps '€' (Unicode U+20AC = 8364) to a single byte 0x80. => cannot just cast 8364 to byte! => encode the character to bytes using Encoding!
             try
             {
-                //if (value != null)
-                //{
                 byte b = CBYTECore(value, "'CHR'");
                 char result = Windows1252.GetChars([b])[0]; // not Encoding.UTF8 for VBScript
                 return new string(result, 1);
-                //}
-                /*
-                if (value != null && value is not IConvertible && value is DispatchWrapper dwY)
-                {
-                    value = dwY.WrappedObject;
-                }
-
-                if (value == null)
-                {
-                    //char c = (char)0;// Encoding.Default.GetChars(new[] { CBYTECore(value, "'CHR'") })[0];
-                    return new string((char)0, 1);
-                }
-                if (value == DBNull.Value)
-                {
-                    var c = Encoding.Default.GetChars(new[] { CBYTECore(value, "'CHR'") })[0];
-                    return new string(c, 1);
-                }
-                if (value is string valueString && valueString == string.Empty)
-                {
-                    return new string((char)0, 1);
-                }
-                //if (value != null)
-                {
-                    // Convert the int code point to char
-                    byte b;
-                    if (value is int valueInt32)
-                    {
-                        char c = (char)(int)valueInt32; // 8364 -> '€'
-                        b = Windows1252.GetBytes(new[] { c })[0];
-                    }
-                    else
-                    {
-                        if (value is not IConvertible)
-                        {
-                            // try get default property's value and convert it to byte
-                            var pis = value.GetType().GetProperties();
-                            if (pis.Length == 1)
-                            {
-                                var pi = pis[0];
-                                var propertyValue = pi.GetValue(value);
-                                if (propertyValue != null && propertyValue is DispatchWrapper dwX)
-                                    propertyValue = dwX.WrappedObject;
-                                if (propertyValue == null)
-                                {
-                                    return new string((char)0, 1);
-                                }
-                                if (propertyValue == DBNull.Value)
-                                {
-                                    var c = Encoding.Default.GetChars(new[] { CBYTE(propertyValue) })[0];
-                                    return new string(c, 1);
-                                }
-                                b = Convert.ToByte(propertyValue); // double, null, empty
-                            }
-                            else
-                            {
-                                b = Convert.ToByte(value); // double, null, empty
-                            }
-                        }
-                        try
-                        {
-                            b = Convert.ToByte(value); // double, null, empty
-                        }
-                        catch (System.OverflowException e) // for -0.6
-                        {
-                            throw new InvalidProcedureCallOrArgumentException("'CHR'", e);
-                        }
-                    }
-                    //byte b = Convert.ToByte(value);
-                    char result = Windows1252.GetChars(new[] { b })[0]; // not Encoding.UTF8 for VBSCript
-                    return new string(result, 1);
-                }
-                //else
-                //{
-                //
-                //    // Need to use Encoding.Default.GetChars so that we can reliably get the information back out using ASC (if used something that seems simple like
-                //    // "return new string((char)CBYTE(value), 1);" then the correct value won't always be returned from ASC - eg. 155)
-                //    var c = Encoding.Default.GetChars(new[] { CBYTE(value) })[0];
-                //    return new string(c, 1);
-                //}*/
             }
             catch (VBScriptOverflowException e)
             {
@@ -2212,7 +2100,7 @@ namespace Skrypton.RuntimeSupport.Implementations
             if (string.IsNullOrEmpty(classProgId))
                 throw new ArgumentException("object prog-id cannot be null or empty.", nameof(classProgId));
             if (_objectCreateFactories.TryGetValue(classProgId, out Func<string?, object> objectFactory))
-                return HandlePostInitializationHandler(classProgId, objectFactory(optionalMonikerValues));
+                return objectFactory(optionalMonikerValues);
 
             try
             {
@@ -2230,12 +2118,12 @@ namespace Skrypton.RuntimeSupport.Implementations
                 // ProgID, so they just work and can still be overridden (see issue #50)
                 object? builtInObject = TryCreateBuiltInObject(classProgId);
                 if (builtInObject != null)
-                    return HandlePostInitializationHandler(classProgId, builtInObject);
+                    return builtInObject;
 
                 // The host's COM activation (eg. registered COM classes, opt-in) comes last, so built-ins and factories win (issue #103)
                 object? comObject = _runtimeHost.TryGetRuntimeHostService<IHostComActivationHostService>()?.TryCreateObject(classProgId);
                 if (comObject != null)
-                    return HandlePostInitializationHandler(classProgId, comObject);
+                    return comObject;
 
                 // Error 429 as with Windows VBScript (issue #103)
                 throw ActiveXComponentCantCreateObjectException.ForProgId(
@@ -2247,19 +2135,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 throw new InvalidOperationException($"Failed to create com object for '{classProgId}'", ex);
             }
         }
-        public static IReflect TestCreateComObjectTest(string classProgId, Type comType)
-        {
-            MyComProxy prx = MyComProxy.CreateComProxy(classProgId, comType);
-            return prx._comInstance is IReflect rfl ? rfl : prx;
-        }
 
-        //"Scripting.Dictionary"
-        //throw new InvalidOperationException($"object factory for '{classProgId}' not registered.");
-        private static object CreateComObject(string classProgId, Type comType)
-        {
-            MyComProxy prx = MyComProxy.CreateComProxy(classProgId, comType);
-            return prx._comInstance;
-        }
         public object GETOBJECT(object path, object value)
         {
             return GETOBJECTCore(path, value);

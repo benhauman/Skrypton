@@ -22,12 +22,12 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
     {
         private readonly VBScriptNameRewriter _nameRewriter;
         private readonly TempValueNameGenerator _tempNameGenerator;
-        private readonly ILogInformation _logger;
         public FuncByRefArgumentMapper(VBScriptNameRewriter nameRewriter, TempValueNameGenerator tempNameGenerator, ILogInformation logger)
         {
             _nameRewriter = nameRewriter;
             _tempNameGenerator = tempNameGenerator ?? throw new ArgumentNullException(nameof(tempNameGenerator));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            if (logger == null)
+                throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>

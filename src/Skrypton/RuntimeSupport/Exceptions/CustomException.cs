@@ -15,9 +15,11 @@ namespace Skrypton.RuntimeSupport.Exceptions
 
         private readonly int _errorNumber;
 
+#pragma warning disable IDE0051 // CA1032 wants the standard exception constructors - they are private so that they are not used
         [Obsolete("do not use it")] private CustomException() { }
         [Obsolete("do not use it")] private CustomException(string message) : base(message) { }
         [Obsolete("do not use it")] private CustomException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning restore IDE0051
         public CustomException(int number, string source, string description) : base(GetMessage(source, description), additionalInformationIfAny: null, innerException: null)
         {
             if (number == 0)

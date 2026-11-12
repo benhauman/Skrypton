@@ -10,8 +10,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
     [DataContract(Namespace = "http://vbs")]
     public abstract class BaseDimStatement : IHaveNonNestedExpressions
     {
-        private readonly int _lineIndex;
-
         // =======================================================================================
         // CLASS INITIALISATION
         // =======================================================================================
@@ -19,7 +17,6 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
         {
             if (variables == null)
                 throw new ArgumentNullException(nameof(variables));
-            _lineIndex = lineIndex;
 
             Variables = variables.ToList().AsReadOnly();
             if (Variables.Any(v => v == null))

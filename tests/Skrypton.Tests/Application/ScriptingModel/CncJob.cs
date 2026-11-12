@@ -1,4 +1,6 @@
-﻿using System;
+﻿// The private members are reached by the scripts of the tests (the binder allows private access to the script model) - IDE0051 does not see that
+#pragma warning disable IDE0051
+using System;
 using System.Collections.Generic;
 
 namespace Helpline.Application.ScriptingModel

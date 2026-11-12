@@ -1221,15 +1221,6 @@ namespace Skrypton.Tests.StageTwoParser
         }
 
         /// <summary>
-        /// Create a CallExpressionSegment from member access tokens and argument expressions (the zeroArgBrackets is only considered if arguments is an empty set,
-        /// if arguments is empty and zeroArgBrackets is null then a Absent will be used as a default)
-        /// </summary>
-        private static IExpressionSegment CALL(int lineIndex, IReadOnlyCollection<IToken> memberAccessTokens, CallExpressionSegment.ArgumentBracketPresenceOptions? zeroArgBrackets, params Skrypton.StageTwoParser.ExpressionParsing.ParsingExpression[] arguments)
-        {
-            return CALL(lineIndex, memberAccessTokens, arguments, zeroArgBrackets);
-        }
-
-        /// <summary>
         /// Create a CallExpressionSegment from member access tokens and argument expressions (applying the default logic for ArgumentBracketPresenceOptions; null
         /// if there are arguments and Absent otherwise)
         /// </summary>

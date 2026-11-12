@@ -1950,27 +1950,6 @@ namespace Skrypton.RuntimeSupport.Implementations
             return (index is string text) ? "[string: \"" + text + "\"]" : "[number: " + Convert.ToString(index, CultureInfo.InvariantCulture) + "]";
         }
 
-        private static NewExpression GetNewArgumentException(string message, ParameterExpression exceptionParameter)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-                throw new ArgumentException("Null/blank message specified");
-            if (exceptionParameter == null)
-                throw new ArgumentNullException(nameof(exceptionParameter));
-
-            return Expression.New(
-                typeof(ArgumentException).GetConstructor(new[] { typeof(string), typeof(Exception) }),
-                Expression.Call(
-                    typeof(string).GetMethod("Concat", new[] { typeof(object), typeof(object) }),
-                    Expression.Constant(message.Trim() + ": "),
-                    Expression.Call(
-                        exceptionParameter,
-                        typeof(Exception).GetMethod("GetBaseException")
-                    )
-                ),
-                exceptionParameter
-            );
-        }
-
         private static Type GetNonByRefType(Type byRefType)
         {
             if (byRefType == null)
