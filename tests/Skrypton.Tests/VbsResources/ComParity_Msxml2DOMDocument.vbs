@@ -161,3 +161,14 @@ Sub AttributesAndCData()
     attrFso.DeleteFile attrPath
 End Sub
 AttributesAndCData
+' The ProgIDs of the DOM document (issue #108): MSXML 3 (DOMDocument, XSLPattern) and MSXML 6 (DOMDocument60, XPath); async is True by default
+Dim domProgId, progDoc
+For Each domProgId In Array("Microsoft.XMLDOM", "Microsoft.FreeThreadedXMLDOM", "MSXML.DOMDocument", "Msxml2.DOMDocument", "Msxml2.DOMDocument.3.0", "Msxml2.DOMDocument.6.0", "Msxml2.FreeThreadedDOMDocument", "Msxml2.FreeThreadedDOMDocument.3.0", "Msxml2.FreeThreadedDOMDocument.6.0")
+    Set progDoc = CreateObject(domProgId)
+    Out domProgId & " " & TypeName(progDoc) & " " & progDoc.getProperty("SelectionLanguage") & " " & progDoc.async & " " & progDoc.preserveWhiteSpace & " " & progDoc.loadXML("<a><b/></a>") & " " & progDoc.selectNodes("//b").length
+Next
+Dim xmlDomDoc : Set xmlDomDoc = CreateObject("Microsoft.XMLDOM")
+xmlDomDoc.LoadXml("<Translations><Translation key=""NoCaller"">kein Anrufer</Translation><Translation key=""SubjectAgentNotify"">Neue Anfrage</Translation></Translations>")
+Out TypeName(xmlDomDoc) & " " & xmlDomDoc.getProperty("SelectionLanguage")
+Out xmlDomDoc.SelectSingleNode("//Translation[@key=""SubjectAgentNotify""]").Text
+Out xmlDomDoc.SelectNodes("//Translation").length

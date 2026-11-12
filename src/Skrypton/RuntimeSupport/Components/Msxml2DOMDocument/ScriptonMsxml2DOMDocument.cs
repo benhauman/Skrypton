@@ -24,8 +24,17 @@ namespace Skrypton.RuntimeSupport.Components
     [ComVisible(true)] // Required because .NET can auto‑implement IDispatch when (1):COM‑visible:true, (2): interface mode:AutoDispatch and (3): DISPID(0) & DISPIDs used
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     // [DefaultMember("Item")]
-    internal sealed class ScriptonMsxml2DOMDocument //  see "Msxml2.DOMDocument" from Interop.MSXML2.dll, 'MSXML2.DOMDocument60'
+    internal class ScriptonMsxml2DOMDocument //  see "Msxml2.DOMDocument" from Interop.MSXML2.dll, 'MSXML2.DOMDocument60'
     {
+        /// <summary>
+        /// The ProgIDs of the MSXML 3 document (TypeName DOMDocument, SelectionLanguage XSLPattern with Windows VBScript - issue #108)
+        /// </summary>
+        public static readonly IReadOnlyCollection<string> ProgIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Msxml2.DOMDocument", "Msxml2.DOMDocument.3.0", "Msxml2.FreeThreadedDOMDocument", "Msxml2.FreeThreadedDOMDocument.3.0",
+            "Microsoft.XMLDOM", "Microsoft.FreeThreadedXMLDOM", "MSXML.DOMDocument",
+        };
+
         private readonly XmlDocument _xmldoc = new XmlDocument();
         private readonly IHostFileSystemHostService _fileSystem;
 
@@ -131,6 +140,9 @@ namespace Skrypton.RuntimeSupport.Components
             }
         }
 
+        /// <summary>
+        /// True by default, as with MSXML (issue #108) - documents are loaded synchronously anyway
+        /// </summary>
         [DispId(61)]
         public bool async
         {
@@ -141,7 +153,7 @@ namespace Skrypton.RuntimeSupport.Components
             [DispId(61)]
             [param: In]
             set;
-        }
+        } = true;
 
 
         // the other properties of MSXML's DOMDocument - kept, they do not change how Skrypton parses or selects
