@@ -128,8 +128,10 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return new Components.ScriptonVBScriptRegExp(_culture);
             if (classProgId.Equals("Msxml2.DOMDocument", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonMsxml2DOMDocument(_runtimeHost);
-            if (classProgId.Equals(Components.ScriptonServerXMLHTTP60.ProgId, StringComparison.OrdinalIgnoreCase))
+            if (Components.ScriptonServerXMLHTTP60.ProgIds.Contains(classProgId))
                 return new Components.ScriptonServerXMLHTTP60(_runtimeHost);
+            if (classProgId.Equals(Components.ScriptonWinHttpRequest.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonWinHttpRequest(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonWScriptShell.ProgId, StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonWScriptShell(_runtimeHost);
             if (classProgId.Equals(Components.ScriptonFileSystemObject.ProgId, StringComparison.OrdinalIgnoreCase))

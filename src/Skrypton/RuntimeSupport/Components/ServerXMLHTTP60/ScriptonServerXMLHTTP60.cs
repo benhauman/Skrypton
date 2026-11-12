@@ -10,8 +10,9 @@ using Skrypton.RuntimeSupport.Implementations;
 namespace Skrypton.RuntimeSupport.Components
 {
     /// <summary>
-    /// The built-in Msxml2.ServerXMLHTTP.6.0. Requests are sent through the host's IHostHttpClientHostService (or with HttpClient if the host has
-    /// not registered one), synchronously - a request opened with async = True is also completed by send (readyState is then 4).
+    /// The built-in Msxml2.ServerXMLHTTP.6.0 - also for Msxml2.XMLHTTP (and its versions; TypeName is IServerXMLHTTPRequest2 for them all with
+    /// Windows VBScript - issue #102). Requests are sent through the host's IHostHttpClientHostService (or with HttpClient if the host has not
+    /// registered one), synchronously - a request opened with async = True is also completed by send (readyState is then 4).
     /// </summary>
     [SourceClassName("IServerXMLHTTPRequest2")] // TypeName(CreateObject("Msxml2.ServerXMLHTTP.6.0")) (as with Windows VBScript)
     [ComVisible(true)]
@@ -19,6 +20,14 @@ namespace Skrypton.RuntimeSupport.Components
     internal sealed class ScriptonServerXMLHTTP60 : ScriptonIReflectOnClrType
     {
         public const string ProgId = "Msxml2.ServerXMLHTTP.6.0";
+
+        /// <summary>
+        /// The ProgIDs of this built-in (issue #102)
+        /// </summary>
+        public static readonly IReadOnlyCollection<string> ProgIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ProgId, "Msxml2.ServerXMLHTTP", "Msxml2.ServerXMLHTTP.3.0", "Msxml2.XMLHTTP", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP.6.0", "Microsoft.XMLHTTP",
+        };
 
         private readonly IHostHttpClientHostService _httpClient;
         private readonly List<KeyValuePair<string, string>> _requestHeaders = new List<KeyValuePair<string, string>>();
@@ -176,6 +185,25 @@ namespace Skrypton.RuntimeSupport.Components
         {
             return _options.TryGetValue(option, out object? value) ? value : null;
         }
+
+        /// <summary>
+        /// Has the script set the request header (before send)
+        /// </summary>
+        internal bool HasRequestHeader(string header) => _requestHeaders.Any(h => h.Key.Equals(header, StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// The credentials of WinHttpRequest.SetCredentials (sent with the request, as the user and password of open)
+        /// </summary>
+        internal void SetCredentials(string user, string password)
+        {
+            _user = user;
+            _password = password;
+        }
+
+        /// <summary>
+        /// The URL of the response (after redirects), or the opened URL before send
+        /// </summary>
+        internal Uri? ResponseUrlOrOpenedUrl => _response?.Url ?? _url;
 
         private HostHttpResponse Response => _response ?? throw new InvalidOperationException("ServerXMLHTTP: the response is only available after send has completed");
 

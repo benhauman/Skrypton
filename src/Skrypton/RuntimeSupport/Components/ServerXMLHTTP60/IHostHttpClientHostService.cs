@@ -53,7 +53,16 @@ namespace Skrypton.RuntimeSupport.Components
     public sealed class HostHttpResponse
     {
         public HostHttpResponse(int status, string statusText, IReadOnlyList<KeyValuePair<string, string>> headers, byte[] body)
+            : this(status, statusText, headers, body, url: null)
         {
+        }
+
+        /// <summary>
+        /// url: the URL of the response - after redirects (WinHttpRequest.Option(1)); null if it is the URL of the request
+        /// </summary>
+        public HostHttpResponse(int status, string statusText, IReadOnlyList<KeyValuePair<string, string>> headers, byte[] body, Uri? url)
+        {
+            Url = url;
             Status = status;
             StatusText = statusText ?? "";
             Headers = headers ?? throw new ArgumentNullException(nameof(headers));
@@ -62,6 +71,11 @@ namespace Skrypton.RuntimeSupport.Components
 
         public int Status { get; }
         public string StatusText { get; }
+
+        /// <summary>
+        /// The URL of the response (after redirects) - null if it is the URL of the request
+        /// </summary>
+        public Uri? Url { get; }
         public IReadOnlyList<KeyValuePair<string, string>> Headers { get; }
 #pragma warning disable CA1819 // The body is handed over as is (a copy per access would be wasteful)
         public byte[] Body { get; }
