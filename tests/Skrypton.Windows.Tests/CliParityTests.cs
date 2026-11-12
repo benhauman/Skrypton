@@ -68,7 +68,10 @@ namespace Skrypton.Windows.Tests
 
             // the parity scripts write with Out (cscript: WScript.Echo)
             File.WriteAllText(script, "Sub Out(s) : WScript.Echo \"\" & s : End Sub\r\n" + File.ReadAllText(Path.Combine(folder, name + ".vbs")));
-            string? clipboard = name.Contains("HtmlFile") ? new WindowsHostClipboardHostService().GetText("Text") : null; // the script uses the clipboard
+            bool usesClipboard = name.Contains("HtmlFile"); // the script uses the clipboard - one test at a time (they run in parallel)
+            if (usesClipboard)
+                System.Threading.Monitor.Enter(SharedMachineState.Clipboard);
+            string? clipboard = usesClipboard ? new WindowsHostClipboardHostService().GetText("Text") : null;
             try
             {
                 CliRunner.Result result = CliRunner.Run(new[] { "/culture:en-US", script }, environment);
@@ -81,6 +84,8 @@ namespace Skrypton.Windows.Tests
                     File.Delete(template);
                 if (clipboard != null)
                     new WindowsHostClipboardHostService().SetText("Text", clipboard);
+                if (usesClipboard)
+                    System.Threading.Monitor.Exit(SharedMachineState.Clipboard);
             }
         }
 
@@ -95,11 +100,13 @@ namespace Skrypton.Windows.Tests
             string[] lines = File.ReadAllLines(Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources", "ComParity_UnhandledErrors.cases.txt"))
                 .Where(line => (line.Length > 0) && !line.StartsWith("#", StringComparison.Ordinal))
                 .ToArray();
-            string script = Path.Combine(Path.GetTempPath(), "skrypton_cli_" + Guid.NewGuid().ToString("N") + ".vbs");
-            var failures = new List<string>();
-            try
+            // the cases run in parallel (a process each - issue #134), each with its own script file
+            var failures = new string?[lines.Length / 2];
+            System.Threading.Tasks.Parallel.For(0, lines.Length / 2, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, c =>
             {
-                for (int i = 0; i + 1 < lines.Length; i += 2)
+                int i = 2 * c;
+                string script = Path.Combine(Path.GetTempPath(), "skrypton_cli_" + Guid.NewGuid().ToString("N") + ".vbs");
+                try
                 {
                     File.WriteAllText(script, lines[i] + "\r\n");
                     CliRunner.Result result = CliRunner.Run(new[] { "/culture:en-US", script });
@@ -107,14 +114,15 @@ namespace Skrypton.Windows.Tests
                     // "C:\..\x.vbs(1, 41) Microsoft VBScript runtime error: .." -> "(1, 41) Microsoft VBScript runtime error: .."
                     string actual = System.Text.RegularExpressions.Regex.Replace(reported, @"^.*?\((\d+, \d+)\) ", "($1) ");
                     if ((actual != lines[i + 1]) || (result.ExitCode != 1))
-                        failures.Add($"{lines[i]}{Environment.NewLine}  expected: {lines[i + 1]}{Environment.NewLine}  actual:   {actual} (exit code {result.ExitCode})");
+                        failures[c] = $"{lines[i]}{Environment.NewLine}  expected: {lines[i + 1]}{Environment.NewLine}  actual:   {actual} (exit code {result.ExitCode})";
                 }
-            }
-            finally
-            {
-                File.Delete(script);
-            }
-            Assert.IsEmpty(failures, string.Join(Environment.NewLine, failures));
+                finally
+                {
+                    File.Delete(script);
+                }
+            });
+            string[] failed = failures.Where(f => f != null).Select(f => f!).ToArray();
+            Assert.IsEmpty(failed, string.Join(Environment.NewLine, failed));
         }
 
         /// <summary>
