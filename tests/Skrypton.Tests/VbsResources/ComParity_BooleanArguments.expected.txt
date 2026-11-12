@@ -1,0 +1,17 @@
+OpenTextFile(p, 1, 0): a
+OpenTextFile(p, 1, "False"): ab
+OpenTextFile(p, 1, "true", 0): ab
+CreateTextFile(p, 1): c
+CreateTextFile(p, -1, 1): 4
+CreateTextFile(p, "True", "0"): 1
+CopyFile 1: True
+DeleteFile(p, 0): False
+Dictionary CompareMode 1: True
+OpenTextFile(p, 2, "yes"): 13 Type mismatch
+OpenTextFile(p, 2, object): 13 Type mismatch
+OpenTextFile(p, 2, Null): 13 Type mismatch
+exists after errors: False
+DOMDocument async 0: False
+DOMDocument async "True": True
+preserveWhiteSpace 1: True True
+Dictionary CompareMode "1": True
