@@ -238,11 +238,11 @@ namespace Skrypton.RuntimeSupport.Components
                 throw FileNotFound(path); // error 53, as scrrun
             if (mode == IOMode.ForReading)
             {
-                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileRead(path));
+                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileRead(path), format);
             }
             else
             {
-                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: false);
+                return new ScriptonFileTextStream(path, _hostFileSystem.OpenTextFileWrite(path, createIfNotExists: create, overwriteIfExists: true, mode == IOMode.ForAppending), mode, unicode: format == Tristate.True);
             }
         }
 
@@ -376,6 +376,10 @@ namespace Skrypton.RuntimeSupport.Components
             _hostFileSystem.CopyFile(Path, newPath, overwrite);
         }
 
+        // the IOMode and Tristate of a script are numbers (as for FileSystemObject.OpenTextFile - issue #163)
+        public ITextStream OpenAsTextStream(short mode) => OpenAsTextStream((IOMode)mode, Tristate.UseDefault);
+        public ITextStream OpenAsTextStream(short mode, short format) => OpenAsTextStream((IOMode)mode, (Tristate)format);
+
         public ITextStream OpenAsTextStream(IOMode mode, Tristate format = Tristate.UseDefault)
         {
             if (!Enum.IsDefined(typeof(IOMode), mode))
@@ -383,11 +387,11 @@ namespace Skrypton.RuntimeSupport.Components
 
             if (mode == IOMode.ForReading)
             {
-                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileRead(Path));
+                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileRead(Path), format);
             }
             else
             {
-                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileWrite(Path, createIfNotExists: true, overwriteIfExists: mode == IOMode.ForAppending, append: mode == IOMode.ForAppending), mode, unicode: false);
+                return new ScriptonFileTextStream(Path, _hostFileSystem.OpenTextFileWrite(Path, createIfNotExists: true, overwriteIfExists: true, append: mode == IOMode.ForAppending), mode, unicode: format == Tristate.True);
             }
         }
     }
@@ -403,18 +407,51 @@ namespace Skrypton.RuntimeSupport.Components
         private readonly string _path;
         private readonly IOMode _mode;
 
-        public ScriptonFileTextStream(string path, System.IO.StreamReader reader)
+        /// <summary>
+        /// Read the file as scrrun does (issue #163): TristateFalse in the ANSI code page (a byte order mark is text), TristateTrue as UTF-16 LE
+        /// (without its byte order mark), TristateUseDefault as UTF-16 LE if the file starts with its byte order mark, in the ANSI code page otherwise
+        /// - the stream of the host's reader is read with that encoding
+        /// </summary>
+        public ScriptonFileTextStream(string path, System.IO.StreamReader reader, Tristate format)
         {
             _mode = IOMode.ForReading;
             _path = path ?? throw new ArgumentNullException(nameof(path));
-            _reader = reader ?? throw new ArgumentNullException(nameof(reader));
+            System.IO.Stream stream = (reader ?? throw new ArgumentNullException(nameof(reader))).BaseStream;
+            bool unicode = (format == Tristate.True) || ((format == Tristate.UseDefault) && StartsWithUnicodeByteOrderMark(stream));
+            // (invalid UTF-16 - eg. an ANSI file read as Unicode - becomes U+FFFD, scrrun keeps the code units)
+            _reader = new System.IO.StreamReader(stream, unicode ? System.Text.Encoding.Unicode : AnsiEncoding(), detectEncodingFromByteOrderMarks: false);
         }
+
+        /// <summary>
+        /// Write as scrrun does (issue #163): UTF-16 LE with its byte order mark (not when appending to a file) or in the ANSI code page
+        /// </summary>
         public ScriptonFileTextStream(string path, System.IO.Stream writeStream, IOMode mode, bool unicode)
         {
             _mode = mode;
             _path = path ?? throw new ArgumentNullException(nameof(path));
             _writeStream = writeStream ?? throw new ArgumentNullException(nameof(writeStream));
-            _writer = new System.IO.StreamWriter(_writeStream, unicode ? System.Text.Encoding.Unicode : System.Text.Encoding.ASCII);
+            _writer = new System.IO.StreamWriter(_writeStream, unicode ? System.Text.Encoding.Unicode : AnsiEncoding());
+        }
+
+        /// <summary>
+        /// The ANSI code page of the culture (eg. Windows-1252 for en-US or de-DE), as for the script files (ScriptonScriptRunner)
+        /// </summary>
+        internal static System.Text.Encoding AnsiEncoding()
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            int codePage = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
+            return System.Text.Encoding.GetEncoding((codePage == 0) ? 1252 : codePage);
+        }
+
+        private static bool StartsWithUnicodeByteOrderMark(System.IO.Stream stream)
+        {
+            if (!stream.CanSeek)
+                return false;
+            long position = stream.Position;
+            int first = stream.ReadByte();
+            int second = stream.ReadByte();
+            stream.Position = position;
+            return (first == 0xFF) && (second == 0xFE);
         }
         private System.IO.StreamReader reader => _reader ?? throw new InvalidOperationException($"Reader not set. Path:{_path}");
         private System.IO.StreamWriter writer => _writer ?? throw new InvalidOperationException($"Writer not set. ({_mode}) Path:{_path}");
