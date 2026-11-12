@@ -11,8 +11,9 @@ namespace Skrypton.Windows.Tests
     public sealed partial class CliParityTests
     {
         /// <summary>
-        /// The command line tool in a 32-bit process (issue #147): a COM call with more than one argument (Fields(key) = value puts the value with
-        /// the key - two VARIANTs) as 32-bit cscript does. The VARIANTs are 16 bytes there, not 24 - with 24 the second argument was read at the
+        /// The command line tool in a 32-bit process (issue #147): COM calls with more than one argument as 32-bit cscript does them -
+        /// Scripting.Encoder.EncodeScriptFile (four VARIANTs) and CDO's Fields(key) = value (the key and the value; CDO.Configuration is a built-in
+        /// since issue #149, Scripting.Encoder stays COM). The VARIANTs are 16 bytes there, not 24 - with 24 the second argument was read at the
         /// wrong place. The .NET Framework tool is AnyCPU: a copy of it is marked 32-bit (the 32BITREQUIRED flag of its CLR header), so no 32-bit
         /// build is needed. Only here (Skrypton.Windows.NetFx.Tests): the .NET tool has a 64-bit native launcher.
         /// </summary>
@@ -35,12 +36,15 @@ namespace Skrypton.Windows.Tests
                     "oCfgFields(cdoSMTPServer) = \"127.0.0.1\"\r\n" +
                     "oCfgFields.Item(cdoSMTPServerPort).Value = 2525\r\n" +
                     "oCfgFields.Update\r\n" +
-                    "WScript.Echo TypeName(oCfgFields) & \" \" & oCfgFields(cdoSendUsingMethod) & \" \" & oCfgFields.Item(cdoSMTPServer).Value & \" \" & oCfg.Fields(cdoSMTPServer) & \" \" & oCfgFields(cdoSMTPServerPort)\r\n");
+                    "WScript.Echo TypeName(oCfgFields) & \" \" & oCfgFields(cdoSendUsingMethod) & \" \" & oCfgFields.Item(cdoSMTPServer).Value & \" \" & oCfg.Fields(cdoSMTPServer) & \" \" & oCfgFields(cdoSMTPServerPort)\r\n" +
+                    "Dim oEncoder : Set oEncoder = CreateObject(\"Scripting.Encoder\")\r\n" +
+                    // the encoded text ends with Chr(0) - cscript writes it up to there
+                    "WScript.Echo TypeName(oEncoder) & \" \" & Replace(oEncoder.EncodeScriptFile(\".vbs\", \"WScript.Echo \"\"hello\"\"\", 0, \"VBScript\"), Chr(0), \"<NUL>\")\r\n");
 
                 string expected = Run(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "cscript.exe"), "//NoLogo \"" + script + "\"", out int cscriptExitCode, out string cscriptError);
                 Assert.AreEqual(0, cscriptExitCode, "32-bit cscript: " + expected + cscriptError);
 
-                string actual = Run(cli32, "/com:CDO.Configuration \"" + script + "\"", out int exitCode, out string error);
+                string actual = Run(cli32, "/com:CDO.Configuration,Scripting.Encoder \"" + script + "\"", out int exitCode, out string error);
                 AssertSameOutput("ComCallsWithSeveralArgumentsWorkInA32BitProcess", expected, new CliRunner.Result(exitCode, actual, error));
             }
             finally
