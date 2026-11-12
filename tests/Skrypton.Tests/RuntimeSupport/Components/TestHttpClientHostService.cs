@@ -13,6 +13,11 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
     {
         public List<HostHttpRequest> Requests { get; } = new List<HostHttpRequest>();
 
+        /// <summary>
+        /// The URL of the response, as after a redirect (null: the URL of the request)
+        /// </summary>
+        public Uri ResponseUrl { get; set; }
+
         public HostHttpResponse Send(HostHttpRequest request)
         {
             Requests.Add(request ?? throw new ArgumentNullException(nameof(request)));
@@ -20,7 +25,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 200,
                 "OK",
                 new[] { new KeyValuePair<string, string>("Content-Type", "text/xml; charset=utf-8") },
-                Encoding.UTF8.GetBytes(SampleResponseXml)
+                Encoding.UTF8.GetBytes(SampleResponseXml),
+                ResponseUrl
             );
         }
 

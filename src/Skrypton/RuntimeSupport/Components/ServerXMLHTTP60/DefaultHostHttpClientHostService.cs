@@ -76,7 +76,7 @@ namespace Skrypton.RuntimeSupport.Components
                 .Concat(response.Content.Headers)
                 .SelectMany(h => h.Value.Select(v => new KeyValuePair<string, string>(h.Key, v)))
                 .ToList();
-            return new HostHttpResponse((int)response.StatusCode, response.ReasonPhrase ?? "", headers, body);
+            return new HostHttpResponse((int)response.StatusCode, response.ReasonPhrase ?? "", headers, body, response.RequestMessage?.RequestUri); // the URL after redirects
         }
     }
 }
