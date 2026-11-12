@@ -38,3 +38,5 @@ Option Explicit : Dim a : a = 1 : b = 2
 (1, 35) Microsoft VBScript runtime error: Variable is undefined: 'b'
 Option Explicit : Sub M : Dim a : c = 2 : End Sub : M
 (1, 35) Microsoft VBScript runtime error: Variable is undefined: 'c'
+Set x = CreateObject("Foo.Bar")
+(1, 1) Microsoft VBScript runtime error: ActiveX component can't create object: 'Foo.Bar'

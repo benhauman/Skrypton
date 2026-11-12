@@ -47,6 +47,15 @@ namespace Skrypton.Windows
         }
 
         /// <summary>
+        /// Let CreateObject create the registered COM classes of these ProgIDs (opt-in, issue #103) - built-ins and object factories still come
+        /// first; other ProgIDs raise error 429
+        /// </summary>
+        public WindowsRuntimeHost RegisterComActivation(params string[] allowedProgIds)
+        {
+            return Register<IHostComActivationHostService>(new WindowsHostComActivationHostService(allowedProgIds));
+        }
+
+        /// <summary>
         /// Remove a host service (the built-in components then use their default or raise an error)
         /// </summary>
         public WindowsRuntimeHost Unregister<TService>() where TService : class

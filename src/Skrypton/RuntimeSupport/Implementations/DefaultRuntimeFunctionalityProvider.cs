@@ -2232,13 +2232,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                 if (builtInObject != null)
                     return HandlePostInitializationHandler(classProgId, builtInObject);
 
-                //if (classProgId.Length > 0)
-                throw new NotSupportedException($"CreateObject(\"{classProgId}\"): no object factory is registered for this ProgID (register one with RegisterObjectCreateFactory or an IHostObjectFactoryHostService)");
-                //Type comType = Type.GetTypeFromProgID(classProgId, true);
-                //
-                //return HandlePostInitializationHandler(classProgId, CreateComObject(classProgId, comType));
+                // The host's COM activation (eg. registered COM classes, opt-in) comes last, so built-ins and factories win (issue #103)
+                object? comObject = _runtimeHost.TryGetRuntimeHostService<IHostComActivationHostService>()?.TryCreateObject(classProgId);
+                if (comObject != null)
+                    return HandlePostInitializationHandler(classProgId, comObject);
+
+                // Error 429 as with Windows VBScript (issue #103)
+                throw ActiveXComponentCantCreateObjectException.ForProgId(
+                    classProgId,
+                    $"CreateObject(\"{classProgId}\"): no object factory is registered for this ProgID (register one with RegisterObjectCreateFactory, an {nameof(IHostObjectFactoryHostService)} or an {nameof(IHostComActivationHostService)})");
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is ActiveXComponentCantCreateObjectException))
             {
                 throw new InvalidOperationException($"Failed to create com object for '{classProgId}'", ex);
             }
