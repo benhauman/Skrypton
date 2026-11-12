@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -672,6 +673,68 @@ namespace Skrypton.RuntimeSupport.Components
         /// The attributes of the element (issue #121)
         /// </summary>
         public MyXMLDOMNamedNodeMap attributes => new MyXMLDOMNamedNodeMap(_element);
+
+        private const string DataTypesNamespace = "urn:schemas-microsoft-com:datatypes";
+
+        /// <summary>
+        /// The data type of the element (its dt:dt attribute, as MSXML writes it), Null if it has none (issue #170)
+        /// </summary>
+        public object dataType
+        {
+            get => _element.HasAttribute("dt", DataTypesNamespace) ? _element.GetAttribute("dt", DataTypesNamespace) : (object)DBNull.Value;
+            set
+            {
+                string type = Convert.ToString((value is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : value, System.Globalization.CultureInfo.InvariantCulture) ?? "";
+                if (!_element.HasAttribute("xmlns:dt"))
+                    _element.SetAttribute("xmlns:dt", DataTypesNamespace);
+                XmlAttribute attribute = _element.GetAttributeNode("dt", DataTypesNamespace) ?? _element.SetAttributeNode(_element.OwnerDocument.CreateAttribute("dt", "dt", DataTypesNamespace));
+                attribute.Value = type;
+            }
+        }
+
+        /// <summary>
+        /// The value of the element as its data type (issue #170): bin.hex and bin.base64 are the bytes (Byte()) of the text - setting bytes writes
+        /// them as lower-case hex or as Base64 in lines of 72 characters, as MSXML does; other elements are their text
+        /// </summary>
+        public object nodeTypedValue
+        {
+            get
+            {
+                string text = _element.InnerText;
+                switch (dataType as string)
+                {
+                    case "bin.hex":
+                        string hex = new string(text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                        var bytes = new byte[hex.Length / 2];
+                        for (int i = 0; i < bytes.Length; i++)
+                            bytes[i] = Convert.ToByte(hex.Substring(2 * i, 2), 16);
+                        return bytes;
+                    case "bin.base64":
+                        return Convert.FromBase64String(new string(text.Where(c => !char.IsWhiteSpace(c)).ToArray()));
+                    default:
+                        return text;
+                }
+            }
+            set
+            {
+                object content = (value is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : value;
+                string type = dataType as string;
+                if ((content is byte[] bytes) && (type == "bin.hex"))
+                    _element.InnerText = string.Concat(bytes.Select(b => b.ToString("x2", System.Globalization.CultureInfo.InvariantCulture)));
+                else if ((content is byte[] base64Bytes) && (type == "bin.base64"))
+                    _element.InnerText = Base64Lines(Convert.ToBase64String(base64Bytes));
+                else
+                    _element.InnerText = Convert.ToString(content, System.Globalization.CultureInfo.InvariantCulture) ?? "";
+            }
+        }
+
+        private static string Base64Lines(string base64)
+        {
+            var lines = new System.Collections.Generic.List<string>();
+            for (int index = 0; index < base64.Length; index += 72)
+                lines.Add(base64.Substring(index, Math.Min(72, base64.Length - index)));
+            return string.Join("\n", lines);
+        }
     }
 
     [SourceClassName("IXMLDOMNode")]
