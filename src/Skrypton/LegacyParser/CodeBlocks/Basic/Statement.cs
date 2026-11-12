@@ -429,6 +429,15 @@ namespace Skrypton.LegacyParser.CodeBlocks.Basic
                             // If we've reached an un-bracketed string or date literal then we need to standardise the brackets starting before this token and closing around the last
                             insertBracketsBeforeThisToken = true;
                         }
+                        if ((token is ArgumentSeparatorToken)
+                        && (lastUnbracketedToken != null)
+                        && ReferenceEquals(tokenArray[tokenIndex - 1], lastUnbracketedToken)
+                        && IsTokenAcceptableToCommenceCallExecution(lastUnbracketedToken, nextTokenIfAny))
+                        {
+                            // An argument separator straight after the name of the call: the first argument is left out - eg. "Test , , 3" or
+                            // "a.Logon , , False" (issue #154) - so the arguments start here
+                            insertBracketsBeforeThisToken = true;
+                        }
                         if (IsTokenAcceptableToCommenceCallExecution(token, nextTokenIfAny)
                         && (lastUnbracketedToken != null)
                         && (IsTokenAcceptableToCommenceCallExecution(lastUnbracketedToken, nextTokenIfAny)))

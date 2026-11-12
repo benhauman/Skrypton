@@ -1549,7 +1549,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         }
         public bool ISOBJECT(object value)
         {
-            return !_valueRetriever.IsVBScriptValueType(value);
+            return !(value is System.Reflection.Missing) && !_valueRetriever.IsVBScriptValueType(value); // an omitted argument is VT_ERROR (issue #154)
         }
         public string TYPENAME(object? value)
         {
@@ -1559,6 +1559,8 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return "Null";
             if (IsVBScriptNothing(value))
                 return "Nothing";
+            if (value is System.Reflection.Missing)
+                return "Error"; // an omitted argument (VT_ERROR - issue #154)
 
             Type type = value.GetType();
             if (type.IsArray && (type.GetElementType() == typeof(Object)))
@@ -1624,6 +1626,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         {
             if (value == null)
                 return (short)MyVarEnum.VT_EMPTY; // VarType(Empty) is 0 (an Integer), not the enum name
+            if (value is System.Reflection.Missing)
+                return (short)MyVarEnum.VT_ERROR; // an omitted argument (issue #154)
             MyVarEnum variantType = IDispatchAccess.GetVariantType(value!);
             if ((variantType == MyVarEnum.VT_DISPATCH) && !((value is ScriptDispatchWrapper wrapper) && (wrapper.WrappedObject == null)))
             {

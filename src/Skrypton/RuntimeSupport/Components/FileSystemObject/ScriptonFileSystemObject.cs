@@ -223,7 +223,8 @@ namespace Skrypton.RuntimeSupport.Components
         public ITextStream OpenTextFile(string path, IOMode mode) => OpenTextFileCore(path, mode, create: false, format: Tristate.UseDefault);
         public ITextStream OpenTextFile(string path, short mode, bool create) => OpenTextFileCore(path, (IOMode)mode, create, format: Tristate.UseDefault);
         public ITextStream OpenTextFile(string path, IOMode mode, bool create) => OpenTextFileCore(path, mode, create, format: Tristate.UseDefault);
-        public ITextStream OpenTextFile(string path, short mode, bool create, short format) => OpenTextFileCore(path, (IOMode)mode, create, (Tristate)format);
+        // iomode, create and format are optional (scrrun: ForReading, False, TristateFalse) - for omitted arguments (OpenTextFile(path, , True) - issue #154)
+        public ITextStream OpenTextFile(string path, [Optional, DefaultParameterValue((short)1)] short mode, [Optional, DefaultParameterValue(false)] bool create, [Optional, DefaultParameterValue((short)0)] short format) => OpenTextFileCore(path, (IOMode)mode, create, (Tristate)format);
         public ITextStream OpenTextFile(string path, IOMode mode, bool create, Tristate format) => OpenTextFileCore(path, mode, create, format);
         private ITextStream OpenTextFileCore(string path, IOMode mode, bool create, Tristate format)
         {
