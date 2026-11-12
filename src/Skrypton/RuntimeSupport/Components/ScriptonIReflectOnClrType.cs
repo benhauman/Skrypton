@@ -181,6 +181,12 @@ namespace Skrypton.RuntimeSupport.Components
             }
             catch (System.MissingMemberException ex)
             {
+                // A property put that the default binder does not bind (issue #159): a writable property with the arguments converted as COM
+                // converts them (d.CompareMode = "1") or a method that takes the index arguments and the value (d.Key(old) = new)
+                if ((args != null) && (args.Length > 0) && ((invokeAttr & BindingFlags.SetProperty) != 0)
+                    && TrySetWithConvertedArguments(name, target ?? this, args, culture ?? CultureInfo.CurrentCulture))
+                    return null;
+
                 // obj.Prop(i) where Prop has no parameters is obj.Prop.Item(i): the default member of the value of Prop (eg. doc.Tables(1), as with COM)
                 if ((args != null) && (args.Length > 0) && ((invokeAttr & (BindingFlags.GetProperty | BindingFlags.InvokeMethod)) != 0))
                 {
@@ -255,6 +261,47 @@ namespace Skrypton.RuntimeSupport.Components
         /// conversions is called. When an overload takes as many arguments but one of them can not be converted, the error is a Type mismatch (13)
         /// or an Overflow (6), as with COM.
         /// </summary>
+        /// <summary>
+        /// Put the value (the last argument) with the index arguments before it: into a writable property of the name (the default member for
+        /// "[DISPID=0]") with as many index parameters, or through a method of the name with as many parameters - the arguments are converted to
+        /// the parameter types with the rules of VBScript (a failed conversion is a Type mismatch or an Overflow)
+        /// </summary>
+        private bool TrySetWithConvertedArguments(string name, object target, object[] args, CultureInfo culture)
+        {
+            string memberName = (name == "[DISPID=0]") ? (_type.GetCustomAttribute<DefaultMemberAttribute>()?.MemberName ?? name) : name;
+            PropertyInfo property = _type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(p => string.Equals(p.Name, memberName, StringComparison.OrdinalIgnoreCase) && p.CanWrite && (p.GetIndexParameters().Length == args.Length - 1));
+            if (property != null)
+            {
+                Type[] types = property.GetIndexParameters().Select(p => p.ParameterType).Concat(new[] { property.PropertyType }).ToArray();
+                object[] converted = Convert(args, types, culture);
+                property.SetValue(target, converted[converted.Length - 1], converted.Take(converted.Length - 1).ToArray());
+                return true;
+            }
+            MethodInfo method = _type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(m => string.Equals(m.Name, memberName, StringComparison.OrdinalIgnoreCase) && (m.GetCustomAttribute<DispIdAttribute>() != null) && (m.GetParameters().Length == args.Length));
+            if (method == null)
+                return false;
+            try
+            {
+                method.Invoke(target, Convert(args, method.GetParameters().Select(p => p.ParameterType).ToArray(), culture));
+                return true;
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            {
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                throw;
+            }
+        }
+
+        private static object[] Convert(object[] args, Type[] types, CultureInfo culture)
+        {
+            var converted = new object[args.Length];
+            for (int i = 0; i < args.Length; i++)
+                converted[i] = ((args[i] == null) ? !types[i].IsValueType : types[i].IsInstanceOfType(args[i])) ? args[i] : VBScriptArgumentConversion.ChangeType(args[i], types[i], culture);
+            return converted;
+        }
+
         private bool TryInvokeWithConvertedArguments(string name, object target, object[] args, CultureInfo culture, out object result)
         {
             result = null;

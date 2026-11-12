@@ -21,9 +21,8 @@ namespace Skrypton.RuntimeSupport.Components
     [SourceClassName("Dictionary")] // TypeName(CreateObject("Scripting.Dictionary")) is "Dictionary"
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [DefaultMember("Item")]
 #pragma warning disable CA1010 // Generic IEnumerable<T> - the shape mirrors the COM Scripting.Dictionary (For Each over the keys, as variants)
-    internal sealed class SkryptonScriptingDictionaryCpuAny : IEnumerable
+    internal sealed class ScriptonScriptingDictionary : ScriptonIReflectOnClrType, IScriptingDictionary, IEnumerable // IReflect as the other built-ins (issue #159); the DISPIDs are scrrun's
 #pragma warning restore CA1010
     {
         public const string ProgId = "Scripting.Dictionary";
@@ -34,7 +33,7 @@ namespace Skrypton.RuntimeSupport.Components
         private Dictionary<VariantKey, LinkedListNode<KeyValuePair<object?, object?>>> _index;
         private int _compareMode;
 
-        public SkryptonScriptingDictionaryCpuAny()
+        public ScriptonScriptingDictionary() : base(typeof(ScriptonScriptingDictionary))
         {
             _compareMode = 0;
             _index = new Dictionary<VariantKey, LinkedListNode<KeyValuePair<object?, object?>>>(new VariantKeyComparer(textCompare: false));
@@ -44,6 +43,7 @@ namespace Skrypton.RuntimeSupport.Components
         /// 0 (vbBinaryCompare) or 1 (vbTextCompare). This may only be changed while the dictionary is empty (otherwise error 5, Invalid procedure
         /// call or argument, is raised, as scrrun does).
         /// </summary>
+        [DispId(9)]
         public int CompareMode
         {
             get => _compareMode;
@@ -60,8 +60,10 @@ namespace Skrypton.RuntimeSupport.Components
             }
         }
 
+        [DispId(2)]
         public int Count => _entries.Count;
 
+        [DispId(1)]
         public void Add(object? key, object? item)
         {
             VariantKey variantKey = new VariantKey(key);
@@ -70,39 +72,39 @@ namespace Skrypton.RuntimeSupport.Components
             _index.Add(variantKey, _entries.AddLast(new KeyValuePair<object?, object?>(key, item)));
         }
 
+        [DispId(3)]
         public bool Exists(object? key) => _index.ContainsKey(new VariantKey(key));
 
         /// <summary>
-        /// The default member - reading a key that does not exist adds it with the value Empty (as scrrun does)
+        /// The default member, an indexed property (Item, as with scrrun): reading a key that does not exist adds it with the value Empty (as
+        /// scrrun does); d(key) = value / d.Item(key) = value adds the key or replaces its value
         /// </summary>
         [DispId(0)]
         [IsDefault]
-        public object? Item(object? key)
+        public object? this[object? key]
         {
-            VariantKey variantKey = new VariantKey(key);
-            if (_index.TryGetValue(variantKey, out LinkedListNode<KeyValuePair<object?, object?>>? node))
-                return node.Value.Value;
-            _index.Add(variantKey, _entries.AddLast(new KeyValuePair<object?, object?>(key, null)));
-            return null;
-        }
-
-        /// <summary>
-        /// d(key) = value / d.Item(key) = value - adds the key or replaces its value
-        /// </summary>
-        [DispId(0)]
-        [IsDefault]
-        public void Item(object? key, object? value)
-        {
-            VariantKey variantKey = new VariantKey(key);
-            if (_index.TryGetValue(variantKey, out LinkedListNode<KeyValuePair<object?, object?>>? node))
-                node.Value = new KeyValuePair<object?, object?>(node.Value.Key, value);
-            else
-                _index.Add(variantKey, _entries.AddLast(new KeyValuePair<object?, object?>(key, value)));
+            get
+            {
+                VariantKey variantKey = new VariantKey(key);
+                if (_index.TryGetValue(variantKey, out LinkedListNode<KeyValuePair<object?, object?>>? node))
+                    return node.Value.Value;
+                _index.Add(variantKey, _entries.AddLast(new KeyValuePair<object?, object?>(key, null)));
+                return null;
+            }
+            set
+            {
+                VariantKey variantKey = new VariantKey(key);
+                if (_index.TryGetValue(variantKey, out LinkedListNode<KeyValuePair<object?, object?>>? node))
+                    node.Value = new KeyValuePair<object?, object?>(node.Value.Key, value);
+                else
+                    _index.Add(variantKey, _entries.AddLast(new KeyValuePair<object?, object?>(key, value)));
+            }
         }
 
         /// <summary>
         /// d.Key(oldKey) = newKey - renames a key, keeping its position and value
         /// </summary>
+        [DispId(5)]
         public void Key(object? oldKey, object? newKey)
         {
             VariantKey oldVariantKey = new VariantKey(oldKey);
@@ -117,6 +119,7 @@ namespace Skrypton.RuntimeSupport.Components
             _index[newVariantKey] = node;
         }
 
+        [DispId(7)]
         public void Remove(object? key)
         {
             VariantKey variantKey = new VariantKey(key);
@@ -126,6 +129,7 @@ namespace Skrypton.RuntimeSupport.Components
             _entries.Remove(node);
         }
 
+        [DispId(8)]
         public void RemoveAll()
         {
             _index.Clear();
@@ -135,6 +139,7 @@ namespace Skrypton.RuntimeSupport.Components
         /// <summary>
         /// The keys, in insertion order
         /// </summary>
+        [DispId(6)]
         public object?[] Keys()
         {
             var keys = new object?[_entries.Count];
@@ -147,6 +152,7 @@ namespace Skrypton.RuntimeSupport.Components
         /// <summary>
         /// The items, in insertion order
         /// </summary>
+        [DispId(4)]
         public object?[] Items()
         {
             var items = new object?[_entries.Count];
@@ -243,5 +249,26 @@ namespace Skrypton.RuntimeSupport.Components
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// The members of the built-in Scripting.Dictionary that a host uses (as IFileSystem for Scripting.FileSystemObject): the keys, whether a
+    /// key exists and the value of a key (Item, read and write - reading a missing key adds it with the value Empty, as scrrun does)
+    /// </summary>
+#pragma warning disable CA1711 // The name is the one of the COM component (Scripting.Dictionary)
+    public interface IScriptingDictionary
+#pragma warning restore CA1711
+    {
+        /// <summary>
+        /// The keys, in insertion order
+        /// </summary>
+        object?[] Keys();
+
+        bool Exists(object? key);
+
+        /// <summary>
+        /// Item: the value of the key - setting it adds the key or replaces its value
+        /// </summary>
+        object? this[object? key] { get; set; }
     }
 }
