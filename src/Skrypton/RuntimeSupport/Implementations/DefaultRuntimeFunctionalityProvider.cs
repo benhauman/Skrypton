@@ -91,8 +91,8 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// </summary>
         private object? TryCreateBuiltInObject(string classProgId)
         {
-            if (classProgId.Equals(Components.SkryptonScriptingDictionaryCpuAny.ProgId, StringComparison.OrdinalIgnoreCase))
-                return new Components.SkryptonScriptingDictionaryCpuAny();
+            if (classProgId.Equals(Components.ScriptonScriptingDictionary.ProgId, StringComparison.OrdinalIgnoreCase))
+                return new Components.ScriptonScriptingDictionary();
             if (classProgId.Equals("VBScript.RegExp", StringComparison.OrdinalIgnoreCase))
                 return new Components.ScriptonVBScriptRegExp(_culture);
             if (Components.ScriptonMsxml2DOMDocument.ProgIds.Contains(classProgId))
@@ -142,7 +142,7 @@ namespace Skrypton.RuntimeSupport.Implementations
 
         public void RegisterScriptingDictionaryCpuAny()
         {
-            RegisterObjectCreateFactory(Components.SkryptonScriptingDictionaryCpuAny.ProgId, _ => new Components.SkryptonScriptingDictionaryCpuAny());
+            RegisterObjectCreateFactory(Components.ScriptonScriptingDictionary.ProgId, _ => new Components.ScriptonScriptingDictionary());
         }
 
         private enum ErrorTokenState
