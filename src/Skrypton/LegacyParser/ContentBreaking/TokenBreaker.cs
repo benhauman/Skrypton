@@ -75,11 +75,20 @@ namespace Skrypton.LegacyParser.ContentBreaking
                         {
                             var chrNext = content.Substring(index + 1, 1);
                             var chrNextNext = content.Substring(index + 2, 1);
-                            if (chrNext.Equals("H", StringComparison.OrdinalIgnoreCase) && ("0123456789".Contains(chrNextNext, StringComparison.Ordinal)))
+                            if ((chrNext.Equals("H", StringComparison.OrdinalIgnoreCase) && ("0123456789ABCDEFabcdef".Contains(chrNextNext, StringComparison.Ordinal))) // eg. &HDFFC (issue #169)
+                                || (chrNext.Equals("O", StringComparison.OrdinalIgnoreCase) && ("01234567".Contains(chrNextNext, StringComparison.Ordinal)))) // octal, eg. &O177777
                             {
                                 buffer += chr;
                                 continue;
                             }
+                        }
+
+                        // A "&" straight after the digits of a hex / octal number makes it a Long (eg. "&H8000&" - issue #169)
+                        if ((chr == "&") && (buffer.Length > 2) && (buffer.StartsWith("&H", StringComparison.OrdinalIgnoreCase) || buffer.StartsWith("&O", StringComparison.OrdinalIgnoreCase))
+                            && !buffer.EndsWith("&", StringComparison.Ordinal))
+                        {
+                            buffer += chr;
+                            continue;
                         }
 
                         // If we've found another "break" character (which means a token split is identified, but that we want to keep the break character itself,

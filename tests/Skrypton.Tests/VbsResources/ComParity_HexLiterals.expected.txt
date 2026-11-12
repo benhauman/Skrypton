@@ -1,0 +1,17 @@
+&H7FFF 32767 Integer
+&H8000 -32768 Long
+&H8001 -32767 Integer
+&HDFFC -8196 Integer
+&HFFFF -1 Integer
+&H10000 65536 Long
+&H7FFFFFFF 2147483647 Long
+&H80000000 -2147483648 Long
+&HFFFFFFFF -1 Integer
+&H8000& 32768 Long
+&HFFFF& 65535 Long
+&O177777 -1 Integer
+-&H8000 32768 Long
+True
+0
+Long Integer Integer Long Integer
+&H41 |65|31|15

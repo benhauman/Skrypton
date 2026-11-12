@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Transactions;
 
@@ -166,7 +167,7 @@ namespace Skrypton.LegacyParser.Tokens.Basic
             double numericValue;
             if (double.TryParse(contentUpper.Original, out numericValue))
                 return new NumericValueToken(contentUpper, lineIndex);
-            if (contentUpper.Original.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase) && TryHEX(contentUpper.Original, lineIndex, out IToken? hexToken) && hexToken != null)
+            if ((contentUpper.Original.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase) || contentUpper.Original.StartsWith("&o", StringComparison.InvariantCultureIgnoreCase)) && TryHEX(contentUpper.Original, lineIndex, out IToken? hexToken) && hexToken != null)
             {
                 //int numericHexValue;
                 //if (int.TryParse(contentUpper.Original.AsSpanX(2), NumberStyles.HexNumber, null, out numericHexValue))
@@ -178,13 +179,28 @@ namespace Skrypton.LegacyParser.Tokens.Basic
         }
         internal static bool TryHEX(string contentOriginal, int lineIndex, out IToken? token)
         {
-            if (contentOriginal.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase))
+            bool isHex = contentOriginal.StartsWith("&h", StringComparison.InvariantCultureIgnoreCase);
+            if (isHex || contentOriginal.StartsWith("&o", StringComparison.InvariantCultureIgnoreCase))
             {
-                int numericHexValue;
-                if (int.TryParse(contentOriginal.AsSpanX(2), NumberStyles.HexNumber, null, out numericHexValue))
+                // As with VBScript (issue #169): a value up to &HFFFF is a 16-bit Integer and up to &HFFFFFFFF a 32-bit Long, both two's complement
+                // (&H8000 is -32768, &HFFFF -1, &H80000000 -2147483648); a trailing & (&H8000&) makes it a Long, without the 16-bit wrap. Only the
+                // digits of the base (no white space) - "&H41 " is not a number.
+                string digits = contentOriginal.Substring(2);
+                bool isLong = digits.EndsWith("&", StringComparison.Ordinal);
+                if (isLong)
+                    digits = digits.Substring(0, digits.Length - 1);
+                string validDigits = isHex ? "0123456789ABCDEFabcdef" : "01234567";
+                if ((digits.Length > 0) && (digits.Length <= (isHex ? 8 : 11)) && digits.All(c => validDigits.IndexOf(c) >= 0))
                 {
-                    token = new NumericValueToken(numericHexValue.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
-                    return true;
+                    long parsed = 0;
+                    foreach (char c in digits)
+                        parsed = (parsed * (isHex ? 16 : 8)) + Convert.ToInt32(c.ToString(), isHex ? 16 : 8);
+                    if (parsed <= 0xFFFFFFFFL)
+                    {
+                        long value = (!isLong && (parsed <= 0xFFFF)) ? (short)(ushort)parsed : (int)(uint)parsed;
+                        token = new NumericValueToken(value.ToString(CultureInfo.InvariantCulture).ToUpperX(), lineIndex);
+                        return true;
+                    }
                 }
             }
 

@@ -36,6 +36,8 @@ namespace Skrypton.StageTwoParser.TokenCombining.NumberRebuilding
         {
             double value;
             var combinedTokenContent = string.Join("", Tokens.Select(t => t.Content));
+            if (combinedTokenContent.StartsWith("--", StringComparison.Ordinal))
+                combinedTokenContent = combinedTokenContent.Substring(2); // the negation of a negative literal (-&H8000 is 32768 - issue #169)
             if (double.TryParse(combinedTokenContent, out value))
                 return new NumericValueToken(combinedTokenContent.ToUpperX(), Tokens.First().LineIndex);
             return null;
