@@ -1,7 +1,7 @@
 #nullable enable
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// The tests run the command line tool (and cscript) as processes, which are independent - run them in parallel (issue #134)
+// The tests are independent: they run the command line tool (in the process, issue #136) and cscript - run them in parallel (issue #134)
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 
 namespace Skrypton.Windows.Tests

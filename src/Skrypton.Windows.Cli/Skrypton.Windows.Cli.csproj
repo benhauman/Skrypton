@@ -13,4 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Skrypton.Windows\Skrypton.Windows.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Skrypton.Windows.Tests" /> <!-- Program.Run: the parity tests run the tool in their process (issue #136) -->
+  </ItemGroup>
 </Project>

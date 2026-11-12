@@ -100,7 +100,7 @@ namespace Skrypton.Windows.Tests
             string[] lines = File.ReadAllLines(Path.Combine(CliRunner.RepositoryRoot, "tests", "Skrypton.Tests", "VbsResources", "ComParity_UnhandledErrors.cases.txt"))
                 .Where(line => (line.Length > 0) && !line.StartsWith("#", StringComparison.Ordinal))
                 .ToArray();
-            // the cases run in parallel (a process each - issue #134), each with its own script file
+            // the cases run in parallel (issue #134), each with its own script file
             var failures = new string?[lines.Length / 2];
             System.Threading.Tasks.Parallel.For(0, lines.Length / 2, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, c =>
             {

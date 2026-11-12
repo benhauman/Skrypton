@@ -76,7 +76,7 @@ namespace Skrypton.Windows.Tests
         {
             foreach (string option in new[] { "/h", "/help", "/?", "-h" })
             {
-                CliRunner.Result result = CliRunner.Run(new[] { option });
+                CliRunner.Result result = CliRunner.RunProcess(new[] { option });
                 Assert.AreEqual(0, result.ExitCode, option);
                 StringAssert.Contains(result.StandardOutput, "[options] scriptname.vbs [script arguments]", option);
                 StringAssert.Contains(result.StandardOutput, "/translate", option);
@@ -90,18 +90,18 @@ namespace Skrypton.Windows.Tests
             File.WriteAllText(script, "WScript.Echo WScript.Arguments(0)\r\nWScript.Quit 4\r\n");
             try
             {
-                CliRunner.Result result = CliRunner.Run(new[] { script, "hello world" });
+                CliRunner.Result result = CliRunner.RunProcess(new[] { script, "hello world" });
                 Assert.AreEqual(4, result.ExitCode);
                 Assert.AreEqual("hello world", result.StandardOutput.Trim());
 
-                CliRunner.Result missing = CliRunner.Run(new[] { script + ".missing.vbs" });
+                CliRunner.Result missing = CliRunner.RunProcess(new[] { script + ".missing.vbs" });
                 Assert.AreEqual(1, missing.ExitCode);
                 StringAssert.Contains(missing.StandardError, "Can not find script file");
 
-                CliRunner.Result unknown = CliRunner.Run(new[] { "/nosuchoption", script });
+                CliRunner.Result unknown = CliRunner.RunProcess(new[] { "/nosuchoption", script });
                 Assert.AreEqual(1, unknown.ExitCode);
 
-                CliRunner.Result translated = CliRunner.Run(new[] { "/translate", script });
+                CliRunner.Result translated = CliRunner.RunProcess(new[] { "/translate", script });
                 Assert.AreEqual(0, translated.ExitCode);
                 StringAssert.Contains(translated.StandardOutput, "class Runner");
             }

@@ -21,8 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Skrypton.Windows.NetFx\Skrypton.Windows.NetFx.csproj" />
     <Reference Include="System.Transactions" />
-    <!-- built before the tests run (the tests start it) -->
-    <ProjectReference Include="$(CliProject)" ReferenceOutputAssembly="false" />
+    <!-- the tests run it in their process (Program.Run: the parity scripts) and start it (options, exit codes) -->
+    <ProjectReference Include="$(CliProject)" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="MSTest.TestAdapter" />

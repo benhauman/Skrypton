@@ -19,4 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Skrypton.Windows.NetFx\Skrypton.Windows.NetFx.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Skrypton.Windows.NetFx.Tests" /> <!-- Program.Run: the parity tests run the tool in their process (issue #136) -->
+  </ItemGroup>
 </Project>
