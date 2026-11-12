@@ -237,7 +237,7 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                 translatedStatements.Add(
                     new TranslatedStatement(TranslatedStatementKind.RawText,
                         string.Format(CultureInfo.InvariantCulture,
-                            "[TranslatedProperty({0})]", // Note: Safe to assume that using statements are present for the namespace that contains TranslatedProperty
+                            "[Skrypton.RuntimeSupport.Attributes.TranslatedProperty({0})]", // fully qualified: the program has no using for the namespace
                             property.Name.Content.ToLiteral()
                         ),
                         indentationDepth,

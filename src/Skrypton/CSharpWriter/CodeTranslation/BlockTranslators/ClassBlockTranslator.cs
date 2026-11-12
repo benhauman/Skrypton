@@ -291,9 +291,9 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
             // has the same methods and properties on it).
             var classHeaderStatements = new List<TranslatedStatement>
             {
-                new TranslatedStatement(TranslatedStatementKind.RawText, "[ComVisible(true)]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement(TranslatedStatementKind.RawText, "[ClassInterface(ClassInterfaceType.AutoDispatch)]", indentationDepth, classBlock.Name.LineIndex),
-                new TranslatedStatement(TranslatedStatementKind.RawText, "[SourceClassName(" + sourceClassNameArg + ")]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[System.Runtime.InteropServices.ComVisible(true)]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[System.Runtime.InteropServices.ClassInterface(System.Runtime.InteropServices.ClassInterfaceType.AutoDispatch)]", indentationDepth, classBlock.Name.LineIndex),
+                new TranslatedStatement(TranslatedStatementKind.RawText, "[Skrypton.RuntimeSupport.Attributes.SourceClassName(" + sourceClassNameArg + ")]", indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement(TranslatedStatementKind.RawText, "public sealed class " + className + inheritanceChainIfAny, indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth, classBlock.Name.LineIndex),
                 new TranslatedStatement(TranslatedStatementKind.RawText, "private readonly " + typeof(IProvideVBScriptCompatFunctionalityToIndividualRequests).Name + " " + _supportRefName.Name + ";", indentationDepth + 1, classBlock.Name.LineIndex),
