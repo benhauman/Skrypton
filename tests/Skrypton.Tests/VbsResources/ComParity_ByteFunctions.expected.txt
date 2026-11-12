@@ -11,6 +11,8 @@ Byte String Long Long String
 0102FF
 Byte() 5 72 101 3 111 3
 48656C6C6F
+Byte() 8209 True 8204 Variant()
+Byte() 8209 8 97
 AscB("") 5 Invalid procedure call or argument
 AscB(Null) 94 Invalid use of Null
 MidB(s, 0) 5 Invalid procedure call or argument

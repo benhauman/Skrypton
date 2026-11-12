@@ -58,6 +58,25 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             vbscriptRule.ExecuteStatement("x = 1\r\nx = x + 1\r\n");
         }
 
+        public sealed class ByteHost
+        {
+            public byte[] Bytes => new byte[] { 1, 2, 3 };
+        }
+
+        /// <summary>
+        /// A byte array from the host is vbArray + vbByte (8209), as with Windows VBScript (issue #100)
+        /// </summary>
+        [TestMethod]
+        public void VarTypeOfAByteArrayFromTheHostIsArrayOfBytes()
+        {
+            var output = new Output();
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), VBScriptRuleConfiguration());
+            scriptengine.AddObject("output", output, false);
+            scriptengine.AddObject("host", new ByteHost(), false);
+            scriptengine.ExecuteStatement("Dim b : b = host.Bytes\r\noutput.Write TypeName(b) & \" \" & VarType(b) & \" \" & LenB(b) & \" \" & VarType(Array(1))\r\n");
+            CollectionAssert.AreEqual(new[] { "Byte() 8209 3 8204" }, output.Lines);
+        }
+
         /// <summary>
         /// Only the end of the statement may follow the END IF of a single-line If, as with Windows VBScript (compilation errors there - issue #97)
         /// </summary>

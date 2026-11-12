@@ -25,6 +25,14 @@ Out TypeName(b) & " " & LenB(b) & " " & AscB(b) & " " & AscB(MidB(b, 2, 1)) & " 
 hx = "" : For i = 1 To LenB(b) : hx = hx & Right("0" & Hex(AscB(MidB(b, i, 1))), 2) : Next
 Out hx
 
+' VarType of a byte array is vbArray + vbByte (issue #100), of a VBScript array vbArray + vbVariant
+Out TypeName(b) & " " & VarType(b) & " " & (VarType(b) = vbArray + vbByte) & " " & VarType(Array(1, 2)) & " " & TypeName(Array(1, 2))
+Dim ust : Set ust = CreateObject("ADODB.Stream")
+ust.Type = 2 : ust.CharSet = "unicode" : ust.Open : ust.WriteText "abc"
+ust.Position = 0 : ust.Type = 1 : ust.Position = 0
+Dim ub : ub = ust.Read : ust.Close
+Out TypeName(ub) & " " & VarType(ub) & " " & LenB(ub) & " " & AscB(MidB(ub, 3, 1))
+
 ' errors
 On Error Resume Next
 Dim x
