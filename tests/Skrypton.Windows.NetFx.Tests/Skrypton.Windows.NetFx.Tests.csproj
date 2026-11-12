@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Skrypton.Windows.NetFx\Skrypton.Windows.NetFx.csproj" />
+    <Reference Include="System.Transactions" />
     <!-- built before the tests run (the tests start it) -->
     <ProjectReference Include="$(CliProject)" ReferenceOutputAssembly="false" />
 

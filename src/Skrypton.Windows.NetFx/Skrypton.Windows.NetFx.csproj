@@ -21,5 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Skrypton\Skrypton.csproj" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
 </Project>

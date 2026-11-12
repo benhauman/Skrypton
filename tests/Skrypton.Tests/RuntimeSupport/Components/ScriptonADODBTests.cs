@@ -125,6 +125,71 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Assert.AreEqual(0, values[0], "a statement that returns no rows gives a closed Recordset");
         }
 
+        /// <summary>
+        /// Statements are text commands unless the options say adCmdStoredProc (4) - the default Options (-1, adOptionUnspecified) are not a
+        /// stored procedure (issue #99: ACE raised "Expected query name after EXECUTE" for cn.Execute("SELECT .."))
+        /// </summary>
+        [TestMethod]
+        public void StatementsAreTextCommandsUnlessTheOptionsSayStoredProcedure()
+        {
+            var database = new TestDatabaseConnectionFactoryHostService();
+            Execute(
+                OpenConnection +
+                "cn.Execute \"SELECT 1\"\r\n" +
+                "cn.Execute \"sp_who\", , 4\r\n" +
+                "cn.Execute \"UPDATE t SET x = 1\", , 1 + 128\r\n" +
+                "Dim rs : Set rs = CreateObject(\"ADODB.Recordset\")\r\n" +
+                "rs.Open \"SELECT 2\", cn\r\n" +
+                "Dim cmd : Set cmd = CreateObject(\"ADODB.Command\")\r\n" +
+                "Set cmd.ActiveConnection = cn\r\n" +
+                "cmd.CommandText = \"SELECT 3\"\r\n" +
+                "cmd.Execute\r\n",
+                database);
+            CollectionAssert.AreEqual(
+                new[] { "SELECT 1:Text", "sp_who:StoredProcedure", "UPDATE t SET x = 1:Text", "SELECT 2:Text", "SELECT 3:Text" },
+                database.ExecutedCommands.Select(c => c.CommandText + ":" + c.CommandType).ToArray());
+        }
+
+        /// <summary>
+        /// Records the ambient transaction (System.Transactions) when the connection is created and opened
+        /// </summary>
+        private sealed class AmbientTransactionRecordingFactory : IHostDatabaseConnectionFactoryHostService
+        {
+            private readonly TestDatabaseConnectionFactoryHostService _database = new TestDatabaseConnectionFactoryHostService();
+
+            public int Calls { get; private set; }
+
+            public System.Transactions.Transaction? AmbientTransaction { get; private set; }
+
+            public System.Data.Common.DbConnection CreateAndOpenDatabaseConnectionString(string connectionString, string userName, string password)
+            {
+                Calls++;
+                AmbientTransaction = System.Transactions.Transaction.Current;
+                return _database.CreateAndOpenDatabaseConnectionString(connectionString, userName, password);
+            }
+        }
+
+        /// <summary>
+        /// A host may run the script inside a TransactionScope: the connection is opened outside of it, as Windows ADO knows nothing of
+        /// System.Transactions (issue #99)
+        /// </summary>
+        [TestMethod]
+        public void OpenDoesNotEnlistInTheAmbientTransaction()
+        {
+            var factory = new AmbientTransactionRecordingFactory();
+            IScriptControl scriptengine = CreateScriptControlClass(
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostDatabaseConnectionFactoryHostService>(() => factory))),
+                CreateScriptControlConfiguration(false, [], []));
+            using (new System.Transactions.TransactionScope())
+            {
+                Assert.IsNotNull(System.Transactions.Transaction.Current);
+                scriptengine.ExecuteStatement(OpenConnection + "cn.BeginTrans\r\ncn.Execute \"UPDATE t SET x = 1\"\r\ncn.CommitTrans\r\ncn.Close\r\n");
+                Assert.AreEqual(Guid.Empty, System.Transactions.Transaction.Current!.TransactionInformation.DistributedIdentifier);
+            }
+            Assert.AreEqual(1, factory.Calls);
+            Assert.IsNull(factory.AmbientTransaction);
+        }
+
         [TestMethod]
         public void WithoutAHostServiceOpenRaisesAnError()
         {
