@@ -135,7 +135,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    _outer.PosID = null;
                     break;
+                }
                 _outer.PosID = enumerationContent.Current;
                 //Counter = Counter + 1
                 //hlContext. Trace 1, "Jetzt For each Schleife"
@@ -309,7 +312,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent2.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent2.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -426,7 +432,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent3.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent3.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -541,7 +550,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent4.MoveNext())
+                                {
+                                    _outer.rewritten_Group = null;
                                     break;
+                                }
                                 _outer.rewritten_Group = enumerationContent4.Current;
                                 _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                             }
@@ -658,7 +670,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent5.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent5.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -776,7 +791,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent6.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent6.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -894,7 +912,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent7.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent7.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1012,7 +1033,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent8.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent8.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1130,7 +1154,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent9.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent9.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1248,7 +1275,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent10.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent10.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1366,7 +1396,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent11.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent11.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1484,7 +1517,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent12.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent12.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1602,7 +1638,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent13.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent13.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1719,7 +1758,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent14.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent14.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1837,7 +1879,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent15.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent15.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -1955,7 +2000,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent16.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent16.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2073,7 +2121,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent17.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent17.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2191,7 +2242,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent18.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent18.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2309,7 +2363,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent19.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent19.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2427,7 +2484,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent20.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent20.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2545,7 +2605,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent21.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent21.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2663,7 +2726,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent22.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent22.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2781,7 +2847,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent23.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent23.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -2898,7 +2967,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent24.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent24.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -3016,7 +3088,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent25.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent25.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -3135,7 +3210,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent26.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent26.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -3254,7 +3332,10 @@ namespace TranslatedProgram
                                     while (true)
                                     {
                                         if (!enumerationContent27.MoveNext())
+                                        {
+                                            _outer.rewritten_Group = null;
                                             break;
+                                        }
                                         _outer.rewritten_Group = enumerationContent27.Current;
                                         _outer.AssetGroup = _.OBJ(_outer.rewritten_Group);
                                     }
@@ -3295,7 +3376,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent28.MoveNext())
+                {
+                    _outer.PosID = null;
                     break;
+                }
                 _outer.PosID = enumerationContent28.Current;
                 //Pruefen ob CI erzeugt werden soll
                 _outer.CreateCI = _.VAL(_.CALLm1argp(this, _.NnO(_outer.hlCase, null), "GetValue", _.ARGS.Val("OrderRequestAttribute.OrderedCIs_CA.CreateCI").Val((Int16)0).Ref(_outer.PosID, v733 => { _outer.PosID = v733; }).Val((Int16)0).Val((Int16)0)));
@@ -3315,7 +3399,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent29.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent29.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "DesktopComputer")))
@@ -3344,7 +3431,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent30.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent30.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "DesktopComputer")))
@@ -3391,7 +3481,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent31.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent31.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "NotebookComputer")))
@@ -3420,7 +3513,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent32.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent32.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "NotebookComputer")))
@@ -3467,7 +3563,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent33.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent33.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "NetworkComponent")))
@@ -3496,7 +3595,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent34.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent34.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "NotebookComputer")))
@@ -3543,7 +3645,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent35.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent35.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Monitor")))
@@ -3573,7 +3678,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent36.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent36.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Monitor")))
@@ -3620,7 +3728,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent37.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent37.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3650,7 +3761,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent38.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent38.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3697,7 +3811,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent39.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent39.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3727,7 +3844,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent40.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent40.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3774,7 +3894,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent41.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent41.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3804,7 +3927,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent42.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent42.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3851,7 +3977,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent43.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent43.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3881,7 +4010,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent44.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent44.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "Printer")))
@@ -3928,7 +4060,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent45.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent45.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -3958,7 +4093,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent46.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent46.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4005,7 +4143,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent47.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent47.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4035,7 +4176,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent48.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent48.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4082,7 +4226,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent49.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent49.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4112,7 +4259,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent50.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent50.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4159,7 +4309,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent51.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent51.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4189,7 +4342,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent52.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent52.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4236,7 +4392,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent53.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent53.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4266,7 +4425,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent54.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent54.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4313,7 +4475,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent55.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent55.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4343,7 +4508,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent56.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent56.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4390,7 +4558,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent57.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent57.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4420,7 +4591,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent58.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent58.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "GenericAsset")))
@@ -4467,7 +4641,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent59.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent59.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4497,7 +4674,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent60.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent60.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4544,7 +4724,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent61.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent61.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4574,7 +4757,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent62.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent62.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4621,7 +4807,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent63.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent63.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4651,7 +4840,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent64.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent64.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4698,7 +4890,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent65.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent65.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4728,7 +4923,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent66.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent66.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4775,7 +4973,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent67.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent67.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4805,7 +5006,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent68.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent68.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MobileDevice")))
@@ -4852,7 +5056,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent69.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent69.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -4882,7 +5089,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent70.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent70.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -4929,7 +5139,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent71.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent71.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -4959,7 +5172,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent72.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent72.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -5006,7 +5222,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent73.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent73.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -5036,7 +5255,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent74.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent74.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "MultiMediaDevice")))
@@ -5083,7 +5305,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent75.MoveNext())
+                        {
+                            _outer.obj = null;
                             break;
+                        }
                         _outer.obj = enumerationContent75.Current;
                         _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                         if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "ServerComputer")))
@@ -5113,7 +5338,10 @@ namespace TranslatedProgram
                             while (true)
                             {
                                 if (!enumerationContent76.MoveNext())
+                                {
+                                    _outer.obj = null;
                                     break;
+                                }
                                 _outer.obj = enumerationContent76.Current;
                                 _outer.objtype = _.VAL(_.CALLm1argp(this, _.NnO(_outer.obj, null), "GetType", _.ARGS.ForceBrackets()));
                                 if (_.IF(_.EQ(_.NullableSTR(_outer.objtype), "ServerComputer")))
@@ -5222,7 +5450,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent77.MoveNext())
+                        {
+                            _outer.SUIdx = null;
                             break;
+                        }
                         _outer.SUIdx = enumerationContent77.Current;
                         _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _.NnO(_outer.hlCase, null), "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v885 => { _outer.SUIdx = v885; }).Val((Int16)0)));
                         //SUActivity = hlcase.GetValue("IncidentSUAttribute.IncidentOperation", LangID, 0, SUIdx, 0)
@@ -5281,7 +5512,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent78.MoveNext())
+                    {
+                        _outer.SUIdx = null;
                         break;
+                    }
                     _outer.SUIdx = enumerationContent78.Current;
                     _outer.SUDiagnosis = _.VAL(_.CALLm1argp(this, _.NnO(_outer.hlCase, null), "GetValue", _.ARGS.Val("CaseDiagnosis.DiagnosisText").Val((Int16)0).Val((Int16)0).Ref(_outer.SUIdx, v890 => { _outer.SUIdx = v890; }).Val((Int16)0)));
                     //SUActivity = hlcase.GetValue("IncidentSUAttribute.IncidentOperation", LangID, 0, SUIdx, 0)

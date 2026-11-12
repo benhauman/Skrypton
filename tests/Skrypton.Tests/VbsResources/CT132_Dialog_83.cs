@@ -543,7 +543,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent.MoveNext())
+                    {
+                        Caller = null;
                         break;
+                    }
                     Caller = enumerationContent.Current;
                     CallerType = _.VAL(_.CALLm1v0(this, _.NnO(Caller, "Caller"), "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
@@ -695,7 +698,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent2.MoveNext())
+                    {
+                        Caller = null;
                         break;
+                    }
                     Caller = enumerationContent2.Current;
                     CallerType = _.VAL(_.CALLm1v0(this, _.NnO(Caller, "Caller"), "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
@@ -1191,7 +1197,10 @@ namespace TranslatedProgram
                     while (true)
                     {
                         if (!enumerationContent3.MoveNext())
+                        {
+                            Caller = null;
                             break;
+                        }
                         Caller = enumerationContent3.Current;
                         CallerType = _.VAL(_.CALLm1v0(this, _.NnO(Caller, "Caller"), "GetType"));
                         if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
@@ -2021,7 +2030,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent4.MoveNext())
+                    {
+                        Caller = null;
                         break;
+                    }
                     Caller = enumerationContent4.Current;
                     CallerType = _.VAL(_.CALLm1v0(this, _.NnO(Caller, "Caller"), "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))
@@ -2350,7 +2362,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent5.MoveNext())
+                    {
+                        Caller = null;
                         break;
+                    }
                     Caller = enumerationContent5.Current;
                     CallerType = _.VAL(_.CALLm1v0(this, _.NnO(Caller, "Caller"), "GetType"));
                     if (_.IF(_.EQ(_.NullableSTR(CallerType), "Employee")))

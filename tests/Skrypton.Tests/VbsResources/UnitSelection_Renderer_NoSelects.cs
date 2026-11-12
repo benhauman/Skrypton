@@ -160,7 +160,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    Item = null;
                     break;
+                }
                 Item = enumerationContent.Current;
                 //## Loop through only units
                 if (_.IF(_.EQ(_.NullableSTR(_.LEFT(Item, (Int16)5)), "unit_")))
@@ -536,7 +539,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
+                {
+                    key = null;
                     break;
+                }
                 key = enumerationContent2.Current;
                 //#MJ's Reasoning -	we don't want to render our roomrequirement's here as they may not be valid
                 //					instead when we write out a room requirement say what room it is and for how many
@@ -1077,7 +1083,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
+                {
+                    itm = null;
                     break;
+                }
                 itm = enumerationContent3.Current;
                 if (_.IF(_.EQ(_.NullableSTR(itm), "isostartdate")))
                 {

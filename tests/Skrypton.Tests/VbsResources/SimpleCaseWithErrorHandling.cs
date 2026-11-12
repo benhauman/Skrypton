@@ -10,7 +10,10 @@
                 if (enumerationContent != null)
                 {
                     if (!enumerationContent.MoveNext())
+                    {
+                        _env.value = null;
                         break;
+                    }
                     _env.value = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {

@@ -62,7 +62,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    item = null;
                     break;
+                }
                 item = enumerationContent.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "Subject"), item, (Int16)1)), (Int16)0)))
                 {
@@ -185,7 +188,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
+                {
+                    oCaseType = null;
                     break;
+                }
                 oCaseType = enumerationContent2.Current;
                 if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(oCaseType, "oCaseType"), "GetValue", "type"), null), "data"), _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype"))))
                 {
@@ -219,7 +225,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
+                {
+                    oCaseType = null;
                     break;
+                }
                 oCaseType = enumerationContent3.Current;
                 if (_.IF(_.EQ(_.CALLm1v0(this, _.NnO(_.CALLm1v1(this, _.NnO(oCaseType, "oCaseType"), "GetValue", "type"), null), "data"), _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "mailtype"))))
                 {
@@ -246,7 +255,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent4.MoveNext())
+                {
+                    oSubjectValue = null;
                     break;
+                }
                 oSubjectValue = enumerationContent4.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, _.CALLm1v0(this, _.NnO(oMailRequest, "oMailRequest"), "Subject"), _.CALLm1v0(this, _.NnO(oSubjectValue, "oSubjectValue"), "data"), (Int16)1)), (Int16)0)))
                 {
@@ -442,7 +454,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent5.MoveNext())
+                {
+                    oCase = null;
                     break;
+                }
                 oCase = enumerationContent5.Current;
                 object oMailRequest_vref4 = oMailRequest, oCaseCfg_vref2 = oCaseCfg, oHLServer_vref2 = oHLServer;
                 try
@@ -493,7 +508,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent6.MoveNext())
+                {
+                    item = null;
                     break;
+                }
                 item = enumerationContent6.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, subject, item, (Int16)1)), (Int16)0)))
                 {

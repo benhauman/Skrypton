@@ -158,7 +158,15 @@ namespace Skrypton.CSharpWriter.CodeTranslation.BlockTranslators
                     indentationDepth + 1,
                     forEachBlock.LoopVar.LineIndex
                 ))
+                // At the end of the loop, VBScript sets the loop variable to Empty (it keeps its value only with Exit For) - issue #112
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "{", indentationDepth + 1, forEachBlock.LoopVar.LineIndex))
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
+                    string.Format(CultureInfo.InvariantCulture, "{0} = null;", rewrittenLoopVarName),
+                    indentationDepth + 2,
+                    forEachBlock.LoopVar.LineIndex
+                ))
                 .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "break;", indentationDepth + 2, forEachBlock.LoopVar.LineIndex))
+                .Add(new TranslatedStatement(TranslatedStatementKind.RawText, "}", indentationDepth + 1, forEachBlock.LoopVar.LineIndex))
                 .Add(new TranslatedStatement(TranslatedStatementKind.RawText,
                     string.Format(CultureInfo.InvariantCulture,
                         "{0} = {1}.Current;",
