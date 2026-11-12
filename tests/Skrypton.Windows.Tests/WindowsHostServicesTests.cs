@@ -23,6 +23,7 @@ namespace Skrypton.Windows.Tests
             Assert.IsInstanceOfType<WindowsHostInputBoxHostService>(host.TryGetRuntimeHostService<IHostInputBoxHostService>());
             Assert.IsInstanceOfType<WindowsHostOleDbConnectionFactoryHostService>(host.TryGetRuntimeHostService<IHostDatabaseConnectionFactoryHostService>());
             Assert.IsInstanceOfType<WindowsHostOutlookHostService>(host.TryGetRuntimeHostService<IHostOutlookHostService>());
+            Assert.IsInstanceOfType<WindowsHostEnvironmentVariablesHostService>(host.TryGetRuntimeHostService<IHostEnvironmentVariablesHostService>());
             Assert.IsNull(host.TryGetRuntimeHostService<IHostFileSystemHostService>(), "the built-in components use the process file system");
             Assert.IsNull(host.Unregister<IHostOutlookHostService>().TryGetRuntimeHostService<IHostOutlookHostService>());
         }

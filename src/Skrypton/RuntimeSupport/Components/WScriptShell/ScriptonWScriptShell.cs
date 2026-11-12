@@ -72,6 +72,25 @@ namespace Skrypton.RuntimeSupport.Components
             return _environment.ExpandEnvironmentStrings(Src ?? "");
         }
 
+        /// <summary>
+        /// Environment([Type]) - the variables of "PROCESS", "SYSTEM" (the default), "USER" or "VOLATILE" (issue #107), through the host's
+        /// IHostEnvironmentVariablesHostService - or, if the host has registered only its own IHostEnvironmentHostService, read through that (a
+        /// sandboxed environment stays sandboxed) - or the process environment
+        /// </summary>
+        [DispId(200)]
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        public object Environment([In, MarshalAs(UnmanagedType.Struct), Optional, DefaultParameterValue("SYSTEM")] object? Type)
+        {
+            string type = IsMissing(Type) ? "SYSTEM" : (Convert.ToString(Type, CultureInfo.InvariantCulture) ?? "").Trim().ToUpperInvariant();
+            if ((type != "PROCESS") && (type != "SYSTEM") && (type != "USER") && (type != "VOLATILE"))
+                throw new Skrypton.RuntimeSupport.Exceptions.InvalidProcedureCallOrArgumentException($"'WshShell.Environment' (unknown environment '{Type}')");
+            IHostEnvironmentVariablesHostService variables = _runtimeHost.TryGetRuntimeHostService<IHostEnvironmentVariablesHostService>()
+                ?? ((_runtimeHost.TryGetRuntimeHostService<IHostEnvironmentHostService>() is IHostEnvironmentHostService hostEnvironment)
+                    ? new ExpandingEnvironmentVariablesHostService(hostEnvironment)
+                    : DefaultHostEnvironmentVariablesHostService.Instance);
+            return new ScriptonWshEnvironment(variables, type);
+        }
+
         private IHostProcessControlHostService ProcessControl(string member)
         {
             return _runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>() ?? throw new InvalidOperationException(
