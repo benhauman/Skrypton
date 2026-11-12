@@ -41,9 +41,9 @@ namespace TranslatedProgram
     {
         public object a { get => GetExternalReferenceAsObject(); internal set => RestoreExternalReferenceAsObject(value); }
     }
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [SourceClassName(nameof(C1))]
+    [System.Runtime.InteropServices.ComVisible(true)]
+    [System.Runtime.InteropServices.ClassInterface(System.Runtime.InteropServices.ClassInterfaceType.AutoDispatch)]
+    [Skrypton.RuntimeSupport.Attributes.SourceClassName(nameof(C1))]
     public sealed class C1
     {
         private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;

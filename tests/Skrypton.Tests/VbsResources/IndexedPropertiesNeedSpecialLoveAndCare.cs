@@ -1,7 +1,7 @@
 
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.AutoDispatch)]
-    [SourceClassName(nameof(C1))]
+    [System.Runtime.InteropServices.ComVisible(true)]
+    [System.Runtime.InteropServices.ClassInterface(System.Runtime.InteropServices.ClassInterfaceType.AutoDispatch)]
+    [Skrypton.RuntimeSupport.Attributes.SourceClassName(nameof(C1))]
     public sealed class C1 : TranslatedPropertyIReflectImplementation
     {
         private readonly IProvideVBScriptCompatFunctionalityToIndividualRequests _;
@@ -13,7 +13,7 @@
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _outer = outer ?? throw new ArgumentNullException(nameof(outer));
         }
-        [TranslatedProperty("Blah")]
+        [Skrypton.RuntimeSupport.Attributes.TranslatedProperty("Blah")]
         public void Blah(object i, object j, object value)
         {
         }
