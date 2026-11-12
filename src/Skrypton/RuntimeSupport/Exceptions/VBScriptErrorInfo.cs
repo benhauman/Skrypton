@@ -71,6 +71,8 @@ namespace Skrypton.RuntimeSupport.Exceptions
                 exception = exception.InnerException!;
             }
 
+            if ((exception is CustomException asGiven) && asGiven.IsAsGiven)
+                return new VBScriptErrorInfo(asGiven.ErrorNumber, asGiven.ErrDescription, asGiven.ErrSource);
             if (exception is CustomException custom)
             {
                 // Err.Raise (and the errors of the built-in components): the description and source given, otherwise those of the VBScript error
