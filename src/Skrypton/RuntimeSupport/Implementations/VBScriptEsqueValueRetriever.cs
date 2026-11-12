@@ -1160,6 +1160,15 @@ namespace Skrypton.RuntimeSupport.Implementations
         /// <summary>
         /// Is the target code that was translated from the VBScript source (the global references class or a translated VBScript class), rather than a host object?
         /// </summary>
+        /// <summary>
+        /// The global scope or a class of the translated script (compiled from it - the built-ins carry SourceClassName too, but they are in Skrypton)
+        /// </summary>
+        private static bool IsCodeOfTheScript(Type type)
+        {
+            return typeof(GlobalReferencesBase).IsAssignableFrom(type)
+                || ((type.GetCustomAttribute<SourceClassNameAttribute>(inherit: false) != null) && (type.Assembly != typeof(VBScriptEsqueValueRetriever).Assembly));
+        }
+
         private static bool IsTranslatedScriptTarget(object target)
         {
             return (target is GlobalReferencesBase) || (target.GetType().GetCustomAttribute<SourceClassNameAttribute>(inherit: false) != null);
@@ -1430,6 +1439,17 @@ namespace Skrypton.RuntimeSupport.Implementations
                     if (argumentsArray.Length > 0)
                     {
                         MethodInfo? parameterLessMember = GetNamedGetMethods(targetType, optionalName, 0, allowPrivateAccess).FirstOrDefault();
+                        if ((parameterLessMember != null) && IsCodeOfTheScript(targetType))
+                        {
+                            // Not for a Function (or Property Get) of the script: F(args) with a parameterless F is error 450, as with VBScript - inside F
+                            // the default member of its return value would call F again (issue #161)
+                            return new GetterInfo(
+                                (invokeTarget, invokeArguments) => throw new Skrypton.RuntimeSupport.Exceptions.CustomException(450, "Microsoft VBScript runtime error", "Wrong number of arguments or invalid property assignment"),
+                                $"{targetType.FullName}::{optionalName}(450)",
+                                null,
+                                usesIReflect: false
+                            );
+                        }
                         if (parameterLessMember != null)
                         {
                             GetterInfo memberGetter = GenerateCompiledLinqExpressionGetInvoker(targetType, parameterLessMember, 0);

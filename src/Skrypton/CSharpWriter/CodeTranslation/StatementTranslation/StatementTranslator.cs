@@ -669,9 +669,13 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                 //   so ANY argument use always points to a function / property call)
                 string rewrittenFirstMemberAccessor = _nameRewriter.GetMemberAccessTokenName(firstMemberAccessToken);
                 string rewrittenScopeDefiningParentName = _nameRewriter.GetMemberAccessTokenName(scopeAccessInformation.ScopeDefiningParent.Name);
+                // - With further member accessors (Name.Member args) the arguments are those of the last member: the name is the return value (as
+                //   with VBScript - issue #161: calling the function again recursed until the stack overflowed)
+                bool argumentsAreForTheLastMember = callExpressionSegment.MemberAccessTokens.Count > 1;
                 if ((rewrittenFirstMemberAccessor == rewrittenScopeDefiningParentName)
-                && callExpressionSegment.Arguments.Count == 0
-                && (callExpressionSegment.ZeroArgumentBracketsPresence == CallExpressionSegment.ArgumentBracketPresenceOptions.Absent))
+                && (argumentsAreForTheLastMember
+                    || ((callExpressionSegment.Arguments.Count == 0)
+                        && (callExpressionSegment.ZeroArgumentBracketsPresence == CallExpressionSegment.ArgumentBracketPresenceOptions.Absent))))
                 {
                     // The ScopeDefiningParent's Name will have come from a TempValueNameGenerator rather than VBScript source code, and as such it should
                     // not be passed through any VBScriptNameRewriter processing. Using a DoNotRenameNameToken means that, if the extension method
@@ -682,8 +686,8 @@ namespace Skrypton.CSharpWriter.CodeTranslation.StatementTranslation
                     );
                     callExpressionSegment = new CallExpressionSegment(firstMemberAccessToken.LineIndex,
                         new[] { parentReturnValueNameToken }.Concat(callExpressionSegment.MemberAccessTokens.Skip(1)).ToArray(),
-                        [],
-                        CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
+                        argumentsAreForTheLastMember ? callExpressionSegment.Arguments : [],
+                        argumentsAreForTheLastMember ? callExpressionSegment.ZeroArgumentBracketsPresence : CallExpressionSegment.ArgumentBracketPresenceOptions.Absent
                     );
                     firstMemberAccessToken = parentReturnValueNameToken;
                     firstMemberAccessTokenIsParentReturnValueName = true;
