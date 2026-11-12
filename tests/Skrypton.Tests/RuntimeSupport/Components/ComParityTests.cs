@@ -223,7 +223,8 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             }
         }
 
-        private void RunParityScript(string script, string expected)
+        /// <param name="demo">a demo script (samples\Windows): it writes with WScript.Echo, and it may begin with Option Explicit (no Out before it)</param>
+        private void RunParityScript(string script, string expected, bool demo = false)
         {
             // The expected output was captured with cscript on Windows with the culture en-US (numbers, currency, month names)
             TestCulture = System.Globalization.CultureInfo.GetCultureInfo("en-US");
@@ -238,7 +239,9 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 VBScriptRuleConfiguration()
             );
             scriptengine.AddObject("output", output, false);
-            scriptengine.ExecuteStatement("Sub Out(s)\r\n  output.Write \"\" & s\r\nEnd Sub\r\n" + script.Replace("\r\n", "\n").Replace("\n", "\r\n"));
+            if (demo)
+                scriptengine.AddObject("WScript", new DemoWScript(output), false);
+            scriptengine.ExecuteStatement((demo ? "" : "Sub Out(s)\r\n  output.Write \"\" & s\r\nEnd Sub\r\n") + script.Replace("\r\n", "\n").Replace("\n", "\r\n"));
 
             string[] expectedLines = expected.Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
             string[] actualLines = string.Join("\n", output.Lines).Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
