@@ -69,3 +69,15 @@ last
 1
 173|<Data><Asset aliasname="Replaced"><AssetGeneral.AssetName iskey="false"><![CDATA[PC <4711> & Co]]></AssetGeneral.AssetName></Asset><e><![CDATA[]]>t&lt;&amp;&gt;</e></Data>
 
+Microsoft.XMLDOM DOMDocument XSLPattern True False True 1
+Microsoft.FreeThreadedXMLDOM DOMDocument XSLPattern True False True 1
+MSXML.DOMDocument DOMDocument XSLPattern True False True 1
+Msxml2.DOMDocument DOMDocument XSLPattern True False True 1
+Msxml2.DOMDocument.3.0 DOMDocument XSLPattern True False True 1
+Msxml2.DOMDocument.6.0 DOMDocument60 XPath True False True 1
+Msxml2.FreeThreadedDOMDocument DOMDocument XSLPattern True False True 1
+Msxml2.FreeThreadedDOMDocument.3.0 DOMDocument XSLPattern True False True 1
+Msxml2.FreeThreadedDOMDocument.6.0 DOMDocument60 XPath True False True 1
+DOMDocument XSLPattern
+Neue Anfrage
+2
