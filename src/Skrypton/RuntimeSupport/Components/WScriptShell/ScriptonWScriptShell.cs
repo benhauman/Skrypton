@@ -40,7 +40,14 @@ namespace Skrypton.RuntimeSupport.Components
             // 0 hidden, 1 normal (default), 2 minimized, 3 maximized, 4 normal without activating, 5 show, 6 minimize, 7 minimized without activating, ..
             byte windowStyle = IsMissing(WindowStyle) ? (byte)1 : Convert.ToByte(WindowStyle, CultureInfo.InvariantCulture);
             bool waitOnReturn = !IsMissing(WaitOnReturn) && ToBool(WaitOnReturn!);
-            return ProcessControl("Run").ProcessStart(Command, windowStyle, waitOnReturn);
+            try
+            {
+                return ProcessControl("Run").ProcessStart(Command, windowStyle, waitOnReturn);
+            }
+            catch (System.ComponentModel.Win32Exception e) when (e.NativeErrorCode != 0)
+            {
+                throw StartError(e, source: "", describe: false); // WshShell.Run has no source and no description (as with WSH)
+            }
         }
 
         /// <summary>
@@ -53,7 +60,27 @@ namespace Skrypton.RuntimeSupport.Components
         {
             if (string.IsNullOrWhiteSpace(Command))
                 throw new ArgumentException("WshShell.Exec: a command is required", nameof(Command));
-            return new ScriptonWshScriptExec(ProcessControl("Exec").ProcessExec(Command));
+            try
+            {
+                return new ScriptonWshScriptExec(ProcessControl("Exec").ProcessExec(Command));
+            }
+            catch (System.ComponentModel.Win32Exception e) when (e.NativeErrorCode != 0)
+            {
+                throw StartError(e, source: "WshShell.Exec", describe: true);
+            }
+        }
+
+        /// <summary>
+        /// The error of Windows Script Host for a program that can not be started (issue #165): the Windows error as HRESULT_FROM_WIN32 (eg.
+        /// 0x80070002 file not found, 0x80070005 access denied) - with the message of Windows (and a line break) as the description for Exec
+        /// </summary>
+        private static Exceptions.CustomException StartError(System.ComponentModel.Win32Exception error, string source, bool describe)
+        {
+            int hresult = unchecked((int)0x80070000) | (error.NativeErrorCode & 0xFFFF);
+            string message = new System.ComponentModel.Win32Exception(error.NativeErrorCode).Message.TrimEnd();
+            if (!message.EndsWith(".", StringComparison.Ordinal))
+                message += "."; // the message of Windows ends with a period - .NET Framework's Win32Exception removes it
+            return Exceptions.CustomException.AsGiven(hresult, source, describe ? message + "\r\n" : "");
         }
 
         /// <summary>

@@ -31,6 +31,17 @@ namespace Skrypton.RuntimeSupport.Exceptions
         }
 
         /// <summary>
+        /// An error of a built-in component whose source and description are as given, also when they are empty (Err.Raise without them gets those
+        /// of the VBScript error, or "Unknown runtime error") - eg. WshShell.Run of a missing program (issue #165)
+        /// </summary>
+        internal static CustomException AsGiven(int number, string source, string description) => new CustomException(number, source, description) { IsAsGiven = true };
+
+        /// <summary>
+        /// The source and the description are as given, also when they are empty (see AsGiven)
+        /// </summary>
+        internal bool IsAsGiven { get; private set; }
+
+        /// <summary>
         /// The source given to Err.Raise ("" if there was none) - Err.Source
         /// </summary>
         public string ErrSource { get; } = "";
