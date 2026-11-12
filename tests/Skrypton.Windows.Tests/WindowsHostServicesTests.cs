@@ -27,6 +27,49 @@ namespace Skrypton.Windows.Tests
             Assert.IsNull(host.Unregister<IHostOutlookHostService>().TryGetRuntimeHostService<IHostOutlookHostService>());
         }
 
+        /// <summary>
+        /// ADODB inside a host's TransactionScope (issue #99): the connection does not enlist in it, as with Windows ADO - the text provider
+        /// (no local transactions) would fail at Open otherwise. The query runs and the ambient transaction stays a local one.
+        /// </summary>
+        [TestMethod]
+        public void AdodbConnectionDoesNotEnlistInTheAmbientTransaction()
+        {
+            string folder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "skrypton-ado-" + Guid.NewGuid().ToString("N"));
+            System.IO.Directory.CreateDirectory(folder);
+            try
+            {
+                System.IO.File.WriteAllText(System.IO.Path.Combine(folder, "products.csv"), "productid,equinr\r\n4711,E1\r\n4712,E2\r\n4714,E1\r\n");
+                string script =
+                    "Dim cn : Set cn = CreateObject(\"ADODB.Connection\")\r\n" +
+                    "cn.ConnectionString = \"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + folder + ";Extended Properties=\"\"text;HDR=Yes;FMT=Delimited\"\"\"\r\n" +
+                    "cn.Open\r\n" +
+                    "Dim rs : Set rs = cn.Execute(\"SELECT productid FROM [products.csv] WHERE equinr = 'E1'\")\r\n" +
+                    "Do While Not rs.EOF\r\n" +
+                    "    WScript.Echo rs.Fields(0).Value\r\n" +
+                    "    rs.MoveNext\r\n" +
+                    "Loop\r\n" +
+                    "rs.Close\r\n" +
+                    "cn.Close\r\n" +
+                    "WScript.Echo \"State=\" & cn.State\r\n";
+                using (new System.Transactions.TransactionScope())
+                {
+                    var output = new System.IO.StringWriter();
+                    var error = new System.IO.StringWriter();
+                    int exitCode = new ScriptonScriptRunner(WindowsRuntimeHost.CreateDefault(), output, error, System.IO.TextReader.Null, System.Globalization.CultureInfo.GetCultureInfo("en-US")).Run(script, System.IO.Path.Combine(folder, "repro.vbs"), Array.Empty<string>());
+                    if (error.ToString().Contains("provider is not registered"))
+                        Assert.Inconclusive("The Microsoft.ACE.OLEDB.12.0 provider is not installed: " + error);
+                    Assert.AreEqual("", error.ToString());
+                    Assert.AreEqual(0, exitCode);
+                    CollectionAssert.AreEqual(new[] { "4711", "4714", "State=0" }, output.ToString().Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));
+                    Assert.AreEqual(Guid.Empty, System.Transactions.Transaction.Current!.TransactionInformation.DistributedIdentifier);
+                }
+            }
+            finally
+            {
+                System.IO.Directory.Delete(folder, recursive: true);
+            }
+        }
+
         [TestMethod]
         public void ExecRunsACommandLineApplication()
         {

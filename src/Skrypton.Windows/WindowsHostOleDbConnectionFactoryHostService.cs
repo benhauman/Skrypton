@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Data.OleDb;
+using System.Transactions;
 using Skrypton.RuntimeSupport.Components;
 
 namespace Skrypton.Windows
@@ -8,7 +9,8 @@ namespace Skrypton.Windows
     /// <summary>
     /// ADODB connections through the OLE DB providers of Windows - the ADO connection string is an OLE DB connection string ("Provider=MSOLEDBSQL;
     /// Data Source=..;Initial Catalog=..", "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=x.accdb", ..); without a provider the ODBC provider is
-    /// used, as with ADO
+    /// used, as with ADO. The connection is opened outside of an ambient System.Transactions transaction (a host's TransactionScope): it does not
+    /// enlist in it, as Windows ADO does not (issue #99)
     /// </summary>
     public sealed class WindowsHostOleDbConnectionFactoryHostService : IHostDatabaseConnectionFactoryHostService
     {
@@ -24,7 +26,8 @@ namespace Skrypton.Windows
             var connection = new OleDbConnection(builder.ConnectionString);
             try
             {
-                connection.Open();
+                using (new TransactionScope(TransactionScopeOption.Suppress))
+                    connection.Open();
                 return connection;
             }
             catch

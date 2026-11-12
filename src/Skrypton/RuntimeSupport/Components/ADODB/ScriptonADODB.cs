@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Transactions;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Implementations;
 
@@ -63,10 +64,17 @@ namespace Skrypton.RuntimeSupport.Components
 
             IHostDatabaseConnectionFactoryHostService factory = _runtimeHost.TryGetRuntimeHostService<IHostDatabaseConnectionFactoryHostService>()
                 ?? throw new InvalidOperationException($"ADODB.Connection.Open: opening database connections requires the host to register an {nameof(IHostDatabaseConnectionFactoryHostService)}");
-            DbConnection connection = factory.CreateAndOpenDatabaseConnectionString(this.ConnectionString, UserID ?? "", Password ?? "")
-                ?? throw new InvalidOperationException($"ADODB.Connection.Open: the {nameof(IHostDatabaseConnectionFactoryHostService)} did not return a connection");
-            if (connection.State == ConnectionState.Closed)
-                connection.Open();
+            // Windows ADO knows nothing of System.Transactions: the connection is opened outside of the host's ambient transaction (a
+            // TransactionScope), so that it does not enlist in it - BeginTrans / CommitTrans / RollbackTrans are local transactions of the
+            // connection (issue #99)
+            DbConnection connection;
+            using (new TransactionScope(TransactionScopeOption.Suppress))
+            {
+                connection = factory.CreateAndOpenDatabaseConnectionString(this.ConnectionString, UserID ?? "", Password ?? "")
+                    ?? throw new InvalidOperationException($"ADODB.Connection.Open: the {nameof(IHostDatabaseConnectionFactoryHostService)} did not return a connection");
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+            }
             _connection = connection;
         }
 
@@ -90,7 +98,7 @@ namespace Skrypton.RuntimeSupport.Components
             [Optional] out object RecordsAffected,
             [In, Optional, DefaultParameterValue(-1)] int Options)
         {
-            using DbCommand command = CreateCommand(CommandText, ((Options & 4) == 4) ? CommandType.StoredProcedure : CommandType.Text, CommandTimeout);
+            using DbCommand command = CreateCommand(CommandText, ScriptonADODBConnection.IsStoredProcedure(Options) ? CommandType.StoredProcedure : CommandType.Text, CommandTimeout);
             ScriptonADODBRecordset recordset = ScriptonADODBRecordset.FromCommand(_runtimeHost, command, out int recordsAffected);
             RecordsAffected = recordsAffected;
             return recordset;
@@ -120,6 +128,11 @@ namespace Skrypton.RuntimeSupport.Components
             _transaction.Dispose();
             _transaction = null;
         }
+
+        /// <summary>
+        /// Do the Options of Execute / Open say adCmdStoredProc (4) - not with -1 (adOptionUnspecified, the default), which has all bits set
+        /// </summary>
+        internal static bool IsStoredProcedure(int options) => (options != -1) && ((options & 4) == 4);
 
         internal DbCommand CreateCommand(string commandText, CommandType commandType, int commandTimeout)
         {
@@ -216,7 +229,7 @@ namespace Skrypton.RuntimeSupport.Components
                     throw new ArgumentException("ADODB.Recordset.Open: ActiveConnection must be an ADODB.Connection or a connection string", nameof(ActiveConnection));
             }
 
-            using DbCommand command = connection.CreateCommand(sql, ((Options & 4) == 4) ? CommandType.StoredProcedure : CommandType.Text, connection.CommandTimeout);
+            using DbCommand command = connection.CreateCommand(sql, ScriptonADODBConnection.IsStoredProcedure(Options) ? CommandType.StoredProcedure : CommandType.Text, connection.CommandTimeout);
             Load(command, out _);
             _open = true;
         }
@@ -466,7 +479,7 @@ namespace Skrypton.RuntimeSupport.Components
                     _parameters.GetParameter(i).Value = values[i];
             }
 
-            System.Data.CommandType commandType = (CommandType == 4) || ((Options & 4) == 4) ? System.Data.CommandType.StoredProcedure : System.Data.CommandType.Text;
+            System.Data.CommandType commandType = (CommandType == 4) || ScriptonADODBConnection.IsStoredProcedure(Options) ? System.Data.CommandType.StoredProcedure : System.Data.CommandType.Text;
             using DbCommand command = connection.CreateCommand(CommandText, commandType, CommandTimeout);
             var dbParameters = new List<KeyValuePair<ScriptonADODBParameter, DbParameter>>();
             foreach (ScriptonADODBParameter parameter in _parameters)
