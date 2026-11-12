@@ -288,8 +288,12 @@ namespace Skrypton.RuntimeSupport
             var parts = input.Split([' ', '-', '/'], StringSplitOptions.RemoveEmptyEntries);
 
             // Try direct parse first (handles ISO formats like 2009-7-6)
-            if (DateTime.TryParse(input, culture, DateTimeStyles.None, out var dt))
+            if (DateTime.TryParse(input, culture, DateTimeStyles.NoCurrentDateDefault, out var dt))
             {
+                // A text without a date is the time on VBScript's zero date (1899-12-30), not today (issue #124) - .NET leaves the date at 0001-01-01
+                if (dt.Date == DateTime.MinValue.Date)
+                    return VBScriptConstants.ZeroDate.Add(dt.TimeOfDay);
+
                 if (defaultYear != DateTime.UtcNow.Year)
                 {
                     // If input had only 2 parts (month/day), force default year
@@ -1137,7 +1141,9 @@ namespace Skrypton.RuntimeSupport
             // Use the culture's LongTimePattern
             string format = culture.DateTimeFormat.LongTimePattern;
 
-            string text = dt.ToString(format, culture);
+            // ICU (.NET on Linux) puts a narrow no-break space (U+202F) before AM / PM in some cultures (en-US "h:mm:ss tt"); Windows and VBScript
+            // write a space
+            string text = dt.ToString(format, culture).Replace(' ', ' ');
             return text;
         }
 
