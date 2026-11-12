@@ -34,7 +34,10 @@ namespace Skrypton.Windows.Tests
         /// ADODB inside a host's TransactionScope (issue #99): the connection does not enlist in it, as with Windows ADO - the text provider
         /// (no local transactions) would fail at Open otherwise. The query runs and the ambient transaction stays a local one.
         /// </summary>
-        [TestMethod]
+        // Not run (issue #145): it needs the OLE DB provider Microsoft.ACE.OLEDB.12.0 (Access Database Engine), which the CI agent does not have
+        // (installing it on every build makes the pipeline longer) - the test would always be skipped. Put the attribute back to run it on a machine
+        // with the Access Database Engine.
+        //[TestMethod]
         public void AdodbConnectionDoesNotEnlistInTheAmbientTransaction()
         {
             string folder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "skrypton-ado-" + Guid.NewGuid().ToString("N"));
