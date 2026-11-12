@@ -1,0 +1,21 @@
+files: 47 72 FC DF 65 | EF BB BF 47 72 C3 BC C3 9F 65 | FF FE 47 00 72 00 FC 00 DF 00 65 00
+ansi fmt 0: Gr%FC%DFe
+utf8bom fmt 0: %EF%BB%BFGr%C3%BC%C3%u0178e
+utf16 fmt 0: %FF%FEG%00r%00%FC%00%DF%00e%00
+utf8bom fmt -1: %uBBEF%u47BF%uC372%uC3BC%u659F
+utf16 fmt -1: Gr%FC%DFe
+ansi fmt -2: Gr%FC%DFe
+utf8bom fmt -2: %EF%BB%BFGr%C3%BC%C3%u0178e
+utf16 fmt -2: Gr%FC%DFe
+ansi default: Gr%FC%DFe
+ansi ReadLine: Gr%FC%DFe
+ansi OpenAsTextStream: Gr%FC%DFe
+utf16 OpenAsTextStream -1: Gr%FC%DFe
+CreateTextFile ansi: 47 72 FC DF 65
+CreateTextFile unicode: FF FE 47 00 72 00 FC 00
+OpenTextFile write 0: 47 72 FC 80
+OpenTextFile write -1: FF FE 47 00 72 00 FC 00
+OpenTextFile append -1: FF FE 47 00 72 00 FC 00 21 00
+OpenTextFile write -2: 47 72 FC
+OpenTextFile append 0: 47 72 FC DF
+OpenAsTextStream write -1: FF FE 78 00
