@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Skrypton.RuntimeSupport.Attributes;
 using Skrypton.RuntimeSupport.Implementations;
@@ -105,6 +106,77 @@ namespace Skrypton.RuntimeSupport.Components
             IHostEventLogHostService eventLog = _runtimeHost.TryGetRuntimeHostService<IHostEventLogHostService>() ?? DefaultHostEventLogHostService.Instance;
             eventLog.LogEvent(type, Message ?? "", string.IsNullOrEmpty(Target) ? null : Target);
             return true;
+        }
+
+        private const string RegReadErrorSource = "WshShell.RegRead";
+
+        /// <summary>
+        /// RegRead(Name) - a registry value through the host's IHostRegistryHostService (issue #122), as Windows Script Host returns it: REG_SZ /
+        /// REG_EXPAND_SZ a String (not expanded), REG_DWORD a Long, REG_MULTI_SZ an array of Strings and REG_BINARY an array of Bytes (both as
+        /// Variant arrays), REG_QWORD is a Type mismatch; a Name that ends with "\" is the default value of the key ("" if it has none). The root
+        /// is HKCU, HKLM, HKCR or the full name (also HKEY_USERS, HKEY_CURRENT_CONFIG), case-sensitive; other roots and missing keys and values
+        /// raise the errors of WSH.
+        /// </summary>
+        [DispId(2002)]
+        public object RegRead([In, MarshalAs(UnmanagedType.BStr)] string Name)
+        {
+            string name = Name ?? "";
+            int separator = name.IndexOf('\\');
+            string? root = (separator < 0) ? null : ToRegistryRoot(name.Substring(0, separator));
+            if (root == null)
+                throw new Skrypton.RuntimeSupport.Exceptions.CustomException(unchecked((int)0x80070003), RegReadErrorSource, $"Invalid root in registry key \"{name}\".");
+            string path = name.Substring(separator + 1);
+            int lastSeparator = path.LastIndexOf('\\');
+            string subKey = (lastSeparator < 0) ? "" : path.Substring(0, lastSeparator);
+            string valueName = (lastSeparator < 0) ? path : path.Substring(lastSeparator + 1);
+
+            IHostRegistryHostService registry = _runtimeHost.TryGetRuntimeHostService<IHostRegistryHostService>() ?? throw new InvalidOperationException(
+                $"WshShell.RegRead: reading the registry requires the host to register an {nameof(IHostRegistryHostService)}");
+            HostRegistryValue? value = registry.ReadValue(root, subKey, valueName, out bool keyExists);
+            if (!keyExists)
+                throw new Skrypton.RuntimeSupport.Exceptions.CustomException(unchecked((int)0x80070002), RegReadErrorSource, $"Invalid root in registry key \"{name}\".");
+            if (value == null)
+            {
+                if (valueName.Length == 0)
+                    return ""; // the default value of a key that has none
+                throw new Skrypton.RuntimeSupport.Exceptions.CustomException(unchecked((int)0x80070002), RegReadErrorSource, $"Unable to open registry key \"{name}\" for reading.");
+            }
+            switch (value.Kind)
+            {
+                case HostRegistryValueKind.DWord:
+                    return Convert.ToInt32(value.Data, CultureInfo.InvariantCulture);
+                case HostRegistryValueKind.MultiSz:
+                    return ((string[])value.Data).Cast<object>().ToArray();
+                case HostRegistryValueKind.Binary:
+                    return ((byte[])value.Data).Cast<object>().ToArray();
+                case HostRegistryValueKind.Sz:
+                case HostRegistryValueKind.ExpandSz:
+                    return Convert.ToString(value.Data, CultureInfo.InvariantCulture) ?? "";
+                default:
+                    throw new Skrypton.RuntimeSupport.TypeMismatchException($"'WshShell.RegRead' ({name} is a {value.Kind} value)");
+            }
+        }
+
+        private static string? ToRegistryRoot(string root)
+        {
+            // case-sensitive, as with Windows Script Host ("hklm" is an invalid root); HKU and HKCC are not abbreviations WSH knows
+            switch (root)
+            {
+                case "HKCU":
+                case "HKEY_CURRENT_USER":
+                    return "HKEY_CURRENT_USER";
+                case "HKLM":
+                case "HKEY_LOCAL_MACHINE":
+                    return "HKEY_LOCAL_MACHINE";
+                case "HKCR":
+                case "HKEY_CLASSES_ROOT":
+                    return "HKEY_CLASSES_ROOT";
+                case "HKEY_USERS":
+                case "HKEY_CURRENT_CONFIG":
+                    return root;
+                default:
+                    return null;
+            }
         }
 
         private IHostProcessControlHostService ProcessControl(string member)

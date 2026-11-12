@@ -34,7 +34,8 @@ namespace Skrypton.Windows
                 .Register<IHostDatabaseConnectionFactoryHostService>(new WindowsHostOleDbConnectionFactoryHostService())
                 .Register<IHostOutlookHostService>(new WindowsHostOutlookHostService())
                 .Register<IHostEnvironmentVariablesHostService>(new WindowsHostEnvironmentVariablesHostService())
-                .Register<IHostEventLogHostService>(new WindowsHostEventLogHostService());
+                .Register<IHostEventLogHostService>(new WindowsHostEventLogHostService())
+                .Register<IHostRegistryHostService>(new WindowsHostRegistryHostService());
         }
 
         /// <summary>

@@ -251,5 +251,80 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
 
             Assert.AreEqual(true, Execute("collector.Report sh.LogEvent(4, \"to the trace\")\r\n", null)[0]);
         }
+
+        /// <summary>
+        /// A registry in memory: HKEY_LOCAL_MACHINE\Software\Test with a value of each kind and no default value
+        /// </summary>
+        private sealed class TestRegistry : IHostRegistryHostService
+        {
+            public List<string> Reads { get; } = new List<string>();
+
+            public HostRegistryValue? ReadValue(string root, string subKey, string valueName, out bool keyExists)
+            {
+                Reads.Add(root + "|" + subKey + "|" + valueName);
+                keyExists = (root == "HKEY_LOCAL_MACHINE") && (subKey.Equals(@"Software\Test", StringComparison.OrdinalIgnoreCase) || (subKey.Length == 0));
+                if (!keyExists)
+                    return null;
+                switch (valueName.ToUpperInvariant())
+                {
+                    case "SZ": return new HostRegistryValue(HostRegistryValueKind.Sz, "text");
+                    case "EXPAND": return new HostRegistryValue(HostRegistryValueKind.ExpandSz, @"%USERPROFILE%\x");
+                    case "DWORD": return new HostRegistryValue(HostRegistryValueKind.DWord, -60);
+                    case "QWORD": return new HostRegistryValue(HostRegistryValueKind.QWord, 5L);
+                    case "MULTI": return new HostRegistryValue(HostRegistryValueKind.MultiSz, new[] { "a", "b" });
+                    case "BINARY": return new HostRegistryValue(HostRegistryValueKind.Binary, new byte[] { 1, 255 });
+                    default: return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// WshShell.RegRead through the host's IHostRegistryHostService (issue #122): the types and errors of Windows Script Host
+        /// (CliParityTests.RegReadReadsTheRegistryAsWsh compares the real registry with cscript); without a host service it is an error
+        /// </summary>
+        [TestMethod]
+        public void RegReadGoesThroughTheHostService()
+        {
+            var registry = new TestRegistry();
+            var collector = new ValueCollector();
+            IScriptControl scriptengine = CreateScriptControlClass(
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostRegistryHostService>(() => registry))),
+                CreateScriptControlConfiguration(false, [], []));
+            scriptengine.AddObject("collector", collector, false);
+            scriptengine.ExecuteStatement(
+                "Dim sh : Set sh = CreateObject(\"WScript.Shell\")\r\n" +
+                "Dim v\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Dword\") : collector.Report VarType(v) & \" \" & v\r\n" +
+                "v = sh.RegRead(\"HKEY_LOCAL_MACHINE\\Software\\Test\\Sz\") : collector.Report VarType(v) & \" \" & v\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Expand\") : collector.Report v\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Multi\") : collector.Report VarType(v) & \" \" & Join(v, \",\")\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Binary\") : collector.Report VarType(v) & \" \" & TypeName(v(1)) & \" \" & v(1)\r\n" +
+                "collector.Report \"[\" & sh.RegRead(\"HKLM\\Software\\Test\\\") & \"]\"\r\n" +
+                "On Error Resume Next\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Qword\") : collector.Report Err.Number : Err.Clear\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Test\\Missing\") : collector.Report Err.Number & \" \" & Err.Source & \" \" & Err.Description : Err.Clear\r\n" +
+                "v = sh.RegRead(\"HKLM\\Software\\Nope\\Value\") : collector.Report Err.Number & \" \" & Err.Description : Err.Clear\r\n" +
+                "v = sh.RegRead(\"hklm\\Software\\Test\\Sz\") : collector.Report Err.Number & \" \" & Err.Description : Err.Clear\r\n" +
+                "v = sh.RegRead(\"HKU\\x\\y\") : collector.Report Err.Number : Err.Clear\r\n");
+            CollectionAssert.AreEqual(
+                new object[]
+                {
+                    "3 -60",
+                    "8 text",
+                    @"%USERPROFILE%\x",
+                    "8204 a,b",
+                    "8204 Byte 255",
+                    "[]",
+                    13,
+                    "-2147024894 WshShell.RegRead Unable to open registry key \"HKLM\\Software\\Test\\Missing\" for reading.",
+                    "-2147024894 Invalid root in registry key \"HKLM\\Software\\Nope\\Value\".",
+                    "-2147024893 Invalid root in registry key \"hklm\\Software\\Test\\Sz\".",
+                    -2147024893,
+                },
+                collector.Values.ToArray());
+
+            var noService = Assert.Throws<Exception>(() => Execute("collector.Report sh.RegRead(\"HKLM\\Software\\x\")\r\n", null));
+            StringAssert.Contains(noService.ToString(), nameof(IHostRegistryHostService));
+        }
     }
 }
