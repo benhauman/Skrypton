@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skrypton.RuntimeSupport.Components;
 using Skrypton.ScriptControlSupport;
 
 namespace Skrypton.Tests.Issues
@@ -49,6 +50,53 @@ namespace Skrypton.Tests.Issues
 
             Assert.AreEqual(1, reflect.InvokeMember("Count", BindingFlags.GetProperty, null, dictionary!, null, null, null, null));
             Assert.AreEqual(true, reflect.InvokeMember("Exists", BindingFlags.InvokeMethod, null, dictionary!, new object[] { "a" }, null, null, null));
+        }
+
+        /// <summary>
+        /// A host uses the dictionary of a script through IScriptingDictionary (as IFileSystem for Scripting.FileSystemObject): Keys, Exists and
+        /// Item (read and write) - the script sees what the host writes
+        /// </summary>
+        [TestMethod]
+        public void AHostUsesTheDictionaryOfAScriptThroughIScriptingDictionary()
+        {
+            var collector = new ValueCollector();
+            var host = new DictionaryHost();
+            IScriptControl scriptengine = CreateScriptControlClass(CreateRuntimeHost(CreateTestHostServices()), CreateScriptControlConfiguration(false, [], []));
+            scriptengine.AddObject("collector", collector, false);
+            scriptengine.AddObject("host", host, false);
+            scriptengine.ExecuteStatement(
+                "Dim d : Set d = CreateObject(\"Scripting.Dictionary\")\r\n" +
+                "d.Add \"a\", 1\r\n" +
+                "d(\"b\") = \"two\"\r\n" +
+                "host.Use d\r\n" +
+                "collector.Report Join(d.Keys, \",\") & \"|\" & d(\"a\") & \"|\" & d(\"c\") & \"|\" & d.Count\r\n");
+
+            IScriptingDictionary? dictionary = host.Dictionary;
+            Assert.IsNotNull(dictionary, "the dictionary is an IScriptingDictionary");
+            CollectionAssert.AreEqual(new object[] { "a", "b" }, host.KeysBefore);
+            CollectionAssert.AreEqual(new object?[] { true, false, (short)1, "two" }, host.ValuesBefore); // the literal 1 is an Integer in VBScript
+            Assert.AreEqual("a,b,c|10|three|3", collector.Values.Single(), "the script sees what the host wrote");
+        }
+
+        /// <summary>
+        /// A host object that reads the dictionary of the script and writes to it through IScriptingDictionary
+        /// </summary>
+        public sealed class DictionaryHost
+        {
+            public IScriptingDictionary? Dictionary { get; private set; }
+            public object?[] KeysBefore { get; private set; } = [];
+            public object?[] ValuesBefore { get; private set; } = [];
+
+            public void Use(object? value)
+            {
+                Dictionary = ((value is Skrypton.RuntimeSupport.ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : value) as IScriptingDictionary;
+                if (Dictionary == null)
+                    return;
+                KeysBefore = Dictionary.Keys();
+                ValuesBefore = new[] { Dictionary.Exists("a"), Dictionary.Exists("c"), Dictionary["a"], Dictionary["b"] };
+                Dictionary["a"] = 10;
+                Dictionary["c"] = "three";
+            }
         }
     }
 }

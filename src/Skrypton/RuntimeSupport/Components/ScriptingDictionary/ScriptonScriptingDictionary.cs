@@ -22,7 +22,7 @@ namespace Skrypton.RuntimeSupport.Components
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #pragma warning disable CA1010 // Generic IEnumerable<T> - the shape mirrors the COM Scripting.Dictionary (For Each over the keys, as variants)
-    internal sealed class ScriptonScriptingDictionary : ScriptonIReflectOnClrType, IEnumerable // IReflect as the other built-ins (issue #159); the DISPIDs are scrrun's
+    internal sealed class ScriptonScriptingDictionary : ScriptonIReflectOnClrType, IScriptingDictionary, IEnumerable // IReflect as the other built-ins (issue #159); the DISPIDs are scrrun's
 #pragma warning restore CA1010
     {
         public const string ProgId = "Scripting.Dictionary";
@@ -249,5 +249,26 @@ namespace Skrypton.RuntimeSupport.Components
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// The members of the built-in Scripting.Dictionary that a host uses (as IFileSystem for Scripting.FileSystemObject): the keys, whether a
+    /// key exists and the value of a key (Item, read and write - reading a missing key adds it with the value Empty, as scrrun does)
+    /// </summary>
+#pragma warning disable CA1711 // The name is the one of the COM component (Scripting.Dictionary)
+    public interface IScriptingDictionary
+#pragma warning restore CA1711
+    {
+        /// <summary>
+        /// The keys, in insertion order
+        /// </summary>
+        object?[] Keys();
+
+        bool Exists(object? key);
+
+        /// <summary>
+        /// Item: the value of the key - setting it adds the key or replaces its value
+        /// </summary>
+        object? this[object? key] { get; set; }
     }
 }
