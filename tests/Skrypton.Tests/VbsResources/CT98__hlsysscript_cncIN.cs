@@ -83,7 +83,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    item = null;
                     break;
+                }
                 item = enumerationContent.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {
@@ -294,7 +297,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
+                {
+                    item = null;
                     break;
+                }
                 item = enumerationContent2.Current;
                 if (_.IF(_.GT(_.NullableNUM(_.INSTR((Int16)1, mailSubject, item, (Int16)1)), (Int16)0)))
                 {

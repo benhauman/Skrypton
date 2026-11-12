@@ -1,0 +1,9 @@
+array Empty
+dict Empty
+exit Integer 1
+empty Empty
+for 3
+string Integer 5 n=1 err=451
+nothing Integer 7 n=1
+ok Empty
+byref Empty

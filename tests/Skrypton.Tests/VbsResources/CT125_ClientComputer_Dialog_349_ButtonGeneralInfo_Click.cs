@@ -457,7 +457,10 @@ namespace TranslatedProgram
                 if (enumerationContent != null)
                 {
                     if (!enumerationContent.MoveNext())
+                    {
+                        n = null;
                         break;
+                    }
                     n = enumerationContent.Current;
                 }
                 _.HANDLEERROR(errOn, () => {

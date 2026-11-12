@@ -76,7 +76,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    Item = null;
                     break;
+                }
                 Item = enumerationContent.Current;
                 defItem = false;
                 object hlContext_vref = hlContext, hlObject_vref = hlObject, dict_vref2 = dict;
@@ -477,7 +480,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent2.MoveNext())
+                {
+                    SoftwareLicense = null;
                     break;
+                }
                 SoftwareLicense = enumerationContent2.Current;
                 objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "LicenseFolder")))
@@ -727,7 +733,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
+                {
+                    SoftwareLicense = null;
                     break;
+                }
                 SoftwareLicense = enumerationContent3.Current;
                 objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.EQ(_.NullableSTR(objType), "SoftwareLicense")))
@@ -788,7 +797,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent4.MoveNext())
+                {
+                    SoftwareLicense = null;
                     break;
+                }
                 SoftwareLicense = enumerationContent4.Current;
                 objType = _.VAL(_.CALLm1argp(this, _.NnO(SoftwareLicense, "SoftwareLicense"), "GetType", _.ARGS.ForceBrackets()));
                 if (_.IF(_.OR(_.EQ(_.NullableSTR(objType), "LicenseFolder"), _.EQ(_.NullableSTR(objType), "Software"))))
@@ -1002,7 +1014,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent5.MoveNext())
+                    {
+                        objParent = null;
                         break;
+                    }
                     objParent = enumerationContent5.Current;
                     object pDict_vref10 = pDict;
                     try

@@ -20,7 +20,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    _env.value = null;
                     break;
+                }
                 _env.value = enumerationContent.Current;
             }
         }

@@ -49,7 +49,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    Process = null;
                     break;
+                }
                 Process = enumerationContent.Current;
                 if (_.IF(_.EQ(_.NullableNUM(_.STRCOMP(_.CALLm1v0(this, _.NnO(Process, "Process"), "Name"), "iexplore.exe", VBScriptConstants.vbTextCompare)), (Int16)0)))
                 {

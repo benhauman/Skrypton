@@ -89,7 +89,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent.MoveNext())
+                    {
+                        AttachID = null;
                         break;
+                    }
                     AttachID = enumerationContent.Current;
                     Attachment = _.OBJ(_.CALLm1argp(this, _.NnO(hlCase, "hlCase"), "GetAttachment", _.ARGS.Val("HLOBJECTINFO.ATTACHMENT").Ref(AttachID, v3 => { AttachID = v3; }).Val((Int16)0)));
                     if (_.IF(_.GT(_.NullableNUM(_.CALLm1v0(this, _.NnO(Attachment, "Attachment"), "Size")), (Int16)0)))
@@ -328,7 +331,10 @@ namespace TranslatedProgram
                 while (true)
                 {
                     if (!enumerationContent2.MoveNext())
+                    {
+                        contentID = null;
                         break;
+                    }
                     contentID = enumerationContent2.Current;
                     assignedGroupWF = _.VAL(_.CALLm1argp(this, _.NnO(hlObj, "hlObj"), "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedGroup").Val((Int16)0).Ref(contentID, v14 => { contentID = v14; }).Val((Int16)0).Val((Int16)0)));
                     assignedPersonWF = _.VAL(_.CALLm1argp(this, _.NnO(hlObj, "hlObj"), "GetValue", _.ARGS.Val("TaskDesignWorkflow.TaskWorkflow_CA.AssignedPerson").Val((Int16)0).Ref(contentID, v15 => { contentID = v15; }).Val((Int16)0).Val((Int16)0)));
@@ -345,7 +351,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent3.MoveNext())
+                {
+                    Asset = null;
                     break;
+                }
                 Asset = enumerationContent3.Current;
                 _.CALLm1argp(this, _.NnO(newTask, "newTask"), "AddItemEx", _.ARGS.Val((Int16)0).Ref(Asset, v23 => { Asset = v23; }).Val((Int16)0).Val((Int16)131));
             }

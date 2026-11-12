@@ -36,7 +36,10 @@ namespace TranslatedProgram
             while (true)
             {
                 if (!enumerationContent.MoveNext())
+                {
+                    _outer.element = null;
                     break;
+                }
                 _outer.element = enumerationContent.Current;
                 if (_.IF(_.NOTEQ(_.NullableSTR(_.CALLm0argp(this, _.NnO(_env.dict, null), _.ARGS.Ref(_outer.element, v => { _outer.element = v; }))), "")))
                 {

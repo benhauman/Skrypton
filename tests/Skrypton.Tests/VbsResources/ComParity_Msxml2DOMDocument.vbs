@@ -167,8 +167,8 @@ For Each domProgId In Array("Microsoft.XMLDOM", "Microsoft.FreeThreadedXMLDOM", 
     Set progDoc = CreateObject(domProgId)
     Out domProgId & " " & TypeName(progDoc) & " " & progDoc.getProperty("SelectionLanguage") & " " & progDoc.async & " " & progDoc.preserveWhiteSpace & " " & progDoc.loadXML("<a><b/></a>") & " " & progDoc.selectNodes("//b").length
 Next
-Dim xmlDoc : Set xmlDoc = CreateObject("Microsoft.XMLDOM")
-xmlDoc.LoadXml("<Translations><Translation key=""NoCaller"">kein Anrufer</Translation><Translation key=""SubjectAgentNotify"">Neue Anfrage</Translation></Translations>")
-Out TypeName(xmlDoc) & " " & xmlDoc.getProperty("SelectionLanguage")
-Out xmlDoc.SelectSingleNode("//Translation[@key=""SubjectAgentNotify""]").Text
-Out xmlDoc.SelectNodes("//Translation").length
+Dim xmlDomDoc : Set xmlDomDoc = CreateObject("Microsoft.XMLDOM")
+xmlDomDoc.LoadXml("<Translations><Translation key=""NoCaller"">kein Anrufer</Translation><Translation key=""SubjectAgentNotify"">Neue Anfrage</Translation></Translations>")
+Out TypeName(xmlDomDoc) & " " & xmlDomDoc.getProperty("SelectionLanguage")
+Out xmlDomDoc.SelectSingleNode("//Translation[@key=""SubjectAgentNotify""]").Text
+Out xmlDomDoc.SelectNodes("//Translation").length
