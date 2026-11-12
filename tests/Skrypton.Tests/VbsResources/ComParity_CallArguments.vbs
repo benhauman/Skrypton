@@ -24,3 +24,14 @@ d("k") = 1 = 1
 Out d("k")
 d.Item("j") = 7
 Out d.Item("j")
+' A call with a number of ByVal arguments that has no helper of its own (7, 11) - issue #156
+Class CallArgs7
+    Sub M(a, b, c, d, e, f, g) : Out a & b & c & d & e & f & g : End Sub
+    Sub L(a, b, c, d, e, f, g, h, i, j, k) : Out a & b & c & d & e & f & g & h & i & j & k : End Sub
+    Function N() : Set N = Me : End Function
+End Class
+Dim c7 : Set c7 = New CallArgs7
+c7.M 1, 2, 3, 4, 5, 6, "a" & "b"
+c7.N.M 1, 2, 3, 4, 5, 6, 7
+c7.N.N.M 1, 2, 3, 4, 5, 6, "z"
+c7.L 1, 2, 3, 4, 5, 6, 7, 8, 9, "x", "y"
