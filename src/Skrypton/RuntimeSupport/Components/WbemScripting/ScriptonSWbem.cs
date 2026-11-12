@@ -11,9 +11,10 @@ using Skrypton.RuntimeSupport.Implementations;
 namespace Skrypton.RuntimeSupport.Components
 {
     /// <summary>
-    /// The built-in WbemScripting.SWbemLocator, also reached through GetObject("winmgmts:"). Only the Win32_Process class is supported and the
-    /// processes come from the host's IHostProcessControlHostService (ProcessesCollect) - querying processes is a decision for the host, so this
-    /// raises an error if the host has not registered one. Other WMI classes and operations raise a NotSupportedException.
+    /// The built-in WbemScripting.SWbemLocator, also reached through GetObject("winmgmts:"). The classes Win32_Process and Win32_TimeZone are
+    /// supported: the processes come from the host's IHostProcessControlHostService (ProcessesCollect) - querying processes is a decision for the
+    /// host, so this raises an error if the host has not registered one - and the time zone is the local one of the process (TimeZoneInfo.Local).
+    /// Other WMI classes and operations raise a NotSupportedException.
     /// </summary>
     [SourceClassName("SWbemLocator")] // TypeName(CreateObject("WbemScripting.SWbemLocator"))
     [ComVisible(true)]
@@ -78,11 +79,14 @@ namespace Skrypton.RuntimeSupport.Components
         [DispId(0x60020001)]
         public object InstancesOf([In] string strClass, [In, Optional, DefaultParameterValue(0)] int lFlags, [In, Optional, DefaultParameterValue(null)] object? objWbemNamedValueSet)
         {
-            return new ScriptonSWbemObjectSet(GetInstances(strClass));
+            if (string.Equals(ScriptonWin32TimeZone.ClassName, strClass, StringComparison.OrdinalIgnoreCase))
+                return new ScriptonSWbemObjectSet(new[] { ScriptonWin32TimeZone.FromLocal() });
+            return new ScriptonSWbemObjectSet(GetProcesses(strClass));
         }
 
         /// <summary>
         /// Supports "SELECT ... FROM Win32_Process" with an optional "WHERE Name = '...'" or "WHERE ProcessId = '...'" (compared case-insensitively)
+        /// and "SELECT ... FROM Win32_TimeZone"
         /// </summary>
         [DispId(0x60020000)]
         public object ExecQuery([In] string strQuery, [In, Optional, DefaultParameterValue("WQL")] string? strQueryLanguage, [In, Optional, DefaultParameterValue(0)] int lFlags, [In, Optional, DefaultParameterValue(null)] object? objWbemNamedValueSet)
@@ -94,7 +98,15 @@ namespace Skrypton.RuntimeSupport.Components
             if (!match.Success)
                 throw new NotSupportedException($"SWbemServices.ExecQuery: only \"SELECT ... FROM <class> [WHERE <property> = '<value>']\" is supported, not '{strQuery}'");
 
-            IEnumerable<ScriptonWin32Process> instances = GetInstances(match.Groups["class"].Value);
+            string wmiClass = match.Groups["class"].Value;
+            if (string.Equals(ScriptonWin32TimeZone.ClassName, wmiClass, StringComparison.OrdinalIgnoreCase))
+            {
+                if (match.Groups["property"].Success)
+                    throw new NotSupportedException($"SWbemServices.ExecQuery: filtering {ScriptonWin32TimeZone.ClassName} is not supported");
+                return InstancesOf(wmiClass);
+            }
+
+            IEnumerable<ScriptonWin32Process> instances = GetProcesses(wmiClass);
             if (match.Groups["property"].Success)
             {
                 string property = match.Groups["property"].Value;
@@ -109,10 +121,10 @@ namespace Skrypton.RuntimeSupport.Components
             return new ScriptonSWbemObjectSet(instances.ToList());
         }
 
-        private List<ScriptonWin32Process> GetInstances(string wmiClass)
+        private List<ScriptonWin32Process> GetProcesses(string wmiClass)
         {
             if (!string.Equals("Win32_Process", wmiClass, StringComparison.OrdinalIgnoreCase))
-                throw new NotSupportedException($"SWbemServices: the WMI class '{wmiClass}' is not supported (only Win32_Process is)");
+                throw new NotSupportedException($"SWbemServices: the WMI class '{wmiClass}' is not supported (only Win32_Process and {ScriptonWin32TimeZone.ClassName} are)");
 
             IHostProcessControlHostService processControl = _runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>()
                 ?? throw new InvalidOperationException($"SWbemServices: querying processes requires the host to register an {nameof(IHostProcessControlHostService)}");
