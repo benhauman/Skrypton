@@ -201,6 +201,19 @@ namespace Skrypton.RuntimeSupport.Components
             throw MsxmlSelection.Error("Property name is invalid.");
         }
 
+        /// <summary>
+        /// MSXML validates against the DTD while it parses - Skrypton keeps the value (it does not validate); True by default, as with MSXML (issue #164)
+        /// </summary>
+        [DispId(65)]
+        public bool validateOnParse { get; set; } = true;
+
+        /// <summary>
+        /// MSXML resolves external definitions (DTD, entities) while it parses - Skrypton keeps the value (it does not resolve them); True by
+        /// default for MSXML 3, False for MSXML 6 (issue #164)
+        /// </summary>
+        [DispId(66)]
+        public bool resolveExternals { get; set; } = true;
+
         [DispId(67)]
         public bool preserveWhiteSpace
         {

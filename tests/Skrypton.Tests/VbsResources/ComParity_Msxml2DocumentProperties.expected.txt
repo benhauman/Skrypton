@@ -1,0 +1,9 @@
+MSXML2.DOMDocument: True|True|False
+False|False|True|Boolean
+True|True
+Microsoft.XMLDOM: True|True|False
+False|False|True|Boolean
+True|True
+Msxml2.DOMDocument.6.0: True|False|False
+False|False|True|Boolean
+True|True
