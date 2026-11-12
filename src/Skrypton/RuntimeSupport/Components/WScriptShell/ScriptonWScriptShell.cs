@@ -91,6 +91,22 @@ namespace Skrypton.RuntimeSupport.Components
             return new ScriptonWshEnvironment(variables, type);
         }
 
+        /// <summary>
+        /// LogEvent(Type, Message, [Target]) - an event log entry (issue #116) through the host's IHostEventLogHostService (the Windows Application
+        /// log with the source WSH; System.Diagnostics.Trace if the host has none). Type 0 (success), 1 (error), 2 (warning), 4 (information), 8
+        /// (audit success) or 16 (audit failure), other types are error 5. Returns True.
+        /// </summary>
+        [DispId(3000)]
+        public bool LogEvent([In, MarshalAs(UnmanagedType.Struct)] object Type, [In, MarshalAs(UnmanagedType.BStr)] string Message, [In, MarshalAs(UnmanagedType.BStr), Optional, DefaultParameterValue("")] string? Target)
+        {
+            int type = Convert.ToInt32(Type, CultureInfo.InvariantCulture);
+            if ((type != 0) && (type != 1) && (type != 2) && (type != 4) && (type != 8) && (type != 16))
+                throw new Skrypton.RuntimeSupport.Exceptions.InvalidProcedureCallOrArgumentException($"'WshShell.LogEvent' ({type} is not an event type)");
+            IHostEventLogHostService eventLog = _runtimeHost.TryGetRuntimeHostService<IHostEventLogHostService>() ?? DefaultHostEventLogHostService.Instance;
+            eventLog.LogEvent(type, Message ?? "", string.IsNullOrEmpty(Target) ? null : Target);
+            return true;
+        }
+
         private IHostProcessControlHostService ProcessControl(string member)
         {
             return _runtimeHost.TryGetRuntimeHostService<IHostProcessControlHostService>() ?? throw new InvalidOperationException(

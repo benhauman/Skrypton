@@ -210,5 +210,46 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
                 Environment.SetEnvironmentVariable("SKRYPTON_ENV_TEST", null);
             }
         }
+
+        private sealed class TestEventLog : IHostEventLogHostService
+        {
+            public List<string> Entries { get; } = new List<string>();
+
+            public void LogEvent(int type, string message, string? target) => Entries.Add(type + "|" + message + "|" + (target ?? "(local)"));
+        }
+
+        /// <summary>
+        /// WshShell.LogEvent (issue #116) through the host's IHostEventLogHostService: the types 0, 1, 2, 4, 8, 16 (others are error 5), True as
+        /// the result, the optional target computer; without a host service it returns True too (System.Diagnostics.Trace)
+        /// </summary>
+        [TestMethod]
+        public void LogEventGoesThroughTheHostService()
+        {
+            var eventLog = new TestEventLog();
+            var collector = new ValueCollector();
+            IScriptControl scriptengine = CreateScriptControlClass(
+                CreateRuntimeHost(CreateTestHostServices(s => s.RegisterHostService<IHostEventLogHostService>(() => eventLog))),
+                CreateScriptControlConfiguration(false, [], []));
+            scriptengine.AddObject("collector", collector, false);
+            scriptengine.ExecuteStatement(
+                "Dim sh : Set sh = CreateObject(\"WScript.Shell\")\r\n" +
+                "sh.LogEvent 2, \"warning\"\r\n" +
+                "collector.Report sh.LogEvent(4, \"information\")\r\n" +
+                "Dim t\r\n" +
+                "For Each t In Array(0, 1, 8, 16)\r\n" +
+                "    sh.LogEvent t, \"type\"\r\n" +
+                "Next\r\n" +
+                "sh.LogEvent 4, \"remote\", \"SERVER1\"\r\n" +
+                "sh.LogEvent 4, \"local\", \"\"\r\n" +
+                "On Error Resume Next\r\n" +
+                "sh.LogEvent 3, \"bad\"\r\n" +
+                "collector.Report Err.Number\r\n");
+            CollectionAssert.AreEqual(new object[] { true, 5 }, collector.Values.ToArray());
+            CollectionAssert.AreEqual(
+                new[] { "2|warning|(local)", "4|information|(local)", "0|type|(local)", "1|type|(local)", "8|type|(local)", "16|type|(local)", "4|remote|SERVER1", "4|local|(local)" },
+                eventLog.Entries.ToArray());
+
+            Assert.AreEqual(true, Execute("collector.Report sh.LogEvent(4, \"to the trace\")\r\n", null)[0]);
+        }
     }
 }
