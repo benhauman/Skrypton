@@ -18,7 +18,16 @@ namespace Skrypton.Windows.Cli
 
         private static int Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8; // before Console.Out is passed on: setting the encoding replaces Console.Out
             string exe = Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly()?.Location ?? "Skrypton.Windows.Cli");
+            return Run(exe, args, Console.Out, Console.Error, Console.In);
+        }
+
+        /// <summary>
+        /// The command line tool with these streams (the tests run the parity scripts in their process with it - issue #136)
+        /// </summary>
+        internal static int Run(string exe, string[] args, TextWriter output, TextWriter error, TextReader input)
+        {
             var options = new List<string>();
             int index = 0;
             while ((index < args.Length) && (args[index].StartsWith("/", StringComparison.Ordinal) || args[index].StartsWith("-", StringComparison.Ordinal)))
@@ -26,14 +35,14 @@ namespace Skrypton.Windows.Cli
 
             if (options.Any(o => (o == "h") || (o == "help") || (o == "?")) || (index >= args.Length))
             {
-                Console.Out.Write(Usage(exe));
+                output.Write(Usage(exe));
                 return (index >= args.Length) && (options.Count == 0) ? 1 : 0;
             }
 
             string? unknown = options.FirstOrDefault(o => (o != "nologo") && (o != "logo") && (o != "translate") && !o.StartsWith("culture:", StringComparison.Ordinal) && !o.StartsWith("com:", StringComparison.Ordinal));
             if (unknown != null)
             {
-                Console.Error.WriteLine($"Input Error: Unknown option \"/{unknown}\" specified (see {exe} /help).");
+                error.WriteLine($"Input Error: Unknown option \"/{unknown}\" specified (see {exe} /help).");
                 return 1;
             }
 
@@ -46,9 +55,8 @@ namespace Skrypton.Windows.Cli
             }
 
             if (options.Contains("logo"))
-                Console.Out.WriteLine(Logo());
+                output.WriteLine(Logo());
 
-            Console.OutputEncoding = Encoding.UTF8;
             // /com:<ProgID>[,<ProgID>..] or /com:* - CreateObject also creates these registered COM classes (issue #103)
             WindowsRuntimeHost host = WindowsRuntimeHost.CreateDefault();
             string[] comProgIds = options.Where(o => o.StartsWith("com:", StringComparison.Ordinal))
@@ -60,16 +68,16 @@ namespace Skrypton.Windows.Cli
             else if (comProgIds.Length > 0)
                 host.RegisterComActivation(comProgIds);
 
-            var runner = new ScriptonScriptRunner(host, Console.Out, Console.Error, Console.In, culture);
+            var runner = new ScriptonScriptRunner(host, output, error, input, culture);
             string script = args[index];
             if (options.Contains("translate"))
             {
                 if (!File.Exists(script))
                 {
-                    Console.Error.WriteLine($"Input Error: Can not find script file \"{Path.GetFullPath(script)}\".");
+                    error.WriteLine($"Input Error: Can not find script file \"{Path.GetFullPath(script)}\".");
                     return 1;
                 }
-                Console.Out.Write(runner.Translate(ScriptonScriptRunner.ReadScriptFile(script)));
+                output.Write(runner.Translate(ScriptonScriptRunner.ReadScriptFile(script)));
                 return 0;
             }
             return runner.RunFile(script, args.Skip(index + 1).ToList());

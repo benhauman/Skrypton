@@ -29,7 +29,7 @@ namespace Skrypton.Windows.Tests
                 process.WaitForExit();
                 Assert.AreEqual(0, process.ExitCode, "cscript: " + expected + process.StandardError.ReadToEnd());
             }
-            AssertSameOutput("WshEnvironment", expected, CliRunner.Run(new[] { script }));
+            AssertSameOutput("WshEnvironment", expected, CliRunner.RunProcess(new[] { script }));
         }
     }
 }
