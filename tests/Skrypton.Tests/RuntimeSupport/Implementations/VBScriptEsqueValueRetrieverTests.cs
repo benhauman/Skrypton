@@ -1,4 +1,6 @@
-﻿
+﻿// The test classes have private members to check that the binder does not reach them - IDE0051 sees them as unused
+#pragma warning disable IDE0051
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

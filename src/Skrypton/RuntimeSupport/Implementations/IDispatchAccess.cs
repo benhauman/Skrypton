@@ -346,29 +346,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 return MyVarEnum.VT_DISPATCH;
 
             throw NotSupportedExceptionFactory.Create($"No VARIANT type is known for a value of type '{value.GetType().FullName}' ({value})");
-            /*
-            ////////////////////////////////////////////////
-            //Marshal.GetNativeVariantForObject(arg, pVariant);
-            if (value!.GetType() != null)
-                throw new NotSupportedException();//lubo 'Marshal.GetNativeVariantForObject'
-            ////////////////////////////////////
-            IntPtr ptr = Marshal.AllocCoTaskMem(24); // VARIANT is 16 bytes on Windows
-            try
-            {
-                // Write the object into a native VARIANT
-                //Marshal.GetNativeVariantForObject(value, ptr);
-
-                // Read the vt field (first 2 bytes)
-                short vt = Marshal.ReadInt16(ptr);
-
-                return (MyVarEnum)vt;
-            }
-            finally
-            {
-                // Free the VARIANT
-                Marshal.FreeCoTaskMem(ptr);
-            }
-            */
         }
 
         // http://blogs.msdn.com/b/eldar/archive/2007/04/03/a-lot-of-hresult-codes.aspx
@@ -458,8 +435,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         public sealed class IDispatchAccessException : Exception
 #pragma warning restore CA1034 // Nested types should not be visible
         {
+#pragma warning disable IDE0051 // CA1032 wants the standard exception constructors - they are private so that they are not used
             [Obsolete("do not use it")] private IDispatchAccessException() : this(null!, innerException: null!) { }
             [Obsolete("do not use it")] private IDispatchAccessException(string message) : this(message, innerException: null!) { }
+#pragma warning restore IDE0051
             [Obsolete("do not use it")]
             private IDispatchAccessException(string message, Exception innerException) : this(message, null!, null!, null, CommonErrors.Unknown, innerException: null) { }
 

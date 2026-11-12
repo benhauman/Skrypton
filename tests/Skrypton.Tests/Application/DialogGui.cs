@@ -1555,12 +1555,12 @@ WScript.Echo xmlhttp.responseText
 
     public class WorkflowParameters
     {
-        private string workflowName;
         private Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         public WorkflowParameters(string workflowName)
         {
-            this.workflowName = workflowName;
+            if (workflowName == null)
+                throw new ArgumentNullException(nameof(workflowName));
         }
 
         public void Add(string key, object value)

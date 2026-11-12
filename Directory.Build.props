@@ -6,6 +6,8 @@
     <Copyright>© $([System.DateTime]::Today.Year) BENLENA.</Copyright>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- the code style rules (IDE*) of .editorconfig are checked by the build, eg. dead code (issue #132) -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <LangVersion>latest</LangVersion>
     <DebugType>embedded</DebugType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

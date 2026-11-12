@@ -48,6 +48,7 @@ namespace Skrypton.Tests
                 ]);
             }
 
+#pragma warning disable IDE0051 // called with GetDeclaredMethod("EqualsGeneric") for the runtime type (as xUnit does)
             private bool EqualsGeneric<U>(U x, U y)
             {
                 return new AssertEqualityComparer<U>(this.innerComparer).Equals(x, y);
@@ -348,6 +349,7 @@ namespace Skrypton.Tests
             ]));
         }
 
+#pragma warning disable IDE0051 // called with GetDeclaredMethod("CompareTypedSets") for the runtime type (as xUnit does)
         private bool CompareTypedSets<R>(System.Collections.IEnumerable enumX, System.Collections.IEnumerable enumY)
         {
             System.Collections.Generic.HashSet<R> arg_18_0 = new System.Collections.Generic.HashSet<R>(enumX.Cast<R>());
