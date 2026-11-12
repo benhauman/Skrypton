@@ -1141,7 +1141,9 @@ namespace Skrypton.RuntimeSupport
             // Use the culture's LongTimePattern
             string format = culture.DateTimeFormat.LongTimePattern;
 
-            string text = dt.ToString(format, culture);
+            // ICU (.NET on Linux) puts a narrow no-break space (U+202F) before AM / PM in some cultures (en-US "h:mm:ss tt"); Windows and VBScript
+            // write a space
+            string text = dt.ToString(format, culture).Replace(' ', ' ');
             return text;
         }
 
