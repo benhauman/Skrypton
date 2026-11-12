@@ -171,7 +171,7 @@ namespace Skrypton.RuntimeSupport.Implementations
                 cNamedArgs = 0;
             }
 
-            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 and not 16
+            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 (64-bit) or 16 (32-bit)
 
             var variantsToClear = new List<IntPtr>();
             IntPtr rgvarg;
@@ -283,7 +283,7 @@ namespace Skrypton.RuntimeSupport.Implementations
         // Free VARIANT array
         private static void FreeArgs(IntPtr ptr, int count)
         {
-            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 and not 16
+            int SizeOfNativeVariant = VARIANT.MarshalSizeOf; // 24 (64-bit) or 16 (32-bit)
             for (int i = 0; i < count; i++)
             {
                 IntPtr variantToClear = IntPtr.Add(ptr, i * SizeOfNativeVariant);
@@ -291,7 +291,6 @@ namespace Skrypton.RuntimeSupport.Implementations
                 {
                     _ = VariantClear(variantToClear); //  Clear the VARIANT contents, Without this, BSTRs/SAFEARRAYs leak. VariantClear does not free the memory block that holds the VARIANT struct.
                 }
-                Marshal.FreeHGlobal(variantToClear); // Free the memory block
             }
             Marshal.FreeCoTaskMem(ptr);
         }
@@ -544,7 +543,10 @@ namespace Skrypton.RuntimeSupport.Implementations
         // The padding is inserted because IntPtr is 8 bytes on x64, and the struct must align the pointer fields to 8‑byte boundaries
         // => (2+2+2+2)+4+(8+8)=24 bytes : (vt + reserved1 + 2 + 3) + alignment padding + (data1 + data2)
         // => in c++/native : the native definition uses a union, not two pointers => 16 bytes
-        public static readonly int MarshalSizeOf = 24; // Marshal.SizeOf<VARIANT>(); // 24 and not 16 because of the 8-byte alignment of the largest field (long/double) in the struct, which causes padding in the native layout.
+        // The size of the native VARIANT: 8 bytes (vt and the reserved fields) and the union, whose largest member is the record (two pointers) -
+        // 24 bytes in a 64-bit process, 16 in a 32-bit one. A fixed 24 put the second and further arguments of a call at the wrong place in a
+        // 32-bit process (issue #147: Fields(key) = value failed with "Arguments are of the wrong type").
+        public static readonly int MarshalSizeOf = 8 + (2 * IntPtr.Size);
 
         internal MyVarEnum VariantTypeEnum => (MyVarEnum)vt;
 
