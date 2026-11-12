@@ -1,0 +1,11 @@
+IConfiguration Fields Field
+defaults [en-us] [0] [0] [True] []
+set [mail.example.com] [2525] [mail.example.com] http://schemas.microsoft.com/cdo/configuration/smtpserver
+IMessage IConfiguration [0] [||||]
+text [The incident 4711 is solved.\r\n\r\nLine 2 & more\r\nnext\r\n\r\n]
+text [plain] html [<p>The incident <b>4711</b> is solved.</p><p>Line&nbsp;2 &amp; more<br>next</p>]
+no sendusing: 80040220 [The "SendUsing" configuration value is invalid.\r\n] CDO.Message.1
+no server: 8004020A [The SMTP server name is required, and was not found in the configuration source.\r\n]
+no from: 8004020D [At least one of the From or Sender fields is required, and neither was found.\r\n]
+no recipient: 8004020C [At least one recipient is required, but none were found.\r\n]
+no listener: 80040213 [The transport failed to connect to the server.\r\n] CDO.Message.1
