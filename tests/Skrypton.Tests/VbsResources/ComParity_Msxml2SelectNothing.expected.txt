@@ -1,0 +1,7 @@
+Nothing,True,True
+IXMLDOMElement v
+Nothing,True,IXMLDOMElement
+Nothing,True
+Nothing,True
+done
+a=[v] b=[]
