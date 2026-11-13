@@ -388,6 +388,7 @@ namespace Skrypton.RuntimeSupport.Components
         [DispId(0)]
         //public MyXMLDOMNode this[[In] int index]
         [IsDefault] // needed for enumeration : dict[currentkey]
+        [return: MarshalAs(UnmanagedType.IDispatch)] // Nothing for an index out of range, as with MSXML (issue #179)
         public object item(object key)
         {
             //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -398,7 +399,8 @@ namespace Skrypton.RuntimeSupport.Components
                 if (_nodes == null)
                     return null;
 
-                int index = (int)key;
+                // the index of a script is an Integer (Int16) or Long - any number (an unboxing cast of a short to int failed: Type mismatch)
+                int index = Convert.ToInt32((key is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : key, System.Globalization.CultureInfo.InvariantCulture);
                 if (index < 0 || index >= _nodes.Count)
                     return null; // MSXML returns null, not exception
 
@@ -837,6 +839,7 @@ namespace Skrypton.RuntimeSupport.Components
         public string xml => MsxmlSerializer.Serialize(_node);
 
         [DispId(30)]
+        [return: MarshalAs(UnmanagedType.IDispatch)] // Nothing if no node matches, as with MSXML (issue #179)
         public object selectSingleNode([In][MarshalAs(UnmanagedType.BStr)] string queryString)
         {
             if (string.IsNullOrEmpty(queryString))
