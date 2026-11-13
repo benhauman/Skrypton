@@ -92,6 +92,30 @@ namespace Skrypton.Tests.RuntimeSupport.Implementations
             Assert.AreEqual("Cid", values[0]);
         }
 
+        /// <summary>
+        /// cmd.ActiveConnection = cn without Set (issue #177): the connection's default member is its ConnectionString, from which the command opens a
+        /// connection of its own, as ADO does - TypeName(cmd.ActiveConnection) is Connection and Execute runs (with a parameter through cmd(0))
+        /// </summary>
+        [TestMethod]
+        public void ActiveConnectionFromTheDefaultMemberOfAConnection()
+        {
+            var database = new TestDatabaseConnectionFactoryHostService(sql => sql.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase) ? People() : null);
+            var values = Execute(
+                OpenConnection +
+                "Dim cmd : Set cmd = CreateObject(\"ADODB.Command\")\r\n" +
+                "cmd.ActiveConnection = cn\r\n" +
+                "collector.Report TypeName(cmd.ActiveConnection) & \"|\" & (cn = cn.ConnectionString) & \"|\" & cn & \"|\" & TypeName(cn) & \"|\" & cmd.ActiveConnection.State\r\n" +
+                "cmd.CommandText = \"SELECT id FROM people WHERE name = ?\"\r\n" +
+                "cmd.Parameters.Append cmd.CreateParameter(\"name\", 200, 1, 10)\r\n" +
+                "cmd(0) = \"Ann\"\r\n" +
+                "Dim rs : Set rs = cmd.Execute\r\n" +
+                "collector.Report rs(0) & \"|\" & cmd(0) & \"|\" & cmd.Parameters.Count\r\n",
+                database);
+            Assert.AreEqual("Connection|True|Provider=SQLOLEDB;Data Source=test|Connection|1", values[0]);
+            Assert.AreEqual("1|Ann|1", values[1]);
+            Assert.AreEqual("SELECT id FROM people WHERE name = ?", database.ExecutedCommands.Last().CommandText);
+        }
+
         [TestMethod]
         public void CommandWithParameters()
         {

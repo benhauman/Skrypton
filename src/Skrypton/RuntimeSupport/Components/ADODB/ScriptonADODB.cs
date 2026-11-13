@@ -18,6 +18,7 @@ namespace Skrypton.RuntimeSupport.Components
     /// The built-in ADODB.Connection. Connections are created by the host's IHostDatabaseConnectionFactoryHostService (there is no default).
     /// </summary>
     [SourceClassName("Connection")] // TypeName(CreateObject("ADODB.Connection"))
+    [DefaultMember("ConnectionString")] // "cmd.ActiveConnection = cn" (without Set) is the connection string, as with ADO (issue #177)
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     internal sealed class ScriptonADODBConnection : ScriptonIReflectOnClrType
@@ -34,6 +35,7 @@ namespace Skrypton.RuntimeSupport.Components
         }
 
         [DispId(0)]
+        [IsDefault]
         public string ConnectionString { get; set; } = "";
 
         [DispId(2)]
@@ -415,11 +417,28 @@ namespace Skrypton.RuntimeSupport.Components
             _parameters = new ScriptonADODBParameters();
         }
 
+        private object? _activeConnection;
+
         /// <summary>
-        /// An ADODB.Connection (Set cmd.ActiveConnection = conn) or a connection string
+        /// The ADODB.Connection of the command: Set cmd.ActiveConnection = conn shares the connection, a connection string (also "cmd.ActiveConnection
+        /// = conn" without Set, the default member of the connection) opens a new connection from it, as ADO does (issue #177)
         /// </summary>
         [DispId(1)]
-        public object? ActiveConnection { get; set; }
+        public object? ActiveConnection
+        {
+            get => _activeConnection;
+            set
+            {
+                object? connection = (value is ScriptDispatchWrapper wrapper) ? wrapper.WrappedObject : value;
+                if (connection is string connectionString)
+                {
+                    var opened = new ScriptonADODBConnection(_runtimeHost);
+                    opened.Open(connectionString, "", "", -1);
+                    connection = opened;
+                }
+                _activeConnection = connection;
+            }
+        }
 
         [DispId(2)]
         public string CommandText { get; set; } = "";
