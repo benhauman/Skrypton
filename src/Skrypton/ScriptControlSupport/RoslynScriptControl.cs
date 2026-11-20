@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 //using Microsoft.CodeAnalysis.Scripting;
 
 namespace Skrypton.ScriptControlSupport
@@ -174,7 +175,7 @@ namespace Skrypton.ScriptControlSupport
             }
         }
 
-        internal static UnloadableAssemblyLoadContextContext? CompileCSharpProgram(ScriptControlConfiguration config, string programName, int codeNumber, string csCode, string[] nowarn)
+        internal static CodeLoadContext? CompileCSharpProgram(ScriptControlConfiguration config, string programName, int codeNumber, string csCode, string[] nowarn, IHostCodeLoadContextHostService? codeLoadContextService = null)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(csCode);
             MetadataReference[] references = GetCompilationReferences();
@@ -320,12 +321,17 @@ namespace Skrypton.ScriptControlSupport
                 var asm = Assembly.LoadFile(dllFilePath); // this a dynamic assembly => do not use Assembly.Load(AssemblyName.GetAssemblyName(dllFilePath))!!! otherwise 'System.IO.FileNotFoundException'
                 asmLoad = () => asm;
             }
+            else if (codeLoadContextService != null)
+            {
+                // a code load context of the host (issue #190): eg. a collectible AssemblyLoadContext, so that a retired version can be unloaded
+                return new CodeLoadContext(codeLoadContextService.Load(codeName, assemblyBytes, pdbBytes));
+            }
             else
             {
                 asmLoad = () => Assembly.Load(assemblyBytes, pdbBytes); // with symbols, so that stack traces have line numbers (used to report IScriptControl.Error.Line, see issue #47)
             }
             // return Assembly.Load(peStream.ToArray());
-            UnloadableAssemblyLoadContextContext context = new UnloadableAssemblyLoadContextContext(asmLoad());
+            CodeLoadContext context = new CodeLoadContext(asmLoad());
             //context.LoadedAssembly = context.LoadFromStream(new MemoryStream(assemblyBytes));
             //context.LoadFromAssemblyPath
             //return context;
@@ -339,14 +345,30 @@ namespace Skrypton.ScriptControlSupport
         }
     }
 
-    internal sealed class UnloadableAssemblyLoadContextContext// : System.Runtime.Loader.AssemblyLoadContext
+    /// <summary>
+    /// The loaded assembly of a compiled program and, if a host code load context loaded it, that context (which can unload it, issue #190)
+    /// </summary>
+    internal sealed class CodeLoadContext// : System.Runtime.Loader.AssemblyLoadContext
     {
+        private IHostCodeLoadContext? _hostContext;
+
         public Assembly LoadedAssembly { get; set; }
 
-        public UnloadableAssemblyLoadContextContext(Assembly loadedAssembly)// : base(isCollectible: true)
+        public CodeLoadContext(Assembly loadedAssembly)// : base(isCollectible: true)
         {
             LoadedAssembly = loadedAssembly ?? throw new ArgumentNullException(nameof(loadedAssembly));
         }
+
+        public CodeLoadContext(IHostCodeLoadContext hostContext)
+            : this((hostContext ?? throw new ArgumentNullException(nameof(hostContext))).Assembly)
+        {
+            _hostContext = hostContext;
+        }
+
+        /// <summary>
+        /// Unload the program if its host context can (once; a program in the default context stays loaded)
+        /// </summary>
+        internal void Unload() => Interlocked.Exchange(ref _hostContext, null)?.Unload();
         //protected override Assembly Load(AssemblyName assemblyName)
         //{
         //    return base.Load(assemblyName);

@@ -36,6 +36,8 @@ namespace Skrypton.ScriptControlSupport
             EngineCulture = engineCulture ?? throw new ArgumentNullException(nameof(engineCulture));
             EngineRuntimeLogger = engineRuntimeLogger ?? throw new ArgumentNullException(nameof(engineRuntimeLogger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            if ((config is ScriptEngineConfiguration engineConfig) && (engineConfig.Mode != ScriptEngineMode.ScriptControl))
+                throw new ArgumentException($"A configuration in {nameof(ScriptEngineMode)}.{engineConfig.Mode} is for {nameof(EagerScriptEngine)}, not for {nameof(ScriptControlClass)} (issue #190)", nameof(config));
         }
 
         string IScriptControl.Language { get => _language; set => _language = value; }
@@ -153,7 +155,7 @@ namespace Skrypton.ScriptControlSupport
             if (nowarn == null) throw new ArgumentNullException(nameof(nowarn));
             if (testHandler == null) throw new ArgumentNullException(nameof(testHandler));
             if (string.IsNullOrEmpty(csCode)) throw new ArgumentException("Value cannot be null or empty.", nameof(csCode));
-            UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, programName, codeNumber: _lastExecNumber, csCode, nowarn);
+            CodeLoadContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, programName, codeNumber: _lastExecNumber, csCode, nowarn);
             try
             {
                 using Skrypton.RuntimeSupport.IProvideVBScriptCompatFunctionalityToIndividualRequests compatLayer = CreateCompatLayer();
@@ -283,7 +285,7 @@ namespace Skrypton.ScriptControlSupport
             Assembly programAssembly = CompiledProgramCache.GetOrAdd(cacheKey, () =>
             {
                 int execNumber = Interlocked.Increment(ref _lastExecNumber); // threadsafe
-                UnloadableAssemblyLoadContextContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: execNumber, csCode, _config.NoWarn);
+                CodeLoadContext? asmctx = RoslynScriptControl.CompileCSharpProgram(_config, "TempScriptProgram", codeNumber: execNumber, csCode, _config.NoWarn);
                 return asmctx!.LoadedAssembly;
             });
             LastExecutedProgramAssembly = programAssembly;

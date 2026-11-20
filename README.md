@@ -105,6 +105,26 @@ control.ExecuteStatement("DoTheThing");                    // translate → comp
 
 The whole script is compiled once per version (keyed by a hash of the script text, culture, host objects and options) and reused: a second request with an unchanged script does not parse, translate or compile again - for `Procedures`, `ExecuteStatement` of a bare procedure call (`"Name"`, `"Call Name()"`) and `Run(name, ref args)`. `LastCompiledScriptKey` / `LastCompiledScriptReused` tell which compiled script a call used and whether it was reused.
 
+### EagerScript mode: compile once, then bind and call
+A host that runs one large script version for many requests can use `IEagerScriptEngine` instead (a `ScriptEngineConfiguration` in `ScriptEngineMode.EagerScript`). The phases are strict - a call out of order throws `InvalidOperationException` - and there is no `AddCode`, `AddObject`, `ExecuteStatement`, `Eval`, `Modules` or `Reset`:
+
+```csharp
+var config = new ScriptEngineConfiguration(false, null, false, [], [], mode: ScriptEngineMode.EagerScript);
+IEagerScriptEngine engine = new EagerScriptEngine(host, logger, culture, config);
+engine.DeclareObject("session", typeof(ISession));  // 1. name + contract type, no instance
+engine.SetCode(code);                               // 2. the whole script, once
+CompiledCodeHandle handle = engine.CompileCode();   // 3. translate + compile once per version, runs nothing (eg. at process start)
+engine.Dispose();
+
+// per request
+using IEagerScriptEngine run = handle.CreateEngine(host, logger);
+run.BindObject("session", session);                 // 4. an instance of the declared type
+run.RunGlobalCode();                                // 5. the top-level code, once per engine (optional)
+object result = run.CallProcedure("OnSave", 1, 2);  //    procedures keep the module state between calls
+```
+
+`handle.Key` / `handle.Reused` tell the version and whether `CompileCode` reused it; parallel callers of a new version wait for one compilation. Dispose the handle to retire a version: once its last engine is disposed too, it is released - with `WindowsRuntimeHost.CreateDefault()` (`IHostCodeLoadContextHostService`) on .NET its collectible `AssemblyLoadContext` is unloaded, on the .NET Framework only the reference goes (the assembly stays loaded).
+
 ## Running .vbs files from the command line
 Two command line tools run VBScript files like `cscript.exe` - the script is translated to C#, compiled and run, `WScript.Echo` writes to the console, `WScript.Arguments` are the script arguments and `WScript.Quit` sets the exit code:
 
