@@ -142,7 +142,7 @@ namespace Skrypton.ScriptControlSupport
             _proceduresByContent[contentKey] = procedures;
         }
 
-        private static string GetKey(CompiledScriptSource source)
+        internal static string GetKey(CompiledScriptSource source)
         {
             ScriptControlConfiguration config = source.Configuration;
             StringBuilder keySource = new StringBuilder();
@@ -162,7 +162,7 @@ namespace Skrypton.ScriptControlSupport
 
         private static string GetContentKey(CultureInfo culture, string scriptContent) => Hash(culture.Name + "\n" + scriptContent);
 
-        private static string Hash(string value)
+        internal static string Hash(string value)
         {
             using (SHA256 sha = SHA256.Create())
             {

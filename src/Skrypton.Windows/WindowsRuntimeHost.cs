@@ -35,7 +35,8 @@ namespace Skrypton.Windows
                 .Register<IHostOutlookHostService>(new WindowsHostOutlookHostService())
                 .Register<IHostEnvironmentVariablesHostService>(new WindowsHostEnvironmentVariablesHostService())
                 .Register<IHostEventLogHostService>(new WindowsHostEventLogHostService())
-                .Register<IHostRegistryHostService>(new WindowsHostRegistryHostService());
+                .Register<IHostRegistryHostService>(new WindowsHostRegistryHostService())
+                .Register<Skrypton.ScriptControlSupport.IHostCodeLoadContextHostService>(new WindowsHostCodeLoadContextHostService());
         }
 
         /// <summary>

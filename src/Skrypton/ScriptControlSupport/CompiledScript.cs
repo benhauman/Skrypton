@@ -17,11 +17,14 @@ namespace Skrypton.ScriptControlSupport
     /// </summary>
     internal sealed class CompiledScript
     {
-        private CompiledScript(string key, CompiledScriptSource source, Assembly programAssembly, string csCode, IReadOnlyDictionary<int, int> sourceLineMap, ScriptControlProcedures procedures, IReadOnlyDictionary<string, int> undeclaredVariableNames)
+        private readonly CodeLoadContext _codeLoadContext;
+
+        private CompiledScript(string key, CompiledScriptSource source, CodeLoadContext codeLoadContext, string csCode, IReadOnlyDictionary<int, int> sourceLineMap, ScriptControlProcedures procedures, IReadOnlyDictionary<string, int> undeclaredVariableNames)
         {
             Key = key;
             ScriptContent = source.ScriptContent;
-            ProgramAssembly = programAssembly;
+            _codeLoadContext = codeLoadContext;
+            ProgramAssembly = codeLoadContext.LoadedAssembly;
             CsCode = csCode;
             SourceLineMap = sourceLineMap;
             Procedures = procedures;
@@ -73,9 +76,14 @@ namespace Skrypton.ScriptControlSupport
         }
 
         /// <summary>
+        /// Release the program: unloaded if its code load context can unload (issue #190), otherwise it stays loaded and only the reference goes
+        /// </summary>
+        internal void Unload() => _codeLoadContext.Unload();
+
+        /// <summary>
         /// Parse, translate and compile the whole script (the parse of the translation also gives the procedures)
         /// </summary>
-        internal static CompiledScript Compile(string key, CompiledScriptSource source)
+        internal static CompiledScript Compile(string key, CompiledScriptSource source, IHostCodeLoadContextHostService? codeLoadContextService = null)
         {
             ScriptControlConfiguration config = source.Configuration;
             NonNullImmutableList<string> externalDependencies = source.ExternalObjectNames.ToNonNullImmutableList();
@@ -111,8 +119,8 @@ namespace Skrypton.ScriptControlSupport
             if (config.TempEnabled)
                 config.TempFileWriteAllText("CompiledScript", programName + ".cs", csCode);
 
-            UnloadableAssemblyLoadContextContext asmctx = RoslynScriptControl.CompileCSharpProgram(config, programName, codeNumber: ScriptControlClass.NextExecNumber(), csCode, config.NoWarn)!;
-            return new CompiledScript(key, source, asmctx.LoadedAssembly, csCode, sourceLineMap, procedures!, new Dictionary<string, int>(translationIssues._undeclaredNames, StringComparer.OrdinalIgnoreCase));
+            CodeLoadContext asmctx = RoslynScriptControl.CompileCSharpProgram(config, programName, codeNumber: ScriptControlClass.NextExecNumber(), csCode, config.NoWarn, codeLoadContextService)!;
+            return new CompiledScript(key, source, asmctx, csCode, sourceLineMap, procedures!, new Dictionary<string, int>(translationIssues._undeclaredNames, StringComparer.OrdinalIgnoreCase));
         }
     }
 }
