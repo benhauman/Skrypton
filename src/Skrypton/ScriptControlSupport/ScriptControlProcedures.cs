@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Skrypton.CSharpWriter;
+using Skrypton.LegacyParser.CodeBlocks;
 using Skrypton.LegacyParser.CodeBlocks.Basic;
 
 namespace Skrypton.ScriptControlSupport
@@ -28,8 +29,19 @@ namespace Skrypton.ScriptControlSupport
             if (string.IsNullOrWhiteSpace(scriptContent))
                 return new ScriptControlProcedures(Array.Empty<Procedure>());
 
+            return FromBlocks(DefaultTranslator.Parse(culture, scriptContent));
+        }
+
+        /// <summary>
+        /// The procedures of an already parsed script (a compiled script takes them from the parse of its translation, issue #187)
+        /// </summary>
+        internal static ScriptControlProcedures FromBlocks(IEnumerable<ICodeBlock> blocks)
+        {
+            if (blocks == null)
+                throw new ArgumentNullException(nameof(blocks));
+
             return new ScriptControlProcedures(
-                DefaultTranslator.Parse(culture, scriptContent)
+                blocks
                     .OfType<AbstractFunctionBlock>()
                     .Where(block => !(block is PropertyBlock))
                     .Select(block => (Procedure)new ScriptControlProcedure(block.Name.Content, block.Parameters.Count(), block.HasReturnValue))

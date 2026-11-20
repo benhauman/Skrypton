@@ -103,6 +103,8 @@ control.AddCode(vbscript);
 control.ExecuteStatement("DoTheThing");                    // translate → compile → run
 ```
 
+The whole script is compiled once per version (keyed by a hash of the script text, culture, host objects and options) and reused: a second request with an unchanged script does not parse, translate or compile again - for `Procedures`, `ExecuteStatement` of a bare procedure call (`"Name"`, `"Call Name()"`) and `Run(name, ref args)`. `LastCompiledScriptKey` / `LastCompiledScriptReused` tell which compiled script a call used and whether it was reused.
+
 ## Running .vbs files from the command line
 Two command line tools run VBScript files like `cscript.exe` - the script is translated to C#, compiled and run, `WScript.Echo` writes to the console, `WScript.Arguments` are the script arguments and `WScript.Quit` sets the exit code:
 
