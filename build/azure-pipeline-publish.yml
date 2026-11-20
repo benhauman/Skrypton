@@ -1,7 +1,8 @@
 # Publish: tests the commit, packs Skrypton, Skrypton.Windows and Skrypton.Windows.NetFx (Skrypton with the command line tools in tools\),
 # pushes them to nuget.org and creates the GitHub release v<version> with the packages.
 #
-# Run it manually (no triggers, no options) on the commit to release - usually main. The version comes from Nerdbank.GitVersioning, so
+# Run it manually (no triggers, no options) on the commit to release - usually main - here or from GitHub (Actions > "Publish release",
+# .github/workflows/publish.yml). The version comes from Nerdbank.GitVersioning, so
 # every commit has its own version: running it again on a commit that is published already fails with 409 (the version exists on
 # nuget.org) - that does not affect the build badge, which is the one of the CI pipeline (azure-pipeline-build.yml).
 #
