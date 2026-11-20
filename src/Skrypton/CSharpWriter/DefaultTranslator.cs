@@ -64,7 +64,8 @@ namespace Skrypton.CSharpWriter
             IReadOnlyCollection<ExternalMemberMethodInfo> externalMemberMethods,
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
             ITranslatorOptions translatorOptions,
-            ILogInformation logger
+            ILogInformation logger,
+            Action<IReadOnlyList<ICodeBlock>>? parsedBlocksObserver = null
             )
         {
             if (scriptContent == null)
@@ -111,6 +112,7 @@ namespace Skrypton.CSharpWriter
             );
 
             IReadOnlyList<ICodeBlock> parsedBlocks = Parse(culture, scriptContent);
+            parsedBlocksObserver?.Invoke(parsedBlocks); // eg. the procedures of a compiled script, without a second parse (issue #187)
             // Option Explicit (the first statement of a script) applies to the whole script, including the procedures that may be translated first
             if (parsedBlocks.OfType<Skrypton.LegacyParser.CodeBlocks.Basic.OptionExplicit>().Any())
                 translatorOptions.OptionExplicitDetected();
@@ -129,11 +131,12 @@ namespace Skrypton.CSharpWriter
             OuterScopeBlockTranslator.OutputTypeOptions outputType,
             ITranslatorOptions translatorOptions,
             ILogInformation logger,
-            out IReadOnlyDictionary<int, int> csLineToSourceLineIndex
+            out IReadOnlyDictionary<int, int> csLineToSourceLineIndex,
+            Action<IReadOnlyList<ICodeBlock>>? parsedBlocksObserver = null
             )
         {
             using SourceLineMapRecorder recorder = SourceLineMapRecorder.Start();
-            string csCode = TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, outputType, translatorOptions, logger);
+            string csCode = TranslateCore(culture, scriptContent, externalDependencies, externalMemberMethods, outputType, translatorOptions, logger, parsedBlocksObserver);
             csLineToSourceLineIndex = recorder.CSharpLineToSourceLineIndex;
             return csCode;
         }

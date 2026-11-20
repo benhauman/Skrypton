@@ -91,7 +91,7 @@ namespace Skrypton.ScriptControlSupport
         /// <summary>
         /// The Subs and Functions declared in the code added with AddCode (see issue #47)
         /// </summary>
-        Procedures IScriptControl.Procedures => ScriptControlProcedures.FromScript(EngineCulture, _code.ToString());
+        Procedures IScriptControl.Procedures => CompiledScriptCache.GetProcedures(EngineCulture, _code.ToString()); // parsed once per script text (issue #187)
 
         void IScriptControl._AboutBox()
         {
@@ -180,6 +180,7 @@ namespace Skrypton.ScriptControlSupport
             }
         }
         private static int _lastExecNumber;
+        internal static int NextExecNumber() => Interlocked.Increment(ref _lastExecNumber); // threadsafe
 
         /// <summary>
         /// The assembly of the program that was run by the most recent ExecuteStatement call (programs are cached, see CompiledProgramCache)
@@ -193,16 +194,79 @@ namespace Skrypton.ScriptControlSupport
 
             // As with MSScriptControl, Error describes the error raised by the most recent call (and is cleared by a call that succeeds), see issue #47
             _error.Clear();
+            LastCompiledScriptKey = null;
+            LastCompiledScriptReused = false;
             Assembly? programAssembly = null;
             try
             {
-                ExecuteStatementCore(statement, out programAssembly);
+                if (!TryExecuteProcedureOfCompiledScript(statement, out programAssembly))
+                    ExecuteStatementCore(statement, out programAssembly);
             }
             catch (Exception e)
             {
                 _error.SetFrom(e, programAssembly, _lastSourceLineMap, _lastScriptContent, _lastCsCode);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// The cache key of the whole compiled script that the most recent ExecuteStatement / Run call used (null if the statement was translated
+        /// with the script) and whether that call reused it (no parse, no translation, no compile) - see issue #187
+        /// </summary>
+        public string? LastCompiledScriptKey { get; private set; }
+        public bool LastCompiledScriptReused { get; private set; }
+
+        // A statement that only calls a procedure without arguments ("Name", "Name()", "Call Name" or "Call Name()")
+        private static readonly System.Text.RegularExpressions.Regex ProcedureCallStatement = new System.Text.RegularExpressions.Regex(
+            @"^\s*(?:call\s+)?(?<name>[a-z][a-z0-9_]*)\s*(?:\(\s*\))?\s*$",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// If the statement only calls a procedure of the script (without arguments), then the whole script is compiled once (see CompiledScriptCache,
+        /// issue #187) - not once per statement - and the procedure is called after the outer scope ran, as if the statement was appended to the script
+        /// </summary>
+        private bool TryExecuteProcedureOfCompiledScript(string statement, out Assembly? programAssemblyIfCompiled)
+        {
+            programAssemblyIfCompiled = null;
+            System.Text.RegularExpressions.Match match = ProcedureCallStatement.Match(statement);
+            if (!match.Success || string.IsNullOrWhiteSpace(_code.ToString()))
+                return false;
+            string procedureName = match.Groups["name"].Value;
+            CompiledScript script = GetCompiledScript(out bool reused);
+            if (!script.Procedures.Any(p => p.Name.Equals(procedureName, StringComparison.OrdinalIgnoreCase) && (p.NumArgs == 0)))
+                return false; // eg. a call of a host object member or of a procedure with parameters: translated with the script, as before
+
+            programAssemblyIfCompiled = UseCompiledScript(script, reused);
+            using CompiledScriptRun run = script.Run(CreateCompatLayer(), _addedObjects);
+            run.Call(procedureName, Array.Empty<object?>());
+            return true;
+        }
+
+        /// <summary>
+        /// The whole script, compiled once per version (see CompiledScriptCache, issue #187)
+        /// </summary>
+        private CompiledScript GetCompiledScript(out bool reused)
+        {
+            string scriptContent = _code.ToString();
+            _lastScriptContent = scriptContent;
+            _lastSourceLineMap = null;
+            _lastCsCode = null;
+            CompiledScript script = CompiledScriptCache.GetOrCompile(new CompiledScriptSource(scriptContent, EngineCulture, _config, _addedObjects.Keys.ToArray(), _addedObjectMembers), out bool compiled);
+            reused = !compiled;
+            return script;
+        }
+
+        private Assembly UseCompiledScript(CompiledScript script, bool reused)
+        {
+            LastCompiledScriptKey = script.Key;
+            LastCompiledScriptReused = reused;
+            _lastSourceLineMap = script.SourceLineMap;
+            _lastCsCode = script.CsCode;
+            _translationIssues.Clear();
+            foreach (KeyValuePair<string, int> undeclaredName in script.UndeclaredVariableNames)
+                _translationIssues._undeclaredNames[undeclaredName.Key] = undeclaredName.Value;
+            LastExecutedProgramAssembly = script.ProgramAssembly;
+            return script.ProgramAssembly;
         }
 
         private void ExecuteStatementCore(string statement, out Assembly? programAssemblyIfCompiled)
@@ -262,11 +326,35 @@ namespace Skrypton.ScriptControlSupport
         {
             _setupDefaultRuntimeFunctionalityProvider = setupDefaultRuntimeFunctionalityProvider ?? throw new ArgumentNullException(nameof(setupDefaultRuntimeFunctionalityProvider));
         }
+        /// <summary>
+        /// Call a Sub or Function of the script with arguments, as MSScriptControl's Run: the outer scope of the script runs first, then the procedure
+        /// (a ByRef parameter that the procedure changes updates its element of parameters). The whole script is compiled once per version and
+        /// reused (issue #187). Error describes the error raised by the call.
+        /// </summary>
         object IScriptControl.Run(string procedureName, ref object[] parameters)
         {
-            //RoslynScriptControl sc = StartAsync(null, cancellationToken: default).ConfigureAwait(false).GetAwaiter().GetResult();
-            //return RunProcedure(procedureName);
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(procedureName))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(procedureName));
+            object?[] arguments = parameters ?? Array.Empty<object?>();
+
+            _error.Clear();
+            LastCompiledScriptKey = null;
+            LastCompiledScriptReused = false;
+            Assembly? programAssembly = null;
+            try
+            {
+                CompiledScript script = GetCompiledScript(out bool reused);
+                if (!script.Procedures.Any(p => p.Name.Equals(procedureName, StringComparison.OrdinalIgnoreCase)))
+                    throw new ArgumentException($"The script has no Sub or Function '{procedureName}'", nameof(procedureName));
+                programAssembly = UseCompiledScript(script, reused);
+                using CompiledScriptRun run = script.Run(CreateCompatLayer(), _addedObjects);
+                return run.Call(procedureName, arguments)!;
+            }
+            catch (Exception e)
+            {
+                _error.SetFrom(e, programAssembly, _lastSourceLineMap, _lastScriptContent, _lastCsCode);
+                throw;
+            }
         }
 
         public static object RunProcedure(GlobalReferencesBase globalRefs, string procedureName, object[] parameters)
@@ -349,7 +437,7 @@ namespace Skrypton.ScriptControlSupport
             return csCode;
         }
         private const char NewLineNormalized = '\n';
-        private sealed class ScriptTranslationIssuesCollector : TranslationIssuesCollectorBase
+        internal sealed class ScriptTranslationIssuesCollector : TranslationIssuesCollectorBase
         {
             internal Dictionary<string, int> _undeclaredNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             public override void UndeclaredNamedReferenceDetected(string errorKey, string referenceName, int lineIndex)
