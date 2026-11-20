@@ -1,0 +1,58 @@
+# Publish from GitHub: queues the Azure DevOps pipeline "Skrypton nuget publish" (build/azure-pipeline-publish.yml, definition 4) on the
+# branch selected in "Run workflow" (usually main) and waits for its result. The pipeline itself tests the commit, pushes the packages to
+# nuget.org and creates the GitHub release v<version> (with its own service connections).
+#
+# Setup (once): an Azure DevOps personal access token with the scope "Build (Read & execute)" for the organization lubennaumov0149, stored as
+# the repository secret AZURE_DEVOPS_PAT (Settings > Secrets and variables > Actions).
+name: Publish release
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+env:
+  ADO_PROJECT_URL: https://dev.azure.com/lubennaumov0149/da6f60d8-8511-4261-8553-65721b607b3c
+  ADO_PIPELINE_ID: 4
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Queue the Azure DevOps publish pipeline and wait for it
+        env:
+          AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+          REF_NAME: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          if [ -z "$AZURE_DEVOPS_PAT" ]; then
+            echo "::error::The repository secret AZURE_DEVOPS_PAT is not set (Azure DevOps token with 'Build (Read & execute)')"
+            exit 1
+          fi
+          auth="Authorization: Basic $(printf ':%s' "$AZURE_DEVOPS_PAT" | base64 -w0)"
+
+          body=$(jq -n --arg ref "$REF_NAME" '{resources: {repositories: {self: {refName: $ref}}}}')
+          run=$(curl -sS --fail-with-body -X POST -H "$auth" -H "Content-Type: application/json" \
+            "$ADO_PROJECT_URL/_apis/pipelines/$ADO_PIPELINE_ID/runs?api-version=7.1" -d "$body")
+          run_id=$(echo "$run" | jq -r '.id')
+          run_url="$ADO_PROJECT_URL/_build/results?buildId=$run_id"
+          echo "Queued publish run $run_id for $REF_NAME: $run_url"
+          echo "Azure DevOps run: $run_url" >> "$GITHUB_STEP_SUMMARY"
+
+          while true; do
+            sleep 30
+            status=$(curl -sS --fail-with-body -H "$auth" "$ADO_PROJECT_URL/_apis/pipelines/$ADO_PIPELINE_ID/runs/$run_id?api-version=7.1")
+            state=$(echo "$status" | jq -r '.state')
+            result=$(echo "$status" | jq -r '.result // empty')
+            echo "state: $state ${result:+(result: $result)}"
+            if [ "$state" = "completed" ]; then
+              echo "Result: $result" >> "$GITHUB_STEP_SUMMARY"
+              [ "$result" = "succeeded" ] || { echo "::error::The publish pipeline finished with '$result': $run_url"; exit 1; }
+              break
+            fi
+          done
